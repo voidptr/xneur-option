@@ -1,0 +1,48 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N15
+
+getarr ()
+{
+   curdir=`pwd`
+   for i in `ls $1 | sort`
+   do
+      cd -- "$curdir/$1$i" > /dev/null 2>&1
+      if [ $? -ne 0 -a -d $curdir/$1$i ]; then
+         echo "Нет прав доступа к $curdir/$1$i" > /dev/tty
+         continue
+      fi
+      cd $curdir
+      if [ -d $curdir/$1$i ]; then
+         echo $curdir/$1$i
+         getarr $curdir/$1$i/
+      fi
+   done
+}
+
+echo -e "Введите: n - для перехода к следующему каталогу\n         q - для выхода из программы"
+dirs=`getarr`
+mydir=`pwd`
+for i in $dirs
+do
+   if [ -d $i ]; then
+      cd -- $i > /dev/null 2>&1
+      if [ $? -ne 0 ]; then
+         continue
+      fi
+      while [ 1 ]
+      do
+         curdir=`pwd`
+         cd $curdir > /dev/null 2>&1
+         if [ $? -ne 0 ]; then
+            break
+         fi
+         echo -n "[$curdir]$ " 
+         read command
+         case $command in
+            n|N) break ;;
+            q|Q) exit ;;
+            *)    eval "$command" ;;
+         esac
+      done
+   fi
+done

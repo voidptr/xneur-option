@@ -1,0 +1,32 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N2
+total=0
+for i in `cat afile6`
+do
+   len=${#i}
+   j=1
+   let "tmp=total+len"
+   if [ $tmp -le 40 -o $total -gt 40 -a $tmp -le 80 -o $total -gt 80 -a $tmp -le 120 ];
+   then
+      echo -n $i
+      let "total+=len"
+   else
+      while [ $j -le $len ];
+      do
+         if [ $total -eq 40 -o $total -eq 80 ];
+         then
+            echo -n "     "
+         elif [ $total -eq 120 ];
+         then
+           echo
+           total=0
+         fi
+         echo $i | awk '{printf substr($0,'$j',1)}'
+         let "j++"
+         let "total++"
+      done
+   fi
+   echo -n " "
+   let "total++"
+done
+echo

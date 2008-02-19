@@ -1,0 +1,118 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N12
+
+if [ $# -eq 0 ]; then
+   echo "Использование: `basename $0` Файл_Списка"
+   exit
+fi
+
+if [ -e $1 ]; then
+   echo "Ошибка: Файл $1 уже существует"
+   exit
+fi
+
+echo
+
+declare fields=""
+declare file=$1
+declare total=0
+
+get ()
+{
+   cnt=0
+   fields=""
+   while [ $cnt -ne $total ]
+   do
+      eval "echo \$record$cnt"
+      let "cnt++"
+   done
+}
+
+save ()
+{
+   if [ $total -eq 0 ]; then
+      echo -e "Нечего сохранять\n"
+   else
+      cnt=1
+      for i in `get | sort`
+      do
+         echo -e "$cnt.\t$i" >> $file
+         let "cnt++"
+      done
+
+      echo -e "Сохранено записей в файл $file: $total"
+      exit
+   fi
+}
+
+addnew ()
+{
+   surname=""
+   initials=""
+   birthyear=""
+
+   echo "Добавление новой записи"
+
+   while [ "$surname" == "" ]
+   do
+      echo -n "   Фамилия: "
+      read surname
+      if [ "`echo $surname | cut -s --delimiter=\" \" -f1-`" != "" ]; then
+         echo "Вводимая строка НЕ должна содержать пробелы"
+         surname=""
+      fi
+   done
+   while [ "$initials" == "" ]
+   do
+      echo -n "   Инициалы: "
+      read initials
+      if [ "`echo $initials | cut -s --delimiter=\" \" -f1-`" != "" ]; then
+         echo "Вводимая строка НЕ должна содержать пробелы"
+         initials=""
+      fi
+   done
+   while [ "$birthyear" == "" ]
+   do
+      echo -n "   Год рождения: "
+      read birthyear
+      if [ "`echo $birthyear | cut -s --delimiter=\" \" -f1-`" != "" ]; then
+         echo "Вводимая строка НЕ должна содержать пробелы"
+         birthyear=""
+      fi
+   done
+
+   tmpstr="$surname\t$initials\t$birthyear"
+   echo -e "Добавлена новая запись - $tmpstr\n"
+   eval "record$total=\"$tmpstr\""
+   let "total++"
+}
+
+list ()
+{
+   if [ $total -eq 0 ]; then
+      echo "Ещё ничего не добавлено"
+   else
+      echo "Всего добавлено записей: $total"
+      echo -e "`get | sort`"
+   fi
+   echo
+}
+
+logo ()
+{
+   echo "Введите Q - для выхода, S - для сохранения, A - для добавления новой записи, L - для просмотра добавленных записей"
+}
+
+addnew
+logo
+while [ 1 ];
+do
+   echo -n "Действие: "
+   read choice
+   case $choice in
+      Q|q) echo "Выходим..."; exit ;;
+      S|s) save; logo ;;
+      A|a) addnew; logo ;;
+      L|l) list; logo ;;
+   esac
+done

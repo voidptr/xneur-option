@@ -1,0 +1,98 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N12
+
+if [ $# -eq 0 ]; then
+   echo "Использование: `basename $0` Файл_Списка"
+   exit
+fi
+
+if [ -e $1 ]; then
+   echo "Внимание: Файл $1 уже существует"
+else
+   touch -- $1
+fi
+
+echo
+
+declare fields=""
+declare file=$1
+declare -a format
+format[0]="Фамилия"
+format[1]="Инициалы"
+format[2]="Год рождения"
+
+save ()
+{
+   if [ "$fields" = "" ]; then
+      echo -e "Нечего сохранять\n"
+   else
+      curcnt=`echo -e $fields | wc -l`
+      awko=`sed "s/^[0-9]*\. //" $file`
+      if [ "$awko" != "" ]; then
+         awko="\n$awko"
+      fi
+      echo -e "$fields$awko" | sort | awk 'BEGIN {cnt=1} {print cnt". "$0; cnt++}' > $file
+      set `wc -l -- $file`
+      echo -e "Сохранено записей в файл $file: $curcnt\nВсего уже записей: $1\n"
+      fields=""
+   fi
+}
+
+addnew ()
+{
+   echo "Добавление новой записи"
+   max=${#format[@]}
+   what=0
+   unset array
+   while [ $what -lt $max ]
+   do
+      response=""
+      while [ "$response" == "" ]
+      do
+         echo -n "   ${format[$what]}: "
+         read response
+      done
+      array[$what]=$response
+      let "what++"
+   done
+
+   tmpstr=${array[@]}
+   echo -e "Добавлена новая запись - $tmpstr\n"
+   if [ "$fields" != "" ]; then
+      fields="$fields\n"
+   fi
+   fields="$fields$tmpstr"
+}
+
+list ()
+{
+   if [ "$fields" = "" ]; then
+      echo "Ещё ничего не добавлено"
+   else
+      cnt=`echo -e "$fields" | wc -l`
+      echo "Всего добавлено записей: $cnt"
+      echo -e "$fields" | sort
+   fi
+   echo
+}
+
+logo ()
+{
+   echo "Введите Q - для выхода, S - для сохранения, A - для добавления новой записи, L - для просмотра добавленных записей"
+}
+
+addnew
+logo
+while [ 1 ];
+do
+   echo -n "Действие: "
+   read choice
+   case $choice in
+      Q|q) echo "Выходим..."; exit ;;
+      S|s) save; logo ;;
+      A|a) addnew; logo ;;
+      L|l) list; logo ;;
+      SQ|Sq|sQ|sq) save; exit ;;
+      SA|Sa|sA|sa) save; addnew ;;
+   esac
+done

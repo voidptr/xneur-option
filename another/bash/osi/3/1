@@ -1,0 +1,20 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N3
+for i
+do
+   endstr="End of $i"
+   while [ 1 ];
+   do
+      if [ "`cat \"$i\" | grep \"$endstr\"`" != "" ];
+      then
+         endstr="$endstr".X
+      else
+         break
+      fi
+   done
+   echo $endstr
+#   echo "echo $i>&2"
+#   echo "cat >$i <<'End of $i' "
+#   cat $i 
+#   echo "End of $i"
+done

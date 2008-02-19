@@ -1,0 +1,3700 @@
+EDGE Diagram File
+Version 5.00
+
+## Globals Section:
+
+X 62
+Y 577
+Scale 118.08
+Orientation 1
+Paper 9
+PaperWidth 2100
+PaperLength 2970
+PageMarginLeft 128
+PageMarginTop 128
+PageMarginRight 128
+PageMarginBottom 128
+PosterRows 1
+PosterCols 1
+Color1 255,255,255
+Color2 192,192,192
+Color3 130,130,130
+Color4 0,0,0
+Color5 0,255,255
+Color6 0,0,255
+Color7 0,0,160
+Color8 128,0,128
+Color9 255,128,0
+Color10 255,0,0
+Color11 128,0,64
+Color12 128,64,0
+Color13 0,255,0
+Color14 0,128,0
+Color15 128,128,255
+Color16 205,114,203
+GridX 32
+GridY 32
+SnapX 32
+SnapY 32
+SnapConPtsCentersEdges TRUE
+ShadowColor 130,130,130
+ShadowX 12
+ShadowY 12
+ShowGrid FALSE
+AlignToGrid TRUE
+AlignToGridConPts FALSE
+AttachMode 1
+SBarWidth 128
+SBarFigCols 2
+SBarLblCols 2
+SBarConCols 2
+SBarFigHeight 34
+SBarLblHeight 20
+SBarConHeight 20
+Parent ""
+LargeDropMenus FALSE
+FullColorIcons FALSE
+LastEnd "null"
+LastEndLen 36
+EnableConPts TRUE
+AutoLabelStyle "Label"
+ConLabelStyle "Label"
+FlowLabelStyle "Label"
+ConPointMarks 1
+CornerRadius 43
+FigMarginMode 0
+FigMarginTop 12
+FigMarginBottom 12
+FigMarginLeft 12
+FigMarginRight 12
+Template "Flowchart.EDG"
+TypeSize 8
+TypeFace "Arial"
+ConnectorJogs TRUE
+ConnectorJogRadius 16
+JunctionDots FALSE
+FigLblPrimarySector 8
+SelfReferenceRadius 64
+OversizeTextRect TRUE
+LineSpacingMode 0
+LineSpacingValue 0
+
+DevMode 514
+{
+4550534F4E205374796C75732050686F746F2038393500000000000000000000
+010460049C0066010F8B0006010009009A0B3408640001000700680101000100
+6801000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000
+0000000001000000300100000000000000000000000000000000000000000000
+01000000340800009A0B00000D00000002000000010000000000000001000300
+0300000005000200B40001000000000000000200000000000000000001000000
+0000000000000000000005000100000000000000000000000000000000000000
+00000100000000000000000000000000000001000000010000002A0000002A00
+00002A000000C6000000A00B000071100000680100006801000000000000444C
+4C4E616D6533323D455F4455313543452E444C4C000000000000000000000000
+000009004C0B0000810F000064004C0B0000810F000000000000140000000000
+00000000000000000000000032000000FF000000010000000000000000000000
+00004500500053004F004E0020005300740079006C0075007300200050006800
+6F0074006F002000380039003500000000000000000000000000000000000000
+00001904000000010000000000001E0001002A0000002A0000002A000000C600
+0000
+}
+
+DevNames 66
+{
+080012002A00010077696E73706F6F6C00004550534F4E205374796C75732050
+686F746F20383935000055534230303100000000000000000000000000000000
+0000
+}
+
+Preview 4392
+{
+FC424DF6A20600FF360300FF280300FF700300FF7C0300FD0100180500F6C0A2
+00007F1100007F110A007FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF77FF
+0F0045FF0F007FFF7DFF030051FF03007FFF62FFFDDFFFFF0300EB3F3E5F7465
+5F660065744874DFFFBFDFBFBF9C9CBF030036FFFDDFFFFF0300EB3F3E5F7465
+5F660065744874DFFFBFC4BFBF74489C03007FFF65FF120042FF12007FFF74FF
+06004EFF06007FFF7AFF03004EFF03007FFF7DFF03004EFF03007FFF68FF2A00
+2AFF27007FFF56FF030024FF03002AFF030021FF03007FFF56FF030006FFEBDF
+FFFF66489C574874894857A89C8874489CFFFFBF09FF03002AFF030006FFEBDF
+FFFF66489C574874894857A89C8874489CFFFFBF06FF03007FFF53FFFDDFFFFF
+0300DC660048364874660048664874A89C7466489C5748746600578974746648
+886648745748740300FDFFFFBF21FFFADFFFFF36489C0300DF36487466004866
+4874A89C7466489C5748746600578974746648886648745748740300FDFFFFBF
+7FFF53FF2A002AFF27007FFF68FF06004EFF06007FFF7AFF03004EFF03007FFF
+6BFF210018FF060015FF21007FFF5CFF03001BFF030012FF060006FF06000FFF
+03001BFF03007FFF5CFF03001BFF03000CFF060012FF060009FF03001BFF0300
+7FFF5CFF03001BFF0F001EFF0C001BFF03007FFF5FFF0400E6489CC49C480048
+9CC49C4866489C664874A89C7474489CFFFFBF030006FF0600E8893E48574888
+660057004874C49C4857489C7400579C9C8F060009FF0300EBDFFFFF36489C89
+3E485748886600579C7474FFFFDF06FF03007FFF5CFF03001BFF03000CFF0300
+0FFF06000FFF03001BFF03007FFF5CFF21000FFF060003FF060015FF21007FFF
+7FFF13FF06007FFF7FFF4FFF03007FFF7FFF1CFF0F0024FF03001EFF0F007FFF
+7DFF030021FF03002DFF03007FFF62FFFDDFFFFF1500FD9C9CBF03001EFF0300
+15FFFDDFFFFF1500FD9C9CBF03007FFF6EFF060027FF030024FF06007FFF7AFF
+030027FF030024FF03007FFF7DFF030027FF030024FF03001BFF21007FFF2CFF
+2A0003FF210006FF270009FF03001BFF03007FFF2CFF030024FF030003FF0300
+1BFF030006FF030021FF030009FF03001BFF03007FFF2CFF030006FFEBDFFFFF
+66489C574874894857A89C8874489CFFFFBF09FF030003FF0300E8DFFFFF6648
+9C6648748F9C74660074A89C7474489CFFFFBF03FF030006FF030006FFEBDFFF
+FF66489C574874894857A89C8874489CFFFFBF06FF0F001BFF03007FFF29FFFD
+DFFFFF0300DC660048364874660048664874A89C7466489C5748746600578974
+746648886648745748740300FD3648740300E5664874574874000057C49C4866
+489CA89C7466489C6648746648740300FADFFFBF36489C0300DF364874660048
+664874A89C7466489C5748746600578974746648886648745748740300FDFFFF
+BF09FF0400E6489CC49C4800489CC49C4866489C664874A89C7474489CFFFFBF
+03007FFF29FF030024FF030003FF03001BFF030006FF030021FF03000CFF0300
+1BFF03007FFF29FF2A0003FF210006FF27000CFF21007FFF3BFF060024FF0600
+51FF06007FFF4DFF030027FF030054FF03007FFF3BFF210009FF210039FFF4DF
+FFFF00489C660035BF9C7403FF03007FFF3BFF03001BFF030009FF03001BFF03
+0009FF210018FF060003FF060036FF30004EFF03001BFF030009FF03001BFF03
+0009FF03001BFF030015FF03000FFF03000CFF210006FF03002AFF030051FF04
+00E6489CC49C4800489CC49C4866489C664874A89C7474489CFFFFBF030009FF
+0300EBDFFFFF36489C893E485748886600579C7474FFFFDF06FF030006FF0300
+1BFF03000FFF060015FF060006FF03001BFF030006FF03002AFF030051FF0300
+1BFF030009FF03001BFF030006FF030003FFEBDFFFFF36489C893E4857488866
+00579C7474FFFFDF03FF1200E236489C893E48574888660057004874C49C4857
+489C7400579C9C8FFFFFDF03FF0900E574749C894865A89C8866489C57487466
+0057897474A89C8874489C0C0006FFE2BFFFFF740074DFFFBF66489C6648748F
+9C746600748F9C74740074FFFFBF06FF030051FF210009FF210009FF03001BFF
+0300F73F489C743E5FFFFFBF03FF060015FF060003FFFDDFFFFF0300E5570057
+894857A89C8866489C5748746600578974746648886648740300F7740057DFFF
+BF3F489C0300D674655F660065744874DFFFBF66489C574874000057A79C4866
+00746648743F4874663E5F6648746648740300FDFFFFBF57FF060024FF060018
+FF03001BFF030012FF060009FF06000CFF03001BFF030009FF03002AFF03005D
+FF030027FF030018FF210018FF090012FF210009FF30005DFF030027FF030024
+FF03007FFF05FF030075FF03001BFFF7DFFFFF3F489C743E5F060024FF060078
+FFF7DFFFFF3F489C743E5F030075FF03001EFF060006FF06001EFF03007FFF05
+FF030075FF030018FF060012FF060009FF210033FF2A0012FF060003FF06006F
+FF1B001EFF0C00E8DFFFFF66489C6648748F9C74660074A89C7474489CFFFFBF
+03FF030033FF030024FF03000CFF06000FFF06007FFFFEFFFF0600E8893E4857
+4888660057004874C49C4857489C7400579C9C8F060003FF0600E536489C893E
+48A89C8866489C574874660057897474A89C8874489C030033FF030024FF0600
+03FF06001BFF06006CFFF4DFFFFF00489C660035BF9C7409FF03000FFF06000C
+FF03001BFF030018FF1E0006FFE8DFFFFF66489C6648748F9C74660074BF9C74
+9C9CBFFFFFDF06FF0900ECDFFFFF66489C3F4874743E5FBFFFBF660074A89C03
+74F39C660065BF9C749C9CBFFFFFDF03FF0C0078FF060003FF060012FF210018
+FF030015FFFADFFFFF00489C0300EF740074DFFFBFA89C9C57489C6600576648
+0474F16600653F48743F3E5F743E5FFFFFBF030003FF060003FFEBDFFFFF6648
+9C6648748F9C74660074744874FFFFBF03FF0700F8489C660035BF9C7403007E
+FF030051FF03001BFF030024FF030009FF06000FFF06000FFF03007FFF53FF03
+001BFF2A000FFF060003FF060015FF03007FFFFEFFFF300021FF03002DFF0300
+2AFF03001BFF03005AFF210006FF03002AFF030021FF06002AFF030015FFEBDF
+FFFF3F489C663E5F897474A7BFA766007474487403001BFF03005AFF03001BFF
+030006FF03002AFF03001BFF060006FF060024FF03002AFF03001BFF03005AFF
+03001BFF030006FF03002AFF030015FF060012FF06001EFF30001BFF03005AFF
+030003FFEBBFFFFF894874664888574874744857660065BF9C7403FF0C0006FF
+E8DFFFFF66489C364874660048574874660057484874FFDF9C0CFF1800E56648
+9C6648746648745748746600575748747400579C9C8FFFFFDF03FF210048FF03
+005DFF0300E83F489C3F3E5F74655F660065664874664874484874FFDF9C03FF
+0300FA66489C6648740300E86600748F9C746600749C7474BFFFDF9C4874DFFF
+DF66489C0203664874F73F4874483E5FFFDF9C03000FFF0600F83F489C8F885F
+66000202746648F6748F9C74740074FFFFBF06001BFF030048FF03005DFF0300
+1BFF0300FADFFFFF3F489C0300D9573E5F740057DFFFBF66489C664874664874
+574874660057574874740057DFFFBF48489CFFDF9C03FF030003FFF49C9CBFFF
+FFDF9C9CBFFFFFDF06FF03000FFF060003FFF1DFFFFF74489CDFFFBF74489CFF
+FFBF0FFF030048FF03005DFF210006FF03002AFF030018FF060003FF060027FF
+030048FF03006CFF030015FF30001EFF06002AFF030048FF03006CFF030063FF
+03002DFF030048FF030069FF06002AFF030036FF03002AFF060048FF03005AFF
+210018FF060003FF060030FF03001BFF21003CFF03005AFF03001BFF030012FF
+06000FFF060015FF2A0009FF03001BFF03003CFF03005AFF03001BFF03000CFF
+06001BFF06000FFF030024FF030009FF03001BFF03003CFF030057FFFDDFFFFF
+0300E5664888004874DF9C48DFFFFF89749C6648886648745748745700570F00
+06FFF8BFFFFF660074A89C0374F39C660065BF9C749C9CBFFFFFDF09FF120003
+FFE2DFFFFF66489C744874DFFFBF66489C5748748948578F9C88740074FFFFBF
+03FF030009FF030003FFE8DFFFFF66489C664874664874574874660057744874
+FFFFBF03003CFF03005DFF0300E53F489C8F885F660074897474664888664874
+8F9C74740074FFFFBF030009FF0600E56648748F9C74660074744874DFFFBF66
+489C3F4874743E5FFFFFBF06000FFF0400DD489C660035574874894857BF9C88
+DFFFFF66489C6648748F9C746600748F9C746600740300FDFFFFDF09FF0400E6
+489C6635488F9C74660074BF9C74DFFFFF57489C740057FFFFBF030039FF0300
+5DFF03001BFF03000FFF06000FFF060003FFEEDFFFFF00489C740035DFFFBF66
+489CDFDFA80300FDFFBF7421FF03000CFF03001BFF030039FF03005DFF210015
+FF060003FF06001BFF2A000CFF210039FF03007FFF1AFF030036FF06002AFF03
+0048FF03007FFF08FFF1DFFFFF66489CDFDFA800489CFFBF7403FF030036FF03
+002AFF060048FF03007FFF1AFF030027FF21001EFF030048FF03007FFF1AFF03
+0027FF03001BFF030009FF2A0036FF03007FFF05FF2A0015FF03001BFF030009
+FF030006FFEBDFFFFF66489C574874894857A89C8874489CFFFFBF09FF3C007F
+FF05FF030024FF030018FF0300EBDFFFFF36489C893E485748886600579C7474
+FFFFDF06FF030003FFFDDFFFFF0300DC660048364874660048664874A89C7466
+489C57487466005789747466488866487457487406007FFF32FF0C0006FFEBDF
+FFFF66489C574874894857A89C8874489CFFFFBF09FF030018FF03001BFF0300
+06FF030024FF03007FFF35FF030003FFFDDFFFFF0300DC660048364874660048
+664874A89C7466489C5748746600578974746648886648745748740300FDFFFF
+BF15FF210006FF2A007FFF35FF030006FF030024FF030024FF06002AFF03007F
+FF47FF030006FF2A0024FF03002DFF03007FFF47FF030054FF03002DFF03007F
+FF47FF03004BFFF7DFFFFF3F489C743E5F06002AFF03007FFF47FF03004EFF06
+0006FF060024FF03007FFF47FF030048FF060012FF06001EFF03007FFF47FF03
+002AFF1E001EFF060018FF03007FFF47FF03002AFF030018FF0600E8893E4857
+4888660057004874C49C4857489C7400579C9C8F06001BFF03007FFF47FF0300
+2AFF030009FFF4DFFFFF00489C660035BF9C7409FF03000FFF060021FF03007F
+FF47FF03002AFF030021FF060003FF060027FF03007FFF47FF03002AFF030027
+FF03002DFF03007FFF47FF03002AFF030027FF06002AFF03007FFF47FF03002A
+FF060024FF03002DFF03007FFF47FF03001BFF210018FF03002DFF03007FFF47
+FF03001BFF03001BFF030003FF2A001BFF03007FFF47FF03001BFF03001BFF03
+0003FF030024FF03001BFF03007FFF47FF03001BFF03001BFF030003FF030024
+FF03001BFF03007FFF47FF03001BFFFDDFFFFF0300E8C49C4800489CC49C4866
+489C664874A89C7474489CFFFFBF03FF0700DD489CA79C48660074664874A89C
+7466489C5748746600578974746648886648745748740300FDFFFFBF18FF0300
+7FFF47FF03001EFF03001BFF060024FF03001BFF03007FFF47FF03001EFF4B00
+1BFF03007FFF47FF03002AFF030027FF06002AFF03007FFF47FF03002AFF0300
+27FF03002DFF03007FFF47FF03002AFF03000FFF330015FF03007FFF47FF0300
+2AFF06000CFF03002DFF030015FF03007FFF47FF300003FF1200E266489C5748
+74894857A89C8866489C664874664874897474A89C8866489C0374F766006548
+4874FFDF9C1B007FFF71FF09000CFF0600D936489C893E48A89C8866489C8974
+746648888F9C74740074DFFFBF66489C574874894857BF9C8806FF03007FFF7F
+FF1FFF03002DFF03007FFF7FFF1FFF33007FFF7FFF34FF06007FFF7FFF4CFF03
+007FFF7FFF4FFF03007FFF7FFF4FFF0300FDFFFFDF7FFF7FFF49FF030003FF03
+007FFF7FFF4CFF03007FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+FF7FFF7FFF3AFF00
+}
+
+LabelMenu
+{
+  Columns 1
+  Row "Label"
+  Row "Title"
+  Row "yes"
+  Row "no"
+}
+
+LabelButtons
+{
+  Columns 2
+  BtnHeight 20
+  Row "yes", "no"
+}
+
+FigureMenu
+{
+  Columns 6
+  ItemHeight 18
+  ItemWidth 36
+  Row "Process", "Input/Output", "Decision", "Decision2", "Auxiliary Operation", "Preparation"
+  Row "Predefined Process", "Manual Operation", "Merge", "Extract", "Terminal", "Connector"
+  Row "Off-page Connector", "Manual Input", "Internal Subroutine", "Document", "Disk", "Display"
+  Row "Sort", "Collate", "Punched Card", "Card Deck", "Combined Operation", "Online Storage"
+  Row "Magnetic Tape", "Core", "Offline Storage", "Punched Tape", "Magnetic Drum", "Comment"
+}
+
+FigureButtons
+{
+  Columns 2
+  BtnHeight 34
+  Row "Process", "Input/Output"
+  Row "Decision", "Auxiliary Operation"
+  Row "Preparation", "Predefined Process"
+  Row "Manual Operation", "Terminal"
+  Row "Connector", "Off-page Connector"
+  Row "Manual Input", "Document"
+  Row "Disk", "Comment"
+}
+
+ConnectorMenu
+{
+  Columns 4
+  ItemHeight 11
+  ItemWidth 49
+  Row "No Arrow", "No Arrow - Dashed", "Stick Arrow", "Stick Arrow - Dashed"
+  Row "Solid Arrow", "Solid Arrow - Dashed", "Outline Arrow", "Outline Arrow - Dashed"
+}
+
+ConnectorButtons
+{
+  Columns 2
+  BtnHeight 20
+  Row "No Arrow", "No Arrow - Dashed"
+  Row "Stick Arrow", "Stick Arrow - Dashed"
+  Row "Solid Arrow", "Solid Arrow - Dashed"
+  Row "Outline Arrow", "Outline Arrow - Dashed"
+}
+
+## Graphics Section:
+
+## Figure Symbols Section:
+
+FigureSymbol "home base"
+{
+  FixedAspect FALSE
+  Height 64
+  Width 80
+  TextBox >100,>100,<900,<750
+  Fill
+  {
+    Polygon 6 0,0 1000,0 1000,<700 500,1000 0,<700 0,0
+  }
+  Outline
+  {
+    Polyline 6 0,0 1000,0 1000,<700 500,1000 0,<700 0,0
+  }
+  Hot 6 0,0 1000,0 1000,<700 500,1000 0,<700 0,0
+}
+
+FigureSymbol "process"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >100,>100,<900,<900 0,0,1000,1000 0 0 0 0
+  Fill
+  {
+    Rect 0,0,1000,1000
+  }
+  Outline
+  {
+    Rect 0,0,1000,1000
+  }
+}
+
+FigureSymbol "internal sub"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >100,>200,<900,<900 0,>100,1000,1000 0 0 0 0
+  Fill
+  {
+    Rect 0,0,1000,1000
+  }
+  Outline
+  {
+    Rect 0,0,1000,1000
+    Line 0,>100 1000,>100
+  }
+  MiniOutline
+  {
+    Rect 0,0,1000,1000
+    Line 0,200 1000,200
+  }
+}
+
+FigureSymbol "input/output"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >200,>100,<800,<900 >200,0,<800,1000 1 0 1 0
+  Fill
+  {
+    Polygon 5 >200,0 1000,0 <800,1000 0,1000 >200,0
+  }
+  Outline
+  {
+    Polyline 5 >200,0 1000,0 <800,1000 0,1000 >200,0
+  }
+  Hot 5 >200,0 1000,0 <800,1000 0,1000 >200,0
+}
+
+FigureSymbol "decision"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  OversizeText TRUE
+  TextBox 200,255,800,750
+  TextBox 800,375,950,625
+  TextBox 425,750,575,1000
+  TextBox 50,375,200,625
+  TextBox 425,0,575,250
+  Fill
+  {
+    Polygon 5 500,0 1000,500 500,1000 0,500 500,0
+  }
+  Outline
+  {
+    Polyline 5 500,0 1000,500 500,1000 0,500 500,0
+  }
+  Hot 5 500,0 1000,500 500,1000 0,500 500,0
+}
+
+FigureSymbol "decision2"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  OversizeText TRUE
+  TextBox 125,225,875,775
+  TextBox 875,375,1000,625
+  TextBox 425,750,575,1000
+  TextBox 0,375,125,625
+  TextBox 425,0,575,250
+  Fill
+  {
+    Polygon 41 60,360 38,386 20,418 8,450 0,484 0,516 8,550 20,582-
+     38,614 60,640 395,955 414,973 438,986 462,995 488,1000 512,1000-
+     537,995 561,986 585,973 605,955 940,640 962,614 980,582 992,550-
+     1000,516 1000,484 992,450 980,418 962,386 940,360 605,45 585,27-
+     561,13 537,4 512,0 488,0 462,4 438,13 414,27 395,45-
+     60,360
+  }
+  Outline
+  {
+    Polyline 41 60,360 38,386 20,418 8,450 0,484 0,516 8,550 20,582-
+     38,614 60,640 395,955 414,973 438,986 462,995 488,1000 512,1000-
+     537,995 561,986 585,973 605,955 940,640 962,614 980,582 992,550-
+     1000,516 1000,484 992,450 980,418 962,386 940,360 605,45 585,27-
+     561,13 537,4 512,0 488,0 462,4 438,13 414,27 395,45-
+     60,360
+  }
+  MiniOutline
+  {
+    Polyline 41 60,360 38,386 20,418 8,450 0,484 0,516 8,550 20,582-
+     38,614 60,640 360,940 386,964 418,982 450,994 484,1000 516,1000-
+     550,994 582,982 614,964 640,940 940,640 962,614 980,582 992,550-
+     1000,516 1000,484 992,450 980,418 962,386 940,360 640,60 614,36-
+     582,18 550,6 516,0 484,0 450,6 418,18 386,36 360,60-
+     60,360
+  }
+  Hot 41 60,360 38,386 20,418 8,450 0,484 0,516 8,550 20,582-
+   38,614 60,640 395,955 414,973 438,986 462,995 488,1000 512,1000-
+   537,995 561,986 585,973 605,955 940,640 962,614 980,582 992,550-
+   1000,516 1000,484 992,450 980,418 962,386 940,360 605,45 585,27-
+   561,13 537,4 512,0 488,0 462,4 438,13 414,27 395,45-
+   60,360
+}
+
+FigureSymbol "sort"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  Fill
+  {
+    Polygon 5 500,0 1000,500 500,1000 0,500 500,0
+  }
+  Outline
+  {
+    Polyline 5 500,0 1000,500 500,1000 0,500 500,0
+    Line 0,500 1000,500
+  }
+  Hot 5 500,0 1000,500 500,1000 0,500 500,0
+}
+
+FigureSymbol "auxiliary"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >100,>100,<900,<900 0,0,1000,1000 0 0 0 0
+  Fill
+  {
+    Rect 0,0,1000,1000
+  }
+  Outline
+  {
+    Rect 0,0,1000,1000
+  }
+}
+
+FigureSymbol "core"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >200,>200,<900,<900 >100,>100,1000,1000 0 0 0 0
+  Fill
+  {
+    Rect 0,0,1000,1000
+  }
+  Outline
+  {
+    Rect 0,0,1000,1000
+    Line >100,0 >100,1000
+    Line 0,>100 1000,>100
+  }
+  MiniOutline
+  {
+    Rect 0,0,1000,1000
+    Line >250,0 >250,1000
+    Line 0,>250 1000,>250
+  }
+}
+
+FigureSymbol "merge"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  TextBox 250,100,750,600
+  Fill
+  {
+    Polygon 4 0,0 1000,0 500,1000 0,0
+  }
+  Outline
+  {
+    Polyline 4 0,0 1000,0 500,1000 0,0
+  }
+  Hot 4 0,0 1000,0 500,1000 0,0
+}
+
+FigureSymbol "extract"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  TextBox 250,400,750,900
+  Fill
+  {
+    Polygon 4 0,1000 500,0 1000,1000 0,1000
+  }
+  Outline
+  {
+    Polyline 4 0,1000 500,0 1000,1000 0,1000
+  }
+  Hot 4 0,1000 500,0 1000,1000 0,1000
+}
+
+FigureSymbol "collate"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  Fill
+  {
+    Polygon 4 0,0 1000,0 500,500 0,0
+    Polygon 4 0,1000 1000,1000 500,500 0,1000
+  }
+  Outline
+  {
+    Polyline 4 0,0 1000,0 500,500 0,0
+    Polyline 4 0,1000 1000,1000 500,500 0,1000
+  }
+  Hot 7 500,500 0,0 1000,0 500,500 0,1000 1000,1000 500,500
+}
+
+FigureSymbol "predefined"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >200,>100,<800,<900 >100,0,<900,1000 0 0 0 0
+  Fill
+  {
+    Rect 0,0,1000,1000
+  }
+  Outline
+  {
+    Rect 0,0,1000,1000
+    Line >100,0 >100,1000
+    Line <900,0 <900,1000
+  }
+  MiniOutline
+  {
+    Rect 0,0,1000,1000
+    Line 100,0 100,1000
+    Line 880,0 880,1000
+  }
+}
+
+FigureSymbol "preparation"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >150,>100,<850,<900 >150,0,<850,1000 1 0 1 0
+  Fill
+  {
+    Polygon 7 >200,0 <800,0 1000,500 <800,1000 >200,1000 0,500 >200,0
+  }
+  Outline
+  {
+    Polyline 7 >200,0 <800,0 1000,500 <800,1000 >200,1000 0,500 >200,0
+  }
+  Hot 7 >200,0 <800,0 1000,500 <800,1000 >200,1000 0,500 >200,0
+}
+
+FigureSymbol "manual operation"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >200,>100,<800,<900 >200,0,<800,1000 1 0 1 0
+  Fill
+  {
+    Polygon 5 0,0 1000,0 <800,1000 >200,1000 0,0
+  }
+  Outline
+  {
+    Polyline 5 0,0 1000,0 <800,1000 >200,1000 0,0
+  }
+  Hot 5 0,0 1000,0 <800,1000 >200,1000 0,0
+}
+
+FigureSymbol "connector"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  TextBox 100,100,900,900
+  Fill
+  {
+    Ellipse 0,0,1000,1000
+  }
+  Outline
+  {
+    Ellipse 0,0,1000,1000
+  }
+  Hot 17 599,1000 783,924 924,783 1000,599 1000,402 924,218 783,77 599,1-
+   402,1 218,77 77,218 1,402 1,599 77,783 218,924 402,1000-
+   599,1000
+}
+
+FigureSymbol "terminal"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  TextBox >200,>100,<800,<900
+  Fill
+  {
+    Rect >500,0,<500,1000
+    Ellipse 0,0,>999,1000
+    Ellipse <1,0,1000,1000
+  }
+  Outline
+  {
+    Line >500,0 <500,0
+    Line >500,1000 <500,1000
+    Arc 0,0,>999,1000 >500,0 >500,1000
+    Arc <1,0,1000,1000 <500,1000 <500,0
+  }
+  Hot 17 >401,1 >217,77 >77,218 >1,402 >1,599 >77,783 >217,924 >401,1000-
+   <599,1000 <783,924 <923,783 <999,599 <999,402 <923,218 <783,77 <599,1-
+   >401,1
+}
+
+FigureSymbol "punched card"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >100,>100,<900,<900 0,0,1000,1000 0 0 0 0
+  Fill
+  {
+    Polygon 6 >250,0 1000,0 1000,1000 0,1000 0,>250 >250,0
+  }
+  Outline
+  {
+    Polyline 6 >250,0 1000,0 1000,1000 0,1000 0,>250 >250,0
+  }
+  MiniOutline
+  {
+    Polyline 6 250,0 1000,0 1000,1000 0,1000 0,400 250,0
+  }
+  Hot 6 >250,0 1000,0 1000,1000 0,1000 0,>250 >250,0
+}
+
+FigureSymbol "card file"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >200,>250,<775,<850 0,>75,<900,1000 0 0 0 0
+  Fill
+  {
+    Polygon 6 >300,>75 <900,>75 <900,1000 0,1000 0,>375 >300,>75
+  }
+  Outline
+  {
+    Polyline 6 >300,>75 <900,>75 <900,1000 0,1000 0,>375 >300,>75
+    Polyline 3 <700,0 1000,0 1000,>250
+  }
+  MiniOutline
+  {
+    Polyline 6 250,150 900,150 900,1000 0,1000 0,500 250,150
+    Polyline 3 700,0 1000,0 1000,500
+  }
+  Hot 6 >300,>75 <900,>75 <900,1000 0,1000 0,>375 >300,>75
+}
+
+FigureSymbol "combined"
+{
+  FixedAspect FALSE
+  Height 192
+  Width 192
+  TextBox >100,>100,<900,<900
+  Fill
+  {
+    Rect 0,0,1000,1000
+  }
+  Outline
+  {
+    Rect 0,0,1000,1000
+    Ellipse 0,0,1000,1000
+  }
+}
+
+FigureSymbol "card deck"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >200,>250,<775,<850 >75,>75,1000,1000 0 0 0 0
+  Fill
+  {
+    Polygon 8 1000,1000 1000,>75 <925,0 >300,0 0,>300 0,<925 >75,1000 1000,1000
+  }
+  Outline
+  {
+    Polyline 8 1000,1000 1000,>75 <925,0 >300,0 0,>300 0,<925 >75,1000 1000,1000
+    Polyline 4 >75,1000 >75,>375 >375,>75 1000,>75
+    Line 0,>300 >75,>375
+    Line >300,0 >375,>75
+  }
+  MiniOutline
+  {
+    Polyline 8 1000,1000 1000,150 900,0 250,0 0,250 0,900 100,1000 1000,1000
+    Polyline 4 100,1000 100,400 400,150 1000,150
+    Line 0,250 100,400
+    Line 250,0 400,150
+  }
+  Hot 7 >375,0 1000,0 1000,<925 <900,1000 0,1000 0,>375 >375,0
+}
+
+FigureSymbol "document"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >100,>100,<900,<750 0,0,1000,<750 0 0 0 1
+  Fill
+  {
+    Polygon 26 1000,<900 1000,0 0,0 0,<900 14,<928 39,<955 86,<976 146,<992-
+     215,1000 286,1000 355,<992 415,<976 462,<955 487,<928 500,<900 514,<873-
+     539,<846 586,<825 646,<809 715,<801 786,<801 855,<809 915,<825 962,<846-
+     987,<873 1000,<900
+  }
+  Outline
+  {
+    Polyline 26 1000,<900 1000,0 0,0 0,<900 14,<928 39,<955 86,<976 146,<992-
+     215,1000 286,1000 355,<992 415,<976 462,<955 487,<928 500,<900 514,<873-
+     539,<846 586,<825 646,<809 715,<801 786,<801 855,<809 915,<825 962,<846-
+     987,<873 1000,<900
+  }
+  Hot 26 1000,<900 1000,0 0,0 0,<900 14,<928 39,<955 86,<976 146,<992-
+   215,1000 286,1000 355,<992 415,<976 462,<955 487,<928 500,<900 514,<873-
+   539,<846 586,<825 646,<809 715,<801 786,<801 855,<809 915,<825 962,<846-
+   987,<873 1000,<900
+}
+
+FigureSymbol "punched tape"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >100,>250,<900,<750 0,>250,1000,<750 0 1 0 1
+  Fill
+  {
+    Polygon 47 0,<900 0,>100 14,>128 39,>155 86,>176 146,>192 215,>200 286,>200-
+     355,>192 415,>176 462,>155 487,>128 500,>100 514,>73 539,>46 586,>25-
+     646,>9 715,0 786,0 855,>9 915,>25 962,>46 987,>73 1000,>100-
+     1000,<900 987,<873 962,<846 915,<825 855,<809 786,<801 715,<801 646,<809-
+     586,<825 539,<846 514,<873 500,<900 487,<928 462,<955 415,<976 355,<992-
+     286,1000 215,1000 146,<992 86,<976 39,<955 14,<928 0,<900
+  }
+  Outline
+  {
+    Polyline 47 0,<900 0,>100 14,>128 39,>155 86,>176 146,>192 215,>200 286,>200-
+     355,>192 415,>176 462,>155 487,>128 500,>100 514,>73 539,>46 586,>25-
+     646,>9 715,0 786,0 855,>9 915,>25 962,>46 987,>73 1000,>100-
+     1000,<900 987,<873 962,<846 915,<825 855,<809 786,<801 715,<801 646,<809-
+     586,<825 539,<846 514,<873 500,<900 487,<928 462,<955 415,<976 355,<992-
+     286,1000 215,1000 146,<992 86,<976 39,<955 14,<928 0,<900
+  }
+  Hot 47 0,<900 0,>100 14,>128 39,>155 86,>176 146,>192 215,>200 286,>200-
+   355,>192 415,>176 462,>155 487,>128 500,>100 514,>73 539,>46 586,>25-
+   646,>9 715,0 786,0 855,>9 915,>25 962,>46 987,>73 1000,>100-
+   1000,<900 987,<873 962,<846 915,<825 855,<809 786,<801 715,<801 646,<809-
+   586,<825 539,<846 514,<873 500,<900 487,<928 462,<955 415,<976 355,<992-
+   286,1000 215,1000 146,<992 86,<976 39,<955 14,<928 0,<900
+}
+
+FigureSymbol "manual input"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >100,>250,<900,<900 0,250,1000,1000 0 1 0 0
+  Fill
+  {
+    Polygon 5 0,>250 1000,0 1000,1000 0,1000 0,>250
+  }
+  Outline
+  {
+    Polyline 5 0,>250 1000,0 1000,1000 0,1000 0,>250
+  }
+  Hot 5 0,>250 1000,0 1000,1000 0,1000 0,>250
+}
+
+FigureSymbol "drum"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >300,>100,<850,<900 >200,0,<950,1000 0 0 0 0
+  Fill
+  {
+    Rect >100,0,<900,1000
+    Ellipse 0,0,>200,1000
+    Ellipse <800,0,1000,1000
+  }
+  Outline
+  {
+    Line >100,0 <900,0
+    Line >100,1000 <900,1000
+    Ellipse 0,0,>200,1000
+    Arc <800,0,1000,1000 <900,1000 <900,0
+  }
+  MiniOutline
+  {
+    Line 100,0 950,0
+    Line 100,1000 900,1000
+    Ellipse 0,0,200,1000
+    Arc 800,0,1000,1000 900,1000 900,0
+  }
+  Hot 17 >81,1 >44,77 >16,218 >1,402 >1,599 >16,783 >44,924 >81,1000-
+   <920,1000 <957,924 <985,783 <1000,599 <1000,402 <985,218 <957,77 <920,1-
+   >81,1
+}
+
+FigureSymbol "disk"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >100,>350,<900,<900 0,>350,1000,<900 0 1 0 1
+  Fill
+  {
+    Rect 0,>100,1000,<900
+    Ellipse 0,0,1000,>200
+    Ellipse 0,<800,1000,1000
+  }
+  Outline
+  {
+    Line 0,>100 0,<900
+    Line 1000,>100 1000,<900
+    Ellipse 0,0,1000,>200
+    Arc 0,<800,1000,1000 0,<900 1000,<900
+    Arc 0,>50,1000,>250 0,>150 1000,>150
+    Arc 0,>100,1000,>300 0,>200 1000,>200
+  }
+  MiniOutline
+  {
+    Line 0,200 0,800
+    Line 1000,100 1000,900
+    Ellipse 0,0,1000,400
+    Arc 0,600,1000,1000 0,800 1000,800
+  }
+  Hot 17 1,>81 77,>44 218,>16 402,>1 599,>1 783,>16 924,>44 1000,>81-
+   1000,<920 924,<957 783,<985 599,<1000 402,<1000 218,<985 77,<957 1,<920-
+   1,>81
+}
+
+FigureSymbol "magtape"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  TextBox >150,>150,<850,<850
+  Fill
+  {
+    Ellipse 0,0,1000,1000
+  }
+  Outline
+  {
+    Ellipse 0,0,1000,1000
+    Line 500,1000 1000,1000
+  }
+  Hot 17 599,1000 783,924 924,783 1000,599 1000,402 924,218 783,77 599,1-
+   402,1 218,77 77,218 1,402 1,599 77,783 218,924 402,1000-
+   599,1000
+}
+
+FigureSymbol "offline storage"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  TextBox 250,100,750,600
+  Fill
+  {
+    Polygon 4 0,0 1000,0 500,1000 0,0
+  }
+  Outline
+  {
+    Polyline 4 0,0 1000,0 500,1000 0,0
+    Line 375,750 625,750
+  }
+  Hot 4 0,0 1000,0 500,1000 0,0
+}
+
+FigureSymbol "online storage"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >150,>100,<850,<900 >150,0,<850,1000 0 0 0 0
+  Fill
+  {
+    Polygon 27 >150,0 >129,1 >88,42 >52,119 >24,228 >6,359 0,500 >6,642-
+     >24,773 >52,882 >88,959 >129,1000 >150,1000 1000,1000 <979,1000 <938,959-
+     <902,882 <874,773 <856,642 <850,500 <856,359 <874,228 <902,119 <938,42-
+     <979,1 1000,0 >150,0
+  }
+  Outline
+  {
+    Polyline 27 >150,0 >129,1 >88,42 >52,119 >24,228 >6,359 0,500 >6,642-
+     >24,773 >52,882 >88,959 >129,1000 >150,1000 1000,1000 <979,1000 <938,959-
+     <902,882 <874,773 <856,642 <850,500 <856,359 <874,228 <902,119 <938,42-
+     <979,1 1000,0 >150,0
+  }
+  Hot 27 >150,0 >129,1 >88,42 >52,119 >24,228 >6,359 0,500 >6,642-
+   >24,773 >52,882 >88,959 >129,1000 >150,1000 1000,1000 <979,1000 <938,959-
+   <902,882 <874,773 <856,642 <850,500 <856,359 <874,228 <902,119 <938,42-
+   <979,1 1000,0 >150,0
+}
+
+FigureSymbol "display"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >300,>100,<800,<900 >400,0,<800,1000 1 0 1 0
+  Fill
+  {
+    Ellipse <800,0,1000,1000
+    Polygon 6 0,500 >400,0 <900,0 <900,1000 >400,1000 0,500
+  }
+  Outline
+  {
+    Polyline 5 <900,1000 >400,1000 0,500 >400,0 <900,0
+    Arc <800,0,1000,1000 <900,1000 <900,0
+  }
+  Hot 12 <920,1000 <957,924 <985,783 <1000,599 <1000,402 <985,218 <957,77 <920,0-
+   >400,0 0,500 >400,1000 <920,1000
+}
+
+FigureSymbol "comment"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >100,>100,1000,<900 0,0,1000,1000 0 0 1 0
+  Outline
+  {
+    Polyline 4 1000,0 0,0 0,1000 1000,1000
+  }
+}
+
+FigureSymbol "input/output:1"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >200,>100,<800,<900 >200,0,<800,1000 1 0 1 0
+  Fill
+  {
+    Polygon 5 >200,0 1000,0 <800,1000 0,1000 >200,0
+  }
+  Outline
+  {
+    Polyline 5 >200,0 1000,0 <800,1000 0,1000 >200,0
+  }
+  Hot 5 >200,0 1000,0 <800,1000 0,1000 >200,0
+}
+
+FigureSymbol "process:1"
+{
+  FixedAspect FALSE
+  Height 0
+  Width 0
+  FramedTextBox >100,>100,<900,<900 0,0,1000,1000 0 0 0 0
+  Fill
+  {
+    Rect 0,0,1000,1000
+  }
+  Outline
+  {
+    Rect 0,0,1000,1000
+  }
+}
+
+## End Symbols Section:
+
+EndSymbol "block"
+{
+  LineTo 100
+  Fill
+  {
+    Polygon 4 500,500 1000,300 1000,700 500,500
+  }
+  Outline
+  {
+    Polyline 4 500,500 1000,300 1000,700 500,500
+  }
+}
+
+EndSymbol "stick"
+{
+  Outline
+  {
+    Line 500,500 1000,300
+    Line 500,500 1000,700
+  }
+}
+
+## Figure Styles Section:
+
+FigureStyle "Label"
+{
+  Label TRUE
+  Height 64
+  Width 128
+  Description "An annotation or comment"
+  TextFormat 0x0044
+  Behavior 0x018241E1
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Title"
+{
+  Label TRUE
+  Height 64
+  Width 128
+  Description "A heading or title"
+  TextFormat 0x0044
+  Behavior 0x018241E1
+  Symbol "lbl"
+  TypeSize 14
+  TypeWeight 700
+  TypeFace "Arial"
+}
+
+FigureStyle "Process"
+{
+  HasButton TRUE
+  Height 160
+  Width 288
+  Description "A process, operation, or function"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Input/Output"
+{
+  HasButton TRUE
+  Height 160
+  Width 288
+  Description "An input or output operation"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Decision"
+{
+  HasButton TRUE
+  Height 160
+  Width 288
+  Description "A branch of control based on a conditional expression"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x05024E12
+  Symbol "decision"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Decision2"
+{
+  Height 160
+  Width 288
+  Description "A branch of control based on a conditional expression"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x05024E12
+  Symbol "decision2"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Auxiliary Operation"
+{
+  HasButton TRUE
+  Height 160
+  Width 160
+  Description "An operation carried out offline"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "auxiliary"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Preparation"
+{
+  HasButton TRUE
+  Height 160
+  Width 288
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "preparation"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Predefined Process"
+{
+  HasButton TRUE
+  Height 160
+  Width 288
+  Description "A process (such as a subroutine) that has been defined elsewhere"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "predefined"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Manual Operation"
+{
+  HasButton TRUE
+  Height 160
+  Width 288
+  Description "An operation performed offline by hand"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "manual operation"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Merge"
+{
+  Height 160
+  Width 288
+  Description "Two or more files to be merged together"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "merge"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Extract"
+{
+  Height 160
+  Width 288
+  Description "Data removed from (a file)"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "extract"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Terminal"
+{
+  HasButton TRUE
+  Height 64
+  Width 288
+  Description "A beginning, end, or interruption point"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "terminal"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Connector"
+{
+  HasButton TRUE
+  Height 64
+  Width 64
+  Description "A symbol for connecting two parts of a flowchart"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "connector"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Off-page Connector"
+{
+  HasButton TRUE
+  Height 64
+  Width 64
+  Description "A symbol for connecting two parts of a flowchart on different pag-
+es"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "home base"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Manual Input"
+{
+  HasButton TRUE
+  Height 160
+  Width 288
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "manual input"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Internal Subroutine"
+{
+  Height 160
+  Width 288
+  Description "An internal subroutine or procedure"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "internal sub"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Document"
+{
+  HasButton TRUE
+  Height 160
+  Width 288
+  Description "Data output in the form of a document"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "document"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Disk"
+{
+  HasButton TRUE
+  Height 160
+  Width 288
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "disk"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Display"
+{
+  Height 160
+  Width 288
+  Description "Output to a display device"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "display"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Sort"
+{
+  Height 128
+  Width 128
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "sort"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Collate"
+{
+  Height 128
+  Width 128
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "collate"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Punched Card"
+{
+  Height 160
+  Width 288
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "punched card"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Card Deck"
+{
+  Height 160
+  Width 288
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "card deck"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Card File"
+{
+  InMenu FALSE
+  Height 160
+  Width 288
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "card file"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Combined Operation"
+{
+  Height 160
+  Width 160
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "combined"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Online Storage"
+{
+  Height 160
+  Width 288
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "online storage"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Magnetic Tape"
+{
+  Height 160
+  Width 160
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "magtape"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Core"
+{
+  Height 160
+  Width 160
+  Description "I/O operation using primary storage"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "core"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Offline Storage"
+{
+  Height 160
+  Width 288
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "offline storage"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Punched Tape"
+{
+  Height 160
+  Width 288
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "punched tape"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Magnetic Drum"
+{
+  Height 160
+  Width 288
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "drum"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "Comment"
+{
+  HasButton TRUE
+  Height 160
+  Width 288
+  Description "Explanatory notes"
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "comment"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "yes"
+{
+  Label TRUE
+  HasButton TRUE
+  Height 0
+  Width 0
+  Description "True decision branch"
+  DefaultText "yes"
+  BorderWidth 3
+  BindToStyle FALSE
+  TextFormat 0x0044
+  Behavior 0x00A241E1
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+FigureStyle "no"
+{
+  Label TRUE
+  HasButton TRUE
+  Height 0
+  Width 0
+  Description "False decision branch"
+  DefaultText "no"
+  BorderWidth 3
+  BindToStyle FALSE
+  TextFormat 0x0044
+  Behavior 0x00A241E1
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+## Connector Styles Section:
+
+ConnectorStyle "No Arrow"
+{
+  HasButton TRUE
+  End1 "null"
+  End2 "null"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+ConnectorStyle "No Arrow - Dashed"
+{
+  HasButton TRUE
+  End1 "null"
+  End2 "null"
+  End1Length 18
+  End2Length 18
+  PenStyle 12
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+ConnectorStyle "Stick Arrow"
+{
+  HasButton TRUE
+  End1 "null"
+  End2 "stick"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+ConnectorStyle "Stick Arrow - Dashed"
+{
+  HasButton TRUE
+  End1 "null"
+  End2 "stick"
+  End1Length 18
+  End2Length 18
+  PenStyle 12
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+ConnectorStyle "Solid Arrow"
+{
+  HasButton TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+ConnectorStyle "Solid Arrow - Dashed"
+{
+  HasButton TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  PenStyle 12
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+ConnectorStyle "Outline Arrow"
+{
+  HasButton TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  End2FillColor 255,255,255
+  Behavior 0x00000000
+}
+
+ConnectorStyle "Outline Arrow - Dashed"
+{
+  HasButton TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  PenStyle 12
+  LineWidth 3
+  EndBorderWidth 2
+  End2FillColor 255,255,255
+  Behavior 0x00000000
+}
+
+ConnectorStyle "No Arrow - Dashed Rnd"
+{
+  InMenu FALSE
+  End1 "null"
+  End2 "null"
+  End1Length 18
+  End2Length 18
+  PenStyle 12
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000010
+}
+
+ConnectorStyle "No Arrow - Rnd"
+{
+  InMenu FALSE
+  End1 "null"
+  End2 "null"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000010
+}
+
+ConnectorStyle "Solid Arrow - Rnd"
+{
+  InMenu FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000010
+}
+
+ConnectorStyle "Solid Arrow - Dashed Rnd"
+{
+  InMenu FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  PenStyle 12
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000010
+}
+
+## Figures & Connectors Section:
+
+Figure 1
+{
+  Style "Connector"
+  Text "\fs24 1"
+  Bounds 1120,64,1184,128
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "connector"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 2
+{
+  Style "Input/Output"
+  Text "\fs20 Вставьте диск\line с дистрибутивом"
+  Bounds 960,192,1344,320
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 3
+{
+  Style "Solid Arrow"
+  Figure1 1
+  Figure2 2
+  EndPoint1 1152,128
+  EndPoint2 1152,192
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 4
+{
+  Style "Process"
+  Text "\fs20 Монтирование"
+  Bounds 992,384,1312,512
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 5
+{
+  Style "Solid Arrow"
+  Figure1 2
+  Figure2 4
+  EndPoint1 1152,320
+  EndPoint2 1152,384
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 6
+{
+  Style "Decision"
+  Text "\fs20 Успешно?"
+  Bounds 1008,592,1296,752
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x05024E12
+  Symbol "decision"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 7
+{
+  Style "Solid Arrow"
+  Figure1 4
+  Figure2 6
+  EndPoint1 1152,512
+  EndPoint2 1152,592
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 8
+{
+  Style "Input/Output"
+  Text "\fs20 Ошибка"
+  Bounds 704,384,960,512
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 9
+{
+  Text ""
+  Bounds 825,665,840,680
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 10
+{
+  Style "Solid Arrow"
+  Figure1 6
+  Figure2 9
+  EndPoint1 1008,672
+  EndPoint2 832,672
+  SuppressEnd1 FALSE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 11
+{
+  Style "Solid Arrow"
+  Figure1 9
+  Figure2 8
+  EndPoint1 832,672
+  EndPoint2 832,512
+  SuppressEnd1 TRUE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 12
+{
+  Style "Solid Arrow"
+  Figure1 8
+  Figure2 55
+  EndPoint1 832,384
+  EndPoint2 832,281
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 13
+{
+  Style "Solid Arrow"
+  Figure1 55
+  Figure2 2
+  EndPoint1 857,256
+  EndPoint2 973,256
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 14
+{
+  Label TRUE
+  Text "\fs20 Нет"
+  Bounds 949,620,1008,660
+  BindToStyle FALSE
+  TextFormat 0x0019
+  Behavior 0x00A241CC
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 15
+{
+  Style "Input/Output"
+  Text "\fs20 Успех"
+  Bounds 1024,832,1280,960
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 16
+{
+  Style "Solid Arrow"
+  Figure1 6
+  Figure2 15
+  EndPoint1 1152,752
+  EndPoint2 1152,832
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 17
+{
+  Label TRUE
+  Text "\fs20 Да"
+  Bounds 1098,752,1140,792
+  BindToStyle FALSE
+  TextFormat 0x0041
+  Behavior 0x00A241E4
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 18
+{
+  Style "Process"
+  Text "\fs20 Поиск пакетов\line на диске"
+  Bounds 992,1024,1312,1152
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 19
+{
+  Style "Solid Arrow"
+  Figure1 15
+  Figure2 18
+  EndPoint1 1152,960
+  EndPoint2 1152,1024
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 20
+{
+  Style "Decision"
+  Text "\fs20 Сколько\line найдено?"
+  Bounds 1008,1232,1296,1392
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x05024E12
+  Symbol "decision"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 21
+{
+  Style "Solid Arrow"
+  Figure1 18
+  Figure2 20
+  EndPoint1 1152,1152
+  EndPoint2 1152,1232
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 22
+{
+  Style "Input/Output"
+  Text "\fs20 Пакет не\line найден"
+  Bounds 1376,1024,1632,1152
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 23
+{
+  Text ""
+  Bounds 1497,1305,1512,1320
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 24
+{
+  Style "Solid Arrow"
+  Figure1 20
+  Figure2 23
+  EndPoint1 1296,1312
+  EndPoint2 1504,1312
+  SuppressEnd1 FALSE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 25
+{
+  Style "Solid Arrow"
+  Figure1 23
+  Figure2 22
+  EndPoint1 1504,1312
+  EndPoint2 1504,1152
+  SuppressEnd1 TRUE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 26
+{
+  Label TRUE
+  Style "Label"
+  Text "\fs20 = 0"
+  Bounds 1296,1260,1345,1300
+  TextFormat 0x0014
+  Behavior 0x018241C9
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 27
+{
+  Style "Process"
+  Text "\fs20 Демонтирование\line диска"
+  Bounds 1344,832,1664,960
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 28
+{
+  Style "Solid Arrow"
+  Figure1 22
+  Figure2 27
+  EndPoint1 1504,1024
+  EndPoint2 1504,960
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 29
+{
+  Style "Solid Arrow"
+  Figure1 27
+  Figure2 64
+  EndPoint1 1504,832
+  EndPoint2 1504,256
+  SuppressEnd1 FALSE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 30
+{
+  Style "Solid Arrow"
+  Figure1 64
+  Figure2 2
+  EndPoint1 1504,256
+  EndPoint2 1331,256
+  SuppressEnd1 TRUE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 31
+{
+  Style "Input/Output"
+  Text "\fs20 Это требуемый\line пакет?"
+  Bounds 1344,1440,1664,1568
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 32
+{
+  Text ""
+  Bounds 1145,1497,1160,1512
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 33
+{
+  Style "Solid Arrow"
+  Figure1 20
+  Figure2 32
+  EndPoint1 1152,1392
+  EndPoint2 1152,1504
+  SuppressEnd1 FALSE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 34
+{
+  Style "Solid Arrow"
+  Figure1 32
+  Figure2 31
+  EndPoint1 1152,1504
+  EndPoint2 1357,1504
+  SuppressEnd1 TRUE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 35
+{
+  Style "Decision"
+  Text "\fs20 Какой\line был ответ?"
+  Bounds 1696,1408,2016,1600
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x05024E12
+  Symbol "decision"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 36
+{
+  Style "Solid Arrow"
+  Figure1 31
+  Figure2 35
+  EndPoint1 1651,1504
+  EndPoint2 1696,1504
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 37
+{
+  Text ""
+  Bounds 1849,1337,1864,1352
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 38
+{
+  Style "Solid Arrow"
+  Figure1 35
+  Figure2 37
+  EndPoint1 1856,1408
+  EndPoint2 1856,1344
+  SuppressEnd1 FALSE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 39
+{
+  Text ""
+  Bounds 1497,1337,1512,1352
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 40
+{
+  Style "Solid Arrow"
+  Figure1 37
+  Figure2 39
+  EndPoint1 1856,1344
+  EndPoint2 1504,1344
+  SuppressEnd1 TRUE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 41
+{
+  Style "Solid Arrow"
+  Figure1 39
+  Figure2 31
+  EndPoint1 1504,1344
+  EndPoint2 1504,1440
+  SuppressEnd1 TRUE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 42
+{
+  Label TRUE
+  Text "\fs20 Другой"
+  Bounds 1733,1368,1844,1408
+  BindToStyle FALSE
+  TextFormat 0x0019
+  Behavior 0x00A241CC
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 43
+{
+  Label TRUE
+  Text "\fs20 Нет"
+  Bounds 2016,1452,2075,1492
+  BindToStyle FALSE
+  TextFormat 0x0014
+  Behavior 0x00A241C9
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 44
+{
+  Style "Input/Output"
+  Text "\fs20 Было найдено X\line пакетов с данным\line именем"
+  Bounds 512,1216,896,1408
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 45
+{
+  Style "Solid Arrow"
+  Figure1 20
+  Figure2 44
+  EndPoint1 1008,1312
+  EndPoint2 877,1312
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 46
+{
+  Label TRUE
+  Style "Label"
+  Text ">\fs20  1"
+  Bounds 963,1260,1008,1300
+  TextFormat 0x0019
+  Behavior 0x018241CC
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 47
+{
+  Style "Input/Output"
+  Text "\fs20 Уточните\line ваш запрос"
+  Bounds 224,1024,480,1152
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 48
+{
+  Style "Input/Output"
+  Text "\fs20 Выводим\line список"
+  Bounds 224,1248,480,1376
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 49
+{
+  Style "Decision"
+  Text "\fs20 Какой был\line ответ?"
+  Bounds 544,992,864,1184
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x05024E12
+  Symbol "decision"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 50
+{
+  Style "Solid Arrow"
+  Figure1 48
+  Figure2 47
+  EndPoint1 352,1248
+  EndPoint2 352,1152
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 51
+{
+  Style "Solid Arrow"
+  Figure1 47
+  Figure2 49
+  EndPoint1 467,1088
+  EndPoint2 544,1088
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 52
+{
+  Style "Solid Arrow"
+  Figure1 44
+  Figure2 48
+  EndPoint1 531,1312
+  EndPoint2 467,1312
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 53
+{
+  Style "Solid Arrow"
+  Figure1 49
+  Figure2 18
+  EndPoint1 864,1088
+  EndPoint2 992,1088
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 54
+{
+  Label TRUE
+  Style "Label"
+  Text "\fs20 Не n/N"
+  Bounds 864,1036,971,1076
+  TextFormat 0x0014
+  Behavior 0x018241C9
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 55
+{
+  Style "Connector"
+  Text ""
+  Bounds 807,231,857,281
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "connector"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 56
+{
+  Style "Process"
+  Text "\fs20 Демонтирование\line диска"
+  Bounds 544,800,864,928
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 57
+{
+  Style "Solid Arrow"
+  Figure1 49
+  Figure2 56
+  EndPoint1 704,992
+  EndPoint2 704,928
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 58
+{
+  Text ""
+  Bounds 473,857,488,872
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 59
+{
+  Style "Solid Arrow"
+  Figure1 56
+  Figure2 58
+  EndPoint1 544,864
+  EndPoint2 480,864
+  SuppressEnd1 FALSE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 60
+{
+  Text ""
+  Bounds 473,249,488,264
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 61
+{
+  Style "Solid Arrow"
+  Figure1 58
+  Figure2 60
+  EndPoint1 480,864
+  EndPoint2 480,256
+  SuppressEnd1 TRUE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 62
+{
+  Style "Solid Arrow"
+  Figure1 60
+  Figure2 55
+  EndPoint1 480,256
+  EndPoint2 807,256
+  SuppressEnd1 TRUE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 63
+{
+  Label TRUE
+  Style "Label"
+  Text "\fs20 n/N"
+  Bounds 638,952,692,992
+  TextFormat 0x0019
+  Behavior 0x018241CC
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 64
+{
+  Text ""
+  Bounds 1497,249,1512,264
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 65
+{
+  Text ""
+  Bounds 2073,1497,2088,1512
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 66
+{
+  Style "Solid Arrow"
+  Figure1 35
+  Figure2 65
+  EndPoint1 2016,1504
+  EndPoint2 2080,1504
+  SuppressEnd1 FALSE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 67
+{
+  Text ""
+  Bounds 2073,889,2088,904
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 68
+{
+  Style "Solid Arrow"
+  Figure1 65
+  Figure2 67
+  EndPoint1 2080,1504
+  EndPoint2 2080,896
+  SuppressEnd1 TRUE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 69
+{
+  Style "Solid Arrow"
+  Figure1 67
+  Figure2 27
+  EndPoint1 2080,896
+  EndPoint2 1664,896
+  SuppressEnd1 TRUE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 70
+{
+  Style "Input/Output"
+  Text "\fs20 Вывод информации\line о пакете"
+  Bounds 1664,1664,2048,1792
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 71
+{
+  Style "Solid Arrow"
+  Figure1 35
+  Figure2 70
+  EndPoint1 1856,1600
+  EndPoint2 1856,1664
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 72
+{
+  Label TRUE
+  Style "Label"
+  Text "\fs20 Да"
+  Bounds 1802,1600,1844,1640
+  TextFormat 0x0041
+  Behavior 0x018241E4
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 73
+{
+  Style "Process"
+  Text "\fs20 Тестирование\line установки"
+  Bounds 1376,1664,1632,1792
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 74
+{
+  Style "Solid Arrow"
+  Figure1 70
+  Figure2 73
+  EndPoint1 1677,1728
+  EndPoint2 1632,1728
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 75
+{
+  Style "Decision"
+  Text "\fs20 Успешно?"
+  Bounds 1040,1648,1328,1808
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x05024E12
+  Symbol "decision"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 76
+{
+  Style "Solid Arrow"
+  Figure1 73
+  Figure2 75
+  EndPoint1 1376,1728
+  EndPoint2 1328,1728
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 77
+{
+  Style "Input/Output"
+  Text "\fs20 Ошибка"
+  Bounds 1056,1888,1312,2016
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 78
+{
+  Style "Solid Arrow"
+  Figure1 75
+  Figure2 77
+  EndPoint1 1184,1808
+  EndPoint2 1184,1888
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 79
+{
+  Label TRUE
+  Style "Label"
+  Text "\fs20 Нет"
+  Bounds 1113,1808,1172,1848
+  TextFormat 0x0041
+  Behavior 0x018241E4
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 80
+{
+  Style "Terminal"
+  Text "\fs20 Выход (1)"
+  Bounds 736,2080,928,2144
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "terminal"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 81
+{
+  Style "Input/Output"
+  Text "\fs20 Успех"
+  Bounds 704,1664,960,1792
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 82
+{
+  Style "Solid Arrow"
+  Figure1 75
+  Figure2 81
+  EndPoint1 1040,1728
+  EndPoint2 947,1728
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 83
+{
+  Style "Process"
+  Text "\fs20 Установка\line пакета"
+  Bounds 704,1472,960,1600
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 84
+{
+  Style "Solid Arrow"
+  Figure1 81
+  Figure2 83
+  EndPoint1 832,1664
+  EndPoint2 832,1600
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 85
+{
+  Label TRUE
+  Style "Label"
+  Text "\fs20 Да"
+  Bounds 998,1676,1040,1716
+  TextFormat 0x0019
+  Behavior 0x018241CC
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 86
+{
+  Style "Decision"
+  Text "\fs20 Успешно?"
+  Bounds 368,1456,656,1616
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x05024E12
+  Symbol "decision"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 87
+{
+  Style "Solid Arrow"
+  Figure1 83
+  Figure2 86
+  EndPoint1 704,1536
+  EndPoint2 656,1536
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 88
+{
+  Style "Input/Output"
+  Text "\fs20 Ошибка"
+  Bounds 64,1696,320,1824
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 89
+{
+  Text ""
+  Bounds 185,1529,200,1544
+  FillColor 0,0,0
+  BorderWidth 0
+  BindToStyle FALSE
+  TextFormat 0x0000
+  Behavior 0x00327A12
+  Symbol "null"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 90
+{
+  Style "Solid Arrow"
+  Figure1 86
+  Figure2 89
+  EndPoint1 368,1536
+  EndPoint2 192,1536
+  SuppressEnd1 FALSE
+  SuppressEnd2 TRUE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 91
+{
+  Style "Solid Arrow"
+  Figure1 89
+  Figure2 88
+  EndPoint1 192,1536
+  EndPoint2 192,1696
+  SuppressEnd1 TRUE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 92
+{
+  Label TRUE
+  Style "Label"
+  Text "\fs20 Нет"
+  Bounds 309,1484,368,1524
+  TextFormat 0x0019
+  Behavior 0x018241CC
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 93
+{
+  Style "Terminal"
+  Text "\fs20 Выход (1)"
+  Bounds 96,2080,288,2144
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "terminal"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 94
+{
+  Style "Input/Output"
+  Text "\fs20 Успех"
+  Bounds 384,1696,640,1824
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 95
+{
+  Style "Solid Arrow"
+  Figure1 86
+  Figure2 94
+  EndPoint1 512,1616
+  EndPoint2 512,1696
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 96
+{
+  Label TRUE
+  Style "Label"
+  Text "\fs20 Да"
+  Bounds 458,1616,500,1656
+  TextFormat 0x0041
+  Behavior 0x018241E4
+  Symbol "lbl"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 97
+{
+  Style "Process"
+  Text "\fs20 Верификация\line пакета"
+  Bounds 384,1888,640,2016
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 98
+{
+  Style "Solid Arrow"
+  Figure1 94
+  Figure2 97
+  EndPoint1 512,1824
+  EndPoint2 512,1888
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 99
+{
+  Style "Decision"
+  Text "\fs20 Успешно?"
+  Bounds 368,2192,656,2352
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x05024E12
+  Symbol "decision"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 100
+{
+  Style "Solid Arrow"
+  Figure1 97
+  Figure2 99
+  EndPoint1 512,2016
+  EndPoint2 512,2192
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 101
+{
+  Style "Input/Output"
+  Text "\fs20 Ошибка"
+  Bounds 64,2208,320,2336
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 102
+{
+  Style "Terminal"
+  Text "\fs20 Выход (1)"
+  Bounds 96,2592,288,2656
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "terminal"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Figure 103
+{
+  Style "Input/Output"
+  Text "\fs20 Успех"
+  Bounds 704,2208,960,2336
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "input/output:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 104
+{
+  Style "Solid Arrow"
+  Figure1 99
+  Figure2 103
+  EndPoint1 656,2272
+  EndPoint2 717,2272
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 105
+{
+  Style "Process"
+  Text "\fs20 Демонтирование\line диска"
+  Bounds 32,1888,352,2016
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 106
+{
+  Style "Solid Arrow"
+  Figure1 88
+  Figure2 105
+  EndPoint1 192,1824
+  EndPoint2 192,1888
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 107
+{
+  Style "Solid Arrow"
+  Figure1 105
+  Figure2 93
+  EndPoint1 192,2016
+  EndPoint2 192,2080
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 108
+{
+  Style "Process"
+  Text "\fs20 Демонтирование\line диска"
+  Bounds 32,2400,352,2528
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 109
+{
+  Style "Solid Arrow"
+  Figure1 101
+  Figure2 108
+  EndPoint1 192,2336
+  EndPoint2 192,2400
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 110
+{
+  Style "Solid Arrow"
+  Figure1 108
+  Figure2 102
+  EndPoint1 192,2528
+  EndPoint2 192,2592
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 111
+{
+  Style "Process"
+  Text "\fs20 Демонтирование\line диска"
+  Bounds 672,2400,992,2528
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 112
+{
+  Style "Solid Arrow"
+  Figure1 99
+  Figure2 101
+  EndPoint1 368,2272
+  EndPoint2 307,2272
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 113
+{
+  Style "Solid Arrow"
+  Figure1 103
+  Figure2 111
+  EndPoint1 832,2336
+  EndPoint2 832,2400
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 114
+{
+  Style "Terminal"
+  Text "\fs20 Выход (0)"
+  Bounds 736,2592,928,2656
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "terminal"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 115
+{
+  Style "Solid Arrow"
+  Figure1 111
+  Figure2 114
+  EndPoint1 832,2528
+  EndPoint2 832,2592
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Figure 116
+{
+  Style "Process"
+  Text "\fs20 Демонтирование\line диска"
+  Bounds 672,1888,992,2016
+  BorderWidth 3
+  TextFormat 0x0022
+  Behavior 0x01024E12
+  Symbol "process:1"
+  TypeSize 8
+  TypeFace "Arial"
+}
+
+Connector 117
+{
+  Style "Solid Arrow"
+  Figure1 77
+  Figure2 116
+  EndPoint1 1069,1952
+  EndPoint2 992,1952
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+Connector 118
+{
+  Style "Solid Arrow"
+  Figure1 116
+  Figure2 80
+  EndPoint1 832,2016
+  EndPoint2 832,2080
+  SuppressEnd1 FALSE
+  SuppressEnd2 FALSE
+  End1 "null"
+  End2 "block"
+  End1Length 18
+  End2Length 18
+  LineWidth 3
+  EndBorderWidth 2
+  Behavior 0x00000000
+}
+
+## Staples Section:
+
+Staple 1
+{
+  StapleType 3
+  Connector 10
+  ConPos 0
+  Figure1 6
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 14
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 2
+{
+  StapleType 3
+  Connector 16
+  ConPos 0
+  Figure1 6
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 17
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 3
+{
+  StapleType 3
+  Connector 24
+  ConPos 0
+  Figure1 20
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 26
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 4
+{
+  StapleType 3
+  Connector 38
+  ConPos 0
+  Figure1 35
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 42
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 5
+{
+  StapleType 3
+  Connector 45
+  ConPos 0
+  Figure1 20
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 46
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 6
+{
+  StapleType 3
+  Connector 53
+  ConPos 0
+  Figure1 49
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 54
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 7
+{
+  StapleType 3
+  Connector 57
+  ConPos 0
+  Figure1 49
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 63
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 8
+{
+  StapleType 3
+  Connector 66
+  ConPos 0
+  Figure1 35
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 43
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 9
+{
+  StapleType 3
+  Connector 71
+  ConPos 0
+  Figure1 35
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 72
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 10
+{
+  StapleType 3
+  Connector 78
+  ConPos 0
+  Figure1 75
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 79
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 11
+{
+  StapleType 3
+  Connector 82
+  ConPos 0
+  Figure1 75
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 85
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 12
+{
+  StapleType 3
+  Connector 90
+  ConPos 0
+  Figure1 86
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 92
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+Staple 13
+{
+  StapleType 3
+  Connector 95
+  ConPos 0
+  Figure1 86
+  Fig1PosX 0
+  Fig1PosY 0
+  Figure2 96
+  Fig2PosX 0
+  Fig2PosY 0
+  OffsetX 0
+  OffsetY 0
+  FlowSide 1
+}
+
+## Groups Section:

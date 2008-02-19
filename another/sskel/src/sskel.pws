@@ -1,0 +1,42 @@
+
+[executer]
+RunInTerminal=true
+
+[Project State]
+clean before build=true
+
+[filelist]
+0=/usr/home/data/kdevelop/sskel/src/tools/descriptors_transmitter.cpp
+1=/usr/home/data/kdevelop/sskel/src/loggerd.cpp
+2=/usr/home/data/kdevelop/sskel/src/io/net_io.cpp
+3=/usr/home/data/kdevelop/sskel/src/connections/connection.cpp
+4=/usr/home/data/kdevelop/sskel/src/workers/workers_pool.cpp
+5=/usr/home/data/kdevelop/sskel/src/connections/connection_kqueue.cpp
+
+[filenumbers]
+0=19
+1=1
+2=4
+3=1
+4=1
+5=33
+
+[filemarkers]
+0=
+1=
+2=
+3=
+4=
+5=
+
+[File View]
+filter.file.unmatch=*.so *.o *.a *.la
+filter.file.ignore.hidden=0
+filter.dir.ignore.hidden=0
+
+[Project Tree]
+0=0
+1=0:1
+
+[File Tree]
+0=0

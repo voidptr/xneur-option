@@ -1,0 +1,31 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N4
+
+total=0
+min=`echo $1 | egrep -v "[^0-9]"`
+
+if [ "$1" = "" ]; then
+   echo "Использование: `basename $0` Число"
+   exit
+fi
+
+min=`echo $1 | egrep -v "[^1-9]"`
+
+if [ "$min" == "" ]; then
+   echo "Параметр должен являться положительным числом"
+   exit
+fi
+
+for i in *
+do
+   if [ -f $i ];
+   then
+      set `wc -c -- $i`
+      if [ $1 -ge $min ]; then
+         echo "Файл $2, Размер - $1"
+         let "total+=$1"
+      fi
+   fi
+done
+
+echo "Общий размер - $total"

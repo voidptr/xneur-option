@@ -1,0 +1,67 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N19
+
+if [ $# -eq 0 ]; then
+   echo "Использование `basename $0` Файл_Каталога"
+   exit
+fi
+
+if [ ! -f "$1" ]; then
+   echo "Файл каталога должен существовать"
+   exit
+fi
+
+declare catalog=$1
+
+cexport ()
+{
+   echo -n "Введите имя страны: "
+   read country
+   echo -e "Список экспортируемых товаров:\n\n===================="
+
+   awk -F: '{ if($2 == "'$country'") print $1 }' $catalog
+   echo -e "====================\n"
+}
+
+countries ()
+{
+   echo -n "Введите название товара: "
+   read thing
+   echo -e "Список стран:\n\n===================="
+
+   sort -t: -nrk3 $catalog | awk -F: '{ if($1 == "'$thing'") print $2 }'
+   echo -e "====================\n"
+}
+
+expcount ()
+{
+   echo -n "Введите имя страны: "
+   read country
+   echo -n "Страна экспортирует товаров на сумму: "
+
+   awk -F: 'BEGIN { expcount=0 } { if($2 == "'$country'") expcount+=$3*$4; } END { print expcount }' $catalog
+   echo
+}
+
+logo ()
+{
+   echo "Введите:"
+   echo "   E - Для просмотра списка экспортируемых товаров для произвольной страны"
+   echo "   C - Для просмотра списка стран экспортирующих произвольный товар"
+   echo "   T - Для просмотра общей суммы экспортируемых товаров для произвольной страны"
+   echo "   Q - Для выхода"
+   echo
+}
+
+logo
+while [ 1 ];
+do
+   echo -n "Действие: "
+   read choice
+   case $choice in
+      Q|q|Й|й) echo "Выходим..."; exit ;;
+      E|e|Е|е) cexport; logo ;;
+      C|c|С|с) countries; logo ;;
+      T|t|Т|т) expcount; logo ;;
+   esac
+done

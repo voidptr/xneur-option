@@ -1,0 +1,36 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N14
+
+getarr ()
+{
+   for i in `ls $1 | sort`
+   do
+      if [ -f ./$1$i ]; then
+         echo ./$1$i
+      else
+         if [ "$1" != "" ];then
+            getarr $1$i/
+         else
+            getarr $i/
+         fi
+      fi
+   done
+}
+
+files=`getarr`
+
+while [ 1 ]
+do
+   sleep 1
+   newfiles=`getarr`
+   diff=`echo "$newfiles" | grep -v -x "$files"`
+
+   for i in $diff
+   do
+      if [ -f $i ]; then
+         echo "Был создан файл $i"
+         exit
+      fi
+   done
+   files=$newfiles
+done

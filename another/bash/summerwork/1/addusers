@@ -1,0 +1,226 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N1
+
+loadfile=""
+creategroup=""
+savefile=""
+if [ $# -ne 0 ]; then
+    while [ $# -gt 0 ]; do
+        case $1 in
+            -s) if [ "$savefile" != "" ]; then
+                     echo "Ошибка: Ключ -s задан более одного раза"
+                     exit 1
+                 fi
+                 savefile="yes"
+                 ;;
+            -c) if [ "$creategroup" != "" ]; then
+                     echo "Ошибка: Ключ -c задан более одного раза"
+                     exit 1
+                 fi
+                 creategroup="yes"
+                 ;;
+            -e) if [ "$dialog" != "" ]; then
+                     echo "Ошибка: Ключ -e задан более одного раза"
+                     exit 1
+                 fi
+                 dialog="yes"
+                 ;;
+             *) if [ "$loadfile" != "" ]; then
+                    echo "Ошибка: Неизвестный флаг $1"
+                    exit 1
+                fi
+                loadfile=$1
+                ;;
+        esac
+        shift
+    done
+else
+    echo "Использование: `basename $0` [-s] [-c] СписокСтудентов"
+    echo "          Или: `basename $0` [-e]"
+    exit 1
+fi
+
+if [[ "$dialog" != "" && ( "$creategroup" != "" || "$savefile" != "" || "$loadfile" != "" ) ]]; then
+    echo "Ошибка: Ключ -e не может быть задан с остальными ключами"
+    exit 1
+fi
+
+if [ "$dialog" == "yes" ]; then
+    while [ 1 ]; do
+        echo -n "Введите имя пользователя: "
+        read username
+        if [ "$username" != "" ]; then
+            if [ "`grep \"^$username:\" /etc/passwd`" != "" ]; then
+                ok=0
+                while [ 1 ]; do
+                    echo -n "Введите макс. количество дней действия пароля: "
+                    read offdate
+                    if [ "$offdate" != "" ]; then
+                        offdate=`echo $offdate | grep "^[1-9]\{1,\}[0-9]*$"`
+                        if [ "$offdate" != "" ]; then
+                            passwd -x $offdate $username > /dev/null 2>&1
+                            if [ $? -ne 0 ]; then
+                                echo "Ошибка: Не удалось изменить макс. количество дней действия пароля для пользователя $username"
+                                echo
+                                exit 1
+                            fi
+                            break
+                        else
+                            echo "Ошибка: Макс. количество дней действия пароля должно быть числом"
+                            echo
+                        fi
+                    else
+                        break
+                    fi
+                done
+                while [ 1 ]; do
+                    echo -n "Введите дату отключения пользователя в формате (YYYY-MM-DD): "
+                    read offdate
+                    if [ "$offdate" != "" ]; then
+                        offdate=`echo $offdate | grep "^[2-9][0-9]\{3\}-[0-1][0-9]-[0-3][0-9]$"`
+                        if [ "$offdate" != "" ]; then
+                            usermod -e $offdate $username > /dev/null 2>&1
+                            if [ $? -ne 0 ]; then
+                                echo "Ошибка: Не удалось изменить дату отключения пользователя $username"
+                                echo
+                                exit 1
+                            fi
+                            break
+                        else
+                            echo "Ошибка: Дата отключения пользователя должна быть в формате YYYY-MM-DD"
+                            echo
+                        fi
+                    else
+                        break
+                    fi
+                done
+                echo "Данные пользователя $username обновлены"
+            else
+                echo "Ошибка: Пользователь $username не найден"
+                echo
+            fi
+        fi
+    done
+    exit 0
+fi
+
+if [ "$loadfile" == "" ]; then
+    echo "Использование: `basename $0` [-s] [-c] СписокСтудентов"
+    echo "          Или: `basename $0` [-e]"
+    exit 1
+fi
+
+if [ ! -f "$loadfile" ]; then
+    echo "Ошибка: Файл $loadfile не найден"
+    exit 1
+fi
+
+russ=(а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я)
+angl=(a b v g d e e zh z i j k l m n o p r s t u f h c ch sh sh tv i mz e you ya)
+russcount=${#russ[@]}
+translit()
+{
+    count=0
+    temp=`echo $1 | sed -e 's/[^a-zA-Zа-яА-Я0-9]//g' | tr 'Ю-Ч' 'ю-ч'`
+    while [ $count -ne $russcount ]; do
+        temp=${temp//${russ[$count]}/${angl[$count]}}
+        let "count++"
+    done
+    echo $temp
+}
+
+letters=(Q W E R T Y U I O P A S D F G H J K L Z X C V B N M q w e r t y u i o p a s d f g h j k l z x c v b n m 1 2 3 4 5 6 7 8 9 0 _)
+letcount=${#letters[@]}
+RANDOM=`date +%s`
+getpasswd()
+{
+    count=0
+    randstr=""
+    while [ $count -ne 9 ]; do
+       let "letter=RANDOM % letcount"
+       letter=${letters[$letter]}
+       randstr=$randstr$letter
+       let "count++"
+    done
+    echo $randstr
+}
+
+passwords=()
+str=`sort -k3 $loadfile`
+str=${str// /:}
+ingcnt=1
+total=0
+tmp=""
+ugroup="users"
+
+for i in $str
+do
+    i=${i//:/ }
+    set $i
+    group=`translit $3`
+    if [ "$tmp" != "$group" ]; then
+       tmp=$group
+       ingcnt=1
+    else
+       let "ingcnt++"
+    fi
+
+    if [ "`cat /etc/passwd | grep \"^${group}_${ingcnt}:\"`" != "" ]; then
+        echo "Ошибка: Пользователь ${group}_${ingcnt} уже существует"
+        exit 1
+    fi
+
+    while [ 1 ]; do
+        passwords[$total]=`getpasswd`
+        j=0
+        bad=0
+        while [ $j -lt $total ]; do
+            if [ "${passwords[$j]}" == "${passwords[$total]}" ]; then
+                bad=1
+                break
+            fi
+            let "j++"
+        done
+        if [ $bad -eq 0 ]; then
+            break
+        fi
+    done
+
+    if [ ${#1} -lt 8 ]; then
+        addt="\t"
+    else
+        addt=""
+    fi
+    if [ "$savefile" == "yes" ]; then
+        echo -e $ingcnt".\t"$1$addt"\t"$2"\t"$group"_"$ingcnt"\t"${passwords[$total]} >> $group
+    fi
+
+    if [ "$creategroup" == "yes" ]; then
+        if [ "`grep ^$group: /etc/group`" == "" ]; then
+            groupadd $group >> /dev/null 2>&1
+            if [ $? -ne 0 ]; then
+                echo "Ошибка: Не удалось создать группу $group"
+                exit 1
+            fi
+            echo "Создана группа $group"
+        fi
+        ugroup=$group
+    fi
+
+    adduser -g $ugroup -c "$1 $2 $3"  $group"_"$ingcnt> /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "Ошибка: Не удалось добавить пользователя ${group}_${ingcnt} в группу $ugroup"
+        exit 1
+    fi
+
+    echo ${passwords[$total]} | passwd --stdin $group"_"$ingcnt > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "Ошибка: Не удалось установить пароль для пользователя ${group}_${ingcnt}"
+        exit 1
+    else
+        echo "Добавлен пользователь ${group}_${ingcnt} в группу $ugroup с паролем ${passwords[$total]}"
+    fi
+    let "total++"
+done
+echo "Список был успешно обработан"
+exit 0

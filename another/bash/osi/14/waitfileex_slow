@@ -1,0 +1,42 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N14
+
+getarr ()
+{
+   for i in `ls $1 | sort`
+   do
+      if [ -f "./$1$i" ]; then
+         echo "./$1$i"
+      else
+         getarr "$1$i/"
+      fi
+   done
+}
+
+files=`getarr`
+
+while [ 1 ]
+do
+   sleep 1
+   newfiles=`getarr`
+
+   if [ "$files" != "$newfiles" ]; then
+      for i in $newfiles
+      do
+         finded=0
+         for j in $files
+         do
+            if [ "$j" == "$i" ]; then
+               finded=1
+               break
+            fi
+         done
+
+         if [ $finded -eq 0 ]; then
+            echo "File $i was created"
+            exit
+         fi
+      done
+   fi
+   files=$newfiles
+done

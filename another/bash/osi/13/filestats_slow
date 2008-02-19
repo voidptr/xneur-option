@@ -1,0 +1,18 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N13
+
+i=50
+while [ $i -ge 0 ]
+do
+   cnt=0
+   for f in `ls`
+   do
+      if [ -f $f -a `echo -n $f | wc -c` -eq $i ]; then
+         let "cnt++"
+      fi
+   done
+   if [ $cnt -ne 0 ]; then
+      echo "Всего файлов с длинной имени $i символа(ов) - $cnt"
+   fi
+   let "i--"
+done

@@ -1,0 +1,34 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N6
+
+pick ()
+{
+   for i
+   do
+      if [ -f $i ]; then
+         echo -n "$i ?" > /dev/tty
+         read response
+         case $response in
+            Y*|y*) echo $i ;;
+            Q*|q*) break ;;
+            N*|n*) continue ;;
+         esac
+      fi
+   done
+}
+
+if [ $# -eq 0 ]; then
+   echo "Использование: `basename $0` Каталог_Назначения"
+   exit
+fi
+
+if [ ! -d "$1" ]; then
+   echo "Ошибка: Каталог назначения должен существовать"
+   exit
+fi
+
+a=`ls`
+b=`pick $a`
+if [ "$b" != "" ]; then
+   cp -- $b $1
+fi

@@ -1,0 +1,31 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N7
+
+if [ $# -eq 0 ]; then
+    cat=`pwd`
+else
+    oldcat=`pwd`
+    cd -- $1
+    cat=`pwd`
+    cd -- $oldcat
+fi
+
+dirs=0
+files=0
+for i in `ls -- $cat`
+do
+   if [ -d "$cat/$i" ]; then
+      let "dirs++"
+   else
+      let "files++"
+   fi
+done
+
+echo "Директория $cat содержит $files файлов и $dirs папок"
+
+for i in `ls -- $cat`
+do
+   if [ -d "$cat/$i" ]; then
+      $0 $cat/$i
+   fi
+done

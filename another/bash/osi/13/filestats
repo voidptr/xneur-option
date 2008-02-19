@@ -1,0 +1,18 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N13
+
+for i in *
+do
+   if [ -f $i ]; then
+      let "array[${#i}]++"
+   fi
+done
+
+i=50
+while [ $i -ge 0 ]
+do
+   if [ "${array[$i]}" != "" ]; then
+      echo "Всего файлов с длинной имени $i символа(ов) - ${array[$i]}"
+   fi
+   let "i--"
+done

@@ -1,0 +1,42 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N3
+
+letters=(Q W E R T Y U I O P A S D F G H J K L Z X C V B N M)
+letcount=${#letters[@]}
+RANDOM=`date +%s`
+
+genrand ()
+{
+   randstr=""
+   count=0
+   while [ $count -ne 25 ];
+   do
+      let "letter=RANDOM % letcount"
+      letter=${letters[$letter]}
+      let "count++"
+      randstr=$randstr$letter
+   done
+   echo $randstr
+}
+
+if [ $# -eq 0 ]; then
+   echo "Использование: `basename $0` Файл1 Файл2 ... ФайлN"
+   exit
+fi
+
+for i
+do
+   endstr=`genrand`
+   while [ 1 ]
+   do
+      if [ "`grep \"$endstr\" \"$i\"`" != "" ]; then
+         endstr=`genrand`
+      else
+         break
+      fi
+   done
+   echo "echo $i>&2"
+   echo "cat >$i <<'$endstr'"
+   cat -- $i
+   echo $endstr
+done

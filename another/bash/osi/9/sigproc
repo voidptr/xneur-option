@@ -1,0 +1,38 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N9
+
+i=1
+
+c_file ()
+{
+   if [ $i -le 9 ]; then
+      f="temp0$i"
+   else
+      f="temp$i"
+   fi
+   echo "Этот файл был создан процедурой `basename $0`" > $f
+   let "i++"
+}
+
+exit_f ()
+{
+   n=1
+   while [ $n -lt $i ]
+   do
+      if [ $n -le 9 ]; then
+         echo "temp0$n"
+      else
+         echo "temp$n"
+      fi
+      let "n++"
+   done
+   exit
+}
+
+trap "c_file" 3
+trap "exit_f" 2
+
+while [ 1 ]
+do
+   sleep 1
+done

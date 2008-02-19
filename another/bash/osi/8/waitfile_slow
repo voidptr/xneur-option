@@ -1,0 +1,43 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N8
+
+getarr ()
+{
+   for i in `ls | sort`
+   do
+      if [ -f "$i" ];
+      then
+         echo "$i"
+      fi
+   done
+}
+
+files="`getarr`"
+
+while [ 1 ];
+do
+   sleep 1
+   newfiles="`getarr`"
+   
+   if [ "$files" != "$newfiles" ];
+   then
+      for i in $newfiles
+      do
+         finded=0
+         for j in $files
+         do
+            if [ "$j" == "$i" ];
+            then
+               finded=1
+               break
+            fi
+         done
+         if [ $finded -eq 0 ];
+         then
+            echo "File $i was created"
+            exit
+         fi
+      done
+      files=$newfiles
+   fi
+done

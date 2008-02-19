@@ -1,0 +1,34 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N6
+
+let="0"
+num=0
+if [ $# -ne 0 ]; then
+   while [ $# -gt 0 ]
+   do
+      case $1 in
+         -[abc]) if [ "$let" = "0" ]; then
+                    let=$1
+                 fi
+                 ;;
+         -[123]) if [ $num -eq 0 ]; then
+                    num=$1
+                 fi
+                 ;;
+             -*) echo "Неизвестный флаг $1" ; exit ;;
+          [!-]*) echo "Неизвестный аргумент $1" ; exit ;;
+      esac
+      shift
+   done
+else
+   echo "Использование: `basename $0` [-abc] [-123]"
+   exit
+fi
+
+if [ $num -ne 0 ]; then
+   echo "Задан флаг $num"
+fi
+
+if [ "$let" != "0" ]; then
+   echo "Задан флаг $let"
+fi

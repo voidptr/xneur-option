@@ -1,0 +1,11 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N2
+
+for i in `ls a* | egrep ".+[0-9]$"`
+do
+   if [ -f "$i" ];
+   then
+      echo -e "\nFile $i"
+      pr -3 -t -W 130 -- $i
+   fi
+done

@@ -1,0 +1,245 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N4
+
+if [ $# -eq 0 ]; then
+    echo "Использование: `basename $0` ИМЯ_ПАКЕТА"
+    exit 1
+fi
+
+cdrom="/dev/hdc"
+path="/usr/rpms"
+#path="/mnt/cdrom"
+rpmspath="Fedora/RPMS"
+rpmspath=""
+
+doinstall()
+{
+    rpm -qpi "$path/$2"
+    rpm -i --test "$path/$2"
+    if [ $? -ne 0 ]; then
+        echo "Тестирование установки пакета завершилось с ошибкой"
+        umount $cdrom > /dev/null 2>&1
+        exit 1
+    fi
+    echo
+    echo "--------------------------------------------------------"
+    echo "| Тестирование установки пакета было успешно завершено |"
+    echo "--------------------------------------------------------"
+    echo
+    rpm -ihv "$path/$2"
+    if [ $? -ne 0 ]; then
+        echo "Ошибка: Пакет не удалось установить"
+        umount $cdrom > /dev/null 2>&1
+        exit 1
+    fi
+    echo
+    echo "--------------------------------"
+    echo "| Пакет был успешно установлен |"
+    echo "--------------------------------"
+    echo
+    rpm -V "$1"
+    if [ $? -ne 0 ]; then
+        echo "Верификация пакета завершилась с ошибкой"
+        umount $cdrom > /dev/null 2>&1
+        exit 1
+    fi
+    echo
+    echo "-----------------------------------------------"
+    echo "| Верификация пакета была успешно произведена |"
+    echo "-----------------------------------------------"
+    echo
+}
+
+installp()
+{
+    while [ 1 ]; do
+        if [ ! -d "$path" ]; then
+            echo -n "Каталог $path не найден, введите другой путь для монтирования $cdrom: "
+            read path
+        else
+            break
+        fi
+    done
+
+    while [ 1 ]; do
+        if [ "`mount | grep $cdrom`" != "" ]; then
+            echo -n "Устройство $cdrom уже примонтировано, демонтировать? [Y/N]: "
+            read choise
+            case $choise in
+                n|N) exit 0
+                     ;;
+                y|Y) umount $cdrom
+                     if [ $? -ne 0 ]; then
+                          echo "Ошибка: Не удалось демонтировать $cdrom"
+                          exit 1
+                     else
+                          echo
+                          echo "-------------------------------------------"
+                          echo "| Демонтирование было успешно произведено |"
+                          echo "-------------------------------------------"
+                          echo
+                          break
+                     fi
+                     break
+                     ;;
+            esac
+        else
+            break
+        fi
+    done
+
+    while [ 1 ]; do
+        echo -n "Вствьте диск с дистрибутивом Linux, содержащий пакет $1 и нажмите Enter: "
+        read choise
+#        mount -t auto /dev/cdrom "$path"
+        if [ $? -ne 0 ]; then
+            echo "Не удалось примонтировать $cdrom на $path, возможно вы не вставили диск в дисковод"
+        else
+            echo
+            echo "-----------------------------------------"
+            echo "| Монтирование было успешно произведено |"
+            echo "-----------------------------------------"
+            echo
+            package=$1
+            while [ 1 ]; do
+                pcnt=`ls "$path$rpmspath" | grep "$package.*\.rpm" | wc -l`
+                if [ $pcnt -eq 0 ]; then
+                    echo "Пакет $package на диске не найден"
+                    break
+                elif [ $pcnt -eq 1 ]; then
+                    package_file=`ls "$path$rpmspath" | grep "$package.*\.rpm"`
+                    while [ 1 ]; do
+                        echo -n "На диске найден пакет $package, это требуемый пакет? [Y/N]: "
+                        read choise
+                        case $choise in
+                            n|N) break
+                                 ;;
+                            y|Y) doinstall "$package" "$rpmspath/$package_file"
+                                 umount $cdrom > /dev/null 2>&1
+                                 exit 0
+                                 ;;
+                        esac
+                    done
+                    break
+                elif [ $pcnt -gt 1 ]; then
+                    echo "На диске найдено $pcnt пакетов, соответствующих данному имени:"
+                    echo "---------------------------------------------------------------"
+                    ls "$path$rpmspath" | grep "$package.*\.rpm"
+                    echo "---------------------------------------------------------------"
+                    echo -n "Уточните ваш запрос [Имя/N]: "
+                    read choise
+                    if [ "$choise" == "" ]; then
+                        continue
+                    fi
+                    case $choise in
+                        n|N) break
+                             ;;
+                          *) package=$choise
+                             ;;
+                    esac
+                fi
+            done
+            umount $cdrom > /dev/null 2>&1
+        fi
+    done
+}
+
+installed()
+{
+    rpm -V $1
+    if [ $? -ne 0 ]; then
+        echo
+        echo "-----------------------------------------"
+        echo "| Проверка пакета завершилась с ошибкой |"
+        echo "-----------------------------------------"
+        echo
+    else
+        echo
+        echo "----------------------------------------"
+        echo "| Верификация пакета успешно завершена |"
+        echo "----------------------------------------"
+        echo
+    fi
+    while [ 1 ]; do
+        echo -n "Вывести список файлов, входящих в пакет $1? [Y/N]: "
+        read choise
+        case $choise in
+            n|N) break
+                 ;;
+            y|Y) rpm -ql $1
+                 break
+                 ;;
+        esac
+    done
+    echo
+    while [ 1 ]; do
+        echo -n "Удалить пакет $1? [Y/N]: "
+        read choise
+        case $choise in
+            n|N) return
+                 ;;
+            y|Y) rpm -e $1
+                 if [ $? -ne 0 ]; then
+                     echo "Не удалось удалить пакет $1"
+                     exit 1
+                 else
+                     echo
+                     echo "----------------------------"
+                     echo "| Пакет был успешно удалён |"
+                     echo "----------------------------"
+                     echo
+                     exit 0
+                 fi
+                 ;;
+        esac
+    done
+}
+
+pcname=$1
+while [ 1 ]; do
+    pcount=`rpm -qa | grep $pcname | wc -l`
+    if [ $pcount -eq 0 ]; then
+        while [ 1 ]; do
+            echo -n "Пакет с таким именем не найден, установить? [Y/N]: "
+            read choise
+            case $choise in
+                n|N) echo "Выходим..."
+                     exit 0
+                     ;;
+                y|Y) installp $pcname
+                     exit 0
+                     ;;
+            esac
+        done
+    elif [ $pcount -eq 1 ]; then
+        package=`rpm -qa | grep $pcname`
+        while [ 1 ]; do
+            echo -n "Найден пакет $package, это требуемый пакет? [Y/N]: "
+            read choise
+            case $choise in
+                n|N) echo "Уточните ваш запрос"
+                     exit 0
+                     ;;
+                y|Y) installed $package
+                     exit 0
+                     ;;
+            esac
+        done
+    elif [ $pcount -gt 1 ]; then
+        echo "В системе установлено $pcount пакетов, соответствующих данному имени:"
+        echo "---------------------------------------------------------------"
+        rpm -qa | grep $pcname
+        echo "---------------------------------------------------------------"
+        echo -n "Уточните ваш запрос [Имя/Q]: "
+        read choise
+        if [ "$choise" == "" ]; then
+            continue
+        fi
+        case $choise in
+            q|Q) exit 0
+                 ;;
+              *) pcname=$choise
+                 ;;
+        esac
+    fi
+done

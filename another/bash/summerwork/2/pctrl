@@ -1,0 +1,60 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N2
+
+stop()
+{
+    kill -9 $1 > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "Ошибка: Не удалось убить процесс с PID $1"
+    else
+        echo "Процесс с PID $1 был успешно убит"
+    fi
+}
+
+lowp()
+{
+    while [ 1 ]; do
+        echo -n "Введите новый приоритет процесса: "
+        read priority
+        priority=`echo $priority | sed -e 's/[^0-9]//g'`
+        if [[ $priority -gt 19 || $priority -lt -20 ]]; then
+            echo "Ошибка: Приоритет должен быть больеш -21 и меньше 20"
+            continue
+        fi
+        renice $priority $1 > /dev/null 2>&1
+        if [ $? -ne 0 ]; then
+            echo "Ошибка: Не удалось изменить приоритет процесса с PID $1"
+        else
+            echo "Приоритет процесса с PID $1 был успешно изменён"
+        fi
+        break
+    done
+}
+
+programs=`ps axo euser,comm,pid,etime | sed -e '1d' | sort -rnk3 | sed -e 's/ \+/|/g'`
+for i in $programs
+do
+    pline=${i//|/ }
+    set $pline
+    if [[ "`echo $4 | grep -e .*:.*:.*`" != "" || "`echo $4 | grep -e '[0-9][2-9]:.*'`" != "" || "`echo $4 | grep -e '[1-9][0-9]:.*'`" != ""  ]]; then
+        if [ ${#2} -lt 3 ]; then
+            addt="\t\t"
+        elif [ ${#2} -lt 11 ]; then
+            addt="\t"
+        else
+            addt=""
+        fi
+        echo -e "Пользователь - "$1",\tпрограмма - "$2",\t"$addt"pid - "$3
+        while [ 1 ]; do
+            echo -n "Действие: "
+            read action
+            case $action in
+                n|N) break ;;
+                k|K) stop $3; break ;;
+                p|P) lowp $3 ;;
+                e|q|E|Q) exit 0 ;;
+            esac
+        done
+    fi
+done
+exit 0

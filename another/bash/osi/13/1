@@ -1,0 +1,21 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N10
+
+for i in *
+do
+   if [ -f $i ];
+   then
+      set `wc -l $i`
+      filesa[$1]="File - $2 total lines: $1"
+   fi
+done
+
+filesas=${filesa[@]}
+unset filesa
+
+i=${#filesas[@]}
+while [ $i -ge 0 ];
+do
+   echo filesas[$i] filesas[$i-2] filesas[$i-1] filesas[$i]
+   i=$(($i-4))   
+done

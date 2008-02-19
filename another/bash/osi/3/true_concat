@@ -1,0 +1,24 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N3
+
+if [ $# -lt 2 ]; then
+   echo "Error: You must specify at least 2 args"
+   exit
+fi
+
+eval destfile=\"\$\{$#\}\"
+if [ -e $destfile ]; then
+   echo "Error: destination file $destfile exists"
+   exit
+fi
+
+while [ $# -gt 1 ];
+do
+   if [ "$1" = "$destfile" ]; then
+      echo "Error: source and destination file are equals"
+      exit
+   fi
+   echo $1>&2
+   cat -- $1 >> $destfile
+   shift
+done

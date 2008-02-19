@@ -1,0 +1,15 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N10
+
+get ()
+{
+   for i in *
+   do
+      if [ -f $i ]; then
+         set `wc -l -- $i`
+         echo "Файл $2 содержит строк: $1"
+      fi
+   done
+}
+
+echo "`get`" | sort -k 5 -n -r

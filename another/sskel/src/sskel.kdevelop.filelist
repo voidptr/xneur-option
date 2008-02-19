@@ -1,0 +1,22 @@
+# KDevelop Custom Project File List
+loggerd.cpp
+Makefile
+workers/worker.cpp
+workers/worker.h
+workers/worker_fork.cpp
+workers/worker_fork.h
+workers/workers_pool.cpp
+workers/workers_pool.h
+io/descriptors_transmitter.cpp
+io/descriptors_transmitter.h
+io/net_io.cpp
+io/net_io.h
+io/defines.h
+helpers/functions.cpp
+helpers/functions.h
+connections/connection.cpp
+connections/connection.h
+connections/connection_kqueue.cpp
+connections/connection_kqueue.h
+connections/connection_select.cpp
+connections/connection_select.h

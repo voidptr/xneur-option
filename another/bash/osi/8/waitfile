@@ -1,0 +1,20 @@
+# Автор: Янкин Н.В. МК-201
+# Задание N8
+
+files=`ls`
+
+while [ 1 ]
+do
+   sleep 1
+   newfiles=`ls`
+   diff=`echo "$newfiles" | grep -v -x "$files"`
+
+   for i in $diff
+   do
+      if [ -f $i ]; then
+         echo "Был создан файл $i"
+         exit
+      fi
+   done
+   files=$newfiles
+done
