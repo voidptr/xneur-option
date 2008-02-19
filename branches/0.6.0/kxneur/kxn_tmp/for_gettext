@@ -1,1 +1,0 @@
-xgettext -C -kI18N_NOOP src/*.cpp --output=po/kxneur.pot
