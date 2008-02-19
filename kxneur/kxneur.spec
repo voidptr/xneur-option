@@ -1,11 +1,11 @@
-%define fedora 0
-%define rhel 5
-%define dist el5
+%define fedora 7
+%define rhel 0
+#define dist .asp12
 
 Summary: 	X Neural Switcher front-end for KDE
 Name: 		kxneur
-Version: 	0.8
-Release: 	0.%{?dist}
+Version: 	0.9.0
+Release: 	0%{?dist}
 
 Group: 		User Interface/Desktops
 License: 	GPL
@@ -14,8 +14,8 @@ Source: 	%{name}-%{version}.tar.bz2
 
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
-BuildRequires: 	qt-devel, kdelibs-devel, xneur-devel = 0.8
-Requires: 	xneur = 0.8
+BuildRequires: 	qt-devel, kdelibs-devel, xneur-devel = 0.9.0
+Requires: 	xneur = 0.9.0
 Requires: 	kdelibs >= 3.3.0
 %if 0%{?fedora} > 4 || 0%{?rhel} > 4
 Requires: 	xorg-x11-utils
@@ -60,12 +60,14 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_docdir}/HTML/*/kxneur/*
 %{_bindir}/*
 %{_datadir}/apps/kxneur/*
-%{_datadir}/pixmaps/*
 %{_datadir}/applnk/Utilities/*.desktop
 %{_datadir}/autostart/kxneur.desktop
 
 
 %changelog
+* Fri Jan 4 2008 Vadim Likhota <vadim-lvv@yandex.ru> 0.9.0
+- up to 0.9.0
+
 * Tue Oct 1 2007 Vadim Likhota <vadim-lvv@yandex.ru> 0.8
 - up to 0.8
 

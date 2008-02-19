@@ -84,5 +84,3 @@ void KXNeurTray::mouseReleaseEvent (QMouseEvent *event)
 	emit clicked();
     }
 }
-
-// #include "kxneurtray.moc"

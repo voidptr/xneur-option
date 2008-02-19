@@ -25,8 +25,6 @@
 #include <config.h>
 #endif
 
-#define XN_END
-
 
 #include <kuniqueapplication.h>
 #include <qptrvector.h>
@@ -35,6 +33,8 @@ extern "C" {
 #include <xneur/xnconfig.h>
 }
 
+#define XNEUR_NEEDED_MAJOR_VERSION      3
+#define MAX_LANGUAGES 4
 #define SHOW_ICON 0
 #define SHOW_LANG 1
 #define SHOW_ALL -1
@@ -47,6 +47,9 @@ class KConfig;
 class XNLang;
 typedef QPtrVector<XNLang> XNLangVector;
 
+#define XN_END
+
+// moc not conceive #define
 class KXNeurApp : public KUniqueApplication
 // class KXNeurApp : public KApplication
 {

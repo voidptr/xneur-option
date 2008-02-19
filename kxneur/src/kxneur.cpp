@@ -33,13 +33,13 @@
 #include "kxneurconf.h"
 #include "kxnkeyboard.h"
 
-#define XNEUR_MAJOR_VER      2
-// #define XNEUR_MINOR_VER       0
-
 
 KXNeurApp::KXNeurApp()
+#ifdef XN_END
  : KUniqueApplication()
-// : KApplication()
+#else
+ : KApplication()
+#endif
 {
     KGlobal::dirs()->addResourceDir("appdata", ".");
     all_langs = new KConfig("langs", true, true, "appdata");
@@ -55,8 +55,9 @@ KXNeurApp::KXNeurApp()
     cur_lang = -1;
     prev_lang = -1;
     if ( !(KXNeurSettings::self()->RunXNeur() && xneur_start()) ) {
-//	printf("start -- ok\n");
-//    else {
+#ifndef XN_END
+	printf("start -- ok\n");
+#endif
 	trayicon->run->setText(i18n("Start xneur daemon"));
 	trayicon->run->setIcon("fork");
 	trayicon->mode->setEnabled(false);
@@ -170,8 +171,8 @@ bool KXNeurApp::xnconf_reload()
     }
     int major_v, minor_v;
     xnconf->get_library_api_version(&major_v, &minor_v);
-    if ( major_v != XNEUR_MAJOR_VER ) {
-                printf("Wrong XNeur configuration library api version.\nPlease install libxnconfig version %d.x\n", XNEUR_MAJOR_VER);
+    if ( major_v != XNEUR_NEEDED_MAJOR_VERSION ) {
+                printf("Wrong XNeur configuration library api version.\nPlease install libxnconfig version %d.x\n", XNEUR_NEEDED_MAJOR_VERSION);
                 xnconf->uninit(xnconf);
 		quit();
     }
@@ -359,8 +360,6 @@ void KXNeurApp::setMenuLang(int nn)
 }
 
 
-
-
 XNLang::XNLang(const QString& n)
 {
     name = n;
@@ -369,7 +368,3 @@ XNLang::XNLang(const QString& n)
 XNLang::~XNLang()
 {
 }
-
-
-// #include "kxneur.moc"
-

@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the KXNeur package.
-# Vadim Likhota <vadim-lvv@yandex.ru>, 2007.
+# Vadim Likhota <vadim-lvv@yandex.ru>, 2007-2008.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.8.0\n"
+"Project-Id-Version: 0.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-24 14:52+0300\n"
+"POT-Creation-Date: 2008-01-04 15:20+0200\n"
 "PO-Revision-Date: 2007-05-16 22:10+0300\n"
 "Last-Translator: Vadim Likhota <vadim-lvv@yandex.ru>\n"
 "Language-Team: RUSSIAN <ru@li.org>\n"
@@ -27,43 +27,47 @@ msgid ""
 "Your emails"
 msgstr "vadim-lvv@yandex.ru"
 
-#: kxneur.cpp:60 kxneur.cpp:140
+#: kxneur.cpp:61 kxneur.cpp:141
 msgid "Start xneur daemon"
 msgstr "Запустить службу xneur"
 
-#: kxneur.cpp:107 kxneurtray.cpp:44
+#: kxneur.cpp:108 kxneurtray.cpp:44
 msgid "Stop xneur daemon"
 msgstr "Остановить службу xneur"
 
-#: kxneur.cpp:205 kxneurtray.cpp:42
+#: kxneur.cpp:206 kxneurtray.cpp:42
 msgid "Set manual mode"
 msgstr "Установить ручной режим"
 
-#: kxneur.cpp:210
+#: kxneur.cpp:211
 msgid "Set auto mode"
 msgstr "Установить автоматический режим"
 
-#: kxneur.cpp:279
+#: kxneur.cpp:280
 msgid "* Unknown lang *"
 msgstr "* Неопознанный язык* "
 
-#: kxneurconf.cpp:93
+#: kxneurconf.cpp:95
+msgid "KXNeur (front-end) options "
+msgstr "Настройки KXNeur (front-end'a)"
+
+#: kxneurconf.cpp:99
 msgid "Run NXeur with start KXNeur"
 msgstr "Запускать службу xneur вместе с kxneur"
 
-#: kxneurconf.cpp:97
+#: kxneurconf.cpp:103
 msgid "Start XNeur with '--force' option"
 msgstr "Запускать xneur c параметром '--force'"
 
-#: kxneurconf.cpp:99
+#: kxneurconf.cpp:105
 msgid "With this option xneur don't check other xneur copies in ram"
 msgstr "С этой опцией xneur не проверяет наличие другой копии xneur в памяти"
 
-#: kxneurconf.cpp:101
+#: kxneurconf.cpp:107
 msgid "Autostart"
 msgstr "Автозапуск"
 
-#: kxneurconf.cpp:103
+#: kxneurconf.cpp:109
 msgid ""
 "Autostart of the program when entering the session. If recovery mode was "
 "enabled in KDE and KXNeur is running when exiting from this session, then "
@@ -74,23 +78,11 @@ msgstr ""
 "сеанса, то программа  запустится независимо от того, установлен ли "
 "автозапуск."
 
-#: kxneurconf.cpp:107
-msgid "show flag in tray"
-msgstr "показывать флаг в трее"
-
-#: kxneurconf.cpp:108
-msgid "show lang in tray"
-msgstr "показывать язык в трее"
-
-#: kxneurconf.cpp:110
-msgid "The style of icon reflected in the tray"
-msgstr "Стиль значка, отображаемого в трее"
-
-#: kxneurconf.cpp:112
+#: kxneurconf.cpp:111
 msgid "Switcher mode"
 msgstr "Режим переключателя"
 
-#: kxneurconf.cpp:114
+#: kxneurconf.cpp:113
 msgid ""
 "This mode  switches between two languages used the last. For select anothey "
 "language need pointed it. For selecting the third language one needs to "
@@ -101,124 +93,39 @@ msgstr ""
 "Для выбора третьего языка необходимо указать его мышкой в меню программы. "
 "Режим переключателя имеет смысл при использовании трех и более языков."
 
-#: kxneurconf.cpp:133
-msgid "Set Mode on Start"
-msgstr "Установить режим работы при запуске"
+#: kxneurconf.cpp:117
+msgid "show flag in tray"
+msgstr "показывать флаг в трее"
 
-#: kxneurconf.cpp:136
-msgid "Automatic"
-msgstr "автоматический"
+#: kxneurconf.cpp:118
+msgid "show lang in tray"
+msgstr "показывать язык в трее"
 
-#: kxneurconf.cpp:137
-msgid "Manual"
-msgstr "ручной"
+#: kxneurconf.cpp:120
+msgid "The style of icon reflected in the tray"
+msgstr "Стиль значка, отображаемого в трее"
 
-#: kxneurconf.cpp:139
-msgid "The mode of program working set with its start"
-msgstr "Режим работы программы, который будет установлен при ее старте"
+#: kxneurconf.cpp:124
+msgid "XNeur (daemon) options "
+msgstr "Настройки службы XNeur"
 
-#: kxneurconf.cpp:142
-msgid "Set Default Language for programs"
-msgstr "Установить язык по умолчанию для программ"
+#: kxneurconf.cpp:128
+msgid "Enable Education Mode"
+msgstr "Включить режим самообучения"
 
-#: kxneurconf.cpp:146
-msgid "Define initial keyboard layout for all new applications"
-msgstr "Установить начальную расскладку для новых программ"
-
-#: kxneurconf.cpp:149
-msgid "Delay before send event (in milliseconds)"
-msgstr "Задержка перед звуком (в миллисекундах)"
-
-#: kxneurconf.cpp:153
-msgid "Layouts"
-msgstr "Раскладки"
-
-#: kxneurconf.cpp:155
-msgid " Language Name "
-msgstr " Язык "
-
-#: kxneurconf.cpp:156
-msgid " Number "
-msgstr " Номер "
-
-#: kxneurconf.cpp:161
-msgid " "
-msgstr " "
-
-#: kxneurconf.cpp:162 kxneurconf.cpp:493
-msgid "English"
-msgstr "Английский"
-
-#: kxneurconf.cpp:163 kxneurconf.cpp:499
-msgid "Russian"
-msgstr "Русский"
-
-#: kxneurconf.cpp:164 kxneurconf.cpp:505
-msgid "Ukrainian"
-msgstr "Украинский"
-
-#: kxneurconf.cpp:165 kxneurconf.cpp:511
-msgid "Belarusian"
-msgstr "Белорусский"
-
-#: kxneurconf.cpp:166 kxneurconf.cpp:517
-msgid "French"
-msgstr "Французский"
-
-#: kxneurconf.cpp:167 kxneurconf.cpp:523
-msgid "Romanian"
-msgstr "Румынский"
-
-#: kxneurconf.cpp:168 kxneurconf.cpp:529
-msgid "Kazakh"
-msgstr "Казахский"
-
-#: kxneurconf.cpp:169 kxneurconf.cpp:535
-msgid "German"
-msgstr "Немецкий"
-
-#: kxneurconf.cpp:179
-msgid "A number of the language group. NB! The numbers must be unique."
-msgstr "Номер группы языка. Номера не должны повторяться!!!"
-
-#: kxneurconf.cpp:180
-msgid "Dictionary..."
-msgstr "Словарь..."
-
-#: kxneurconf.cpp:187
+#: kxneurconf.cpp:130
 msgid ""
-"The dictionaries for identification of certain language words. The words "
-"must be typed in Latine layout. For example, Russian 'tree' must be typed as "
-"'lthtdj'."
+"All the returned (incorrect) switchings will be automatically added to the "
+"dictionary."
 msgstr ""
-"Словари распознавания слов какого-либо языка. Слова должны набираться в "
-"латинской расскладке. Например, 'дерево' должно быть набрано как 'lthtdj'."
+"Все возвращенные (неверные) переключения будут автоматически заноситься в "
+"словарь."
 
-#: kxneurconf.cpp:188
-msgid "Regular Expressions..."
-msgstr "Регулярные выражения..."
-
-#: kxneurconf.cpp:195
-msgid "To set a word in the form of regular expression"
-msgstr "Задать слово в виде регулярного выражения"
-
-#: kxneurconf.cpp:202
-msgid ""
-"The block of layouts allow to set  languages and words for their processing "
-"by the program."
-msgstr ""
-"Блок раскладок позволяет задать используемые языки и слова для их обработки "
-"программой."
-
-#: kxneurconf.cpp:204
-msgid "Additional"
-msgstr "Дополнительно"
-
-#: kxneurconf.cpp:207
+#: kxneurconf.cpp:132
 msgid "Processing Mouse Events"
 msgstr "Обрабатывать события мыши"
 
-#: kxneurconf.cpp:209
+#: kxneurconf.cpp:134
 msgid ""
 "If activated this mode considers not only Space, Tab, Enter etc. to be the "
 "end of a word, but also mouse clicking to another field."
@@ -227,43 +134,132 @@ msgstr ""
 "Пробел, Табуляция, Enter и т.п, но и переход курсора к другому полю ввода "
 "щелчком мыши."
 
-#: kxneurconf.cpp:210
-msgid "Enable Education Mode"
-msgstr "Включить режим самообучения"
-
-#: kxneurconf.cpp:212
-msgid ""
-"All the returned (incorrect) switchings will be automatically added to the "
-"dictionary."
-msgstr ""
-"Все возвращенные (неверные) переключения будут автоматически заноситься в "
-"словарь."
-
-#: kxneurconf.cpp:213
-msgid "Remember Layoute For Each Window"
-msgstr "Запоминать раскладку для каждого окна"
-
-#: kxneurconf.cpp:215
-msgid "Program will save a language for each window."
-msgstr "Программа будет запоминать язык для каждого окна."
-
-#: kxneurconf.cpp:216
+#: kxneurconf.cpp:136
 msgid "Save Selection After Change Selected Text"
 msgstr "Сохранять выделение после изменения выделенного текста"
 
-#: kxneurconf.cpp:319
-msgid "Excluded List"
-msgstr "Список исключений"
+#: kxneurconf.cpp:142
+msgid "Set Mode on Start"
+msgstr "Установить режим работы при запуске"
 
-#: kxneurconf.cpp:320
-msgid "Force Automatic Processing List"
-msgstr "Список для принудительной автоматической обработки"
+#: kxneurconf.cpp:145
+msgid "Automatic"
+msgstr "автоматический"
 
-#: kxneurconf.cpp:321
-msgid "Force Manual Processing List"
-msgstr "Список для принудительной ручной обработки"
+#: kxneurconf.cpp:146
+msgid "Manual"
+msgstr "ручной"
 
-#: kxneurconf.cpp:326
+#: kxneurconf.cpp:147
+msgid "The mode of program working set with its start"
+msgstr "Режим работы программы, который будет установлен при ее старте"
+
+#: kxneurconf.cpp:167
+msgid "Set Default Language for programs"
+msgstr "Установить язык по умолчанию для программ"
+
+#: kxneurconf.cpp:170
+msgid "Define initial keyboard layout for all new applications"
+msgstr "Установить начальную расскладку для новых программ"
+
+#: kxneurconf.cpp:172
+msgid "Delay before send event (in milliseconds)                "
+msgstr "Задержка перед звуком (в миллисекундах)                   "
+
+#: kxneurconf.cpp:176
+msgid "Layouts"
+msgstr "Раскладки"
+
+#: kxneurconf.cpp:178
+msgid " Language Name "
+msgstr " Язык "
+
+#: kxneurconf.cpp:179
+msgid " Number "
+msgstr " Номер "
+
+#: kxneurconf.cpp:184
+msgid " "
+msgstr " "
+
+#: kxneurconf.cpp:185 kxneurconf.cpp:480
+msgid "English"
+msgstr "Английский"
+
+#: kxneurconf.cpp:186 kxneurconf.cpp:486
+msgid "Russian"
+msgstr "Русский"
+
+#: kxneurconf.cpp:187 kxneurconf.cpp:492
+msgid "Ukrainian"
+msgstr "Украинский"
+
+#: kxneurconf.cpp:188 kxneurconf.cpp:498
+msgid "Belarusian"
+msgstr "Белорусский"
+
+#: kxneurconf.cpp:189 kxneurconf.cpp:504
+msgid "French"
+msgstr "Французский"
+
+#: kxneurconf.cpp:190 kxneurconf.cpp:510
+msgid "Romanian"
+msgstr "Румынский"
+
+#: kxneurconf.cpp:191 kxneurconf.cpp:516
+msgid "Kazakh"
+msgstr "Казахский"
+
+#: kxneurconf.cpp:192 kxneurconf.cpp:522
+msgid "German"
+msgstr "Немецкий"
+
+#: kxneurconf.cpp:202
+msgid "A number of the language group. NB! The numbers must be unique."
+msgstr "Номер группы языка. Номера не должны повторяться!!!"
+
+#: kxneurconf.cpp:203
+msgid "Dictionary..."
+msgstr "Словарь..."
+
+#: kxneurconf.cpp:210
+msgid ""
+"The dictionaries for identification of certain language words. The words "
+"must be typed in Latine layout. For example, Russian 'tree' must be typed as "
+"'lthtdj'."
+msgstr ""
+"Словари распознавания слов какого-либо языка. Слова должны набираться в "
+"латинской расскладке. Например, 'дерево' должно быть набрано как 'lthtdj'."
+
+#: kxneurconf.cpp:211
+msgid "Regular Expressions..."
+msgstr "Регулярные выражения..."
+
+#: kxneurconf.cpp:218
+msgid "To set a word in the form of regular expression"
+msgstr "Задать слово в виде регулярного выражения"
+
+#: kxneurconf.cpp:225
+msgid ""
+"The block of layouts allow to set  languages and words for their processing "
+"by the program."
+msgstr ""
+"Блок раскладок позволяет задать используемые языки и слова для их обработки "
+"программой."
+
+#: kxneurconf.cpp:228
+msgid "Remember Layout For Each Window"
+msgstr "Запоминать раскладку для каждого окна"
+
+#: kxneurconf.cpp:230
+msgid "Program will save a language for each window."
+msgstr "Программа будет запоминать язык для каждого окна."
+
+#: kxneurconf.cpp:232
+msgid "Excluded List (one layout for program) "
+msgstr "Исключения (одна раскладка на всю программу"
+
+#: kxneurconf.cpp:236 kxneurconf.cpp:323
 msgid ""
 "List of the programs or names of MainWindow of these programs that coincide "
 "in most cases."
@@ -271,11 +267,11 @@ msgstr ""
 "Список программ или названий MainWindow этих программ, которые в большинстве "
 "случаев совпадают."
 
-#: kxneurconf.cpp:327
+#: kxneurconf.cpp:237 kxneurconf.cpp:325
 msgid "Add program from list..."
 msgstr "Добавить программу из списка"
 
-#: kxneurconf.cpp:330
+#: kxneurconf.cpp:240 kxneurconf.cpp:328
 msgid ""
 "List of the running graphical programs or the names of their  MainWindow "
 "(for several programs, for example sim, they do not coincide). If You do not "
@@ -289,11 +285,11 @@ msgstr ""
 "программ был получен запросом дочерних окон root-window посредством xwininfo "
 "из x11-tools."
 
-#: kxneurconf.cpp:331
+#: kxneurconf.cpp:241 kxneurconf.cpp:330
 msgid "Point window..."
 msgstr "Указать окно"
 
-#: kxneurconf.cpp:334
+#: kxneurconf.cpp:244 kxneurconf.cpp:333
 msgid ""
 "After pressing the button 'Point the button' one should make mouse click on "
 "a program window that must be added to the list. It is possible one will "
@@ -306,153 +302,173 @@ msgstr ""
 "имеющих независимые окна, возможно, придется указать несколько окон. Для "
 "получения информации об указанном окне используется xprop из X11."
 
-#: kxneurconf.cpp:382
+#: kxneurconf.cpp:315
+msgid "Excluded List"
+msgstr "Список исключений"
+
+#: kxneurconf.cpp:316
+msgid "Force Automatic Processing List"
+msgstr "Список для принудительной автоматической обработки"
+
+#: kxneurconf.cpp:317
+msgid "Force Manual Processing List"
+msgstr "Список для принудительной ручной обработки"
+
+#: kxneurconf.cpp:378
 msgid "Enable sounds on XNeur actions"
 msgstr "Активировать звуки событий в XNeur"
 
-#: kxneurconf.cpp:394
+#: kxneurconf.cpp:388
 msgid "Press Key On Layout 1 "
 msgstr "Накмити клавишу для 1ой расскадки"
 
-#: kxneurconf.cpp:395
+#: kxneurconf.cpp:389
 msgid "Press Key On Layout 2 "
 msgstr "Назмите клавишу для 2ой расскладки"
 
-#: kxneurconf.cpp:396
+#: kxneurconf.cpp:390
 msgid "Press Key On Layout 3 "
 msgstr "Нажмите клавишу для 3ей расскладки"
 
-#: kxneurconf.cpp:397
+#: kxneurconf.cpp:391
 msgid "Press Key On Layout 4 "
 msgstr "Нажмите клавишу для 4ой расскладки"
 
-#: kxneurconf.cpp:398
+#: kxneurconf.cpp:392
 msgid "Enable Layout 1 "
 msgstr "Активировать 1ую расскладку"
 
-#: kxneurconf.cpp:399
+#: kxneurconf.cpp:393
 msgid "Enable Layout 2 "
 msgstr "Активировать 2ую расскладку"
 
-#: kxneurconf.cpp:400
+#: kxneurconf.cpp:394
 msgid "Enable Layout 3 "
 msgstr "Активировать 3ю расскладку"
 
-#: kxneurconf.cpp:401
+#: kxneurconf.cpp:395
 msgid "Enable Layout 4 "
 msgstr "Активировать 4ую расскладку"
 
-#: kxneurconf.cpp:402
+#: kxneurconf.cpp:396
 msgid "Automatic Change Word "
 msgstr "Автоматическое изменение слова"
 
-#: kxneurconf.cpp:403
+#: kxneurconf.cpp:397
 msgid "Manual Change Word "
 msgstr "Ручное изменение слова"
 
-#: kxneurconf.cpp:404
+#: kxneurconf.cpp:398
 msgid "Change String "
 msgstr "Изменение строки "
 
-#: kxneurconf.cpp:405
+#: kxneurconf.cpp:399
 msgid "Change Selected Text "
 msgstr "Изменение выделенного текста "
 
-#: kxneurconf.cpp:406
+#: kxneurconf.cpp:400
 msgid "Translit Selected Text "
 msgstr "Транслитерация выделенного текста "
 
-#: kxneurconf.cpp:407
+#: kxneurconf.cpp:401
 msgid "Changecase Selected Text "
 msgstr "Изменение выделенного текста "
 
-#: kxneurconf.cpp:416
+#: kxneurconf.cpp:410
 msgid "List of sounds"
 msgstr "Список звуков"
 
-#: kxneurconf.cpp:427
+#: kxneurconf.cpp:421
 msgid "Settings"
 msgstr "Установки"
 
-#: kxneurconf.cpp:435 kxneurtray.cpp:58
-msgid "KXNeur"
-msgstr "KXNeur"
+#: kxneurconf.cpp:429
+msgid "Common"
+msgstr "Общие"
 
-#: kxneurconf.cpp:435
-msgid "KXNeur Options"
-msgstr "Настройки KXNeur"
+#: kxneurconf.cpp:429
+msgid "Commons Options"
+msgstr "Общие настройки"
 
-#: kxneurconf.cpp:436
-msgid "XNeur"
-msgstr "XNeur"
+#: kxneurconf.cpp:430
+msgid "Languages"
+msgstr " Языки "
 
-#: kxneurconf.cpp:436
-msgid "XNeur Daemon Options"
-msgstr "Настройки службы XNeur"
+#: kxneurconf.cpp:430
+msgid "Languages Options"
+msgstr "Языковые настройки"
 
-#: kxneurconf.cpp:437
+#: kxneurconf.cpp:431
 msgid "Keys"
 msgstr "Клавиши"
 
-#: kxneurconf.cpp:437
+#: kxneurconf.cpp:431
 msgid "Key Combinations"
 msgstr "Комбинации клавиш"
 
-#: kxneurconf.cpp:438
+#: kxneurconf.cpp:432
 msgid "Programs"
 msgstr "Программы"
 
-#: kxneurconf.cpp:438
+#: kxneurconf.cpp:432
 msgid "Exclusions for Program"
 msgstr "Исключения для программ"
 
-#: kxneurconf.cpp:439
+#: kxneurconf.cpp:433
 msgid "Sounds"
 msgstr "Звуки"
 
-#: kxneurconf.cpp:439
+#: kxneurconf.cpp:433
 msgid "Sounds for Events"
 msgstr "Звуки событий"
 
-#: kxneurconf.cpp:548
+#: kxneurconf.cpp:544
 msgid "Replace / Cancel Replace "
 msgstr "Замена / Отмена замены "
 
-#: kxneurconf.cpp:549
+#: kxneurconf.cpp:545
 msgid "Replace Last String "
 msgstr "Замена последней строки "
 
-#: kxneurconf.cpp:550
+#: kxneurconf.cpp:546
 msgid "Change Processing Mode "
 msgstr "Смена режима работы "
 
-#: kxneurconf.cpp:551
+#: kxneurconf.cpp:547
 msgid "Replace Selected Text "
 msgstr "Смена выделенного текста "
 
-#: kxneurconf.cpp:552
+#: kxneurconf.cpp:548
 msgid "Transliterate Selected Text "
 msgstr "Транслитерация выделенного текста "
 
-#: kxneurconf.cpp:553
+#: kxneurconf.cpp:549
 msgid "Change Case Selected Text "
 msgstr "Смена регистра выделенного текста "
 
-#: kxneurconf.cpp:554
+#: kxneurconf.cpp:550
 msgid "Enable First Layout "
 msgstr "Активировать 1ую расскладку"
 
-#: kxneurconf.cpp:555
+#: kxneurconf.cpp:551
 msgid "Enable Secondary Layout "
 msgstr "Активировать 2ую расскладку"
 
-#: kxneurconf.cpp:556
+#: kxneurconf.cpp:552
 msgid "Enable Thrid Layout "
 msgstr "Активировать 3ю расскладку"
 
-#: kxneurconf.cpp:557
+#: kxneurconf.cpp:553
 msgid "Enable Fourth Layout "
 msgstr "Активировать 4ую расскладку"
+
+#: kxneurconf.cpp:558
+msgid "warning! kdelibs have bug with Ctrl+Break"
+msgstr "обратите внимание! kdelibs содержит ошибку с установкой Ctrl+Break"
+
+#: kxneurtray.cpp:58
+msgid "KXNeur"
+msgstr "KXNeur"
 
 #: kxnlistbox.cpp:68
 msgid "current programs:"
@@ -462,11 +478,11 @@ msgstr "текущие программы"
 msgid ""
 "KXNeur (KDE X Neural Switcher) is XNeur front-end for KDE ( http://xneur."
 "ru ).\n"
-"This version work with XNeur v.0.8.0 only"
+"This version work with XNeur v.0.9.0 only"
 msgstr ""
 "KXNeur (KDE X Neural Switcher) -- фронт-енд XNeur для KDE ( http://xneur."
 "ru ).\n"
-"Эта версия работает только с XNeur v.0.8.0"
+"Эта версия работает только с XNeur v.0.9.0"
 
 #: main.cpp:41
 msgid "keyboard autoswitcher"

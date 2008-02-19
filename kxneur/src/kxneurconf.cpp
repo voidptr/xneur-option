@@ -42,7 +42,6 @@ extern "C" {
 }
 #include "kxnlistbox.h"
 #include "kxncombobox.h"
-#include "kxneur.h"
 #include "kxneursettings.h"
 #include "kxneurconf.h"
 
@@ -51,6 +50,7 @@ extern "C" {
 static char *lang_name_list[9] = {NULL, "English", "Russian", "Ukrainian", "Belarusian", "French", "Romanian", "Kazakh", "German"};
 static char *lang_code_list[9] = {NULL, "en",      "ru",      "uk",        "be",         "fr",     "ro"      , "kz",     "de"};
 }
+
 
 
 
@@ -89,31 +89,64 @@ KXNeurPage::KXNeurPage( QWidget* parent, const char* name, WFlags fl )
     if ( !name )
 	setName( "KXNeurPage" );
 
-    vlayout = new QVBoxLayout(this, 10);
-    run_xneur = new QCheckBox(i18n("Run NXeur with start KXNeur"), this);
-    vlayout->addWidget(run_xneur);
+    vlayout = new QVBoxLayout(this, 1, 12);
+    vlayout->setAlignment( Qt::AlignTop );
+
+    group1 = new QGroupBox(i18n("KXNeur (front-end) options "), this);
+    vlayout1 = new QVBoxLayout(group1, 16, 8);
+    vlayout1->setAlignment( Qt::AlignTop );
+
+    run_xneur = new QCheckBox(i18n("Run NXeur with start KXNeur"), group1);
+    vlayout1->addWidget(run_xneur);
     // QWhatsThis::add(run_xneur, i18n(""));
 
-    force_run = new QCheckBox(i18n("Start XNeur with '--force' option"), this);
-    vlayout->addWidget(force_run);
+    force_run = new QCheckBox(i18n("Start XNeur with '--force' option"), group1);
+    vlayout1->addWidget(force_run);
     QWhatsThis::add(force_run, i18n("With this option xneur don't check other xneur copies in ram"));
 
-    autostart = new QCheckBox(i18n("Autostart"), this);
-    vlayout->addWidget(autostart);
+    autostart = new QCheckBox(i18n("Autostart"), group1);
+    vlayout1->addWidget(autostart);
     QWhatsThis::add(autostart, i18n("Autostart of the program when entering the session. If recovery mode was enabled in KDE and KXNeur is running when exiting from this session, then KXneur will run automatically regardless of  autostart setting."));
 
-    in_tray = new QComboBox(this);
+    sw_mode = new QCheckBox(i18n("Switcher mode"), group1);
+    vlayout1->addWidget(sw_mode);
+    QWhatsThis::add(sw_mode, i18n("This mode  switches between two languages used the last. For select anothey language need pointed it. For selecting the third language one needs to click it in the program menu. The switcher mode makes sense if one uses three or more languages."));
+
+    in_tray = new QComboBox(group1);
     in_tray->setEditable(false);
     in_tray->insertItem(i18n("show flag in tray"));
     in_tray->insertItem(i18n("show lang in tray"));
-    vlayout->addWidget(in_tray);
+    vlayout1->addWidget(in_tray);
     QWhatsThis::add(in_tray, i18n("The style of icon reflected in the tray"));
 
-    sw_mode = new QCheckBox(i18n("Switcher mode"), this);
-    vlayout->addWidget(sw_mode);
-    QWhatsThis::add(sw_mode, i18n("This mode  switches between two languages used the last. For select anothey language need pointed it. For selecting the third language one needs to click it in the program menu. The switcher mode makes sense if one uses three or more languages."));
+    vlayout->addWidget(group1);
 
-    vlayout->setAlignment( Qt::AlignTop );
+    group2 = new QGroupBox(i18n("XNeur (daemon) options "), this);
+    vlayout2 = new QVBoxLayout(group2, 16, 8);
+    vlayout2->setAlignment( Qt::AlignTop );
+
+    edu_mode = new QCheckBox(i18n("Enable Education Mode"), group2);
+    vlayout2->addWidget(edu_mode);
+    QWhatsThis::add(edu_mode, i18n("All the returned (incorrect) switchings will be automatically added to the dictionary."));
+
+    mouse_mode = new QCheckBox(i18n("Processing Mouse Events"), group2);
+    vlayout2->addWidget(mouse_mode);
+    QWhatsThis::add(mouse_mode, i18n("If activated this mode considers not only Space, Tab, Enter etc. to be the end of a word, but also mouse clicking to another field."));
+
+    save_sel_text = new QCheckBox(i18n("Save Selection After Change Selected Text"), group2);
+    vlayout2->addWidget(save_sel_text);
+    // QWhatsThis::add(save_sel_text, i18n(""));
+
+    box2 = new QHBox(group2);
+    vlayout2->addWidget(box2);
+    new QLabel(i18n("Set Mode on Start"), box2);
+    xneur_mode = new QComboBox(box2);
+    xneur_mode->setEditable(false);
+    xneur_mode->insertItem(i18n("Automatic"));
+    xneur_mode->insertItem(i18n("Manual"));
+    QWhatsThis::add(box2, i18n("The mode of program working set with its start"));
+
+    vlayout->addWidget(group2);
 }
 
 KXNeurPage::~KXNeurPage()
@@ -126,29 +159,19 @@ XNeurPage::XNeurPage( QWidget* parent, const char* name, WFlags fl )
     if ( !name )
 	setName( "XNeurPage" );
 
-    vlayout = new QVBoxLayout(this);
+    vlayout = new QVBoxLayout(this, 2, 8);
     vlayout->setSpacing(5);
 
-    hbox = new QHBox(this);
-    new QLabel(i18n("Set Mode on Start"), hbox);
-    xneur_mode = new QComboBox(hbox);
-    xneur_mode->setEditable(false);
-    xneur_mode->insertItem(i18n("Automatic"));
-    xneur_mode->insertItem(i18n("Manual"));
-    vlayout->addWidget(hbox);
-    QWhatsThis::add(hbox, i18n("The mode of program working set with its start"));
+    grid = new QGrid(2, this);
 
-    hbox2 = new QHBox(this);
-    new QLabel(i18n("Set Default Language for programs"), hbox2);
-    default_group = new QComboBox(hbox2);
+    new QLabel(i18n("Set Default Language for programs"), grid);
+    default_group = new QComboBox(grid);
     default_group->setEditable(false);
-    vlayout->addWidget(hbox2);
-    QWhatsThis::add(hbox, i18n("Define initial keyboard layout for all new applications"));
+    QWhatsThis::add(default_group, i18n("Define initial keyboard layout for all new applications"));
 
-    hbox3 = new QHBox(this);
-    new QLabel(i18n("Delay before send event (in milliseconds)"), hbox3);
-    send_delay = new QSpinBox(0, 99999, 1, hbox3);
-    vlayout->addWidget(hbox3);
+    new QLabel(i18n("Delay before send event (in milliseconds)                "), grid);
+    send_delay = new QSpinBox(0, 9999, 1, grid);
+    vlayout->addWidget(grid);
 
     group1 = new QGroupBox(i18n("Layouts"), this);
     glayout = new QGridLayout(group1, MAX_LANGUAGES+1, 4, 15, 5);
@@ -201,21 +224,30 @@ XNeurPage::XNeurPage( QWidget* parent, const char* name, WFlags fl )
     vlayout->addWidget(group1);
     QWhatsThis::add(group1, i18n("The block of layouts allow to set  languages and words for their processing by the program."));
 
-    group2 =  new QGroupBox(i18n("Additional"), this);
-    vlayout2 = new QVBoxLayout(group2, 15, 5);
 
-    mouse_mode = new QCheckBox(i18n("Processing Mouse Events"), group2);
-    vlayout2->addWidget(mouse_mode);
-    QWhatsThis::add(mouse_mode, i18n("If activated this mode considers not only Space, Tab, Enter etc. to be the end of a word, but also mouse clicking to another field."));
-    edu_mode = new QCheckBox(i18n("Enable Education Mode"), group2);
-    vlayout2->addWidget(edu_mode);
-    QWhatsThis::add(edu_mode, i18n("All the returned (incorrect) switchings will be automatically added to the dictionary."));
-    remem_win = new QCheckBox(i18n("Remember Layoute For Each Window"), group2);
-    vlayout2->addWidget(remem_win);
+    remem_win = new QCheckBox(i18n("Remember Layout For Each Window"), this);
+    vlayout->addWidget(remem_win);
     QWhatsThis::add(remem_win, i18n("Program will save a language for each window."));
-    save_sel_text = new QCheckBox(i18n("Save Selection After Change Selected Text"), group2);
-    vlayout2->addWidget(save_sel_text);
-    // QWhatsThis::add(save_sel_text, i18n(""));
+
+    group2 =  new QGroupBox(i18n("Excluded List (one layout for program) "), this);
+    glayout2 = new QGridLayout(group2, 5, 3, 15, 5);
+    list = new KXNListBox(group2);
+    glayout2->addMultiCellWidget(list, 0, 4, 0, 1);
+    QWhatsThis::add(list, i18n("List of the programs or names of MainWindow of these programs that coincide in most cases."));
+    addprg = new QPushButton(i18n("Add program from list..."), group2);
+    QObject::connect(addprg, SIGNAL(clicked()), list, SLOT( getProgList() ));
+    glayout2->addWidget(addprg, 0, 2);
+    QWhatsThis::add(addprg, i18n("List of the running graphical programs or the names of their  MainWindow (for several programs, for example sim, they do not coincide). If You do not see in the list  your program use the button 'Point the window' below. The list of the programs was received  by a query of child windows of the root-window by means of xwininfo from x11-tools."));
+    add2prg = new QPushButton(i18n("Point window..."), group2);
+    QObject::connect(add2prg, SIGNAL(clicked()), list, SLOT( getPointedProg() ));
+    glayout2->addWidget(add2prg, 1, 2);
+    QWhatsThis::add(add2prg, i18n("After pressing the button 'Point the button' one should make mouse click on a program window that must be added to the list. It is possible one will have to point out several windows for some sdi programs that have independant windows. Xprop from X11 is used for receiving the information of pointed window."));
+    delprg = new QPushButton(i18n("Remove"), group2);
+    QObject::connect(delprg, SIGNAL(clicked()), list, SLOT( deleteSelected() ));
+    glayout2->addWidget(delprg, 2, 2);
+    glayout2->addWidget(new QLabel(" ", group2), 3, 2);
+
+    QObject::connect(remem_win, SIGNAL(toggled(bool)), group2, SLOT( setEnabled(bool) ));
 
     vlayout->addWidget(group2);
     vlayout->setAlignment( Qt::AlignTop );
@@ -262,42 +294,6 @@ KeysPage::KeysPage( QWidget* parent, const char* name, WFlags fl )
 
     vlayout = new QVBoxLayout(this);
     vlayout->setSpacing(5);
-/*
-    grid = new QGrid(3, this);
-    grid->setSpacing(5);
-    grid->setMargin(15);
-    grid->setFrameShape(QFrame::GroupBoxPanel);
-
-    new QLabel(i18n("Key Bindings "), grid);
-    new QLabel(i18n("Modifier "), grid);
-    new QLabel(i18n("Keys "), grid);
-
-    for ( int i = 0 ; i < MAX_HOTKEYS ; i++ ) {
-	switch ( i ) {
-	    case 0 : new QLabel(i18n("Replace / Cancel Replace "), grid); break;
-	    case 1 : new QLabel(i18n("Replace Last String "), grid); break;
-	    case 2 : new QLabel(i18n("Change Processing Mode "), grid); break;
-	    case 3 : new QLabel(i18n("Replace Selected Text "), grid); break;
-	    case 4 : new QLabel(i18n("Transliterate Selected Text "), grid); break;
-	    case 5 : new QLabel(i18n("Change Case Selected Text "), grid); break;
-	}
-
-	mod[i] = new QComboBox(grid);
-	mod[i]->setEditable(false);
-	mod[i]->insertItem(i18n("None"));
-	mod[i]->insertItem(i18n("Shift"));
-	mod[i]->insertItem(i18n("Control"));
-	mod[i]->insertItem(i18n("Alt"));
-
-	key[i] = new QComboBox(grid);
-	key[i]->setEditable(false);
-	key[i]->insertItem(i18n("None"));
-	key[i]->insertItem(i18n("Break"));
-	key[i]->insertItem(i18n("Scroll Lock"));
-	key[i]->insertItem(i18n("Prt Scr"));
-    }
-
-    vlayout->addWidget(grid);*/
     vlayout->setAlignment( Qt::AlignTop );
 }
 
@@ -320,18 +316,22 @@ ProgPage::ProgPage( QWidget* parent, const char* name, WFlags fl )
 	    case 1 : group[1] = new QGroupBox(i18n("Force Automatic Processing List"), this); break;
 	    case 2 : group[2] = new QGroupBox(i18n("Force Manual Processing List"), this); break;
 	}
+
 	glayout[i] = new QGridLayout(group[i], 5, 3, 15, 5);
 	list[i] = new KXNListBox(group[i]);
 	glayout[i]->addMultiCellWidget(list[i], 0, 4, 0, 1);
 	QWhatsThis::add(list[i], i18n("List of the programs or names of MainWindow of these programs that coincide in most cases."));
+
 	addprg[i] = new QPushButton(i18n("Add program from list..."), group[i]);
 	QObject::connect(addprg[i], SIGNAL(clicked()), list[i], SLOT( getProgList() ));
 	glayout[i]->addWidget(addprg[i], 0, 2);
 	QWhatsThis::add(addprg[i], i18n("List of the running graphical programs or the names of their  MainWindow (for several programs, for example sim, they do not coincide). If You do not see in the list  your program use the button 'Point the window' below. The list of the programs was received  by a query of child windows of the root-window by means of xwininfo from x11-tools."));
+
 	add2prg[i] = new QPushButton(i18n("Point window..."), group[i]);
 	QObject::connect(add2prg[i], SIGNAL(clicked()), list[i], SLOT( getPointedProg() ));
 	glayout[i]->addWidget(add2prg[i], 1, 2);
 	QWhatsThis::add(add2prg[i], i18n("After pressing the button 'Point the button' one should make mouse click on a program window that must be added to the list. It is possible one will have to point out several windows for some sdi programs that have independant windows. Xprop from X11 is used for receiving the information of pointed window."));
+
 	delprg[i] = new QPushButton(i18n("Remove"), group[i]);
 	QObject::connect(delprg[i], SIGNAL(clicked()), list[i], SLOT(deleteSelected()));
 	glayout[i]->addWidget(delprg[i], 2, 2);
@@ -346,11 +346,9 @@ ProgPage::~ProgPage()
 }
 
 
-
 KXNLineEdit::KXNLineEdit(QWidget * parent, const char * name)
  : QLineEdit(parent, name)
 {
-    // par = parent;
 }
 
 KXNLineEdit::~KXNLineEdit()
@@ -364,8 +362,6 @@ void KXNLineEdit::openDlg()
     if ( str.length() > 0 )
         setText(str);
 }
-
-
 
 
 SndPage::SndPage( QWidget* parent, const char* name, WFlags fl )
@@ -387,9 +383,7 @@ SndPage::SndPage( QWidget* parent, const char* name, WFlags fl )
     grid->setMargin(5);
     grid->setFrameShape(QFrame::GroupBoxPanel);
 
-
-
-    for ( int i = 0 ; i < 14 ; i++ ) {
+    for ( int i = 0 ; i < MAX_SOUNDS ; i++ ) {
         switch ( i ) {
 	    case  0 : new QLabel(i18n("Press Key On Layout 1 "), grid); break;
 	    case  1 : new QLabel(i18n("Press Key On Layout 2 "), grid); break;
@@ -432,8 +426,8 @@ KXNeurConf::KXNeurConf(KXNeurApp *app, QWidget *parent)
     prog_page = new ProgPage(0, "ProgPage");
     snd_page = new SndPage(0, "SndPage");
 
-    addPage( kxneur_page, i18n("KXNeur"), "keyboard_layout", i18n("KXNeur Options") ); // or pic = locale
-    addPage( xneur_page, i18n("XNeur"), "embedjs", i18n("XNeur Daemon Options") );     // or pic = exec
+    addPage( kxneur_page, i18n("Common"), "keyboard_layout", i18n("Commons Options") ); // or pic = embedjs, exec
+    addPage( xneur_page, i18n("Languages"), "locale", i18n("Languages Options") ); // or pic = 
     addPage( keys_page, i18n("Keys"), "key_bindings", i18n("Key Combinations") );
     addPage( prog_page, i18n("Programs"), "kwin", i18n("Exclusions for Program") );
     addPage( snd_page, i18n("Sounds"), "kmix", i18n("Sounds for Events") );
@@ -450,40 +444,33 @@ void KXNeurConf::LoadSettings()
 {
     knapp->xnconf_reload();
 
-
     kxneur_page->run_xneur->setChecked( KXNeurSettings::RunXNeur() );
     kxneur_page->force_run->setChecked( KXNeurSettings::ForceRun() );
     kxneur_page->autostart->setChecked( KXNeurSettings::Autostart() );
     kxneur_page->in_tray->setCurrentItem( KXNeurSettings::ShowInTray() );
     kxneur_page->sw_mode->setChecked( KXNeurSettings::SwitcherMode() );
 
-    xneur_page->send_delay->setValue(knapp->xnconf->send_delay);
-
-    if ( knapp->xnconf->get_current_mode(knapp->xnconf) == AUTO_MODE )
-	xneur_page->xneur_mode->setCurrentItem(0);
-    else
-	xneur_page->xneur_mode->setCurrentItem(1);
-
     if ( knapp->xnconf->mouse_processing_mode == MOUSE_GRAB_DISABLE )
-	xneur_page->mouse_mode->setChecked(false);
+	kxneur_page->mouse_mode->setChecked(false);
     else
-	xneur_page->mouse_mode->setChecked(true);
+	kxneur_page->mouse_mode->setChecked(true);
 
     if ( knapp->xnconf->education_mode == EDUCATION_MODE_DISABLE )
-	xneur_page->edu_mode->setChecked(false);
+	kxneur_page->edu_mode->setChecked(false);
     else
-	xneur_page->edu_mode->setChecked(true);
-
-    if ( knapp->xnconf->layout_remember_mode == LAYOUTE_REMEMBER_DISABLE )
-	xneur_page->remem_win->setChecked(false);
-    else
-	xneur_page->remem_win->setChecked(true);
+	kxneur_page->edu_mode->setChecked(true);
 
     if ( knapp->xnconf->save_selection_mode == SELECTION_SAVE_DISABLED )
-	xneur_page->save_sel_text->setChecked(false);
+	kxneur_page->save_sel_text->setChecked(false);
     else
-	xneur_page->save_sel_text->setChecked(true);
+	kxneur_page->save_sel_text->setChecked(true);
 
+    if ( knapp->xnconf->get_current_mode(knapp->xnconf) == AUTO_MODE )
+	kxneur_page->xneur_mode->setCurrentItem(0);
+    else
+	kxneur_page->xneur_mode->setCurrentItem(1);
+
+    xneur_page->send_delay->setValue(knapp->xnconf->send_delay);
 
     for ( int i = 0 ; i < knapp->xnconf->total_languages && i < MAX_LANGUAGES ; i++ ) {
 	if ( strcmp(knapp->xnconf->get_lang_name(knapp->xnconf, i), "English") == 0 ) {
@@ -529,9 +516,9 @@ void KXNeurConf::LoadSettings()
 	    xneur_page->default_group->insertItem(i18n("Kazakh"));
 	}
 	else if ( strcmp(knapp->xnconf->get_lang_name(knapp->xnconf, i), "German") == 0 ) {
-	    xneur_page->lang[i]->setCurrentItem(7);
-	    xneur_page->regexp[i]->lang = lang_code_list[7];
-	    xneur_page->dict[i]->lang = lang_code_list[7];
+	    xneur_page->lang[i]->setCurrentItem(8);
+	    xneur_page->regexp[i]->lang = lang_code_list[8];
+	    xneur_page->dict[i]->lang = lang_code_list[8];
 	    xneur_page->default_group->insertItem(i18n("German"));
 	}
 	else
@@ -543,6 +530,15 @@ void KXNeurConf::LoadSettings()
     }
 
     xneur_page->default_group->setCurrentItem(knapp->xnconf->default_group);
+
+    if ( knapp->xnconf->layout_remember_mode == LAYOUTE_REMEMBER_DISABLE )
+	xneur_page->remem_win->setChecked(false);
+    else
+	xneur_page->remem_win->setChecked(true);
+
+    for (int i = 0 ; i < knapp->xnconf->layout_remember_apps->data_count ; i++ )
+	xneur_page->list->insertItem(knapp->xnconf->layout_remember_apps->data[i].string);
+
 
     keys = new KGlobalAccel(NULL);
     keys->insert("Replace / Cancel Replace ",    i18n("Replace / Cancel Replace "),    QString::null, KeyFromXNConf(0), 0, this, NULL);
@@ -558,6 +554,8 @@ void KXNeurConf::LoadSettings()
 
     keys_page->keyChooser = new KKeyChooser(keys, keys_page);
     keys_page->vlayout->addWidget(keys_page->keyChooser);
+    // keys_page->vlayout->addWidget(new QLabel(i18n("kdelibs have bug with Ctrl+Break"), keys_page));
+    QWhatsThis::add(keys_page->keyChooser, i18n("warning! kdelibs have bug with Ctrl+Break"));
 
 
     for (int i = 0 ; i < knapp->xnconf->excluded_apps->data_count ; i++ )
@@ -567,72 +565,68 @@ void KXNeurConf::LoadSettings()
     for (int i = 0 ; i < knapp->xnconf->manual_apps->data_count ; i++ )
 	prog_page->list[2]->insertItem(knapp->xnconf->manual_apps->data[i].string);
 
-    snd_page->enable_snd->setChecked( knapp->xnconf->sound_mode );
+    snd_page->enable_snd->setChecked( knapp->xnconf->sound_mode != SOUND_DISABLED );
 
-    for (int i = 0 ; i < 14 ; i++)
-	snd_page->edit[i]->setText(knapp->xnconf->sounds[i]);
+    for (int i = 0 ; i < MAX_SOUNDS ; i++)
+	snd_page->edit[i]->setText(knapp->xnconf->sounds[i].file);
 
 }
 
 void KXNeurConf::SaveSettings()
 {
-
     KXNeurSettings::setRunXNeur( kxneur_page->run_xneur->isChecked() );
     KXNeurSettings::setForceRun( kxneur_page->force_run->isChecked() );
     KXNeurSettings::setAutostart( kxneur_page->autostart->isChecked() );
     KXNeurSettings::setShowInTray( kxneur_page->in_tray->currentItem() );
     KXNeurSettings::setSwitcherMode( kxneur_page->sw_mode->isChecked() );
 
-    knapp->xnconf->send_delay = xneur_page->send_delay->value();
+    knapp->xnconf->clear(knapp->xnconf);
 
-    if ( xneur_page->xneur_mode->currentItem() )
-	knapp->xnconf->set_current_mode(knapp->xnconf, MANUAL_MODE);
-    else
-	knapp->xnconf->set_current_mode(knapp->xnconf, AUTO_MODE);
-
-    if ( xneur_page->mouse_mode->isChecked() )
+    if ( kxneur_page->mouse_mode->isChecked() )
 	knapp->xnconf->mouse_processing_mode = MOUSE_GRAB_ENABLE;
     else
 	knapp->xnconf->mouse_processing_mode = MOUSE_GRAB_DISABLE;
 
-    if ( xneur_page->edu_mode->isChecked() )
+    if ( kxneur_page->edu_mode->isChecked() )
 	knapp->xnconf->education_mode = EDUCATION_MODE_ENABLE;
     else
 	knapp->xnconf->education_mode = EDUCATION_MODE_DISABLE;
+
+    if ( kxneur_page->save_sel_text->isChecked() )
+	knapp->xnconf->save_selection_mode = SELECTION_SAVE_ENABLED;
+    else
+	knapp->xnconf->save_selection_mode = SELECTION_SAVE_DISABLED;
+
+    if ( kxneur_page->xneur_mode->currentItem() )
+	knapp->xnconf->set_current_mode(knapp->xnconf, MANUAL_MODE);
+    else
+	knapp->xnconf->set_current_mode(knapp->xnconf, AUTO_MODE);
+
+    knapp->xnconf->send_delay = xneur_page->send_delay->value();
+
+    knapp->xnconf->default_group = xneur_page->default_group->currentItem();
+
+    for ( int i = 0 ; i < MAX_LANGUAGES ; i++ )
+	if ( xneur_page->lang[i]->currentItem() ) {
+	    const char *lang_name = lang_name_list[ xneur_page->lang[i]->currentItem() ];
+	    const char *lang_dir = lang_code_list[ xneur_page->lang[i]->currentItem() ];
+	    int lang_group = xneur_page->num[i]->currentItem();
+	    knapp->xnconf->add_language(knapp->xnconf, lang_name, lang_dir, lang_group);
+	}
 
     if ( xneur_page->remem_win->isChecked() )
 	knapp->xnconf->layout_remember_mode = LAYOUTE_REMEMBER_ENABLE;
     else
 	knapp->xnconf->layout_remember_mode = LAYOUTE_REMEMBER_DISABLE;
 
-    if ( xneur_page->save_sel_text->isChecked() )
-	knapp->xnconf->save_selection_mode = SELECTION_SAVE_ENABLED;
-    else
-	knapp->xnconf->save_selection_mode = SELECTION_SAVE_DISABLED;
+    for ( int i = 0 ; i < xneur_page->list->numRows() ; i++ )
+	knapp->xnconf->layout_remember_apps->add(knapp->xnconf->layout_remember_apps, xneur_page->list->text(i).latin1());
 
-    knapp->xnconf->default_group = xneur_page->default_group->currentItem();
-
-    int total_lang = 0;
-    char **lang_name = (char **)malloc(4 * sizeof(char*));
-    char **lang_dir = (char **)malloc(4 * sizeof(char*));
-    int *lang_group = (int *)malloc(4 * sizeof(int));
-    for ( int i = 0 ; i < MAX_LANGUAGES ; i++ )
-	if ( xneur_page->lang[i]->currentItem() ) {
-	    lang_name[total_lang] = lang_name_list[ xneur_page->lang[i]->currentItem() ];
-	    lang_dir[total_lang] = lang_code_list[ xneur_page->lang[i]->currentItem() ];
-	    lang_group[total_lang] = xneur_page->num[i]->currentItem();
-	    total_lang++;
-	}
-    knapp->xnconf->set_languages(knapp->xnconf, lang_name, lang_dir, lang_group, total_lang);
 
     keys_page->keyChooser->commitChanges();
-
     // printf("%s - %x\n", keys->shortcut("Replace / Cancel Replace ").toString().latin1(), keys->shortcut("Replace / Cancel Replace ").keyCodeQt() );
-    // ToXNConf(0, keys->shortcut("Replace / Cancel Replace ").toString());
     KeyToXNConf(0, keys->shortcut("Replace / Cancel Replace "   ).keyCodeQt());
-    // printf("%s - %x\n", keys->shortcut("Replace Last String ").toString().latin1(), keys->shortcut("Replace Last String ").keyCodeQt() );
     KeyToXNConf(1, keys->shortcut("Replace Last String "        ).keyCodeQt());
-    // printf("%s - %x\n", keys->shortcut("Change Processing Mode ").toString().latin1(), keys->shortcut("Change Processing Mode ").keyCodeQt() );
     KeyToXNConf(2, keys->shortcut("Change Processing Mode "     ).keyCodeQt());
     KeyToXNConf(3, keys->shortcut("Replace Selected Text "      ).keyCodeQt());
     KeyToXNConf(4, keys->shortcut("Transliterate Selected Text ").keyCodeQt());
@@ -642,18 +636,12 @@ void KXNeurConf::SaveSettings()
     KeyToXNConf(8, keys->shortcut("Enable Thrid Layout "        ).keyCodeQt());
     KeyToXNConf(9, keys->shortcut("Enable Fourth Layout "       ).keyCodeQt());
 
-    knapp->xnconf->excluded_apps->uninit(knapp->xnconf->excluded_apps);
-    knapp->xnconf->excluded_apps = list_char_init();
     for ( int i = 0 ; i < prog_page->list[0]->numRows() ; i++ )
 	knapp->xnconf->excluded_apps->add(knapp->xnconf->excluded_apps, prog_page->list[0]->text(i).latin1());
 
-    knapp->xnconf->auto_apps->uninit(knapp->xnconf->auto_apps);
-    knapp->xnconf->auto_apps = list_char_init();
     for ( int i = 0 ; i < prog_page->list[1]->numRows() ; i++ )
 	knapp->xnconf->auto_apps->add(knapp->xnconf->auto_apps, prog_page->list[1]->text(i).latin1());
 
-    knapp->xnconf->manual_apps->uninit(knapp->xnconf->manual_apps);
-    knapp->xnconf->manual_apps = list_char_init();
     for ( int i = 0 ; i < prog_page->list[2]->numRows() ; i++ )
 	knapp->xnconf->manual_apps->add(knapp->xnconf->manual_apps, prog_page->list[2]->text(i).latin1());
 
@@ -662,13 +650,14 @@ void KXNeurConf::SaveSettings()
     else
 	knapp->xnconf->sound_mode = SOUND_DISABLED;
 
-    for ( int i = 0 ; i < 14 ; i++ ) {
-	free(knapp->xnconf->sounds[i]);
-	knapp->xnconf->sounds[i] = (char *)malloc( snd_page->edit[i]->maxLength() * sizeof(char) );
-	strcpy(knapp->xnconf->sounds[i], snd_page->edit[i]->text().utf8() );
+    for ( int i = 0 ; i < MAX_SOUNDS ; i++ ) {
+	if ( knapp->xnconf->sounds[i].file )
+	    free(knapp->xnconf->sounds[i].file);
+	knapp->xnconf->sounds[i].file = qstrdup(snd_page->edit[i]->text().utf8());
     }
 
     knapp->xnconf->save(knapp->xnconf);
+    knapp->xnconf->reload(knapp->xnconf);
 
     if ( knapp->xneur_stop() )
 	knapp->xneur_start();
@@ -695,117 +684,52 @@ int KXNeurConf::KeyFromXNConf(int action)
 {
     int shc = 0;
 
-    if ( knapp->xnconf->hotkeys[action].modifier1 )
+    if ( knapp->xnconf->hotkeys[action].modifiers & 0x1 )
 	shc += Qt::SHIFT;
-    if ( knapp->xnconf->hotkeys[action].modifier2 )
+    if ( knapp->xnconf->hotkeys[action].modifiers & 0x2  )
 	shc += Qt::CTRL;
-    if ( knapp->xnconf->hotkeys[action].modifier3 )
+    if ( knapp->xnconf->hotkeys[action].modifiers & 0x4 )
 	shc += Qt::ALT;
-    if ( knapp->xnconf->hotkeys[action].modifier4 )
+    if ( knapp->xnconf->hotkeys[action].modifiers & 0x8 )
 	shc += KKey::QtWIN;
     int ccc = kc.key2code(knapp->xnconf->hotkeys[action].key);
-    // printf("%s == %x\n", knapp->xnconf->hotkeys[action].key, ccc);
+    // printf("%d : %s == %x -> ", action, knapp->xnconf->hotkeys[action].key, ccc);
     shc += ccc;
     // printf("%x\n", shc);
+    orig_keys[action] = shc;
     return shc;
 }
 
-// void KXNeurConf::ToXNConf(int action, QString s)
 void KXNeurConf::KeyToXNConf(int a, int c)
 {
     int action = a, cod = c;
 
     if ( (cod & 0xffff) == 0 ) {
-	printf("not found key for action %d: key code = %x;  key will not change\n", action, cod);
-	// fflush(stdout);
-	return;
+	printf("not found key for action %d: key code = %x; restore old key\n", action, cod); // kdelibs have bug with Ctrl+Break
+	fflush(stdout);
+        cod = orig_keys[action];
+	// return;
     }
 
-    if ( knapp->xnconf->hotkeys[action].modifier1 ) {
-	free(knapp->xnconf->hotkeys[action].modifier1);
-	knapp->xnconf->hotkeys[action].modifier1 = NULL;
-    }
-    if ( knapp->xnconf->hotkeys[action].modifier2 ) {
-	free(knapp->xnconf->hotkeys[action].modifier2);
-    	knapp->xnconf->hotkeys[action].modifier2 = NULL;
-    }
-    if ( knapp->xnconf->hotkeys[action].modifier3 ) {
-	free(knapp->xnconf->hotkeys[action].modifier3);
-	knapp->xnconf->hotkeys[action].modifier3 = NULL;
-    }
-    if ( knapp->xnconf->hotkeys[action].modifier4 ) {
-	free(knapp->xnconf->hotkeys[action].modifier4);
-        knapp->xnconf->hotkeys[action].modifier4 = NULL;
-    }
+    knapp->xnconf->hotkeys[action].modifiers = 0;
     if ( knapp->xnconf->hotkeys[action].key ) {
     	free(knapp->xnconf->hotkeys[action].key);
 	knapp->xnconf->hotkeys[action].key = NULL;
     }
-/*
-    QStringList sl = QStringList::split( '+', s );
 
-    QStringList::Iterator it = sl.begin();
+    if ( cod & Qt::SHIFT )
+        knapp->xnconf->hotkeys[action].modifiers |= 0x1;
+    if ( cod & Qt::CTRL )
+	knapp->xnconf->hotkeys[action].modifiers |= 0x2;
+    if ( cod & Qt::ALT )
+	knapp->xnconf->hotkeys[action].modifiers |= 0x4;
+    if ( cod & KKey::QtWIN )
+	knapp->xnconf->hotkeys[action].modifiers |= 0x8;
 
-    for ( ; it != sl.end(); ++it ) {
-	// printf("%s\n", (*it).latin1());
-	if ( *it == "Shift" )
-	    knapp->xnconf->hotkeys[action].modifier1 = (char *)"Shift";
-	else if ( *it == "Control" )
-	    knapp->xnconf->hotkeys[action].modifier2 = (char *)"Control";
-	else if ( *it == "Alt" )
-	    knapp->xnconf->hotkeys[action].modifier3 = (char *)"Alt";
-	else if ( *it == "Win" )
-	    knapp->xnconf->hotkeys[action].modifier4 = (char *)"Super";
-	else {
-	    knapp->xnconf->hotkeys[action].key = (char *)malloc( sizeof( (*it).latin1() ) );
-	    strcpy(knapp->xnconf->hotkeys[action].key, (*it).latin1());
-	}
-    }*/
-
-    if ( cod & Qt::SHIFT ) {
-	knapp->xnconf->hotkeys[action].modifier1 = (char *)malloc( 8 * sizeof(char) );
-	strcpy(knapp->xnconf->hotkeys[action].modifier1, (char *)"Shift");
-    }
-    if ( cod & Qt::CTRL ) {
-	knapp->xnconf->hotkeys[action].modifier2 = (char *)malloc( 8 * sizeof(char) );
-	strcpy(knapp->xnconf->hotkeys[action].modifier2, (char *)"Control");
-    }
-    if ( cod & Qt::ALT ) {
-	knapp->xnconf->hotkeys[action].modifier3 = (char *)malloc( 8 * sizeof(char) );
-	strcpy(knapp->xnconf->hotkeys[action].modifier3, (char *)"Alt");
-    }
-    if ( cod & KKey::QtWIN ) {
-	knapp->xnconf->hotkeys[action].modifier4 = (char *)malloc( 8 * sizeof(char) );
-	strcpy(knapp->xnconf->hotkeys[action].modifier4, (char *)"Super");
-    }
     cod &= 0x0000ffff;
-    // if ( cod ) {
-	QString cc = kc.code2key(cod);
-	// printf("%x\n", cod );
+    QString cc = kc.code2key(cod);
+	// printf("%x -> ", cod );
 	// printf("%s\n", cc.latin1());
 	// fflush(stdout);
-	knapp->xnconf->hotkeys[action].key = (char *)malloc( sizeof( cc.latin1() ) );
-	strcpy(knapp->xnconf->hotkeys[action].key, cc.latin1());
-    // }
+    knapp->xnconf->hotkeys[action].key = qstrdup( cc.latin1() );
 }
-
-/*
-void KXNeurConf::SndFromXNConf(int sound)
-{
-
-}
-
-
-void KXNeurConf::SndToXNConf(int sound)
-{
-
-}
-*/
-
-
-
-
-
-
-// #include "kxneurconf.moc"
-

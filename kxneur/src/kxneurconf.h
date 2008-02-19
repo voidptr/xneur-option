@@ -20,16 +20,13 @@
 #ifndef KXNEURCONF_H
 #define KXNEURCONF_H
 
-#define MAX_LANGUAGES 4
-
 #include <kconfigdialog.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
+#include "kxneur.h"
 #include "key_convert.h"
 
-/**
-	@author Vadim Likhota <vadim-lvv{a}yandex.ru>
-*/
+
 
 class KApplication;
 class KXNeurApp;
@@ -83,14 +80,16 @@ public slots:
 
 class KXNeurPage : public QWidget
 {
-    // Q_OBJECT
+
 public:
     KXNeurPage( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~KXNeurPage();
 
-    QVBoxLayout *vlayout;
-    QCheckBox *run_xneur, *autostart, *sw_mode, *force_run;
-    QComboBox *in_tray;
+    QVBoxLayout *vlayout, *vlayout1, *vlayout2;
+    QCheckBox *run_xneur, *autostart, *sw_mode, *force_run, *mouse_mode, *edu_mode, *save_sel_text;
+    QComboBox *in_tray, *xneur_mode;
+    QGroupBox *group1, *group2;
+    QHBox *box2;
 };
 
 
@@ -102,19 +101,20 @@ public:
     ~XNeurPage();
 
     QVBoxLayout *vlayout, *vlayout2;
-    QHBox *hbox, *hbox2, *hbox3;
-    QComboBox *xneur_mode, *default_group;
-    // QLineEdit *send_delay;
+    QComboBox *default_group;
     QSpinBox *send_delay;
     QGroupBox *group1, *group2;
-    QGridLayout *glayout;
+    QGridLayout *glayout, *glayout2;
+    QGrid *grid;
 
     QComboBox *lang[MAX_LANGUAGES];
     KXNComboBox *num[MAX_LANGUAGES];
     KXNPushButton *regexp[MAX_LANGUAGES];
     KXNPushButton *dict[MAX_LANGUAGES];
 
-    QCheckBox *mouse_mode, *edu_mode, *remem_win, *save_sel_text;
+    QCheckBox *remem_win;
+    KXNListBox *list;
+    QPushButton *addprg, *add2prg, *delprg;
 private slots:
     void open_file(char *path);
 };
@@ -122,7 +122,7 @@ private slots:
 
 class KeysPage : public QWidget
 {
-    // Q_OBJECT
+
 public:
     KeysPage( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~KeysPage();
@@ -137,7 +137,7 @@ public:
 
 class ProgPage : public QWidget
 {
-    // Q_OBJECT
+
 public:
     ProgPage( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~ProgPage();
@@ -152,7 +152,7 @@ public:
 
 class SndPage : public QWidget
 {
-    // Q_OBJECT
+
 public:
     SndPage( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~SndPage();
@@ -169,10 +169,12 @@ public:
 
 class KXNeurConf : public KConfigDialog
 {
-    // Q_OBJECT
+
 public:
     KXNeurConf(KXNeurApp *app, QWidget *parent = 0);
     ~KXNeurConf();
+
+    int orig_keys[10];
 
 private:
     KXNeurPage *kxneur_page;
@@ -190,8 +192,6 @@ private:
     int KeyFromXNConf(int action);
     // void ToXNConf(int action, QString s);
     void KeyToXNConf(int a, int c);
-    // void SndFromXNConf(int sound);
-    // void SndToXNConf(int sound);
 
 protected:
     virtual void slotApply();

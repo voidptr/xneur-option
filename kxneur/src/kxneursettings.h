@@ -23,9 +23,6 @@
 #include <kconfigskeleton.h>
 #include <kdebug.h>
 
-/**
-	@author Vadim Likhota <vadim-lvv{a}yandex.ru>
-*/
 class KXNeurSettings : public KConfigSkeleton
 {
 public:

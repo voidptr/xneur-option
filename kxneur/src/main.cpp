@@ -26,9 +26,9 @@
 #include "kxnkeyboard.h"
 
 static const char description[] =
-    I18N_NOOP("KXNeur (KDE X Neural Switcher) is XNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.8.0 only");
+    I18N_NOOP("KXNeur (KDE X Neural Switcher) is XNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.9.0 only");
 
-static const char version[] = "0.8.0";
+static const char version[] = "0.9.0";
 
 static KCmdLineOptions options[] =
 {
@@ -39,7 +39,7 @@ static KCmdLineOptions options[] =
 int main(int argc, char **argv)
 {
     KAboutData about("kxneur", I18N_NOOP("keyboard autoswitcher"), version, description,
-		     KAboutData::License_GPL, "(C) 2007 Vadim Likhota", 0, "http://xneur.ru",
+		     KAboutData::License_GPL, "(C) 2007-2008 Vadim Likhota", 0, "http://xneur.ru",
 		     "xneur@lists.net.ru");
     about.addAuthor( "Vadim Likhota", 0, "vadim-lvv@yandex.ru" );
     about.addCredit("XNeur Team", I18N_NOOP("Authors X Neural Switcher, including Andrew Crew Kuznetsov and Yankin Nickolay Valerevich"), "http://xneur.ru/");
@@ -61,4 +61,3 @@ int main(int argc, char **argv)
 	return app.exec();
     return -1;
 }
-
