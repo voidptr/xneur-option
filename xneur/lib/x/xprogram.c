@@ -28,6 +28,7 @@
 #include <strings.h>
 #include <string.h>
 #include <stdio.h>
+#include <signal.h>
 
 #include "xnconfig.h"
 #include "xnconfig_files.h"
@@ -68,6 +69,13 @@
 extern struct _xneur_config *xconfig;
 
 struct _xwindow *main_window;
+
+sig_atomic_t	xprogram_terminated = 0;
+
+void xprogram_terminate()
+{
+	xprogram_terminated = (sig_atomic_t)-1;
+}
 
 static int get_auto_action(struct _xprogram *p, KeySym key, int modifier_mask)
 {
@@ -301,7 +309,7 @@ void xprogram_process_input(struct _xprogram *p)
 	int do_update = TRUE;
 	p->update(p, &do_update);
 
-	while (1)
+	while (! xprogram_terminated)
 	{
 		int type = p->event->get_next_event(p->event);
 

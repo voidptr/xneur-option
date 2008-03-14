@@ -352,6 +352,6 @@ int main(int argc, char *argv[])
 	xprogram->process_input(xprogram);
 
 	xneur_cleanup();
-
-	return EXIT_SUCCESS;
+	
+	xprogram_terminate();
 }
