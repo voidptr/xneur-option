@@ -19,6 +19,7 @@ noinst_DATA =			\
 	TODO
 
 EXTRA_DIST = $(noinst_DATA) m4/ChangeLog
+man_MANS = gxneur.1
 
 check-gettext:
 	@if test x$(USE_NLS) != "xyes" ; then echo "Missing gettext. Rerun configure and check for" \

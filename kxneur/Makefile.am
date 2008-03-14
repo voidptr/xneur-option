@@ -16,6 +16,7 @@ package-messages:
 	$(MAKE) -C po merge
 
 EXTRA_DIST = admin COPYING configure.in.in
+man_MANS = kxneur.1
 
 dist-hook:
 	cd $(top_distdir) && perl admin/am_edit -padmin
