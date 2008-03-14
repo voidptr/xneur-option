@@ -93,7 +93,7 @@ static void xneur_load_config(int final)
 	// Checking configuration file version
 	xneur_check_config_version(final);
 
-	const char *log_levels[] = {"Error", "Warning", "Log", "Debug"};
+	const char *log_levels[] = {"Error", "Warning", "Log", "Debug", "Trace"};
 	log_message(LOG, "Log level is set to %s", log_levels[xconfig->log_level]);
 
 	log_message(LOG, "Total detected %d languages", xconfig->total_languages);
@@ -204,7 +204,9 @@ static void xneur_terminate(int status)
 
 	xneur_cleanup();
 
-	exit(EXIT_SUCCESS);
+	xprogram_terminate();
+	
+	//exit(EXIT_SUCCESS);
 }
 
 static void xneur_reload(int status)
@@ -352,6 +354,6 @@ int main(int argc, char *argv[])
 	xprogram->process_input(xprogram);
 
 	xneur_cleanup();
-	
-	xprogram_terminate();
+
+	return EXIT_SUCCESS;
 }
