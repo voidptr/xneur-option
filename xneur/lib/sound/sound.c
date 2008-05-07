@@ -115,7 +115,8 @@ static void new_pad(GstElement *element, GstPad *pad, gpointer data)
 void *play_file_thread(void *ptr)
 {
 	pthread_mutex_lock(&sound_mutex);
-	int file_type = (int) ptr;
+	int file_type = *(int *) ptr;
+	free(ptr);
 
 	// Initialize GStreamer
 	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
@@ -181,7 +182,8 @@ void sound_uninit(void)
 void *play_file_thread(void *ptr)
 {
 	pthread_mutex_lock(&sound_mutex);
-	int file_type = (int) ptr;
+	int file_type = *(int *) ptr;
+	free(ptr);
 
 	char *path = get_file_path_name(SOUNDDIR, xconfig->sounds[file_type].file);
 
@@ -228,7 +230,8 @@ void sound_uninit(void)
 void *play_file_thread(void *ptr)
 {
 	pthread_mutex_lock(&sound_mutex);
-	int file_type = (int) ptr;
+	int file_type = *(int *) ptr;
+	free(ptr);
 	
 	char *path = get_file_path_name(SOUNDDIR, xconfig->sounds[file_type].file);
 
@@ -256,7 +259,11 @@ void play_file(int file_type)
 	pthread_attr_setdetachstate(&sound_thread_attr, PTHREAD_CREATE_DETACHED);
 
 	pthread_t sound_thread;
-	pthread_create(&sound_thread, &sound_thread_attr, &play_file_thread, (void *) file_type);
+	int * arg = malloc(sizeof(int));
+	if (! arg)
+		return;
+	*arg = file_type;
+	pthread_create(&sound_thread, &sound_thread_attr, &play_file_thread, arg);
 }
 
 #else /* WITH_SOUND */
