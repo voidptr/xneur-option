@@ -125,7 +125,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 		
 		mask |= INPUT_HANDLE_MASK;
 	}
-	
+
 	while (TRUE)
 	{
 		set_event_mask(parent_window, mask);
@@ -145,7 +145,6 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 
 void xfocus_uninit(struct _xfocus *p)
 {
-	p->update_events(p, LISTEN_FLUSH);
 	free(p);
 }
 

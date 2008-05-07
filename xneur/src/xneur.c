@@ -178,7 +178,8 @@ static void xneur_set_lock(void)
 static void xneur_cleanup(void)
 {
 	sound_uninit();
-
+	log_message(DEBUG, "Current sound data is freed");
+	
 	if (xprogram != NULL)
 		xprogram->uninit(xprogram);
 
@@ -204,9 +205,7 @@ static void xneur_terminate(int status)
 
 	xneur_cleanup();
 
-	xprogram_terminate();
-	
-	//exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 static void xneur_reload(int status)

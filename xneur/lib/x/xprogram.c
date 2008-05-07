@@ -70,13 +70,6 @@ extern struct _xneur_config *xconfig;
 
 struct _xwindow *main_window;
 
-sig_atomic_t	xprogram_terminated = 0;
-
-void xprogram_terminate()
-{
-	xprogram_terminated = (sig_atomic_t)-1;
-}
-
 static int get_auto_action(struct _xprogram *p, KeySym key, int modifier_mask)
 {
 	// Null symbol
@@ -309,7 +302,7 @@ void xprogram_process_input(struct _xprogram *p)
 	int do_update = TRUE;
 	p->update(p, &do_update);
 
-	while (! xprogram_terminated)
+	while (1)
 	{
 		int type = p->event->get_next_event(p->event);
 
@@ -736,10 +729,15 @@ void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 void xprogram_uninit(struct _xprogram *p)
 {
 	p->focus->uninit(p->focus);
+	log_message(DEBUG, "Current focus is freed");
 	p->event->uninit(p->event);
+	log_message(DEBUG, "Current event is freed");
 	p->string->uninit(p->string);
-
+	log_message(DEBUG, "Current string is freed");
+	
 	main_window->uninit(main_window);
+	log_message(DEBUG, "Current main_window is freed");
+	
 
 	free(p);
 }

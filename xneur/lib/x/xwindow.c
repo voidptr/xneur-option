@@ -70,9 +70,6 @@ void xwindow_destroy(struct _xwindow *p)
 	if (p->window == None)
 		return;
 
-	XDestroyWindow(p->display, p->window);
-	XCloseDisplay(p->display);
-
 	p->window = None;
 }
 
