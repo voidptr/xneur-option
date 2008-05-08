@@ -300,10 +300,12 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 	
 	int min_keycode, max_keycode;
 	XDisplayKeycodes(main_window->display, &min_keycode, &max_keycode);
-
+	
+	Display *display = XOpenDisplay(NULL);
 	int keysyms_per_keycode;
-	KeySym *keymap = XGetKeyboardMapping(main_window->display, min_keycode, max_keycode - min_keycode + 1, &keysyms_per_keycode);
-
+	KeySym *keymap = XGetKeyboardMapping(display, min_keycode, max_keycode - min_keycode + 1, &keysyms_per_keycode);
+	XCloseDisplay(display);
+	
 	for (int i = min_keycode; i <= max_keycode; i++)
 	{
 		for (int j = 0; j < 2; j++)

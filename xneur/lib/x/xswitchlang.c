@@ -17,8 +17,7 @@
  *
  */
 
-#include <X11/XKBlib.h>
-
+#include <X11/XKBlib.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -74,12 +73,14 @@ int check_keyboard_groups(void)
 		return FALSE;
 	}
 
-	Display *display = main_window->display;
-
+	Display *display = XOpenDisplay(NULL);
+	
 	XkbGetControls(display, XkbAllControlsMask, kbd_desc_ptr);
 	XkbGetNames(display, XkbSymbolsNameMask, kbd_desc_ptr);
 	XkbGetNames(display, XkbGroupNamesMask, kbd_desc_ptr);
 
+	XCloseDisplay(display);
+	
 	if (kbd_desc_ptr->names == NULL)
 	{
 		log_message(ERROR, "Failed to get keyboard group names");
@@ -118,7 +119,7 @@ int check_keyboard_groups(void)
 	int valid_count = 0;
 	for (int group = 0; group < groups_count; group++)
 	{
-		char *name = XGetAtomName(display, kbd_desc_ptr->names->groups[group]);
+		char *name = XGetAtomName(main_window->display, kbd_desc_ptr->names->groups[group]);
 
 		int lang = xconfig->find_group_lang(xconfig, group);
 		char *lang_name = xconfig->get_lang_name(xconfig, lang);
@@ -133,7 +134,7 @@ int check_keyboard_groups(void)
 		log_message(LOG, "   XKB Group '%s' must be for '%s' language (group %d)", name, lang_name, group);
 		valid_count++;
 	}
-
+	
 	log_message(LOG, "Total %d of %d valid keyboard layouts detected", valid_count, groups_count);
 	return TRUE;
 }

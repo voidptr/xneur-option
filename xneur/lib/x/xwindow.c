@@ -69,7 +69,7 @@ void xwindow_destroy(struct _xwindow *p)
 {
 	if (p->window == None)
 		return;
-
+	
 	p->window = None;
 }
 
