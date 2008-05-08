@@ -213,6 +213,8 @@ static void xneur_reload(int status)
 	status = status; // To prevent warnings
 	log_message(LOG, "Caught SIGHUP, reloading configuration file");
 
+	sound_uninit();
+	
 	if (xconfig != NULL)
 		xconfig->uninit(xconfig);
 
@@ -224,6 +226,7 @@ static void xneur_reload(int status)
 	}
 
 	xneur_load_config(TRUE);
+	sound_init();
 }
 
 static void xneur_usage(void)
