@@ -3,8 +3,8 @@
 # This file is distributed under the same license as the gxneur package.
 # <>, 2007.
 # , fuzzy
-# 
-# 
+#
+#
 #: src/callbacks.c:140 src/interface.c:70 src/interface.c:541
 #: src/interface.c:556 src/interface.c:571 src/interface.c:586 src/main.c:38
 #: src/misc.c:58

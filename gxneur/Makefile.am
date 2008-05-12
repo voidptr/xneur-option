@@ -16,9 +16,10 @@ noinst_DATA =			\
 	ChangeLog		\
 	INSTALL			\
 	NEWS			\
-	TODO
+	TODO			\
+	gxneur.glade
 
-EXTRA_DIST = $(noinst_DATA) m4/ChangeLog
+EXTRA_DIST = $(noinst_DATA) m4/ChangeLog gxneur.1
 man_MANS = gxneur.1
 
 check-gettext:
