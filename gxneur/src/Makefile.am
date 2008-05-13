@@ -1,4 +1,6 @@
-INCLUDES = -DPACKAGE_PIXMAPS_DIR=\""@datadir@/pixmaps"\" -DLOCALEDIR=\""@localedir@"\"
+INCLUDES = 	-DPACKAGE_PIXMAPS_DIR=\""@datadir@/gxneur/pixmaps"\" 	\
+		-DLOCALEDIR=\""@localedir@"\"				\
+		-DPACKAGE_GLADE_FILE_DIR=\""@datadir@/gxneur/glade"\"
 
 bin_PROGRAMS = gxneur
 
@@ -7,8 +9,6 @@ gxneur_SOURCES =		\
 	callbacks.h		\
 	clock.c			\
 	clock.h			\
-	interface.c		\
-	interface.h		\
 	main.c			\
 	misc.c			\
 	misc.h			\
@@ -21,5 +21,5 @@ gxneur_SOURCES =		\
 	xkb.c			\
 	xkb.h
 
-gxneur_CFLAGS = @GTK_CFLAGS@ @XNEUR_CFLAGS@
-gxneur_LDFLAGS = @GTK_LIBS@ @XNEUR_LIBS@
+gxneur_CFLAGS = @GTK_CFLAGS@ @XNEUR_CFLAGS@ @GXNEUR_CFLAGS@
+gxneur_LDFLAGS = @GTK_LIBS@ @XNEUR_LIBS@ @GXNEUR_LIBS@

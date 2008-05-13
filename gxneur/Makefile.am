@@ -3,7 +3,8 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS =			\
 	src			\
 	pixmaps			\
-	po
+	po			\
+	glade
 
 AUTOMAKE_OPTIONS =		\
 	1.9			\
@@ -16,8 +17,7 @@ noinst_DATA =			\
 	ChangeLog		\
 	INSTALL			\
 	NEWS			\
-	TODO			\
-	gxneur.glade
+	TODO			
 
 EXTRA_DIST = $(noinst_DATA) m4/ChangeLog gxneur.1
 man_MANS = gxneur.1

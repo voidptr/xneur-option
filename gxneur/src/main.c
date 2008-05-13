@@ -28,7 +28,6 @@
 #include <stdio.h>
 
 #include "support.h"
-#include "interface.h"
 
 #include "trayicon.h"
 #include "misc.h"

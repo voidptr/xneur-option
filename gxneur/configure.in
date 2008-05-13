@@ -14,6 +14,11 @@ PKG_PROG_PKG_CONFIG([0.20])
 PKG_CHECK_MODULES(GTK, [gtk+-2.0 gdk-2.0])
 PKG_CHECK_MODULES(XNEUR, [xnconfig = 0.9.0])
 
+PKG_CHECK_MODULES(GXNEUR, [libglade-2.0 >= 2.6.0    ])
+AC_SUBST(GXNEUR_CFLAGS)
+AC_SUBST(GXNEUR_LIBS)
+
+
 AM_GNU_GETTEXT_VERSION([0.16.1])
 AM_GNU_GETTEXT([external])
 
@@ -30,7 +35,7 @@ localedir="$datadir/locale"
 CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
 AC_SUBST(CFLAGS)
 
-AC_OUTPUT([Makefile src/Makefile pixmaps/Makefile po/Makefile.in])
+AC_OUTPUT([Makefile src/Makefile pixmaps/Makefile glade/Makefile po/Makefile.in])
 
 cat << EOF
 
@@ -42,5 +47,8 @@ $PACKAGE $VERSION configured successfully:
 
 	XNeur flags:		$XNEUR_CFLAGS
 	XNeur libs:		$XNEUR_LIBS
+
+	gXNeur flags:		$GXNEUR_CFLAGS
+	gXNeur libs:		$GXNEUR_LIBS
 
 EOF

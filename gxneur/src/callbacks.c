@@ -23,17 +23,20 @@
 #include <stdlib.h>
 
 #include "misc.h"
-#include "interface.h"
+
 #include "support.h"
 
 #include "callbacks.h"
 
-GtkWidget *wDict = NULL;
+#include <glade/glade.h>
+#define GLADE_FILE_LIST PACKAGE_GLADE_FILE_DIR"/list.glade"
 
-static void set_dialog_text(int index, const char *name)
+static void set_dialog_text(int index, const char *name, GladeXML *gxml_config)
 {
-	char *text_path		= xneur_get_dict_path(index, name);
-	char *text_home_path	= xneur_get_home_dict_path(index, name);
+	GladeXML *gxml = glade_xml_new (GLADE_FILE_LIST, NULL, NULL);
+	
+	char *text_path		= xneur_get_dict_path(gxml_config, index, name);
+	char *text_home_path	= xneur_get_home_dict_path(gxml_config, index, name);
 	char *text		= xneur_get_file_content(text_path);
 
 	if (text == NULL)
@@ -42,17 +45,28 @@ static void set_dialog_text(int index, const char *name)
 		free(text_path);
 		return;
 	}
+	
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+	if (window_icon_pixbuf)
+	{
+		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+		gdk_pixbuf_unref (window_icon_pixbuf);
+	}
+	gtk_widget_show(window);
 
-	wDict = create_dialog1();
-	gtk_widget_show(wDict);
-
-	GtkWidget *widgetPtrToBefound = lookup_widget(wDict, "textview1");
-	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgetPtrToBefound));
+	GtkWidget *widget = glade_xml_get_widget (gxml, "textview1");
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widget));
 	gtk_text_buffer_set_text(buffer, text, strlen(text));
 
-	widgetPtrToBefound = lookup_widget(wDict, "entry10");
-	gtk_entry_set_text(GTK_ENTRY(widgetPtrToBefound), text_home_path);
+	widget = glade_xml_get_widget (gxml, "entry10");
+	gtk_entry_set_text(GTK_ENTRY(widget), text_home_path);
 
+	widget= glade_xml_get_widget (gxml, "okbutton1");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_okbutton1_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "cancelbutton1");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_cancelbutton1_clicked), gxml);
+	
 	free(text);
 	free(text_home_path);
 	free(text_path);
@@ -60,59 +74,60 @@ static void set_dialog_text(int index, const char *name)
 
 void on_button6_clicked(GtkButton *button, gpointer user_data)
 {
-	if (button || user_data){};
-	set_dialog_text(0, "dict");
+	if (button){};
+	set_dialog_text(0, "dict", user_data);
 }
 
 void on_button7_clicked(GtkButton *button, gpointer user_data)
 {
-	if (button || user_data){};
-	set_dialog_text(1, "dict");
+	if (button){};
+	set_dialog_text(1, "dict", user_data);
 }
 
 void on_button8_clicked(GtkButton *button, gpointer user_data)
 {
-	if (button || user_data){};
-	set_dialog_text(2, "dict");
+	if (button){};
+	set_dialog_text(2, "dict", user_data);
 }
 
 void on_button9_clicked(GtkButton *button, gpointer user_data)
 {
-	if (button || user_data){};
-	set_dialog_text(3, "dict");
+	if (button){};
+	set_dialog_text(3, "dict", user_data);
 }
 
 void on_button23_clicked(GtkButton *button, gpointer user_data)
 {
-	if (button || user_data){};
-	set_dialog_text(0, "regexp");
+	if (button){};
+	set_dialog_text(0, "regexp", user_data);
 }
 
 void on_button24_clicked(GtkButton *button, gpointer user_data)
 {
-	if (button || user_data){};
-	set_dialog_text(1, "regexp");
+	if (button){};
+	set_dialog_text(1, "regexp", user_data);
 }
 
 void on_button25_clicked(GtkButton *button, gpointer user_data)
 {
-	if (button || user_data){};
-	set_dialog_text(2, "regexp");
+	if (button){};
+	set_dialog_text(2, "regexp", user_data);
 }
 
 
 void on_button26_clicked(GtkButton *button, gpointer user_data)
 {
-	if (button || user_data){};
-	set_dialog_text(3, "regexp");
+	if (button){};
+	set_dialog_text(3, "regexp", user_data);
 }
 
 // Save dictionary
 void on_okbutton1_clicked(GtkButton *button, gpointer user_data)
 {
-	if (button || user_data){};
+	if (button){};
 
-	GtkWidget *widgetPtrToBefound = lookup_widget(wDict, "textview1");
+	GladeXML *gxml = user_data;
+	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, "textview1");
 	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgetPtrToBefound));
 
 	GtkTextIter begin, end;
@@ -120,7 +135,7 @@ void on_okbutton1_clicked(GtkButton *button, gpointer user_data)
 
 	char *text = gtk_text_buffer_get_text(buffer, &begin, &end, FALSE);
 
-	widgetPtrToBefound = lookup_widget(wDict, "entry10");
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry10");
 
 	char *path = g_strdup_printf("%s", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
 
@@ -131,7 +146,17 @@ void on_okbutton1_clicked(GtkButton *button, gpointer user_data)
 		fclose(stream);
 	}
 
-	gtk_widget_destroy(wDict);
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+	gtk_widget_destroy(window);
+}
+
+void on_cancelbutton1_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+	
+	GladeXML *gxml = user_data;
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+	gtk_widget_destroy(window);
 }
 
 // Parse keyboard binds

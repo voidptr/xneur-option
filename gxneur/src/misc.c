@@ -31,10 +31,12 @@
 #include <xneur/xnconfig.h>
 #include <xneur/list_char.h>
 
-#include "support.h"
+#define GLADE_FILE_ABOUT PACKAGE_GLADE_FILE_DIR"/about.glade"
+#define GLADE_FILE_CONFIG PACKAGE_GLADE_FILE_DIR"/config.glade"
 
+#include "support.h"
+#include "callbacks.h"
 #include "trayicon.h"
-#include "interface.h"
 
 #include "misc.h"
 
@@ -44,7 +46,6 @@
 	
 struct _xneur_config *xconfig				= NULL;
 	
-static GtkWidget *wPreference				= NULL;
 static GtkListStore *store_exclude_app			= NULL;
 static GtkListStore *store_auto_app			= NULL;
 static GtkListStore *store_manual_app			= NULL;
@@ -114,9 +115,9 @@ static void split_bind(char *text, int action)
 	g_strfreev(key_stat);
 }
 
-static void fill_binds(int action, const char *label, gboolean fill_combobox)
+static void fill_binds(int action, GladeXML *gxml, const char *label, gboolean fill_combobox)
 {
-	GtkWidget *widget_bind = lookup_widget(wPreference, label);
+	GtkWidget *widget_bind = glade_xml_get_widget (gxml, label);
 	if (!fill_combobox)
 	{
 		split_bind((char *) gtk_entry_get_text(GTK_ENTRY(widget_bind)), action);
@@ -131,9 +132,9 @@ static void fill_binds(int action, const char *label, gboolean fill_combobox)
 	free(binds);
 }
 
-static void fill_sounds(int sound, const char *label, gboolean fill_combobox)
+static void fill_sounds(int sound, GladeXML *gxml, const char *label, gboolean fill_combobox)
 {
-	GtkWidget *widget_bind = lookup_widget(wPreference, label);
+	GtkWidget *widget_bind = glade_xml_get_widget (gxml, label);
 	if (fill_combobox)
 	{
 		gtk_entry_set_text(GTK_ENTRY(widget_bind), xconfig->sounds[sound].file);
@@ -180,11 +181,10 @@ static void add_item(GtkListStore *store)
 	gtk_list_store_set(GTK_LIST_STORE(store), &iter, 0, p, -1);
 }
 
-static void remove_item(char *view_name, GtkListStore *store)
+static void remove_item(GtkWidget *treeview, GtkListStore *store)
 {
 	GtkTreeModel *model = GTK_TREE_MODEL(store);
-	GtkWidget *treeview1 = lookup_widget(wPreference, view_name);
-	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview1));
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
 
@@ -277,28 +277,55 @@ void xneur_auto_manual(GtkWidget *widget, struct _tray_icon *tray)
 
 void xneur_about(void)
 { 
-	GtkWidget *wAbout = create_window1();
-	GtkWidget *widgetPtrToBefound = lookup_widget(wAbout, "label44");
+	GladeXML *gxml = glade_xml_new (GLADE_FILE_ABOUT, NULL, NULL);
+	
+	glade_xml_signal_autoconnect (gxml);
+	GtkWidget *window = glade_xml_get_widget (gxml, "window1");
+
+	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+	if (window_icon_pixbuf)
+	{
+		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+		
+		GtkWidget *image = glade_xml_get_widget (gxml, "image1");	
+		gtk_image_set_from_pixbuf (GTK_IMAGE (image), window_icon_pixbuf);
+		
+		gdk_pixbuf_unref (window_icon_pixbuf);
+	}
+	
+	GtkWidget *widget = glade_xml_get_widget(gxml, "label44");
 	gchar *text = g_strdup_printf("%s %s", _("Current Version"), VERSION);
-	gtk_label_set_text(GTK_LABEL(widgetPtrToBefound), text);
-	gtk_widget_show(wAbout);
+	gtk_label_set_text(GTK_LABEL(widget), text);	
+
+	gtk_widget_show(window);
 }
 
 void xneur_preference(void)
 {
-	wPreference = create_window2();
-	gtk_widget_show(wPreference);
+	GladeXML *gxml = glade_xml_new (GLADE_FILE_CONFIG, NULL, NULL);
+	
+	glade_xml_signal_autoconnect (gxml);
+	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
+
+	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+	if (window_icon_pixbuf)
+	{
+		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+		gdk_pixbuf_unref (window_icon_pixbuf);
+	}
+	
+	gtk_widget_show(window);
 
 	// Mode set
-	GtkWidget *widgetPtrToBefound = lookup_widget(wPreference, "combobox1");
-	gtk_combo_box_set_active(GTK_COMBO_BOX(widgetPtrToBefound), xconfig->get_current_mode(xconfig));
+	GtkWidget *widget = glade_xml_get_widget (gxml, "combobox1");
+	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->get_current_mode(xconfig));
 
 	// Exclude App set
-	widgetPtrToBefound = lookup_widget(wPreference, "treeview1");
+	GtkWidget *treeview = glade_xml_get_widget (gxml, "treeview1");
 
 	store_exclude_app = gtk_list_store_new(1, G_TYPE_STRING);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(widgetPtrToBefound), GTK_TREE_MODEL(store_exclude_app));
-	gtk_widget_show(widgetPtrToBefound);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_exclude_app));
+	gtk_widget_show(treeview);
 
 	for (int i = 0; i < xconfig->excluded_apps->data_count; i++)
 	{
@@ -310,22 +337,21 @@ void xneur_preference(void)
 	GtkCellRenderer *cell = gtk_cell_renderer_text_new();
 
 	GtkTreeViewColumn *column = gtk_tree_view_column_new_with_attributes(_("Application"), cell, "text", 0, NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(widgetPtrToBefound), GTK_TREE_VIEW_COLUMN(column));
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// Adding/Removing Exclude App
-	widgetPtrToBefound = lookup_widget(wPreference, "button2");
+	widget = glade_xml_get_widget (gxml, "button2");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_exclude_app), G_OBJECT(window));
 
-	g_signal_connect_swapped(G_OBJECT(widgetPtrToBefound), "clicked", G_CALLBACK(xneur_add_exclude_app), G_OBJECT(wPreference));
-
-	widgetPtrToBefound = lookup_widget(wPreference, "button3");
-	g_signal_connect_swapped(G_OBJECT(widgetPtrToBefound), "clicked", G_CALLBACK(xneur_rem_exclude_app), G_OBJECT(wPreference));
+	widget = glade_xml_get_widget (gxml, "button3");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_exclude_app), G_OBJECT(treeview));
 
 	// Auto App Set
-	widgetPtrToBefound = lookup_widget(wPreference, "treeview2");
+	treeview = glade_xml_get_widget (gxml, "treeview2");
 
 	store_auto_app = gtk_list_store_new(1, G_TYPE_STRING);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(widgetPtrToBefound), GTK_TREE_MODEL(store_auto_app));
-	gtk_widget_show(widgetPtrToBefound);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_auto_app));
+	gtk_widget_show(treeview);
 
 	for (int i = 0; i < xconfig->auto_apps->data_count; i++)
 	{
@@ -337,22 +363,22 @@ void xneur_preference(void)
 	cell = gtk_cell_renderer_text_new();
 
 	column = gtk_tree_view_column_new_with_attributes(_("Application"), cell, "text", 0, NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(widgetPtrToBefound), GTK_TREE_VIEW_COLUMN(column));
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// Adding/Removing Auto App
-	widgetPtrToBefound = lookup_widget(wPreference, "button19");
+	widget = glade_xml_get_widget (gxml, "button19");
 
-	g_signal_connect_swapped(G_OBJECT(widgetPtrToBefound), "clicked", G_CALLBACK(xneur_add_auto_app), G_OBJECT(wPreference));
-	widgetPtrToBefound = lookup_widget(wPreference, "button20");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_auto_app), G_OBJECT(window));
+	widget = glade_xml_get_widget (gxml, "button20");
 
-	g_signal_connect_swapped(G_OBJECT(widgetPtrToBefound), "clicked", G_CALLBACK(xneur_rem_auto_app), G_OBJECT(wPreference));
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_auto_app), G_OBJECT(treeview));
 
 	// Manual App Set
-	widgetPtrToBefound = lookup_widget(wPreference, "treeview3");
+	treeview = glade_xml_get_widget (gxml, "treeview3");
 	
 	store_manual_app = gtk_list_store_new(1, G_TYPE_STRING);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(widgetPtrToBefound), GTK_TREE_MODEL(store_manual_app));
-	gtk_widget_show(widgetPtrToBefound);	
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_manual_app));
+	gtk_widget_show(treeview);	
 
 	for (int i = 0; i < xconfig->manual_apps->data_count; i++)
 	{
@@ -364,21 +390,21 @@ void xneur_preference(void)
 	cell = gtk_cell_renderer_text_new();
 
 	column = gtk_tree_view_column_new_with_attributes(_("Application"), cell, "text", 0, NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(widgetPtrToBefound), GTK_TREE_VIEW_COLUMN(column));
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// Adding/Removing Manual App
-	widgetPtrToBefound = lookup_widget(wPreference, "button21");
-	g_signal_connect_swapped(G_OBJECT(widgetPtrToBefound), "clicked", G_CALLBACK(xneur_add_manual_app), G_OBJECT(wPreference));
+	widget = glade_xml_get_widget (gxml, "button21");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_manual_app), G_OBJECT(window));
 
-	widgetPtrToBefound = lookup_widget(wPreference, "button22");
-	g_signal_connect_swapped(G_OBJECT(widgetPtrToBefound), "clicked", G_CALLBACK(xneur_rem_manual_app), G_OBJECT(wPreference));
+	widget = glade_xml_get_widget (gxml, "button22");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_manual_app), G_OBJECT(treeview));
 
 	// Layout Remember App Set
-	widgetPtrToBefound = lookup_widget(wPreference, "treeview4");
+	treeview = glade_xml_get_widget (gxml, "treeview4");
 	
 	store_layout_app = gtk_list_store_new(1, G_TYPE_STRING);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(widgetPtrToBefound), GTK_TREE_MODEL(store_layout_app));
-	gtk_widget_show(widgetPtrToBefound);	
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_layout_app));
+	gtk_widget_show(treeview);	
 
 	for (int i = 0; i < xconfig->layout_remember_apps->data_count; i++)
 	{
@@ -390,34 +416,34 @@ void xneur_preference(void)
 	cell = gtk_cell_renderer_text_new();
 
 	column = gtk_tree_view_column_new_with_attributes(_("Application"), cell, "text", 0, NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(widgetPtrToBefound), GTK_TREE_VIEW_COLUMN(column));
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// Adding/Removing Layour Remember App
-	widgetPtrToBefound = lookup_widget(wPreference, "button27");
-	g_signal_connect_swapped(G_OBJECT(widgetPtrToBefound), "clicked", G_CALLBACK(xneur_add_layout_app), G_OBJECT(wPreference));
+	widget = glade_xml_get_widget (gxml, "button27");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_layout_app), G_OBJECT(window));
 
-	widgetPtrToBefound = lookup_widget(wPreference, "button28");
-	g_signal_connect_swapped(G_OBJECT(widgetPtrToBefound), "clicked", G_CALLBACK(xneur_rem_layout_app), G_OBJECT(wPreference));
+	widget = glade_xml_get_widget (gxml, "button28");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_layout_app), G_OBJECT(treeview));
 
 	// Keyboard Bind set
-	fill_binds(0, "entry11", TRUE);
-	fill_binds(1, "entry12", TRUE);
-	fill_binds(2, "entry13", TRUE);
-	fill_binds(3, "entry14", TRUE);
-	fill_binds(4, "entry15", TRUE);
-	fill_binds(5, "entry16", TRUE);
-	fill_binds(6, "entry17", TRUE);
-	fill_binds(7, "entry18", TRUE);
-	fill_binds(8, "entry19", TRUE);
-	fill_binds(9, "entry20", TRUE);
-	
+	fill_binds(0, gxml, "entry11", TRUE);
+	fill_binds(1, gxml, "entry12", TRUE);
+	fill_binds(2, gxml, "entry13", TRUE);
+	fill_binds(3, gxml, "entry14", TRUE);
+	fill_binds(4, gxml, "entry15", TRUE);
+	fill_binds(5, gxml, "entry16", TRUE);
+	fill_binds(6, gxml, "entry17", TRUE);
+	fill_binds(7, gxml, "entry18", TRUE);
+	fill_binds(8, gxml, "entry19", TRUE);
+	fill_binds(9, gxml, "entry20", TRUE);
+
 	// Languages
 	for (int lang = 0; lang < xconfig->total_languages && lang < MAX_LANGUAGES; lang++)
 	{
-		GtkWidget *name = lookup_widget(wPreference, language_name_boxes[lang]);
-		widgetPtrToBefound = lookup_widget(wPreference, language_combo_boxes[lang]);
+		GtkWidget *name = glade_xml_get_widget (gxml,  language_name_boxes[lang]);
+		widget = glade_xml_get_widget (gxml, language_combo_boxes[lang]);
 
-		gtk_combo_box_set_active(GTK_COMBO_BOX(widgetPtrToBefound), xconfig->get_lang_group(xconfig, lang));
+		gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->get_lang_group(xconfig, lang));
 
 		const char *lang_name = xconfig->get_lang_name(xconfig, lang);
 		for (int j = 0; j < total_languages; j++)
@@ -429,54 +455,73 @@ void xneur_preference(void)
 			break;
 		}
 	}
-	
+		
 	// Default Layout Group
-	widgetPtrToBefound = lookup_widget(wPreference, "combobox25");
-	gtk_combo_box_set_active(GTK_COMBO_BOX(widgetPtrToBefound), xconfig->default_group);
+	widget = glade_xml_get_widget (gxml, "combobox25");
+	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->default_group);
 	
 	// Mouse Grab 
-	widgetPtrToBefound = lookup_widget(wPreference, "checkbutton1");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgetPtrToBefound), xconfig->mouse_processing_mode);
+	widget = glade_xml_get_widget (gxml, "checkbutton1");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->mouse_processing_mode);
 	
 	// Education Mode
-	widgetPtrToBefound = lookup_widget(wPreference, "checkbutton2");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgetPtrToBefound), xconfig->education_mode);
+	widget = glade_xml_get_widget (gxml, "checkbutton2");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->education_mode);
 	
 	// Layout Remember Mode
-	widgetPtrToBefound = lookup_widget(wPreference, "checkbutton3");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgetPtrToBefound), xconfig->layout_remember_mode);
+	widget = glade_xml_get_widget (gxml, "checkbutton3");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->layout_remember_mode);
 	
 	// Saving Selection Mode
-	widgetPtrToBefound = lookup_widget(wPreference, "checkbutton4");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgetPtrToBefound), xconfig->save_selection_mode);
+	widget = glade_xml_get_widget (gxml, "checkbutton4");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->save_selection_mode);
 	
 	// Sound Playing Mode
-	widgetPtrToBefound = lookup_widget(wPreference, "checkbutton5");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widgetPtrToBefound), xconfig->sound_mode);
+	widget = glade_xml_get_widget (gxml, "checkbutton5");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->sound_mode);
 	
 	// Sound Paths Preference
-	fill_sounds(0, "entry21", TRUE);
-	fill_sounds(1, "entry22", TRUE);
-	fill_sounds(2, "entry23", TRUE);
-	fill_sounds(3, "entry24", TRUE);
-	fill_sounds(4, "entry25", TRUE);
-	fill_sounds(5, "entry26", TRUE);
-	fill_sounds(6, "entry27", TRUE);
-	fill_sounds(7, "entry28", TRUE);
-	fill_sounds(8, "entry29", TRUE);
-	fill_sounds(9, "entry30", TRUE);
-	fill_sounds(10, "entry31", TRUE);
-	fill_sounds(11, "entry32", TRUE);
-	fill_sounds(12, "entry33", TRUE);
-	fill_sounds(13, "entry34", TRUE);
+	fill_sounds(0, gxml, "entry21", TRUE);
+	fill_sounds(1, gxml, "entry22", TRUE);
+	fill_sounds(2, gxml, "entry23", TRUE);
+	fill_sounds(3, gxml, "entry24", TRUE);
+	fill_sounds(4, gxml, "entry25", TRUE);
+	fill_sounds(5, gxml, "entry26", TRUE);
+	fill_sounds(6, gxml, "entry27", TRUE);
+	fill_sounds(7, gxml, "entry28", TRUE);
+	fill_sounds(8, gxml, "entry29", TRUE);
+	fill_sounds(9, gxml, "entry30", TRUE);
+	fill_sounds(10, gxml, "entry31", TRUE);
+	fill_sounds(11, gxml, "entry32", TRUE);
+	fill_sounds(12, gxml, "entry33", TRUE);
+	fill_sounds(13, gxml, "entry34", TRUE);
+	
+	// Set Callbacks for Dict and Regexp
+	widget= glade_xml_get_widget (gxml, "button8");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button8_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button9");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button9_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button7");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button7_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button6");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button6_clicked), gxml);
+	widget= glade_xml_get_widget (gxml, "button23");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button23_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button24");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button24_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button25");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button25_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button26");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button26_clicked), gxml);
 	
 	// Button OK
-	widgetPtrToBefound = lookup_widget(wPreference, "button5");
-	g_signal_connect_swapped((gpointer) widgetPtrToBefound, "clicked", G_CALLBACK(xneur_save_preference), GTK_OBJECT(widgetPtrToBefound));
+	widget = glade_xml_get_widget (gxml, "button5");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
 
 	// Button Cancel
-	widgetPtrToBefound = lookup_widget(wPreference, "button4");
-	g_signal_connect_swapped((gpointer) widgetPtrToBefound, "clicked", G_CALLBACK(xneur_dontsave_preference), GTK_OBJECT(widgetPtrToBefound));
+	widget = glade_xml_get_widget (gxml, "button4");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_dontsave_preference), gxml);
+
 }
 
 void xneur_add_exclude_app(void)
@@ -499,24 +544,24 @@ void xneur_add_layout_app(void)
 	add_item(store_layout_app);
 }
 
-void xneur_rem_exclude_app(void)
+void xneur_rem_exclude_app(GtkWidget *widget)
 {
-	remove_item("treeview1", store_exclude_app);
+	remove_item(widget, store_exclude_app);
 }
 
-void xneur_rem_auto_app(void)
+void xneur_rem_auto_app(GtkWidget *widget)
 {
-	remove_item("treeview2", store_auto_app);
+	remove_item(widget, store_auto_app);
 }
 
-void xneur_rem_manual_app(void)
+void xneur_rem_manual_app(GtkWidget *widget)
 {
-	remove_item("treeview3", store_manual_app);
+	remove_item(widget, store_manual_app);
 }
 
-void xneur_rem_layout_app(void)
+void xneur_rem_layout_app(GtkWidget *widget)
 {
-	remove_item("treeview4", store_layout_app);
+	remove_item(widget, store_layout_app);
 }
 
 gboolean save_exclude_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
@@ -555,14 +600,14 @@ gboolean save_layout_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *it
 	return FALSE;
 }
 
-void xneur_save_preference(void)
+void xneur_save_preference(GladeXML *gxml)
 {
 	xconfig->clear(xconfig);
 
 	for (int i = 0; i < MAX_LANGUAGES; i++)
 	{
-		GtkWidget *widgetPtrToBefound = lookup_widget(wPreference, language_name_boxes[i]);
-		GtkWidget *widgetPtrToBefound2 = lookup_widget(wPreference, language_combo_boxes[i]);
+		GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, language_name_boxes[i]);
+		GtkWidget *widgetPtrToBefound2 = glade_xml_get_widget (gxml, language_combo_boxes[i]);
 
 		if (gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)) == -1)
 			continue;
@@ -574,7 +619,7 @@ void xneur_save_preference(void)
 		xconfig->add_language(xconfig, lang_name, lang_dir, lang_group);
 	}
 	
-	GtkWidget *widgetPtrToBefound = lookup_widget(wPreference, "combobox25");
+	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox25");
 	xconfig->default_group = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound));
 
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_exclude_app), save_exclude_app, NULL);
@@ -582,92 +627,94 @@ void xneur_save_preference(void)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_manual_app), save_manual_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_layout_app), save_layout_app, NULL);
 
-	fill_binds(0, "entry11", FALSE);
-	fill_binds(1, "entry12", FALSE);
-	fill_binds(2, "entry13", FALSE);
-	fill_binds(3, "entry14", FALSE);
-	fill_binds(4, "entry15", FALSE);
-	fill_binds(5, "entry16", FALSE);
-	fill_binds(6, "entry17", FALSE);
-	fill_binds(7, "entry18", FALSE);
-	fill_binds(8, "entry19", FALSE);
-	fill_binds(9, "entry20", FALSE);
+	fill_binds(0, gxml, "entry11", FALSE);
+	fill_binds(1, gxml, "entry12", FALSE);
+	fill_binds(2, gxml, "entry13", FALSE);
+	fill_binds(3, gxml, "entry14", FALSE);
+	fill_binds(4, gxml, "entry15", FALSE);
+	fill_binds(5, gxml, "entry16", FALSE);
+	fill_binds(6, gxml, "entry17", FALSE);
+	fill_binds(7, gxml, "entry18", FALSE);
+	fill_binds(8, gxml, "entry19", FALSE);
+	fill_binds(9, gxml, "entry20", FALSE);
 
-	widgetPtrToBefound = lookup_widget(wPreference, "combobox1");
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox1");
 	if (gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)) == 0)
 		xconfig->set_current_mode(xconfig, AUTO_MODE);
 	else
 		xconfig->set_current_mode(xconfig, MANUAL_MODE);
 
-	widgetPtrToBefound = lookup_widget(wPreference, "checkbutton1");
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton1");
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
 		xconfig->mouse_processing_mode = MOUSE_GRAB_ENABLE;
 	else
 		xconfig->mouse_processing_mode = MOUSE_GRAB_DISABLE;
 	
-	widgetPtrToBefound = lookup_widget(wPreference, "checkbutton2");
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton2");
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
 		xconfig->education_mode = EDUCATION_MODE_ENABLE;
 	else
 		xconfig->education_mode = EDUCATION_MODE_DISABLE;
 
-	widgetPtrToBefound = lookup_widget(wPreference, "checkbutton3");
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton3");
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
 		xconfig->layout_remember_mode = LAYOUTE_REMEMBER_ENABLE;
 	else
 		xconfig->layout_remember_mode = LAYOUTE_REMEMBER_DISABLE;
 	
-	widgetPtrToBefound = lookup_widget(wPreference, "checkbutton4");
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton4");
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
 		xconfig->save_selection_mode = SELECTION_SAVE_ENABLED;
 	else
 		xconfig->save_selection_mode = SELECTION_SAVE_DISABLED;
 	
-	widgetPtrToBefound = lookup_widget(wPreference, "checkbutton5");
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton5");
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
 		xconfig->sound_mode = SOUND_ENABLED;
 	else
 		xconfig->sound_mode = SOUND_DISABLED;
 	
 	// Sound Paths Preference
-	fill_sounds(0, "entry21", FALSE);
-	fill_sounds(1, "entry22", FALSE);
-	fill_sounds(2, "entry23", FALSE);
-	fill_sounds(3, "entry24", FALSE);
-	fill_sounds(4, "entry25", FALSE);
-	fill_sounds(5, "entry26", FALSE);
-	fill_sounds(6, "entry27", FALSE);
-	fill_sounds(7, "entry28", FALSE);
-	fill_sounds(8, "entry29", FALSE);
-	fill_sounds(9, "entry30", FALSE);
-	fill_sounds(10, "entry31", FALSE);
-	fill_sounds(11, "entry32", FALSE);
-	fill_sounds(12, "entry33", FALSE);
-	fill_sounds(13, "entry34", FALSE);
+	fill_sounds(0, gxml, "entry21", FALSE);
+	fill_sounds(1, gxml, "entry22", FALSE);
+	fill_sounds(2, gxml, "entry23", FALSE);
+	fill_sounds(3, gxml, "entry24", FALSE);
+	fill_sounds(4, gxml, "entry25", FALSE);
+	fill_sounds(5, gxml, "entry26", FALSE);
+	fill_sounds(6, gxml, "entry27", FALSE);
+	fill_sounds(7, gxml, "entry28", FALSE);
+	fill_sounds(8, gxml, "entry29", FALSE);
+	fill_sounds(9, gxml, "entry30", FALSE);
+	fill_sounds(10, gxml, "entry31", FALSE);
+	fill_sounds(11, gxml, "entry32", FALSE);
+	fill_sounds(12, gxml, "entry33", FALSE);
+	fill_sounds(13, gxml, "entry34", FALSE);
 	
-	gtk_widget_destroy(wPreference);
+	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
+	gtk_widget_destroy(window);
 
 	xconfig->save(xconfig);
 	xconfig->reload(xconfig);
 }
 
-void xneur_dontsave_preference(void)
+void xneur_dontsave_preference(GladeXML *gxml)
 {
-	gtk_widget_destroy(wPreference);
+	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
+	gtk_widget_destroy(window);
 }
 
-char* xneur_get_dict_path(int layout_no, const char *file_name)
+char* xneur_get_dict_path(GladeXML *gxml, int layout_no, const char *file_name)
 {
-	GtkWidget *widgetPtrToBefound = lookup_widget(wPreference, language_name_boxes[layout_no]);
+	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, language_name_boxes[layout_no]);
 
 	const char *dir_name = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 
 	return xconfig->get_dict_path(dir_name, file_name);
 }
 
-char* xneur_get_home_dict_path(int layout_no, const char *file_name)
+char* xneur_get_home_dict_path(GladeXML *gxml, int layout_no, const char *file_name)
 {
-	GtkWidget *widgetPtrToBefound = lookup_widget(wPreference, language_name_boxes[layout_no]);
+	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, language_name_boxes[layout_no]);
 
 	const char *dir_name = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 

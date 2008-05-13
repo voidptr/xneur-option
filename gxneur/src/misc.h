@@ -20,11 +20,13 @@
 #ifndef _MISC_H_
 #define _MISC_H_
 
+#include <glade/glade.h>
+
 struct _tray_icon;
 
 char* xneur_get_file_content(const char *path);
-char* xneur_get_dict_path(int layout_no, const char *file_name);
-char* xneur_get_home_dict_path(int layout_no, const char *file_name);
+char* xneur_get_dict_path(GladeXML *gxml, int layout_no, const char *file_name);
+char* xneur_get_home_dict_path(GladeXML *gxml, int layout_no, const char *file_name);
 char* xneur_modifiers_to_string(unsigned int modifier);
 
 void xneur_exit(void);
@@ -33,19 +35,19 @@ void xneur_preference(void);
 void xneur_about(void);
 
 void xneur_add_exclude_app(void);
-void xneur_rem_exclude_app(void);
+void xneur_rem_exclude_app(GtkWidget *widget);
 
 void xneur_add_auto_app(void);
-void xneur_rem_auto_app(void);
+void xneur_rem_auto_app(GtkWidget *widget);
 
 void xneur_add_manual_app(void);
-void xneur_rem_manual_app(void);
+void xneur_rem_manual_app(GtkWidget *widget);
 
 void xneur_add_layout_app(void);
-void xneur_rem_layout_app(void);
+void xneur_rem_layout_app(GtkWidget *widget);
 
-void xneur_save_preference(void);
-void xneur_dontsave_preference(void);
+void xneur_save_preference(GladeXML *gxml);
+void xneur_dontsave_preference(GladeXML *gxml);
 
 void xneur_start_stop(GtkWidget *widget, struct _tray_icon *tray);
 void xneur_auto_manual(GtkWidget *widget, struct _tray_icon *tray);

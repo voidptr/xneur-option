@@ -1,4 +1,4 @@
-pixmapsdir = @datadir@/pixmaps
+pixmapsdir = @datadir@/gxneur/pixmaps
 pixmaps_DATA =			\
 	Russian.png		\
 	Ukrainian.png		\

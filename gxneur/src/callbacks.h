@@ -31,6 +31,7 @@ void on_button24_clicked(GtkButton *button, gpointer user_data);
 void on_button25_clicked(GtkButton *button, gpointer user_data);
 void on_button26_clicked(GtkButton *button, gpointer user_data);
 void on_okbutton1_clicked(GtkButton *button, gpointer user_data);
+void on_cancelbutton1_clicked(GtkButton *button, gpointer user_data);
 
 gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 gboolean on_key_release_event (GtkWidget *widget, GdkEventKey *event, gpointer user_data);
