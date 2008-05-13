@@ -671,6 +671,7 @@ void xprogram_change_word(struct _xprogram *p, int new_lang)
 	p->string->cur_pos		-= offset;
 
 	p->change_lang(p, new_lang);
+	
 	p->send_string_silent(p, TRUE);
 
 	// Revert fields back

@@ -125,6 +125,7 @@ void xstring_add_symbol(struct _xstring *p, char sym, KeyCode keycode, int modif
 	p->content[p->cur_pos] = NULLSYM;
 }
 
+
 void xstring_del_symbol(struct _xstring *p)
 {
 	if (p->cur_pos == 0)
@@ -132,6 +133,32 @@ void xstring_del_symbol(struct _xstring *p)
 
 	p->cur_pos--;
 	p->content[p->cur_pos] = NULLSYM;
+}
+
+char *xstring_get_utf_string(struct _xstring *p)
+{
+	char *symbol		= (char *) malloc((256 + 1) * sizeof(char));
+	char *prev_symbols	= (char *) malloc(sizeof(char));
+	prev_symbols[0] = NULLSYM;
+	int byte_count = 1;
+	XEvent event		= create_basic_event();
+	for (int i = 0; i < p->cur_pos; i++)
+	{
+		event.xkey.keycode	= p->keycode[i];
+		event.xkey.state	= p->keycode_modifiers[i];
+		
+		int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
+		if (nbytes <= 0)
+			continue;
+		
+		symbol[nbytes] = NULLSYM;
+		
+		byte_count += nbytes;
+		prev_symbols = (char *) realloc(prev_symbols, byte_count);
+		strcat(prev_symbols, symbol);
+	}
+	free(symbol);
+	return prev_symbols;
 }
 
 void xstring_uninit(struct _xstring *p)
@@ -165,6 +192,7 @@ struct _xstring* xstring_init(void)
 	p->changecase_content	= xstring_changecase_content;
 	p->add_symbol		= xstring_add_symbol;
 	p->del_symbol		= xstring_del_symbol;
+	p->get_utf_string	= xstring_get_utf_string;
 	p->uninit		= xstring_uninit;
 
 	return p;

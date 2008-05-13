@@ -38,6 +38,7 @@ struct _xstring
 	void (*changecase_content) (struct _xstring *p);
 	void (*add_symbol) (struct _xstring *p, char sym, KeyCode keycode, int modifier);
 	void (*del_symbol) (struct _xstring *p);
+	char*(*get_utf_string) (struct _xstring *p);
 	void (*uninit) (struct _xstring *p);
 };
 

@@ -55,8 +55,6 @@ struct _xprogram
 	void (*uninit) (struct _xprogram *p);
 };
 
-extern void xprogram_terminate();
-
 struct _xprogram* xprogram_init(void);
 
 #endif /* _XPROGRAM_H_ */

@@ -23,5 +23,4 @@
 char* get_selected_text(XSelectionEvent *event);
 void  on_selection_converted(char *selected_text);
 void  do_selection_request(void);
-
 #endif /* _XSELECTION_H_ */

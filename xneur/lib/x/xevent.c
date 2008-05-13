@@ -18,6 +18,7 @@
  */
 
 #include <X11/keysym.h>
+#include <X11/Xatom.h>
 
 #include <stdlib.h>
 #include <string.h>
