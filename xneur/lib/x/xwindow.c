@@ -54,9 +54,18 @@ int xwindow_create(struct _xwindow *p)
 		return FALSE;
 	}
 
+	Window flag_window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 34, 34, 0, 0, 4095);
+	if (!flag_window)
+	{
+		log_message(ERROR, "Can't create flag window");
+		XCloseDisplay(display);
+		return FALSE;
+	}
+	
 	p->display = display;
 	p->window  = window;
-
+	p->flag_window  = flag_window;
+	
 	log_message(LOG, "Main window with id %d created", window);
 
 	XSynchronize(display, TRUE);
@@ -71,6 +80,7 @@ void xwindow_destroy(struct _xwindow *p)
 		return;
 	
 	p->window = None;
+	p->flag_window = None;
 }
 
 int xwindow_init_keymap(struct _xwindow *p)

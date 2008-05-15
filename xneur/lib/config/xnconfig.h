@@ -47,6 +47,9 @@
 #define SOUND_DISABLED			0
 #define SOUND_ENABLED			1
 
+#define DRAW_FLAG_DISABLED			0
+#define DRAW_FLAG_ENABLED			1
+
 #define EVENT_PRESS			0
 #define EVENT_RELEASE			1
 
@@ -56,6 +59,15 @@
 
 #define MAX_SOUNDS			14
 #define MAX_HOTKEYS			10
+#define MAX_FLAGS			4
+
+enum _flag_action
+{
+	FLAG_LAYOUT_0 = 0,
+	FLAG_LAYOUT_1,
+	FLAG_LAYOUT_2,
+	FLAG_LAYOUT_3,
+};
 
 enum _sound_action
 {
@@ -130,7 +142,7 @@ struct _xneur_hotkey
 	char *key;
 };
 
-struct _xneur_sound
+struct _xneur_file
 {
 	char *file;
 };
@@ -156,7 +168,7 @@ struct _xneur_config
 	struct _xneur_data *xneur_data;
 	struct _xneur_language *languages;		// Array of languages used in program
 	struct _xneur_hotkey *hotkeys;			// Array of hotkeys used in program
-	struct _xneur_sound *sounds;			// Array of sounds for actions
+	struct _xneur_file *sounds;			// Array of sounds for actions
 
 	int   log_level;				// Maximum level of log messages to print
 	int   send_delay;				// Delay before send event (in milliseconds)
@@ -170,7 +182,11 @@ struct _xneur_config
 	int   layout_remember_mode;			// Remember layout for each of window
 	int   save_selection_mode;			// Save selection after convert
 	int   events_receive_mode;			// Define KeyPress or KeyRelease mode used in xneur
-
+	
+	int   draw_flag_mode;			// Define draw flag icon in xneur
+	struct _list_char *draw_flag_apps;
+	struct _xneur_file *flags;			// Array of flag pixmaps for draw
+		   
 	int   (*load) (struct _xneur_config *p);
 	void  (*clear) (struct _xneur_config *p);
 	int   (*save) (struct _xneur_config *p);

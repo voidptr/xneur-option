@@ -65,6 +65,9 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		usleep(500);
 	}
 	
+	if (new_window == main_window->flag_window)
+		return FOCUS_UNCHANGED;
+	
 	char *new_app_name = get_wm_class_name(new_window);
 	if (new_app_name != NULL)
 	{		
@@ -84,7 +87,8 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 			free(new_app_name);
 		return FOCUS_UNCHANGED;
 	}
-
+	
+	// Replace unfocused window to focused window
 	p->owner_window = new_window;
 
 	log_message(DEBUG, "Process new window (ID %d) with name '%s' (status %s, mode %s)", new_window, new_app_name, verbose_focus_status[*focus_status], verbose_forced_mode[*forced_mode]);
@@ -109,10 +113,9 @@ int xfocus_get_focus_status(struct _xfocus *p, int *forced_mode, int *focus_stat
 	return focus;
 }
 
+
 void xfocus_update_events(struct _xfocus *p, int mode)
 {
-	Window parent_window = p->owner_window;
-
 	int mask = FOCUS_CHANGE_MASK;
 	if (mode == LISTEN_FLUSH)
 		mask = None;
@@ -124,23 +127,43 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 			mask |= EVENT_RELEASE_MASK;
 		
 		mask |= INPUT_HANDLE_MASK;
+		mask |= POINTER_MOTION_MASK;
 	}
-
+	
+	// Set filter on all children windows
+	Window current_window = p->owner_window;
 	while (TRUE)
 	{
-		set_event_mask(parent_window, mask);
+		set_event_mask(current_window, mask);
 		
 		int dummy;
 		unsigned int dummyU;
 		Window root_window, child_window;
-		int is_same_screen = XQueryPointer(main_window->display, parent_window, &root_window, &child_window, &dummy, &dummy, &dummy, &dummy, &dummyU);
+		int is_same_screen = XQueryPointer(main_window->display, current_window, &root_window, &child_window, &dummy, &dummy, &dummy, &dummy, &dummyU);
 		if (!is_same_screen || child_window == None)
 			break;
-
-		parent_window = child_window;
+		
+		current_window = child_window;
 	}
-
-	p->last_parent_window = parent_window;
+	
+	p->last_parent_window = current_window;
+	
+	// Set filter on all parent windows
+	current_window = p->owner_window;
+	while (TRUE)
+	{
+		
+		unsigned int dummyU;
+		Window root_window, parent_window;
+		Window *children_return;
+		int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &dummyU);
+		if (!is_same_screen || parent_window == None || parent_window == root_window)
+			break;
+	
+		current_window = parent_window;
+	}
+	
+	XFlush(main_window->display);
 }
 
 void xfocus_uninit(struct _xfocus *p)

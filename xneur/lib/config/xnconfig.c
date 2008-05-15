@@ -46,7 +46,7 @@ static const char *option_names[] = 	{
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySound", "SendDelay", "LayoutRememberModeForApp",
-						"EventsReceiveMode"
+						"EventsReceiveMode", "DrawFlag", "DrawFlagApp", "AddFlagPixmap"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode", 
@@ -59,7 +59,10 @@ static const char *sound_names[] =	{
 						"AutomaticChangeWord", "ManualChangeWord", "ChangeString", 
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected"
 					};
-									
+static const char *flag_names[] =	{
+						"Layout1Flag", "Layout2Flag", "Layout3Flag", "Layout4Flag"
+					};
+
 static const int total_options = sizeof(option_names) / sizeof(option_names[0]);
 static const int total_modifiers = sizeof(modifier_names) / sizeof(modifier_names[0]);
 
@@ -361,6 +364,41 @@ static void parse_line(struct _xneur_config *p, char *line)
 				log_message(WARNING, "Invalid value for receive events mode specified");
 			break;
 		}
+		case 22: // Draw flag
+		{
+			if (strcmp(param, "Yes") == 0)
+				p->draw_flag_mode = DRAW_FLAG_ENABLED;
+			else if (strcmp(param, "No") == 0)
+				p->draw_flag_mode = DRAW_FLAG_DISABLED;
+			else
+				log_message(WARNING, "Invalid value for draw flag mode specified");
+			break;
+		}
+		case 23: // Get Draw Flag Applications
+		{
+			p->draw_flag_apps->add(p->draw_flag_apps, param);
+			break;
+		}
+		case 24: // Flags
+		{
+			int flag;
+			if (strcmp(param, "Layout1Flag") == 0)
+				flag = FLAG_LAYOUT_0;
+			else if (strcmp(param, "Layout2Flag") == 0)
+				flag = FLAG_LAYOUT_1;
+			else if (strcmp(param, "Layout3Flag") == 0)
+				flag = FLAG_LAYOUT_2;
+			else if (strcmp(param, "Layout4Flag") == 0)
+				flag = FLAG_LAYOUT_3;
+			else
+			{
+				log_message(WARNING, "Invalid value for flag layout name specified");
+				break;
+			}
+
+			p->flags[flag].file = strdup(get_word(&line));
+			break;
+		}
 	}
 }
 
@@ -399,7 +437,8 @@ static void free_structures(struct _xneur_config *p)
 	p->auto_apps->uninit(p->auto_apps);
 	p->layout_remember_apps->uninit(p->layout_remember_apps);
 	p->excluded_apps->uninit(p->excluded_apps);
-
+	p->draw_flag_apps->uninit(p->draw_flag_apps);
+	
 	if (p->version != NULL)
 	{
 		free(p->version);
@@ -456,8 +495,15 @@ static void free_structures(struct _xneur_config *p)
 			free(p->sounds[sound].file);
 	}
 
+	for (int flag = 0; flag < MAX_FLAGS; flag++)
+	{
+		if (p->flags[flag].file != NULL)
+			free(p->flags[flag].file);
+	}
+	
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
-	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_sound));
+	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
+	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
 }
 
 void xneur_config_reload(struct _xneur_config *p)
@@ -720,6 +766,31 @@ int xneur_config_save(struct _xneur_config *p)
 	else
 		fprintf(stream, "EventsReceiveMode KeyRelease\n\n");
 	
+	fprintf(stream, "# This option enable or disable flag drawig\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#DrawFlag No\n");
+	if (p->draw_flag_mode)
+		fprintf(stream, "DrawFlag Yes\n\n");
+	else
+		fprintf(stream, "DrawFlag No\n\n");
+			
+	fprintf(stream, "# Binds pixmaps for some layouts\n");
+	for (int flag = 0; flag < MAX_FLAGS; flag++)
+	{
+		if (p->flags[flag].file == NULL)
+			continue;
+
+		fprintf(stream, "AddFlagPixmap %s %s\n", flag_names[flag], p->flags[flag].file);
+	}
+	fprintf(stream, "\n");
+			
+	fprintf(stream, "# Add Applications names to draw flag in window\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#DrawFlagApp Gedit\n");
+	for (int i = 0; i < p->draw_flag_apps->data_count; i++)
+		fprintf(stream, "DrawFlagApp %s\n", p->draw_flag_apps->data[i].string);
+	fprintf(stream, "\n");
+			
 	fprintf(stream, "# That's all\n");
 
 	fclose(stream);
@@ -822,7 +893,8 @@ void xneur_config_uninit(struct _xneur_config *p)
 
 	free(p->hotkeys);
 	free(p->sounds);
-
+	free(p->flags);
+	
 	free(p);
 }
 
@@ -840,16 +912,20 @@ struct _xneur_config* xneur_config_init(void)
 	p->hotkeys = (struct _xneur_hotkey *) malloc(MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 
-	p->sounds = (struct _xneur_sound *) malloc(MAX_SOUNDS * sizeof(struct _xneur_sound));
-	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_sound));
+	p->sounds = (struct _xneur_file *) malloc(MAX_SOUNDS * sizeof(struct _xneur_file));
+	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
 
+	p->flags = (struct _xneur_file *) malloc(MAX_FLAGS * sizeof(struct _xneur_file));
+	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
+	
 	p->log_level			= LOG;
 	p->excluded_apps		= list_char_init();
 	p->auto_apps			= list_char_init();
 	p->manual_apps			= list_char_init();
 	p->layout_remember_apps		= list_char_init();
 	p->window_layouts		= list_char_init();
-
+	p->draw_flag_apps		= list_char_init();
+	
 	p->send_delay			= 0;
 	p->default_group		= 0;
 	
@@ -859,6 +935,7 @@ struct _xneur_config* xneur_config_init(void)
 	p->layout_remember_mode		= -1;
 	p->save_selection_mode		= -1;
 	p->events_receive_mode		= EVENT_PRESS;
+	p->draw_flag_mode = -1;
 	
 	// Function mapping
 	p->get_dict_path		= get_file_path_name;
