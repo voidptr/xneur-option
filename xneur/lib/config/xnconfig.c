@@ -929,13 +929,13 @@ struct _xneur_config* xneur_config_init(void)
 	p->send_delay			= 0;
 	p->default_group		= 0;
 	
-	p->sound_mode			= -1;
-	p->mouse_processing_mode	= -1;
-	p->education_mode		= -1;
-	p->layout_remember_mode		= -1;
-	p->save_selection_mode		= -1;
+	p->sound_mode			= SOUND_DISABLED;
+	p->mouse_processing_mode	= MOUSE_GRAB_DISABLE;
+	p->education_mode		= EDUCATION_MODE_DISABLE;
+	p->layout_remember_mode		= LAYOUTE_REMEMBER_DISABLE;
+	p->save_selection_mode		= SELECTION_SAVE_DISABLED;
 	p->events_receive_mode		= EVENT_PRESS;
-	p->draw_flag_mode = -1;
+	p->draw_flag_mode = DRAW_FLAG_DISABLED;
 	
 	// Function mapping
 	p->get_dict_path		= get_file_path_name;
