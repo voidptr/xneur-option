@@ -1,5 +1,4 @@
 SUBDIRS =			\
-	etc			\
 	lib			\
 	src			\
 	share
