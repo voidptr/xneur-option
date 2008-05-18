@@ -81,6 +81,12 @@ if test "x$with_pcre" != "xno"; then
 	AC_DEFINE(WITH_PCRE, 1, [Define if you want pcre support])
 fi
 
+AC_ARG_WITH(xpm, [  --without-xpm	  Compile without xpm support])
+if test "x$with_xpm" != "xno"; then
+	PKG_CHECK_MODULES(XPM, [xpm ])
+	AC_DEFINE(WITH_XPM, 1, [Define if you want xmp support])
+fi
+
 AC_ARG_WITH(aspell, [  --without-aspell	  Compile without aspell support])
 if test "x$with_aspell" != "xno"; then
 	found_aspell_include_dir=""
@@ -168,6 +174,14 @@ if test "x$with_aspell" != "xno"; then
 cat <<EOF
 	Aspell compiler flags:		$ASPELL_CFLAGS
 	Aspell linker flags:		$ASPELL_LIBS
+
+EOF
+fi
+
+if test "x$with_xpm" != "xno"; then
+cat <<EOF
+	Xpm compiler flags:		$XPM_CFLAGS
+	Xpm linker flags:		$XPM_LIBS
 
 EOF
 fi

@@ -27,7 +27,8 @@ struct _xprogram
 	struct _xevent *event;
 	struct _xfocus *focus;
 	struct _xstring *string;
-
+	struct _xcursor *cursor;
+	
 	int  last_action;
 	int  changed_manual;
 	int  app_forced_mode;

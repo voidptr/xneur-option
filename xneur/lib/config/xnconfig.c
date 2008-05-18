@@ -774,7 +774,9 @@ int xneur_config_save(struct _xneur_config *p)
 	else
 		fprintf(stream, "DrawFlag No\n\n");
 			
-	fprintf(stream, "# Binds pixmaps for some layouts\n");
+	fprintf(stream, "# Binds pixmaps for some layouts \n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.png\n");			
 	for (int flag = 0; flag < MAX_FLAGS; flag++)
 	{
 		if (p->flags[flag].file == NULL)

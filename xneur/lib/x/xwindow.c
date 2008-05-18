@@ -29,6 +29,16 @@
 
 #include "xwindow.h"
 
+#define MWM_HINTS_DECORATIONS   (1L << 1) 
+#define PROP_MWM_HINTS_ELEMENTS 5
+typedef struct {
+  int  flags;
+  int  functions;
+  int  decorations;
+  int   input_mode;
+  int  status;
+} MWMHints;
+
 static int error_handler(Display *d, XErrorEvent *e)
 {
 	if (d || e) {}
@@ -46,6 +56,7 @@ int xwindow_create(struct _xwindow *p)
 		return FALSE;
 	}
 
+	// Create Main Window
 	Window window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 1, 1, 0, 0, 0);
 	if (!window)
 	{
@@ -54,14 +65,24 @@ int xwindow_create(struct _xwindow *p)
 		return FALSE;
 	}
 
-	Window flag_window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 34, 34, 0, 0, 4095);
+	// Create flag window
+	Window flag_window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 27, 18, 0, 0, 4095);
 	if (!flag_window)
 	{
 		log_message(ERROR, "Can't create flag window");
 		XCloseDisplay(display);
 		return FALSE;
 	}
+	// Set no border mode to flag window
+	MWMHints mwmhints;
+	Atom prop;
+	bzero(&mwmhints, sizeof(mwmhints));
+	prop = XInternAtom(display, "_MOTIF_WM_HINTS", False);
+	mwmhints.flags = MWM_HINTS_DECORATIONS;
+	mwmhints.decorations = 0;
+	XChangeProperty(display, flag_window, prop, prop, 32, PropModeReplace, (unsigned char *) &mwmhints, PROP_MWM_HINTS_ELEMENTS);
 	
+	//
 	p->display = display;
 	p->window  = window;
 	p->flag_window  = flag_window;

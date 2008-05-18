@@ -56,6 +56,7 @@
 #define NO_LANGUAGE			-1
 
 #define SOUNDDIR			"sounds"
+#define PIXMAPDIR			"pixmaps"
 
 #define MAX_SOUNDS			14
 #define MAX_HOTKEYS			10

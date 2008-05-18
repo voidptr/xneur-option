@@ -166,6 +166,18 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 	XFlush(main_window->display);
 }
 
+int  xfocus_draw_flag(struct _xfocus *p)
+{
+	char *app_name = get_wm_class_name(p->owner_window);
+	if (app_name == NULL)
+		return FALSE;
+	
+	if (xconfig->draw_flag_apps->exist(xconfig->draw_flag_apps, app_name, BY_PLAIN))
+		return TRUE;
+
+	return FALSE;
+}
+
 void xfocus_uninit(struct _xfocus *p)
 {
 	free(p);
@@ -179,6 +191,7 @@ struct _xfocus* xfocus_init(void)
 	// Functions mapping
 	p->get_focus_status	= xfocus_get_focus_status;
 	p->update_events	= xfocus_update_events;
+	p->draw_flag	= xfocus_draw_flag;
 	p->uninit		= xfocus_uninit;
 
 	return p;

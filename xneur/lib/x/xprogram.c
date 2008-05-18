@@ -42,6 +42,7 @@
 #include "xwindow.h"
 #include "xkeymap.h"
 #include "xutils.h"
+#include "xcursor.h"
 
 #include "types.h"
 #include "list_char.h"
@@ -284,7 +285,6 @@ void xprogram_update(struct _xprogram *p, int *do_update)
 	{
 		p->layout_update(p);
 		p->string->clear(p->string);
-		//p->focus->unset_motion_events(p->last_window);
 	}
 
 	if (status == FOCUS_NONE)
@@ -300,11 +300,10 @@ void xprogram_update(struct _xprogram *p, int *do_update)
 
 void xprogram_process_input(struct _xprogram *p)
 {
+	p->cursor->load_pixmaps(p->cursor);
 	int do_update = TRUE;
 	p->update(p, &do_update);
 				
-	//Window w_flag = XCreateSimpleWindow(main_window->display, DefaultRootWindow(main_window->display), 0, 0, 20, 20, 0, 0, 4095);
-
 	while (1)
 	{
 		int type = p->event->get_next_event(p->event);
@@ -368,63 +367,69 @@ void xprogram_process_input(struct _xprogram *p)
 			}
 			case MotionNotify:
 			{
-			/*	int root_x, root_y, win_x, win_y;
-				Window root_window, child_window, parent_window;
-				Window *children_return;
-				unsigned int dummyU;
+				if (p->focus->draw_flag(p->focus))
+				{
+					int root_x, root_y, win_x, win_y;
+					Window root_window, child_window, parent_window;
+					Window *children_return;
+					unsigned int dummyU;
 								
-				// Get parent window for focused window
-				Window current_window = p->focus->owner_window;
-				while (TRUE)
-				{
-					int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &dummyU);
-					if (!is_same_screen || parent_window == None || parent_window == root_window)
-						break;
+					// Get parent window for focused window
+					Window current_window = p->focus->owner_window;
+					while (TRUE)
+					{
+						int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &dummyU);
+						if (!is_same_screen || parent_window == None || parent_window == root_window)
+							break;
 		
-					current_window = parent_window;
-				}
+						current_window = parent_window;
+					}
 				
-				// Get parent window for window over pointer
-				Window current_event_window = p->event->event.xmotion.window;
-				while (TRUE)
-				{
-					int is_same_screen = XQueryTree(main_window->display, current_event_window, &root_window, &parent_window, &children_return, &dummyU);
-					if (!is_same_screen || parent_window == None || parent_window == root_window)
-						break;
+					// Get parent window for window over pointer
+					Window current_event_window = p->event->event.xmotion.window;
+					while (TRUE)
+					{
+						int is_same_screen = XQueryTree(main_window->display, current_event_window, &root_window, &parent_window, &children_return, &dummyU);
+						if (!is_same_screen || parent_window == None || parent_window == root_window)
+							break;
 		
-					current_event_window = parent_window;
-				}
+						current_event_window = parent_window;
+					}
+					
+					//XWindowAttributes w_attributes;
+					//XGetWindowAttributes(main_window->display, current_window, &w_attributes); 
 				
-				XWindowAttributes w_attributes;
-				XGetWindowAttributes(main_window->display, current_window, &w_attributes); 
+					//XkbStateRec xkbState;
+					//XkbGetState(main_window->display, XkbUseCoreKbd, &xkbState);
 				
-				XkbStateRec xkbState;
-				XkbGetState(main_window->display, XkbUseCoreKbd, &xkbState);
+					XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
+	
+					//printf ("(%d:%d (%d) FocusW %d EventW %d (%d:%d %dx%d))\n", p->event->event.xmotion.x_root, p->event->event.xmotion.y_root, xkbState.group, 
+					//		(int)current_window, (int)current_event_window, w_attributes.x, w_attributes.y,
+					//		w_attributes.width, w_attributes.height);
 				
-				XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
-
-				//printf ("(%d:%d (%d) FocusW %d EventW %d (%d:%d %dx%d))\n", p->event->event.xmotion.x_root, p->event->event.xmotion.y_root, xkbState.group, 
-				//		(int)current_window, (int)current_event_window, w_attributes.x, w_attributes.y,
-				//		w_attributes.width, w_attributes.height);
-				
-				XGetWindowAttributes(main_window->display, w_flag, &w_attributes);
-				if (current_window == current_event_window)
-				{
-					if (w_attributes.map_state == IsUnmapped)
-						XMapWindow(main_window->display, w_flag);
-					XRaiseWindow(main_window->display, w_flag);
-					XMoveWindow(main_window->display, w_flag, root_x+40, root_y+40);
-					XSetInputFocus(main_window->display, p->focus->owner_window, RevertToNone, CurrentTime);
-					//printf ("Map Window\n");
-				}
-				else
-				{
-					if (w_attributes.map_state != IsUnmapped)
-						XUnmapWindow(main_window->display, w_flag);
-					//printf ("Unmap Window\n");
-				}
-				break;*/
-				
+					//XGetWindowAttributes(main_window->display, main_window->flag_window, &w_attributes);
+					if (current_window == current_event_window)
+					{
+						//if (w_attributes.map_state == IsUnmapped)
+						//	XMapWindow(main_window->display, main_window->flag_window);
+						//XRaiseWindow(main_window->display, main_window->flag_window);
+						//XMoveWindow(main_window->display, main_window->flag_window, root_x+10, root_y+10);
+						//show_flag(root_x+40, root_y+40);
+						p->cursor->show_flag(p->cursor, root_x+10, root_y+10);
+						XSetInputFocus(main_window->display, p->focus->owner_window, RevertToNone, CurrentTime);
+						printf ("Map Window\n");
+					}
+					else
+					{
+						//if (w_attributes.map_state != IsUnmapped)
+						//	XUnmapWindow(main_window->display, main_window->flag_window);
+						//hide_flag();
+						p->cursor->hide_flag(p->cursor);
+						printf ("Unmap Window\n");
+					}
+				}	
+				break;				
 			}
 			case PropertyNotify:
 			{
@@ -796,6 +801,8 @@ void xprogram_uninit(struct _xprogram *p)
 	log_message(DEBUG, "Current event is freed");
 	p->string->uninit(p->string);
 	log_message(DEBUG, "Current string is freed");
+	p->cursor->uninit(p->cursor);
+	log_message(DEBUG, "Current cursor is freed");
 	
 	main_window->uninit(main_window);
 	log_message(DEBUG, "Current main_window is freed");
@@ -822,7 +829,8 @@ struct _xprogram* xprogram_init(void)
 	p->event			= xevent_init();		// X Event processor
 	p->focus			= xfocus_init();		// X Input Focus and Pointer processor
 	p->string			= xstring_init();		// Input string buffer
-
+	p->cursor			= xcursor_init();
+	
 	// Function mapping
 	p->uninit			= xprogram_uninit; 
 	p->layout_update		= xprogram_layout_update;

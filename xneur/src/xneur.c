@@ -157,18 +157,11 @@ static void xneur_load_config(int final)
 	if (xconfig->draw_flag_mode == DRAW_FLAG_DISABLED)
 		current_mode = "No";
 	log_message(LOG, "Draw Flag mode set to %s", current_mode);
-	for (int i = 0; i < xconfig->draw_flag_apps->data_count; i++)
-		log_message(LOG, "DrawFlagApp %s", xconfig->draw_flag_apps->data[i].string);
-	static const char *flag_names[] =	{
-						"Layout1Flag", "Layout2Flag", "Layout3Flag", "Layout4Flag"
-					};
-	for (int flag = 0; flag < MAX_FLAGS; flag++)
+	for (int i=0; i<MAX_FLAGS; i++)	
 	{
-		if (xconfig->flags[flag].file == NULL)
-			continue;
-
-		log_message(LOG, "AddFlagPixmap %s %s\n", flag_names[flag], xconfig->flags[flag].file);
+		log_message(LOG, "%s", xconfig->flags[i].file);
 	}
+	
 	bind_manual_actions();	
 }
 
