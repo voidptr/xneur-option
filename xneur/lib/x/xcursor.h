@@ -19,12 +19,21 @@
 
 #ifndef _XCURSOR_H_
 #define _XCURSOR_H_
+ 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
+#ifdef WITH_XPM
 
 #include <X11/Xutil.h>
 #include <X11/xpm.h>
 
+#include "xnconfig.h"
+
 struct _xcursor
 {
+
 	Pixmap bitmap[MAX_FLAGS];
 	Pixmap bitmap_mask[MAX_FLAGS];
 	XpmAttributes Attrs[MAX_FLAGS];
@@ -36,6 +45,18 @@ struct _xcursor
 	void (*hide_flag) (struct _xcursor *p);
 	void (*uninit) (struct _xcursor *p);
 };
+
+#else
+
+struct _xcursor
+{
+	void (*load_pixmaps) (struct _xcursor *p);
+	void (*show_flag) (struct _xcursor *p, int x, int y);
+	void (*hide_flag) (struct _xcursor *p);
+	void (*uninit) (struct _xcursor *p);
+};
+
+#endif /* WITH_XPM */
 
 struct _xcursor* xcursor_init(void);
 

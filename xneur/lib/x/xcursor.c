@@ -16,24 +16,30 @@
  *  Copyright (C) 2006-2008 XNeur Team
  *
  */
+ 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
+#include <stdlib.h>
+#include <string.h>
+
+#include "xcursor.h"
+
+#ifdef WITH_XPM
 
 #include <X11/Xutil.h>
 #include <X11/xpm.h>
 #include <X11/XKBlib.h>
 
-#include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 #include <stdio.h>
 
-#include "xnconfig.h"
 #include "xnconfig_files.h"
 
 #include "xwindow.h"
 
 #include "log.h"
-
-#include "xcursor.h"
 
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
@@ -49,7 +55,6 @@ static int ReadPixmapFromFile (char *FileName, Pixmap *phPm, Pixmap *phMask, Xpm
 	pFile = fopen (FileName, "r");
 	if (!pFile) {
 		perror (FileName);
-		printf ("Bab file %s\n", FileName);
 		return -1;
 	}
 	fseek (pFile, 0, SEEK_END);
@@ -130,13 +135,12 @@ static GC create_gc(Display* display, Window win, int reverse_video)
 	XSetFillStyle(display, gc, FillSolid);
 
 	return gc;
-}
+} 
 
 void xcursor_load_pixmaps(struct _xcursor *p)
 {
 	for (int i=0; i<MAX_FLAGS; i++)	
 	{
-		log_message(LOG, "%s", xconfig->flags[i].file);
 		ReadPixmapFromFile(get_file_path_name(PIXMAPDIR, xconfig->flags[i].file),
 						   &p->bitmap[i], &p->bitmap_mask[i], &p->Attrs[i],
 						   main_window->display, main_window->flag_window,
@@ -223,3 +227,44 @@ struct _xcursor* xcursor_init(void)
 
 	return p;
 }
+
+
+#else /* WITH_XPM */
+
+#include "xcursor.h"
+
+void xcursor_load_pixmaps(struct _xcursor *p)
+{
+	return;
+}
+
+void xcursor_show_flag(struct _xcursor *p, int x, int y)
+{
+	return;
+}
+
+void xcursor_hide_flag(struct _xcursor *p)
+{
+	return;
+}
+
+void xcursor_uninit(struct _xcursor *p)
+{
+	free(p);
+}
+
+struct _xcursor* xcursor_init(void)
+{
+	struct _xcursor *p = (struct _xcursor *) malloc(sizeof(struct _xcursor));
+	bzero(p, sizeof(struct _xcursor));
+	
+	// Functions mapping
+	p->load_pixmaps = xcursor_load_pixmaps;
+	p->show_flag = xcursor_show_flag;
+	p->hide_flag = xcursor_hide_flag;
+	p->uninit		= xcursor_uninit;
+
+	return p;
+}
+
+#endif /* WITH_XPM */
