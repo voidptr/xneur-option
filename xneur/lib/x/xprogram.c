@@ -307,7 +307,10 @@ void xprogram_process_input(struct _xprogram *p)
 	while (1)
 	{
 		int type = p->event->get_next_event(p->event);
-
+		
+		if (p->event->event.xany.window == main_window->flag_window)
+			continue;
+		
 		switch (type)
 		{
 			case ClientMessage:
@@ -340,9 +343,29 @@ void xprogram_process_input(struct _xprogram *p)
 				p->update(p, &do_update);
 				break;
 			}
-			case EnterNotify:
 			case LeaveNotify:
+			case EnterNotify:
 			case FocusIn:
+			{
+				if (p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
+				{		
+					int root_x, root_y, win_x, win_y;
+					Window root_window, child_window;
+					unsigned int dummyU;
+					
+					XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
+					
+					p->cursor->show_flag(p->cursor, root_x+10, root_y+10);
+				}
+				else
+					p->cursor->hide_flag(p->cursor);
+				
+				p->last_layout = get_active_keyboard_group();
+
+				do_update = TRUE;
+				p->update(p, &do_update);
+				break;
+			}
 			case FocusOut:
 			{
 				p->last_layout = get_active_keyboard_group();
@@ -367,68 +390,19 @@ void xprogram_process_input(struct _xprogram *p)
 			}
 			case MotionNotify:
 			{
-				if (p->focus->draw_flag(p->focus))
-				{
+				if (p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
+				{		
 					int root_x, root_y, win_x, win_y;
-					Window root_window, child_window, parent_window;
-					Window *children_return;
+					Window root_window, child_window;
 					unsigned int dummyU;
-								
-					// Get parent window for focused window
-					Window current_window = p->focus->owner_window;
-					while (TRUE)
-					{
-						int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &dummyU);
-						if (!is_same_screen || parent_window == None || parent_window == root_window)
-							break;
-		
-						current_window = parent_window;
-					}
-				
-					// Get parent window for window over pointer
-					Window current_event_window = p->event->event.xmotion.window;
-					while (TRUE)
-					{
-						int is_same_screen = XQueryTree(main_window->display, current_event_window, &root_window, &parent_window, &children_return, &dummyU);
-						if (!is_same_screen || parent_window == None || parent_window == root_window)
-							break;
-		
-						current_event_window = parent_window;
-					}
 					
-					//XWindowAttributes w_attributes;
-					//XGetWindowAttributes(main_window->display, current_window, &w_attributes); 
-				
-					//XkbStateRec xkbState;
-					//XkbGetState(main_window->display, XkbUseCoreKbd, &xkbState);
-				
 					XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
-	
-					//printf ("(%d:%d (%d) FocusW %d EventW %d (%d:%d %dx%d))\n", p->event->event.xmotion.x_root, p->event->event.xmotion.y_root, xkbState.group, 
-					//		(int)current_window, (int)current_event_window, w_attributes.x, w_attributes.y,
-					//		w_attributes.width, w_attributes.height);
-				
-					//XGetWindowAttributes(main_window->display, main_window->flag_window, &w_attributes);
-					if (current_window == current_event_window)
-					{
-						//if (w_attributes.map_state == IsUnmapped)
-						//	XMapWindow(main_window->display, main_window->flag_window);
-						//XRaiseWindow(main_window->display, main_window->flag_window);
-						//XMoveWindow(main_window->display, main_window->flag_window, root_x+10, root_y+10);
-						//show_flag(root_x+40, root_y+40);
-						p->cursor->show_flag(p->cursor, root_x+10, root_y+10);
-						XSetInputFocus(main_window->display, p->focus->owner_window, RevertToNone, CurrentTime);
-						printf ("Map Window\n");
-					}
-					else
-					{
-						//if (w_attributes.map_state != IsUnmapped)
-						//	XUnmapWindow(main_window->display, main_window->flag_window);
-						//hide_flag();
-						p->cursor->hide_flag(p->cursor);
-						printf ("Unmap Window\n");
-					}
-				}	
+					
+					p->cursor->show_flag(p->cursor, root_x+10, root_y+10);
+				}
+				else
+					p->cursor->hide_flag(p->cursor);
+					
 				break;				
 			}
 			case PropertyNotify:
@@ -441,7 +415,7 @@ void xprogram_process_input(struct _xprogram *p)
 			}
 			default:
 			{
-				log_message(DEBUG, "Uncatched event with type %d", type);
+				log_message(DEBUG, "Uncatched event with type %d)", type);
 				break;
 			}
 		}

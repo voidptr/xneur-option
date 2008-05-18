@@ -65,9 +65,6 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		usleep(500);
 	}
 	
-	if (new_window == main_window->flag_window)
-		return FOCUS_UNCHANGED;
-	
 	char *new_app_name = get_wm_class_name(new_window);
 	if (new_app_name != NULL)
 	{		
@@ -166,14 +163,43 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 	XFlush(main_window->display);
 }
 
-int  xfocus_draw_flag(struct _xfocus *p)
+int  xfocus_draw_flag(struct _xfocus *p, Window event_window)
 {
 	char *app_name = get_wm_class_name(p->owner_window);
 	if (app_name == NULL)
 		return FALSE;
 	
 	if (xconfig->draw_flag_apps->exist(xconfig->draw_flag_apps, app_name, BY_PLAIN))
-		return TRUE;
+	{
+		Window root_window, parent_window;
+		Window *children_return;
+		unsigned int dummyU;
+								
+		// Get parent window for focused window
+		Window current_window = p->owner_window;
+		while (TRUE)
+		{
+			int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &dummyU);
+			if (!is_same_screen || parent_window == None || parent_window == root_window)
+				break;
+		
+			current_window = parent_window;
+		}
+				
+		// Get parent window for window over pointer
+		Window current_event_window = event_window;
+		while (TRUE)
+		{
+			int is_same_screen = XQueryTree(main_window->display, current_event_window, &root_window, &parent_window, &children_return, &dummyU);
+			if (!is_same_screen || parent_window == None || parent_window == root_window)
+				break;
+		
+			current_event_window = parent_window;
+		}
+
+		if (current_window == current_event_window)
+			return TRUE;
+	}
 
 	return FALSE;
 }

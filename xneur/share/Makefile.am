@@ -1,5 +1,6 @@
 SUBDIRS =			\
 	sounds			\
+	pixmaps			\
 	en			\
 	uk			\
 	ru			\

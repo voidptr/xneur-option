@@ -151,19 +151,23 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 				
 	XkbStateRec xkbState;
 	XkbGetState(main_window->display, XkbUseCoreKbd, &xkbState);
+	if (xconfig->flags[xkbState.group].file == NULL)
+	{
+		if (w_attributes.map_state != IsUnmapped)
+		XUnmapWindow(main_window->display, main_window->flag_window);
+	}
 	
 	if (w_attributes.map_state == IsUnmapped)
 		XMapWindow(main_window->display, main_window->flag_window);
 
 	XSetClipMask (main_window->display, p->gc, p->bitmap_mask[xkbState.group]);
 	XSetClipOrigin (main_window->display, p->gc, 0, 0);
-	Status s = XCopyArea (main_window->display, p->bitmap[xkbState.group], main_window->flag_window, p->gc, 0, 0, p->Attrs[xkbState.group].width, p->Attrs[xkbState.group].height, 0, 0);
-	if (s == BadDrawable)
-		log_message(ERROR, "BadDrawable");
+	XCopyArea (main_window->display, p->bitmap[xkbState.group], main_window->flag_window, p->gc, 0, 0, p->Attrs[xkbState.group].width, p->Attrs[xkbState.group].height, 0, 0);
+
 	XFlush (main_window->display);
 	
 	XRaiseWindow(main_window->display, main_window->flag_window);
-	XMoveWindow(main_window->display, main_window->flag_window, x, y);
+	XMoveResizeWindow(main_window->display, main_window->flag_window, x, y, p->Attrs[xkbState.group].width, p->Attrs[xkbState.group].height);
 }
 
 void xcursor_hide_flag(struct _xcursor *p)

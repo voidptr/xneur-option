@@ -87,6 +87,9 @@ static Window find_window_with_atom(Window window, Atom atom)
 
 void set_event_mask(Window window, int event_mask)
 {
+	if (window == main_window->flag_window)
+		return;
+	
 	grab_button(window, TRUE);
 	XSelectInput(main_window->display, window, event_mask);
 	//grab_keyboard(window, TRUE);

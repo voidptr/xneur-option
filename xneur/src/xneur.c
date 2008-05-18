@@ -157,11 +157,7 @@ static void xneur_load_config(int final)
 	if (xconfig->draw_flag_mode == DRAW_FLAG_DISABLED)
 		current_mode = "No";
 	log_message(LOG, "Draw Flag mode set to %s", current_mode);
-	for (int i=0; i<MAX_FLAGS; i++)	
-	{
-		log_message(LOG, "%s", xconfig->flags[i].file);
-	}
-	
+		
 	bind_manual_actions();	
 }
 

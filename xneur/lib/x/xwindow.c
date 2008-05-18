@@ -66,7 +66,11 @@ int xwindow_create(struct _xwindow *p)
 	}
 
 	// Create flag window
-	Window flag_window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 27, 18, 0, 0, 4095);
+	XSetWindowAttributes attrs;
+	attrs.override_redirect = True;
+
+	//Window flag_window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 1, 1, 0, 0, 4095);
+	Window flag_window = XCreateWindow(display, DefaultRootWindow(display), 0, 0, 1, 1,0, CopyFromParent, CopyFromParent, CopyFromParent, CWOverrideRedirect, &attrs );
 	if (!flag_window)
 	{
 		log_message(ERROR, "Can't create flag window");
@@ -80,8 +84,15 @@ int xwindow_create(struct _xwindow *p)
 	prop = XInternAtom(display, "_MOTIF_WM_HINTS", False);
 	mwmhints.flags = MWM_HINTS_DECORATIONS;
 	mwmhints.decorations = 0;
+	
 	XChangeProperty(display, flag_window, prop, prop, 32, PropModeReplace, (unsigned char *) &mwmhints, PROP_MWM_HINTS_ELEMENTS);
 	
+	prop = XInternAtom(display, "_WIN_HINTS", False);
+	XWMHints wmhints;
+	bzero(&wmhints, sizeof(wmhints));
+	wmhints.flags = InputHint;
+	wmhints.input = 0;
+	XChangeProperty(display, flag_window, prop, prop, 32, PropModeReplace, (unsigned char *) &mwmhints, sizeof (XWMHints) / 4);
 	//
 	p->display = display;
 	p->window  = window;
