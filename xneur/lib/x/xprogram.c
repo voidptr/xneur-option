@@ -381,11 +381,11 @@ void xprogram_process_input(struct _xprogram *p)
 				break;
 			}
 			case ButtonPress:				// Falling down
-				//p->string->clear(p->string);
+				p->string->clear(p->string);
 			case ButtonRelease:
 			{
 				p->update(p, &do_update);
-				//p->event->send_next_event(p->event);
+				p->event->send_next_event(p->event);
 				log_message(DEBUG, "Сatched event Button");
 				break;
 			}

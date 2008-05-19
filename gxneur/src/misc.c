@@ -661,7 +661,7 @@ gboolean save_layout_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *it
 gboolean save_draw_flag_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
 {
 	if (model || path || user_data){};
-printf("aaaaaaaaaaaaaaa\n");
+
 	save_list(store_draw_flag_app, xconfig->draw_flag_apps, iter);
 
 	return FALSE;
