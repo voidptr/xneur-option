@@ -343,9 +343,9 @@ void xprogram_process_input(struct _xprogram *p)
 				p->update(p, &do_update);
 				break;
 			}
+			case FocusIn:
 			case LeaveNotify:
 			case EnterNotify:
-			case FocusIn:
 			{
 				if (p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
 				{		
@@ -381,11 +381,12 @@ void xprogram_process_input(struct _xprogram *p)
 				break;
 			}
 			case ButtonPress:				// Falling down
-				p->string->clear(p->string);
+				//p->string->clear(p->string);
 			case ButtonRelease:
 			{
 				p->update(p, &do_update);
-				p->event->send_next_event(p->event);
+				//p->event->send_next_event(p->event);
+				log_message(DEBUG, "Сatched event Button");
 				break;
 			}
 			case MotionNotify:

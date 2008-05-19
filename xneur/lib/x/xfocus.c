@@ -149,6 +149,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 	current_window = p->owner_window;
 	while (TRUE)
 	{
+		set_event_mask(current_window, mask);
 		
 		unsigned int dummyU;
 		Window root_window, parent_window;
@@ -163,7 +164,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 	XFlush(main_window->display);
 }
 
-int  xfocus_draw_flag(struct _xfocus *p, Window event_window)
+int xfocus_draw_flag(struct _xfocus *p, Window event_window)
 {
 	char *app_name = get_wm_class_name(p->owner_window);
 	if (app_name == NULL)
