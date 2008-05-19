@@ -46,7 +46,7 @@ static const char *option_names[] = 	{
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySound", "SendDelay", "LayoutRememberModeForApp",
-						"EventsReceiveMode", "DrawFlag", "DrawFlagApp", "AddFlagPixmap"
+						"EventsReceiveMode", "DrawFlagApp", "AddFlagPixmap"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode", 
@@ -364,22 +364,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 				log_message(WARNING, "Invalid value for receive events mode specified");
 			break;
 		}
-		case 22: // Draw flag
-		{
-			if (strcmp(param, "Yes") == 0)
-				p->draw_flag_mode = DRAW_FLAG_ENABLED;
-			else if (strcmp(param, "No") == 0)
-				p->draw_flag_mode = DRAW_FLAG_DISABLED;
-			else
-				log_message(WARNING, "Invalid value for draw flag mode specified");
-			break;
-		}
-		case 23: // Get Draw Flag Applications
+		case 22: // Get Draw Flag Applications
 		{
 			p->draw_flag_apps->add(p->draw_flag_apps, param);
 			break;
 		}
-		case 24: // Flags
+		case 23: // Flags
 		{
 			int flag;
 			if (strcmp(param, "Layout1Flag") == 0)
@@ -617,6 +607,7 @@ void xneur_config_clear(struct _xneur_config *p)
 	p->auto_apps		= list_char_init();
 	p->layout_remember_apps	= list_char_init();
 	p->excluded_apps	= list_char_init();
+	p->draw_flag_apps	= list_char_init();
 }
 
 int xneur_config_save(struct _xneur_config *p)
@@ -765,14 +756,6 @@ int xneur_config_save(struct _xneur_config *p)
 		fprintf(stream, "EventsReceiveMode KeyPress\n\n");
 	else
 		fprintf(stream, "EventsReceiveMode KeyRelease\n\n");
-	
-	fprintf(stream, "# This option enable or disable flag drawig\n");
-	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#DrawFlag No\n");
-	if (p->draw_flag_mode)
-		fprintf(stream, "DrawFlag Yes\n\n");
-	else
-		fprintf(stream, "DrawFlag No\n\n");
 			
 	fprintf(stream, "# Binds pixmaps for some layouts (pixmap only in xpm format)\n");
 	fprintf(stream, "# Example:\n");
@@ -937,7 +920,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->layout_remember_mode		= LAYOUTE_REMEMBER_DISABLE;
 	p->save_selection_mode		= SELECTION_SAVE_DISABLED;
 	p->events_receive_mode		= EVENT_PRESS;
-	p->draw_flag_mode = DRAW_FLAG_DISABLED;
 	
 	// Function mapping
 	p->get_dict_path		= get_file_path_name;

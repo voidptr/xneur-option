@@ -184,7 +184,6 @@ struct _xneur_config
 	int   save_selection_mode;			// Save selection after convert
 	int   events_receive_mode;			// Define KeyPress or KeyRelease mode used in xneur
 	
-	int   draw_flag_mode;			// Define draw flag icon in xneur
 	struct _list_char *draw_flag_apps;
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw
 		   

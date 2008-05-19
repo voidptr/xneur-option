@@ -50,6 +50,7 @@ static GtkListStore *store_exclude_app			= NULL;
 static GtkListStore *store_auto_app			= NULL;
 static GtkListStore *store_manual_app			= NULL;
 static GtkListStore *store_layout_app			= NULL;
+static GtkListStore *store_draw_flag_app			= NULL;
 
 static const char *modifier_names[]			= {"Shift", "Control", "Alt", "Super"};
 static const char *all_modifiers[]			= {"Control", "Shift", "Alt", "Super", "Control_R", "Shift_R", "Alt_R", "Super_R", "Control_L", "Shift_L", "Alt_L", "Super_L"};
@@ -145,6 +146,21 @@ static void fill_sounds(int sound, GladeXML *gxml, const char *label, gboolean f
 		free(xconfig->sounds[sound].file);
 
 	xconfig->sounds[sound].file = strdup(gtk_entry_get_text(GTK_ENTRY(widget_bind)));
+}
+
+static void fill_pixmaps(int pixmap, GladeXML *gxml, const char *label, gboolean fill_combobox)
+{
+	GtkWidget *widget_bind = glade_xml_get_widget (gxml, label);
+	if (fill_combobox)
+	{
+		gtk_entry_set_text(GTK_ENTRY(widget_bind), xconfig->flags[pixmap].file);
+		return;
+	}
+
+	if (xconfig->flags[pixmap].file != NULL)
+		free(xconfig->flags[pixmap].file);
+
+	xconfig->flags[pixmap].file = strdup(gtk_entry_get_text(GTK_ENTRY(widget_bind)));
 }
 
 static void add_item(GtkListStore *store)
@@ -514,6 +530,38 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "button26");
 	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button26_clicked), gxml);
 	
+	// Flags Paths Preference
+	fill_pixmaps(0, gxml, "entry35", TRUE);
+	fill_pixmaps(1, gxml, "entry36", TRUE);
+	fill_pixmaps(2, gxml, "entry37", TRUE);
+	fill_pixmaps(3, gxml, "entry38", TRUE);
+	
+	// Draw Flag App Set
+	treeview = glade_xml_get_widget (gxml, "treeview5");
+	
+	store_draw_flag_app = gtk_list_store_new(1, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_draw_flag_app));
+	gtk_widget_show(treeview);	
+
+	for (int i = 0; i < xconfig->draw_flag_apps->data_count; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_draw_flag_app), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_draw_flag_app), &iter, 0, xconfig->draw_flag_apps->data[i].string, -1);
+	}				
+
+	cell = gtk_cell_renderer_text_new();
+
+	column = gtk_tree_view_column_new_with_attributes(_("Application"), cell, "text", 0, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	// Adding/Removing Draw Flag App
+	widget = glade_xml_get_widget (gxml, "button1");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_draw_flag_app), G_OBJECT(window));
+
+	widget = glade_xml_get_widget (gxml, "button10");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_draw_flag_app), G_OBJECT(treeview));
+
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
@@ -544,6 +592,11 @@ void xneur_add_layout_app(void)
 	add_item(store_layout_app);
 }
 
+void xneur_add_draw_flag_app(void)
+{
+	add_item(store_draw_flag_app);
+}
+
 void xneur_rem_exclude_app(GtkWidget *widget)
 {
 	remove_item(widget, store_exclude_app);
@@ -562,6 +615,11 @@ void xneur_rem_manual_app(GtkWidget *widget)
 void xneur_rem_layout_app(GtkWidget *widget)
 {
 	remove_item(widget, store_layout_app);
+}
+
+void xneur_rem_draw_flag_app(GtkWidget *widget)
+{
+	remove_item(widget, store_draw_flag_app);
 }
 
 gboolean save_exclude_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
@@ -600,6 +658,15 @@ gboolean save_layout_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *it
 	return FALSE;
 }
 
+gboolean save_draw_flag_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+printf("aaaaaaaaaaaaaaa\n");
+	save_list(store_draw_flag_app, xconfig->draw_flag_apps, iter);
+
+	return FALSE;
+}
+
 void xneur_save_preference(GladeXML *gxml)
 {
 	xconfig->clear(xconfig);
@@ -626,7 +693,8 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_auto_app), save_auto_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_manual_app), save_manual_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_layout_app), save_layout_app, NULL);
-
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_draw_flag_app), save_draw_flag_app, NULL);
+	
 	fill_binds(0, gxml, "entry11", FALSE);
 	fill_binds(1, gxml, "entry12", FALSE);
 	fill_binds(2, gxml, "entry13", FALSE);
@@ -689,6 +757,11 @@ void xneur_save_preference(GladeXML *gxml)
 	fill_sounds(11, gxml, "entry32", FALSE);
 	fill_sounds(12, gxml, "entry33", FALSE);
 	fill_sounds(13, gxml, "entry34", FALSE);
+	
+	fill_pixmaps(0, gxml, "entry35", FALSE);
+	fill_pixmaps(1, gxml, "entry36", FALSE);
+	fill_pixmaps(2, gxml, "entry37", FALSE);
+	fill_pixmaps(3, gxml, "entry38", FALSE);
 	
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);

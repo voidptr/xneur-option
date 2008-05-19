@@ -152,11 +152,6 @@ static void xneur_load_config(int final)
 	if (xconfig->events_receive_mode == EVENT_RELEASE)
 		current_mode = "KeyRelease";
 	log_message(LOG, "Current events receive mode set to %s", current_mode);
-	
-	current_mode = "Yes";
-	if (xconfig->draw_flag_mode == DRAW_FLAG_DISABLED)
-		current_mode = "No";
-	log_message(LOG, "Draw Flag mode set to %s", current_mode);
 		
 	bind_manual_actions();	
 }

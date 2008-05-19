@@ -46,6 +46,9 @@ void xneur_rem_manual_app(GtkWidget *widget);
 void xneur_add_layout_app(void);
 void xneur_rem_layout_app(GtkWidget *widget);
 
+void xneur_add_draw_flag_app(void);
+void xneur_rem_draw_flag_app(GtkWidget *widget);
+
 void xneur_save_preference(GladeXML *gxml);
 void xneur_dontsave_preference(GladeXML *gxml);
 
