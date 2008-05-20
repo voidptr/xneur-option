@@ -71,7 +71,7 @@ static int ReadPixmapFromFile (char *FileName, Pixmap *phPm, Pixmap *phMask, Xpm
 	
 	// Check Signature
 	if (strncmp (buffer, "/* XPM */", 9)) {
-		printf ("%s: not XPM format file\n", FileName);
+		//printf ("%s: not XPM format file\n", FileName);
 		return -1;
 	}
 
@@ -141,10 +141,11 @@ void xcursor_load_pixmaps(struct _xcursor *p)
 {
 	for (int i=0; i<MAX_FLAGS; i++)	
 	{
-		ReadPixmapFromFile(get_file_path_name(PIXMAPDIR, xconfig->flags[i].file),
-						   &p->bitmap[i], &p->bitmap_mask[i], &p->Attrs[i],
-						   main_window->display, main_window->flag_window,
-						   XDefaultColormap (main_window->display, DefaultScreen(main_window->display)));
+		if (xconfig->flags[i].file != NULL)
+			ReadPixmapFromFile(get_file_path_name(PIXMAPDIR, xconfig->flags[i].file),
+							   &p->bitmap[i], &p->bitmap_mask[i], &p->Attrs[i],
+							   main_window->display, main_window->flag_window,
+							   XDefaultColormap (main_window->display, DefaultScreen(main_window->display)));
 	}
 }
 
@@ -210,14 +211,6 @@ struct _xcursor* xcursor_init(void)
 		return NULL;
 	}
 	XSync(main_window->display, False);
-	
-	for (int i=0; i<MAX_FLAGS; i++)	
-	{
-		ReadPixmapFromFile(get_file_path_name(PIXMAPDIR, xconfig->flags[i].file),
-						   &p->bitmap[i], &p->bitmap_mask[i], &p->Attrs[i],
-						   main_window->display, main_window->flag_window,
-						   XDefaultColormap (main_window->display, DefaultScreen(main_window->display)));
-	}
 	
 	// Functions mapping
 	p->load_pixmaps = xcursor_load_pixmaps;

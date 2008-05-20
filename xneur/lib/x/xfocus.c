@@ -110,8 +110,56 @@ int xfocus_get_focus_status(struct _xfocus *p, int *forced_mode, int *focus_stat
 	return focus;
 }
 
+static void set_mask_to_window(Window current_window, int mask)
+{
+	set_event_mask(current_window, mask);
+		
+	unsigned int children_count;
+	Window root_window, parent_window;
+	Window *children_return;
+	XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &children_count);
+	for (int i=0; i < children_count; i++)
+		set_mask_to_window(children_return[i], mask);
+}
 
 void xfocus_update_events(struct _xfocus *p, int mode)
+{
+	int mask = FOCUS_CHANGE_MASK;
+	if (mode == LISTEN_FLUSH)
+		mask = None;
+	else if (mode == LISTEN_GRAB_INPUT)
+	{
+		if (xconfig->events_receive_mode == EVENT_PRESS)
+			mask |= EVENT_PRESS_MASK;
+		else
+			mask |= EVENT_RELEASE_MASK;
+		
+		mask |= INPUT_HANDLE_MASK;
+		mask |= POINTER_MOTION_MASK;
+	}
+	
+	Window current_window = p->owner_window;
+	
+	// Up to heighted window
+	while (TRUE)
+	{
+		unsigned int children_count;
+		Window root_window, parent_window, *children_return;
+		int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &children_count);
+		if (!is_same_screen || parent_window == None || parent_window == root_window)
+			break;
+		
+		current_window = parent_window;
+	}
+	
+	p->last_parent_window = current_window;
+	
+	set_mask_to_window(current_window, mask);
+	
+	XFlush(main_window->display);
+}
+
+/*void xfocus_update_events(struct _xfocus *p, int mode)
 {
 	int mask = FOCUS_CHANGE_MASK;
 	if (mode == LISTEN_FLUSH)
@@ -162,7 +210,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 	}
 	
 	XFlush(main_window->display);
-}
+}*/
 
 int xfocus_draw_flag(struct _xfocus *p, Window event_window)
 {
