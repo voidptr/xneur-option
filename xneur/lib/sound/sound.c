@@ -112,11 +112,9 @@ static void new_pad(GstElement *element, GstPad *pad, gpointer data)
 	gst_object_unref(alsapad);
 }
 
-void *play_file_thread(void *ptr)
+void *play_file_thread(void *param)
 {
 	pthread_mutex_lock(&sound_mutex);
-	int file_type = *(int *) ptr;
-	free(ptr);
 
 	// Initialize GStreamer
 	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
@@ -133,12 +131,13 @@ void *play_file_thread(void *ptr)
 		return NULL;
   	}
 
+	char *path = (char *) param;
+	log_message(TRACE, "Play sound sample %s (use Gstreamer engine)", path);
+
 	gst_bin_add_many(GST_BIN(pipeline), source, parser, sink, NULL);
 	gst_element_link(source, parser);
 
 	g_signal_connect(parser, "pad-added", G_CALLBACK(new_pad), sink);
-
-	char *path = get_file_path_name(SOUNDDIR, xconfig->sounds[file_type].file);
 
 	// Set filename property on the file source. Also add a message handler. 
 	g_object_set(G_OBJECT(source), "location", path, NULL);
@@ -146,8 +145,6 @@ void *play_file_thread(void *ptr)
 	GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipeline));
 	gst_bus_add_watch(bus, bus_call, loop);
 	gst_object_unref(bus);
-
-	log_message(TRACE, "Play sound sample %s (use Gstreamer engine)", path);
 
 	gst_element_set_state(pipeline, GST_STATE_PLAYING);
 	g_main_loop_run(loop);
@@ -179,18 +176,14 @@ void sound_uninit(void)
 	alutExit();
 }
 
-void *play_file_thread(void *ptr)
+void *play_file_thread(void *param)
 {
 	pthread_mutex_lock(&sound_mutex);
-	int file_type = *(int *) ptr;
-	free(ptr);
 
-	char *path = get_file_path_name(SOUNDDIR, xconfig->sounds[file_type].file);
-
+	char *path = (char *) param;
 	log_message(TRACE, "Play sound sample %s (use OpenAL library)", path);
 
-	ALuint AlutBuffer;
-	AlutBuffer = alutCreateBufferFromFile(path);
+	ALuint AlutBuffer = alutCreateBufferFromFile(path);
 	if (!AlutBuffer)
 	{
 		free(path);
@@ -227,14 +220,11 @@ void sound_uninit(void)
 {
 }
 
-void *play_file_thread(void *ptr)
+void *play_file_thread(void *param)
 {
 	pthread_mutex_lock(&sound_mutex);
-	int file_type = *(int *) ptr;
-	free(ptr);
-	
-	char *path = get_file_path_name(SOUNDDIR, xconfig->sounds[file_type].file);
 
+	char *path = (char *) param;
 	log_message(TRACE, "Play sound sample %s (use ALSA library)", path);
 	
 	char *command = malloc((strlen(path) + 6) * sizeof(char));
@@ -242,7 +232,8 @@ void *play_file_thread(void *ptr)
 	system(command);
 	
 	free(command);
-	
+
+	free(path);
 	pthread_mutex_unlock(&sound_mutex);
 	return NULL;
 }
@@ -258,12 +249,10 @@ void play_file(int file_type)
 	pthread_attr_init(&sound_thread_attr);
 	pthread_attr_setdetachstate(&sound_thread_attr, PTHREAD_CREATE_DETACHED);
 
+	char *path = get_file_path_name(SOUNDDIR, xconfig->sounds[file_type].file);
+
 	pthread_t sound_thread;
-	int * arg = malloc(sizeof(int));
-	if (! arg)
-		return;
-	*arg = file_type;
-	pthread_create(&sound_thread, &sound_thread_attr, &play_file_thread, arg);
+	pthread_create(&sound_thread, &sound_thread_attr, &play_file_thread, (void *) path);
 }
 
 #else /* WITH_SOUND */
