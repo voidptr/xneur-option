@@ -223,6 +223,12 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 	gtk_tooltips_set_tip(tray->tooltip, GTK_WIDGET(tray->widget), hint, NULL);
 	
 	GdkPixbuf *pb = create_pixbuf(image_file);
+	if (pb == NULL)
+	{
+		layout_name = "gxneur";
+		image_file = g_strdup_printf("%s%s", layout_name, ".png");
+		pb = create_pixbuf(image_file);
+	}
 	gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
 	tray->image = gtk_image_new_from_pixbuf(pb);
 		
