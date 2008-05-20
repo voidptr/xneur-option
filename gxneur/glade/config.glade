@@ -1561,7 +1561,7 @@ German</property>
               <widget class="GtkVBox" id="vbox1">
                 <property name="visible">True</property>
                 <child>
-                  <widget class="GtkCheckButton" id="checkbutton6">
+                  <widget class="GtkCheckButton" id="checkbutton1">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="label" translatable="yes">Process Mouse Events</property>
