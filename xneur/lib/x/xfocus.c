@@ -112,12 +112,19 @@ int xfocus_get_focus_status(struct _xfocus *p, int *forced_mode, int *focus_stat
 
 static void set_mask_to_window(Window current_window, int mask)
 {
+	if (current_window == None)
+		return;
+
 	set_event_mask(current_window, mask);
 		
 	unsigned int children_count;
 	Window root_window, parent_window;
 	Window *children_return;
-	XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &children_count);
+	
+	int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &children_count);
+	if (!is_same_screen)
+		return;
+	
 	for (int i=0; i < children_count; i++)
 		set_mask_to_window(children_return[i], mask);
 }
