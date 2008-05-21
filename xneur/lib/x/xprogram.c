@@ -193,6 +193,22 @@ static int get_auto_action(struct _xprogram *p, KeySym key, int modifier_mask)
 	return KLB_ADD_SYM;
 }
 
+void xprogram_cursor_update(struct _xprogram *p)
+{
+	if (p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
+	{		
+		int root_x, root_y, win_x, win_y;
+		Window root_window, child_window;
+		unsigned int dummyU;
+					
+		XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
+				
+		p->cursor->show_flag(p->cursor, root_x+10, root_y+10);
+	}
+	else
+		p->cursor->hide_flag(p->cursor);
+}
+
 void xprogram_layout_update(struct _xprogram *p)
 {
 	if (xconfig->layout_remember_mode == LAYOUTE_REMEMBER_DISABLE)
@@ -347,18 +363,7 @@ void xprogram_process_input(struct _xprogram *p)
 			case LeaveNotify:
 			case EnterNotify:
 			{
-				if (p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
-				{		
-					int root_x, root_y, win_x, win_y;
-					Window root_window, child_window;
-					unsigned int dummyU;
-					
-					XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
-					
-					p->cursor->show_flag(p->cursor, root_x+10, root_y+10);
-				}
-				else
-					p->cursor->hide_flag(p->cursor);
+				p->cursor_update(p);
 				
 				p->last_layout = get_active_keyboard_group();
 
@@ -386,28 +391,27 @@ void xprogram_process_input(struct _xprogram *p)
 			{
 				p->update(p, &do_update);
 				p->event->send_next_event(p->event);
-				log_message(DEBUG, "Сatched event Button");
+				log_message(TRACE, "Received Button Press/Release");
 				break;
 			}
 			case MotionNotify:
 			{
-				if (p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
-				{		
-					int root_x, root_y, win_x, win_y;
-					Window root_window, child_window;
-					unsigned int dummyU;
-					
-					XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
-					
-					p->cursor->show_flag(p->cursor, root_x+10, root_y+10);
-				}
-				else
-					p->cursor->hide_flag(p->cursor);
-					
+				p->cursor_update(p);	
 				break;				
 			}
 			case PropertyNotify:
 			{
+				
+				if (XInternAtom(main_window->display, "XKLAVIER_STATE", FALSE) == p->event->event.xproperty.atom)
+				{
+					log_message(TRACE, "Received Property Notify (layout switch event)");
+					
+					// Flush string
+					p->string->clear(p->string);
+					
+					// Update flag
+					p->cursor_update(p);
+				}
 				// On all event
 				if (xconfig->events_receive_mode == EVENT_RELEASE)
 					p->modifier_mask = NO_MODIFIER_MASK;
@@ -808,6 +812,7 @@ struct _xprogram* xprogram_init(void)
 	
 	// Function mapping
 	p->uninit			= xprogram_uninit; 
+	p->cursor_update		= xprogram_cursor_update;
 	p->layout_update		= xprogram_layout_update;
 	p->update			= xprogram_update;
 	p->on_key_action		= xprogram_on_key_action;
