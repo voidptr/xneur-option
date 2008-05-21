@@ -677,16 +677,16 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Binds hotkeys for some actions\n");
 	for (int action = 0; action < MAX_HOTKEYS; action++)
 	{
-		if (p->hotkeys[action].key == NULL)
-			continue;
-
 		fprintf(stream, "AddBind %s ", action_names[action]);
 		for (int i = 0; i < total_modifiers; i++)
 		{
 			if (p->hotkeys[action].modifiers & (0x1 << i))
 				fprintf(stream, "%s ", modifier_names[i]);
 		}
-		fprintf(stream, "%s\n", p->hotkeys[action].key);
+		if (p->hotkeys[action].key == NULL)
+			fprintf(stream, "\n");
+		else
+			fprintf(stream, "%s\n", p->hotkeys[action].key);
 	}
 	fprintf(stream, "\n");
 
@@ -702,9 +702,9 @@ int xneur_config_save(struct _xneur_config *p)
 	for (int sound = 0; sound < MAX_SOUNDS; sound++)
 	{
 		if (p->sounds[sound].file == NULL)
-			continue;
-
-		fprintf(stream, "AddSound %s %s\n", sound_names[sound], p->sounds[sound].file);
+			fprintf(stream, "AddSound %s\n", sound_names[sound]);
+		else
+			fprintf(stream, "AddSound %s %s\n", sound_names[sound], p->sounds[sound].file);
 	}
 	fprintf(stream, "\n");
 	

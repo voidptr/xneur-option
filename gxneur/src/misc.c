@@ -453,6 +453,71 @@ void xneur_preference(void)
 	fill_binds(8, gxml, "entry19", TRUE);
 	fill_binds(9, gxml, "entry20", TRUE);
 
+	// Set Callbacks for hotkeys entry
+	widget= glade_xml_get_widget (gxml, "entry11");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry11");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	widget= glade_xml_get_widget (gxml, "entry12");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry12");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	widget= glade_xml_get_widget (gxml, "entry13");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry13");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	widget= glade_xml_get_widget (gxml, "entry14");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry14");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	widget= glade_xml_get_widget (gxml, "entry15");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry15");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	widget= glade_xml_get_widget (gxml, "entry16");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry16");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	widget= glade_xml_get_widget (gxml, "entry17");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry17");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	widget= glade_xml_get_widget (gxml, "entry18");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry18");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	widget= glade_xml_get_widget (gxml, "entry19");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry19");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	widget= glade_xml_get_widget (gxml, "entry20");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry20");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	
+	// Set callbacks for clear buttons
+	widget = glade_xml_get_widget (gxml, "button11");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button11_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button12");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button12_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button13");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button13_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button14");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button14_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button15");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button15_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button16");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button16_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button17");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button17_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button18");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button18_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button29");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button29_clicked), gxml);
+	widget = glade_xml_get_widget (gxml, "button30");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button30_clicked), gxml);
+			
+	
 	// Languages
 	for (int lang = 0; lang < xconfig->total_languages && lang < MAX_LANGUAGES; lang++)
 	{
@@ -561,7 +626,7 @@ void xneur_preference(void)
 
 	widget = glade_xml_get_widget (gxml, "button10");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_draw_flag_app), G_OBJECT(treeview));
-
+	
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);

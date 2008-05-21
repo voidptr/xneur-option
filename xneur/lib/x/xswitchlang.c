@@ -79,7 +79,7 @@ int check_keyboard_groups(void)
 	XkbGetNames(display, XkbSymbolsNameMask, kbd_desc_ptr);
 	XkbGetNames(display, XkbGroupNamesMask, kbd_desc_ptr);
 
-	XCloseDisplay(display);
+	XCloseDisplay(display);	
 	
 	if (kbd_desc_ptr->names == NULL)
 	{

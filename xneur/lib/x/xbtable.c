@@ -34,16 +34,16 @@
 #include "xbtable.h"
 
 static struct _xbtable btable[MAX_HOTKEYS] =	{
-							{XK_Pause, XK_Break, 0}, 
-							{XK_Pause, XK_Break, 4}, 
-							{XK_Print, XK_Sys_Req, 4}, 
-							{XK_Pause, XK_Break, 1}, 
-							{XK_Scroll_Lock, XK_Scroll_Lock, 8}, 
-							{XK_Pause, XK_Break, 8},
-							{XK_q, XK_Q, 4},
-							{XK_w, XK_W, 4},
-							{XK_e, XK_E, 4},
-							{XK_r, XK_R, 4}
+							{0, 0, 0}, 
+							{0, 0, 0},
+							{0, 0, 0}, 
+							{0, 0, 0},
+							{0, 0, 0},
+							{0, 0, 0},
+							{0, 0, 0},
+							{0, 0, 0},
+							{0, 0, 0},
+							{0, 0, 0}
 						};
 static const char *normal_action_names[] =	{
 							"Change Last Word", "Change Last String", "Change Mode", 
@@ -55,6 +55,8 @@ extern struct _xneur_config *xconfig;
 static void bind_action(enum _hotkey_action action)
 {
 	btable[action].modifier_mask = 0;
+	btable[action].key_sym = 0;
+	btable[action].key_sym_shift = 0;
 	
 	if (xconfig->hotkeys[action].modifiers & 0x1)
 		btable[action].modifier_mask = btable[action].modifier_mask + 1; // Shift
@@ -77,8 +79,9 @@ static void bind_action(enum _hotkey_action action)
 		btable[action].key_sym = key_sym;
 		btable[action].key_sym_shift = key_sym_shift;
 	}
-
-	log_message(DEBUG, "   Action \"%s\" with mod_mask %d and key \"%s (%s)\"", normal_action_names[action], btable[action].modifier_mask, XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift));
+	
+	if (btable[action].key_sym != 0)
+		log_message(DEBUG, "   Action \"%s\" with mod_mask %d and key \"%s (%s)\"", normal_action_names[action], btable[action].modifier_mask, XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift));
 }
 
 enum _hotkey_action get_manual_action(KeySym key_sym, int mask)

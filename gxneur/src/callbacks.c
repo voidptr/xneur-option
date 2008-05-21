@@ -191,6 +191,82 @@ gboolean on_key_release_event(GtkWidget *widget, GdkEventKey *event, gpointer us
 	return FALSE;
 }
 
+static void clear_hotkey_text(const char *name, GladeXML *gxml)
+{
+	GtkWidget *widget = glade_xml_get_widget (gxml, name);
+	gtk_entry_set_text(GTK_ENTRY(widget), "");
+}
+
+void on_button11_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+	
+	clear_hotkey_text("entry11", user_data);
+}
+
+void on_button12_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+		
+	clear_hotkey_text("entry12", user_data);
+}
+
+void on_button13_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+		
+	clear_hotkey_text("entry13", user_data);
+}
+
+void on_button14_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+		
+	clear_hotkey_text("entry14", user_data);
+}
+
+void on_button15_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+		
+	clear_hotkey_text("entry15", user_data);
+}
+
+void on_button16_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+		
+	clear_hotkey_text("entry16", user_data);
+}
+
+void on_button17_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+		
+	clear_hotkey_text("entry17", user_data);
+}
+
+void on_button18_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+		
+	clear_hotkey_text("entry18", user_data);
+}
+
+void on_button29_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+		
+	clear_hotkey_text("entry19", user_data);
+}
+
+void on_button30_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+		
+	clear_hotkey_text("entry20", user_data);
+}
+
 void on_window2_delete_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
 	if (widget || event || user_data){};
