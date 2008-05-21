@@ -2,7 +2,7 @@
 # all values are default
 
 # Config version
-Version 0.8.0
+Version 0.9.0
 
 # Default work mode
 DefaultMode Auto
@@ -93,5 +93,19 @@ SendDelay 1
 
 # This option define KeyPress or KeyRelease events used in program
 EventsReceiveMode KeyPress
+
+# Binds pixmaps for some layouts (pixmap only in xpm format)
+# Example:
+#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.xpm
+AddFlagPixmap Layout1Flag English.xpm
+AddFlagPixmap Layout2Flag German.xpm
+AddFlagPixmap Layout3Flag 
+AddFlagPixmap Layout4Flag 
+
+# Add Applications names to draw flag in window
+# Example:
+#DrawFlagApp Gedit
+DrawFlagApp Gedit
+DrawFlagApp Pidgin
 
 # That's all
