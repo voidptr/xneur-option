@@ -34,13 +34,14 @@
 struct _xcursor
 {
 
-	Pixmap bitmap[MAX_FLAGS];
-	Pixmap bitmap_mask[MAX_FLAGS];
-	XpmAttributes Attrs[MAX_FLAGS];
+	Pixmap bitmap;
+	Pixmap bitmap_mask;
+	XpmAttributes Attrs;
 
 	GC gc;
 	
-	void (*load_pixmaps) (struct _xcursor *p);
+	int last_layuot;
+
 	void (*show_flag) (struct _xcursor *p, int x, int y);
 	void (*hide_flag) (struct _xcursor *p);
 	void (*uninit) (struct _xcursor *p);
@@ -50,7 +51,6 @@ struct _xcursor
 
 struct _xcursor
 {
-	void (*load_pixmaps) (struct _xcursor *p);
 	void (*show_flag) (struct _xcursor *p, int x, int y);
 	void (*hide_flag) (struct _xcursor *p);
 	void (*uninit) (struct _xcursor *p);

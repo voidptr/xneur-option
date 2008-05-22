@@ -40,6 +40,7 @@
 #include "xwindow.h"
 
 #include "log.h"
+#include "types.h"
 
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
@@ -54,7 +55,7 @@ static int ReadPixmapFromFile (char *FileName, Pixmap *phPm, Pixmap *phMask, Xpm
 	// Open file
 	pFile = fopen (FileName, "r");
 	if (!pFile) {
-		perror (FileName);
+		//perror (FileName);
 		return -1;
 	}
 	fseek (pFile, 0, SEEK_END);
@@ -63,7 +64,7 @@ static int ReadPixmapFromFile (char *FileName, Pixmap *phPm, Pixmap *phMask, Xpm
 	
 	buffer = (char*)malloc (sizeFile);
 	if (!buffer) {
-		perror (FileName);
+		///perror (FileName);
 		return -1;
 	}
 	fread (buffer, 1, sizeFile, pFile);
@@ -137,18 +138,6 @@ static GC create_gc(Display* display, Window win, int reverse_video)
 	return gc;
 } 
 
-void xcursor_load_pixmaps(struct _xcursor *p)
-{
-	for (int i=0; i<MAX_FLAGS; i++)	
-	{
-		if (xconfig->flags[i].file != NULL)
-			ReadPixmapFromFile(get_file_path_name(PIXMAPDIR, xconfig->flags[i].file),
-							   &p->bitmap[i], &p->bitmap_mask[i], &p->Attrs[i],
-							   main_window->display, main_window->flag_window,
-							   XDefaultColormap (main_window->display, DefaultScreen(main_window->display)));
-	}
-}
-
 void xcursor_show_flag(struct _xcursor *p, int x, int y)
 {
 	XWindowAttributes w_attributes;
@@ -156,23 +145,54 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 				
 	XkbStateRec xkbState;
 	XkbGetState(main_window->display, XkbUseCoreKbd, &xkbState);
-	if (xconfig->flags[xkbState.group].file == NULL)
+	
+	// if for layout not defined xpm file then unmap window and stop procedure
+	if (xconfig->flags[xkbState.group].file[0] == NULLSYM)
 	{
 		if (w_attributes.map_state != IsUnmapped)
-		XUnmapWindow(main_window->display, main_window->flag_window);
+			XUnmapWindow(main_window->display, main_window->flag_window);
+		XFlush (main_window->display);
+		return;
 	}
 	
+	// if current layout not equal last layout then load new pixmap
+	if (p->last_layuot != xkbState.group)
+	{
+		p->last_layuot = xkbState.group;
+		
+		XFreePixmap(main_window->display, p->bitmap);
+		XFreePixmap(main_window->display, p->bitmap_mask);
+		p->bitmap = 0;
+		p->bitmap_mask = 0;
+		char *path = get_file_path_name(PIXMAPDIR, xconfig->flags[xkbState.group].file);
+		ReadPixmapFromFile(path, &p->bitmap, &p->bitmap_mask, &p->Attrs,
+						   main_window->display, main_window->flag_window,
+						   XDefaultColormap (main_window->display, DefaultScreen(main_window->display)));
+		if (path != NULL)
+			free(path);
+		// if pixmap not loaded then unmap window (if need) and return
+		if (p->bitmap == 0)
+		{
+			if  (w_attributes.map_state != IsUnmapped)
+				XUnmapWindow(main_window->display, main_window->flag_window);
+			XFlush (main_window->display);
+			return;
+		}
+		
+	}
+	
+		// for set pixmap to window, need map window
 	if (w_attributes.map_state == IsUnmapped)
 		XMapWindow(main_window->display, main_window->flag_window);
-
-	XSetClipMask (main_window->display, p->gc, p->bitmap_mask[xkbState.group]);
+	
+	XSetClipMask (main_window->display, p->gc, p->bitmap_mask);
 	XSetClipOrigin (main_window->display, p->gc, 0, 0);
-	XCopyArea (main_window->display, p->bitmap[xkbState.group], main_window->flag_window, p->gc, 0, 0, p->Attrs[xkbState.group].width, p->Attrs[xkbState.group].height, 0, 0);
-
-	XFlush (main_window->display);
+	XCopyArea (main_window->display, p->bitmap, main_window->flag_window, p->gc, 0, 0, p->Attrs.width, p->Attrs.height, 0, 0);
 	
 	XRaiseWindow(main_window->display, main_window->flag_window);
-	XMoveResizeWindow(main_window->display, main_window->flag_window, x, y, p->Attrs[xkbState.group].width, p->Attrs[xkbState.group].height);
+	XMoveResizeWindow(main_window->display, main_window->flag_window, x, y, p->Attrs.width, p->Attrs.height);	
+		
+	XFlush (main_window->display);
 }
 
 void xcursor_hide_flag(struct _xcursor *p)
@@ -187,11 +207,9 @@ void xcursor_hide_flag(struct _xcursor *p)
 void xcursor_uninit(struct _xcursor *p)
 {
 	Display *dpy = XOpenDisplay(NULL);
-	for (int i=0; i<MAX_FLAGS; i++)	
-	{
-		XFreePixmap(dpy, p->bitmap[i]);
-		XFreePixmap(dpy, p->bitmap_mask[i]);
-	}
+
+	XFreePixmap(dpy, p->bitmap);
+	XFreePixmap(dpy, p->bitmap_mask);
 	
 	XFreeGC(dpy, p->gc);
 	XCloseDisplay(dpy);
@@ -212,8 +230,9 @@ struct _xcursor* xcursor_init(void)
 	}
 	XSync(main_window->display, False);
 	
+	p->last_layuot = -1;
+	
 	// Functions mapping
-	p->load_pixmaps = xcursor_load_pixmaps;
 	p->show_flag = xcursor_show_flag;
 	p->hide_flag = xcursor_hide_flag;
 	p->uninit		= xcursor_uninit;
@@ -252,7 +271,6 @@ struct _xcursor* xcursor_init(void)
 	bzero(p, sizeof(struct _xcursor));
 	
 	// Functions mapping
-	p->load_pixmaps = xcursor_load_pixmaps;
 	p->show_flag = xcursor_show_flag;
 	p->hide_flag = xcursor_hide_flag;
 	p->uninit		= xcursor_uninit;

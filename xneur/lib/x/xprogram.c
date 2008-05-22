@@ -316,7 +316,6 @@ void xprogram_update(struct _xprogram *p, int *do_update)
 
 void xprogram_process_input(struct _xprogram *p)
 {
-	p->cursor->load_pixmaps(p->cursor);
 	int do_update = TRUE;
 	p->update(p, &do_update);
 				
