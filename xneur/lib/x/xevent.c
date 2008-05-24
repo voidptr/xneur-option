@@ -174,21 +174,13 @@ void xevent_send_next_event(struct _xevent *p)
 	}
 	
 	if (p->event.type == ButtonPress || p->event.type == ButtonRelease || p->event.type == MotionNotify)
-	{
-		int group_mask = groups[get_cur_lang()];
-		int mod_mask = p->get_cur_modifiers(p);
-		
-		p->event.xbutton.state	= group_mask;
-		p->event.xbutton.state	|= mod_mask;
-		//send_mask = BUTTON_HANDLE_MASK;
-	}
+		send_mask = BUTTON_HANDLE_MASK;
 	
 	Window window = p->event.xany.window;
 	if (window == None)
 		window = p->owner_window;
-	//XSendEvent(main_window->display, p->owner_window, FALSE, send_mask, &p->event);
-	XSendEvent(main_window->display, window, FALSE, send_mask, &p->event);
-	log_message(TRACE, "Send Event to %d", window);			
+
+	XSendEvent(main_window->display, window, FALSE, send_mask, &p->event);		
 }
 
 void xevent_uninit(struct _xevent *p)
