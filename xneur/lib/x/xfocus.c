@@ -145,6 +145,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 		
 		mask |= INPUT_HANDLE_MASK;
 		mask |= POINTER_MOTION_MASK;
+		mask |= OwnerGrabButtonMask;
 	}
 	
 	Window current_window = p->owner_window;
