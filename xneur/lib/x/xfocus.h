@@ -38,6 +38,7 @@
 struct _xfocus
 {
 	Window owner_window;		// Input focus window
+	Window parent_window;		// Parent widget in window
 	Window last_parent_window;	// Last grab parent window
 	int last_focus;			// Last focus status
 

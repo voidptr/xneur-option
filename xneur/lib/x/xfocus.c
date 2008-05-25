@@ -60,21 +60,6 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		usleep(500);
 	}
 	
-		
-	// Up to heighted window
-	while (TRUE)
-	{
-		unsigned int children_count;
-		Window root_window, parent_window;
-		Window *children_return;
-		int is_same_screen = XQueryTree(main_window->display, new_window, &root_window, &parent_window, &children_return, &children_count);
-		if (!is_same_screen || parent_window == None || parent_window == root_window)
-			break;
-		
-		new_window = parent_window;
-		XFree(children_return);
-	}	
-	
 	char *new_app_name = get_wm_class_name(new_window);
 	if (new_app_name != NULL)
 	{		
@@ -85,8 +70,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 			*forced_mode = FORCE_MODE_AUTO;
 		else if (xconfig->manual_apps->exist(xconfig->manual_apps, new_app_name, BY_PLAIN))
 			*forced_mode = FORCE_MODE_MANUAL;
-	}
-
+	}	
 	Window old_window = p->owner_window;
 	if (new_window == old_window)
 	{
@@ -95,6 +79,21 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		return FOCUS_UNCHANGED;
 	}
 
+	// Up to heighted window
+	p->parent_window = new_window;
+	while (TRUE)
+	{
+		unsigned int children_count;
+		Window root_window, parent_window;
+		Window *children_return;
+		int is_same_screen = XQueryTree(main_window->display, p->parent_window, &root_window, &parent_window, &children_return, &children_count);
+		if (!is_same_screen || parent_window == None || parent_window == root_window)
+			break;
+		
+		p->parent_window = parent_window;
+		XFree(children_return);
+	}	
+	
 	// Replace unfocused window to focused window
 	p->owner_window = new_window;
 
@@ -148,7 +147,7 @@ static void set_mask_to_window(Window current_window, int mask)
 
 void xfocus_update_events(struct _xfocus *p, int mode)
 {
-	Window current_window = p->owner_window;
+	//Window current_window = p->owner_window;
 	
 	int mask = FOCUS_CHANGE_MASK;
 	if (mode == LISTEN_FLUSH)
@@ -168,9 +167,9 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 	if (p->last_parent_window != None)
 		set_mask_to_window(p->last_parent_window, None);
 	
-	p->last_parent_window = current_window;
+	p->last_parent_window = p->parent_window;
 	
-	set_mask_to_window(current_window, mask);
+	set_mask_to_window(p->parent_window, mask);
 	
 	XFlush(main_window->display);
 }
