@@ -73,7 +73,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		
 		new_window = parent_window;
 		XFree(children_return);
-	}
+	}	
 	
 	char *new_app_name = get_wm_class_name(new_window);
 	if (new_app_name != NULL)
@@ -164,7 +164,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 		mask |= POINTER_MOTION_MASK;
 	}
 	
-	// Flush mask and grabbing
+	// Flush mask and grabbing 
 	if (p->last_parent_window != None)
 		set_mask_to_window(p->last_parent_window, None);
 	

@@ -414,7 +414,7 @@ void xprogram_process_input(struct _xprogram *p)
 					log_message(TRACE, "Received Property Notify (layout switch event)");
 					
 					// Flush string
-					p->string->clear(p->string);
+					//p->string->clear(p->string);
 					
 					// Update flag
 					p->cursor_update(p);
