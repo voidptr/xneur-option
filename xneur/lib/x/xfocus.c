@@ -60,6 +60,21 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		usleep(500);
 	}
 	
+		
+	// Up to heighted window
+	while (TRUE)
+	{
+		unsigned int children_count;
+		Window root_window, parent_window;
+		Window *children_return;
+		int is_same_screen = XQueryTree(main_window->display, new_window, &root_window, &parent_window, &children_return, &children_count);
+		if (!is_same_screen || parent_window == None || parent_window == root_window)
+			break;
+		
+		new_window = parent_window;
+		XFree(children_return);
+	}
+	
 	char *new_app_name = get_wm_class_name(new_window);
 	if (new_app_name != NULL)
 	{		
@@ -79,7 +94,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 			free(new_app_name);
 		return FOCUS_UNCHANGED;
 	}
-	
+
 	// Replace unfocused window to focused window
 	p->owner_window = new_window;
 
@@ -149,19 +164,9 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 		mask |= POINTER_MOTION_MASK;
 	}
 	
-	// Up to heighted window
-	while (TRUE)
-	{
-		unsigned int children_count;
-		Window root_window, parent_window;
-		Window *children_return;
-		int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &children_count);
-		if (!is_same_screen || parent_window == None || parent_window == root_window)
-			break;
-		
-		current_window = parent_window;
-		XFree(children_return);
-	}
+	// Flush mask and grabbing
+	if (p->last_parent_window != None)
+		set_mask_to_window(p->last_parent_window, None);
 	
 	p->last_parent_window = current_window;
 	
