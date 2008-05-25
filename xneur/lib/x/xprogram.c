@@ -388,14 +388,18 @@ void xprogram_process_input(struct _xprogram *p)
 				p->string->clear(p->string);
 				p->update(p, &do_update);
 				log_message(TRACE, "Received ButtonPress");
-				p->event->send_next_event(p->event);
+				//grab_button(p->event->event.xany.window, FALSE);
+				p->event->send_button1_event(p->event, DOWN);
+				//grab_button(p->event->event.xany.window, TRUE);
 				break;
 				
 			case ButtonRelease:
 			{
 				p->update(p, &do_update);
 				log_message(TRACE, "Received ButtonRelease");
-				p->event->send_next_event(p->event);
+				//grab_button(p->event->event.xany.window, FALSE);
+				p->event->send_button1_event(p->event, UP);
+				//grab_button(p->event->event.xany.window, TRUE);
 				break;
 			}
 			case MotionNotify:

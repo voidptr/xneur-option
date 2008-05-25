@@ -42,6 +42,39 @@ extern struct _xneur_config *xconfig;
 	
 static const int groups[4] = {0x00000000, 0x00002000, 0x00004000, 0x00006000};
 
+void xevent_send_button1_event(struct _xevent *p, int direction)
+{
+  XButtonEvent bevent;
+  //int x_root,y_root;
+  //Window tmp;
+
+	//Window root = XDefaultRootWindow(main_window->display);
+  bevent.display=main_window->display;
+  /* This is weird - but this is the only way that works :( */
+  bevent.window=p->event.xbutton.window;
+  bevent.root=p->event.xbutton.root;
+  bevent.subwindow=p->event.xbutton.window;
+  bevent.time=CurrentTime;
+  bevent.x=p->event.xbutton.x;
+  bevent.y=p->event.xbutton.y;
+  //XTranslateCoordinates(main_window->display,window,root,x,y,&x_root,&y_root,&tmp);
+  bevent.x_root=p->event.xbutton.x_root;
+  bevent.y_root=p->event.xbutton.y_root;
+  bevent.button=1;
+  bevent.same_screen=1;
+
+  if(direction == DOWN) {
+    bevent.type=ButtonPress;
+    bevent.state=0x0;
+    XSendEvent(main_window->display, bevent.window, 1, ButtonPressMask,(XEvent *) &bevent);
+  }
+  if(direction == UP) {
+    bevent.type=ButtonRelease;
+    bevent.state=1<<8;
+    XSendEvent(main_window->display, bevent.window, 1, ButtonReleaseMask,(XEvent *) &bevent);
+  }
+}
+
 static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 {
 	p->event.type			= KeyPress;
@@ -179,8 +212,8 @@ void xevent_send_next_event(struct _xevent *p)
 	Window window = p->event.xany.window;
 	if (window == None)
 		window = p->owner_window;
-
-	XSendEvent(main_window->display, window, FALSE, send_mask, &p->event);		
+	//XtDispatchEvent(&p->event);
+	XSendEvent(main_window->display, window, TRUE, send_mask, &p->event);		
 }
 
 void xevent_uninit(struct _xevent *p)
@@ -206,6 +239,7 @@ struct _xevent* xevent_init(void)
 	p->get_cur_modifiers	= xevent_get_cur_modifiers;
 	p->send_backspaces	= xevent_send_backspaces;
 	p->send_selection	= xevent_send_selection;
+	p->send_button1_event = xevent_send_button1_event;
 	p->uninit		= xevent_uninit;
 
 	return p;
