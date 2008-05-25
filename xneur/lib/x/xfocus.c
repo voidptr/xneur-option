@@ -46,19 +46,14 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 	*forced_mode = FORCE_MODE_NORMAL;
 	*focus_status = FOCUS_NONE;
 
-	if (p->last_parent_window != None)
-	{
-		grab_button(p->last_parent_window, FALSE);
-		//grab_enter_key(p->last_parent_window, FALSE);
-	}
-	
 	Window new_window;
 	while (TRUE)
 	{
 		int revert_to;
 		XGetInputFocus(main_window->display, &new_window, &revert_to);
 
-		if (new_window != None && new_window > 100)
+		// Catch not empty and not system window 
+		if (new_window != None && new_window > 1000)
 			break;
 
 		log_message(DEBUG, "New window empty");
@@ -116,7 +111,12 @@ static void set_mask_to_window(Window current_window, int mask)
 		return;
 	
 	set_event_mask(current_window, mask);
-		
+	
+	if (mask == None)
+		grab_button(current_window, FALSE);
+	else
+		grab_button(current_window, TRUE);
+	
 	unsigned int children_count;
 	Window root_window, parent_window;
 	Window *children_return;
@@ -133,6 +133,8 @@ static void set_mask_to_window(Window current_window, int mask)
 
 void xfocus_update_events(struct _xfocus *p, int mode)
 {
+	Window current_window = p->owner_window;
+	
 	int mask = FOCUS_CHANGE_MASK;
 	if (mode == LISTEN_FLUSH)
 		mask = None;
@@ -145,10 +147,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 		
 		mask |= INPUT_HANDLE_MASK;
 		mask |= POINTER_MOTION_MASK;
-		mask |= OwnerGrabButtonMask;
 	}
-	
-	Window current_window = p->owner_window;
 	
 	// Up to heighted window
 	while (TRUE)

@@ -384,22 +384,20 @@ void xprogram_process_input(struct _xprogram *p)
 				p->process_selection(p);
 				break;
 			}
-			case ButtonPress:				// Falling down
-				p->string->clear(p->string);
-				p->update(p, &do_update);
-				log_message(TRACE, "Received ButtonPress");
-				//grab_button(p->event->event.xany.window, FALSE);
-				p->event->send_button1_event(p->event, DOWN);
-				//grab_button(p->event->event.xany.window, TRUE);
-				break;
-				
-			case ButtonRelease:
+			case ButtonPress:
 			{
+				// Falling down
+				p->string->clear(p->string);
+				log_message(TRACE, "Received ButtonPress on window %d", p->event->event.xbutton.window);
+				
+				grab_button (p->event->event.xbutton.window, FALSE);
+				
+				// Unfreeze and resend grabbed event
+				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
+				
+				grab_button (p->event->event.xbutton.window, TRUE);
+				
 				p->update(p, &do_update);
-				log_message(TRACE, "Received ButtonRelease");
-				//grab_button(p->event->event.xany.window, FALSE);
-				p->event->send_button1_event(p->event, UP);
-				//grab_button(p->event->event.xany.window, TRUE);
 				break;
 			}
 			case MotionNotify:

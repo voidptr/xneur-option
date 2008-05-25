@@ -90,7 +90,6 @@ void set_event_mask(Window window, int event_mask)
 	if (window == main_window->flag_window)
 		return;
 	
-	grab_button(window, TRUE);
 	XSelectInput(main_window->display, window, event_mask);
 	//grab_keyboard(window, TRUE);
 }
@@ -102,7 +101,7 @@ void grab_button(Window window, int is_grab)
 	
 	int status;
 	if (is_grab)
-		status = XGrabButton(main_window->display, Button1, AnyModifier, window, TRUE, BUTTON_HANDLE_MASK, GrabModeAsync, GrabModeAsync, None, None);
+		status = XGrabButton(main_window->display, Button1, AnyModifier, window, TRUE, BUTTON_HANDLE_MASK, GrabModeSync, GrabModeAsync, None, None);
 	else
 		status = XUngrabButton(main_window->display, Button1, AnyModifier, window);
 
