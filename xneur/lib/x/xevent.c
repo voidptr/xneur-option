@@ -42,10 +42,10 @@ extern struct _xneur_config *xconfig;
 	
 static const int groups[4] = {0x00000000, 0x00002000, 0x00004000, 0x00006000};
 
-void xevent_send_button1_event(Window window, Window subwindow, int direction, int x, int y)
+void xevent_send_button1_event(Window window, int root_x, int root_y, int direction)
 {
 	XButtonEvent bevent;
-	int x_root,y_root;
+	int x, y;
 	Window tmp;
 
 	Window root = XDefaultRootWindow(main_window->display);
@@ -54,13 +54,13 @@ void xevent_send_button1_event(Window window, Window subwindow, int direction, i
 	/* This is weird - but this is the only way that works :( */
 	bevent.window = window;
 	bevent.root = root;
-	bevent.subwindow = subwindow;
+	bevent.subwindow = window;
 	bevent.time = CurrentTime;
+	XTranslateCoordinates(main_window->display, root, window, root_x, root_y, &x, &y, &tmp);
+	bevent.x_root = root_x;
+	bevent.y_root = root_y;
 	bevent.x = x;
 	bevent.y = y;
-	XTranslateCoordinates(main_window->display, window, root, x, y, &x_root, &y_root, &tmp);
-	bevent.x_root = x_root;
-	bevent.y_root = y_root;
 	bevent.button = 1;
 	bevent.same_screen = 1;
 

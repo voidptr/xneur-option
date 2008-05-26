@@ -25,6 +25,6 @@
 #define EVENT_RELEASE_MASK	KeyReleaseMask 
 #define POINTER_MOTION_MASK	PointerMotionMask
 #define FOCUS_CHANGE_MASK	LeaveWindowMask | EnterWindowMask | FocusChangeMask
-#define BUTTON_HANDLE_MASK	ButtonPressMask
+#define BUTTON_HANDLE_MASK	ButtonPressMask | ButtonReleaseMask
 
 #endif /* _XDEFINIES_H_ */

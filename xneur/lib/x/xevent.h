@@ -47,7 +47,7 @@ struct _xevent
 	void (*send_string) (struct _xevent *p, struct _xstring *str);
 	void (*send_backspaces) (struct _xevent *p, int n);
 	void (*send_selection) (struct _xevent *p, int n);
-	void (*send_button1_event) (Window window, Window subwindow, int direction, int x, int y);
+	void (*send_button1_event) (Window window, int root_x, int root_y, int direction);
 	void (*uninit) (struct _xevent *p);
 };
 

@@ -389,15 +389,33 @@ void xprogram_process_input(struct _xprogram *p)
 				// Falling down
 				p->string->clear(p->string);
 				log_message(TRACE, "Received ButtonPress on window %d", p->event->event.xbutton.window);
+
+				p->focus->update_events(p->focus, LISTEN_FLUSH);
+				// Unfreeze and resend grabbed event
+				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
+
+				int listen_mode = LISTEN_GRAB_INPUT;
+				if (p->app_focus_mode == FOCUS_EXCLUDED)
+					listen_mode = LISTEN_DONTGRAB_INPUT;
+				p->focus->update_events(p->focus, listen_mode);
+				break;
+			}
+			case ButtonRelease:
+			{
+				// Falling up
+				log_message(TRACE, "Received ButtonRelease on window %d", p->event->event.xbutton.window);
 				
 				grab_button (p->event->event.xbutton.window, FALSE);
 				
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 				
-				grab_button (p->event->event.xbutton.window, TRUE);
+				//p->event->send_button1_event(p->event->event.xbutton.window, p->event->event.xbutton.x_root, p->event->event.xbutton.y_root, UP);
 				
-				p->update(p, &do_update);
+				
+				//grab_button (p->event->event.xbutton.window, TRUE);
+				
+				//p->update(p, &do_update);
 				break;
 			}
 			case MotionNotify:
