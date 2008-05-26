@@ -42,6 +42,7 @@ extern struct _xneur_config *xconfig;
 	
 static const int groups[4] = {0x00000000, 0x00002000, 0x00004000, 0x00006000};
 
+/*
 void xevent_send_button1_event(Window window, int root_x, int root_y, int direction)
 {
 	XButtonEvent bevent;
@@ -51,7 +52,7 @@ void xevent_send_button1_event(Window window, int root_x, int root_y, int direct
 	Window root = XDefaultRootWindow(main_window->display);
 	bevent.display = main_window->display;
 	
-	/* This is weird - but this is the only way that works :( */
+	// This is weird - but this is the only way that works :( 
 	bevent.window = window;
 	bevent.root = root;
 	bevent.subwindow = window;
@@ -77,7 +78,7 @@ void xevent_send_button1_event(Window window, int root_x, int root_y, int direct
 		bevent.state = ButtonReleaseMask;
 		XSendEvent(main_window->display, window, TRUE, ButtonReleaseMask, (XEvent *) &bevent);
 	}
-}
+} */
 
 static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 {
@@ -216,7 +217,7 @@ void xevent_send_next_event(struct _xevent *p)
 	Window window = p->event.xany.window;
 	if (window == None)
 		window = p->owner_window;
-	//XtDispatchEvent(&p->event);
+	
 	XSendEvent(main_window->display, window, TRUE, send_mask, &p->event);		
 }
 
@@ -243,7 +244,7 @@ struct _xevent* xevent_init(void)
 	p->get_cur_modifiers	= xevent_get_cur_modifiers;
 	p->send_backspaces	= xevent_send_backspaces;
 	p->send_selection	= xevent_send_selection;
-	p->send_button1_event = xevent_send_button1_event;
+	//p->send_button1_event = xevent_send_button1_event;
 	p->uninit		= xevent_uninit;
 
 	return p;
