@@ -46,7 +46,7 @@ static const char *option_names[] = 	{
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySound", "SendDelay", "LayoutRememberModeForApp",
-						"DrawFlagApp", "AddFlagPixmap"
+						"DrawFlagApp", "AddFlagPixmap", "SaveLog"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode", 
@@ -377,6 +377,16 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 
 			p->flags[flag].file = strdup(get_word(&line));
+			break;
+		}
+		case 23: // Save Keyboard Log
+		{
+			if (strcmp(param, "Yes") == 0)
+				p->save_log_mode = LOG_ENABLED;
+			else if (strcmp(param, "No") == 0)
+				p->save_log_mode = LOG_DISABLED;
+			else
+				log_message(WARNING, "Invalid value for save keyboard log mode specified");
 			break;
 		}
 	}
@@ -760,6 +770,14 @@ int xneur_config_save(struct _xneur_config *p)
 		fprintf(stream, "DrawFlagApp %s\n", p->draw_flag_apps->data[i].string);
 	fprintf(stream, "\n");
 			
+	fprintf(stream, "# This option enable or disable logging keyboard\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#SaveLog No\n");
+	if (p->save_log_mode)
+		fprintf(stream, "SaveLog Yes\n\n");
+	else
+		fprintf(stream, "SaveLog No\n\n");
+			
 	fprintf(stream, "# That's all\n");
 
 	fclose(stream);
@@ -903,6 +921,7 @@ struct _xneur_config* xneur_config_init(void)
 	p->education_mode		= EDUCATION_MODE_DISABLE;
 	p->layout_remember_mode		= LAYOUTE_REMEMBER_DISABLE;
 	p->save_selection_mode		= SELECTION_SAVE_DISABLED;
+	p->save_log_mode		= LOG_DISABLED;
 	
 	// Function mapping
 	p->get_dict_path		= get_file_path_name;

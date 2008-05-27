@@ -22,8 +22,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdio.h>
+#include <time.h>
 
 #include "xnconfig.h"
+#include "xnconfig_files.h"
 
 #include "xwindow.h"
 #include "xevent.h"
@@ -51,6 +54,45 @@ void xstring_set_key_code(struct _xstring *p, int lang)
 		p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~languages_mask);
 		p->keycode_modifiers[i] = p->keycode_modifiers[i] | keycode_mod;
 	}
+}
+
+void xstring_savelog(struct _xstring *p, char *file_name, char *app_name)
+{
+	if (xconfig->save_log_mode != LOG_ENABLED)
+		return;
+	
+	if (p->cur_pos == 0)
+		return;
+	
+	if (file_name == NULL)
+		return;
+	
+	char *file_path_name = get_home_file_path_name(NULL, file_name);
+	
+	FILE *stream = fopen(file_path_name, "a");
+	if (stream == NULL)
+		return;
+	
+	time_t curtime = time(NULL);
+	struct tm *loctime = localtime(&curtime);
+	char buffer[256];
+	strftime(buffer, 256, "%c", loctime);
+	fprintf(stream, "[%s] (%s)\n", app_name, buffer);
+
+	for (int i=0; i<p->cur_pos; i++)
+	{
+		char *symbol = keycode_to_symbol(p->keycode[i], -1, p->keycode_modifiers[i]);
+		
+		if (symbol != NULL)
+			fprintf(stream, "%s", symbol);
+		else
+			fprintf(stream, "?");
+		
+		free(symbol);
+	}
+	fprintf(stream, "\n\n");
+	
+	fclose(stream);
 }
 
 void xstring_clear(struct _xstring *p)
@@ -186,6 +228,7 @@ struct _xstring* xstring_init(void)
 
 	// Functions mapping
 	p->clear		= xstring_clear;
+	p->savelog		= xstring_savelog;
 	p->is_space_last	= xstring_is_space_last;
 	p->set_key_code		= xstring_set_key_code;
 	p->set_content		= xstring_set_content;

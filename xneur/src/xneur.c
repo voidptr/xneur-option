@@ -148,6 +148,11 @@ static void xneur_load_config(int final)
 		current_mode = "No";
 	log_message(LOG, "Sound playing mode set to %s", current_mode);
 	
+	current_mode = "Yes";
+	if (xconfig->save_log_mode == LOG_DISABLED)
+		current_mode = "No";
+	log_message(LOG, "Logging keyboard mode set to %s", current_mode);
+	
 	bind_manual_actions();	
 }
 

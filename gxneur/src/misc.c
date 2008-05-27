@@ -561,6 +561,10 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton5");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->sound_mode);
 	
+	// Logging Keyboard Mode
+	widget = glade_xml_get_widget (gxml, "checkbutton6");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->save_log_mode);
+	
 	// Sound Paths Preference
 	fill_sounds(0, gxml, "entry21", TRUE);
 	fill_sounds(1, gxml, "entry22", TRUE);
@@ -806,6 +810,12 @@ void xneur_save_preference(GladeXML *gxml)
 		xconfig->sound_mode = SOUND_ENABLED;
 	else
 		xconfig->sound_mode = SOUND_DISABLED;
+	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton6");
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
+		xconfig->save_log_mode = LOG_ENABLED;
+	else
+		xconfig->save_log_mode = LOG_DISABLED;
 	
 	// Sound Paths Preference
 	fill_sounds(0, gxml, "entry21", FALSE);

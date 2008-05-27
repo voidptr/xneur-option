@@ -127,20 +127,6 @@ void grab_keyboard(Window window, int is_grab)
 		log_message(ERROR, "Failed to %s keyboard with error BadWindow", grab_ungrab[is_grab]);
 }
 
-void grab_enter_key(Window window, int is_grab)
-{
-	int status;
-	if (is_grab)
-		status = XGrabKey(main_window->display, 36, AnyModifier, window, TRUE, GrabModeAsync, GrabModeAsync);
-	else
-		status = XUngrabKey(main_window->display, 36, AnyModifier, window);
-	
-	if (status == BadValue)
-		log_message(ERROR, "Failed to %s keyboard with error BadValue", grab_ungrab[is_grab]);
-	else if (status == BadWindow)
-		log_message(ERROR, "Failed to %s keyboard with error BadWindow", grab_ungrab[is_grab]);
-}
-
 char* get_wm_class_name(Window window)
 {
 	if (window == None)

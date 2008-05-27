@@ -190,6 +190,14 @@ static int get_auto_action(struct _xprogram *p, KeySym key, int modifier_mask)
 	return KLB_ADD_SYM;
 }
 
+static void save_and_clear_string(struct _xprogram *p)
+{
+	char *curr_app_name = get_wm_class_name(p->focus->owner_window);
+	p->string->savelog(p->string, LOG_NAME, curr_app_name);
+	p->string->clear(p->string);
+	free(curr_app_name);
+}
+
 void xprogram_cursor_update(struct _xprogram *p)
 {
 	if (p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
@@ -297,7 +305,7 @@ void xprogram_update(struct _xprogram *p, int *do_update)
 	if (status != FOCUS_UNCHANGED)
 	{
 		p->layout_update(p);
-		p->string->clear(p->string);
+		save_and_clear_string(p);
 	}
 
 	if (status == FOCUS_NONE)
@@ -391,7 +399,7 @@ void xprogram_process_input(struct _xprogram *p)
 			case ButtonPress:
 			{
 				// Falling down
-				p->string->clear(p->string);
+				save_and_clear_string(p);
 				log_message(TRACE, "Received ButtonPress on window %d", p->event->event.xbutton.window);
 
 				// Unfreeze and resend grabbed event
@@ -476,7 +484,7 @@ void xprogram_process_selection(struct _xprogram *p)
 	if (xconfig->save_selection_mode == SELECTION_SAVE_ENABLED)
 		p->event->send_selection(p->event, p->string->cur_pos);
 
-	p->string->clear(p->string);
+	save_and_clear_string(p);
 	free(selected_text);
 }
 
@@ -508,7 +516,7 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 	{
 		case KLB_CLEAR:
 		{
-			string->clear(string);
+			save_and_clear_string(p);
 			return;
 		}
 		case KLB_DEL_SYM:

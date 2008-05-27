@@ -26,6 +26,5 @@ void   set_event_mask(Window window, int event_mask);
 char*  get_wm_class_name(Window window);
 void   grab_button(Window window, int is_grab);
 void   grab_keyboard(Window window, int is_grab);
-void   grab_enter_key(Window window, int is_grab);
 
 #endif /* _XUTILS_H_ */

@@ -22,6 +22,7 @@
 
 #define CONFIG_NAME			"xneurrc"
 #define CONFIG_BCK_NAME			"xneurrc~"
+#define LOG_NAME			"xneurlog"
 
 #define DICT_NAME			"dict"
 #define PROTO_NAME			"proto"
@@ -46,6 +47,9 @@
 
 #define SOUND_DISABLED			0
 #define SOUND_ENABLED			1
+
+#define LOG_DISABLED			0
+#define LOG_ENABLED				1
 
 #define DRAW_FLAG_DISABLED			0
 #define DRAW_FLAG_ENABLED			1
@@ -179,7 +183,8 @@ struct _xneur_config
 	int   education_mode;				// Education xneur
 	int   layout_remember_mode;			// Remember layout for each of window
 	int   save_selection_mode;			// Save selection after convert
-	
+	int   save_log_mode;				// Save keyboard log
+	 
 	struct _list_char *draw_flag_apps;
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw
 		   

@@ -135,7 +135,9 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 {
 	XEvent event = create_basic_event();
 	event.xkey.keycode = kc;
-	event.xkey.state = groups[group];
+	event.xkey.state = 0;
+	if (group >= 0)
+		event.xkey.state = groups[group];
 	event.xkey.state |= state;
 
 	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
