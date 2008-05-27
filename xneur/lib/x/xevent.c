@@ -42,47 +42,6 @@ extern struct _xneur_config *xconfig;
 	
 static const int groups[4] = {0x00000000, 0x00002000, 0x00004000, 0x00006000};
 
-void xevent_send_button1_event(struct _xevent *p)
-{
-	XButtonEvent bevent;
-
-	//Window root = XDefaultRootWindow(main_window->display);
-	bevent.display = main_window->display;
-	
-	// This is weird - but this is the only way that works :( 
-	bevent.window = p->event.xbutton.window;
-	bevent.root = p->event.xbutton.root;
-	bevent.subwindow = p->event.xbutton.subwindow;
-	bevent.time = CurrentTime;
-	//XTranslateCoordinates(main_window->display, root, window, root_x, root_y, &x, &y, &tmp);
-	bevent.x_root = p->event.xbutton.x_root;
-	bevent.y_root = p->event.xbutton.y_root;
-	bevent.x = p->event.xbutton.x;
-	bevent.y = p->event.xbutton.y;
-	bevent.button = 1;
-	bevent.same_screen = 1;
-
-	int group_mask = groups[get_cur_lang()];
-	int mod_mask = p->get_cur_modifiers(p);
-	bevent.state	= group_mask;
-	bevent.state	|= mod_mask;
-	
-	//if(direction == DOWN) 
-	//{
-		bevent.type = ButtonPress;
-		bevent.state |= ButtonPressMask;
-		XSendEvent(main_window->display, p->event.xbutton.window, TRUE, ButtonPressMask, (XEvent *) &bevent);
-	//}
-
-	//if(direction == UP) 
-	//{
-		bevent.type = ButtonRelease;
-		bevent.state &= ~ButtonPressMask;
-		bevent.state |= ButtonReleaseMask;
-		XSendEvent(main_window->display, p->event.xbutton.window, TRUE, ButtonReleaseMask, (XEvent *) &bevent);
-	//}
-}
-
 static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 {
 	p->event.type			= KeyPress;
@@ -203,26 +162,15 @@ int xevent_get_next_event(struct _xevent *p)
 
 void xevent_send_next_event(struct _xevent *p)
 {
-	int send_mask = NoEventMask;
-	int group_mask = groups[get_cur_lang()];
-	int mod_mask = p->get_cur_modifiers(p);
+	Window wDummy;
+	int iDummy;
+	unsigned int mask;
+	XQueryPointer(main_window->display, DefaultRootWindow(main_window->display), &wDummy, &wDummy, &iDummy, &iDummy, &iDummy, &iDummy, &mask);
+
 	if (p->event.type == KeyPress || p->event.type == KeyRelease)
-	{
-		p->event.xkey.state	= group_mask;
-		p->event.xkey.state	|= mod_mask;
-	}
+		p->event.xkey.state	= mask;
 	
-	if (p->event.type == ButtonPress || p->event.type == ButtonRelease || p->event.type == MotionNotify)
-	{
-		send_mask = BUTTON_HANDLE_MASK;
-		p->event.xbutton.state	= group_mask;
-		p->event.xbutton.state	|= mod_mask;		
-	}
-	Window window = p->event.xany.window;
-	if (window == None)
-		window = p->owner_window;
-	
-	XSendEvent(main_window->display, window, TRUE, send_mask, &p->event);		
+	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);		
 }
 
 void xevent_uninit(struct _xevent *p)
@@ -248,7 +196,6 @@ struct _xevent* xevent_init(void)
 	p->get_cur_modifiers	= xevent_get_cur_modifiers;
 	p->send_backspaces	= xevent_send_backspaces;
 	p->send_selection	= xevent_send_selection;
-	p->send_button1_event = xevent_send_button1_event;
 	p->uninit		= xevent_uninit;
 
 	return p;

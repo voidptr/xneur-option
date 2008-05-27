@@ -24,9 +24,6 @@
 
 #include "xstring.h"
 
-#define DOWN 0
-#define UP 1
-
 int get_key_state(int key);
 XEvent create_basic_event(void);
 
@@ -47,7 +44,6 @@ struct _xevent
 	void (*send_string) (struct _xevent *p, struct _xstring *str);
 	void (*send_backspaces) (struct _xevent *p, int n);
 	void (*send_selection) (struct _xevent *p, int n);
-	void (*send_button1_event) (struct _xevent *p);
 	void (*uninit) (struct _xevent *p);
 };
 

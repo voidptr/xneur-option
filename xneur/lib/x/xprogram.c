@@ -525,6 +525,9 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 			p->last_action = action;
 
+			// Save event
+			XEvent tmp = p->event->event;
+			
 			if (action == KLB_ADD_SYM)
 			{
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
@@ -535,10 +538,9 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
 
 				return;
-			}
-
-			// Save event
-			XEvent tmp = p->event->event;	
+			}	
+			// Restore event
+			p->event->event = tmp;
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 			{
 				// Checking word
@@ -678,12 +680,8 @@ void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)
 	if (send_backspaces == FALSE)
 		bcount = 0;
 
-	p->focus->update_events(p->focus, LISTEN_FLUSH);		// Disable receiving events
 	p->event->send_backspaces(p->event, bcount);			// Delete old string
 	p->event->send_string(p->event, p->string);			// Send new string
-
-	int do_update = TRUE;
-	p->update(p, &do_update);
 }
 
 void xprogram_change_word(struct _xprogram *p, int new_lang)
