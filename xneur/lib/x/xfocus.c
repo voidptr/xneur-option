@@ -174,7 +174,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 
 int xfocus_draw_flag(struct _xfocus *p, Window event_window)
 {
-	char *app_name = get_wm_class_name(p->parent_window);
+	char *app_name = get_wm_class_name(p->owner_window);
 	if (app_name == NULL)
 		return FALSE;
 	
