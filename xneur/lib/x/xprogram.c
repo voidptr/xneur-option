@@ -103,9 +103,6 @@ static int get_auto_action(struct _xprogram *p, KeySym key, int modifier_mask)
 		return KLB_CLEAR;
 	}
 
-	if (xconfig->events_receive_mode == EVENT_RELEASE && IsModifierKey(key)) 
-		p->modifier_mask = p->event->event.xkey.state;
-	
 	// Func, Mod, PF, PrivateKeypad keys
 	if (IsFunctionKey(key) || IsModifierKey(key) || IsPFKey(key) || IsPrivateKeypadKey(key))
 		return KLB_NO_ACTION;
@@ -342,8 +339,12 @@ void xprogram_process_input(struct _xprogram *p)
 			{
 				log_message(TRACE, "Received KeyPress");
 
-				if (xconfig->events_receive_mode == EVENT_PRESS)
-					p->on_key_action(p);
+				// Processing...
+				p->on_key_action(p);
+				// Unfreeze
+				XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);								
+				// Resend grabbed event
+				p->event->send_next_event(p->event);
 				
 				p->update(p, &do_update);				
 				break;
@@ -352,17 +353,18 @@ void xprogram_process_input(struct _xprogram *p)
 			{
 				log_message(TRACE, "Received KeyRelease");
 
-				if (xconfig->events_receive_mode == EVENT_RELEASE)
-					p->on_key_action(p);
+				// Unfreeze and resend grabbed event
+				XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
+				p->event->send_next_event(p->event);
 				
 				p->update(p, &do_update);
 				break;
 			}
 			case FocusIn:
+				log_message(TRACE, "Received FocusIn");
 			case LeaveNotify:
 			case EnterNotify:
 			{
-				log_message(TRACE, "Received FocusIn/LeaveNotify/EnterNotify");
 				p->cursor_update(p);
 				
 				p->last_layout = get_active_keyboard_group();
@@ -392,16 +394,9 @@ void xprogram_process_input(struct _xprogram *p)
 				p->string->clear(p->string);
 				log_message(TRACE, "Received ButtonPress on window %d", p->event->event.xbutton.window);
 
-				p->focus->update_events(p->focus, LISTEN_FLUSH);
-				
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 
-				int listen_mode = LISTEN_GRAB_INPUT;
-				if (p->app_focus_mode == FOCUS_EXCLUDED)
-					listen_mode = LISTEN_DONTGRAB_INPUT;
-				p->focus->update_events(p->focus, listen_mode);
-				
 				break;
 			}
 			case MotionNotify:
@@ -423,10 +418,7 @@ void xprogram_process_input(struct _xprogram *p)
 					// Update flag
 					p->cursor_update(p);
 				}
-				// On all event
-				if (xconfig->events_receive_mode == EVENT_RELEASE)
-					p->modifier_mask = NO_MODIFIER_MASK;
-				
+			
 				break;
 			}
 			default:
@@ -524,15 +516,12 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			string->del_symbol(string);
 			return;
 		}
+		case KLB_ENTER:
 		case KLB_SPACE:
 		case KLB_ADD_SYM:
 		{
 			if (p->changed_manual == MANUAL_FLAG_SET)
 				p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
-
-			char sym = main_window->xkeymap->get_cur_ascii_char(main_window->xkeymap, p->event->event);
-			
-			string->add_symbol(string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
 
 			p->last_action = action;
 
@@ -541,46 +530,26 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
 					p->changed_manual = MANUAL_FLAG_UNSET;
 
+				// Add symbol to internal bufer
+				char sym = main_window->xkeymap->get_cur_ascii_char(main_window->xkeymap, p->event->event);
+				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
+
 				return;
 			}
 
+			// Save event
+			XEvent tmp = p->event->event;	
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 			{
-				// Block keyboard
-				grab_keyboard(p->focus->owner_window, TRUE);
-	
 				// Checking word
 				p->check_last_word(p);
-
-				// Sending blocked events
-				while (XEventsQueued(main_window->display, QueuedAlready))
-				{
-					int type = p->event->get_next_event(p->event);
-					p->event->send_next_event(p->event);
-
-					if (type == KeyPress)
-						p->on_key_action(p);	
-				}
-
-				// Unblock keyboard 
-				grab_keyboard(p->focus->owner_window, FALSE);
-			}
-			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
-
-			return;
-		}
-		case KLB_ENTER:
-		{
-			char sym = main_window->xkeymap->get_cur_ascii_char(main_window->xkeymap, p->event->event);
-			
-			string->add_symbol(string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
 				
-			int do_update = TRUE;
-			p->update(p, &do_update);
-			
-			string->clear(string);
-			
-			p->last_action = action;
+			}
+			// Restore event
+			p->event->event = tmp;
+			// Add symbol to internal bufer
+			char sym = main_window->xkeymap->get_cur_ascii_char(main_window->xkeymap, p->event->event);
+			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
 			
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			
@@ -707,7 +676,7 @@ void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)
 
 	int bcount = p->string->cur_pos;
 	if (send_backspaces == FALSE)
-		bcount = 1;
+		bcount = 0;
 
 	p->focus->update_events(p->focus, LISTEN_FLUSH);		// Disable receiving events
 	p->event->send_backspaces(p->event, bcount);			// Delete old string

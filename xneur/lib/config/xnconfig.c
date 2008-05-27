@@ -46,7 +46,7 @@ static const char *option_names[] = 	{
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySound", "SendDelay", "LayoutRememberModeForApp",
-						"EventsReceiveMode", "DrawFlagApp", "AddFlagPixmap"
+						"DrawFlagApp", "AddFlagPixmap"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode", 
@@ -354,22 +354,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->layout_remember_apps->add(p->layout_remember_apps, param);
 			break;
 		}
-		case 21: // Get Receive Events Mode (KeyPress/KeyRelease)
-		{
-			if (strcmp(param, "KeyPress") == 0)
-				p->events_receive_mode = EVENT_PRESS;
-			else if (strcmp(param, "KeyRelease") == 0)
-				p->events_receive_mode = EVENT_RELEASE;
-			else
-				log_message(WARNING, "Invalid value for receive events mode specified");
-			break;
-		}
-		case 22: // Get Draw Flag Applications
+		case 21: // Get Draw Flag Applications
 		{
 			p->draw_flag_apps->add(p->draw_flag_apps, param);
 			break;
 		}
-		case 23: // Flags
+		case 22: // Flags
 		{
 			int flag;
 			if (strcmp(param, "Layout1Flag") == 0)
@@ -751,12 +741,6 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option define delay before sendind events to application (in milliseconds between 0 to 50).\n");
 	fprintf(stream, "SendDelay %d\n\n", p->send_delay);
 	
-	fprintf(stream, "# This option define KeyPress or KeyRelease events used in program\n");
-	if (p->events_receive_mode == EVENT_PRESS)
-		fprintf(stream, "EventsReceiveMode KeyPress\n\n");
-	else
-		fprintf(stream, "EventsReceiveMode KeyRelease\n\n");
-			
 	fprintf(stream, "# Binds pixmaps for some layouts (pixmap only in xpm format)\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.xpm\n");			
@@ -919,7 +903,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->education_mode		= EDUCATION_MODE_DISABLE;
 	p->layout_remember_mode		= LAYOUTE_REMEMBER_DISABLE;
 	p->save_selection_mode		= SELECTION_SAVE_DISABLED;
-	p->events_receive_mode		= EVENT_PRESS;
 	
 	// Function mapping
 	p->get_dict_path		= get_file_path_name;

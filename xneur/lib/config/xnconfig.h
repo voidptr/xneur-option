@@ -50,9 +50,6 @@
 #define DRAW_FLAG_DISABLED			0
 #define DRAW_FLAG_ENABLED			1
 
-#define EVENT_PRESS			0
-#define EVENT_RELEASE			1
-
 #define NO_LANGUAGE			-1
 
 #define SOUNDDIR			"sounds"
@@ -182,7 +179,6 @@ struct _xneur_config
 	int   education_mode;				// Education xneur
 	int   layout_remember_mode;			// Remember layout for each of window
 	int   save_selection_mode;			// Save selection after convert
-	int   events_receive_mode;			// Define KeyPress or KeyRelease mode used in xneur
 	
 	struct _list_char *draw_flag_apps;
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw

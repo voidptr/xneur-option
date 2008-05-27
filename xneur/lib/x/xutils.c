@@ -101,7 +101,7 @@ void grab_button(Window window, int is_grab)
 	
 	int status;
 	if (is_grab)
-		status = XGrabButton(main_window->display, Button1, AnyModifier, window, TRUE, BUTTON_HANDLE_MASK, GrabModeSync, GrabModeAsync, None, None);
+		status = XGrabButton(main_window->display, Button1, AnyModifier, window, TRUE, BUTTON_HANDLE_MASK, GrabModeSync, GrabModeSync, None, None);
 	else
 		status = XUngrabButton(main_window->display, Button1, AnyModifier, window);
 
@@ -117,7 +117,7 @@ void grab_keyboard(Window window, int is_grab)
 {
 	int status;
 	if (is_grab)
-		status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, TRUE, GrabModeAsync, GrabModeAsync);
+		status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, TRUE, GrabModeSync, GrabModeSync);
 	else
 		status = XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
 	

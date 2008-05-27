@@ -148,11 +148,6 @@ static void xneur_load_config(int final)
 		current_mode = "No";
 	log_message(LOG, "Sound playing mode set to %s", current_mode);
 	
-	current_mode = "KeyPress";
-	if (xconfig->events_receive_mode == EVENT_RELEASE)
-		current_mode = "KeyRelease";
-	log_message(LOG, "Current events receive mode set to %s", current_mode);
-		
 	bind_manual_actions();	
 }
 

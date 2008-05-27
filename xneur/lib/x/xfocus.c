@@ -147,27 +147,24 @@ static void set_mask_to_window(Window current_window, int mask)
 
 void xfocus_update_events(struct _xfocus *p, int mode)
 {
-	int mask = FOCUS_CHANGE_MASK;
+	int mask = POINTER_MOTION_MASK;
+	set_mask_to_window(p->parent_window, mask);
+	
 	if (mode == LISTEN_FLUSH)
-		mask = None;
-	else if (mode == LISTEN_GRAB_INPUT)
 	{
-		if (xconfig->events_receive_mode == EVENT_PRESS)
-			mask |= EVENT_PRESS_MASK;
-		else
-			mask |= EVENT_RELEASE_MASK;
-		
+		mask = None;
+		grab_keyboard(p->owner_window, FALSE);
+	}
+	else
+	{
 		mask |= INPUT_HANDLE_MASK;
-		mask |= POINTER_MOTION_MASK;
+		mask |= FOCUS_CHANGE_MASK;
+		grab_keyboard(p->owner_window, TRUE);
 	}
 	
-	// Flush mask and grabbing 
-	if (p->last_parent_window != None)
-		set_mask_to_window(p->last_parent_window, POINTER_MOTION_MASK);
-	
+	set_event_mask(p->owner_window, mask);
+
 	p->last_parent_window = p->parent_window;
-	
-	set_mask_to_window(p->parent_window, mask);
 	
 	XFlush(main_window->display);
 }
