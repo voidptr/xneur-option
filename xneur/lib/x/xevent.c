@@ -18,6 +18,7 @@
  */
 
 #include <X11/keysym.h>
+#include <X11/extensions/XTest.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -142,14 +143,22 @@ KeySym xevent_get_cur_keysym(struct _xevent *p)
 int xevent_get_cur_modifiers(struct _xevent *p)
 {
 	int mask = 0;
-	if (p->event.xkey.state & ControlMask)
-		mask += 4;
 	if (p->event.xkey.state & ShiftMask)
 		mask += 1;
+	if (p->event.xkey.state & LockMask)
+		mask += 1;
+	if (p->event.xkey.state & ControlMask)
+		mask += 4;
 	if (p->event.xkey.state & Mod1Mask)
 		mask += 8;
+	if (p->event.xkey.state & Mod2Mask)
+		mask += 16;
+	if (p->event.xkey.state & Mod3Mask)
+		mask += 32;
 	if (p->event.xkey.state & Mod4Mask)
 		mask += 64;
+	if (p->event.xkey.state & Mod5Mask)
+		mask += 128;
 	return mask;
 }
 
@@ -162,15 +171,24 @@ int xevent_get_next_event(struct _xevent *p)
 
 void xevent_send_next_event(struct _xevent *p)
 {
-	Window wDummy;
-	int iDummy;
-	unsigned int mask;
-	XQueryPointer(main_window->display, DefaultRootWindow(main_window->display), &wDummy, &wDummy, &iDummy, &iDummy, &iDummy, &iDummy, &mask);
-
+	int mask = groups[get_cur_lang()]; 
+	mask |= p->get_cur_modifiers(p); 
 	if (p->event.type == KeyPress || p->event.type == KeyRelease)
 		p->event.xkey.state	= mask;
 	
-	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);		
+	XSendEvent(main_window->display, p->event.xany.window, FALSE, NoEventMask, &p->event);		
+}
+
+void xevent_send_fake_key_event(struct _xevent *p, int direction)
+{
+	XTestFakeKeyEvent(main_window->display, p->event.xkey.keycode, direction, 0);
+	
+/*	int mask = groups[get_cur_lang()]; 
+	mask |= p->get_cur_modifiers(p); 
+	if (p->event.type == KeyPress || p->event.type == KeyRelease)
+		p->event.xkey.state	= mask;
+	
+	XSendEvent(main_window->display, p->event.xany.window, FALSE, NoEventMask, &p->event);	*/		
 }
 
 void xevent_uninit(struct _xevent *p)
@@ -189,6 +207,7 @@ struct _xevent* xevent_init(void)
 
 	// Functions mapping
 	p->get_next_event	= xevent_get_next_event;
+	p->send_fake_key_event = xevent_send_fake_key_event;
 	p->send_next_event	= xevent_send_next_event;
 	p->set_owner_window	= xevent_set_owner_window;
 	p->send_string		= xevent_send_string;

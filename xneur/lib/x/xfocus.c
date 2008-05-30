@@ -148,9 +148,10 @@ static void set_mask_to_window(Window current_window, int mask)
 void xfocus_update_events(struct _xfocus *p, int mode)
 {
 	int mask = POINTER_MOTION_MASK;
+	mask |= BUTTON_HANDLE_MASK;
 	set_mask_to_window(p->parent_window, mask);
 	
-	if (mode == LISTEN_FLUSH)
+	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
 		mask = None;
 		grab_keyboard(p->owner_window, FALSE);

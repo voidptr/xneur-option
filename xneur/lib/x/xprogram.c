@@ -323,14 +323,14 @@ void xprogram_process_input(struct _xprogram *p)
 {
 	int do_update = TRUE;
 	p->update(p, &do_update);
-				
+
 	while (1)
 	{
 		int type = p->event->get_next_event(p->event);
 		
 		if (p->event->event.xany.window == main_window->flag_window)
 			continue;
-		
+
 		switch (type)
 		{
 			case ClientMessage:
@@ -346,14 +346,17 @@ void xprogram_process_input(struct _xprogram *p)
 			case KeyPress:
 			{
 				log_message(TRACE, "Received KeyPress");
-
 				// Processing...
 				p->on_key_action(p);
 				// Unfreeze
 				XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);								
 				// Resend grabbed event
 				p->event->send_next_event(p->event);
-				
+				/*p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+				p->event->send_fake_key_event(p->event, TRUE);
+				XEvent dummy;
+				XNextEvent(main_window->display, &dummy);
+				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);*/
 				p->update(p, &do_update);				
 				break;
 			}
@@ -362,8 +365,10 @@ void xprogram_process_input(struct _xprogram *p)
 				log_message(TRACE, "Received KeyRelease");
 
 				// Unfreeze and resend grabbed event
-				XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
-				p->event->send_next_event(p->event);
+				XAllowEvents(main_window->display, ReplayKeyboard, CurrentTime);
+				//p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+				//p->event->send_fake_key_event(p->event, FALSE);
+				//p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 				
 				p->update(p, &do_update);
 				break;
