@@ -365,7 +365,10 @@ void xprogram_process_input(struct _xprogram *p)
 				log_message(TRACE, "Received KeyRelease");
 
 				// Unfreeze and resend grabbed event
-				XAllowEvents(main_window->display, ReplayKeyboard, CurrentTime);
+				XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
+				// Resend grabbed event
+				p->event->send_next_event(p->event);
+				
 				//p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 				//p->event->send_fake_key_event(p->event, FALSE);
 				//p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);

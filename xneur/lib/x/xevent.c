@@ -176,7 +176,7 @@ void xevent_send_next_event(struct _xevent *p)
 	if (p->event.type == KeyPress || p->event.type == KeyRelease)
 		p->event.xkey.state	= mask;
 	
-	XSendEvent(main_window->display, p->event.xany.window, FALSE, NoEventMask, &p->event);		
+	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);		
 }
 
 void xevent_send_fake_key_event(struct _xevent *p, int direction)
