@@ -319,11 +319,13 @@ void xprogram_update(struct _xprogram *p, int *do_update)
 	p->focus->update_events(p->focus, listen_mode);
 }
 
+
+#include "xdefines.h"
 void xprogram_process_input(struct _xprogram *p)
 {
 	int do_update = TRUE;
 	p->update(p, &do_update);
-
+	int stop = 0;
 	while (1)
 	{
 		int type = p->event->get_next_event(p->event);
@@ -346,17 +348,29 @@ void xprogram_process_input(struct _xprogram *p)
 			case KeyPress:
 			{
 				log_message(TRACE, "Received KeyPress");
+				if (stop == 10)
+					exit(0);
+				stop++;
 				// Processing...
 				p->on_key_action(p);
 				// Unfreeze
 				XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);								
 				// Resend grabbed event
 				p->event->send_next_event(p->event);
+				
 				/*p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+				
+				set_event_mask(p->focus->owner_window, EVENT_PRESS_MASK | EVENT_RELEASE_MASK);
+
 				p->event->send_fake_key_event(p->event, TRUE);
+				
+				//XFlush(main_window->display);
+
 				XEvent dummy;
 				XNextEvent(main_window->display, &dummy);
+				log_message(TRACE, "Received Fake KeyPress");
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);*/
+				
 				p->update(p, &do_update);				
 				break;
 			}
@@ -369,9 +383,15 @@ void xprogram_process_input(struct _xprogram *p)
 				// Resend grabbed event
 				p->event->send_next_event(p->event);
 				
-				//p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
-				//p->event->send_fake_key_event(p->event, FALSE);
-				//p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
+				/*p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+				set_event_mask(p->focus->owner_window, EVENT_PRESS_MASK | EVENT_RELEASE_MASK);
+				//XTestGrabControl (main_window->display, False);
+				p->event->send_fake_key_event(p->event, FALSE);
+				//XFlush(main_window->display);
+				XEvent dummy;
+				XNextEvent(main_window->display, &dummy);
+				log_message(TRACE, "Received Fake KeyRelease");
+				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);*/
 				
 				p->update(p, &do_update);
 				break;

@@ -148,7 +148,7 @@ static void set_mask_to_window(Window current_window, int mask)
 void xfocus_update_events(struct _xfocus *p, int mode)
 {
 	int mask = POINTER_MOTION_MASK;
-	mask |= BUTTON_HANDLE_MASK;
+	
 	set_mask_to_window(p->parent_window, mask);
 	
 	if (mode == LISTEN_DONTGRAB_INPUT)
@@ -162,7 +162,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 		mask |= FOCUS_CHANGE_MASK;
 		grab_keyboard(p->owner_window, TRUE);
 	}
-	
+
 	set_event_mask(p->owner_window, mask);
 
 	p->last_parent_window = p->parent_window;
