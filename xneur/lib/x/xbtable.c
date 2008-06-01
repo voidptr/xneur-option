@@ -88,6 +88,15 @@ enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
 {
 	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
 	{
+		log_message(DEBUG, "Btable %s %s mod %d", 
+					XKeysymToString(btable[action].key_sym), 
+					XKeysymToString(btable[action].key_sym_shift),
+					btable[action].modifier_mask);
+		log_message(DEBUG, "Receiv %s %s mod %d", 
+					XKeysymToString(key_sym), 
+					XKeysymToString(key_sym),
+					mask);
+		
 		if (btable[action].key_sym != key_sym && btable[action].key_sym_shift != key_sym)
 			continue;
 

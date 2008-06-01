@@ -107,7 +107,7 @@ int get_key_state(int key)
 
 	if (key_mask == 0)
 		return 0;
-
+	
 	XFreeModifiermap(map);
 
 	Window wDummy;
@@ -144,20 +144,12 @@ int xevent_get_cur_modifiers(struct _xevent *p)
 	int mask = 0;
 	if (p->event.xkey.state & ShiftMask)
 		mask += 1;
-	if (p->event.xkey.state & LockMask)
-		mask += 2;
 	if (p->event.xkey.state & ControlMask)
 		mask += 4;
 	if (p->event.xkey.state & Mod1Mask)
 		mask += 8;
-	if (p->event.xkey.state & Mod2Mask)
-		mask += 16;
-	if (p->event.xkey.state & Mod3Mask)
-		mask += 32;
 	if (p->event.xkey.state & Mod4Mask)
 		mask += 64;
-	if (p->event.xkey.state & Mod5Mask)
-		mask += 128;
 	return mask;
 }
 
