@@ -147,27 +147,31 @@ static void set_mask_to_window(Window current_window, int mask)
 
 void xfocus_update_events(struct _xfocus *p, int mode)
 {
+	// Mouse pointer motion masking every time for all windows
 	int mask = POINTER_MOTION_MASK;
-	
 	set_mask_to_window(p->parent_window, mask);
 	
+	// Grabbing ONLY after masking!!!
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
+		// Event unmasking
 		mask = None;
-		grab_keyboard(p->owner_window, FALSE);
+		set_event_mask(p->owner_window, mask);
+		// Ungrabbing special key (Enter, Tab and other)
+		grab_spec_keys(p->owner_window, FALSE);
 	}
 	else
 	{
+		// Event masking
 		mask |= INPUT_HANDLE_MASK;
 		mask |= FOCUS_CHANGE_MASK;
-		grab_keyboard(p->owner_window, TRUE);
+		mask |= EVENT_PRESS_MASK;
+		set_event_mask(p->owner_window, mask);
+		// Grabbing special key (Enter, Tab and other)
+		grab_spec_keys(p->owner_window, TRUE);
 	}
 
-	set_event_mask(p->owner_window, mask);
-
 	p->last_parent_window = p->parent_window;
-	
-	XFlush(main_window->display);
 }
 
 int xfocus_draw_flag(struct _xfocus *p, Window event_window)

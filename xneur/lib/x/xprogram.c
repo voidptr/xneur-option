@@ -132,19 +132,6 @@ static int get_auto_action(struct _xprogram *p, KeySym key, int modifier_mask)
 			return KLB_ENTER;
 		case XK_Tab:
 		case XK_space:
-		case XK_exclam:
-		case XK_at:
-		case XK_numbersign:
-		case XK_ssharp:
-		case XK_dollar:
-		case XK_percent:
-		case XK_asciicircum:
-		case XK_ampersand:
-		case XK_asterisk:
-		case XK_parenleft:
-		case XK_parenright:
-		case XK_hyphen:
-		case XK_underscore:
 		case XK_equal:
 		case XK_plus:
 		case XK_minus:
@@ -319,13 +306,11 @@ void xprogram_update(struct _xprogram *p, int *do_update)
 	p->focus->update_events(p->focus, listen_mode);
 }
 
-
-#include "xdefines.h"
 void xprogram_process_input(struct _xprogram *p)
 {
 	int do_update = TRUE;
 	p->update(p, &do_update);
-	int stop = 0;
+
 	while (1)
 	{
 		int type = p->event->get_next_event(p->event);
@@ -348,28 +333,9 @@ void xprogram_process_input(struct _xprogram *p)
 			case KeyPress:
 			{
 				log_message(TRACE, "Received KeyPress");
-				if (stop == 10)
-					exit(0);
-				stop++;
+
 				// Processing...
 				p->on_key_action(p);
-				// Unfreeze
-				XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);								
-				// Resend grabbed event
-				p->event->send_next_event(p->event);
-				
-				/*p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
-				
-				set_event_mask(p->focus->owner_window, EVENT_PRESS_MASK | EVENT_RELEASE_MASK);
-
-				p->event->send_fake_key_event(p->event, TRUE);
-				
-				//XFlush(main_window->display);
-
-				XEvent dummy;
-				XNextEvent(main_window->display, &dummy);
-				log_message(TRACE, "Received Fake KeyPress");
-				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);*/
 				
 				p->update(p, &do_update);				
 				break;
@@ -378,21 +344,6 @@ void xprogram_process_input(struct _xprogram *p)
 			{
 				log_message(TRACE, "Received KeyRelease");
 
-				// Unfreeze and resend grabbed event
-				XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
-				// Resend grabbed event
-				p->event->send_next_event(p->event);
-				
-				/*p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
-				set_event_mask(p->focus->owner_window, EVENT_PRESS_MASK | EVENT_RELEASE_MASK);
-				//XTestGrabControl (main_window->display, False);
-				p->event->send_fake_key_event(p->event, FALSE);
-				//XFlush(main_window->display);
-				XEvent dummy;
-				XNextEvent(main_window->display, &dummy);
-				log_message(TRACE, "Received Fake KeyRelease");
-				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);*/
-				
 				p->update(p, &do_update);
 				break;
 			}
@@ -505,6 +456,8 @@ void xprogram_process_selection(struct _xprogram *p)
 	else if (p->selected_mode == ACTION_CHANGE_SELECTED)
 		play_file(SOUND_CHANGE_SELECTED);
 	
+	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
+	
 	p->send_string_silent(p, FALSE);
 
 	on_selection_converted(selected_text);
@@ -512,6 +465,8 @@ void xprogram_process_selection(struct _xprogram *p)
 	if (xconfig->save_selection_mode == SELECTION_SAVE_ENABLED)
 		p->event->send_selection(p->event, p->string->cur_pos);
 
+	int do_update = TRUE;										// Enable receiving events
+	p->update(p, &do_update);	
 	save_and_clear_string(p);
 	free(selected_text);
 }
@@ -563,6 +518,7 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 			// Save event
 			XEvent tmp = p->event->event;
+			char sym = main_window->xkeymap->get_cur_ascii_char(main_window->xkeymap, p->event->event);
 			
 			if (action == KLB_ADD_SYM)
 			{
@@ -570,25 +526,39 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 					p->changed_manual = MANUAL_FLAG_UNSET;
 
 				// Add symbol to internal bufer
-				char sym = main_window->xkeymap->get_cur_ascii_char(main_window->xkeymap, p->event->event);
 				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
 
 				return;
 			}	
-			// Restore event
-			p->event->event = tmp;
+			
+			// Add symbol to internal bufer
+
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 			{
+				
+				// Block keyboard 
+				//grab_keyboard(p->focus->owner_window, TRUE); 
 				// Checking word
 				p->check_last_word(p);
-				
+			
+				// Unblock keyboard 
+				//grab_keyboard(p->focus->owner_window, FALSE); 				
 			}
 			// Restore event
 			p->event->event = tmp;
 			// Add symbol to internal bufer
-			char sym = main_window->xkeymap->get_cur_ascii_char(main_window->xkeymap, p->event->event);
 			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
+			// Resend special key back to window
+			p->event->send_next_event(p->event); 
 			
+			// Sending blocked events 
+			/*while (XEventsQueued(main_window->display, QueuedAlready)) 
+			{ 
+				p->event->get_next_event(p->event); 
+				p->event->send_next_event(p->event); 
+			} */
+
+
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			
 			return;
@@ -627,7 +597,12 @@ int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action acti
 		case ACTION_CHANGE_STRING:	// User needs to change current string
 		{
 			p->change_lang(p, get_next_lang(get_cur_lang()));
+			
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
 			p->send_string_silent(p, TRUE);
+			int do_update = TRUE;										// Enable receiving events
+			p->update(p, &do_update);			
+			
 			play_file(SOUND_CHANGE_STRING);
 			break;
 		}
@@ -716,14 +691,14 @@ void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)
 	if (send_backspaces == FALSE)
 		bcount = 0;
 
-	p->event->send_backspaces(p->event, bcount);			// Delete old string
+	p->event->send_backspaces(p->event, bcount);		// Delete old string
 	p->event->send_string(p->event, p->string);			// Send new string
 }
 
 void xprogram_change_word(struct _xprogram *p, int new_lang)
 {
 	int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
-
+	
 	// Shift fields to point to begin of word
 	p->string->content		+= offset;
 	p->string->keycode		+= offset;
@@ -732,8 +707,11 @@ void xprogram_change_word(struct _xprogram *p, int new_lang)
 
 	p->change_lang(p, new_lang);
 	
+	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
 	p->send_string_silent(p, TRUE);
-
+	int do_update = TRUE;										// Enable receiving events
+	p->update(p, &do_update);
+	
 	// Revert fields back
 	p->string->content		-= offset;
 	p->string->keycode		-= offset;

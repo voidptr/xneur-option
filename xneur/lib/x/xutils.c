@@ -34,6 +34,12 @@
 
 static const char *grab_ungrab[2] = {"ungrab", "grab"};
 
+const KeySym spec_keys[] =  {   
+								XK_Return, XK_Tab, XK_space, XK_slash, XK_backslash, 
+								XK_question, XK_minus, XK_plus, XK_equal
+							};
+static const int total_spec_keys = sizeof(spec_keys) / sizeof(spec_keys[0]);
+
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
 
@@ -91,7 +97,6 @@ void set_event_mask(Window window, int event_mask)
 		return;
 	
 	XSelectInput(main_window->display, window, event_mask);
-	//grab_keyboard(window, TRUE);
 }
 
 void grab_button(Window window, int is_grab)
@@ -101,9 +106,9 @@ void grab_button(Window window, int is_grab)
 	
 	int status;
 	if (is_grab)
-		status = XGrabButton(main_window->display, Button1, AnyModifier, window, TRUE, BUTTON_HANDLE_MASK, GrabModeSync, GrabModeSync, None, None);
+		status = XGrabButton(main_window->display, AnyButton, AnyModifier, window, TRUE, BUTTON_HANDLE_MASK, GrabModeSync, GrabModeAsync, None, None);
 	else
-		status = XUngrabButton(main_window->display, Button1, AnyModifier, window);
+		status = XUngrabButton(main_window->display, AnyButton, AnyModifier, window);
 
 	if (status == BadCursor)
 		log_message(ERROR, "Failed to %s mouse with error BadCursor", grab_ungrab[is_grab]);
@@ -113,15 +118,37 @@ void grab_button(Window window, int is_grab)
 		log_message(ERROR, "Failed to %s mouse with error BadWindow", grab_ungrab[is_grab]);
 }
 
+void grab_key(Window window, KeyCode kc, int is_grab)
+{
+	int status;
+	if (is_grab)
+		status = XGrabKey(main_window->display, kc, AnyModifier, window, TRUE, GrabModeAsync, GrabModeAsync);
+	else
+		status = XUngrabKey(main_window->display, kc, AnyModifier, window);
+	
+	if (status == BadValue)
+		log_message(ERROR, "Failed to %s keyboard with error BadValue", grab_ungrab[is_grab]);
+	else if (status == BadWindow)
+		log_message(ERROR, "Failed to %s keyboard with error BadWindow", grab_ungrab[is_grab]);
+}
+
+void grab_spec_keys(Window window, int is_grab)
+{
+	for (int i=0; i<total_spec_keys; i++)
+	{
+		KeyCode kc = XKeysymToKeycode(main_window->display, spec_keys[i]);
+		if (kc != 0)
+			grab_key(window, kc, is_grab);		
+	}
+}
+
 void grab_keyboard(Window window, int is_grab)
 {
 	int status;
 	if (is_grab)
-		status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, TRUE, GrabModeSync, GrabModeSync);
-		//status = XGrabKeyboard(main_window->display, window, TRUE, GrabModeAsync, GrabModeAsync, CurrentTime);
+		status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, TRUE, GrabModeAsync, GrabModeAsync);
 	else
 		status = XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
-		//status = XUngrabKeyboard(main_window->display, CurrentTime);
 	
 	if (status == BadValue)
 		log_message(ERROR, "Failed to %s keyboard with error BadValue", grab_ungrab[is_grab]);

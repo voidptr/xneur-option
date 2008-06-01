@@ -146,7 +146,7 @@ int xevent_get_cur_modifiers(struct _xevent *p)
 	if (p->event.xkey.state & ShiftMask)
 		mask += 1;
 	if (p->event.xkey.state & LockMask)
-		mask += 1;
+		mask += 2;
 	if (p->event.xkey.state & ControlMask)
 		mask += 4;
 	if (p->event.xkey.state & Mod1Mask)
@@ -165,30 +165,22 @@ int xevent_get_cur_modifiers(struct _xevent *p)
 int xevent_get_next_event(struct _xevent *p)
 {
 	XNextEvent(main_window->display, &(p->event));
-
 	return p->event.type;
 }
 
 void xevent_send_next_event(struct _xevent *p)
 {
-	int mask = groups[get_cur_lang()]; 
-	mask |= p->get_cur_modifiers(p); 
+	int modifier_mask = groups[get_cur_lang()]; 
+	modifier_mask |= p->get_cur_modifiers(p); 
 	if (p->event.type == KeyPress || p->event.type == KeyRelease)
-		p->event.xkey.state	= mask;
+		p->event.xkey.state	= modifier_mask;
 	
-	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);		
+	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);	
 }
 
 void xevent_send_fake_key_event(struct _xevent *p, int direction)
 {
-	XTestFakeKeyEvent(main_window->display, p->event.xkey.keycode, direction, 0);
-	
-/*	int mask = groups[get_cur_lang()]; 
-	mask |= p->get_cur_modifiers(p); 
-	if (p->event.type == KeyPress || p->event.type == KeyRelease)
-		p->event.xkey.state	= mask;
-	
-	XSendEvent(main_window->display, p->event.xany.window, FALSE, NoEventMask, &p->event);	*/		
+	XTestFakeKeyEvent(main_window->display, p->event.xkey.keycode, direction, 0);	
 }
 
 void xevent_uninit(struct _xevent *p)
