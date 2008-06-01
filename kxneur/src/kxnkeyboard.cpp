@@ -32,12 +32,12 @@ KXNKeyboard::KXNKeyboard()
 
     // check the library version
     if (!XkbLibraryVersion(&major, &minor))
-	printf("warning: major and  minor version is not match\n");
+	qDebug("warning: major and  minor version is not match\n");
 
     // initialize the extension
     m_xkb_available = XkbQueryExtension(display, &opcode, &m_event_code, &errorBase, &major, &minor);
     if (!m_xkb_available) {
-	printf("The X Server does not support a compatible XKB extension.\nexit");
+	qDebug("The X Server does not support a compatible XKB extension.\nexit");
 	// exit(1);
     }
     else {

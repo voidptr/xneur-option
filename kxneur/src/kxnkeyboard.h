@@ -24,10 +24,7 @@
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>
 
-/**
-	@author Vadim Likhota <vadim-lvv{a}yandex.ru>
-this file based on xkeyboard from kkbswith
-*/
+/* this file based on xkeyboard from kkbswith */
 
 class QStringList;
 

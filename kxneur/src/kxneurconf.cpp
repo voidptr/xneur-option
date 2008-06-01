@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA    *
  **********************************************************************************/
 
-#include <stdlib.h>
+//#include <stdlib.h>
 #include <qwidget.h>
 #include <kuniqueapplication.h>
 #include <kinputdialog.h>
@@ -275,13 +275,13 @@ void XNeurPage::open_file(char * path)
 		fl.close();
 	    }
 	    else
-		printf("can't open for write %s\n", path);
+		qDebug("can't open for write %s\n", path);
 	}
 	/* else
 	    printf("calcel\n");*/
     }
     else
-	printf("can't open for read %s\n", path);
+	qDebug("can't open for read %s\n", path);
 }
 
 
@@ -661,7 +661,7 @@ void KXNeurConf::SaveSettings()
     if ( knapp->xneur_stop() )
 	knapp->xneur_start();
     else
-	printf("without restart\n");
+	qDebug("without restart\n");
 
     KXNeurSettings::writeConfig();
 }
@@ -704,7 +704,7 @@ void KXNeurConf::KeyToXNConf(int a, int c)
     int action = a, cod = c;
 
     if ( (cod & 0xffff) == 0 ) {
-	printf("not found key for action %d: key code = %x; restore old key\n", action, cod); // kdelibs have bug with Ctrl+Break
+	qDebug("not found key for action %d: key code = %x; restore old key\n", action, cod); // kdelibs have bug with Ctrl+Break
 	fflush(stdout);
         cod = orig_keys[action];
 	// return;

@@ -22,7 +22,7 @@
 #include <klocale.h>
 #include "kxneur.h"
 #include "kxnkeyboard.h"
-#include <stdlib.h>
+// #include <stdlib.h>
 
 static const char description[] =
     I18N_NOOP("KXNeur (KDE X Neural Switcher) is XNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.9.0 only");
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 #ifdef XN_END
     if (!KUniqueApplication::start()) {
         // fprintf(stderr, "KXNeur is already running!\n");
-        exit(0);
+        QApplication::exit(0);
     }
 #endif
     KXNeurApp app;

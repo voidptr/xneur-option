@@ -38,15 +38,28 @@ extern "C" {
 #define SHOW_LANG 1
 #define SHOW_ALL -1
 
+#define XN_END
+
 class KXNKeyboard;
 class KXNeurTray;
 class KAction;
 class KConfig;
 
-class XNLang;
-typedef QPtrVector<XNLang> XNLangVector;
+/* class for save lang groups */
+class XNLang
+{
+public:
+    XNLang(const QString &n);
+    ~XNLang();
 
-#define XN_END
+    QString name;
+    QPixmap pic;
+    QString lg;
+    int supp_lg;
+    int menuid;
+};
+
+typedef QPtrVector<XNLang> XNLangVector;
 
 // moc not conceive #define
 class KXNeurApp : public KUniqueApplication
@@ -89,19 +102,5 @@ private slots:
     void refreshLang();
 };
 
-
-/* class for save lang groups */
-class XNLang
-{
-public:
-    XNLang(const QString &n);
-    ~XNLang();
-
-    QString name;
-    QPixmap pic;
-    QString lg;
-    int supp_lg;
-    int menuid;
-};
 
 #endif // _KXNEUR_H_
