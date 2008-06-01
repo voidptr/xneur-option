@@ -481,7 +481,6 @@ void xprogram_on_key_action(struct _xprogram *p)
 	KeySym key = p->event->get_cur_keysym(p->event);
 
 	int modifier_mask = p->event->get_cur_modifiers(p->event);
-	log_message (DEBUG, "%d", modifier_mask);
 	if (p->modifier_mask != NO_MODIFIER_MASK) 
 	{
 		p->event->event.xkey.state = p->modifier_mask;
