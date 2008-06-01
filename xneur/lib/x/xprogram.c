@@ -489,10 +489,8 @@ void xprogram_on_key_action(struct _xprogram *p)
 	
 	enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
 	if (p->perform_manual_action(p, manual_action))
-	{
-		log_message (DEBUG, "Get Manual Action");
 		return;
-	}
+
 	int auto_action = get_auto_action(p, key, modifier_mask);
 	p->perform_auto_action(p, auto_action);
 }
