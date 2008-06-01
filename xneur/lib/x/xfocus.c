@@ -163,9 +163,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 	else
 	{
 		// Event masking
-		mask |= INPUT_HANDLE_MASK;
-		mask |= FOCUS_CHANGE_MASK;
-		mask |= EVENT_PRESS_MASK;
+		mask |= INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK;
 		set_event_mask(p->owner_window, mask);
 		// Grabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, TRUE);

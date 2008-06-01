@@ -33,6 +33,7 @@
 #include "xnconfig.h"
 #include "xnconfig_files.h"
 
+#include "xdefines.h"
 #include "xstring.h"
 #include "xfocus.h"
 #include "xswitchlang.h"
@@ -458,6 +459,10 @@ void xprogram_process_selection(struct _xprogram *p)
 	
 	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
 	
+	// Block events of keyboard 
+	set_event_mask(p->focus->owner_window, None);
+	grab_spec_keys(p->focus->owner_window, FALSE);
+	
 	p->send_string_silent(p, FALSE);
 
 	on_selection_converted(selected_text);
@@ -531,30 +536,40 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 				return;
 			}
 	
-			// Block keyboard 
+			// Block events of keyboard (push to event queue)
+			set_event_mask(p->focus->owner_window, None);
+			grab_spec_keys(p->focus->owner_window, FALSE);
 			grab_keyboard(p->focus->owner_window, TRUE); 
-			if (p->changed_manual == MANUAL_FLAG_UNSET)
-				// Checking word
+			
+			// Checking word
+			if (p->changed_manual == MANUAL_FLAG_UNSET)	
 				p->check_last_word(p);
-
+			
+			
 			// Restore event
 			p->event->event = tmp;
 			// Resend special key back to window
-			p->event->send_next_event(p->event); 
-			 
-			// Sending blocked events 
-			while (XEventsQueued(main_window->display, QueuedAlready)) 
-			{ 
-				p->event->get_next_event(p->event); 
-				p->event->send_next_event(p->event); 
-			}
-			// Unblock keyboard 
-			grab_keyboard(p->focus->owner_window, FALSE);
+			p->event->send_next_event(p->event);
 			// Add symbol to internal bufer
 			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
 
-			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
+			// Resend blocked events back to window (from the event queue)
+			while (XEventsQueued(main_window->display, QueuedAlready)) 
+			{
+				int type = p->event->get_next_event(p->event);
+				p->event->send_next_event(p->event);
+				
+				if (type == KeyPress)
+					p->on_key_action(p);
+			}
 			
+			// Unblock keyboard 
+			grab_keyboard(p->focus->owner_window, FALSE);					
+			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+			grab_spec_keys(p->focus->owner_window, TRUE);
+
+			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
+
 			return;
 		}
 	}
@@ -607,7 +622,12 @@ int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action acti
 			if (xconfig->education_mode == EDUCATION_MODE_ENABLE)
 				p->add_word_to_dict(p, next_lang);
 
+			set_event_mask(p->focus->owner_window, None);
+			grab_spec_keys(p->focus->owner_window, FALSE);
 			p->change_word(p, next_lang);
+			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+			grab_spec_keys(p->focus->owner_window, TRUE);
+			
 			play_file(SOUND_MANUAL_CHANGE_WORD);
 			break;
 		}
@@ -701,10 +721,7 @@ void xprogram_change_word(struct _xprogram *p, int new_lang)
 
 	p->change_lang(p, new_lang);
 	
-	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
 	p->send_string_silent(p, TRUE);
-	int do_update = TRUE;										// Enable receiving events
-	p->update(p, &do_update);
 	
 	// Revert fields back
 	p->string->content		-= offset;
