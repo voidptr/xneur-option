@@ -39,7 +39,6 @@ struct _xevent
 	int (*get_cur_modifiers) (struct _xevent *p);
 
 	int  (*get_next_event) (struct _xevent *p);
-	void (*send_fake_key_event) (struct _xevent *p, int direction);
 	void (*send_next_event) (struct _xevent *p);
 	void (*set_owner_window) (struct _xevent *p, Window window);
 	void (*send_string) (struct _xevent *p, struct _xstring *str);

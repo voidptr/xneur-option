@@ -178,11 +178,6 @@ void xevent_send_next_event(struct _xevent *p)
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);	
 }
 
-void xevent_send_fake_key_event(struct _xevent *p, int direction)
-{
-	XTestFakeKeyEvent(main_window->display, p->event.xkey.keycode, direction, 0);	
-}
-
 void xevent_uninit(struct _xevent *p)
 {
 	free(p);
@@ -199,7 +194,6 @@ struct _xevent* xevent_init(void)
 
 	// Functions mapping
 	p->get_next_event	= xevent_get_next_event;
-	p->send_fake_key_event = xevent_send_fake_key_event;
 	p->send_next_event	= xevent_send_next_event;
 	p->set_owner_window	= xevent_set_owner_window;
 	p->send_string		= xevent_send_string;
