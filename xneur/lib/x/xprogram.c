@@ -529,35 +529,29 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
 
 				return;
-			}	
-			
-			// Add symbol to internal bufer
-
+			}
+	
+			// Block keyboard 
+			grab_keyboard(p->focus->owner_window, TRUE); 
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
-			{
-				
-				// Block keyboard 
-				//grab_keyboard(p->focus->owner_window, TRUE); 
 				// Checking word
 				p->check_last_word(p);
-			
-				// Unblock keyboard 
-				//grab_keyboard(p->focus->owner_window, FALSE); 				
-			}
+
 			// Restore event
 			p->event->event = tmp;
-			// Add symbol to internal bufer
-			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
 			// Resend special key back to window
 			p->event->send_next_event(p->event); 
-			
+			 
 			// Sending blocked events 
-			/*while (XEventsQueued(main_window->display, QueuedAlready)) 
+			while (XEventsQueued(main_window->display, QueuedAlready)) 
 			{ 
 				p->event->get_next_event(p->event); 
 				p->event->send_next_event(p->event); 
-			} */
-
+			}
+			// Unblock keyboard 
+			grab_keyboard(p->focus->owner_window, FALSE);
+			// Add symbol to internal bufer
+			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
 
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			
