@@ -18,7 +18,6 @@
  */
 
 #include <X11/keysym.h>
-#include <X11/extensions/XTest.h>
 
 #include <stdlib.h>
 #include <string.h>
