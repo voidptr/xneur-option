@@ -547,26 +547,24 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			
 			// Restore event
 			p->event->event = tmp;
-			// Resend special key back to window
-			p->event->send_next_event(p->event);
 			// Add symbol to internal bufer
 			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
+
+			// Resend special key back to window
+			p->event->send_next_event(p->event);
 
 			// Resend blocked events back to window (from the event queue)
 			while (XEventsQueued(main_window->display, QueuedAlready)) 
 			{
-				int type = p->event->get_next_event(p->event);
+				p->event->get_next_event(p->event);
 				p->event->send_next_event(p->event);
-				
-				if (type == KeyPress)
-					p->on_key_action(p);
 			}
 			
 			// Unblock keyboard 
 			grab_keyboard(p->focus->owner_window, FALSE);					
 			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 			grab_spec_keys(p->focus->owner_window, TRUE);
-
+			
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 
 			return;
