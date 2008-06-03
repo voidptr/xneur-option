@@ -180,10 +180,8 @@ static int get_auto_action(struct _xprogram *p, KeySym key, int modifier_mask)
 
 static void save_and_clear_string(struct _xprogram *p, Window window)
 {
-	char *curr_app_name = get_wm_class_name(window);
-	p->string->savelog(p->string, LOG_NAME, curr_app_name);
+	p->string->savelog(p->string, LOG_NAME, window);
 	p->string->clear(p->string);
-	free(curr_app_name);
 }
 
 void xprogram_cursor_update(struct _xprogram *p)
@@ -548,7 +546,8 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			// Restore event
 			p->event->event = tmp;
 			// Add symbol to internal bufer
-			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
+			int modifier_mask = groups[get_cur_lang()] | p->event->get_cur_modifiers(p->event);
+			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, modifier_mask);
 
 			// Resend special key back to window
 			p->event->send_next_event(p->event);

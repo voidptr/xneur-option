@@ -17,6 +17,7 @@
  *
  */
 
+#include <X11/Xlocale.h>
 #include <X11/keysym.h>
 
 #include <stdlib.h>
@@ -31,10 +32,12 @@
 #include "xwindow.h"
 #include "xevent.h"
 #include "xkeymap.h"
+#include "xutils.h"
 
 #include "types.h"
 #include "text.h"
 #include "conversion.h"
+#include "log.h"
 
 #include "xstring.h"
 
@@ -42,6 +45,8 @@
 
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
+
+Window last_log_window = 0;
 
 void xstring_set_key_code(struct _xstring *p, int lang)
 {
@@ -56,41 +61,55 @@ void xstring_set_key_code(struct _xstring *p, int lang)
 	}
 }
 
-void xstring_savelog(struct _xstring *p, char *file_name, char *app_name)
+void xstring_savelog(struct _xstring *p, char *file_name, Window window)
 {
-	if (xconfig->save_log_mode != LOG_ENABLED)
+	if ((xconfig->save_log_mode != LOG_ENABLED) || (p->cur_pos == 0) || (file_name == NULL))
 		return;
-	
-	if (p->cur_pos == 0)
-		return;
-	
-	if (file_name == NULL)
-		return;
-	
+
 	char *file_path_name = get_home_file_path_name(NULL, file_name);
 	
 	FILE *stream = fopen(file_path_name, "a");
 	if (stream == NULL)
 		return;
+
+	// Get app name
+	if (window != last_log_window)
+	{
+		last_log_window = window;
+		char *app_name = get_wm_class_name(window);
+		fprintf(stream, "[%s]\n", app_name);
+		free(app_name);
+	}
 	
+	// Get Date and Time stamp
+	setlocale(LC_ALL, "");
 	time_t curtime = time(NULL);
 	struct tm *loctime = localtime(&curtime);
 	char buffer[256];
 	strftime(buffer, 256, "%c", loctime);
-	fprintf(stream, "[%s] (%s)\n", app_name, buffer);
-
+	fprintf(stream, "  (%s): ", buffer);
+	setlocale(LC_ALL, "en_US.UTF-8");
+	
 	for (int i=0; i<p->cur_pos; i++)
 	{
 		char *symbol = keycode_to_symbol(p->keycode[i], -1, p->keycode_modifiers[i]);
 		
 		if (symbol != NULL)
-			fprintf(stream, "%s", symbol);
-		else
-			fprintf(stream, "?");
-		
+		{
+			if (p->keycode[i] == 36)			// Return
+				fprintf(stream, "\n");
+			else if (p->keycode[i] == 23)		// Tab
+				fprintf(stream, "\t");
+			else								//Other symbols
+				fprintf(stream, "%s", symbol);
+		}
+		else 
+		{
+			fprintf(stream, "<?>");
+		}
 		free(symbol);
 	}
-	fprintf(stream, "\n\n");
+	fprintf(stream, "\n");
 	
 	fclose(stream);
 }

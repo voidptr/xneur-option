@@ -32,7 +32,7 @@ struct _xstring
 	int cur_pos;		// Current filled size
 
 	void (*clear) (struct _xstring *p);
-	void (*savelog) (struct _xstring *p, char *path, char *app_name);
+	void (*savelog) (struct _xstring *p, char *path, Window window);
 	int  (*is_space_last) (struct _xstring *p);
 	void (*set_key_code) (struct _xstring *p, int group);
 	void (*set_content) (struct _xstring *p, const char *new_content);

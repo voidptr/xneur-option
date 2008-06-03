@@ -40,8 +40,6 @@
 extern struct _xwindow *main_window;
 extern struct _xneur_config *xconfig;
 	
-static const int groups[4] = {0x00000000, 0x00002000, 0x00004000, 0x00006000};
-
 static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 {
 	p->event.type			= KeyPress;

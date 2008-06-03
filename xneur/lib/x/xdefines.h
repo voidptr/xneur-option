@@ -27,4 +27,6 @@
 #define FOCUS_CHANGE_MASK	LeaveWindowMask | EnterWindowMask | FocusChangeMask
 #define BUTTON_HANDLE_MASK	ButtonPressMask
 
+static const int groups[4] = {0x00000000, 0x00002000, 0x00004000, 0x00006000};
+
 #endif /* _XDEFINIES_H_ */
