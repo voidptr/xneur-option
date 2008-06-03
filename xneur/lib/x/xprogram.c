@@ -353,12 +353,12 @@ void xprogram_process_input(struct _xprogram *p)
 			case LeaveNotify:
 			case EnterNotify:
 			{
-				p->cursor_update(p);
-				
 				p->last_layout = get_active_keyboard_group();
 
 				do_update = TRUE;
 				p->update(p, &do_update);
+				
+				p->cursor_update(p);
 				break;
 			}
 			case FocusOut:
@@ -381,7 +381,7 @@ void xprogram_process_input(struct _xprogram *p)
 				// Falling down
 				save_and_clear_string(p, p->focus->owner_window);
 				log_message(TRACE, "Received ButtonPress on window %d", p->event->event.xbutton.window);
-
+								
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 
