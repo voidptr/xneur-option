@@ -253,6 +253,7 @@ void play_file(int file_type)
 
 	pthread_t sound_thread;
 	pthread_create(&sound_thread, &sound_thread_attr, &play_file_thread, (void *) path);
+	pthread_attr_destroy(&sound_thread_attr);
 }
 
 #else /* WITH_SOUND */

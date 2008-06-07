@@ -43,7 +43,9 @@ void xntrap(int sig, sg_handler handler)
 
 char* xnreplace(char *str, char *old, char *new)
 {
-	int len = strlen(str);
+	int len = 0;
+	if (str != NULL)
+		len = strlen(str);
 	int newlen = strlen(new);
 	int oldlen = strlen(old);
 

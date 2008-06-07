@@ -121,6 +121,8 @@ static void xkeymap_char_to_keycode(struct _xkeymap *p, char ch, KeyCode *kc, in
 			return;
 		}
 	}
+	
+	free(symbol);
 }
 
 int get_languages_mask(void)
@@ -386,7 +388,9 @@ void xkeymap_print_keymaps(struct _xkeymap *p)
 							continue;
 				
 						strcat(prev_symbols, symbol);
-						printf(" %s", strdup(symbol));
+						char *s = strdup(symbol);
+						printf(" %s", s);
+						free(s);
 					}
 				}
 			}

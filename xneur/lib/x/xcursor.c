@@ -64,7 +64,8 @@ static int ReadPixmapFromFile (char *FileName, Pixmap *phPm, Pixmap *phMask, Xpm
 	
 	buffer = (char*)malloc (sizeFile);
 	if (!buffer) {
-		///perror (FileName);
+		//perror (FileName);
+		fclose (pFile);	
 		return -1;
 	}
 	fread (buffer, 1, sizeFile, pFile);
@@ -73,6 +74,7 @@ static int ReadPixmapFromFile (char *FileName, Pixmap *phPm, Pixmap *phMask, Xpm
 	// Check Signature
 	if (strncmp (buffer, "/* XPM */", 9)) {
 		//printf ("%s: not XPM format file\n", FileName);
+		free(buffer);
 		return -1;
 	}
 
@@ -165,6 +167,13 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 		p->bitmap = 0;
 		p->bitmap_mask = 0;
 		char *path = get_file_path_name(PIXMAPDIR, xconfig->flags[xkbState.group].file);
+		if (path == NULL)
+		{
+			if  (w_attributes.map_state != IsUnmapped)
+				XUnmapWindow(main_window->display, main_window->flag_window);
+			XFlush (main_window->display);
+			return;
+		}
 		ReadPixmapFromFile(path, &p->bitmap, &p->bitmap_mask, &p->Attrs,
 						   main_window->display, main_window->flag_window,
 						   XDefaultColormap (main_window->display, DefaultScreen(main_window->display)));
@@ -226,6 +235,7 @@ struct _xcursor* xcursor_init(void)
 	p->gc = create_gc(main_window->display, main_window->flag_window, dummy);
 	if (p->gc == NULL)
 	{
+		free(p);
 		return NULL;
 	}
 	XSync(main_window->display, False);

@@ -226,6 +226,8 @@ static int get_aspell_hits(const char *word, int len)
 			main_window->xkeymap->char_to_keycode(main_window->xkeymap, word[i], &kc, &modifier);
 
 			char *symbol = keycode_to_symbol(kc, lang, modifier);
+			if (symbol == NULL)
+				continue;
 			lang_word = (char *) realloc(lang_word, (strlen(lang_word) + strlen(symbol) + 1) * sizeof(char));
 			strcat(lang_word, symbol);
 			free(symbol);

@@ -67,11 +67,11 @@ void xstring_savelog(struct _xstring *p, char *file_name, Window window)
 		return;
 
 	char *file_path_name = get_home_file_path_name(NULL, file_name);
-	
 	FILE *stream = fopen(file_path_name, "a");
+	free(file_path_name);
 	if (stream == NULL)
 		return;
-
+	
 	// Get app name
 	if (window != last_log_window)
 	{
@@ -83,11 +83,15 @@ void xstring_savelog(struct _xstring *p, char *file_name, Window window)
 	
 	// Get Date and Time stamp
 	setlocale(LC_ALL, "");
+	
 	time_t curtime = time(NULL);
 	struct tm *loctime = localtime(&curtime);
 	char buffer[256];
-	strftime(buffer, 256, "%c", loctime);
+	buffer[0] = NULLSYM;
+	if (loctime != NULL)	
+		strftime(buffer, 256, "%c", loctime);
 	fprintf(stream, "  (%s): ", buffer);
+	
 	setlocale(LC_ALL, "en_US.UTF-8");
 	
 	for (int i=0; i<p->cur_pos; i++)
