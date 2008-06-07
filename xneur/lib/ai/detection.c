@@ -229,7 +229,8 @@ static int get_aspell_hits(const char *word, int len)
 			if (symbol == NULL)
 				continue;
 			lang_word = (char *) realloc(lang_word, (strlen(lang_word) + strlen(symbol) + 1) * sizeof(char));
-			strcat(lang_word, symbol);
+			if (lang_word != NULL)
+				strcat(lang_word, symbol);
 			free(symbol);
 		}
 		

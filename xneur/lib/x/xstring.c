@@ -152,6 +152,9 @@ void xstring_set_content(struct _xstring *p, const char *new_content)
 		p->keycode_modifiers	= (int *) realloc(p->keycode_modifiers, p->cur_size * sizeof(int));
 	}
 
+	if ((p->content == NULL) || (p->keycode == NULL) || (p->keycode_modifiers == NULL))
+		return;
+	
 	p->content[p->cur_pos] = NULLSYM;
 	if (!p->cur_pos)
 		return;
@@ -220,7 +223,8 @@ char *xstring_get_utf_string(struct _xstring *p)
 		
 		byte_count += nbytes;
 		prev_symbols = (char *) realloc(prev_symbols, byte_count);
-		strcat(prev_symbols, symbol);
+		if (prev_symbols != NULL)
+			strcat(prev_symbols, symbol);
 	}
 	free(symbol);
 	return prev_symbols;
