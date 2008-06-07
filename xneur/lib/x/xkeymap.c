@@ -412,7 +412,12 @@ char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
 	
 	char *newtext = strdup(text);
 	if (newtext == NULL)
+	{
+		free(prev_symbols);
+		free(symbol_new);
+		free(symbol_old);
 		return NULL;
+	}
 	
 	KeySym *keymap = p->keymap;		
 	for (int i = p->min_keycode; i <= p->max_keycode; i++)

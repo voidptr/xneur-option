@@ -185,6 +185,9 @@ void xstring_add_symbol(struct _xstring *p, char sym, KeyCode keycode, int modif
 		p->keycode_modifiers	= (int *) realloc(p->keycode_modifiers, p->cur_size * sizeof(int));
 	}
 
+	if ((p->content == NULL) || (p->keycode == NULL) || (p->keycode_modifiers == NULL))
+		return;
+	
 	p->content[p->cur_pos] = sym;
 	p->keycode[p->cur_pos] = keycode;
 	p->keycode_modifiers[p->cur_pos] = modifier;

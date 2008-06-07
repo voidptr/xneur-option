@@ -226,7 +226,7 @@ static int get_aspell_hits(const char *word, int len)
 			main_window->xkeymap->char_to_keycode(main_window->xkeymap, word[i], &kc, &modifier);
 
 			char *symbol = keycode_to_symbol(kc, lang, modifier);
-			if (symbol == NULL)
+			if ((symbol == NULL) || (lang_word == NULL))
 				continue;
 			lang_word = (char *) realloc(lang_word, (strlen(lang_word) + strlen(symbol) + 1) * sizeof(char));
 			if (lang_word != NULL)
@@ -234,6 +234,9 @@ static int get_aspell_hits(const char *word, int len)
 			free(symbol);
 		}
 		
+		if (lang_word == NULL)
+			continue;
+
 		aspell_config_replace(spell_config, "lang", xconfig->languages[lang].dir);
 		AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
 		AspellSpeller *spell_checker = 0;
