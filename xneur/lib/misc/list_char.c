@@ -124,6 +124,12 @@ struct _list_char_data* list_char_add_last(struct _list_char *list, const char *
 	list->data_count++;
 	list->data = (struct _list_char_data *) realloc(list->data, list->data_count * sizeof(struct _list_char_data));
 
+	if (list->data == NULL)
+	{
+		list->data_count = 0;
+		return NULL;
+	}
+	
 	struct _list_char_data *data = &list->data[list->data_count - 1];
 
 	data->string = strdup(string);
@@ -136,7 +142,9 @@ struct _list_char_data* list_char_add(struct _list_char *list, const char *strin
 	int id = get_add_id(list, string);
 
 	list->data = (struct _list_char_data *) realloc(list->data, (list->data_count + 1) * sizeof(struct _list_char_data));
-
+	if (list->data == NULL)
+		return NULL;
+	
 	if (id != list->data_count)
 		memmove(list->data + id + 1, list->data + id, (list->data_count - id) * sizeof(struct _list_char_data));
 

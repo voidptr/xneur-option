@@ -217,6 +217,8 @@ static int get_aspell_hits(const char *word, int len)
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
 		char *lang_word = (char *) malloc(1 * sizeof(char));
+		if (lang_word == NULL)
+			continue;
 		lang_word[0] = NULLSYM;
 
 		for (int i = 0; i < len; i++)

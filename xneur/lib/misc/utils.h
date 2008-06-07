@@ -23,8 +23,6 @@
 typedef void (*sg_handler)(int);
 
 void xntrap(int sig, sg_handler handler);
-void* xnmalloc(int bytes);
-void* xnrealloc(void *ptr, int bytes);
 char *xnreplace(char *s, char *old, char *new);
 
 #endif /* _UTILS_H_ */

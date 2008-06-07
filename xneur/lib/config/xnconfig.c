@@ -865,12 +865,14 @@ void xneur_xonfig_add_language(struct _xneur_config *p, const char *name, const 
 	}
 
 	p->languages = (struct _xneur_language *) realloc(p->languages, (p->total_languages + 1) * sizeof(struct _xneur_language));
+	if (p->languages == NULL)
+		return;
 	bzero(&(p->languages[p->total_languages]), sizeof(struct _xneur_language));
 
 	p->languages[p->total_languages].name	= strdup(name);
 	p->languages[p->total_languages].dir	= strdup(dir);
 	p->languages[p->total_languages].group	= group;
-
+	
 	p->total_languages++;
 }
 
