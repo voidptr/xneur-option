@@ -738,7 +738,6 @@ void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 	len = trim_word(low_word, len);
 	if (len == 0)
 	{
-		free(word);
 		free(low_word);
 		return;
 	}
@@ -753,7 +752,6 @@ void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 	if (!new_temp_dicts->exist(new_temp_dicts, low_word, BY_PLAIN))
 	{
 		new_temp_dicts->add(new_temp_dicts, low_word);
-		free(word);
 		free(low_word);
 		return;
 	}
@@ -774,7 +772,6 @@ void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 		xconfig->save_dicts(xconfig, new_lang); 
 	}
 
-	free(word);
 	free(low_word);
 }
 
