@@ -147,15 +147,14 @@ static void set_mask_to_window(Window current_window, int mask)
 
 void xfocus_update_events(struct _xfocus *p, int mode)
 {
-	// Mouse pointer motion masking every time for all windows
-	int mask = POINTER_MOTION_MASK;
+	// Mouse pointer motion masking and focus event masking every time for all windows
+	int mask = POINTER_MOTION_MASK | FOCUS_CHANGE_MASK;
 	set_mask_to_window(p->parent_window, mask);
 	
 	// Grabbing ONLY after masking!!!
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
 		// Event unmasking
-		mask = None;
 		set_event_mask(p->owner_window, mask);
 		// Ungrabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, FALSE);
