@@ -45,7 +45,7 @@ char* xnreplace(char *str, char *old, char *new)
 {
 	if (str == NULL)
 		return NULL;
-	
+
 	int len = strlen(str);
 	int newlen = strlen(new);
 	int oldlen = strlen(old);

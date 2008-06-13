@@ -100,8 +100,10 @@ int get_key_state(int key)
 
 	int key_mask = 0;
 	for (int i = 0; i < 8; i++)
+	{
 		if (map->modifiermap[map->max_keypermod * i] == key_code)
 			key_mask = 1 << i;
+	}
 
 	if (key_mask == 0)
 		return 0;
@@ -141,13 +143,13 @@ int xevent_get_cur_modifiers(struct _xevent *p)
 {
 	int mask = 0;
 	if (p->event.xkey.state & ShiftMask)
-		mask += 1;
+		mask += 1 << 0;
 	if (p->event.xkey.state & ControlMask)
-		mask += 4;
+		mask += 1 << 2;
 	if (p->event.xkey.state & Mod1Mask)
-		mask += 8;
+		mask += 1 << 3;
 	if (p->event.xkey.state & Mod4Mask)
-		mask += 64;
+		mask += 1 << 6;
 	return mask;
 }
 
@@ -159,12 +161,11 @@ int xevent_get_next_event(struct _xevent *p)
 
 void xevent_send_next_event(struct _xevent *p)
 {
-	int modifier_mask = groups[get_cur_lang()]; 
-	modifier_mask |= p->get_cur_modifiers(p); 
+	int modifier_mask = groups[get_cur_lang()] | p->get_cur_modifiers(p);
 	if (p->event.type == KeyPress || p->event.type == KeyRelease)
-		p->event.xkey.state	= modifier_mask;
+		p->event.xkey.state = modifier_mask;
 	
-	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);	
+	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);
 }
 
 void xevent_uninit(struct _xevent *p)

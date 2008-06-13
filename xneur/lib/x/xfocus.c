@@ -38,8 +38,8 @@
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
 
-const char *verbose_forced_mode[] = {"Default", "Manual", "Automatic"};
-const char *verbose_focus_status[] = {"Processed", "Changed Focus", "Unchanged Focus", "Excluded"};
+const char *verbose_forced_mode[]	= {"Default", "Manual", "Automatic"};
+const char *verbose_focus_status[]	= {"Processed", "Changed Focus", "Unchanged Focus", "Excluded"};
 
 static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 {
@@ -62,7 +62,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 	
 	char *new_app_name = get_wm_class_name(new_window);
 	if (new_app_name != NULL)
-	{		
+	{
 		if (xconfig->excluded_apps->exist(xconfig->excluded_apps, new_app_name, BY_PLAIN))
 			*focus_status = FOCUS_EXCLUDED;
 
@@ -70,7 +70,8 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 			*forced_mode = FORCE_MODE_AUTO;
 		else if (xconfig->manual_apps->exist(xconfig->manual_apps, new_app_name, BY_PLAIN))
 			*forced_mode = FORCE_MODE_MANUAL;
-	}	
+	}
+	
 	Window old_window = p->owner_window;
 	if (new_window == old_window)
 	{
@@ -86,6 +87,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		unsigned int children_count;
 		Window root_window, parent_window;
 		Window *children_return;
+
 		int is_same_screen = XQueryTree(main_window->display, p->parent_window, &root_window, &parent_window, &children_return, &children_count);
 		if (!is_same_screen || parent_window == None || parent_window == root_window)
 			break;
@@ -139,7 +141,7 @@ static void set_mask_to_window(Window current_window, int mask)
 	if (!is_same_screen)
 		return;
 	
-	for (int i=0; i < children_count; i++)
+	for (int i = 0; i < children_count; i++)
 		set_mask_to_window(children_return[i], mask);
 	
 	XFree(children_return);
@@ -154,17 +156,15 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 	// Grabbing ONLY after masking!!!
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
-		mask |= FOCUS_CHANGE_MASK;
 		// Event unmasking
-		set_event_mask(p->owner_window, mask);
+		set_event_mask(p->owner_window, mask | FOCUS_CHANGE_MASK);
 		// Ungrabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, FALSE);
 	}
 	else
 	{
 		// Event masking
-		mask |= INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK;
-		set_event_mask(p->owner_window, mask);
+		set_event_mask(p->owner_window, mask | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 		// Grabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, TRUE);
 	}
@@ -178,33 +178,30 @@ int xfocus_draw_flag(struct _xfocus *p, Window event_window)
 	if (app_name == NULL)
 		return FALSE;
 	
-	if (xconfig->draw_flag_apps->exist(xconfig->draw_flag_apps, app_name, BY_PLAIN))
+	if (!xconfig->draw_flag_apps->exist(xconfig->draw_flag_apps, app_name, BY_PLAIN))
 	{
-		Window root_window, parent_window;
-		Window *children_return;
-		unsigned int dummyU;
-				
-		// Get parent window for window over pointer
-		Window current_event_window = event_window;
-		while (TRUE)
-		{
-			int is_same_screen = XQueryTree(main_window->display, current_event_window, &root_window, &parent_window, &children_return, &dummyU);
-			if (!is_same_screen || parent_window == None || parent_window == root_window)
-				break;
-		
-			current_event_window = parent_window;
-			XFree(children_return);
-		}
-		
-		if (p->parent_window == current_event_window)
-		{
-			free(app_name);
-			return TRUE;
-		}
+		free(app_name);
+		return FALSE;
+	}
+	free(app_name);
+
+	Window root_window, parent_window;
+	Window *children_return;
+	unsigned int dummyU;
+
+	// Get parent window for window over pointer
+	Window current_event_window = event_window;
+	while (TRUE)
+	{
+		int is_same_screen = XQueryTree(main_window->display, current_event_window, &root_window, &parent_window, &children_return, &dummyU);
+		if (!is_same_screen || parent_window == None || parent_window == root_window)
+			break;
+
+		current_event_window = parent_window;
+		XFree(children_return);
 	}
 
-	free(app_name);
-	return FALSE;
+	return (p->parent_window == current_event_window);
 }
 
 void xfocus_uninit(struct _xfocus *p)
@@ -220,7 +217,7 @@ struct _xfocus* xfocus_init(void)
 	// Functions mapping
 	p->get_focus_status	= xfocus_get_focus_status;
 	p->update_events	= xfocus_update_events;
-	p->draw_flag	= xfocus_draw_flag;
+	p->draw_flag		= xfocus_draw_flag;
 	p->uninit		= xfocus_uninit;
 
 	return p;
