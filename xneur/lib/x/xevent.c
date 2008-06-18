@@ -143,13 +143,13 @@ int xevent_get_cur_modifiers(struct _xevent *p)
 {
 	int mask = 0;
 	if (p->event.xkey.state & ShiftMask)
-		mask += 1 << 0;
+		mask += (1 << 0);
 	if (p->event.xkey.state & ControlMask)
-		mask += 1 << 2;
+		mask += (1 << 2);
 	if (p->event.xkey.state & Mod1Mask)
-		mask += 1 << 3;
+		mask += (1 << 3);
 	if (p->event.xkey.state & Mod4Mask)
-		mask += 1 << 6;
+		mask += (1 << 6);
 	return mask;
 }
 
