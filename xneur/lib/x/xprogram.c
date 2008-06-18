@@ -513,7 +513,6 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 				// Add symbol to internal bufer
 				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
-
 				return;
 			}
 	
@@ -529,6 +528,7 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			
 			// Restore event
 			p->event->event = tmp;
+
 			// Add symbol to internal bufer
 			int modifier_mask = groups[get_cur_lang()] | p->event->get_cur_modifiers(p->event);
 			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, modifier_mask);
@@ -549,7 +549,6 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			grab_spec_keys(p->focus->owner_window, TRUE);
 			
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
-
 			return;
 		}
 	}
@@ -603,7 +602,9 @@ int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action acti
 
 			set_event_mask(p->focus->owner_window, None);
 			grab_spec_keys(p->focus->owner_window, FALSE);
+
 			p->change_word(p, next_lang);
+
 			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 			grab_spec_keys(p->focus->owner_window, TRUE);
 			
@@ -611,27 +612,12 @@ int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action acti
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_0:
-		{
-			switch_group(0);
-			play_file(SOUND_ENABLE_LAYOUT_0);
-			break;
-		}
 		case ACTION_ENABLE_LAYOUT_1:
-		{
-			switch_group(1);
-			play_file(SOUND_ENABLE_LAYOUT_1);
-			break;
-		}
 		case ACTION_ENABLE_LAYOUT_2:
-		{
-			switch_group(2);
-			play_file(SOUND_ENABLE_LAYOUT_2);
-			break;
-		}
 		case ACTION_ENABLE_LAYOUT_3:
 		{
-			switch_group(3);
-			play_file(SOUND_ENABLE_LAYOUT_3);
+			switch_group(action - ACTION_ENABLE_LAYOUT_0);
+			play_file(action);
 			break;
 		}
 	}
@@ -699,7 +685,6 @@ void xprogram_change_word(struct _xprogram *p, int new_lang)
 	p->string->cur_pos		-= offset;
 
 	p->change_lang(p, new_lang);
-	
 	p->send_string_silent(p, TRUE);
 	
 	// Revert fields back
@@ -761,19 +746,13 @@ void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 void xprogram_uninit(struct _xprogram *p)
 {
 	p->focus->uninit(p->focus);
-	log_message(DEBUG, "Current focus is freed");
 	p->event->uninit(p->event);
-	log_message(DEBUG, "Current event is freed");
 	p->string->uninit(p->string);
-	log_message(DEBUG, "Current string is freed");
 	p->cursor->uninit(p->cursor);
-	log_message(DEBUG, "Current cursor is freed");
-	
 	main_window->uninit(main_window);
-	log_message(DEBUG, "Current main_window is freed");
-	
-
 	free(p);
+
+	log_message(DEBUG, "Current program is freed");
 }
 
 struct _xprogram* xprogram_init(void)

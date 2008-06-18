@@ -239,6 +239,8 @@ void xstring_uninit(struct _xstring *p)
 	free(p->keycode);
 	free(p->content);
 	free(p);
+
+	log_message(DEBUG, "Current string is freed");
 }
 
 struct _xstring* xstring_init(void)

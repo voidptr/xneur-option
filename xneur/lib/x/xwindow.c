@@ -31,12 +31,13 @@
 
 #define MWM_HINTS_DECORATIONS   (1L << 1) 
 #define PROP_MWM_HINTS_ELEMENTS 5
+
 typedef struct {
-  int  flags;
-  int  functions;
-  int  decorations;
-  int   input_mode;
-  int  status;
+	int flags;
+	int functions;
+	int decorations;
+	int input_mode;
+	int status;
 } MWMHints;
 
 static int error_handler(Display *d, XErrorEvent *e)
@@ -69,31 +70,33 @@ int xwindow_create(struct _xwindow *p)
 	XSetWindowAttributes attrs;
 	attrs.override_redirect = True;
 
-	//Window flag_window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 1, 1, 0, 0, 4095);
-	Window flag_window = XCreateWindow(display, DefaultRootWindow(display), 0, 0, 1, 1,0, CopyFromParent, CopyFromParent, CopyFromParent, CWOverrideRedirect, &attrs );
+	Window flag_window = XCreateWindow(display, DefaultRootWindow(display), 0, 0, 1, 1,0, CopyFromParent, CopyFromParent, CopyFromParent, CWOverrideRedirect, &attrs);
 	if (!flag_window)
 	{
 		log_message(ERROR, "Can't create flag window");
 		XCloseDisplay(display);
 		return FALSE;
 	}
+
 	// Set no border mode to flag window
 	MWMHints mwmhints;
-	Atom prop;
 	bzero(&mwmhints, sizeof(mwmhints));
-	prop = XInternAtom(display, "_MOTIF_WM_HINTS", False);
 	mwmhints.flags = MWM_HINTS_DECORATIONS;
 	mwmhints.decorations = 0;
+
+	Atom motif_prop = XInternAtom(display, "_MOTIF_WM_HINTS", False);
 	
-	XChangeProperty(display, flag_window, prop, prop, 32, PropModeReplace, (unsigned char *) &mwmhints, PROP_MWM_HINTS_ELEMENTS);
+	XChangeProperty(display, flag_window, motif_prop, motif_prop, 32, PropModeReplace, (unsigned char *) &mwmhints, PROP_MWM_HINTS_ELEMENTS);
 	
-	prop = XInternAtom(display, "_WIN_HINTS", False);
 	XWMHints wmhints;
 	bzero(&wmhints, sizeof(wmhints));
 	wmhints.flags = InputHint;
 	wmhints.input = 0;
-	XChangeProperty(display, flag_window, prop, prop, 32, PropModeReplace, (unsigned char *) &mwmhints, sizeof (XWMHints) / 4);
-	//
+
+	Atom win_prop = XInternAtom(display, "_WIN_HINTS", False);
+
+	XChangeProperty(display, flag_window, win_prop, win_prop, 32, PropModeReplace, (unsigned char *) &mwmhints, sizeof (XWMHints) / 4);
+
 	p->display = display;
 	p->window  = window;
 	p->flag_window  = flag_window;
@@ -130,8 +133,9 @@ void xwindow_uninit(struct _xwindow *p)
 		p->xkeymap->uninit(p->xkeymap);
 
 	p->destroy(p);
-
 	free(p);
+
+	log_message(DEBUG, "Current main_window is freed");
 }
 
 struct _xwindow* xwindow_init(void)

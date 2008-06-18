@@ -45,81 +45,82 @@
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
 
-static int ReadPixmapFromFile (char *FileName, Pixmap *phPm, Pixmap *phMask, XpmAttributes *pAttrs, Display *pDisplay, Window hWnd, Colormap hColorMap)
+static void unmap_window(XWindowAttributes w_attributes)
 {
-	FILE *pFile;
-	long sizeFile, i, k, N;
-	char *buffer;
-	char **xpm;
+	if (w_attributes.map_state != IsUnmapped)
+		XUnmapWindow(main_window->display, main_window->flag_window);
+	XFlush(main_window->display);
+}
 
-	// Open file
-	pFile = fopen (FileName, "r");
-	if (!pFile) {
-		//perror (FileName);
+static int ReadPixmapFromFile(char *FileName, Pixmap *phPm, Pixmap *phMask, XpmAttributes *pAttrs, Display *pDisplay, Window hWnd, Colormap hColorMap)
+{
+	FILE *pFile = fopen(FileName, "r");
+	if (!pFile)
 		return -1;
-	}
-	fseek (pFile, 0, SEEK_END);
-	sizeFile = ftell (pFile);
-	fseek (pFile, 0, SEEK_SET);
+
+	fseek(pFile, 0, SEEK_END);
+	long sizeFile = ftell(pFile);
+	fseek(pFile, 0, SEEK_SET);
 	
-	buffer = (char*)malloc (sizeFile);
-	if (!buffer) {
-		//perror (FileName);
-		fclose (pFile);	
+	char *buffer = (char *) malloc(sizeFile);
+	if (!buffer)
+	{
+		fclose(pFile);	
 		return -1;
 	}
-	fread (buffer, 1, sizeFile, pFile);
-	fclose (pFile);
+
+	fread(buffer, 1, sizeFile, pFile);
+	fclose(pFile);
 	
 	// Check Signature
-	if (strncmp (buffer, "/* XPM */", 9)) {
-		//printf ("%s: not XPM format file\n", FileName);
+	if (strncmp(buffer, "/* XPM */", 9))
+	{
 		free(buffer);
 		return -1;
 	}
 
-	for (N=0,i=0; i<sizeFile; i++)
-		N += (buffer[i]=='"' ? 1 : 0);
+	long N = 0;
+	for (long i = 0; i < sizeFile; i++)
+		N += (buffer[i] == '"' ? 1 : 0);
 	N /= 2;
-	xpm = (char**)malloc (N * sizeof (char*));
-	for (k=0,i=0; i<sizeFile; i++)
-		if (buffer[i]=='"') {
-			xpm[k++] = buffer + ++i;
-			while (buffer[i]!='"')
-				i++;
-			buffer[i] = '\0';
-		}
 
-	pAttrs->valuemask = XpmColormap | XpmCloseness;
-	pAttrs->colormap = hColorMap;
-	pAttrs->closeness = 65535;
-	XpmCreatePixmapFromData (pDisplay, hWnd, xpm, phPm, phMask, pAttrs);
+	char **xpm = (char **) malloc(N * sizeof(char *));
+	for (long k = 0, i = 0; i < sizeFile; i++)
+	{
+		if (buffer[i] != '"')
+			continue;
 
-	free (xpm);
-	free (buffer);
+		xpm[k++] = buffer + ++i;
+		while (buffer[i] != '"')
+			i++;
+		buffer[i] = '\0';
+	}
+
+	pAttrs->valuemask	= XpmColormap | XpmCloseness;
+	pAttrs->colormap	= hColorMap;
+	pAttrs->closeness	= 65535;
+	XpmCreatePixmapFromData(pDisplay, hWnd, xpm, phPm, phMask, pAttrs);
+
+	free(xpm);
+	free(buffer);
 	return 0;
 }
 
 static GC create_gc(Display* display, Window win, int reverse_video)
 {
-	GC gc;				/* handle of newly created GC.  */
-	unsigned long valuemask = 0;		/* which values in 'values' to  */
-					/* check when creating the GC.  */
-	XGCValues values;			/* initial values for the GC.   */
-	unsigned int line_width = 2;		/* line width for the GC.       */
-	int line_style = LineSolid;		/* style for lines drawing and  */
-	int cap_style = CapButt;		/* style of the line's edje and */
-	int join_style = JoinBevel;		/*  joined lines.		*/
-	int screen_num = DefaultScreen(display);
+	XGCValues values;			// Initial values for the GC
+	unsigned long valuemask = 0;		// Which values in 'values' to check when creating the GC
 
-	gc = XCreateGC(display, win, valuemask, &values);
+	GC gc = XCreateGC(display, win, valuemask, &values);
 	if (gc < 0) 
 	{
 		fprintf(stderr, "XCreateGC: \n");
 		return NULL;
 	}
 
-	/* allocate foreground and background colors for this GC. */
+	int screen_num = DefaultScreen(display);
+
+	// Allocate foreground and background colors for this GC
 	if (reverse_video) 
 	{
 		XSetForeground(display, gc, WhitePixel(display, screen_num));
@@ -131,10 +132,15 @@ static GC create_gc(Display* display, Window win, int reverse_video)
 		XSetBackground(display, gc, WhitePixel(display, screen_num));
 	}
 
-	/* define the style of lines that will be drawn using this GC. */
-	XSetLineAttributes(display, gc, line_width, line_style, cap_style, join_style);
+	int line_width	= 2;			// Line width for the GC
+	int line_style	= LineSolid;		// Style for lines drawing
+	int cap_style	= CapButt;		// Style of the line's edje
+	int join_style	= JoinBevel;		// Joined lines
 
-	/* define the fill style for the GC. to be 'solid filling'. */
+	// Define the style of lines that will be drawn using this GC
+	XSetLineAttributes(display, gc, (unsigned int) line_width, line_style, cap_style, join_style);
+
+	// Define the fill style for the GC to be 'solid filling'
 	XSetFillStyle(display, gc, FillSolid);
 
 	return gc;
@@ -151,9 +157,7 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 	// if for layout not defined xpm file then unmap window and stop procedure
 	if (xconfig->flags[xkbState.group].file[0] == NULLSYM)
 	{
-		if (w_attributes.map_state != IsUnmapped)
-			XUnmapWindow(main_window->display, main_window->flag_window);
-		XFlush (main_window->display);
+		unmap_window(w_attributes);
 		return;
 	}
 	
@@ -164,53 +168,47 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 		
 		XFreePixmap(main_window->display, p->bitmap);
 		XFreePixmap(main_window->display, p->bitmap_mask);
+
 		p->bitmap = 0;
 		p->bitmap_mask = 0;
+
 		char *path = get_file_path_name(PIXMAPDIR, xconfig->flags[xkbState.group].file);
 		if (path == NULL)
 		{
-			if  (w_attributes.map_state != IsUnmapped)
-				XUnmapWindow(main_window->display, main_window->flag_window);
-			XFlush (main_window->display);
+			unmap_window(w_attributes);
 			return;
 		}
-		ReadPixmapFromFile(path, &p->bitmap, &p->bitmap_mask, &p->Attrs,
-						   main_window->display, main_window->flag_window,
-						   XDefaultColormap (main_window->display, DefaultScreen(main_window->display)));
-		if (path != NULL)
-			free(path);
-		// if pixmap not loaded then unmap window (if need) and return
+
+		ReadPixmapFromFile(path, &p->bitmap, &p->bitmap_mask, &p->Attrs, main_window->display, main_window->flag_window, XDefaultColormap(main_window->display, DefaultScreen(main_window->display)));
+		free(path);
+
 		if (p->bitmap == 0)
 		{
-			if  (w_attributes.map_state != IsUnmapped)
-				XUnmapWindow(main_window->display, main_window->flag_window);
-			XFlush (main_window->display);
+			unmap_window(w_attributes);
 			return;
 		}
-		
 	}
 	
-		// for set pixmap to window, need map window
+	// For set pixmap to window, need map window
 	if (w_attributes.map_state == IsUnmapped)
 		XMapWindow(main_window->display, main_window->flag_window);
 	
-	XSetClipMask (main_window->display, p->gc, p->bitmap_mask);
-	XSetClipOrigin (main_window->display, p->gc, 0, 0);
-	XCopyArea (main_window->display, p->bitmap, main_window->flag_window, p->gc, 0, 0, p->Attrs.width, p->Attrs.height, 0, 0);
+	XSetClipMask(main_window->display, p->gc, p->bitmap_mask);
+	XSetClipOrigin(main_window->display, p->gc, 0, 0);
+	XCopyArea(main_window->display, p->bitmap, main_window->flag_window, p->gc, 0, 0, p->Attrs.width, p->Attrs.height, 0, 0);
 	
 	XRaiseWindow(main_window->display, main_window->flag_window);
 	XMoveResizeWindow(main_window->display, main_window->flag_window, x, y, p->Attrs.width, p->Attrs.height);	
 		
-	XFlush (main_window->display);
+	XFlush(main_window->display);
 }
 
 void xcursor_hide_flag(struct _xcursor *p)
 {
 	XWindowAttributes w_attributes;
 	XGetWindowAttributes(main_window->display, main_window->flag_window, &w_attributes);
-	
-	if (w_attributes.map_state != IsUnmapped)
-		XUnmapWindow(main_window->display, main_window->flag_window);
+
+	unmap_window(w_attributes);
 }
 
 void xcursor_uninit(struct _xcursor *p)
@@ -224,6 +222,8 @@ void xcursor_uninit(struct _xcursor *p)
 	XCloseDisplay(dpy);
 	
 	free(p);
+
+	log_message(DEBUG, "Current cursor is freed");
 }
 
 struct _xcursor* xcursor_init(void)
@@ -238,22 +238,21 @@ struct _xcursor* xcursor_init(void)
 		free(p);
 		return NULL;
 	}
+
 	XSync(main_window->display, False);
 	
 	p->last_layuot = -1;
 	
 	// Functions mapping
-	p->show_flag = xcursor_show_flag;
-	p->hide_flag = xcursor_hide_flag;
-	p->uninit		= xcursor_uninit;
+	p->show_flag	= xcursor_show_flag;
+	p->hide_flag	= xcursor_hide_flag;
+	p->uninit	= xcursor_uninit;
 
 	return p;
 }
 
 
 #else /* WITH_XPM */
-
-#include "xcursor.h"
 
 void xcursor_load_pixmaps(struct _xcursor *p)
 {
@@ -273,6 +272,8 @@ void xcursor_hide_flag(struct _xcursor *p)
 void xcursor_uninit(struct _xcursor *p)
 {
 	free(p);
+
+	log_message(DEBUG, "Current cursor is freed");
 }
 
 struct _xcursor* xcursor_init(void)
@@ -281,9 +282,9 @@ struct _xcursor* xcursor_init(void)
 	bzero(p, sizeof(struct _xcursor));
 	
 	// Functions mapping
-	p->show_flag = xcursor_show_flag;
-	p->hide_flag = xcursor_hide_flag;
-	p->uninit		= xcursor_uninit;
+	p->show_flag	= xcursor_show_flag;
+	p->hide_flag	= xcursor_hide_flag;
+	p->uninit	= xcursor_uninit;
 
 	return p;
 }

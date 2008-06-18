@@ -17,7 +17,8 @@
  *
  */
 
-#include <X11/XKBlib.h>
+#include <X11/XKBlib.h>
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -28,7 +29,7 @@
 
 #include "types.h"
 #include "utils.h"
-#include "log.h"
+#include "log.h"  
 
 #include "xswitchlang.h"
 

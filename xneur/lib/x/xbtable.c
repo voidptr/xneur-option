@@ -59,13 +59,13 @@ static void bind_action(enum _hotkey_action action)
 	btable[action].key_sym_shift = 0;
 	
 	if (xconfig->hotkeys[action].modifiers & 0x1)
-		btable[action].modifier_mask = btable[action].modifier_mask + 1; // Shift
+		btable[action].modifier_mask = btable[action].modifier_mask + 1;	// Shift
 	if (xconfig->hotkeys[action].modifiers & 0x2)
-		btable[action].modifier_mask = btable[action].modifier_mask + 4; // Control
+		btable[action].modifier_mask = btable[action].modifier_mask + 4;	// Control
 	if (xconfig->hotkeys[action].modifiers & 0x4)
-		btable[action].modifier_mask = btable[action].modifier_mask + 8; // Alt
+		btable[action].modifier_mask = btable[action].modifier_mask + 8;	// Alt
 	if (xconfig->hotkeys[action].modifiers & 0x8)
-		btable[action].modifier_mask = btable[action].modifier_mask + 64; // Super
+		btable[action].modifier_mask = btable[action].modifier_mask + 64;	// Super
 	
 	if (xconfig->hotkeys[action].key != NULL) 
 	{

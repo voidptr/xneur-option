@@ -134,11 +134,12 @@ void grab_key(Window window, KeyCode kc, int is_grab)
 
 void grab_spec_keys(Window window, int is_grab)
 {
-	for (int i=0; i<total_spec_keys; i++)
+	for (int i = 0; i < total_spec_keys; i++)
 	{
 		KeyCode kc = XKeysymToKeycode(main_window->display, spec_keys[i]);
-		if (kc != 0)
-			grab_key(window, kc, is_grab);		
+		if (kc == 0)
+			continue;
+		grab_key(window, kc, is_grab);		
 	}
 }
 

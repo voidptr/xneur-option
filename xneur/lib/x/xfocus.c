@@ -207,6 +207,8 @@ int xfocus_draw_flag(struct _xfocus *p, Window event_window)
 void xfocus_uninit(struct _xfocus *p)
 {
 	free(p);
+
+	log_message(DEBUG, "Current focus is freed");
 }
 
 struct _xfocus* xfocus_init(void)

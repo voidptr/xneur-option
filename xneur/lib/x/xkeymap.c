@@ -383,6 +383,8 @@ void xkeymap_uninit(struct _xkeymap *p)
 	if (p->keymap != NULL)
 		XFree(p->keymap);
 	free(p);
+
+	log_message(DEBUG, "Current keymap is freed");
 }
 
 struct _xkeymap* xkeymap_init(void)

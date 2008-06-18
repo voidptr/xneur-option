@@ -171,6 +171,8 @@ void xevent_send_next_event(struct _xevent *p)
 void xevent_uninit(struct _xevent *p)
 {
 	free(p);
+
+	log_message(DEBUG, "Current event is freed");
 }
 
 struct _xevent* xevent_init(void)
