@@ -16,7 +16,7 @@
  *  Copyright (C) 2006-2008 XNeur Team
  *
  */
- 
+
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -25,6 +25,9 @@
 #include <string.h>
 
 #include "xcursor.h"
+
+#include "log.h"
+#include "types.h"
 
 #ifdef WITH_XPM
 
@@ -38,9 +41,6 @@
 #include "xnconfig_files.h"
 
 #include "xwindow.h"
-
-#include "log.h"
-#include "types.h"
 
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
@@ -61,17 +61,17 @@ static int ReadPixmapFromFile(char *FileName, Pixmap *phPm, Pixmap *phMask, XpmA
 	fseek(pFile, 0, SEEK_END);
 	long sizeFile = ftell(pFile);
 	fseek(pFile, 0, SEEK_SET);
-	
+
 	char *buffer = (char *) malloc(sizeFile);
 	if (!buffer)
 	{
-		fclose(pFile);	
+		fclose(pFile);
 		return -1;
 	}
 
 	fread(buffer, 1, sizeFile, pFile);
 	fclose(pFile);
-	
+
 	// Check Signature
 	if (strncmp(buffer, "/* XPM */", 9))
 	{
@@ -112,7 +112,7 @@ static GC create_gc(Display* display, Window win, int reverse_video)
 	unsigned long valuemask = 0;		// Which values in 'values' to check when creating the GC
 
 	GC gc = XCreateGC(display, win, valuemask, &values);
-	if (gc < 0) 
+	if (gc < 0)
 	{
 		fprintf(stderr, "XCreateGC: \n");
 		return NULL;
@@ -121,12 +121,12 @@ static GC create_gc(Display* display, Window win, int reverse_video)
 	int screen_num = DefaultScreen(display);
 
 	// Allocate foreground and background colors for this GC
-	if (reverse_video) 
+	if (reverse_video)
 	{
 		XSetForeground(display, gc, WhitePixel(display, screen_num));
 		XSetBackground(display, gc, BlackPixel(display, screen_num));
 	}
-	else 
+	else
 	{
 		XSetForeground(display, gc, BlackPixel(display, screen_num));
 		XSetBackground(display, gc, WhitePixel(display, screen_num));
@@ -144,28 +144,28 @@ static GC create_gc(Display* display, Window win, int reverse_video)
 	XSetFillStyle(display, gc, FillSolid);
 
 	return gc;
-} 
+}
 
 void xcursor_show_flag(struct _xcursor *p, int x, int y)
 {
 	XWindowAttributes w_attributes;
-	XGetWindowAttributes(main_window->display, main_window->flag_window, &w_attributes); 
-				
+	XGetWindowAttributes(main_window->display, main_window->flag_window, &w_attributes);
+
 	XkbStateRec xkbState;
 	XkbGetState(main_window->display, XkbUseCoreKbd, &xkbState);
-	
+
 	// if for layout not defined xpm file then unmap window and stop procedure
 	if (xconfig->flags[xkbState.group].file[0] == NULLSYM)
 	{
 		unmap_window(w_attributes);
 		return;
 	}
-	
+
 	// if current layout not equal last layout then load new pixmap
 	if (p->last_layuot != xkbState.group)
 	{
 		p->last_layuot = xkbState.group;
-		
+
 		XFreePixmap(main_window->display, p->bitmap);
 		XFreePixmap(main_window->display, p->bitmap_mask);
 
@@ -188,18 +188,18 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 			return;
 		}
 	}
-	
+
 	// For set pixmap to window, need map window
 	if (w_attributes.map_state == IsUnmapped)
 		XMapWindow(main_window->display, main_window->flag_window);
-	
+
 	XSetClipMask(main_window->display, p->gc, p->bitmap_mask);
 	XSetClipOrigin(main_window->display, p->gc, 0, 0);
 	XCopyArea(main_window->display, p->bitmap, main_window->flag_window, p->gc, 0, 0, p->Attrs.width, p->Attrs.height, 0, 0);
-	
+
 	XRaiseWindow(main_window->display, main_window->flag_window);
-	XMoveResizeWindow(main_window->display, main_window->flag_window, x, y, p->Attrs.width, p->Attrs.height);	
-		
+	XMoveResizeWindow(main_window->display, main_window->flag_window, x, y, p->Attrs.width, p->Attrs.height);
+
 	XFlush(main_window->display);
 }
 
@@ -217,10 +217,10 @@ void xcursor_uninit(struct _xcursor *p)
 
 	XFreePixmap(dpy, p->bitmap);
 	XFreePixmap(dpy, p->bitmap_mask);
-	
+
 	XFreeGC(dpy, p->gc);
 	XCloseDisplay(dpy);
-	
+
 	free(p);
 
 	log_message(DEBUG, "Current cursor is freed");
@@ -240,9 +240,9 @@ struct _xcursor* xcursor_init(void)
 	}
 
 	XSync(main_window->display, False);
-	
+
 	p->last_layuot = -1;
-	
+
 	// Functions mapping
 	p->show_flag	= xcursor_show_flag;
 	p->hide_flag	= xcursor_hide_flag;
@@ -280,7 +280,7 @@ struct _xcursor* xcursor_init(void)
 {
 	struct _xcursor *p = (struct _xcursor *) malloc(sizeof(struct _xcursor));
 	bzero(p, sizeof(struct _xcursor));
-	
+
 	// Functions mapping
 	p->show_flag	= xcursor_show_flag;
 	p->hide_flag	= xcursor_hide_flag;
