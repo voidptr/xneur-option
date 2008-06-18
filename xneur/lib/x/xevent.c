@@ -162,10 +162,7 @@ int xevent_get_next_event(struct _xevent *p)
 void xevent_send_next_event(struct _xevent *p)
 {
 	if (p->event.type == KeyPress || p->event.type == KeyRelease)
-	{
-		p->event.xkey.state = groups[get_cur_lang()];
-		p->event.xkey.state |= p->get_cur_modifiers(p)
-	{
+		p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_cur_lang()];
 
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);
 }
