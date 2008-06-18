@@ -39,7 +39,7 @@
 
 extern struct _xwindow *main_window;
 extern struct _xneur_config *xconfig;
-	
+
 static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 {
 	p->event.type			= KeyPress;
@@ -61,10 +61,10 @@ static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 
 	if (xconfig->send_delay > 0)
 		usleep(xconfig->send_delay);
-	
+
 	XSendEvent(main_window->display, p->owner_window, TRUE, KeyReleaseMask, &p->event);
 }
-	
+
 void xevent_send_backspaces(struct _xevent *p, int count)
 {
 	for (int i = 0; i < count; i++)
@@ -102,12 +102,12 @@ int get_key_state(int key)
 	for (int i = 0; i < 8; i++)
 	{
 		if (map->modifiermap[map->max_keypermod * i] == key_code)
-			key_mask = 1 << i;
+			key_mask = (1 << i);
 	}
 
 	if (key_mask == 0)
 		return 0;
-	
+
 	XFreeModifiermap(map);
 
 	Window wDummy;
@@ -161,10 +161,12 @@ int xevent_get_next_event(struct _xevent *p)
 
 void xevent_send_next_event(struct _xevent *p)
 {
-	int modifier_mask = groups[get_cur_lang()] | p->get_cur_modifiers(p);
 	if (p->event.type == KeyPress || p->event.type == KeyRelease)
-		p->event.xkey.state = modifier_mask;
-	
+	{
+		p->event.xkey.state = groups[get_cur_lang()];
+		p->event.xkey.state |= p->get_cur_modifiers(p)
+	{
+
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);
 }
 
