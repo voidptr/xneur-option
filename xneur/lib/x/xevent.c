@@ -93,10 +93,10 @@ void xevent_set_owner_window(struct _xevent *p, Window window)
 int get_key_state(int key)
 {
 	KeyCode key_code = XKeysymToKeycode(main_window->display, key);
-	XModifierKeymap *map = XGetModifierMapping(main_window->display);
-
 	if (key_code == NoSymbol)
 		return 0;
+
+	XModifierKeymap *map = XGetModifierMapping(main_window->display);
 
 	int key_mask = 0;
 	for (int i = 0; i < 8; i++)
@@ -121,6 +121,7 @@ int get_key_state(int key)
 XEvent create_basic_event(void)
 {
 	XEvent event;
+
 	event.type		= KeyPress;
 	event.xkey.type		= KeyPress;
 	event.xkey.root		= RootWindow(main_window->display, DefaultScreen(main_window->display));
