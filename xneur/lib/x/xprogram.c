@@ -277,14 +277,9 @@ void xprogram_layout_update(struct _xprogram *p)
 	switch_group(xconfig->default_group);
 }
 
-void xprogram_update(struct _xprogram *p, int *do_update)
+void xprogram_update(struct _xprogram *p)
 {
-	if (*do_update == FALSE)
-		return;
-
 	p->last_window = p->focus->owner_window;
-
-	*do_update = FALSE;
 
 	int status = p->focus->get_focus_status(p->focus, &p->app_forced_mode, &p->app_focus_mode);
 
@@ -307,8 +302,7 @@ void xprogram_update(struct _xprogram *p, int *do_update)
 
 void xprogram_process_input(struct _xprogram *p)
 {
-	int do_update = TRUE;
-	p->update(p, &do_update);
+	p->update(p);
 
 	while (1)
 	{
@@ -332,18 +326,12 @@ void xprogram_process_input(struct _xprogram *p)
 			case KeyPress:
 			{
 				log_message(TRACE, "Received KeyPress");
-
-				// Processing...
 				p->on_key_action(p);
-				
-				p->update(p, &do_update);				
 				break;
 			}
 			case KeyRelease:
 			{
 				log_message(TRACE, "Received KeyRelease");
-
-				p->update(p, &do_update);
 				break;
 			}
 			case FocusIn:
@@ -353,24 +341,20 @@ void xprogram_process_input(struct _xprogram *p)
 			{
 				p->last_layout = get_active_keyboard_group();
 
-				do_update = TRUE;
-				p->update(p, &do_update);
-				
+				p->update(p);
 				p->cursor_update(p);
 				break;
 			}
 			case FocusOut:
 			{
 				log_message(TRACE, "Received FocusOut");
-				p->last_layout = get_active_keyboard_group();
 
-				do_update = TRUE;
-				p->update(p, &do_update);
+				p->last_layout = get_active_keyboard_group();
+				p->update(p);
 				break;
 			}
 			case SelectionNotify:
 			{
-				p->update(p, &do_update);
 				p->process_selection(p);
 				break;
 			}
@@ -468,8 +452,8 @@ void xprogram_process_selection(struct _xprogram *p)
 	if (xconfig->save_selection_mode == SELECTION_SAVE_ENABLED)
 		p->event->send_selection(p->event, p->string->cur_pos);
 
-	int do_update = TRUE;										// Enable receiving events
-	p->update(p, &do_update);	
+	p->update(p);
+	
 	save_and_clear_string(p, p->focus->owner_window);
 	free(selected_text);
 }
@@ -605,8 +589,7 @@ int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action acti
 			
 			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
 			p->send_string_silent(p, TRUE);
-			int do_update = TRUE;										// Enable receiving events
-			p->update(p, &do_update);			
+			p->update(p);			
 			
 			play_file(SOUND_CHANGE_STRING);
 			break;
