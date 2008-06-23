@@ -43,7 +43,7 @@ struct _xprogram
 
 	void (*cursor_update) (struct _xprogram *p);
 	void (*layout_update) (struct _xprogram *p);
-	void (*update) (struct _xprogram *p, int *do_update);
+	void (*update) (struct _xprogram *p);
 	void (*on_key_action) (struct _xprogram *p);
 	void (*process_input) (struct _xprogram *p);
 	int  (*perform_manual_action) (struct _xprogram *p, enum _hotkey_action action);
