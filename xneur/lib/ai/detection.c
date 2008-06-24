@@ -220,7 +220,7 @@ static int get_aspell_hits(const char *word, int len)
 		log_message(DEBUG, "   [-]Skip aspell checking (word is very short)");
 		return NO_LANGUAGE;	
 	}
-	
+
 	AspellConfig *spell_config = new_aspell_config();
 	
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
@@ -242,6 +242,7 @@ static int get_aspell_hits(const char *word, int len)
 			lang_word = (char *) realloc(lang_word, (strlen(lang_word) + strlen(symbol) + 1) * sizeof(char));
 			if (lang_word != NULL)
 				strcat(lang_word, symbol);
+
 			free(symbol);
 		}
 		
@@ -255,7 +256,6 @@ static int get_aspell_hits(const char *word, int len)
 		if (aspell_error_number(possible_err) == 0)
 		{
 			spell_checker = to_aspell_speller(possible_err);
-		
 			int correct = aspell_speller_check(spell_checker, lang_word, strlen(lang_word));
 			if (correct)
 			{

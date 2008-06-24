@@ -43,7 +43,7 @@ static const int total_groups		= sizeof(groups) / sizeof(groups[0]);
 
 static int locale_create(struct _xkeymap *p)
 {
-	if (setlocale(LC_ALL, "en_US.UTF-8") == NULL)
+	if (setlocale(LC_ALL, "") == NULL)
 	{
 		log_message(ERROR, "Couldn't set en_US.UTF-8 locale");
 		return FALSE;
@@ -90,13 +90,13 @@ static void xkeymap_char_to_keycode(struct _xkeymap *p, char ch, KeyCode *kc, in
 		event.xkey.state	= 0;
 
 		int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
-		if (nbytes > 0 && symbol[0] != ch)
+		if ((nbytes > 0) && (symbol[0] == ch))
 			break;
 		
 		event.xkey.state	= ShiftMask;
 
 		nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
-		if (nbytes > 0 && symbol[0] != ch)
+		if ((nbytes > 0) && (symbol[0] == ch))
 			break;
 	}
 
@@ -127,7 +127,7 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 	int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
 	if (nbytes > 0)
 		return symbol;
-	
+
 	return NULL;		
 }
 
