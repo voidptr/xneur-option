@@ -100,7 +100,7 @@ static int get_proto_lang(const char *word, int len, int cur_lang, int proto_len
 	int hits = get_proto_hits_function(word, len, cur_lang);
 	if (hits == 0)
 	{
-		log_message(DEBUG, "   This word is ok for %s proto of size %d", xconfig->get_lang_name(xconfig, cur_lang), proto_len);
+		log_message(DEBUG, "   [-]This word is ok for %s proto of size %d", xconfig->get_lang_name(xconfig, cur_lang), proto_len);
 		return NO_LANGUAGE;
 	}
 
@@ -113,11 +113,11 @@ static int get_proto_lang(const char *word, int len, int cur_lang, int proto_len
 		if (hits != 0)
 			continue;
 
-		log_message(DEBUG, "   This word has no hits for %s language proto of size %d", xconfig->get_lang_name(xconfig, lang), proto_len);
+		log_message(DEBUG, "   [+]This word has no hits for %s language proto of size %d", xconfig->get_lang_name(xconfig, lang), proto_len);
 		return lang;
 	}
 
-	log_message(DEBUG, "   This word has hits in all languages proto of size %d", proto_len);
+	log_message(DEBUG, "   [-]This word has hits in all languages proto of size %d", proto_len);
 	return NO_LANGUAGE;
 }
 
@@ -127,11 +127,12 @@ static int get_dict_lang(const char *word)
 	{
 		if (xconfig->languages[lang].dicts->exist(xconfig->languages[lang].dicts, word, BY_PLAIN))
 		{
-			log_message(DEBUG, "   Found this word in %s language dictionary", xconfig->get_lang_name(xconfig, lang));
+			log_message(DEBUG, "   [+]Found this word in %s language dictionary", xconfig->get_lang_name(xconfig, lang));
 			return lang;
 		}
 	}
-
+	
+	log_message(DEBUG, "   [-]This word not found in any dictionaries");		
 	return NO_LANGUAGE;
 }
 
@@ -141,11 +142,12 @@ static int get_regexp_lang(const char *word)
 	{
 		if (xconfig->languages[lang].regexp->exist(xconfig->languages[lang].regexp, word, BY_REGEXP))
 		{
-			log_message(DEBUG, "   Found this word in %s language regular expressions file", xconfig->get_lang_name(xconfig, lang));
+			log_message(DEBUG, "   [+]Found this word in %s language regular expressions file", xconfig->get_lang_name(xconfig, lang));
 			return lang;
 		}
 	}
-
+	
+	log_message(DEBUG, "   [-]This word not found in any regular expressions files");
 	return NO_LANGUAGE;
 }
 
@@ -166,7 +168,7 @@ static int get_letter_order_lang(const char *word, int len, int cur_lang)
 
 	if (get_letter_order_hits(word, len, cur_lang) == TRUE)
 	{
-		log_message(DEBUG, "   This word is ok for %s letter order", xconfig->get_lang_name(xconfig, cur_lang));
+		log_message(DEBUG, "   [-]This word is ok for %s letter order", xconfig->get_lang_name(xconfig, cur_lang));
 		return NO_LANGUAGE;
 	}
 
@@ -178,9 +180,11 @@ static int get_letter_order_lang(const char *word, int len, int cur_lang)
 		if (get_letter_order_hits(word, len, lang) == FALSE)
 			continue;
 
-		log_message(DEBUG, "   This word has no hits by letter order for %s language", xconfig->get_lang_name(xconfig, lang));
+		log_message(DEBUG, "   [+]This word has no hits by letter order for %s language", xconfig->get_lang_name(xconfig, lang));
 		return lang;
 	}
+	
+	log_message(DEBUG, "   [-]This word has hits by letter order for all languages");
 	return NO_LANGUAGE;
 }
 
@@ -188,7 +192,7 @@ static int get_nofirst_letter_lang(const char *word, int cur_lang)
 {
 	if (strrchr(xconfig->languages[cur_lang].nofirst_letter, word[0]) == NULL)
 	{
-		log_message(DEBUG, "   This word is ok for %s first letter check", xconfig->get_lang_name(xconfig, cur_lang));
+		log_message(DEBUG, "   [-]This word is ok for %s first letter check", xconfig->get_lang_name(xconfig, cur_lang));
 		return NO_LANGUAGE;
 	}
 
@@ -200,9 +204,11 @@ static int get_nofirst_letter_lang(const char *word, int cur_lang)
 		if (strrchr(xconfig->languages[cur_lang].nofirst_letter, word[0]) == NULL)
 			continue;
 
-		log_message(DEBUG, "   This word has no hits by no first letter for %s language proto", xconfig->get_lang_name(xconfig, lang));
+		log_message(DEBUG, "   [+]This word has no hits by no first letter for %s language proto", xconfig->get_lang_name(xconfig, lang));
 		return lang;
 	}
+	
+	log_message(DEBUG, "   [-]This word has hits by no first letter for all languages");
 	return NO_LANGUAGE;
 }
 
@@ -210,7 +216,10 @@ static int get_nofirst_letter_lang(const char *word, int cur_lang)
 static int get_aspell_hits(const char *word, int len)
 {
 	if (len < 2) 
+	{
+		log_message(DEBUG, "   [-]Skip aspell checking (word is very short)");
 		return NO_LANGUAGE;	
+	}
 	
 	AspellConfig *spell_config = new_aspell_config();
 	
@@ -250,16 +259,22 @@ static int get_aspell_hits(const char *word, int len)
 			int correct = aspell_speller_check(spell_checker, lang_word, strlen(lang_word));
 			if (correct)
 			{
-				log_message(DEBUG, "   Found this word in %s aspell dictionary", xconfig->get_lang_name(xconfig, lang));
+				log_message(DEBUG, "   [+]Found this word in %s aspell dictionary", xconfig->get_lang_name(xconfig, lang));
 				delete_aspell_speller(spell_checker);
 				free(lang_word);
 				return lang;
 			}
 		}
+		else
+		{
+			log_message(DEBUG, "   [!]Error aspell checking for %s aspell dictionary", xconfig->get_lang_name(xconfig, lang));
+		}
 	
 		delete_aspell_speller(spell_checker);
 		free(lang_word);
 	}
+	
+	log_message(DEBUG, "   [-]This word has no hits for all aspell dictionaries");
 	return NO_LANGUAGE;
 }
 #endif
