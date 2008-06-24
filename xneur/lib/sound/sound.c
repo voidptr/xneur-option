@@ -70,7 +70,11 @@ void sound_uninit(void)
 	if (xconfig->sound_mode != SOUND_ENABLED)
 		return;
 
-	gst_deinit();
+	/*
+	It is normally not needed to call this function in a normal application as 
+	the resources will automatically be freed when the program terminates.
+	*/
+	//gst_deinit(); 
 }
 
 static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data)

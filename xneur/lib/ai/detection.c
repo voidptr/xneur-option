@@ -95,8 +95,11 @@ static int get_proto_lang(const char *word, int len, int cur_lang, int proto_len
 		get_proto_hits_function = get_big_proto_hits;
 
 	if (len < proto_len)
+	{
+		log_message(DEBUG, "   [-]Skip checking by language proto of size %d (word is very short)", proto_len);
 		return NO_LANGUAGE;
-
+	}
+	
 	int hits = get_proto_hits_function(word, len, cur_lang);
 	if (hits == 0)
 	{
