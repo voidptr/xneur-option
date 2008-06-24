@@ -43,7 +43,7 @@ static const int total_groups		= sizeof(groups) / sizeof(groups[0]);
 
 static int locale_create(struct _xkeymap *p)
 {
-	if (setlocale(LC_ALL, "") == NULL)
+	if (setlocale(LC_ALL, "en_US.UTF-8") == NULL)
 	{
 		log_message(ERROR, "Couldn't set en_US.UTF-8 locale");
 		return FALSE;
