@@ -65,7 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Fri Jan 4 2008 Vadim Likhota <vadim-lvv@yandex.ru> 0.9.0
+* Tue Jun 24 2008 Vadim Likhota <vadim-lvv@yandex.ru> 0.9.0
 - up to 0.9.0
 
 * Tue Oct 1 2007 Vadim Likhota <vadim-lvv@yandex.ru> 0.8

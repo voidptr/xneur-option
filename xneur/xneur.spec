@@ -1,11 +1,11 @@
-%define fedora 0
-%define rhel 5
-%define dist el5
+%define fedora 7
+%define rhel 0
+#define dist el5
 
 Summary: 	X Neural Switcher
 Name:		xneur
-Version: 	0.8
-Release: 	0.%{?dist}
+Version: 	0.9.0
+Release: 	0%{?dist}
 
 License: 	GPL
 Group: 		Applications/Office
@@ -14,9 +14,16 @@ Source: 	%{name}-%{version}.tar.bz2
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+Requires:	aspell
+BuildRequires: 	glib2-devel aspell-devel
+BuildRequires: 	pkgconfig >= 0.20
+Requires:	pcre >= 5.0
+BuildRequires: 	pcre-devel >= 5.0
 %if 0%{?fedora} > 4 || 0%{?rhel} > 4
 Requires:	libX11
+Requires:	libXpm
 BuildRequires: 	libX11-devel
+BuildRequires: 	libXpm-devel
 %else
 Requires:	xorg-x11
 BuildRequires: 	xorg-x11-devel
@@ -24,11 +31,9 @@ BuildRequires: 	xorg-x11-devel
 %if 0%{?fedora} > 0
 Requires:	freealut > 1.0.1
 BuildRequires: 	freealut-devel
-Requires:	gstreamer-0.10 >= 0.10.6
+Requires:	gstreamer >= 0.10.6
 BuildRequires: 	gstreamer-devel
 %endif
-Requires:	aspell
-BuildRequires: 	glib2-devel aspell-devel
 
 
 %description
@@ -52,7 +57,7 @@ rm -rf $RPM_BUILD_ROOT
 %setup -q
 
 %build
-%if 0%{?fedora} > 0
+%if 0%{?fedora} > 6
 ./autogen.sh
 %else
 ./autogen.sh --without-sound
@@ -63,10 +68,12 @@ make %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 %makeinstall
-mv -f $RPM_BUILD_ROOT/usr/etc $RPM_BUILD_ROOT/etc
 %if %{_arch} == x86_64
 mv -f $RPM_BUILD_ROOT/usr/lib/pkgconfig $RPM_BUILD_ROOT/usr/lib64/
 %endif
+
+mkdir -p ${RPM_BUILD_ROOT}/usr/local/share/
+ln -s /usr/share/xneur ${RPM_BUILD_ROOT}/usr/local/share/xneur
 
 
 %clean
@@ -76,11 +83,11 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc AUTHORS ChangeLog NEWS README
-%{_sysconfdir}/%{name}
-%{_datadir}/%{name}/sounds/*
+%{_datadir}/%{name}/*
 %{_bindir}/*
 %{_libdir}/*.so.*
 %{_mandir}/man1/*
+/usr/local/share/*
 
 
 %files devel
@@ -92,7 +99,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/%{name}/*.h
 
 %changelog
-* Thu Oct 11 2007 vadim Likhota <vadim-lvv@yandex.ru> 0.8
+* Tue Jun 24 2008 Vadim Likhota <vadiml.xx@gmail.com> 0.9.0
+- update to 0.9
+- test on fc7 && asp12
+
+* Thu Oct 11 2007 Vadim Likhota <vadim-lvv@yandex.ru> 0.8
 - update to 0.8
 
 * Tue Jul 17 2007 Vadim Likhota <vadim-lvv@yandex.ru> 0.6.2-1

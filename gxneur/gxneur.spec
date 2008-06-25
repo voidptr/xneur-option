@@ -1,11 +1,11 @@
-%define fedora 0
-%define rhel 5
-%define dist el5
+%define fedora 7
+%define rhel 0
+#define dist el5
 
 Summary: 	GTK frontend for X Neural Switcher
 Name: 		gxneur
-Version: 	0.8
-Release: 	0.%{?dist}
+Version: 	0.9.0
+Release: 	0%{?dist}
 
 Group: 		Applications/Office
 License: 	GPL
@@ -15,8 +15,12 @@ Source1: 	gxneur.desktop
 
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires: 	gtk2-devel, xneur-devel = %{version}
-Requires: 	xneur = %{version}, gtk2
+Requires: 	xneur = %{version}
+Requires:       libglade2
+Requires:       gtk2
+BuildRequires: 	xneur-devel = %{version}
+BuildRequires:  libglade2-devel
+BuildRequires:  gtk2-devel
 %if 0%{?fedora} > 4 || 0%{?rhel} > 4
 Requires: 	xorg-x11-utils
 %else
@@ -50,7 +54,7 @@ desktop-file-install --vendor fedora			  	\
 # fix bug in config files (in xneur this bug fixed)
 mkdir -p ${RPM_BUILD_ROOT}/usr/local/share/
 ln -s /usr/share/locale ${RPM_BUILD_ROOT}/usr/local/share/locale
-ln -s /usr/share/pixmaps ${RPM_BUILD_ROOT}/usr/local/share/pixmaps
+ln -s /usr/share/gxneur ${RPM_BUILD_ROOT}/usr/local/share/gxneur
 
 %find_lang %{name}
 
@@ -63,12 +67,17 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog NEWS README TODO
 %{_bindir}/*
-%{_datadir}/pixmaps/*
 %{_datadir}/applications/*.desktop
+%{_datadir}/%{name}/*
+%{_mandir}/man1/*
 /usr/local/share/*
 
 %changelog
-* Thu Oct 11 2007 vadim Likhota <vadim-lvv@yandex.ru> 0.8
+* Tue Jul 24 2008 Vadim Likhota <vadiml.xx@gmail.com> 0.9.0
+- update to 0.9
+- test on fc7 && asp12
+
+* Thu Oct 11 2007 Vadim Likhota <vadim-lvv@yandex.ru> 0.8
 - update to 0.8
 
 * Tue Jul 17 2007 Vadim Likhota <vadim-lvv@yandex.ru> 0.6.2-1
