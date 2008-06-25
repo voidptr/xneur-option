@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA    *
  **********************************************************************************/
 
-//#include <stdlib.h>
+#include <stdlib.h>
 #include <qwidget.h>
 #include <kuniqueapplication.h>
 #include <kinputdialog.h>
