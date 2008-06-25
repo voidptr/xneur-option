@@ -151,11 +151,11 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 {
 	// Mouse pointer motion masking and focus event masking every time for all windows
 	int mask = POINTER_MOTION_MASK;
-	set_mask_to_window(p->parent_window, mask);
 	
 	// Grabbing ONLY after masking!!!
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
+		set_mask_to_window(p->parent_window, mask);
 		// Event unmasking
 		set_event_mask(p->owner_window, mask | FOCUS_CHANGE_MASK);
 		// Ungrabbing special key (Enter, Tab and other)
@@ -164,6 +164,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 	else
 	{
 		// Event masking
+		set_mask_to_window(p->parent_window, mask | EVENT_PRESS_MASK);
 		set_event_mask(p->owner_window, mask | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 		// Grabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, TRUE);
