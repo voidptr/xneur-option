@@ -54,6 +54,9 @@ KXNeurApp::KXNeurApp()
     xnconf = NULL;
     cur_lang = -1;
     prev_lang = -1;
+    for ( int i = 0 ; i < MAX_LANGUAGES ; i++ )
+	langs[i] = NULL;
+
     if ( !(KXNeurSettings::self()->RunXNeur() && xneur_start()) ) {
 #ifndef XN_END
 	qDebug("start -- ok\n");
@@ -259,27 +262,40 @@ void KXNeurApp::refreshLang()
     QStringList lngs;
     xnkb->getGroupNames(lngs);
     QString lng;
-    uint i;
+    int i = 0;
 
 
-    for ( i = 0 ; i < langs.count() ; i++ )
-	trayicon->menu->removeItem(langs[i]->menuid);
-    langs.clear();
+    // for ( i = 0 ; i < langs.count() ; i++ )
+    for ( ; i < MAX_LANGUAGES ; i++ ) {
+	if ( langs[i] != NULL ) {
+	    trayicon->menu->removeItem(langs[i]->menuid);
+            // langs.clear();
+	    delete langs[i];
+	}
+	langs[i] = NULL;
+    }
 
     i = 0;
-    langs.resize(lngs.count());
+    // langs.resize(lngs.count());
 
-    for ( QStringList::Iterator iter = lngs.begin(); iter != lngs.end(); iter++, i++ ) {
+    for ( QStringList::Iterator iter = lngs.begin(); iter != lngs.end() ; iter++, i++ ) {
+	if ( i >= MAX_LANGUAGES ) {
+	    qDebug("Error: found more then 4 langs!!!");
+	    xneur_stop();
+	    exit(1);
+	}
 	lng = *iter;
 	QString code = all_langs->readEntry(lng);
 	// printf("%s - %s\n", lng.latin1(), code.latin1());
 	if ( code == QString::null ) {
-	    langs.insert(i, new XNLang(i18n("* Unknown lang *")));
+	    langs[i] = new XNLang(i18n("* Unknown lang *"));
+	    // langs.insert(i, new XNLang(i18n("* Unknown lang *")));
 	    langs[i]->lg = QString::number(i);
 	    langs[i]->supp_lg = -1;
 	}
 	else {
-	    langs.insert(i, new XNLang(lng));
+	    // langs.insert(i, new XNLang(lng));
+	    langs[i] = new XNLang(lng);
 	    langs[i]->lg = code;
 	    langs[i]->supp_lg = 0;
 	}
@@ -299,31 +315,33 @@ void KXNeurApp::refreshLang()
 	    painter.drawText(0, 0, pix.width(), pix.height(), Qt::AlignHCenter | Qt::AlignVCenter, langs[i]->lg);
 	}
 	langs[i]->pic = pix;
-
     };
 
-    for ( int j = 0 ; j < xnconf->total_languages && (uint)j < langs.count() ; j++ ) {
+    for ( int j = 0 ; j < xnconf->total_languages ; j++ ) {
 	QString code = all_langs->readEntry(xnconf->get_lang_name(xnconf, j));
+	int l = -1;
 	if ( code != QString::null ) {
-	    QString path;
-	    QPixmap pic;
-	    for ( i = 0 ; i < langs.count() ; i++ ) {
+	    for ( i = 0 ; i < MAX_LANGUAGES && langs[i] != NULL ; i++ ) {
 		if ( code == langs[i]->lg ) {
 		    langs[i]->name = xnconf->get_lang_name(xnconf, j);
 		    langs[i]->supp_lg = 1;
+		    l = i;
 		    break;
 		}
 	    }
-	    path = locate("appdata", langs[i]->name+".png");
-	    if ( KXNeurSettings::ShowInTray() == SHOW_ICON && !path.isEmpty() ) {
-	    // printf("show flag\n");
-		pic.load(path);
-		langs[i]->pic = pic;
+	    if ( l >= 0 ) {
+		QString path = locate("appdata", langs[l]->name+".png");
+		QPixmap pic;
+		if ( KXNeurSettings::ShowInTray() == SHOW_ICON && !path.isEmpty() ) {
+			// printf("show flag\n");
+		    pic.load(path);
+		    langs[l]->pic = pic;
+		}
 	    }
 	}
     }
 
-    for ( i = 0 ; i < langs.count() ; i++ )
+    for ( i = 0 ; i < MAX_LANGUAGES && langs[i] != NULL ; i++ )
 	langs[i]->menuid = trayicon->menu->insertItem(langs[i]->pic, langs[i]->name, i, i+1);
 }
 
@@ -333,13 +351,14 @@ void KXNeurApp::setNextLang()
     int groupno;
     if ( KXNeurSettings::SwitcherMode() && prev_lang >= 0 ) {
 	groupno = prev_lang;
-	// printf("switch mode\n");
+	// qDebug("switch mode");
     }
     else {
         groupno = cur_lang + 1;
-	if ( groupno >= (int)langs.count() )
+	// if ( groupno >= (int)langs.count() )
+	if ( groupno >= MAX_LANGUAGES || langs[groupno] == NULL )
 	    groupno = 0;
-	// printf("ring mode\n");
+	// qDebug("ring mode");
     }
     xnkb->setGroupNo(groupno);
 }
@@ -348,7 +367,8 @@ void KXNeurApp::setNextLang()
 void KXNeurApp::setMenuLang(int nn)
 {
     // printf("click lang %d\n", nn);
-    for ( uint i = 0 ; i < langs.count() ; i++ )
+    // for ( uint i = 0 ; i < langs.count() ; i++ )
+    for ( uint i = 0 ; i < MAX_LANGUAGES && langs[i] != NULL ; i++ )
 	if ( langs[i]->menuid == nn ) {
 	    xnkb->setGroupNo(i);
 	    break;

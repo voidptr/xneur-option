@@ -40,7 +40,6 @@ class QComboBox;
 class KXNComboBox;
 class QLabel;
 class KXNListBox;
-// class QLineEdit;
 class QSpinBox;
 class KKeyChooser;
 class KGlobalAccel;
@@ -55,8 +54,10 @@ public:
 
     char * lang;
     char * file;
+
 signals:
     void set_file(char *);
+
 public slots:
     void update(int nn);
     void click1();
@@ -68,8 +69,6 @@ class KXNLineEdit : public QLineEdit
 public:
     KXNLineEdit(QWidget * parent, const char * name = 0);
     ~KXNLineEdit();
-
-    // QWidget *par;
 
 public slots:
     void openDlg();

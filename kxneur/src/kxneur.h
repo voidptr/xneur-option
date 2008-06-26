@@ -26,8 +26,6 @@
 
 
 #include <kuniqueapplication.h>
-#include <qptrvector.h>
-#include <qvaluevector.h>
 extern "C" {
 #include <xneur/xnconfig.h>
 }
@@ -59,8 +57,6 @@ public:
     int menuid;
 };
 
-typedef QPtrVector<XNLang> XNLangVector;
-
 // moc not conceive #define
 class KXNeurApp : public KUniqueApplication
 // class KXNeurApp : public KApplication
@@ -89,7 +85,8 @@ private:
     int xneur_pid;
     KXNeurTray *trayicon;
     KXNKeyboard *xnkb;
-    XNLangVector langs;
+    // XNLangVector langs;
+    XNLang *langs[MAX_LANGUAGES];
     KConfig *all_langs;
 
     bool x11EventFilter(XEvent *e);
