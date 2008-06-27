@@ -72,7 +72,6 @@ void xstring_savelog(struct _xstring *p, char *file_name, Window window)
 	if (stream == NULL)
 		return;
 	
-	// Get app name
 	if (window != last_log_window)
 	{
 		last_log_window = window;
@@ -81,40 +80,41 @@ void xstring_savelog(struct _xstring *p, char *file_name, Window window)
 		free(app_name);
 	}
 	
-	// Get Date and Time stamp
-	setlocale(LC_ALL, "");
-	
 	time_t curtime = time(NULL);
 	struct tm *loctime = localtime(&curtime);
-	char buffer[256];
-	buffer[0] = NULLSYM;
-	if (loctime != NULL)	
-		strftime(buffer, 256, "%c", loctime);
+	if (locatime == NULL)
+		return;
+
+	char *buffer = malloc(256 * sizeof(char));
+	strftime(buffer, 256, "%c", loctime);
 	fprintf(stream, "  (%s): ", buffer);
+	free(buffer);
 	
-	setlocale(LC_ALL, "en_US.UTF-8");
-	
-	for (int i=0; i<p->cur_pos; i++)
+	for (int i = 0; i < p->cur_pos; i++)
 	{
-		char *symbol = keycode_to_symbol(p->keycode[i], -1, p->keycode_modifiers[i]);
-		
-		if (symbol != NULL)
+		if (p->keycode[i] == 36)			// Return
 		{
-			if (p->keycode[i] == 36)			// Return
-				fprintf(stream, "\n");
-			else if (p->keycode[i] == 23)		// Tab
-				fprintf(stream, "\t");
-			else								//Other symbols
-				fprintf(stream, "%s", symbol);
+			fprintf(stream, "\n");
+			continue;
 		}
-		else 
+		if (p->keycode[i] == 23)			// Tab
+		{
+			fprintf(stream, "\t");
+			continue;
+		}
+
+		char *symbol = keycode_to_symbol(p->keycode[i], -1, p->keycode_modifiers[i]);
+		if (symbol == NULL)
 		{
 			fprintf(stream, "<?>");
+			continue;
 		}
+
+		fprintf(stream, "%s", symbol);
 		free(symbol);
 	}
+
 	fprintf(stream, "\n");
-	
 	fclose(stream);
 }
 

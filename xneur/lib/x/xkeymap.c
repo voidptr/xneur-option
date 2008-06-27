@@ -47,10 +47,16 @@ static const int max_groups_count	= sizeof(keyboard_groups) / sizeof(keyboard_gr
 
 static int locale_create(struct _xkeymap *p)
 {
-	const char *locale = xconfig->get_locale(xconfig);
-	if (setlocale(LC_ALL, locale) == NULL)
+	char *locale = setlocale(LC_ALL, "");
+	if (locale == NULL)
 	{
-		log_message(ERROR, "Couldn't set %s locale", locale);
+		log_message(ERROR, "Couldn't set default locale");
+		return FALSE;
+	}
+
+	if (strstr(locale, ".UTF8") == NULL)
+	{
+		log_message(ERROR, "Your default locale is not UTF8");
 		return FALSE;
 	}
 
