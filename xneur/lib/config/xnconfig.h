@@ -189,6 +189,7 @@ struct _xneur_config
 	char* (*get_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	void  (*add_language) (struct _xneur_config *p, const char *name, const char *dir, int group);
+	char* (*get_locale) (struct _xneur_config *p);
 
 	char* (*get_bool_name) (int option);
 	char* (*get_log_level_name) (struct _xneur_config *p);

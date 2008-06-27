@@ -44,10 +44,7 @@ static const int total_groups		= sizeof(groups) / sizeof(groups[0]);
 
 static int locale_create(struct _xkeymap *p)
 {
-	char *locale;
-	if (xconfig->locale == NULL)
-		locale = DEFAULT_LOCALE;
-
+	char *locale = xconfig->get_locale(xconfig);
 	if (setlocale(LC_ALL, locale) == NULL)
 	{
 		log_message(ERROR, "Couldn't set %s locale", locale);

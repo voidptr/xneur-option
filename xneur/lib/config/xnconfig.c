@@ -442,21 +442,6 @@ static void free_structures(struct _xneur_config *p)
 	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
 }
 
-char *xneur_config_get_bool_name(int option)
-{
-	return bool_names[option];
-}
-
-char *xneur_config_get_mode_name(struct _xneur_config *p)
-{
-	return mode_names[p->get_current_mode(p)];
-}
-
-char *xneur_config_get_log_level_name(struct _xneur_config *p)
-{
-	return log_levels[xconfig->log_level];
-}
-
 void xneur_config_reload(struct _xneur_config *p)
 {
 	int xneur_pid = p->xneur_data->xneur_pid;
@@ -590,7 +575,7 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# It's a X Neural Switcher configuration file by XNeur\n# All values writted XNeur\n\n");
 
 	fprintf(stream, "# Config version\nVersion %s\n\n", VERSION);
-	fprintf(stream, "# Working locale\Locale %s\n\n", p->locale);
+	fprintf(stream, "# Working locale\Locale %s\n\n", p->get_locale(p));
 	fprintf(stream, "# Default work mode\nDefaultMode %s\n\n", p->get_mode_name(p));
 
 	fprintf(stream, "# Level of messages program will write to output\n");
@@ -814,7 +799,7 @@ void xneur_config_get_library_api_version(int *major_version, int *minor_version
 	*minor_version = LIBRARY_API_VERSION_MINOR;
 }
 
-void xneur_xonfig_add_language(struct _xneur_config *p, const char *name, const char *dir, int group)
+void xneur_config_add_language(struct _xneur_config *p, const char *name, const char *dir, int group)
 {
 	if (name == NULL || dir == NULL)
 	{
@@ -832,6 +817,28 @@ void xneur_xonfig_add_language(struct _xneur_config *p, const char *name, const 
 	p->languages[p->total_languages].group	= group;
 	
 	p->total_languages++;
+}
+
+char *xneur_config_get_locale(struct _xneur_config *p)
+{
+	if (p->locale == NULL)
+		return DEFAULT_LOCALE;
+	return p->locale;
+}
+
+char *xneur_config_get_bool_name(int option)
+{
+	return bool_names[option];
+}
+
+char *xneur_config_get_mode_name(struct _xneur_config *p)
+{
+	return mode_names[p->get_current_mode(p)];
+}
+
+char *xneur_config_get_log_level_name(struct _xneur_config *p)
+{
+	return log_levels[xconfig->log_level];
 }
 
 void xneur_config_uninit(struct _xneur_config *p)
@@ -894,7 +901,8 @@ struct _xneur_config* xneur_config_init(void)
 	p->get_lang_name		= xneur_config_get_lang_name;
 	p->get_lang_group		= xneur_config_get_lang_group;
 	p->find_group_lang		= xneur_config_find_group_lang;
-	p->add_language			= xneur_xonfig_add_language;
+	p->add_language			= xneur_config_add_language;
+	p->get_locale			= xneur_config_get_locale;
 
 	p->get_bool_name		= xneur_config_get_bool_name;
 	p->get_log_level_name		= xneur_config_get_log_level_name;
