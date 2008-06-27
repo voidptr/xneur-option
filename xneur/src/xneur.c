@@ -91,7 +91,7 @@ static void xneur_load_config(int final)
 	
 	xneur_check_config_version(final);
 
-	log_message(LOG, "Log level is set to %s", xconfig->get_log_level());
+	log_message(LOG, "Log level is set to %s", xconfig->get_log_level_name(xconfig));
 	log_message(LOG, "Total detected %d languages", xconfig->total_languages);
 
 	if (!check_xkb_extension() || !check_keyboard_groups())
