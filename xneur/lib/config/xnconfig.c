@@ -381,6 +381,12 @@ static void free_structures(struct _xneur_config *p)
 		p->version = NULL;
 	}
 	
+	if (p->locale != NULL)
+	{
+		free(p->locale);
+		p->locale = NULL;
+	}
+
 	for (int lang = 0; lang < p->total_languages; lang++)
 	{
 		if (p->languages[lang].temp_dicts != NULL)
