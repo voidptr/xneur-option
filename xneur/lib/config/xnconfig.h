@@ -140,8 +140,6 @@ struct _xneur_config
 
 	void (*get_library_version) (int *major_version, int *minor_version); // This function MUST be first
 
-	char *locale;
-
 	struct _list_char *excluded_apps;
 	struct _list_char *auto_apps;
 	struct _list_char *manual_apps;
