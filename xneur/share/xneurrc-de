@@ -2,10 +2,7 @@
 # all values are default
 
 # Config version
-Version 0.9.1
-
-# Working locale
-Locale de_DE.UTF-8
+Version 0.9.0
 
 # Default work mode
 DefaultMode Auto

@@ -30,8 +30,6 @@
 #define LANGDEF_NAME			"langdef"
 #define REGEXP_NAME			"regexp"
 
-#define DEFAULT_LOCALE			"en_US.UTF-8"
-
 #define MANUAL_MODE			0
 #define AUTO_MODE			1
 
@@ -161,16 +159,16 @@ struct _xneur_config
 
 	int   default_group;				// Initial keyboard layout for all new applications
 
-	int   play_sounds;				// Play sound samples or not 
+	int   play_sounds;				// Play sound samples or not
 	int   grab_mouse;				// Grab mouse or not
 	int   educate;					// Education xneur
 	int   remember_layout;				// Remember layout for each of window
 	int   save_selection;				// Save selection after convert
 	int   save_keyboard_log;			// Save keyboard log
-	 
+
 	struct _list_char *draw_flag_apps;
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw
-		   
+
 	int   (*load) (struct _xneur_config *p);
 	void  (*clear) (struct _xneur_config *p);
 	int   (*save) (struct _xneur_config *p);
@@ -190,7 +188,6 @@ struct _xneur_config
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	void  (*add_language) (struct _xneur_config *p, const char *name, const char *dir, int group);
 
-	const char* (*get_locale) (struct _xneur_config *p);
 	const char* (*get_bool_name) (int option);
 	const char* (*get_log_level_name) (struct _xneur_config *p);
 	const char* (*get_mode_name) (struct _xneur_config *p);

@@ -49,10 +49,10 @@ static const char *option_names[] = 	{
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySound", "SendDelay", "LayoutRememberModeForApp",
-						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "Locale"
+						"DrawFlagApp", "AddFlagPixmap", "SaveLog"
 					};
 static const char *action_names[] =	{
-						"ChangeWord", "ChangeString", "ChangeMode", 
+						"ChangeWord", "ChangeString", "ChangeMode",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4"
 					};
@@ -329,11 +329,6 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->save_keyboard_log = index;
 			break;
 		}
-		case 23: // Working locale
-		{
-			p->locale = strdup(param);
-			break;
-		}
 	}
 }
 
@@ -378,12 +373,6 @@ static void free_structures(struct _xneur_config *p)
 	{
 		free(p->version);
 		p->version = NULL;
-	}
-	
-	if (p->locale != NULL)
-	{
-		free(p->locale);
-		p->locale = NULL;
 	}
 
 	for (int lang = 0; lang < p->total_languages; lang++)
@@ -580,7 +569,6 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# It's a X Neural Switcher configuration file by XNeur\n# All values writted XNeur\n\n");
 
 	fprintf(stream, "# Config version\nVersion %s\n\n", VERSION);
-	fprintf(stream, "# Working locale\nLocale %s\n\n", p->get_locale(p));
 	fprintf(stream, "# Default work mode\nDefaultMode %s\n\n", p->get_mode_name(p));
 
 	fprintf(stream, "# Level of messages program will write to output\n");
@@ -808,13 +796,6 @@ void xneur_config_add_language(struct _xneur_config *p, const char *name, const 
 	p->total_languages++;
 }
 
-const char* xneur_config_get_locale(struct _xneur_config *p)
-{
-	if (p->locale == NULL)
-		return DEFAULT_LOCALE;
-	return p->locale;
-}
-
 const char* xneur_config_get_bool_name(int option)
 {
 	return bool_names[option];
@@ -891,7 +872,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->get_lang_group		= xneur_config_get_lang_group;
 	p->find_group_lang		= xneur_config_find_group_lang;
 	p->add_language			= xneur_config_add_language;
-	p->get_locale			= xneur_config_get_locale;
 
 	p->get_bool_name		= xneur_config_get_bool_name;
 	p->get_log_level_name		= xneur_config_get_log_level_name;

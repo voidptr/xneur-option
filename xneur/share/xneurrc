@@ -4,9 +4,6 @@
 # Config version
 Version 0.9.0
 
-# Working locale
-Locale ru_RU.UTF-8
-
 # Default work mode
 DefaultMode Auto
 
