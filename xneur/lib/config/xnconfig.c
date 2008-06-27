@@ -34,8 +34,8 @@
 
 #include "xnconfig.h"
 
-#define LIBRARY_API_VERSION_MAJOR	3
-#define LIBRARY_API_VERSION_MINOR	1
+#define LIBRARY_API_VERSION_MAJOR	4
+#define LIBRARY_API_VERSION_MINOR	0
 #define OPTIONS_DELIMETER		" "
 
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
