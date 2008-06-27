@@ -793,7 +793,7 @@ int xneur_config_get_lang_group(struct _xneur_config *p, int lang)
 	return p->languages[lang].group;
 }
 
-void xneur_config_get_library_api_version(int *major_version, int *minor_version)
+void xneur_config_get_library_version(int *major_version, int *minor_version)
 {
 	*major_version = LIBRARY_API_VERSION_MAJOR;
 	*minor_version = LIBRARY_API_VERSION_MINOR;
@@ -884,7 +884,7 @@ struct _xneur_config* xneur_config_init(void)
 	p->get_dict_path		= get_file_path_name;
 	p->get_home_dict_path		= get_home_file_path_name;
 
-	p->get_library_api_version	= xneur_config_get_library_api_version;
+	p->get_library_version		= xneur_config_get_library_version;
 
 	p->load				= xneur_config_load;
 	p->clear			= xneur_config_clear;

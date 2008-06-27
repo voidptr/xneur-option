@@ -140,7 +140,7 @@ struct _xneur_config
 {
 	char *version;
 
-	void (*get_library_api_version) (int *major_version, int *minor_version); // This function MUST be first
+	void (*get_library_version) (int *major_version, int *minor_version); // This function MUST be first
 
 	char *locale;
 
