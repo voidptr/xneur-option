@@ -576,6 +576,7 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#LogLevel Warning\n");
 	fprintf(stream, "#LogLevel Log\n");
 	fprintf(stream, "#LogLevel Debug\n");
+	fprintf(stream, "#LogLevel Trace\n");
 	fprintf(stream, "LogLevel %s\n\n", p->get_log_level_name(p));
 
 	fprintf(stream, "# Define used languages\n");
