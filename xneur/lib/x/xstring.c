@@ -82,7 +82,7 @@ void xstring_savelog(struct _xstring *p, char *file_name, Window window)
 	
 	time_t curtime = time(NULL);
 	struct tm *loctime = localtime(&curtime);
-	if (locatime == NULL)
+	if (loctime == NULL)
 		return;
 
 	char *buffer = malloc(256 * sizeof(char));
