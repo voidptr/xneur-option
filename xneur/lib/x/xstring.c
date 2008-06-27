@@ -48,10 +48,10 @@ extern struct _xwindow *main_window;
 
 Window last_log_window = 0;
 
+// Private
 static void set_new_size(struct _xstring *p, int new_size)
 {
-	p->cur_size = new_size;
-
+	p->cur_size		= new_size;
 	p->content		= (char *) realloc(p->content, p->cur_size * sizeof(char));
 	p->keycode		= (KeyCode *) realloc(p->keycode, p->cur_size * sizeof(KeyCode));
 	p->keycode_modifiers	= (int *) realloc(p->keycode_modifiers, p->cur_size * sizeof(int));
@@ -59,8 +59,8 @@ static void set_new_size(struct _xstring *p, int new_size)
 
 static void xstring_set_key_code(struct _xstring *p, int lang)
 {
-	int keycode_mod = get_keycode_mod(xconfig->get_lang_group(xconfig, lang));
-	int languages_mask = get_languages_mask();
+	int keycode_mod		= get_keycode_mod(xconfig->get_lang_group(xconfig, lang));
+	int languages_mask	= get_languages_mask();
 
 	// Set new language bit
 	for (int i = 0; i < p->cur_pos; i++)

@@ -55,10 +55,10 @@ int get_key_state(int key)
 			key_mask = (1 << i);
 	}
 
+	XFreeModifiermap(map);
+
 	if (key_mask == 0)
 		return 0;
-
-	XFreeModifiermap(map);
 
 	Window wDummy;
 	int iDummy;
@@ -85,6 +85,7 @@ XEvent create_basic_event(void)
 	return event;
 }
 
+// Private
 static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 {
 	p->event.type			= KeyPress;

@@ -72,6 +72,7 @@ extern struct _xneur_config *xconfig;
 
 struct _xwindow *main_window;
 
+// Private
 static int get_auto_action(KeySym key, int modifier_mask)
 {
 	// Null symbol
@@ -180,18 +181,19 @@ static int get_auto_action(KeySym key, int modifier_mask)
 
 static void xprogram_cursor_update(struct _xprogram *p)
 {
-	if (p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
-	{		
-		int root_x, root_y, win_x, win_y;
-		Window root_window, child_window;
-		unsigned int dummyU;
-					
-		XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
-				
-		p->cursor->show_flag(p->cursor, root_x+10, root_y+10);
-	}
-	else
+	if (!p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
+	{
 		p->cursor->hide_flag(p->cursor);
+		return;
+	}
+
+	int root_x, root_y, win_x, win_y;
+	Window root_window, child_window;
+	unsigned int dummyU;
+					
+	XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
+
+	p->cursor->show_flag(p->cursor, root_x+10, root_y+10);
 }
 
 static void xprogram_layout_update(struct _xprogram *p)

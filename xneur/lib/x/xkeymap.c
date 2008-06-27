@@ -45,6 +45,25 @@ static const int state_masks[]		= {0x00, 0x01, 0x80, 0x10}; // None, NumLock, Al
 
 static const int max_groups_count	= sizeof(keyboard_groups) / sizeof(keyboard_groups[0]);
 
+static int locale_create(vaoi)
+{
+	if (setlocale(LC_ALL, "") == NULL)
+	{
+		log_message(ERROR, "Couldn't set default locale");
+		return FALSE;
+	}
+
+	char *locale = setlocale(LC_CTYPE, "");
+	if (locale == NULL || strstr(locale, "UTF-8") == NULL)
+	{
+		log_message(ERROR, "Your default locale is not UTF-8");
+		return FALSE;
+	}
+
+	log_message(LOG, "Using locale %s", locale);
+	return TRUE;
+}
+
 int get_languages_mask(void)
 {
 	int languages_mask = 0;
@@ -65,10 +84,9 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
 
 	int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
-	if (nbytes > 0)
-		return symbol;
-
-	return NULL;
+	if (nbytes <= 0)
+		return NULL;
+	return symbol;
 }
 
 int get_keycode_mod(int group)
@@ -109,25 +127,7 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 	}
 }
 
-static int locale_create(void)
-{
-	if (setlocale(LC_ALL, "") == NULL)
-	{
-		log_message(ERROR, "Couldn't set default locale");
-		return FALSE;
-	}
-
-	char *locale = setlocale(LC_CTYPE, "");
-	if (locale == NULL || strstr(locale, "UTF-8") == NULL)
-	{
-		log_message(ERROR, "Your default locale is not UTF-8");
-		return FALSE;
-	}
-
-	log_message(LOG, "Using locale %s", locale);
-	return TRUE;
-}
-
+// Private
 static int init_keymaps(struct _xkeymap *p)
 {
 	p->keyboard_groups_count = get_keyboard_groups_count();
@@ -398,7 +398,7 @@ struct _xkeymap* xkeymap_init(void)
 	struct _xkeymap *p = (struct _xkeymap *) malloc(sizeof(struct _xkeymap));
 	bzero(p, sizeof(struct _xkeymap));
 
-	if (!init_keymaps(p) || !locale_create(p))
+	if (!locale_create() || !init_keymaps(p))
 	{
 		free(p);
 		return NULL;

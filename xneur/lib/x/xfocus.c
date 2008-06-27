@@ -41,6 +41,33 @@ extern struct _xwindow *main_window;
 const char *verbose_forced_mode[]	= {"Default", "Manual", "Automatic"};
 const char *verbose_focus_status[]	= {"Processed", "Changed Focus", "Unchanged Focus", "Excluded"};
 
+static void set_mask_to_window(Window current_window, int mask)
+{
+	if (current_window == None)
+		return;
+	
+	set_event_mask(current_window, mask);
+	
+	if (mask == None)
+		grab_button(current_window, FALSE);
+	else
+		grab_button(current_window, TRUE);
+	
+	unsigned int children_count;
+	Window root_window, parent_window;
+	Window *children_return;
+	
+	int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &children_count);
+	if (!is_same_screen)
+		return;
+	
+	for (int i = 0; i < children_count; i++)
+		set_mask_to_window(children_return[i], mask);
+	
+	XFree(children_return);
+}
+
+// Private
 static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 {
 	*forced_mode	= FORCE_MODE_NORMAL;
@@ -104,32 +131,6 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 	if (new_app_name != NULL)
 		free(new_app_name);
 	return FOCUS_CHANGED;
-}
-
-static void set_mask_to_window(Window current_window, int mask)
-{
-	if (current_window == None)
-		return;
-	
-	set_event_mask(current_window, mask);
-	
-	if (mask == None)
-		grab_button(current_window, FALSE);
-	else
-		grab_button(current_window, TRUE);
-	
-	unsigned int children_count;
-	Window root_window, parent_window;
-	Window *children_return;
-	
-	int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &children_count);
-	if (!is_same_screen)
-		return;
-	
-	for (int i = 0; i < children_count; i++)
-		set_mask_to_window(children_return[i], mask);
-	
-	XFree(children_return);
 }
 
 static int xfocus_get_focus_status(struct _xfocus *p, int *forced_mode, int *focus_status)

@@ -81,8 +81,8 @@ static int xwindow_create(struct _xwindow *p)
 	// Set no border mode to flag window
 	MWMHints mwmhints;
 	bzero(&mwmhints, sizeof(mwmhints));
-	mwmhints.flags = MWM_HINTS_DECORATIONS;
-	mwmhints.decorations = 0;
+	mwmhints.flags		= MWM_HINTS_DECORATIONS;
+	mwmhints.decorations	= 0;
 
 	Atom motif_prop = XInternAtom(display, "_MOTIF_WM_HINTS", False);
 	
@@ -114,8 +114,8 @@ static void xwindow_destroy(struct _xwindow *p)
 	if (p->window == None)
 		return;
 	
-	p->window = None;
-	p->flag_window = None;
+	p->window	= None;
+	p->flag_window	= None;
 }
 
 static int xwindow_init_keymap(struct _xwindow *p)
