@@ -73,9 +73,11 @@ int get_keyboard_groups_count(void)
 		log_message(ERROR, "Failed to allocate keyboard descriptor");
 		return 0;
 	}
-
-	XkbGetNames(main_window->display, XkbGroupNamesMask, kbd_desc_ptr);
-
+	
+	Display *dpy = XOpenDisplay(NULL);
+	XkbGetNames(dpy, XkbGroupNamesMask, kbd_desc_ptr);
+	XCloseDisplay(dpy);
+	
 	if (kbd_desc_ptr->names == NULL)
 	{
 		log_message(ERROR, "Failed to get keyboard group names");
@@ -93,18 +95,20 @@ int get_keyboard_groups_count(void)
 }
 
 int print_keyboard_groups(void)
-{
+{		
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)
 	{
 		log_message(ERROR, "Failed to allocate keyboard descriptor");
 		return FALSE;
 	}
-
-	XkbGetNames(main_window->display, XkbGroupNamesMask, kbd_desc_ptr);
-
+	
+	Display *dpy = XOpenDisplay(NULL);
+	XkbGetNames(dpy, XkbGroupNamesMask, kbd_desc_ptr);
+	
 	if (kbd_desc_ptr->names == NULL)
 	{
+		XCloseDisplay(dpy);
 		log_message(ERROR, "Failed to get keyboard group names");
 		return FALSE;
 	}
@@ -112,6 +116,7 @@ int print_keyboard_groups(void)
 	int groups_count = get_keyboard_groups_count();
 	if (groups_count == 0)
 	{
+		XCloseDisplay(dpy);
 		log_message(ERROR, "No keyboard layout found");
 		return FALSE;
 	}
@@ -125,7 +130,7 @@ int print_keyboard_groups(void)
 		if (group_atom == None)
 			continue;
 
-		char *group_name	= XGetAtomName(main_window->display, group_atom);
+		char *group_name	= XGetAtomName(dpy, group_atom);
 		char *lang_name		= xconfig->get_lang_name(xconfig, xconfig->find_group_lang(xconfig, group));
 
 		if (lang_name == NULL)
@@ -137,7 +142,8 @@ int print_keyboard_groups(void)
 		log_message(LOG, "   XKB Group '%s' must be for '%s' language (group %d)", group_name, lang_name, group);
 		valid_count++;
 	}
-
+	
+	XCloseDisplay(dpy);
 	log_message(LOG, "Total %d valid keyboard layouts detected", valid_count);
 	return TRUE;
 }

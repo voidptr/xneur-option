@@ -3,7 +3,8 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS =			\
 	lib			\
 	src			\
-	share
+	share			\
+	etc
 
 AUTOMAKE_OPTIONS =		\
 	1.9			\

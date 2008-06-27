@@ -1,4 +1,4 @@
-bedir = @datarootdir@/xneur/be
+bedir = @sysconfdir@/xneur/be
 be_DATA =			\
 	dict			\
 	proto			\

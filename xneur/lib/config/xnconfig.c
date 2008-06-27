@@ -41,7 +41,7 @@
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
 static const char *bool_names[] =	{"No", "Yes"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
-static const char *mode_names[] =	{"Manual", "Auto"};
+static const char *mode_names[] =	{"Auto", "Manual"};
 static const char *flag_names[] =	{"Layout1Flag", "Layout2Flag", "Layout3Flag", "Layout4Flag"};
 
 static const char *option_names[] = 	{

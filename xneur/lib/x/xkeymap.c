@@ -279,13 +279,17 @@ void xkeymap_convert_text_to_ascii(struct _xkeymap *p, char *text)
 
 void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 {
+	Display *dpy = XOpenDisplay(NULL);
 	KeySym inbound_key = XStringToKeysym(keyname);
 	
 	int min_keycode, max_keycode;
-	XDisplayKeycodes(main_window->display, &min_keycode, &max_keycode);
+	XDisplayKeycodes(dpy, &min_keycode, &max_keycode);
 	
 	int keysyms_per_keycode;
-	KeySym *keymap = XGetKeyboardMapping(main_window->display, min_keycode, max_keycode - min_keycode + 1, &keysyms_per_keycode);
+	
+
+	KeySym *keymap = XGetKeyboardMapping(dpy, min_keycode, max_keycode - min_keycode + 1, &keysyms_per_keycode);
+	XCloseDisplay(dpy);
 	
 	for (int i = min_keycode; i <= max_keycode; i++)
 	{

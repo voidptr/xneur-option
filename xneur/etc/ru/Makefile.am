@@ -1,4 +1,4 @@
-rudir = @datarootdir@/xneur/ru
+rudir = @sysconfdir@/xneur/ru
 ru_DATA =			\
 	dict			\
 	proto			\

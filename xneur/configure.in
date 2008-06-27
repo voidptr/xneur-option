@@ -3,7 +3,7 @@ AC_PREREQ(2.59)
 AC_CONFIG_HEADER(config.h)
 
 AC_CONFIG_MACRO_DIR(m4)
-AM_INIT_AUTOMAKE(xneur, 0.9.0)
+AM_INIT_AUTOMAKE(xneur, 0.9.1)
 
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
@@ -129,7 +129,7 @@ fi
 CFLAGS="-Wall -Werror -g0 -fPIC -std=gnu99"
 AC_SUBST(CFLAGS)
 
-AC_OUTPUT([share/Makefile share/sounds/Makefile share/pixmaps/Makefile share/en/Makefile share/ru/Makefile share/uk/Makefile share/be/Makefile share/fr/Makefile share/ro/Makefile share/kz/Makefile share/de/Makefile lib/Makefile lib/ai/Makefile lib/config/Makefile lib/misc/Makefile lib/sound/Makefile lib/x/Makefile src/Makefile Makefile xnconfig.pc])
+AC_OUTPUT([share/Makefile share/sounds/Makefile share/pixmaps/Makefile etc/Makefile etc/en/Makefile etc/ru/Makefile etc/uk/Makefile etc/be/Makefile etc/fr/Makefile etc/ro/Makefile etc/kz/Makefile etc/de/Makefile lib/Makefile lib/ai/Makefile lib/config/Makefile lib/misc/Makefile lib/sound/Makefile lib/x/Makefile src/Makefile Makefile xnconfig.pc])
 
 cat << EOF
 

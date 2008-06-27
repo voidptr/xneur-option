@@ -1,4 +1,4 @@
-dedir = @datarootdir@/xneur/de
+dedir = @sysconfdir@/xneur/de
 de_DATA =			\
 	dict			\
 	proto			\

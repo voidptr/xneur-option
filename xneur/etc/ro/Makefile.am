@@ -1,4 +1,4 @@
-rodir = @datarootdir@/xneur/ro
+rodir = @sysconfdir@/xneur/ro
 ro_DATA =			\
 	dict			\
 	proto			\

@@ -41,7 +41,7 @@
 #include "misc.h"
 
 #define MAX_LANGUAGES			4
-#define XNEUR_NEEDED_MAJOR_VERSION	3
+#define XNEUR_NEEDED_MAJOR_VERSION	4
 #define XNEUR_BUILD_MINOR_VERSION	0
 	
 struct _xneur_config *xconfig				= NULL;
@@ -236,7 +236,7 @@ static void init_libxnconfig(void)
 	xconfig = xneur_config_init();
 
 	int major_version, minor_version;
-	xconfig->get_library_api_version(&major_version, &minor_version);
+	xconfig->get_library_version(&major_version, &minor_version);
 
 	if (major_version != XNEUR_NEEDED_MAJOR_VERSION)
 	{
@@ -287,8 +287,8 @@ void xneur_auto_manual(GtkWidget *widget, struct _tray_icon *tray)
 {
 	if (widget || tray){};
 
-	int current_mode = xconfig->get_current_mode(xconfig);
-	xconfig->set_current_mode(xconfig, 1 - current_mode);
+	int current_mode = xconfig->get_current_mode(xconfig);	
+	xconfig->set_current_mode(xconfig,current_mode);
 }
 
 void xneur_about(void)
@@ -543,27 +543,27 @@ void xneur_preference(void)
 	
 	// Mouse Grab 
 	widget = glade_xml_get_widget (gxml, "checkbutton1");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->mouse_processing_mode);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->grab_mouse);
 	
 	// Education Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton2");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->education_mode);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->educate);
 	
 	// Layout Remember Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton3");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->layout_remember_mode);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->remember_layout);
 	
 	// Saving Selection Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton4");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->save_selection_mode);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->save_selection);
 	
 	// Sound Playing Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton5");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->sound_mode);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->play_sounds);
 	
 	// Logging Keyboard Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton6");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->save_log_mode);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->save_keyboard_log);
 	
 	// Sound Paths Preference
 	fill_sounds(0, gxml, "entry21", TRUE);
@@ -776,46 +776,25 @@ void xneur_save_preference(GladeXML *gxml)
 	fill_binds(9, gxml, "entry20", FALSE);
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox1");
-	if (gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)) == 0)
-		xconfig->set_current_mode(xconfig, AUTO_MODE);
-	else
-		xconfig->set_current_mode(xconfig, MANUAL_MODE);
+	xconfig->set_current_mode(xconfig, gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton1");
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
-		xconfig->mouse_processing_mode = MOUSE_GRAB_ENABLE;
-	else
-		xconfig->mouse_processing_mode = MOUSE_GRAB_DISABLE;
+	xconfig->grab_mouse = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton2");
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
-		xconfig->education_mode = EDUCATION_MODE_ENABLE;
-	else
-		xconfig->education_mode = EDUCATION_MODE_DISABLE;
+	xconfig->educate = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton3");
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
-		xconfig->layout_remember_mode = LAYOUTE_REMEMBER_ENABLE;
-	else
-		xconfig->layout_remember_mode = LAYOUTE_REMEMBER_DISABLE;
+	xconfig->remember_layout = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton4");
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
-		xconfig->save_selection_mode = SELECTION_SAVE_ENABLED;
-	else
-		xconfig->save_selection_mode = SELECTION_SAVE_DISABLED;
+	xconfig->save_selection = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton5");
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
-		xconfig->sound_mode = SOUND_ENABLED;
-	else
-		xconfig->sound_mode = SOUND_DISABLED;
+	xconfig->play_sounds = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton6");
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
-		xconfig->save_log_mode = LOG_ENABLED;
-	else
-		xconfig->save_log_mode = LOG_DISABLED;
+	xconfig->save_keyboard_log = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	// Sound Paths Preference
 	fill_sounds(0, gxml, "entry21", FALSE);
