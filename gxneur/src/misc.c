@@ -288,7 +288,7 @@ void xneur_auto_manual(GtkWidget *widget, struct _tray_icon *tray)
 	if (widget || tray){};
 
 	int current_mode = xconfig->get_current_mode(xconfig);	
-	xconfig->set_current_mode(xconfig,current_mode);
+	xconfig->set_current_mode(xconfig, 1 - current_mode);
 }
 
 void xneur_about(void)

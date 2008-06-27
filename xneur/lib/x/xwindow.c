@@ -46,7 +46,7 @@ static int error_handler(Display *d, XErrorEvent *e)
         return FALSE;
 }
 
-int xwindow_create(struct _xwindow *p)
+static int xwindow_create(struct _xwindow *p)
 {
 	XSetErrorHandler(error_handler);
 
@@ -97,8 +97,8 @@ int xwindow_create(struct _xwindow *p)
 
 	XChangeProperty(display, flag_window, win_prop, win_prop, 32, PropModeReplace, (unsigned char *) &mwmhints, sizeof (XWMHints) / 4);
 
-	p->display = display;
-	p->window  = window;
+	p->display 	= display;
+	p->window  	= window;
 	p->flag_window  = flag_window;
 	
 	log_message(LOG, "Main window with id %d created", window);
@@ -109,7 +109,7 @@ int xwindow_create(struct _xwindow *p)
 	return TRUE;
 }
 
-void xwindow_destroy(struct _xwindow *p)
+static void xwindow_destroy(struct _xwindow *p)
 {
 	if (p->window == None)
 		return;
@@ -118,16 +118,15 @@ void xwindow_destroy(struct _xwindow *p)
 	p->flag_window = None;
 }
 
-int xwindow_init_keymap(struct _xwindow *p)
+static int xwindow_init_keymap(struct _xwindow *p)
 {
 	p->xkeymap = xkeymap_init();
 	if (!p->xkeymap)
 		return FALSE;
-
 	return TRUE;
 }
 
-void xwindow_uninit(struct _xwindow *p)
+static void xwindow_uninit(struct _xwindow *p)
 {
 	if (p->xkeymap != NULL)
 		p->xkeymap->uninit(p->xkeymap);
@@ -135,7 +134,7 @@ void xwindow_uninit(struct _xwindow *p)
 	p->destroy(p);
 	free(p);
 
-	log_message(DEBUG, "Current main_window is freed");
+	log_message(DEBUG, "Window is freed");
 }
 
 struct _xwindow* xwindow_init(void)

@@ -40,56 +40,6 @@
 extern struct _xwindow *main_window;
 extern struct _xneur_config *xconfig;
 
-static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
-{
-	p->event.type			= KeyPress;
-	p->event.xkey.type		= KeyPress;
-	p->event.xkey.window		= p->owner_window;
-	p->event.xkey.root		= RootWindow(main_window->display, DefaultScreen(main_window->display));
-	p->event.xkey.subwindow		= None;
-	p->event.xkey.same_screen	= True;
-	p->event.xkey.display		= main_window->display;
-	p->event.xkey.state		= modifiers;
-	p->event.xkey.keycode		= kc;
-	p->event.xkey.time		= CurrentTime;
-
-	XSendEvent(main_window->display, p->owner_window, TRUE, KeyPressMask, &p->event);
-
-	p->event.type			= KeyRelease;
-	p->event.xkey.type		= KeyRelease;
-	p->event.xkey.time		= CurrentTime;
-
-	if (xconfig->send_delay > 0)
-		usleep(xconfig->send_delay);
-
-	XSendEvent(main_window->display, p->owner_window, TRUE, KeyReleaseMask, &p->event);
-}
-
-void xevent_send_backspaces(struct _xevent *p, int count)
-{
-	for (int i = 0; i < count; i++)
-		send_xkey(p, p->backspace, None);
-}
-
-void xevent_send_selection(struct _xevent *p, int count)
-{
-	for (int i = 0; i < count; i++)
-		send_xkey(p, p->left, None);
-	for (int i = 0; i < count; i++)
-		send_xkey(p, p->right, ShiftMask);
-}
-
-void xevent_send_string(struct _xevent *p, struct _xstring *str)
-{
-	for (int i = 0; i < str->cur_pos; i++)
-		send_xkey(p, str->keycode[i], str->keycode_modifiers[i]);
-}
-
-void xevent_set_owner_window(struct _xevent *p, Window window)
-{
-	p->owner_window = window;
-}
-
 int get_key_state(int key)
 {
 	KeyCode key_code = XKeysymToKeycode(main_window->display, key);
@@ -135,12 +85,62 @@ XEvent create_basic_event(void)
 	return event;
 }
 
-KeySym xevent_get_cur_keysym(struct _xevent *p)
+static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
+{
+	p->event.type			= KeyPress;
+	p->event.xkey.type		= KeyPress;
+	p->event.xkey.window		= p->owner_window;
+	p->event.xkey.root		= RootWindow(main_window->display, DefaultScreen(main_window->display));
+	p->event.xkey.subwindow		= None;
+	p->event.xkey.same_screen	= True;
+	p->event.xkey.display		= main_window->display;
+	p->event.xkey.state		= modifiers;
+	p->event.xkey.keycode		= kc;
+	p->event.xkey.time		= CurrentTime;
+
+	XSendEvent(main_window->display, p->owner_window, TRUE, KeyPressMask, &p->event);
+
+	p->event.type			= KeyRelease;
+	p->event.xkey.type		= KeyRelease;
+	p->event.xkey.time		= CurrentTime;
+
+	if (xconfig->send_delay > 0)
+		usleep(xconfig->send_delay);
+
+	XSendEvent(main_window->display, p->owner_window, TRUE, KeyReleaseMask, &p->event);
+}
+
+static void xevent_send_backspaces(struct _xevent *p, int count)
+{
+	for (int i = 0; i < count; i++)
+		send_xkey(p, p->backspace, None);
+}
+
+static void xevent_send_selection(struct _xevent *p, int count)
+{
+	for (int i = 0; i < count; i++)
+		send_xkey(p, p->left, None);
+	for (int i = 0; i < count; i++)
+		send_xkey(p, p->right, ShiftMask);
+}
+
+static void xevent_send_string(struct _xevent *p, struct _xstring *str)
+{
+	for (int i = 0; i < str->cur_pos; i++)
+		send_xkey(p, str->keycode[i], str->keycode_modifiers[i]);
+}
+
+static void xevent_set_owner_window(struct _xevent *p, Window window)
+{
+	p->owner_window = window;
+}
+
+static KeySym xevent_get_cur_keysym(struct _xevent *p)
 {
 	return XLookupKeysym(&p->event.xkey, 0);
 }
 
-int xevent_get_cur_modifiers(struct _xevent *p)
+static int xevent_get_cur_modifiers(struct _xevent *p)
 {
 	int mask = 0;
 	if (p->event.xkey.state & ShiftMask)
@@ -154,13 +154,13 @@ int xevent_get_cur_modifiers(struct _xevent *p)
 	return mask;
 }
 
-int xevent_get_next_event(struct _xevent *p)
+static int xevent_get_next_event(struct _xevent *p)
 {
 	XNextEvent(main_window->display, &(p->event));
 	return p->event.type;
 }
 
-void xevent_send_next_event(struct _xevent *p)
+static void xevent_send_next_event(struct _xevent *p)
 {
 	if (p->event.type == KeyPress || p->event.type == KeyRelease)
 		p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_cur_lang()];
@@ -168,11 +168,11 @@ void xevent_send_next_event(struct _xevent *p)
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);
 }
 
-void xevent_uninit(struct _xevent *p)
+static void xevent_uninit(struct _xevent *p)
 {
 	free(p);
 
-	log_message(DEBUG, "Current event is freed");
+	log_message(DEBUG, "Event is freed");
 }
 
 struct _xevent* xevent_init(void)

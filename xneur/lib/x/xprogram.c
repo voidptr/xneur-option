@@ -72,7 +72,7 @@ extern struct _xneur_config *xconfig;
 
 struct _xwindow *main_window;
 
-static int get_auto_action(struct _xprogram *p, KeySym key, int modifier_mask)
+static int get_auto_action(KeySym key, int modifier_mask)
 {
 	// Null symbol
 	if (key == 0)
@@ -178,13 +178,7 @@ static int get_auto_action(struct _xprogram *p, KeySym key, int modifier_mask)
 	return KLB_ADD_SYM;
 }
 
-static void save_and_clear_string(struct _xprogram *p, Window window)
-{
-	p->string->savelog(p->string, LOG_NAME, window);
-	p->string->clear(p->string);
-}
-
-void xprogram_cursor_update(struct _xprogram *p)
+static void xprogram_cursor_update(struct _xprogram *p)
 {
 	if (p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
 	{		
@@ -200,7 +194,7 @@ void xprogram_cursor_update(struct _xprogram *p)
 		p->cursor->hide_flag(p->cursor);
 }
 
-void xprogram_layout_update(struct _xprogram *p)
+static void xprogram_layout_update(struct _xprogram *p)
 {
 	if (!xconfig->remember_layout)
 		return;
@@ -277,7 +271,7 @@ void xprogram_layout_update(struct _xprogram *p)
 	switch_group(xconfig->default_group);
 }
 
-void xprogram_update(struct _xprogram *p)
+static void xprogram_update(struct _xprogram *p)
 {
 	p->last_window = p->focus->owner_window;
 
@@ -286,7 +280,7 @@ void xprogram_update(struct _xprogram *p)
 	if (status != FOCUS_UNCHANGED)
 	{
 		p->layout_update(p);
-		save_and_clear_string(p, p->last_window);
+		p->string->save_and_clear(p->string, p->last_window);
 	}
 
 	if (status == FOCUS_NONE)
@@ -300,7 +294,7 @@ void xprogram_update(struct _xprogram *p)
 	p->focus->update_events(p->focus, listen_mode);
 }
 
-void xprogram_process_input(struct _xprogram *p)
+static void xprogram_process_input(struct _xprogram *p)
 {
 	p->update(p);
 
@@ -361,7 +355,7 @@ void xprogram_process_input(struct _xprogram *p)
 			case ButtonPress:
 			{
 				// Falling down
-				save_and_clear_string(p, p->focus->owner_window);
+				p->string->save_and_clear(p->string, p->focus->owner_window);
 				log_message(TRACE, "Received ButtonPress on window %d", p->event->event.xbutton.window);
 								
 				// Unfreeze and resend grabbed event
@@ -400,14 +394,14 @@ void xprogram_process_input(struct _xprogram *p)
 	}
 }
 
-void xprogram_change_lang(struct _xprogram *p, int new_lang)
+static void xprogram_change_lang(struct _xprogram *p, int new_lang)
 {
 	log_message(DEBUG, "Changing language from %s to %s", xconfig->get_lang_name(xconfig, get_cur_lang()), xconfig->get_lang_name(xconfig, new_lang));
 	p->string->set_key_code(p->string, new_lang);
 	switch_lang(new_lang);
 }
 
-void xprogram_process_selection(struct _xprogram *p)
+static void xprogram_process_selection(struct _xprogram *p)
 {
 	char *event_text = get_selected_text(&p->event->event.xselection);
 	if (event_text == NULL)
@@ -454,11 +448,11 @@ void xprogram_process_selection(struct _xprogram *p)
 
 	p->update(p);
 	
-	save_and_clear_string(p, p->focus->owner_window);
+	p->string->save_and_clear(p->string, p->focus->owner_window);
 	free(selected_text);
 }
 
-void xprogram_on_key_action(struct _xprogram *p)
+static void xprogram_on_key_action(struct _xprogram *p)
 {
 	KeySym key = p->event->get_cur_keysym(p->event);
 
@@ -473,11 +467,11 @@ void xprogram_on_key_action(struct _xprogram *p)
 	if (p->perform_manual_action(p, manual_action))
 		return;
 
-	int auto_action = get_auto_action(p, key, modifier_mask);
+	int auto_action = get_auto_action(key, modifier_mask);
 	p->perform_auto_action(p, auto_action);
 }
 
-void xprogram_perform_auto_action(struct _xprogram *p, int action)
+static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 {
 	struct _xstring *string = p->string;
 
@@ -485,7 +479,7 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 	{
 		case KLB_CLEAR:
 		{
-			save_and_clear_string(p, p->focus->owner_window);
+			p->string->save_and_clear(p->string, p->focus->owner_window);
 			return;
 		}
 		case KLB_DEL_SYM:
@@ -554,7 +548,7 @@ void xprogram_perform_auto_action(struct _xprogram *p, int action)
 	}
 }
 
-int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action action)
+static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action action)
 {
 	switch (action)
 	{
@@ -628,7 +622,7 @@ int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action acti
 	return TRUE;
 }
 
-void xprogram_check_last_word(struct _xprogram *p)
+static void xprogram_check_last_word(struct _xprogram *p)
 {
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
 		return;
@@ -656,7 +650,7 @@ void xprogram_check_last_word(struct _xprogram *p)
 	play_file(SOUND_AUTOMATIC_CHANGE_WORD);
 }
 
-void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)
+static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)
 {
 	if (p->string->cur_pos == 0)
 	{
@@ -674,7 +668,7 @@ void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)
 	p->event->send_string(p->event, p->string);			// Send new string
 }
 
-void xprogram_change_word(struct _xprogram *p, int new_lang)
+static void xprogram_change_word(struct _xprogram *p, int new_lang)
 {
 	int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
 	
@@ -694,7 +688,7 @@ void xprogram_change_word(struct _xprogram *p, int new_lang)
 	p->string->cur_pos		+= offset;
 }
 
-void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
+static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 {
 	char *word = get_last_word(p->string->content);
 	if (word == NULL)
@@ -743,16 +737,17 @@ void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 	free(low_word);
 }
 
-void xprogram_uninit(struct _xprogram *p)
+static void xprogram_uninit(struct _xprogram *p)
 {
 	p->focus->uninit(p->focus);
 	p->event->uninit(p->event);
 	p->string->uninit(p->string);
 	p->cursor->uninit(p->cursor);
 	main_window->uninit(main_window);
+
 	free(p);
 
-	log_message(DEBUG, "Current program is freed");
+	log_message(DEBUG, "Program is freed");
 }
 
 struct _xprogram* xprogram_init(void)

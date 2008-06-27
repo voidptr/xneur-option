@@ -33,7 +33,6 @@
 
 struct _xcursor
 {
-
 	Pixmap bitmap;
 	Pixmap bitmap_mask;
 	XpmAttributes Attrs;

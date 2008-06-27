@@ -73,7 +73,8 @@ static char* get_word(char **string)
 	return strsep(string, OPTIONS_DELIMETER);
 }
 
-#define get_option_index(options, option)	get_option_index_size(options, option, sizeof(options) / sizeof(options[0]));
+#define get_option_index(options, option) \
+	get_option_index_size(options, option, sizeof(options) / sizeof(options[0]));
 static int get_option_index_size(const char *options[], char *option, int options_count)
 {
 	for (int i = 0; i < options_count; i++)
@@ -436,19 +437,19 @@ static void free_structures(struct _xneur_config *p)
 	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
 }
 
-void xneur_config_reload(struct _xneur_config *p)
+static void xneur_config_reload(struct _xneur_config *p)
 {
 	int xneur_pid = p->xneur_data->xneur_pid;
 	if (xneur_pid > 0)
 		kill(xneur_pid, SIGHUP);
 }
 
-void xneur_config_set_pid(struct _xneur_config *p, int pid)
+static void xneur_config_set_pid(struct _xneur_config *p, int pid)
 {
 	p->xneur_data->xneur_pid = pid;
 }
 
-int xneur_config_kill(struct _xneur_config *p)
+static int xneur_config_kill(struct _xneur_config *p)
 {
 	int xneur_pid = p->xneur_data->xneur_pid;
 	if (xneur_pid <= 0)
@@ -462,7 +463,7 @@ int xneur_config_kill(struct _xneur_config *p)
 	return TRUE;
 }
 
-int xneur_config_get_pid(struct _xneur_config *p)
+static int xneur_config_get_pid(struct _xneur_config *p)
 {
 	int xneur_pid = p->xneur_data->xneur_pid;
 	if (xneur_pid <= 0)
@@ -474,17 +475,17 @@ int xneur_config_get_pid(struct _xneur_config *p)
 	return p->xneur_data->xneur_pid;
 }
 
-void xneur_config_set_current_mode(struct _xneur_config *p, int mode)
+static void xneur_config_set_current_mode(struct _xneur_config *p, int mode)
 {
 	p->xneur_data->xneur_mode = mode;
 }
 
-int xneur_config_get_current_mode(struct _xneur_config *p)
+static int xneur_config_get_current_mode(struct _xneur_config *p)
 {
 	return p->xneur_data->xneur_mode;
 }
 
-int xneur_config_load(struct _xneur_config *p)
+static int xneur_config_load(struct _xneur_config *p)
 {
 	if (!parse_config_file(p, NULL, CONFIG_NAME))
 		return FALSE;
@@ -538,7 +539,7 @@ int xneur_config_load(struct _xneur_config *p)
 	return TRUE;
 }
 
-void xneur_config_clear(struct _xneur_config *p)
+static void xneur_config_clear(struct _xneur_config *p)
 {
 	free_structures(p);
 
@@ -550,7 +551,7 @@ void xneur_config_clear(struct _xneur_config *p)
 	p->draw_flag_apps	= list_char_init();
 }
 
-int xneur_config_save(struct _xneur_config *p)
+static int xneur_config_save(struct _xneur_config *p)
 {
  	char *config_file_path_name = get_home_file_path_name(NULL, CONFIG_NAME);
 
@@ -706,7 +707,7 @@ int xneur_config_save(struct _xneur_config *p)
 	return TRUE;
 }
 
-int xneur_config_replace(struct _xneur_config *p)
+static int xneur_config_replace(struct _xneur_config *p)
 {
 	char *config_file_path_name = get_file_path_name(NULL, CONFIG_NAME);
 	char *config_backup_file_path_name = get_file_path_name(NULL, CONFIG_BCK_NAME);
@@ -730,7 +731,7 @@ int xneur_config_replace(struct _xneur_config *p)
 	return p->load(p);
 }
 
-void xneur_config_save_dicts(struct _xneur_config *p, int lang)
+static void xneur_config_save_dicts(struct _xneur_config *p, int lang)
 {
 	if (!p->educate)
 		return;
@@ -740,21 +741,21 @@ void xneur_config_save_dicts(struct _xneur_config *p, int lang)
 	save_list(p->languages[lang].dicts, p->get_lang_dir(p, lang), DICT_NAME);
 }
 
-char* xneur_config_get_lang_dir(struct _xneur_config *p, int lang)
+static char* xneur_config_get_lang_dir(struct _xneur_config *p, int lang)
 {
 	if (lang < 0 || lang >= p->total_languages)
 		return NULL;
 	return p->languages[lang].dir;
 }
 
-char* xneur_config_get_lang_name(struct _xneur_config *p, int lang)
+static char* xneur_config_get_lang_name(struct _xneur_config *p, int lang)
 {
 	if (lang < 0 || lang >= p->total_languages)
 		return NULL;
 	return p->languages[lang].name;
 }
 
-int xneur_config_find_group_lang(struct _xneur_config *p, int group)
+static int xneur_config_find_group_lang(struct _xneur_config *p, int group)
 {
 	for (int lang = 0; lang < p->total_languages; lang++)
 	{
@@ -764,20 +765,20 @@ int xneur_config_find_group_lang(struct _xneur_config *p, int group)
 	return NO_LANGUAGE;
 }
 
-int xneur_config_get_lang_group(struct _xneur_config *p, int lang)
+static int xneur_config_get_lang_group(struct _xneur_config *p, int lang)
 {
 	if (lang < 0 || lang >= p->total_languages)
 		return -1;
 	return p->languages[lang].group;
 }
 
-void xneur_config_get_library_version(int *major_version, int *minor_version)
+static void xneur_config_get_library_version(int *major_version, int *minor_version)
 {
 	*major_version = LIBRARY_API_VERSION_MAJOR;
 	*minor_version = LIBRARY_API_VERSION_MINOR;
 }
 
-void xneur_config_add_language(struct _xneur_config *p, const char *name, const char *dir, int group)
+static void xneur_config_add_language(struct _xneur_config *p, const char *name, const char *dir, int group)
 {
 	if (name == NULL || dir == NULL)
 	{
@@ -797,22 +798,22 @@ void xneur_config_add_language(struct _xneur_config *p, const char *name, const 
 	p->total_languages++;
 }
 
-const char* xneur_config_get_bool_name(int option)
+static const char* xneur_config_get_bool_name(int option)
 {
 	return bool_names[option];
 }
 
-const char* xneur_config_get_mode_name(struct _xneur_config *p)
+static const char* xneur_config_get_mode_name(struct _xneur_config *p)
 {
 	return mode_names[p->get_current_mode(p)];
 }
 
-const char* xneur_config_get_log_level_name(struct _xneur_config *p)
+static const char* xneur_config_get_log_level_name(struct _xneur_config *p)
 {
 	return log_levels[p->log_level];
 }
 
-void xneur_config_uninit(struct _xneur_config *p)
+static void xneur_config_uninit(struct _xneur_config *p)
 {
 	free_structures(p);
 

@@ -43,8 +43,8 @@ const char *verbose_focus_status[]	= {"Processed", "Changed Focus", "Unchanged F
 
 static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 {
-	*forced_mode = FORCE_MODE_NORMAL;
-	*focus_status = FOCUS_NONE;
+	*forced_mode	= FORCE_MODE_NORMAL;
+	*focus_status	= FOCUS_NONE;
 
 	Window new_window;
 	while (TRUE)
@@ -106,21 +106,6 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 	return FOCUS_CHANGED;
 }
 
-int xfocus_get_focus_status(struct _xfocus *p, int *forced_mode, int *focus_status)
-{
-	int focus = get_focus(p, forced_mode, focus_status);
-
-	if (focus == FOCUS_UNCHANGED)
-		return p->last_focus;
-
-	if (focus == FOCUS_CHANGED)
-		p->last_focus = FOCUS_UNCHANGED;
-	else
-		p->last_focus = focus;
-
-	return focus;
-}
-
 static void set_mask_to_window(Window current_window, int mask)
 {
 	if (current_window == None)
@@ -147,7 +132,22 @@ static void set_mask_to_window(Window current_window, int mask)
 	XFree(children_return);
 }
 
-void xfocus_update_events(struct _xfocus *p, int mode)
+static int xfocus_get_focus_status(struct _xfocus *p, int *forced_mode, int *focus_status)
+{
+	int focus = get_focus(p, forced_mode, focus_status);
+
+	if (focus == FOCUS_UNCHANGED)
+		return p->last_focus;
+
+	if (focus == FOCUS_CHANGED)
+		p->last_focus = FOCUS_UNCHANGED;
+	else
+		p->last_focus = focus;
+
+	return focus;
+}
+
+static void xfocus_update_events(struct _xfocus *p, int mode)
 {
 	// Mouse pointer motion masking and focus event masking every time for all windows
 	const int mask = POINTER_MOTION_MASK;
@@ -175,7 +175,7 @@ void xfocus_update_events(struct _xfocus *p, int mode)
 	p->last_parent_window = p->parent_window;
 }
 
-int xfocus_draw_flag(struct _xfocus *p, Window event_window)
+static int xfocus_draw_flag(struct _xfocus *p, Window event_window)
 {
 	char *app_name = get_wm_class_name(p->owner_window);
 	if (app_name == NULL)
@@ -207,11 +207,11 @@ int xfocus_draw_flag(struct _xfocus *p, Window event_window)
 	return (p->parent_window == current_event_window);
 }
 
-void xfocus_uninit(struct _xfocus *p)
+static void xfocus_uninit(struct _xfocus *p)
 {
 	free(p);
 
-	log_message(DEBUG, "Current focus is freed");
+	log_message(DEBUG, "Focus is freed");
 }
 
 struct _xfocus* xfocus_init(void)

@@ -34,10 +34,11 @@
 
 static const char *grab_ungrab[2] = {"ungrab", "grab"};
 
-const KeySym spec_keys[] =  {   
-								XK_Return, XK_Tab, XK_space, XK_slash, XK_backslash, 
-								XK_question, XK_minus, XK_plus, XK_equal
-							};
+const KeySym spec_keys[] =	{   
+					XK_Return, XK_Tab, XK_space, XK_slash, XK_backslash, 
+					XK_question, XK_minus, XK_plus, XK_equal
+				};
+
 static const int total_spec_keys = sizeof(spec_keys) / sizeof(spec_keys[0]);
 
 extern struct _xneur_config *xconfig;

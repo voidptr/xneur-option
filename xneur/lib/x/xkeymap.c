@@ -45,7 +45,71 @@ static const int state_masks[]		= {0x00, 0x01, 0x80, 0x10}; // None, NumLock, Al
 
 static const int max_groups_count	= sizeof(keyboard_groups) / sizeof(keyboard_groups[0]);
 
-static int locale_create(struct _xkeymap *p)
+int get_languages_mask(void)
+{
+	int languages_mask = 0;
+	for (int group = 0; group < max_groups_count; group++)
+		languages_mask = languages_mask | keyboard_groups[group];
+	return languages_mask;
+}
+
+char* keycode_to_symbol(KeyCode kc, int group, int state)
+{
+	XEvent event = create_basic_event();
+	event.xkey.keycode = kc;
+	event.xkey.state = 0;
+	if (group >= 0)
+		event.xkey.state = keyboard_groups[group];
+	event.xkey.state |= state;
+
+	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
+
+	int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
+	if (nbytes > 0)
+		return symbol;
+
+	return NULL;
+}
+
+int get_keycode_mod(int group)
+{
+	return keyboard_groups[group];
+}
+
+void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
+{
+	Display *display = XOpenDisplay(NULL);
+
+	KeySym inbound_key = XStringToKeysym(keyname);
+	
+	int min_keycode, max_keycode;
+	XDisplayKeycodes(display, &min_keycode, &max_keycode);
+	
+	int keysyms_per_keycode;
+	KeySym *keymap = XGetKeyboardMapping(display, min_keycode, max_keycode - min_keycode + 1, &keysyms_per_keycode);
+
+	XCloseDisplay(display);
+	
+	for (int i = min_keycode; i <= max_keycode; i++)
+	{
+		for (int j = 0; j < 2; j++)
+		{
+			if (keymap[j] == NoSymbol)
+				continue;
+
+			if (keymap[j] != inbound_key)
+				continue;
+
+			*lower = keymap[0];
+			*upper = keymap[1];
+			return;
+		}
+
+		keymap += keysyms_per_keycode;
+	}
+}
+
+static int locale_create(void)
 {
 	if (setlocale(LC_ALL, "") == NULL)
 	{
@@ -54,7 +118,7 @@ static int locale_create(struct _xkeymap *p)
 	}
 
 	char *locale = setlocale(LC_CTYPE, "");
-	if (locale == NULL || strstr(locale, ".UTF-8") == NULL)
+	if (locale == NULL || strstr(locale, "UTF-8") == NULL)
 	{
 		log_message(ERROR, "Your default locale is not UTF-8");
 		return FALSE;
@@ -118,38 +182,7 @@ static void xkeymap_char_to_keycode(struct _xkeymap *p, char ch, KeyCode *kc, in
 	free(symbol);
 }
 
-int get_languages_mask(void)
-{
-	int languages_mask = 0;
-	for (int group = 0; group < max_groups_count; group++)
-		languages_mask = languages_mask | keyboard_groups[group];
-	return languages_mask;
-}
-
-char* keycode_to_symbol(KeyCode kc, int group, int state)
-{
-	XEvent event = create_basic_event();
-	event.xkey.keycode = kc;
-	event.xkey.state = 0;
-	if (group >= 0)
-		event.xkey.state = keyboard_groups[group];
-	event.xkey.state |= state;
-
-	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
-
-	int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
-	if (nbytes > 0)
-		return symbol;
-
-	return NULL;
-}
-
-int get_keycode_mod(int group)
-{
-	return keyboard_groups[group];
-}
-
-char xkeymap_get_ascii(struct _xkeymap *p, const char *sym)
+static char xkeymap_get_ascii(struct _xkeymap *p, const char *sym)
 {
 	XEvent event		= create_basic_event();
 
@@ -222,7 +255,7 @@ char xkeymap_get_ascii(struct _xkeymap *p, const char *sym)
 	return NULLSYM;
 }
 
-char xkeymap_get_cur_ascii_char(struct _xkeymap *p, XEvent e)
+static char xkeymap_get_cur_ascii_char(struct _xkeymap *p, XEvent e)
 {
 	XKeyEvent *ke = (XKeyEvent *) &e;
 
@@ -247,7 +280,7 @@ char xkeymap_get_cur_ascii_char(struct _xkeymap *p, XEvent e)
 	return ' ';
 }
 
-void xkeymap_convert_text_to_ascii(struct _xkeymap *p, char *text)
+static void xkeymap_convert_text_to_ascii(struct _xkeymap *p, char *text)
 {
 	int text_len = strlen(text);
 
@@ -277,40 +310,7 @@ void xkeymap_convert_text_to_ascii(struct _xkeymap *p, char *text)
 	text[j] = NULLSYM;
 }
 
-void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
-{
-	Display *dpy = XOpenDisplay(NULL);
-	KeySym inbound_key = XStringToKeysym(keyname);
-	
-	int min_keycode, max_keycode;
-	XDisplayKeycodes(dpy, &min_keycode, &max_keycode);
-	
-	int keysyms_per_keycode;
-	
-
-	KeySym *keymap = XGetKeyboardMapping(dpy, min_keycode, max_keycode - min_keycode + 1, &keysyms_per_keycode);
-	XCloseDisplay(dpy);
-	
-	for (int i = min_keycode; i <= max_keycode; i++)
-	{
-		for (int j = 0; j < 2; j++)
-		{
-			if (keymap[j] == NoSymbol)
-				continue;
-
-			if (keymap[j] != inbound_key)
-				continue;
-
-			*lower = keymap[0];
-			*upper = keymap[1];
-			return;
-		}
-
-		keymap += keysyms_per_keycode;
-	}
-}
-
-char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
+static char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
 {
 	if (text == NULL)
 		return NULL;
@@ -384,13 +384,13 @@ char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
 	return newtext;
 }
 	
-void xkeymap_uninit(struct _xkeymap *p)
+static void xkeymap_uninit(struct _xkeymap *p)
 {
 	if (p->keymap != NULL)
 		XFree(p->keymap);
 	free(p);
 
-	log_message(DEBUG, "Current keymap is freed");
+	log_message(DEBUG, "Keymap is freed");
 }
 
 struct _xkeymap* xkeymap_init(void)

@@ -74,9 +74,9 @@ int get_keyboard_groups_count(void)
 		return 0;
 	}
 	
-	Display *dpy = XOpenDisplay(NULL);
-	XkbGetNames(dpy, XkbGroupNamesMask, kbd_desc_ptr);
-	XCloseDisplay(dpy);
+	Display *display = XOpenDisplay(NULL);
+	XkbGetNames(display, XkbGroupNamesMask, kbd_desc_ptr);
+	XCloseDisplay(display);
 	
 	if (kbd_desc_ptr->names == NULL)
 	{
@@ -103,12 +103,12 @@ int print_keyboard_groups(void)
 		return FALSE;
 	}
 	
-	Display *dpy = XOpenDisplay(NULL);
-	XkbGetNames(dpy, XkbGroupNamesMask, kbd_desc_ptr);
+	Display *display = XOpenDisplay(NULL);
+	XkbGetNames(display, XkbGroupNamesMask, kbd_desc_ptr);
 	
 	if (kbd_desc_ptr->names == NULL)
 	{
-		XCloseDisplay(dpy);
+		XCloseDisplay(display);
 		log_message(ERROR, "Failed to get keyboard group names");
 		return FALSE;
 	}
@@ -116,7 +116,7 @@ int print_keyboard_groups(void)
 	int groups_count = get_keyboard_groups_count();
 	if (groups_count == 0)
 	{
-		XCloseDisplay(dpy);
+		XCloseDisplay(display);
 		log_message(ERROR, "No keyboard layout found");
 		return FALSE;
 	}
@@ -130,7 +130,7 @@ int print_keyboard_groups(void)
 		if (group_atom == None)
 			continue;
 
-		char *group_name	= XGetAtomName(dpy, group_atom);
+		char *group_name	= XGetAtomName(display, group_atom);
 		char *lang_name		= xconfig->get_lang_name(xconfig, xconfig->find_group_lang(xconfig, group));
 
 		if (lang_name == NULL)
@@ -143,7 +143,8 @@ int print_keyboard_groups(void)
 		valid_count++;
 	}
 	
-	XCloseDisplay(dpy);
+	XCloseDisplay(display);
+
 	log_message(LOG, "Total %d valid keyboard layouts detected", valid_count);
 	return TRUE;
 }

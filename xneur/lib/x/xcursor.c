@@ -52,7 +52,7 @@ static void unmap_window(XWindowAttributes w_attributes)
 	XFlush(main_window->display);
 }
 
-static int ReadPixmapFromFile(char *FileName, Pixmap *phPm, Pixmap *phMask, XpmAttributes *pAttrs, Display *pDisplay, Window hWnd, Colormap hColorMap)
+static int ReadPixmapFromFile(char *FileName, Pixmap *phPm, Pixmap *phMask, XpmAttributes *pAttrs, Colormap hColorMap)
 {
 	FILE *pFile = fopen(FileName, "r");
 	if (!pFile)
@@ -62,7 +62,7 @@ static int ReadPixmapFromFile(char *FileName, Pixmap *phPm, Pixmap *phMask, XpmA
 	long sizeFile = ftell(pFile);
 	fseek(pFile, 0, SEEK_SET);
 
-	char *buffer = (char *) malloc(sizeFile);
+	char *buffer = (char *) malloc(sizeFile * sizeof(char));
 	if (!buffer)
 	{
 		fclose(pFile);
@@ -99,38 +99,30 @@ static int ReadPixmapFromFile(char *FileName, Pixmap *phPm, Pixmap *phMask, XpmA
 	pAttrs->valuemask	= XpmColormap | XpmCloseness;
 	pAttrs->colormap	= hColorMap;
 	pAttrs->closeness	= 65535;
-	XpmCreatePixmapFromData(pDisplay, hWnd, xpm, phPm, phMask, pAttrs);
+	XpmCreatePixmapFromData(main_window->display, main_window->flag_window, xpm, phPm, phMask, pAttrs);
 
 	free(xpm);
 	free(buffer);
 	return 0;
 }
 
-static GC create_gc(Display* display, Window win, int reverse_video)
+static GC create_gc()
 {
 	XGCValues values;			// Initial values for the GC
 	unsigned long valuemask = 0;		// Which values in 'values' to check when creating the GC
 
-	GC gc = XCreateGC(display, win, valuemask, &values);
+	GC gc = XCreateGC(main_window->display, main_window->flag_window, valuemask, &values);
 	if (gc < 0)
 	{
-		fprintf(stderr, "XCreateGC: \n");
+		log_message(ERROR, "Can't create GC");
 		return NULL;
 	}
 
-	int screen_num = DefaultScreen(display);
+	int screen_num = DefaultScreen(main_window->display);
 
 	// Allocate foreground and background colors for this GC
-	if (reverse_video)
-	{
-		XSetForeground(display, gc, WhitePixel(display, screen_num));
-		XSetBackground(display, gc, BlackPixel(display, screen_num));
-	}
-	else
-	{
-		XSetForeground(display, gc, BlackPixel(display, screen_num));
-		XSetBackground(display, gc, WhitePixel(display, screen_num));
-	}
+	XSetForeground(main_window->display, gc, WhitePixel(main_window->display, screen_num));
+	XSetBackground(main_window->display, gc, BlackPixel(main_window->display, screen_num));
 
 	int line_width	= 2;			// Line width for the GC
 	int line_style	= LineSolid;		// Style for lines drawing
@@ -138,10 +130,10 @@ static GC create_gc(Display* display, Window win, int reverse_video)
 	int join_style	= JoinBevel;		// Joined lines
 
 	// Define the style of lines that will be drawn using this GC
-	XSetLineAttributes(display, gc, (unsigned int) line_width, line_style, cap_style, join_style);
+	XSetLineAttributes(main_window->display, gc, (unsigned int) line_width, line_style, cap_style, join_style);
 
 	// Define the fill style for the GC to be 'solid filling'
-	XSetFillStyle(display, gc, FillSolid);
+	XSetFillStyle(main_window->display, gc, FillSolid);
 
 	return gc;
 }
@@ -179,7 +171,7 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 			return;
 		}
 
-		ReadPixmapFromFile(path, &p->bitmap, &p->bitmap_mask, &p->Attrs, main_window->display, main_window->flag_window, XDefaultColormap(main_window->display, DefaultScreen(main_window->display)));
+		ReadPixmapFromFile(path, &p->bitmap, &p->bitmap_mask, &p->Attrs, XDefaultColormap(main_window->display, DefaultScreen(main_window->display)));
 		free(path);
 
 		if (p->bitmap == 0)
@@ -213,13 +205,14 @@ void xcursor_hide_flag(struct _xcursor *p)
 
 void xcursor_uninit(struct _xcursor *p)
 {
-	Display *dpy = XOpenDisplay(NULL);
+	Display *display = XOpenDisplay(NULL);
 
-	XFreePixmap(dpy, p->bitmap);
-	XFreePixmap(dpy, p->bitmap_mask);
+	XFreePixmap(display, p->bitmap);
+	XFreePixmap(display, p->bitmap_mask);
 
-	XFreeGC(dpy, p->gc);
-	XCloseDisplay(dpy);
+	XFreeGC(display, p->gc);
+
+	XCloseDisplay(display);
 
 	free(p);
 
@@ -231,8 +224,7 @@ struct _xcursor* xcursor_init(void)
 	struct _xcursor *p = (struct _xcursor *) malloc(sizeof(struct _xcursor));
 	bzero(p, sizeof(struct _xcursor));
 
-	int dummy;
-	p->gc = create_gc(main_window->display, main_window->flag_window, dummy);
+	p->gc = create_gc();
 	if (p->gc == NULL)
 	{
 		free(p);
