@@ -78,6 +78,17 @@ static void xneur_check_config_version(int final)
 	xneur_reload(0);
 }
 
+static void xneur_init(void)
+{
+	if (!print_keyboard_groups())
+	{
+		xconfig->uninit(xconfig);
+		exit(EXIT_FAILURE);
+	}
+
+	bind_manual_actions();
+}
+
 static void xneur_load_config(int final)
 {
 	log_message(LOG, "Loading configuration");
@@ -93,12 +104,6 @@ static void xneur_load_config(int final)
 
 	log_message(LOG, "Log level is set to %s", xconfig->get_log_level_name(xconfig));
 	log_message(LOG, "Total detected %d languages", xconfig->total_languages);
-
-	if (!check_xkb_extension() || !check_keyboard_groups())
-	{
-		xconfig->uninit(xconfig);
-		exit(EXIT_FAILURE);
-	}
 
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
@@ -117,11 +122,9 @@ static void xneur_load_config(int final)
 	log_message(LOG, "Mouse processing mode set to %s", xconfig->get_bool_name(xconfig->grab_mouse));
 	log_message(LOG, "Education mode set to %s", xconfig->get_bool_name(xconfig->educate));
 	log_message(LOG, "Layout remember mode set to %s", xconfig->get_bool_name(xconfig->remember_layout));
-	log_message(LOG, "Save selection after convertion mode set to %s", xconfig->get_bool_name(xconfig->save_selection));
+	log_message(LOG, "Save selection mode set to %s", xconfig->get_bool_name(xconfig->save_selection));
 	log_message(LOG, "Sound playing mode set to %s", xconfig->get_bool_name(xconfig->play_sounds));
 	log_message(LOG, "Logging keyboard mode set to %s", xconfig->get_bool_name(xconfig->save_keyboard_log));
-	
-	bind_manual_actions();	
 }
 
 static void xneur_set_lock(void)
@@ -194,6 +197,7 @@ static void xneur_reload(int status)
 	}
 
 	xneur_load_config(TRUE);
+	xneur_init();
 	sound_init();
 }
 
@@ -286,34 +290,29 @@ int main(int argc, char *argv[])
 {
 	xneur_reklama();
 
-	// Parse command line options
 	xneur_get_options(argc, argv);
 
-	// Init configuration
 	xconfig = xneur_config_init();
 	if (xconfig == NULL)
 	{
 		log_message(ERROR, "Can't init libxnconfig");
-		return EXIT_FAILURE;
+		exit(EXIT_FAILURE);
 	}
 
-	// Init program structures
+	xneur_set_lock();
+	xneur_load_config(FALSE);
+
 	xprogram = xprogram_init();
 	if (xprogram == NULL)
 	{
 		log_message(ERROR, "Failed to init program structure");
 		xconfig->set_pid(xconfig, 0);
 		xconfig->uninit(xconfig);
-		return EXIT_FAILURE;
+		exit(EXIT_FAILURE);
 	}
-	
-	// Set lock pid
-	xneur_set_lock();
-
-	// Load configuration file
-	xneur_load_config(FALSE);
 
 	sound_init();
+	xneur_init();
 
 	log_message(DEBUG, "Init program structure complete");
 
@@ -325,5 +324,5 @@ int main(int argc, char *argv[])
 
 	xneur_cleanup();
 
-	return EXIT_SUCCESS;
+	exit(EXIT_SUCCESS);
 }

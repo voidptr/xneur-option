@@ -29,7 +29,7 @@
 
 #include "types.h"
 #include "utils.h"
-#include "log.h"  
+#include "log.h"
 
 #include "xswitchlang.h"
 
@@ -65,53 +65,54 @@ void switch_group(int new_group)
 	XkbLockGroup(main_window->display, XkbUseCoreKbd, new_group);
 }
 
-int check_keyboard_groups(void)
+int get_keyboard_groups_count(void)
 {
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)
 	{
-		log_message(ERROR, "Failed to get keyboard descriptor");
+		log_message(ERROR, "Failed to allocate keyboard descriptor");
+		return 0;
+	}
+
+	XkbGetNames(main_window->display, XkbGroupNamesMask, kbd_desc_ptr);
+
+	if (kbd_desc_ptr->names == NULL)
+	{
+		log_message(ERROR, "Failed to get keyboard group names");
+		return 0;
+	}
+
+	int groups_count = 0;
+	for (; groups_count < XkbNumKbdGroups; groups_count++)
+	{
+		if (kbd_desc_ptr->names->groups[groups_count] == None)
+			break;
+	}
+
+	return groups_count;
+}
+
+int print_keyboard_groups(void)
+{
+	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
+	if (kbd_desc_ptr == NULL)
+	{
+		log_message(ERROR, "Failed to allocate keyboard descriptor");
 		return FALSE;
 	}
 
-	Display *display = XOpenDisplay(NULL);
-	
-	XkbGetControls(display, XkbAllControlsMask, kbd_desc_ptr);
-	XkbGetNames(display, XkbSymbolsNameMask, kbd_desc_ptr);
-	XkbGetNames(display, XkbGroupNamesMask, kbd_desc_ptr);
+	XkbGetNames(main_window->display, XkbGroupNamesMask, kbd_desc_ptr);
 
-	XCloseDisplay(display);	
-	
 	if (kbd_desc_ptr->names == NULL)
 	{
 		log_message(ERROR, "Failed to get keyboard group names");
 		return FALSE;
 	}
 
-	const Atom *group_source = kbd_desc_ptr->names->groups;
-	int groups_count = 0;
-
-	// And more bug patches
-	if (kbd_desc_ptr->ctrls != NULL)
-		groups_count = kbd_desc_ptr->ctrls->num_groups;
-	else
-	{
-		for (; groups_count < XkbNumKbdGroups; groups_count++)
-		{
-			if (group_source[groups_count] == None)
-				break;
-		}
-	}
-
+	int groups_count = get_keyboard_groups_count();
 	if (groups_count == 0)
 	{
 		log_message(ERROR, "No keyboard layout found");
-		return FALSE;
-	}
-
-	if (groups_count > 4)
-	{
-		log_message(ERROR, "Too many XKB keyboard groups detected (max 4)");
 		return FALSE;
 	}
 
@@ -120,32 +121,23 @@ int check_keyboard_groups(void)
 	int valid_count = 0;
 	for (int group = 0; group < groups_count; group++)
 	{
-		char *name = XGetAtomName(main_window->display, kbd_desc_ptr->names->groups[group]);
+		Atom group_atom = kbd_desc_ptr->names->groups[group];
+		if (group_atom == None)
+			continue;
 
-		int lang = xconfig->find_group_lang(xconfig, group);
-		char *lang_name = xconfig->get_lang_name(xconfig, lang);
+		char *group_name	= XGetAtomName(main_window->display, group_atom);
+		char *lang_name		= xconfig->get_lang_name(xconfig, xconfig->find_group_lang(xconfig, group));
 
-		main_window->xkeymap->store_keymaps(main_window->xkeymap);
 		if (lang_name == NULL)
 		{
-			log_message(ERROR, "   XKB Group '%s' not defined in configuration file (group %d)", name, group);
+			log_message(ERROR, "   XKB Group '%s' not defined in configuration file (group %d)", group_name, group);
 			continue;
 		}
 
-		log_message(LOG, "   XKB Group '%s' must be for '%s' language (group %d)", name, lang_name, group);
+		log_message(LOG, "   XKB Group '%s' must be for '%s' language (group %d)", group_name, lang_name, group);
 		valid_count++;
 	}
-	
-	log_message(LOG, "Total %d of %d valid keyboard layouts detected", valid_count, groups_count);
-	return TRUE;
-}
 
-int check_xkb_extension(void)
-{
-	if (!XkbQueryExtension(main_window->display, NULL, NULL, NULL, NULL, NULL))
-	{
-		log_message(ERROR, "Can't find XKB extension");
-		return FALSE;
-	}
+	log_message(LOG, "Total %d valid keyboard layouts detected", valid_count);
 	return TRUE;
 }

@@ -32,17 +32,16 @@ struct _xkeymap
 	KeySym *keymap;
 
 	int latin_group;
-	int latin_group_mask;	// Define latin group mask
+	int latin_group_mask;
 	int min_keycode;
 	int max_keycode;
 	int keysyms_per_keycode;
-	int total_key_arrays;
+	int keyboard_groups_count;
 
 	char  (*get_ascii)(struct _xkeymap *p, const char *sym);
 	char  (*get_cur_ascii_char) (struct _xkeymap *p, XEvent e);
 	void  (*convert_text_to_ascii)(struct _xkeymap *p, char *text);
 	void  (*char_to_keycode)(struct _xkeymap *p, char ch, KeyCode *kc, int *modifier);
-	void  (*store_keymaps)(struct _xkeymap *p);
 	void  (*print_keymaps)(struct _xkeymap *p);
 	char* (*lower_by_keymaps)(struct _xkeymap *p, int gr, char *text);
 	void  (*uninit) (struct _xkeymap *p);

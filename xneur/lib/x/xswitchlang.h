@@ -21,10 +21,10 @@
 #define _XSWITCHLANG_H_
 
 int  get_active_keyboard_group(void);
-int  check_keyboard_groups(void);
 int  get_cur_lang(void);
 void switch_lang(int new_lang);
 void switch_group(int new_group);
-int  check_xkb_extension(void);
+int  get_keyboard_groups_count(void);
+int  print_keyboard_groups(void);
 
 #endif /* _XSWITCHLANG_H_ */

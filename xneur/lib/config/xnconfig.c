@@ -73,10 +73,9 @@ static char* get_word(char **string)
 	return strsep(string, OPTIONS_DELIMETER);
 }
 
-static int get_option_index(const char **options, char *option)
+#define get_option_index(options, option)	get_option_index_size(options, option, sizeof(options) / sizeof(options[0]));
+static int get_option_index_size(const char *options[], char *option, int options_count)
 {
-	const int options_count = sizeof(options) / sizeof(options[0]);
-
 	for (int i = 0; i < options_count; i++)
 	{
 		if (strcmp(option, options[i]) == 0)

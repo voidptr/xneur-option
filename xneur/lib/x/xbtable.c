@@ -54,10 +54,16 @@ extern struct _xneur_config *xconfig;
 	
 static void bind_action(enum _hotkey_action action)
 {
-	btable[action].modifier_mask = 0;
-	btable[action].key_sym = 0;
-	btable[action].key_sym_shift = 0;
+	btable[action].modifier_mask	= 0;
+	btable[action].key_sym		= 0;
+	btable[action].key_sym_shift	= 0;
 	
+	if (xconfig->hotkeys[action].key == NULL)
+	{
+		log_message(DEBUG, "   No key set for action \"%s\"", normal_action_names[action]);
+		return;
+	}
+
 	if (xconfig->hotkeys[action].modifiers & 0x1)
 		btable[action].modifier_mask = btable[action].modifier_mask + 1;	// Shift
 	if (xconfig->hotkeys[action].modifiers & 0x2)
@@ -65,23 +71,22 @@ static void bind_action(enum _hotkey_action action)
 	if (xconfig->hotkeys[action].modifiers & 0x4)
 		btable[action].modifier_mask = btable[action].modifier_mask + 8;	// Alt
 	if (xconfig->hotkeys[action].modifiers & 0x8)
-		btable[action].modifier_mask = btable[action].modifier_mask + 64;	// Super
+		btable[action].modifier_mask = btable[action].modifier_mask + 64;	// Win
 	
-	if (xconfig->hotkeys[action].key != NULL) 
-	{
-		KeySym key_sym, key_sym_shift;
-		get_keysyms_by_string(xconfig->hotkeys[action].key, &key_sym, &key_sym_shift);
-		if (key_sym == NoSymbol) 
-			key_sym = None;
-		if (key_sym_shift == NoSymbol)
-			key_sym_shift = None;
+	KeySym key_sym, key_sym_shift;
+	get_keysyms_by_string(xconfig->hotkeys[action].key, &key_sym, &key_sym_shift);
+	if (key_sym == NoSymbol)
+		key_sym = None;
+	if (key_sym_shift == NoSymbol)
+		key_sym_shift = None;
 
-		btable[action].key_sym = key_sym;
-		btable[action].key_sym_shift = key_sym_shift;
-	}
+	btable[action].key_sym = key_sym;
+	btable[action].key_sym_shift = key_sym_shift;
 	
-	if (btable[action].key_sym != 0)
-		log_message(DEBUG, "   Action \"%s\" with mod_mask %d and key \"%s (%s)\"", normal_action_names[action], btable[action].modifier_mask, XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift));
+	if (btable[action].key_sym == 0)
+		return;
+
+	log_message(DEBUG, "   Action \"%s\" with mod_mask %d and key \"%s (%s)\"", normal_action_names[action], btable[action].modifier_mask, XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift));
 }
 
 enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
@@ -99,7 +104,7 @@ enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
 
 void bind_manual_actions(void)
 {
-	log_message(DEBUG, "Binded hotkeys actions (mod_mask = \"Shift (1)\"+\"Ctrl (4)\"+\"Alt (8)\"+\"Win(Super) (64)\"):");
+	log_message(DEBUG, "Binded hotkeys actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):");
 	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
 		bind_action(action);
 }
