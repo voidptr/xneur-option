@@ -25,6 +25,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#include "xnconfig.h"
+
 #include "types.h"
 #include "utils.h"
 #include "log.h"
@@ -44,7 +46,7 @@ static const int total_groups		= sizeof(groups) / sizeof(groups[0]);
 
 static int locale_create(struct _xkeymap *p)
 {
-	char *locale = xconfig->get_locale(xconfig);
+	const char *locale = xconfig->get_locale(xconfig);
 	if (setlocale(LC_ALL, locale) == NULL)
 	{
 		log_message(ERROR, "Couldn't set %s locale", locale);

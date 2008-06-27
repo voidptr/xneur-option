@@ -166,7 +166,7 @@ void *play_file_thread(void *param)
 
 void sound_init(void)
 {
-	if (!xconfig->sound_mode)
+	if (!xconfig->play_sounds)
 		return;
 
 	alutInit(NULL, NULL);
@@ -174,7 +174,7 @@ void sound_init(void)
 
 void sound_uninit(void)
 {
-	if (!xconfig->sound_mode)
+	if (!xconfig->play_sounds)
 		return;
 
 	alutExit();
@@ -246,7 +246,7 @@ void *play_file_thread(void *param)
 
 void play_file(int file_type)
 {
-	if (!xconfig->sound_mode)
+	if (!xconfig->play_sounds)
 		return;
 
 	pthread_attr_t sound_thread_attr;

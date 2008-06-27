@@ -92,7 +92,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 
 	char *option = get_word(&line);
 
-	int index = get_option_index(option);
+	int index = get_option_index(option_names, option);
 	if (index == -1)
 	{
 		log_message(WARNING, "Unrecognized option \"%s\" detected", option);
@@ -575,7 +575,7 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# It's a X Neural Switcher configuration file by XNeur\n# All values writted XNeur\n\n");
 
 	fprintf(stream, "# Config version\nVersion %s\n\n", VERSION);
-	fprintf(stream, "# Working locale\Locale %s\n\n", p->get_locale(p));
+	fprintf(stream, "# Working locale\nLocale %s\n\n", p->get_locale(p));
 	fprintf(stream, "# Default work mode\nDefaultMode %s\n\n", p->get_mode_name(p));
 
 	fprintf(stream, "# Level of messages program will write to output\n");
@@ -621,6 +621,8 @@ int xneur_config_save(struct _xneur_config *p)
 	for (int action = 0; action < MAX_HOTKEYS; action++)
 	{
 		fprintf(stream, "AddBind %s ", action_names[action]);
+
+		const int total_modifiers = sizeof(modifier_names) / sizeof(modifier_names[0]);
 		for (int i = 0; i < total_modifiers; i++)
 		{
 			if (p->hotkeys[action].modifiers & (0x1 << i))
@@ -636,10 +638,7 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option enable or disable sound playing\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#PlaySound No\n");
-	if (p->sound_mode)
-		fprintf(stream, "PlaySound Yes\n\n");
-	else
-		fprintf(stream, "PlaySound No\n\n");
+	fprintf(stream, "PlaySound %s\n\n", p->get_bool_name(p->play_sounds));
 	
 	fprintf(stream, "# Binds sounds for some actions\n");
 	for (int sound = 0; sound < MAX_SOUNDS; sound++)
@@ -654,26 +653,17 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option enable or disable mouse processing\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#GrabMouse Yes\n");
-	if (p->mouse_processing_mode)
-		fprintf(stream, "GrabMouse Yes\n\n");
-	else
-		fprintf(stream, "GrabMouse No\n\n");
+	fprintf(stream, "GrabMouse %s\n\n", p->get_bool_name(p->grab_mouse));
 
 	fprintf(stream, "# This option enable or disable self education of xneur\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#EducationMode No\n");
-	if (p->education_mode)
-		fprintf(stream, "EducationMode Yes\n\n");
-	else
-		fprintf(stream, "EducationMode No\n\n");
+	fprintf(stream, "EducationMode %s\n\n", p->get_bool_name(p->educate));
 
 	fprintf(stream, "# This option enable or disable layout remember for each window\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#LayoutRememberMode No\n");
-	if (p->layout_remember_mode)
-		fprintf(stream, "LayoutRememberMode Yes\n\n");
-	else
-		fprintf(stream, "LayoutRememberMode No\n\n");
+	fprintf(stream, "LayoutRememberMode %s\n\n", p->get_bool_name(p->remember_layout));
 
 	fprintf(stream, "# Use this parameter to force enable layout remember for each application, not window.\n");
 	fprintf(stream, "# Option \"LayoutRememberMode\" must be enabled.\n");
@@ -686,10 +676,7 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option enable or disable saving selection text\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#SaveSelectionMode No\n");
-	if (p->save_selection_mode)
-		fprintf(stream, "SaveSelectionMode Yes\n\n");
-	else
-		fprintf(stream, "SaveSelectionMode No\n\n");
+	fprintf(stream, "SaveSelectionMode %s\n\n", p->get_bool_name(p->save_selection));
 
 	fprintf(stream, "# This option define delay before sendind events to application (in milliseconds between 0 to 50).\n");
 	fprintf(stream, "SendDelay %d\n\n", p->send_delay);
@@ -716,10 +703,7 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option enable or disable logging keyboard\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#SaveLog No\n");
-	if (p->save_log_mode)
-		fprintf(stream, "SaveLog Yes\n\n");
-	else
-		fprintf(stream, "SaveLog No\n\n");
+	fprintf(stream, "SaveLog %s\n\n", p->get_bool_name(p->save_keyboard_log));
 			
 	fprintf(stream, "# That's all\n");
 
@@ -819,26 +803,26 @@ void xneur_config_add_language(struct _xneur_config *p, const char *name, const 
 	p->total_languages++;
 }
 
-char *xneur_config_get_locale(struct _xneur_config *p)
+const char* xneur_config_get_locale(struct _xneur_config *p)
 {
 	if (p->locale == NULL)
 		return DEFAULT_LOCALE;
 	return p->locale;
 }
 
-char *xneur_config_get_bool_name(int option)
+const char* xneur_config_get_bool_name(int option)
 {
 	return bool_names[option];
 }
 
-char *xneur_config_get_mode_name(struct _xneur_config *p)
+const char* xneur_config_get_mode_name(struct _xneur_config *p)
 {
 	return mode_names[p->get_current_mode(p)];
 }
 
-char *xneur_config_get_log_level_name(struct _xneur_config *p)
+const char* xneur_config_get_log_level_name(struct _xneur_config *p)
 {
-	return log_levels[xconfig->log_level];
+	return log_levels[p->log_level];
 }
 
 void xneur_config_uninit(struct _xneur_config *p)
