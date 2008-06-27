@@ -4,7 +4,7 @@
 
 Summary: 	X Neural Switcher front-end for KDE
 Name: 		kxneur
-Version: 	0.9.0
+Version: 	0.9.1
 Release: 	0%{?dist}
 
 Group: 		User Interface/Desktops
@@ -14,8 +14,8 @@ Source: 	%{name}-%{version}.tar.bz2
 
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 
-BuildRequires: 	qt-devel, kdelibs-devel, xneur-devel = 0.9.0
-Requires: 	xneur = 0.9.0
+BuildRequires: 	qt-devel, kdelibs-devel, xneur-devel = 0.9.1
+Requires: 	xneur = 0.9.1
 Requires: 	kdelibs >= 3.3.0
 %if 0%{?fedora} > 4 || 0%{?rhel} > 4
 Requires: 	xorg-x11-utils
@@ -65,6 +65,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jun 27 2008 Vadim Likhota <vadim-lvv@yandex.ru> 0.9.1
+- up to 0.9.1
+
 * Tue Jun 24 2008 Vadim Likhota <vadim-lvv@yandex.ru> 0.9.0
 - up to 0.9.0
 

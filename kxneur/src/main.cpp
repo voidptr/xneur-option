@@ -22,12 +22,11 @@
 #include <klocale.h>
 #include "kxneur.h"
 #include "kxnkeyboard.h"
-// #include <stdlib.h>
 
 static const char description[] =
-    I18N_NOOP("KXNeur (KDE X Neural Switcher) is XNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.9.0 only");
+    I18N_NOOP("KXNeur (KDE X Neural Switcher) is XNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.9.1 only");
 
-static const char version[] = "0.9.0";
+static const char version[] = "0.9.1";
 
 static KCmdLineOptions options[] =
 {
