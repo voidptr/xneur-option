@@ -591,14 +591,14 @@ int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "# Config version\nVersion %s\n\n", VERSION);
 	fprintf(stream, "# Working locale\Locale %s\n\n", p->locale);
-	fprintf(stream, "# Default work mode\nDefaultMode %s\n\n", p->get_current_mode_name(p));
+	fprintf(stream, "# Default work mode\nDefaultMode %s\n\n", p->get_mode_name(p));
 
 	fprintf(stream, "# Level of messages program will write to output\n");
 	fprintf(stream, "#LogLevel Error\n");
 	fprintf(stream, "#LogLevel Warning\n");
 	fprintf(stream, "#LogLevel Log\n");
 	fprintf(stream, "#LogLevel Debug\n");
-	fprintf(stream, "LogLevel %s\n\n", p->get_log_level());
+	fprintf(stream, "LogLevel %s\n\n", p->get_log_level_name());
 
 	fprintf(stream, "# Define used languages\n");
 	fprintf(stream, "# See Settings page on http://www.xneur.ru for details\n");
@@ -872,17 +872,7 @@ struct _xneur_config* xneur_config_init(void)
 	p->layout_remember_apps		= list_char_init();
 	p->window_layouts		= list_char_init();
 	p->draw_flag_apps		= list_char_init();
-	
-	p->send_delay			= 0;
-	p->default_group		= 0;
-	
-	p->play_sounds			= NO;
-	p->grab_mouse			= NO;
-	p->educate			= NO;
-	p->remember_layout		= NO;
-	p->save_selection		= NO;
-	p->save_keyboard_log		= NO;
-	
+		
 	// Function mapping
 	p->get_dict_path		= get_file_path_name;
 	p->get_home_dict_path		= get_home_file_path_name;

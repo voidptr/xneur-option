@@ -35,9 +35,6 @@
 #define MANUAL_MODE			0
 #define AUTO_MODE			1
 
-#define NO				0
-#define YES				1
-
 #define NO_LANGUAGE			-1
 
 #define SOUNDDIR			"sounds"
