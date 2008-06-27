@@ -108,7 +108,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 
 	switch (index)
 	{
-		case 1: // Get Default Mode (Manual/Auto)
+		case 0: // Get Default Mode (Manual/Auto)
 		{
 			int index = get_option_index(mode_names, param);
 			if (index == -1)
@@ -120,12 +120,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->set_current_mode(p, index);
 			break;
 		}
-		case 2: // Get Applications Names
+		case 1: // Get Applications Names
 		{
 			p->excluded_apps->add(p->excluded_apps, param);
 			break;
 		}
-		case 3: // Get Keyboard Binds
+		case 2: // Get Keyboard Binds
 		{
 			int action = get_option_index(action_names, param);
 			if (action == -1)
@@ -152,7 +152,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 
 			break;
 		}
-		case 4: // Get Log Level
+		case 3: // Get Log Level
 		{
 			int index = get_option_index(log_levels, param);
 			if (index == -1)
@@ -165,7 +165,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			log_set_level(p->log_level);
 			break;
 		}
-		case 5: // Add Language
+		case 4: // Add Language
 		{
 			char *dir	= get_word(&line);
 			char *group	= get_word(&line);
@@ -179,32 +179,32 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->add_language(p, param, dir, atoi(group));
 			break;
 		}
-		case 6: // Get Vowel Letter
+		case 5: // Get Vowel Letter
 		{
 			p->languages[load_lang].vowel_letter = strdup(param);
 			break;
 		}
-		case 7: // Get Consonant Letter
+		case 6: // Get Consonant Letter
 		{
 			p->languages[load_lang].consonant_letter = strdup(param);
 			break;
 		}
-		case 8: // Get No First Letter
+		case 7: // Get No First Letter
 		{
 			p->languages[load_lang].nofirst_letter = strdup(param);
 			break;
 		}
-		case 9: // Get Auto Processing Applications
+		case 8: // Get Auto Processing Applications
 		{
 			p->auto_apps->add(p->auto_apps, param);
 			break;
 		}
-		case 10: // Get Manual Processing Applications
+		case 9: // Get Manual Processing Applications
 		{
 			p->manual_apps->add(p->manual_apps, param);
 			break;
 		}
-		case 11: // Get Mouse Grab Mode
+		case 10: // Get Mouse Grab Mode
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -216,7 +216,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->grab_mouse = index;
 			break;
 		}
-		case 12: // Get Education Mode
+		case 11: // Get Education Mode
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -228,12 +228,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->educate = index;
 			break;
 		}
-		case 13: // Get config version
+		case 12: // Get config version
 		{
 			p->version = strdup(param);
 			break;
 		}
-		case 14: // Get Layout Remember Mode
+		case 13: // Get Layout Remember Mode
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -245,7 +245,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->remember_layout = index;
 			break;
 		}
-		case 15: // Get Save Selection Mode
+		case 14: // Get Save Selection Mode
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -257,12 +257,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->save_selection = index;
 			break;
 		}
-		case 16: // Get Initial Xkb Group for all new windows
+		case 15: // Get Initial Xkb Group for all new windows
 		{
 			p->default_group = atoi(get_word(&param));
 			break;
 		}
-		case 17: // Sounds
+		case 16: // Sounds
 		{
 			int sound = get_option_index(sound_names, param);
 			if (sound == -1)
@@ -274,7 +274,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->sounds[sound].file = strdup(get_word(&line));
 			break;
 		}
-		case 18: // Play Sound
+		case 17: // Play Sound
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -286,7 +286,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->play_sounds = index;
 			break;
 		}
-		case 19: // Backevent Delay
+		case 18: // Backevent Delay
 		{
 			p->send_delay = atoi(param);
 			if (p->send_delay < 0 || p->send_delay > 50)
@@ -296,17 +296,17 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 			break;
 		}
-		case 20: // layout remember for each application
+		case 19: // layout remember for each application
 		{
 			p->layout_remember_apps->add(p->layout_remember_apps, param);
 			break;
 		}
-		case 21: // Get Draw Flag Applications
+		case 20: // Get Draw Flag Applications
 		{
 			p->draw_flag_apps->add(p->draw_flag_apps, param);
 			break;
 		}
-		case 22: // Flags
+		case 21: // Flags
 		{
 			int flag = get_option_index(flag_names, param);
 			if (flag == -1)
@@ -318,7 +318,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->flags[flag].file = strdup(get_word(&line));
 			break;
 		}
-		case 23: // Save Keyboard Log
+		case 22: // Save Keyboard Log
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -330,7 +330,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->save_keyboard_log = index;
 			break;
 		}
-		case 24: // Working locale
+		case 23: // Working locale
 		{
 			p->locale = strdup(param);
 			break;
