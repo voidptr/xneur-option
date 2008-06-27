@@ -59,7 +59,7 @@ static pthread_mutex_t sound_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void sound_init(void)
 {
-	if (xconfig->sound_mode != SOUND_ENABLED)
+	if (!xconfig->play_sounds)
 		return;
 
 	gst_init(NULL, NULL);
@@ -67,7 +67,7 @@ void sound_init(void)
 
 void sound_uninit(void)
 {
-	if (xconfig->sound_mode != SOUND_ENABLED)
+	if (!xconfig->play_sounds)
 		return;
 
 	/*
@@ -166,7 +166,7 @@ void *play_file_thread(void *param)
 
 void sound_init(void)
 {
-	if (xconfig->sound_mode != SOUND_ENABLED)
+	if (!xconfig->sound_mode)
 		return;
 
 	alutInit(NULL, NULL);
@@ -174,7 +174,7 @@ void sound_init(void)
 
 void sound_uninit(void)
 {
-	if (xconfig->sound_mode != SOUND_ENABLED)
+	if (!xconfig->sound_mode)
 		return;
 
 	alutExit();
@@ -246,7 +246,7 @@ void *play_file_thread(void *param)
 
 void play_file(int file_type)
 {
-	if (xconfig->sound_mode != SOUND_ENABLED)
+	if (!xconfig->sound_mode)
 		return;
 
 	pthread_attr_t sound_thread_attr;

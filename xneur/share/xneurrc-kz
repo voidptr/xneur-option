@@ -2,7 +2,10 @@
 # All values writted XNeur
 
 # Config version
-Version 0.9.0
+Version 0.9.1
+
+# Working locale
+Locale kz_KZ.UTF-8
 
 # Default work mode
 DefaultMode Auto
@@ -26,8 +29,6 @@ DefaultXkbGroup 0
 # Xneur will not process the input for this applications
 # Example:
 #ExcludeApp Gaim
-ExcludeApp Wine
-ExcludeApp Krdc
 
 # Use this parameter to force set work mode in current application to Auto.
 # Example:
@@ -106,8 +107,8 @@ EventsReceiveMode KeyPress
 #AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.xpm
 AddFlagPixmap Layout1Flag English.xpm
 AddFlagPixmap Layout2Flag Kazakh.xpm
-AddFlagPixmap Layout3Flag 
-AddFlagPixmap Layout4Flag 
+AddFlagPixmap Layout3Flag
+AddFlagPixmap Layout4Flag
 
 # Add Applications names to draw flag in window
 # Example:

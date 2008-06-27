@@ -63,7 +63,7 @@ void xstring_set_key_code(struct _xstring *p, int lang)
 
 void xstring_savelog(struct _xstring *p, char *file_name, Window window)
 {
-	if ((xconfig->save_log_mode != LOG_ENABLED) || (p->cur_pos == 0) || (file_name == NULL))
+	if (!xconfig->save_keyboard_log || p->cur_pos == 0 || file_name == NULL)
 		return;
 
 	char *file_path_name = get_home_file_path_name(NULL, file_name);

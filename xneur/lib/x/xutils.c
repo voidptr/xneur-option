@@ -101,7 +101,7 @@ void set_event_mask(Window window, int event_mask)
 
 void grab_button(Window window, int is_grab)
 {
-	if (xconfig->mouse_processing_mode != MOUSE_GRAB_ENABLE)
+	if (!xconfig->grab_mouse)
 		return;
 	
 	int status;

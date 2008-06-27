@@ -34,6 +34,7 @@
 
 #include "xkeymap.h"
 
+extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
 
 static const int groups[]		= {0x00000000, 0x00002000, 0x00004000, 0x00006000};
@@ -43,11 +44,17 @@ static const int total_groups		= sizeof(groups) / sizeof(groups[0]);
 
 static int locale_create(struct _xkeymap *p)
 {
-	if (setlocale(LC_ALL, "en_US.UTF-8") == NULL)
+	char *locale;
+	if (xconfig->locale == NULL)
+		locale = DEFAULT_LOCALE;
+
+	if (setlocale(LC_ALL, locale) == NULL)
 	{
-		log_message(ERROR, "Couldn't set en_US.UTF-8 locale");
+		log_message(ERROR, "Couldn't set %s locale", locale);
 		return FALSE;
 	}
+
+	log_message(LOG, "Using locale %s", locale);
 	return TRUE;
 }
 

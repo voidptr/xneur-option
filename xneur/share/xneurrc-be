@@ -4,6 +4,9 @@
 # Config version
 Version 0.9.0
 
+# Working locale
+Locale be_BY.UTF-8
+
 # Default work mode
 DefaultMode Auto
 

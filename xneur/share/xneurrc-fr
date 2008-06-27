@@ -1,8 +1,11 @@
-# It's a default X Neural Switcher configuration file 
+# It's a default X Neural Switcher configuration file
 # all values are default
 
 # Config version
-Version 0.9.0
+Version 0.9.1
+
+# Working locale
+Locale fr_FR.UTF-8
 
 # Default work mode
 DefaultMode Auto
@@ -47,6 +50,11 @@ AddBind EnableLayout2 Control F3
 AddBind EnableLayout3 Control F4
 AddBind EnableLayout4 Control F5
 
+# This option enable or disable sound playing
+# Example:
+#PlaySound No
+PlaySound Yes
+
 # Binds sounds for some actions
 AddSound PressKeyLayout1 layout1type.wav
 AddSound PressKeyLayout2 layout2type.wav
@@ -56,7 +64,7 @@ AddSound EnableLayout1 layout1.wav
 AddSound EnableLayout2 layout2.wav
 AddSound EnableLayout3 layout1.wav
 AddSound EnableLayout4 layout2.wav
-AddSound AutomaticChangeWord switch.wav
+AddSound AutomaticChangeWord itemback.wav
 AddSound ManualChangeWord switch.wav
 AddSound ChangeString switch.wav
 AddSound ChangeSelected switch.wav
@@ -78,6 +86,11 @@ EducationMode Yes
 #LayoutRememberMode No
 LayoutRememberMode Yes
 
+# Use this parameter to force enable layout remember for each application, not window.
+# Option "LayoutRememberMode" must be enabled.
+# Example:
+#LayoutRememberModeForApp Gaim
+
 # This option enable or disable saving selection text
 # Example:
 #SaveSelectionMode No
@@ -94,8 +107,8 @@ EventsReceiveMode KeyPress
 #AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.xpm
 AddFlagPixmap Layout1Flag English.xpm
 AddFlagPixmap Layout2Flag French.xpm
-AddFlagPixmap Layout3Flag 
-AddFlagPixmap Layout4Flag 
+AddFlagPixmap Layout3Flag
+AddFlagPixmap Layout4Flag
 
 # Add Applications names to draw flag in window
 # Example:

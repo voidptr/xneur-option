@@ -202,7 +202,7 @@ void xprogram_cursor_update(struct _xprogram *p)
 
 void xprogram_layout_update(struct _xprogram *p)
 {
-	if (xconfig->layout_remember_mode == LAYOUTE_REMEMBER_DISABLE)
+	if (!xconfig->remember_layout)
 		return;
 
 	if (p->last_window == p->focus->owner_window)
@@ -449,7 +449,7 @@ void xprogram_process_selection(struct _xprogram *p)
 
 	on_selection_converted(selected_text);
 
-	if (xconfig->save_selection_mode == SELECTION_SAVE_ENABLED)
+	if (xconfig->save_selection)
 		p->event->send_selection(p->event, p->string->cur_pos);
 
 	p->update(p);
@@ -597,7 +597,7 @@ int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action acti
 		{
 			int next_lang = get_next_lang(get_cur_lang());
 
-			if (xconfig->education_mode == EDUCATION_MODE_ENABLE)
+			if (xconfig->educate)
 				p->add_word_to_dict(p, next_lang);
 
 			set_event_mask(p->focus->owner_window, None);

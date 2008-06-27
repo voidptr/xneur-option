@@ -30,29 +30,13 @@
 #define LANGDEF_NAME			"langdef"
 #define REGEXP_NAME			"regexp"
 
-#define AUTO_MODE			0
-#define MANUAL_MODE			1
+#define DEFAULT_LOCALE			"en_US.UTF-8"
 
-#define MOUSE_GRAB_DISABLE		0
-#define MOUSE_GRAB_ENABLE		1
+#define MANUAL_MODE			0
+#define AUTO_MODE			1
 
-#define EDUCATION_MODE_DISABLE		0
-#define EDUCATION_MODE_ENABLE		1
-
-#define LAYOUTE_REMEMBER_DISABLE	0
-#define LAYOUTE_REMEMBER_ENABLE		1
-
-#define SELECTION_SAVE_DISABLED		0
-#define SELECTION_SAVE_ENABLED		1
-
-#define SOUND_DISABLED			0
-#define SOUND_ENABLED			1
-
-#define LOG_DISABLED			0
-#define LOG_ENABLED				1
-
-#define DRAW_FLAG_DISABLED			0
-#define DRAW_FLAG_ENABLED			1
+#define NO				0
+#define YES				1
 
 #define NO_LANGUAGE			-1
 
@@ -158,8 +142,10 @@ struct _xneur_data
 struct _xneur_config
 {
 	char *version;
-	
+
 	void (*get_library_api_version) (int *major_version, int *minor_version); // This function MUST be first
+
+	char *locale;
 
 	struct _list_char *excluded_apps;
 	struct _list_char *auto_apps;
@@ -178,12 +164,12 @@ struct _xneur_config
 
 	int   default_group;				// Initial keyboard layout for all new applications
 
-	int   sound_mode;				// Play sound samples or not 
-	int   mouse_processing_mode;			// Grab mouse or not
-	int   education_mode;				// Education xneur
-	int   layout_remember_mode;			// Remember layout for each of window
-	int   save_selection_mode;			// Save selection after convert
-	int   save_log_mode;				// Save keyboard log
+	int   play_sounds;				// Play sound samples or not 
+	int   grab_mouse;				// Grab mouse or not
+	int   educate;					// Education xneur
+	int   remember_layout;				// Remember layout for each of window
+	int   save_selection;				// Save selection after convert
+	int   save_keyboard_log;			// Save keyboard log
 	 
 	struct _list_char *draw_flag_apps;
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw
@@ -206,6 +192,11 @@ struct _xneur_config
 	char* (*get_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	void  (*add_language) (struct _xneur_config *p, const char *name, const char *dir, int group);
+
+	char* (*get_bool_name) (int option);
+	char* (*get_log_level_name) (struct _xneur_config *p);
+	char* (*get_mode_name) (struct _xneur_config *p);
+
 	void  (*uninit) (struct _xneur_config *p);
 };
 

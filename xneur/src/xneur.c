@@ -82,7 +82,6 @@ static void xneur_load_config(int final)
 {
 	log_message(LOG, "Loading configuration");
 
-	// Load configuration
 	if (!xconfig->load(xconfig))
 	{
 		log_message(ERROR, "Configuration file damaged! Please, remove old file before starting xneur!");
@@ -90,14 +89,11 @@ static void xneur_load_config(int final)
 		exit(EXIT_FAILURE);
 	}
 	
-	// Checking configuration file version
 	xneur_check_config_version(final);
 
-	const char *log_levels[] = {"Error", "Warning", "Log", "Debug", "Trace"};
-	log_message(LOG, "Log level is set to %s", log_levels[xconfig->log_level]);
-
+	log_message(LOG, "Log level is set to %s", xconfig->get_log_level());
 	log_message(LOG, "Total detected %d languages", xconfig->total_languages);
-	
+
 	if (!check_xkb_extension() || !check_keyboard_groups())
 	{
 		xconfig->uninit(xconfig);
@@ -117,41 +113,13 @@ static void xneur_load_config(int final)
 	log_message(DEBUG, "Configuration load complete");
 
 	log_message(LOG, "Default group for all new windows set to %d", xconfig->default_group);
-	
-	char *current_mode = "auto";
-	if (xconfig->get_current_mode(xconfig) == MANUAL_MODE)
-		current_mode = "manual";
-	log_message(LOG, "Current mode set to %s", current_mode);
-
-	current_mode = "Yes";
-	if (xconfig->mouse_processing_mode == MOUSE_GRAB_DISABLE)
-		current_mode = "No";
-	log_message(LOG, "Mouse processing mode set to %s", current_mode);
-
-	current_mode = "Yes";
-	if (xconfig->education_mode == EDUCATION_MODE_DISABLE)
-		current_mode = "No";
-	log_message(LOG, "Education mode set to %s", current_mode);
-
-	current_mode = "Yes";
-	if (xconfig->layout_remember_mode == LAYOUTE_REMEMBER_DISABLE)
-		current_mode = "No";
-	log_message(LOG, "Layout remember mode set to %s", current_mode);
-
-	current_mode = "Yes";
-	if (xconfig->save_selection_mode == SELECTION_SAVE_DISABLED)
-		current_mode = "No";
-	log_message(LOG, "Save selection after convertion mode set to %s", current_mode);
-	
-	current_mode = "Yes";
-	if (xconfig->sound_mode == SOUND_DISABLED)
-		current_mode = "No";
-	log_message(LOG, "Sound playing mode set to %s", current_mode);
-	
-	current_mode = "Yes";
-	if (xconfig->save_log_mode == LOG_DISABLED)
-		current_mode = "No";
-	log_message(LOG, "Logging keyboard mode set to %s", current_mode);
+	log_message(LOG, "Current mode set to %s", xconfig->get_mode_name(xconfig));
+	log_message(LOG, "Mouse processing mode set to %s", xconfig->get_bool_name(xconfig->grab_mouse))
+	log_message(LOG, "Education mode set to %s", xconfig->get_bool_name(xconfig->educate));
+	log_message(LOG, "Layout remember mode set to %s", xconfig->get_bool_name(xconfig->remember_layout));
+	log_message(LOG, "Save selection after convertion mode set to %s", xconfig->get_bool_name(xconfig->save_selection));
+	log_message(LOG, "Sound playing mode set to %s", xconfig->get_bool_name(xconfig->play_sounds));
+	log_message(LOG, "Logging keyboard mode set to %s", xconfig->get_bool_name(xconfig->save_keyboard_log));
 	
 	bind_manual_actions();	
 }

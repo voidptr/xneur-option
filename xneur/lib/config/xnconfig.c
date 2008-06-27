@@ -38,15 +38,18 @@
 #define LIBRARY_API_VERSION_MINOR	1
 #define OPTIONS_DELIMETER		" "
 
-static const char *log_types[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
+static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
+static const char *bool_names[] =	{"No", "Yes"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
+static const char *mode_names[] =	{"Manual", "Auto"};
+static const char *flag_names[] =	{"Layout1Flag", "Layout2Flag", "Layout3Flag", "Layout4Flag"};
 
 static const char *option_names[] = 	{
 						"DefaultMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "VowelLetter",
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySound", "SendDelay", "LayoutRememberModeForApp",
-						"DrawFlagApp", "AddFlagPixmap", "SaveLog"
+						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "Locale"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode", 
@@ -59,12 +62,6 @@ static const char *sound_names[] =	{
 						"AutomaticChangeWord", "ManualChangeWord", "ChangeString", 
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected"
 					};
-static const char *flag_names[] =	{
-						"Layout1Flag", "Layout2Flag", "Layout3Flag", "Layout4Flag"
-					};
-
-static const int total_options = sizeof(option_names) / sizeof(option_names[0]);
-static const int total_modifiers = sizeof(modifier_names) / sizeof(modifier_names[0]);
 
 static int load_lang = -1;
 
@@ -76,14 +73,16 @@ static char* get_word(char **string)
 	return strsep(string, OPTIONS_DELIMETER);
 }
 
-static int get_option_index(char *option)
+static int get_option_index(const char **options, char *option)
 {
-	for (int i = 0; i < total_options; i++)
+	const int options_count = sizeof(options) / sizeof(options[0]);
+
+	for (int i = 0; i < options_count; i++)
 	{
-		if (strcmp(option, option_names[i]) == 0)
-			return i + 1;
+		if (strcmp(option, options[i]) == 0)
+			return i;
 	}
-	return 0;
+	return -1;
 }
 
 static void parse_line(struct _xneur_config *p, char *line)
@@ -94,7 +93,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 	char *option = get_word(&line);
 
 	int index = get_option_index(option);
-	if (index == 0)
+	if (index == -1)
 	{
 		log_message(WARNING, "Unrecognized option \"%s\" detected", option);
 		return;
@@ -111,12 +110,14 @@ static void parse_line(struct _xneur_config *p, char *line)
 	{
 		case 1: // Get Default Mode (Manual/Auto)
 		{
-			if (strcmp(param, "Manual") == 0)
-				p->set_current_mode(p, MANUAL_MODE);
-			else if (strcmp(param, "Auto") == 0)
-				p->set_current_mode(p, AUTO_MODE);
-			else
+			int index = get_option_index(mode_names, param);
+			if (index == -1)
+			{
 				log_message(WARNING, "Invalid value for default mode specified");
+				break;
+			}
+
+			p->set_current_mode(p, index);
 			break;
 		}
 		case 2: // Get Applications Names
@@ -126,28 +127,8 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 3: // Get Keyboard Binds
 		{
-			int action;
-			if (strcmp(param, "ChangeWord") == 0)
-				action = ACTION_CHANGE_WORD;
-			else if (strcmp(param, "ChangeString") == 0)
-				action = ACTION_CHANGE_STRING;
-			else if (strcmp(param, "ChangeMode") == 0)
-				action = ACTION_CHANGE_MODE;
-			else if (strcmp(param, "ChangeSelected") == 0)
-				action = ACTION_CHANGE_SELECTED;
-			else if (strcmp(param, "TranslitSelected") == 0)
-				action = ACTION_TRANSLIT_SELECTED;
-			else if (strcmp(param, "ChangecaseSelected") == 0)
-				action = ACTION_CHANGECASE_SELECTED;
-			else if (strcmp(param, "EnableLayout1") == 0)
-				action = ACTION_ENABLE_LAYOUT_0;
-			else if (strcmp(param, "EnableLayout2") == 0)
-				action = ACTION_ENABLE_LAYOUT_1;
-			else if (strcmp(param, "EnableLayout3") == 0)
-				action = ACTION_ENABLE_LAYOUT_2;
-			else if (strcmp(param, "EnableLayout4") == 0)
-				action = ACTION_ENABLE_LAYOUT_3;
-			else
+			int action = get_option_index(action_names, param);
+			if (action == -1)
 			{
 				log_message(WARNING, "Invalid value for action name specified");
 				break;
@@ -162,41 +143,25 @@ static void parse_line(struct _xneur_config *p, char *line)
 				if (modifier[0] == '\0')
 					continue;
 
-				int assigned = FALSE;
-				for (int i = 0; i < total_modifiers; i++)
-				{
-					if (strcmp(modifier, modifier_names[i]) != 0)
-						continue;
-
-					assigned = TRUE;
-					p->hotkeys[action].modifiers |= (0x1 << i);
-					break;
-				}
-
-				if (assigned == FALSE)
+				int index = get_option_index(modifier_names, modifier);
+				if (index == -1)
 					p->hotkeys[action].key = strdup(modifier);
+				else
+					p->hotkeys[action].modifiers |= (1 << index);
 			}
 
 			break;
 		}
 		case 4: // Get Log Level
 		{
-			if (strcmp(param, "Error") == 0)
-				p->log_level = ERROR;
-			else if (strcmp(param, "Warning") == 0)
-				p->log_level = WARNING;
-			else if (strcmp(param, "Log") == 0)
-				p->log_level = LOG;
-			else if (strcmp(param, "Debug") == 0)
-				p->log_level = DEBUG;
-			else if (strcmp(param, "Trace") == 0)
-				p->log_level = TRACE;
-			else
+			int index = get_option_index(log_levels, param);
+			if (index == -1)
 			{
 				log_message(WARNING, "Invalid value for log level specified");
 				break;
 			}
 
+			p->log_level = index;
 			log_set_level(p->log_level);
 			break;
 		}
@@ -239,24 +204,28 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->manual_apps->add(p->manual_apps, param);
 			break;
 		}
-		case 11: // Get Mouse Processing Mode
+		case 11: // Get Mouse Grab Mode
 		{
-			if (strcmp(param, "Yes") == 0)
-				p->mouse_processing_mode = MOUSE_GRAB_ENABLE;
-			else if (strcmp(param, "No") == 0)
-				p->mouse_processing_mode = MOUSE_GRAB_DISABLE;
-			else
-				log_message(WARNING, "Invalid value for mouse processing mode specified");
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, "Invalid value for mouse grab mode specified");
+				break;
+			}
+
+			p->grab_mouse = index;
 			break;
 		}
 		case 12: // Get Education Mode
 		{
-			if (strcmp(param, "Yes") == 0)
-				p->education_mode = EDUCATION_MODE_ENABLE;
-			else if (strcmp(param, "No") == 0)
-				p->education_mode = EDUCATION_MODE_DISABLE;
-			else
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
 				log_message(WARNING, "Invalid value for education mode specified");
+				break;
+			}
+
+			p->educate = index;
 			break;
 		}
 		case 13: // Get config version
@@ -266,22 +235,26 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 14: // Get Layout Remember Mode
 		{
-			if (strcmp(param, "Yes") == 0)
-				p->layout_remember_mode = LAYOUTE_REMEMBER_ENABLE;
-			else if (strcmp(param, "No") == 0)
-				p->layout_remember_mode = LAYOUTE_REMEMBER_DISABLE;
-			else
-				log_message(WARNING, "Invalid value for layoute remember mode specified");
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, "Invalid value for remember layout mode specified");
+				break;
+			}
+
+			p->remember_layout = index;
 			break;
 		}
 		case 15: // Get Save Selection Mode
 		{
-			if (strcmp(param, "Yes") == 0)
-				p->save_selection_mode = SELECTION_SAVE_ENABLED;
-			else if (strcmp(param, "No") == 0)
-				p->save_selection_mode = SELECTION_SAVE_DISABLED;
-			else
-				log_message(WARNING, "Invalid value for selection save mode specified");
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, "Invalid value for save selection mode specified");
+				break;
+			}
+
+			p->save_selection = index;
 			break;
 		}
 		case 16: // Get Initial Xkb Group for all new windows
@@ -291,36 +264,8 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 17: // Sounds
 		{
-			int sound;
-			if (strcmp(param, "PressKeyLayout1") == 0)
-				sound = SOUND_PRESS_KEY_LAYOUT_0;
-			else if (strcmp(param, "PressKeyLayout2") == 0)
-				sound = SOUND_PRESS_KEY_LAYOUT_1;
-			else if (strcmp(param, "PressKeyLayout3") == 0)
-				sound = SOUND_PRESS_KEY_LAYOUT_2;
-			else if (strcmp(param, "PressKeyLayout4") == 0)
-				sound = SOUND_PRESS_KEY_LAYOUT_3;
-			else if (strcmp(param, "EnableLayout1") == 0)
-				sound = SOUND_ENABLE_LAYOUT_0;
-			else if (strcmp(param, "EnableLayout2") == 0)
-				sound = SOUND_ENABLE_LAYOUT_1;
-			else if (strcmp(param, "EnableLayout3") == 0)
-				sound = SOUND_ENABLE_LAYOUT_2;
-			else if (strcmp(param, "EnableLayout4") == 0)
-				sound = SOUND_ENABLE_LAYOUT_3;
-			else if (strcmp(param, "AutomaticChangeWord") == 0)
-				sound = SOUND_AUTOMATIC_CHANGE_WORD;
-			else if (strcmp(param, "ManualChangeWord") == 0)
-				sound = SOUND_MANUAL_CHANGE_WORD;
-			else if (strcmp(param, "ChangeString") == 0)
-				sound = SOUND_CHANGE_STRING;
-			else if (strcmp(param, "ChangeSelected") == 0)
-				sound = SOUND_CHANGE_SELECTED;
-			else if (strcmp(param, "TranslitSelected") == 0)
-				sound = SOUND_TRANSLIT_SELECTED;
-			else if (strcmp(param, "ChangecaseSelected") == 0)
-				sound = SOUND_CHANGECASE_SELECTED;
-			else
+			int sound = get_option_index(sound_names, param);
+			if (sound == -1)
 			{
 				log_message(WARNING, "Invalid value for sound action name specified");
 				break;
@@ -331,12 +276,14 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 18: // Play Sound
 		{
-			if (strcmp(param, "Yes") == 0)
-				p->sound_mode = SOUND_ENABLED;
-			else if (strcmp(param, "No") == 0)
-				p->sound_mode = SOUND_DISABLED;
-			else
-				log_message(WARNING, "Invalid value for sound playing mode specified");
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, "Invalid value for play sounds mode specified");
+				break;
+			}
+
+			p->play_sounds = index;
 			break;
 		}
 		case 19: // Backevent Delay
@@ -361,16 +308,8 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 22: // Flags
 		{
-			int flag;
-			if (strcmp(param, "Layout1Flag") == 0)
-				flag = FLAG_LAYOUT_0;
-			else if (strcmp(param, "Layout2Flag") == 0)
-				flag = FLAG_LAYOUT_1;
-			else if (strcmp(param, "Layout3Flag") == 0)
-				flag = FLAG_LAYOUT_2;
-			else if (strcmp(param, "Layout4Flag") == 0)
-				flag = FLAG_LAYOUT_3;
-			else
+			int flag = get_option_index(flag_names, param);
+			if (flag == -1)
 			{
 				log_message(WARNING, "Invalid value for flag layout name specified");
 				break;
@@ -381,12 +320,19 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 23: // Save Keyboard Log
 		{
-			if (strcmp(param, "Yes") == 0)
-				p->save_log_mode = LOG_ENABLED;
-			else if (strcmp(param, "No") == 0)
-				p->save_log_mode = LOG_DISABLED;
-			else
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
 				log_message(WARNING, "Invalid value for save keyboard log mode specified");
+				break;
+			}
+
+			p->save_keyboard_log = index;
+			break;
+		}
+		case 24: // Working locale
+		{
+			p->locale = strdup(param);
 			break;
 		}
 	}
@@ -494,6 +440,21 @@ static void free_structures(struct _xneur_config *p)
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
 	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
+}
+
+char *xneur_config_get_bool_name(int option)
+{
+	return bool_names[option];
+}
+
+char *xneur_config_get_mode_name(struct _xneur_config *p)
+{
+	return mode_names[p->get_current_mode(p)];
+}
+
+char *xneur_config_get_log_level_name(struct _xneur_config *p)
+{
+	return log_levels[xconfig->log_level];
 }
 
 void xneur_config_reload(struct _xneur_config *p)
@@ -627,20 +588,18 @@ int xneur_config_save(struct _xneur_config *p)
 	free(config_file_path_name);
 
 	fprintf(stream, "# It's a X Neural Switcher configuration file by XNeur\n# All values writted XNeur\n\n");
-	fprintf(stream, "# Config version\nVersion %s\n\n", VERSION);
 
-	if (p->xneur_data->xneur_mode == AUTO_MODE)
-		fprintf(stream, "# Default work mode\nDefaultMode Auto\n\n");
-	else
-		fprintf(stream, "# Default work mode\nDefaultMode Manual\n\n");
+	fprintf(stream, "# Config version\nVersion %s\n\n", VERSION);
+	fprintf(stream, "# Working locale\Locale %s\n\n", p->locale);
+	fprintf(stream, "# Default work mode\nDefaultMode %s\n\n", p->get_current_mode_name(p));
 
 	fprintf(stream, "# Level of messages program will write to output\n");
 	fprintf(stream, "#LogLevel Error\n");
 	fprintf(stream, "#LogLevel Warning\n");
 	fprintf(stream, "#LogLevel Log\n");
 	fprintf(stream, "#LogLevel Debug\n");
-	fprintf(stream, "LogLevel %s\n", log_types[p->log_level]);
-	fprintf(stream, "\n");
+	fprintf(stream, "LogLevel %s\n\n", p->get_log_level());
+
 	fprintf(stream, "# Define used languages\n");
 	fprintf(stream, "# See Settings page on http://www.xneur.ru for details\n");
 
@@ -649,8 +608,7 @@ int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# Define initial keyboard layout for all new applications\n");
-	fprintf(stream, "DefaultXkbGroup %d\n", p->default_group);
-	fprintf(stream, "\n");
+	fprintf(stream, "DefaultXkbGroup %d\n\n", p->default_group);
 	
 	fprintf(stream, "# Add Applications names to exclude it from procces with xneur\n");
 	fprintf(stream, "# Xneur will not process the input for this applications\n");
@@ -811,7 +769,7 @@ int xneur_config_replace(struct _xneur_config *p)
 
 void xneur_config_save_dicts(struct _xneur_config *p, int lang)
 {
-	if (p->education_mode == EDUCATION_MODE_DISABLE)
+	if (!p->educate)
 		return;
 	
 	log_message(LOG, "Saving %s dictionary", p->get_lang_name(p, lang));
@@ -918,18 +876,19 @@ struct _xneur_config* xneur_config_init(void)
 	p->send_delay			= 0;
 	p->default_group		= 0;
 	
-	p->sound_mode			= SOUND_DISABLED;
-	p->mouse_processing_mode	= MOUSE_GRAB_DISABLE;
-	p->education_mode		= EDUCATION_MODE_DISABLE;
-	p->layout_remember_mode		= LAYOUTE_REMEMBER_DISABLE;
-	p->save_selection_mode		= SELECTION_SAVE_DISABLED;
-	p->save_log_mode		= LOG_DISABLED;
+	p->play_sounds			= NO;
+	p->grab_mouse			= NO;
+	p->educate			= NO;
+	p->remember_layout		= NO;
+	p->save_selection		= NO;
+	p->save_keyboard_log		= NO;
 	
 	// Function mapping
 	p->get_dict_path		= get_file_path_name;
 	p->get_home_dict_path		= get_home_file_path_name;
 
 	p->get_library_api_version	= xneur_config_get_library_api_version;
+
 	p->load				= xneur_config_load;
 	p->clear			= xneur_config_clear;
 	p->save				= xneur_config_save;
@@ -946,6 +905,11 @@ struct _xneur_config* xneur_config_init(void)
 	p->get_lang_group		= xneur_config_get_lang_group;
 	p->find_group_lang		= xneur_config_find_group_lang;
 	p->add_language			= xneur_xonfig_add_language;
+
+	p->get_bool_name		= xneur_config_get_bool_name;
+	p->get_log_level_name		= xneur_config_get_log_level_name;
+	p->get_mode_name		= xneur_config_get_mode_name;
+
 	p->uninit			= xneur_config_uninit;
 
 	p->set_current_mode(p, AUTO_MODE);
