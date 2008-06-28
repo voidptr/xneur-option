@@ -422,7 +422,7 @@ static void xprogram_process_selection(struct _xprogram *p)
 
 	if (p->selected_mode == ACTION_CHANGECASE_SELECTED)
 	{
-		p->string->changecase_content(p->string);
+		p->string->change_case(p->string);
 		p->change_lang(p, get_cur_lang());
 	}
 	else

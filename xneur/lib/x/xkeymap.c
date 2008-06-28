@@ -45,7 +45,7 @@ static const int state_masks[]		= {0x00, 0x01, 0x80, 0x10}; // None, NumLock, Al
 
 static const int max_groups_count	= sizeof(keyboard_groups) / sizeof(keyboard_groups[0]);
 
-static int locale_create(vaoi)
+static int locale_create(void)
 {
 	if (setlocale(LC_ALL, "") == NULL)
 	{
