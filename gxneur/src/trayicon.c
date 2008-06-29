@@ -97,13 +97,13 @@ GtkWidget* create_menu_icon(struct _tray_icon *tray, gboolean runned, int state)
 	// State
 	if (state == 0)
 	{
-		menu_text = _("Disable Input Autocorrection");
-		menu_icon = "gtk-disconnect";
+		menu_text = _("Enable Input Autocorrection");
+		menu_icon = "gtk-connect";
 	}
 	else
 	{
-		menu_text = _("Enable Input Autocorrection");
-		menu_icon = "gtk-connect";
+		menu_text = _("Disable Input Autocorrection");
+		menu_icon = "gtk-disconnect";
 	}
 
 	menuitem = gtk_image_menu_item_new_with_mnemonic(menu_text);
