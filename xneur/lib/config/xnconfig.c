@@ -711,8 +711,8 @@ static int xneur_config_save(struct _xneur_config *p)
 
 static int xneur_config_replace(struct _xneur_config *p)
 {
-	char *config_file_path_name = get_file_path_name(NULL, CONFIG_NAME);
-	char *config_backup_file_path_name = get_file_path_name(NULL, CONFIG_BCK_NAME);
+	char *config_file_path_name		= get_file_path_name(NULL, CONFIG_NAME);
+	char *config_backup_file_path_name	= get_file_path_name(NULL, CONFIG_BCK_NAME);
 
 	log_message(LOG, "Moving config file from %s to %s", config_file_path_name, config_backup_file_path_name);
 	
@@ -853,7 +853,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->draw_flag_apps		= list_char_init();
 		
 	// Function mapping
-	p->get_dict_path		= get_file_path_name;
 	p->get_home_dict_path		= get_home_file_path_name;
 
 	p->get_library_version		= xneur_config_get_library_version;

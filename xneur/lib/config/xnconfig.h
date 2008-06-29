@@ -177,7 +177,6 @@ struct _xneur_config
 	char* (*get_lang_name) (struct _xneur_config *p, int lang);
 	int   (*get_lang_group) (struct _xneur_config *p, int lang);
 	int   (*find_group_lang) (struct _xneur_config *p, int group);
-	char* (*get_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	void  (*add_language) (struct _xneur_config *p, const char *name, const char *dir, int group);
 
