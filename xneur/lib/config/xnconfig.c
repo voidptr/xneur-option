@@ -439,25 +439,25 @@ static void free_structures(struct _xneur_config *p)
 
 static void xneur_config_reload(struct _xneur_config *p)
 {
-	int xneur_pid = p->xneur_data->xneur_pid;
-	if (xneur_pid <= 0)
+	int process_id = p->xneur_data->process_id;
+	if (process_id <= 0)
 		return;
 
-	kill(xneur_pid, SIGHUP);
+	kill(process_id, SIGHUP);
 }
 
-static void xneur_config_set_pid(struct _xneur_config *p, int pid)
+static void xneur_config_set_pid(struct _xneur_config *p, int process_id)
 {
-	p->xneur_data->xneur_pid = pid;
+	p->xneur_data->process_id = process_id;
 }
 
 static int xneur_config_kill(struct _xneur_config *p)
 {
-	int xneur_pid = p->xneur_data->xneur_pid;
-	if (xneur_pid <= 0)
+	int process_id = p->xneur_data->process_id;
+	if (process_id <= 0)
 		return FALSE;
 
-	if (kill(xneur_pid, SIGTERM) == -1)
+	if (kill(process_id, SIGTERM) == -1)
 		return FALSE;
 
 	xneur_config_set_pid(p, 0);
@@ -467,24 +467,24 @@ static int xneur_config_kill(struct _xneur_config *p)
 
 static int xneur_config_get_pid(struct _xneur_config *p)
 {
-	int xneur_pid = p->xneur_data->xneur_pid;
-	if (xneur_pid <= 0)
+	int process_id = p->xneur_data->process_id;
+	if (process_id <= 0)
 		return -1;
 
-	if (getsid(xneur_pid) == -1)
+	if (getsid(process_id) == -1)
 		return -1;
 
-	return p->xneur_data->xneur_pid;
+	return p->xneur_data->process_id;
 }
 
-static void xneur_config_set_current_mode(struct _xneur_config *p, int mode)
+static void xneur_config_set_manual_mode(struct _xneur_config *p, int manual_mode)
 {
-	p->xneur_data->xneur_mode = mode;
+	p->xneur_data->manual_mode = manual_mode;
 }
 
-static int xneur_config_get_current_mode(struct _xneur_config *p)
+static void xneur_config_is_manual_mode(struct _xneur_config *p)
 {
-	return p->xneur_data->xneur_mode;
+	return (p->xneur_data->manual_mode == TRUE);
 }
 
 static int xneur_config_load(struct _xneur_config *p)
@@ -757,6 +757,13 @@ static char* xneur_config_get_lang_name(struct _xneur_config *p, int lang)
 	return p->languages[lang].name;
 }
 
+static int xneur_config_get_lang_group(struct _xneur_config *p, int lang)
+{
+	if (lang < 0 || lang >= p->total_languages)
+		return -1;
+	return p->languages[lang].group;
+}
+
 static int xneur_config_find_group_lang(struct _xneur_config *p, int group)
 {
 	for (int lang = 0; lang < p->total_languages; lang++)
@@ -764,14 +771,7 @@ static int xneur_config_find_group_lang(struct _xneur_config *p, int group)
 		if (p->languages[lang].group == group)
 			return lang;
 	}
-	return NO_LANGUAGE;
-}
-
-static int xneur_config_get_lang_group(struct _xneur_config *p, int lang)
-{
-	if (lang < 0 || lang >= p->total_languages)
-		return -1;
-	return p->languages[lang].group;
+	return -1;
 }
 
 static void xneur_config_get_library_version(int *major_version, int *minor_version)
@@ -789,8 +789,6 @@ static void xneur_config_add_language(struct _xneur_config *p, const char *name,
 	}
 
 	p->languages = (struct _xneur_language *) realloc(p->languages, (p->total_languages + 1) * sizeof(struct _xneur_language));
-	if (p->languages == NULL)
-		return;
 	bzero(&(p->languages[p->total_languages]), sizeof(struct _xneur_language));
 
 	p->languages[p->total_languages].name	= strdup(name);
@@ -859,7 +857,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->get_home_dict_path		= get_home_file_path_name;
 
 	p->get_library_version		= xneur_config_get_library_version;
-
 	p->load				= xneur_config_load;
 	p->clear			= xneur_config_clear;
 	p->save				= xneur_config_save;
@@ -867,8 +864,8 @@ struct _xneur_config* xneur_config_init(void)
 	p->reload			= xneur_config_reload;
 	p->kill				= xneur_config_kill;
 	p->save_dicts			= xneur_config_save_dicts;
-	p->set_current_mode		= xneur_config_set_current_mode;
-	p->get_current_mode		= xneur_config_get_current_mode;
+	p->set_manual_mode		= xneur_config_set_manual_mode;
+	p->is_manual_mode		= xneur_config_is_manual_mode;
 	p->set_pid			= xneur_config_set_pid;
 	p->get_pid			= xneur_config_get_pid;
 	p->get_lang_dir			= xneur_config_get_lang_dir;

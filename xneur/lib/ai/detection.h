@@ -20,6 +20,8 @@
 #ifndef _DETECTION_H_
 #define _DETECTION_H_
 
+#define NO_LANGUAGE	-1
+
 int get_word_lang(const char *word, int cur_lang);
 int get_next_lang(int cur_lang);
 

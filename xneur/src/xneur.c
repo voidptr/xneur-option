@@ -139,11 +139,11 @@ static void xneur_set_lock(void)
 		}
 	}
 
-	int xneur_pid = getpid();
+	int process_id = getpid();
 
-	xconfig->set_pid(xconfig, xneur_pid);
+	xconfig->set_pid(xconfig, process_id);
 
-	log_message(DEBUG, PACKAGE " pid is %d", xneur_pid);
+	log_message(DEBUG, PACKAGE " pid is %d", process_id);
 }
 
 static void xneur_cleanup(void)

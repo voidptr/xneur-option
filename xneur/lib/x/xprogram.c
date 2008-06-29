@@ -558,16 +558,12 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			return FALSE;
 		case ACTION_CHANGE_MODE:	// User needs to change current work mode
 		{
-			if (xconfig->get_current_mode(xconfig) == AUTO_MODE)
-			{
-				xconfig->set_current_mode(xconfig, MANUAL_MODE);
-				log_message(DEBUG, "Current mode changed to manual");
-			}
+			if (xconfig->is_manual_mode(xconfig))
+				xconfig->set_manual_mode(xconfig, FALSE);
 			else
-			{
-				xconfig->set_current_mode(xconfig, AUTO_MODE);
-				log_message(DEBUG, "Current mode changed to auto");
-			}
+				xconfig->set_manual_mode(xconfig, TRUE);
+
+			log_message(DEBUG, "Current mode changed to %s", xconfig->get_mode_name(xconfig));
 			return TRUE;
 		}
 		case ACTION_CHANGE_SELECTED:
@@ -629,7 +625,7 @@ static void xprogram_check_last_word(struct _xprogram *p)
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
 		return;
 
-	if (p->app_forced_mode != FORCE_MODE_AUTO && xconfig->get_current_mode(xconfig) == MANUAL_MODE)
+	if (p->app_forced_mode != FORCE_MODE_AUTO && xconfig->is_manual_mode(xconfig))
 		return;
 
 	const char *word = get_last_word(p->string->content);

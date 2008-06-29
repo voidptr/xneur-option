@@ -48,7 +48,7 @@ int get_cur_lang(void)
 	int group = get_active_keyboard_group();
 
 	int lang = xconfig->find_group_lang(xconfig, group);
-	if (lang != NO_LANGUAGE)
+	if (lang != -1)
 		return lang;
 
 	log_message(ERROR, "Can't find language for this XKB Group");

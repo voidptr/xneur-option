@@ -30,17 +30,12 @@
 #define LANGDEF_NAME			"langdef"
 #define REGEXP_NAME			"regexp"
 
-#define MANUAL_MODE			0
-#define AUTO_MODE			1
-
-#define NO_LANGUAGE			-1
-
 #define SOUNDDIR			"sounds"
 #define PIXMAPDIR			"pixmaps"
 
+#define MAX_FLAGS			4
 #define MAX_SOUNDS			14
 #define MAX_HOTKEYS			10
-#define MAX_FLAGS			4
 
 enum _flag_action
 {
@@ -130,8 +125,8 @@ struct _xneur_file
 
 struct _xneur_data
 {
-	int xneur_pid;
-	int xneur_mode;
+	int process_id;
+	int manual_mode;
 };
 
 struct _xneur_config
@@ -176,8 +171,8 @@ struct _xneur_config
 	void  (*save_dicts) (struct _xneur_config *p, int lang);
 	void  (*set_pid) (struct _xneur_config *p, int pid);
 	int   (*get_pid) (struct _xneur_config *p);
-	void  (*set_current_mode) (struct _xneur_config *p, int mode);
-	int   (*get_current_mode) (struct _xneur_config *p);
+	void  (*set_manual_mode) (struct _xneur_config *p, int manual_mode);
+	int   (*is_manual_mode) (struct _xneur_config *p);
 	char* (*get_lang_dir) (struct _xneur_config *p, int lang);
 	char* (*get_lang_name) (struct _xneur_config *p, int lang);
 	int   (*get_lang_group) (struct _xneur_config *p, int lang);
