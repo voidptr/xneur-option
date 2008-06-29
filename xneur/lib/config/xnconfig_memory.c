@@ -32,6 +32,8 @@
 
 static int get_memory_id(int segment_size, int *need_init)
 {
+	*need_init = FALSE;
+
 	key_t segment_key = ftok("/", getuid());
 	if (segment_key == -1)
 	{
@@ -41,10 +43,7 @@ static int get_memory_id(int segment_size, int *need_init)
 
 	int shm_id = shmget(segment_key, segment_size, SEGMENT_PERMISSIONS);
 	if (shm_id != -1)
-	{
-		*need_init = FALSE;
 		return shm_id;
-	}
 
 	*need_init = TRUE;
 
