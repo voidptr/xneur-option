@@ -34,21 +34,21 @@
 
 #include "xnconfig.h"
 
-#define LIBRARY_API_VERSION_MAJOR	4
-#define LIBRARY_API_VERSION_MINOR	0
+#define LIBRARY_VERSION_MAJOR		4
+#define LIBRARY_VERSION_MINOR		0
 #define OPTIONS_DELIMETER		" "
 
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
 static const char *bool_names[] =	{"No", "Yes"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
-static const char *mode_names[] =	{"Manual", "Auto"};
+static const char *mode_names[] =	{"Auto", "Manual"};
 static const char *flag_names[] =	{"Layout1Flag", "Layout2Flag", "Layout3Flag", "Layout4Flag"};
 
 static const char *option_names[] = 	{
 						"DefaultMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "VowelLetter",
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
-						"DefaultXkbGroup", "AddSound", "PlaySound", "SendDelay", "LayoutRememberModeForApp",
+						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"DrawFlagApp", "AddFlagPixmap", "SaveLog"
 					};
 static const char *action_names[] =	{
@@ -102,13 +102,13 @@ static void parse_line(struct _xneur_config *p, char *line)
 	char *param = get_word(&line);
 	if (param == NULL)
 	{
-		log_message(ERROR, "Param mismatch for option %s", option);
+		log_message(WARNING, "Param mismatch for option %s", option);
 		return;
 	}
 
 	switch (index)
 	{
-		case 0: // Get Default Mode (Manual/Auto)
+		case 0: // Get Default Mode (Auto/Manual)
 		{
 			int index = get_option_index(mode_names, param);
 			if (index == -1)
@@ -291,7 +291,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->send_delay = atoi(param);
 			if (p->send_delay < 0 || p->send_delay > 50)
 			{
-				log_message(WARNING, "Send dealy must be between 0 and 50");
+				log_message(WARNING, "Send delay must be between 0 and 50");
 				p->send_delay = 0;
 			}
 			break;
@@ -440,8 +440,10 @@ static void free_structures(struct _xneur_config *p)
 static void xneur_config_reload(struct _xneur_config *p)
 {
 	int xneur_pid = p->xneur_data->xneur_pid;
-	if (xneur_pid > 0)
-		kill(xneur_pid, SIGHUP);
+	if (xneur_pid <= 0)
+		return;
+
+	kill(xneur_pid, SIGHUP);
 }
 
 static void xneur_config_set_pid(struct _xneur_config *p, int pid)
@@ -620,20 +622,20 @@ static int xneur_config_save(struct _xneur_config *p)
 		const int total_modifiers = sizeof(modifier_names) / sizeof(modifier_names[0]);
 		for (int i = 0; i < total_modifiers; i++)
 		{
-			if (p->hotkeys[action].modifiers & (0x1 << i))
+			if (p->hotkeys[action].modifiers & (1 << i))
 				fprintf(stream, "%s ", modifier_names[i]);
 		}
-		if (p->hotkeys[action].key == NULL)
-			fprintf(stream, "\n");
-		else
-			fprintf(stream, "%s\n", p->hotkeys[action].key);
+
+		if (p->hotkeys[action].key != NULL)
+			fprintf(stream, "%s", p->hotkeys[action].key);
+		fprintf(stream, "\n");
 	}
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# This option enable or disable sound playing\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#PlaySound No\n");
-	fprintf(stream, "PlaySound %s\n\n", p->get_bool_name(p->play_sounds));
+	fprintf(stream, "#PlaySounds No\n");
+	fprintf(stream, "PlaySounds %s\n\n", p->get_bool_name(p->play_sounds));
 	
 	fprintf(stream, "# Binds sounds for some actions\n");
 	for (int sound = 0; sound < MAX_SOUNDS; sound++)
@@ -774,8 +776,8 @@ static int xneur_config_get_lang_group(struct _xneur_config *p, int lang)
 
 static void xneur_config_get_library_version(int *major_version, int *minor_version)
 {
-	*major_version = LIBRARY_API_VERSION_MAJOR;
-	*minor_version = LIBRARY_API_VERSION_MINOR;
+	*major_version = LIBRARY_VERSION_MAJOR;
+	*minor_version = LIBRARY_VERSION_MINOR;
 }
 
 static void xneur_config_add_language(struct _xneur_config *p, const char *name, const char *dir, int group)
@@ -881,7 +883,5 @@ struct _xneur_config* xneur_config_init(void)
 
 	p->uninit			= xneur_config_uninit;
 
-	p->set_current_mode(p, AUTO_MODE);
-	
 	return p;
 }

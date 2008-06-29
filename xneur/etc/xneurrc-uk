@@ -49,8 +49,8 @@ AddBind EnableLayout4 Control F5
 
 # This option enable or disable sound playing
 # Example:
-#PlaySound No
-PlaySound Yes
+#PlaySounds No
+PlaySounds Yes
 
 # Binds sounds for some actions
 AddSound PressKeyLayout1 layout1type.wav
