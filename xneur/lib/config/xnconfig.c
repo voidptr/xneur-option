@@ -117,7 +117,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->set_current_mode(p, index);
+			p->set_manual_mode(p, index);
 			break;
 		}
 		case 1: // Get Applications Names
@@ -482,7 +482,7 @@ static void xneur_config_set_manual_mode(struct _xneur_config *p, int manual_mod
 	p->xneur_data->manual_mode = manual_mode;
 }
 
-static void xneur_config_is_manual_mode(struct _xneur_config *p)
+static int xneur_config_is_manual_mode(struct _xneur_config *p)
 {
 	return (p->xneur_data->manual_mode == TRUE);
 }
@@ -805,7 +805,7 @@ static const char* xneur_config_get_bool_name(int option)
 
 static const char* xneur_config_get_mode_name(struct _xneur_config *p)
 {
-	return mode_names[p->get_current_mode(p)];
+	return mode_names[p->is_manual_mode(p)];
 }
 
 static const char* xneur_config_get_log_level_name(struct _xneur_config *p)
