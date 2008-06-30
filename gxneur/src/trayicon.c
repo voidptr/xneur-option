@@ -150,7 +150,7 @@ void clock_check(Clock *clock)
 	struct _tray_icon *tray = clock->tray;
 	
 	int xneur_pid = xconfig->get_pid(xconfig);
-	int xneur_state = xconfig->is_manual_mode(xconfig);
+	int xneur_state = xconfig->manual_mode;
 	int xneur_group = get_active_keyboard_group();
 
 	if (xneur_pid == xneur_old_pid && xneur_state == xneur_old_state && xneur_group == xneur_old_group)
@@ -214,7 +214,7 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 	}
 		
 	tray->tooltip		= gtk_tooltips_new();
-	tray->popup_menu	= create_menu_icon(tray, runned, xconfig->is_manual_mode(xconfig));
+	tray->popup_menu	= create_menu_icon(tray, runned, xconfig->manual_mode);
 	tray->evbox		= gtk_event_box_new();
 
 	gtk_event_box_set_visible_window(GTK_EVENT_BOX(tray->evbox), 0);

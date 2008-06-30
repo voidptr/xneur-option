@@ -572,7 +572,7 @@ void KXNeurConf::SaveSettings()
 
 	knapp->xnconf->save_selection = kxneur_page->save_sel_text->isChecked();
 
-	knapp->xnconf->set_manual_mode(knapp->xnconf, kxneur_page->xneur_mode->currentItem());
+	knapp->xnconf->manual_mode = kxneur_page->xneur_mode->currentItem();
 
     knapp->xnconf->send_delay = xneur_page->send_delay->value();
 

@@ -127,7 +127,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->set_manual_mode(p, manual);
+			p->manual_mode = manual;
 			break;
 		}
 		case 1: // Get Applications Names
@@ -485,16 +485,6 @@ static int xneur_config_get_pid(struct _xneur_config *p)
 		return -1;
 
 	return p->xneur_data->process_id;
-}
-
-static void xneur_config_set_manual_mode(struct _xneur_config *p, int manual_mode)
-{
-	p->xneur_data->manual_mode = manual_mode;
-}
-
-static int xneur_config_is_manual_mode(struct _xneur_config *p)
-{
-	return (p->xneur_data->manual_mode == TRUE);
 }
 
 static int xneur_config_load(struct _xneur_config *p)
@@ -859,8 +849,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->reload			= xneur_config_reload;
 	p->kill				= xneur_config_kill;
 	p->save_dicts			= xneur_config_save_dicts;
-	p->set_manual_mode		= xneur_config_set_manual_mode;
-	p->is_manual_mode		= xneur_config_is_manual_mode;
 	p->set_pid			= xneur_config_set_pid;
 	p->get_pid			= xneur_config_get_pid;
 	p->get_lang_dir			= xneur_config_get_lang_dir;
