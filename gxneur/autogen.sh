@@ -94,8 +94,8 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-echo Running $srcdir/configure --prefix=/usr $args ...
-$srcdir/configure --prefix=/usr $args
+echo Running $srcdir/configure $args ...
+$srcdir/configure $args
 
 if [ $? -ne 0 ]; then
 	echo
