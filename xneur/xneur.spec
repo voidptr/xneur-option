@@ -1,10 +1,9 @@
 %define fedora 7
 %define rhel 0
-#define dist el5
 
 Summary: 	X Neural Switcher
 Name:		xneur
-Version: 	0.9.0
+Version: 	0.9.1
 Release: 	0%{?dist}
 
 License: 	GPL
@@ -99,12 +98,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/%{name}/*.h
 
 %changelog
+* Mon Jun 30 2008 Yankin Nikolay <web@softodrom.ru> 0.9.1
+- update to 0.9.1
+
 * Tue Jun 24 2008 Vadim Likhota <vadiml.xx@gmail.com> 0.9.0
-- update to 0.9
+- update to 0.9.0
 - test on fc7 && asp12
 
 * Thu Oct 11 2007 Vadim Likhota <vadim-lvv@yandex.ru> 0.8
-- update to 0.8
+- update to 0.8.0
 
 * Tue Jul 17 2007 Vadim Likhota <vadim-lvv@yandex.ru> 0.6.2-1
 - update & test for centos5 x86_64
@@ -119,7 +121,7 @@ rm -rf $RPM_BUILD_ROOT
 - update to 0.6.1 from svn
 
 * Mon Apr 23 2007 Arkady L. Shane <ashejn@yandex-team.ru> 0.6-1
-- 0.6
+- 0.6.0
 
 * Sat Mar 10 2007 Arkady L. Shane <ashejn@yandex-team.ru> 0.5-1
 - 0.5.0

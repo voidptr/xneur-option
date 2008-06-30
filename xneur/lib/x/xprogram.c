@@ -193,7 +193,7 @@ static void xprogram_cursor_update(struct _xprogram *p)
 					
 	XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
 
-	p->cursor->show_flag(p->cursor, root_x+10, root_y+10);
+	p->cursor->show_flag(p->cursor, root_x + 10, root_y + 10);
 }
 
 static void xprogram_layout_update(struct _xprogram *p)
@@ -201,7 +201,7 @@ static void xprogram_layout_update(struct _xprogram *p)
 	if (!xconfig->remember_layout)
 		return;
 
-	if (p->last_window == p->focus->owner_window)
+	if ((Window) p->last_window == p->focus->owner_window)
 		return;
 
 	char *text_to_find	= (char *) malloc(1024 * sizeof(char));
@@ -443,7 +443,7 @@ static void xprogram_process_selection(struct _xprogram *p)
 	
 	p->send_string_silent(p, FALSE);
 
-	on_selection_converted(selected_text);
+	on_selection_converted();
 
 	if (xconfig->save_selection)
 		p->event->send_selection(p->event, p->string->cur_pos);
@@ -558,12 +558,9 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			return FALSE;
 		case ACTION_CHANGE_MODE:	// User needs to change current work mode
 		{
-			if (xconfig->is_manual_mode(xconfig))
-				xconfig->set_manual_mode(xconfig, FALSE);
-			else
-				xconfig->set_manual_mode(xconfig, TRUE);
+			xconfig->set_manual_mode(xconfig, !xconfig->is_manual_mode(xconfig));
 
-			log_message(DEBUG, "Current mode changed to %s", xconfig->get_mode_name(xconfig));
+			log_message(DEBUG, "Manual mode changed to %s", xconfig->get_bool_name(xconfig->manual_mode));
 			return TRUE;
 		}
 		case ACTION_CHANGE_SELECTED:

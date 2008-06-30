@@ -61,7 +61,7 @@ char* get_selected_text(XSelectionEvent *event)
 	return (char *) data;
 }
 
-void on_selection_converted(char *selected_text)
+void on_selection_converted(void)
 {
 	XSetSelectionOwner(main_window->display, XA_PRIMARY, None, CurrentTime);
 }

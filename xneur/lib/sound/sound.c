@@ -77,6 +77,8 @@ void sound_uninit(void)
 
 static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data)
 {
+	if (bus){}
+
 	GMainLoop *loop = (GMainLoop *) data;
 
 	switch (GST_MESSAGE_TYPE(msg))
@@ -107,6 +109,8 @@ static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data)
 
 static void new_pad(GstElement *element, GstPad *pad, gpointer data)
 {
+	if (element){}
+
 	GstElement *sink = data;
 	
 	GstPad *alsapad = gst_element_get_pad(sink, "sink");

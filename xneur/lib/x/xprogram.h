@@ -36,7 +36,7 @@ struct _xprogram
 
 	int  selected_mode;
 	
-	int  modifier_mask; 	
+	int  modifier_mask;
 	
 	int  last_layout;
 	int  last_window;

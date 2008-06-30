@@ -61,7 +61,7 @@ static void set_mask_to_window(Window current_window, int mask)
 	if (!is_same_screen)
 		return;
 	
-	for (int i = 0; i < children_count; i++)
+	for (unsigned int i = 0; i < children_count; i++)
 		set_mask_to_window(children_return[i], mask);
 	
 	XFree(children_return);

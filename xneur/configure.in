@@ -5,9 +5,13 @@ AC_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR(m4)
 AM_INIT_AUTOMAKE(xneur, 0.9.1)
 
-AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
+
+AC_LANG_C
+AM_PROG_CC_C_O
+AC_PROG_MAKE_SET
+
 AC_HEADER_STDC
 
 PKG_PROG_PKG_CONFIG([0.20])
@@ -126,7 +130,7 @@ if test "x$with_aspell" != "xno"; then
 	AC_SUBST(ASPELL_LIBS)
 fi
 
-CFLAGS="-Wall -Werror -g0 -fPIC -std=gnu99"
+CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
 AC_SUBST(CFLAGS)
 
 AC_OUTPUT([share/Makefile share/sounds/Makefile share/pixmaps/Makefile share/en/Makefile share/ru/Makefile share/uk/Makefile share/be/Makefile share/fr/Makefile share/ro/Makefile share/kz/Makefile share/de/Makefile  etc/Makefile lib/Makefile lib/ai/Makefile lib/config/Makefile lib/misc/Makefile lib/sound/Makefile lib/x/Makefile src/Makefile Makefile xnconfig.pc])

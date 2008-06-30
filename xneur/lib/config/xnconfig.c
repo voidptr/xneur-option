@@ -41,11 +41,10 @@
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
 static const char *bool_names[] =	{"No", "Yes"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
-static const char *mode_names[] =	{"Auto", "Manual"};
 static const char *flag_names[] =	{"Layout1Flag", "Layout2Flag", "Layout3Flag", "Layout4Flag"};
 
 static const char *option_names[] = 	{
-						"DefaultMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "VowelLetter",
+						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "VowelLetter",
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
@@ -85,6 +84,17 @@ static int get_option_index_size(const char *options[], char *option, int option
 	return -1;
 }
 
+static void xneur_config_get_library_version(int *major_version, int *minor_version)
+{
+	*major_version = LIBRARY_VERSION_MAJOR;
+	*minor_version = LIBRARY_VERSION_MINOR;
+}
+
+static const char* xneur_config_get_bool_name(int option)
+{
+	return bool_names[option];
+}
+
 static void parse_line(struct _xneur_config *p, char *line)
 {
 	if (line[0] == '#')
@@ -110,14 +120,14 @@ static void parse_line(struct _xneur_config *p, char *line)
 	{
 		case 0: // Get Default Mode (Auto/Manual)
 		{
-			int index = get_option_index(mode_names, param);
-			if (index == -1)
+			int manual = get_option_index(bool_names, param);
+			if (manual == -1)
 			{
-				log_message(WARNING, "Invalid value for default mode specified");
+				log_message(WARNING, "Invalid value for manual mode specified");
 				break;
 			}
 
-			p->set_manual_mode(p, index);
+			p->set_manual_mode(p, manual);
 			break;
 		}
 		case 1: // Get Applications Names
@@ -572,7 +582,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# It's a X Neural Switcher configuration file by XNeur\n# All values writted XNeur\n\n");
 
 	fprintf(stream, "# Config version\nVersion %s\n\n", VERSION);
-	fprintf(stream, "# Default work mode\nDefaultMode %s\n\n", p->get_mode_name(p));
+	fprintf(stream, "# Work in manual mode\nManualMode %s\n\n", p->get_bool_name(p->manual_mode));
 
 	fprintf(stream, "# Level of messages program will write to output\n");
 	fprintf(stream, "#LogLevel Error\n");
@@ -774,12 +784,6 @@ static int xneur_config_find_group_lang(struct _xneur_config *p, int group)
 	return -1;
 }
 
-static void xneur_config_get_library_version(int *major_version, int *minor_version)
-{
-	*major_version = LIBRARY_VERSION_MAJOR;
-	*minor_version = LIBRARY_VERSION_MINOR;
-}
-
 static void xneur_config_add_language(struct _xneur_config *p, const char *name, const char *dir, int group)
 {
 	if (name == NULL || dir == NULL)
@@ -796,16 +800,6 @@ static void xneur_config_add_language(struct _xneur_config *p, const char *name,
 	p->languages[p->total_languages].group	= group;
 	
 	p->total_languages++;
-}
-
-static const char* xneur_config_get_bool_name(int option)
-{
-	return bool_names[option];
-}
-
-static const char* xneur_config_get_mode_name(struct _xneur_config *p)
-{
-	return mode_names[p->is_manual_mode(p)];
 }
 
 static const char* xneur_config_get_log_level_name(struct _xneur_config *p)
@@ -856,6 +850,8 @@ struct _xneur_config* xneur_config_init(void)
 	p->get_home_dict_path		= get_home_file_path_name;
 
 	p->get_library_version		= xneur_config_get_library_version;
+	p->get_bool_name		= xneur_config_get_bool_name;
+
 	p->load				= xneur_config_load;
 	p->clear			= xneur_config_clear;
 	p->save				= xneur_config_save;
@@ -872,10 +868,7 @@ struct _xneur_config* xneur_config_init(void)
 	p->get_lang_group		= xneur_config_get_lang_group;
 	p->find_group_lang		= xneur_config_find_group_lang;
 	p->add_language			= xneur_config_add_language;
-
-	p->get_bool_name		= xneur_config_get_bool_name;
 	p->get_log_level_name		= xneur_config_get_log_level_name;
-	p->get_mode_name		= xneur_config_get_mode_name;
 
 	p->uninit			= xneur_config_uninit;
 

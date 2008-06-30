@@ -38,21 +38,23 @@ int check_regexp_match(const char *str, const char *pattern)
 	const char *error;
 	int erroffset;
 
-	pcre *re = pcre_compile((char *)pattern, options, &error, &erroffset, NULL);
+	pcre *re = pcre_compile((char *) pattern, options, &error, &erroffset, NULL);
 	if (!re)
 		return FALSE;
-	
+
+	int str_len = strlen(str);
+
 	int ovector[2];
-	int count = pcre_exec(re, NULL, (char *)str, strlen(str), 0, 0, ovector, 2);
+	int count = pcre_exec(re, NULL, (char *) str, str_len, 0, 0, ovector, 2);
 	pcre_free(re);
-	
+
 	if (count <= 0)
 		return FALSE;
-	
-	if (ovector[0] != 0 || ovector[1] != strlen(str))
+
+	if (ovector[0] != 0 || ovector[1] != str_len)
 		return FALSE;
-	
-	return TRUE;	
+
+	return TRUE;
 }
 
 #else

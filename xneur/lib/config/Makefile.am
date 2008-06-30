@@ -18,3 +18,6 @@ configdir = @includedir@/xneur
 config_DATA = xnconfig.h
 
 EXTRA_DIST = $(config_DATA)
+
+install-data-local:
+	$(LDCONFIG)

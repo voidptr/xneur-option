@@ -112,7 +112,7 @@ static GC create_gc()
 	unsigned long valuemask = 0;		// Which values in 'values' to check when creating the GC
 
 	GC gc = XCreateGC(main_window->display, main_window->flag_window, valuemask, &values);
-	if (gc < 0)
+	if (!gc)
 	{
 		log_message(ERROR, "Can't create GC");
 		return NULL;
@@ -197,6 +197,8 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 
 void xcursor_hide_flag(struct _xcursor *p)
 {
+	if (p){}
+
 	XWindowAttributes w_attributes;
 	XGetWindowAttributes(main_window->display, main_window->flag_window, &w_attributes);
 

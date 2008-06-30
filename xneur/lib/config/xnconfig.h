@@ -158,9 +158,13 @@ struct _xneur_config
 	int   remember_layout;				// Remember layout for each of window
 	int   save_selection;				// Save selection after convert
 	int   save_keyboard_log;			// Save keyboard log
+	int   manual_mode;				// Work in manual mode
 
 	struct _list_char *draw_flag_apps;
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw
+
+	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
+	const char* (*get_bool_name) (int option);
 
 	int   (*load) (struct _xneur_config *p);
 	void  (*clear) (struct _xneur_config *p);
@@ -177,13 +181,8 @@ struct _xneur_config
 	char* (*get_lang_name) (struct _xneur_config *p, int lang);
 	int   (*get_lang_group) (struct _xneur_config *p, int lang);
 	int   (*find_group_lang) (struct _xneur_config *p, int group);
-	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	void  (*add_language) (struct _xneur_config *p, const char *name, const char *dir, int group);
-
-	const char* (*get_bool_name) (int option);
 	const char* (*get_log_level_name) (struct _xneur_config *p);
-	const char* (*get_mode_name) (struct _xneur_config *p);
-
 	void  (*uninit) (struct _xneur_config *p);
 };
 

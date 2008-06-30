@@ -21,6 +21,6 @@
 #define _XSELECTION_H_
 
 char* get_selected_text(XSelectionEvent *event);
-void  on_selection_converted(char *selected_text);
+void  on_selection_converted(void);
 void  do_selection_request(void);
 #endif /* _XSELECTION_H_ */
