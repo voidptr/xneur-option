@@ -14,10 +14,10 @@ noinst_DATA =			\
 	README			\
 	COPYING			\
 	AUTHORS			\
-	ChangeLog		\
 	INSTALL			\
 	NEWS			\
-	TODO			
+	TODO			\
+	ChangeLog
 
 EXTRA_DIST = $(noinst_DATA) m4/ChangeLog gxneur.1
 man_MANS = gxneur.1
