@@ -1,4 +1,11 @@
 SUBDIRS =			\
 	sounds			\
-	pixmaps			
-
+	pixmaps			\
+	en			\
+	uk			\
+	ru			\
+	be			\
+	fr			\
+	kz			\
+	ro			\
+	de

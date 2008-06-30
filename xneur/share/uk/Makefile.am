@@ -1,4 +1,4 @@
-ukdir = @sysconfdir@/xneur/uk
+ukdir = @datadir@/xneur/uk
 uk_DATA =			\
 	dict			\
 	proto			\

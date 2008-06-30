@@ -1,4 +1,4 @@
-endir = @sysconfdir@/xneur/en
+endir = @datadir@/xneur/en
 en_DATA =			\
 	dict			\
 	proto			\

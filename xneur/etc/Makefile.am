@@ -1,13 +1,3 @@
-SUBDIRS =			\
-	en			\
-	uk			\
-	ru			\
-	be			\
-	fr			\
-	kz			\
-	ro			\
-	de
-
 xneurrcdir = @sysconfdir@/xneur
 xneurrc_DATA =			\
 	xneurrc			\
