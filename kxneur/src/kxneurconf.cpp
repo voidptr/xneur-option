@@ -77,7 +77,7 @@ void KXNPushButton::click1() {
     if ( lang ) {
 	KXNeurApp *knapp = (KXNeurApp *)KApplication::kApplication();
 	// emit set_file(knapp->xnconf->get_file_path_name(lang, file)); get_dict_path
-	emit set_file(knapp->xnconf->get_dict_path(lang, file));
+	emit set_file(knapp->xnconf->get_home_dict_path(lang, file));
     }
 }
 
@@ -449,25 +449,13 @@ void KXNeurConf::LoadSettings()
     kxneur_page->in_tray->setCurrentItem( KXNeurSettings::ShowInTray() );
     kxneur_page->sw_mode->setChecked( KXNeurSettings::SwitcherMode() );
 
-    if ( knapp->xnconf->mouse_processing_mode == MOUSE_GRAB_DISABLE )
-	kxneur_page->mouse_mode->setChecked(false);
-    else
-	kxneur_page->mouse_mode->setChecked(true);
+	kxneur_page->mouse_mode->setChecked(knapp->xnconf->grab_mouse);
 
-    if ( knapp->xnconf->education_mode == EDUCATION_MODE_DISABLE )
-	kxneur_page->edu_mode->setChecked(false);
-    else
-	kxneur_page->edu_mode->setChecked(true);
+	kxneur_page->edu_mode->setChecked(knapp->xnconf->educate);
 
-    if ( knapp->xnconf->save_selection_mode == SELECTION_SAVE_DISABLED )
-	kxneur_page->save_sel_text->setChecked(false);
-    else
-	kxneur_page->save_sel_text->setChecked(true);
+	kxneur_page->save_sel_text->setChecked(knapp->xnconf->save_selection);
 
-    if ( knapp->xnconf->get_current_mode(knapp->xnconf) == AUTO_MODE )
-	kxneur_page->xneur_mode->setCurrentItem(0);
-    else
-	kxneur_page->xneur_mode->setCurrentItem(1);
+	kxneur_page->xneur_mode->setCurrentItem(knapp->xnconf->manual_mode);
 
     xneur_page->send_delay->setValue(knapp->xnconf->send_delay);
 
@@ -530,10 +518,7 @@ void KXNeurConf::LoadSettings()
 
     xneur_page->default_group->setCurrentItem(knapp->xnconf->default_group);
 
-    if ( knapp->xnconf->layout_remember_mode == LAYOUTE_REMEMBER_DISABLE )
-	xneur_page->remem_win->setChecked(false);
-    else
-	xneur_page->remem_win->setChecked(true);
+	xneur_page->remem_win->setChecked(knapp->xnconf->remember_layout);
 
     for (int i = 0 ; i < knapp->xnconf->layout_remember_apps->data_count ; i++ )
 	xneur_page->list->insertItem(knapp->xnconf->layout_remember_apps->data[i].string);
@@ -564,7 +549,7 @@ void KXNeurConf::LoadSettings()
     for (int i = 0 ; i < knapp->xnconf->manual_apps->data_count ; i++ )
 	prog_page->list[2]->insertItem(knapp->xnconf->manual_apps->data[i].string);
 
-    snd_page->enable_snd->setChecked( knapp->xnconf->sound_mode != SOUND_DISABLED );
+    snd_page->enable_snd->setChecked( knapp->xnconf->play_sounds );
 
     for (int i = 0 ; i < MAX_SOUNDS ; i++)
 	snd_page->edit[i]->setText(knapp->xnconf->sounds[i].file);
@@ -581,25 +566,13 @@ void KXNeurConf::SaveSettings()
 
     knapp->xnconf->clear(knapp->xnconf);
 
-    if ( kxneur_page->mouse_mode->isChecked() )
-	knapp->xnconf->mouse_processing_mode = MOUSE_GRAB_ENABLE;
-    else
-	knapp->xnconf->mouse_processing_mode = MOUSE_GRAB_DISABLE;
+	knapp->xnconf->grab_mouse = kxneur_page->mouse_mode->isChecked();
 
-    if ( kxneur_page->edu_mode->isChecked() )
-	knapp->xnconf->education_mode = EDUCATION_MODE_ENABLE;
-    else
-	knapp->xnconf->education_mode = EDUCATION_MODE_DISABLE;
+	knapp->xnconf->educate = kxneur_page->edu_mode->isChecked();
 
-    if ( kxneur_page->save_sel_text->isChecked() )
-	knapp->xnconf->save_selection_mode = SELECTION_SAVE_ENABLED;
-    else
-	knapp->xnconf->save_selection_mode = SELECTION_SAVE_DISABLED;
+	knapp->xnconf->save_selection = kxneur_page->save_sel_text->isChecked();
 
-    if ( kxneur_page->xneur_mode->currentItem() )
-	knapp->xnconf->set_current_mode(knapp->xnconf, MANUAL_MODE);
-    else
-	knapp->xnconf->set_current_mode(knapp->xnconf, AUTO_MODE);
+	knapp->xnconf->set_manual_mode(knapp->xnconf, kxneur_page->xneur_mode->currentItem());
 
     knapp->xnconf->send_delay = xneur_page->send_delay->value();
 
@@ -613,10 +586,7 @@ void KXNeurConf::SaveSettings()
 	    knapp->xnconf->add_language(knapp->xnconf, lang_name, lang_dir, lang_group);
 	}
 
-    if ( xneur_page->remem_win->isChecked() )
-	knapp->xnconf->layout_remember_mode = LAYOUTE_REMEMBER_ENABLE;
-    else
-	knapp->xnconf->layout_remember_mode = LAYOUTE_REMEMBER_DISABLE;
+	knapp->xnconf->remember_layout = xneur_page->remem_win->isChecked() ;
 
     for ( int i = 0 ; i < xneur_page->list->numRows() ; i++ )
 	knapp->xnconf->layout_remember_apps->add(knapp->xnconf->layout_remember_apps, xneur_page->list->text(i).latin1());
@@ -644,10 +614,7 @@ void KXNeurConf::SaveSettings()
     for ( int i = 0 ; i < prog_page->list[2]->numRows() ; i++ )
 	knapp->xnconf->manual_apps->add(knapp->xnconf->manual_apps, prog_page->list[2]->text(i).latin1());
 
-    if ( snd_page->enable_snd->isChecked() )
-	knapp->xnconf->sound_mode = SOUND_ENABLED;
-    else
-	knapp->xnconf->sound_mode = SOUND_DISABLED;
+	knapp->xnconf->play_sounds = snd_page->enable_snd->isChecked();
 
     for ( int i = 0 ; i < MAX_SOUNDS ; i++ ) {
 	if ( knapp->xnconf->sounds[i].file )

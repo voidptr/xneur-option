@@ -30,7 +30,7 @@ extern "C" {
 #include <xneur/xnconfig.h>
 }
 
-#define XNEUR_NEEDED_MAJOR_VERSION      3
+#define XNEUR_NEEDED_MAJOR_VERSION      4
 #define MAX_LANGUAGES 4
 #define SHOW_ICON 0
 #define SHOW_LANG 1
