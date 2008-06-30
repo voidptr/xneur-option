@@ -4,8 +4,8 @@
 # Config version
 Version 0.9.1
 
-# Default work mode
-DefaultMode Auto
+# Work in manual mode
+ManualMode No
 
 # Level of messages program will write to output
 #LogLevel Error
