@@ -287,9 +287,7 @@ void xneur_auto_manual(GtkWidget *widget, struct _tray_icon *tray)
 {
 	if (widget || tray){};
 
-	xconfig->xneur_data->manual_mode = !xconfig->xneur_data->manual_mode;
-	//int current_mode = xconfig->get_current_mode(xconfig);	
-	//xconfig->set_current_mode(xconfig, 1 - current_mode);
+	xconfig->set_manual_mode(xconfig, !xconfig->is_manual_mode(xconfig));
 }
 
 void xneur_about(void)
@@ -335,7 +333,7 @@ void xneur_preference(void)
 
 	// Mode set
 	GtkWidget *widget = glade_xml_get_widget (gxml, "combobox1");
-	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->xneur_data->manual_mode);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->is_manual_mode(xconfig));
 
 	// Exclude App set
 	GtkWidget *treeview = glade_xml_get_widget (gxml, "treeview1");
