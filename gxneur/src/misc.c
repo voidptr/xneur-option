@@ -287,7 +287,7 @@ void xneur_auto_manual(GtkWidget *widget, struct _tray_icon *tray)
 {
 	if (widget || tray){};
 
-	xconfig->manual_mode = !xconfig->manual_mode;
+	xconfig->set_manual_mode(xconfig, !xconfig->is_manual_mode(xconfig));
 }
 
 void xneur_about(void)
@@ -333,7 +333,7 @@ void xneur_preference(void)
 
 	// Mode set
 	GtkWidget *widget = glade_xml_get_widget (gxml, "combobox1");
-	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->manual_mode);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->is_manual_mode(xconfig));
 
 	// Exclude App set
 	GtkWidget *treeview = glade_xml_get_widget (gxml, "treeview1");
@@ -775,7 +775,7 @@ void xneur_save_preference(GladeXML *gxml)
 	fill_binds(9, gxml, "entry20", FALSE);
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox1");
-	xconfig->manual_mode = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound));
+	xconfig->set_manual_mode(xconfig, gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton1");
 	xconfig->grab_mouse = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

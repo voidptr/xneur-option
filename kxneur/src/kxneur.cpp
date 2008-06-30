@@ -188,7 +188,7 @@ bool KXNeurApp::xnconf_reload()
 void KXNeurApp::slotUpdateMode()
 {
     // xnconf_reload();
-    xnconf->manual_mode = !xnconf->manual_mode;
+    xnconf->set_manual_mode(xnconf, !xnconf->is_manual_mode(xnconf));
 	
     xnconf_gets();
 }
@@ -198,7 +198,7 @@ void KXNeurApp::xnconf_gets()
 {
     cnt_langs = xnconf->total_languages;
 
-    if ( xnconf->manual_mode ) {
+    if ( xnconf->is_manual_mode(xnconf) ) {
 		trayicon->mode->setText(i18n("Set auto mode"));
 		trayicon->mode->setIcon("exec"); // mics, gear	
 		// printf("manual\n");
