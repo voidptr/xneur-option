@@ -321,17 +321,17 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			case KeyPress:
 			{
-				log_message(TRACE, "Received KeyPress");
+				log_message(TRACE, "Received KeyPress (event type %d)", type);
 				p->on_key_action(p);
 				break;
 			}
 			case KeyRelease:
 			{
-				log_message(TRACE, "Received KeyRelease");
+				log_message(TRACE, "Received KeyRelease (event type %d)", type);
 				break;
 			}
 			case FocusIn:
-				log_message(TRACE, "Received FocusIn");
+				log_message(TRACE, "Received FocusIn (event type %d)", type);
 			case LeaveNotify:
 			case EnterNotify:
 			{
@@ -343,7 +343,7 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			case FocusOut:
 			{
-				log_message(TRACE, "Received FocusOut");
+				log_message(TRACE, "Received FocusOut (event type %d)", type);
 
 				p->last_layout = get_active_keyboard_group();
 				p->update(p);
@@ -358,7 +358,7 @@ static void xprogram_process_input(struct _xprogram *p)
 			{
 				// Falling down
 				p->string->save_and_clear(p->string, p->focus->owner_window);
-				log_message(TRACE, "Received ButtonPress on window %d", p->event->event.xbutton.window);
+				log_message(TRACE, "Received ButtonPress on window %d  (event type %d)", p->event->event.xbutton.window, type);
 								
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
@@ -376,7 +376,7 @@ static void xprogram_process_input(struct _xprogram *p)
 				
 				if (XInternAtom(main_window->display, "XKLAVIER_STATE", FALSE) == p->event->event.xproperty.atom)
 				{
-					log_message(TRACE, "Received Property Notify (layout switch event)");
+					log_message(TRACE, "Received Property Notify (layout switch event) (event type %d)", type);
 					
 					// Flush string
 					//p->string->clear(p->string);
@@ -521,7 +521,6 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			if (p->changed_manual == MANUAL_FLAG_UNSET)	
 				p->check_last_word(p);
 			
-			
 			// Restore event
 			p->event->event = tmp;
 
@@ -536,6 +535,8 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			while (XEventsQueued(main_window->display, QueuedAlready)) 
 			{
 				p->event->get_next_event(p->event);
+				if (p->event->event.xany.window == main_window->flag_window)
+					continue;
 				p->event->send_next_event(p->event);
 			}
 			
@@ -580,6 +581,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			p->update(p);			
 			
 			play_file(SOUND_CHANGE_STRING);
+			p->cursor_update(p);
 			break;
 		}
 		case ACTION_CHANGE_WORD:	// User needs to cancel last change
@@ -598,6 +600,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			grab_spec_keys(p->focus->owner_window, TRUE);
 			
 			play_file(SOUND_MANUAL_CHANGE_WORD);
+			p->cursor_update(p);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_0:
@@ -643,6 +646,7 @@ static void xprogram_check_last_word(struct _xprogram *p)
 
 	p->change_word(p, new_lang);
 	play_file(SOUND_AUTOMATIC_CHANGE_WORD);
+	p->cursor_update(p);
 }
 
 static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)
