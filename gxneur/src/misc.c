@@ -332,8 +332,8 @@ void xneur_preference(void)
 	gtk_widget_show(window);
 
 	// Mode set
-	GtkWidget *widget = glade_xml_get_widget (gxml, "combobox1");
-	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->is_manual_mode(xconfig));
+	GtkWidget *widget = glade_xml_get_widget (gxml, "checkbutton7");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->is_manual_mode(xconfig));
 
 	// Exclude App set
 	GtkWidget *treeview = glade_xml_get_widget (gxml, "treeview1");
@@ -630,6 +630,10 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "button10");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_draw_flag_app), G_OBJECT(treeview));
 	
+	// Delay Before Send
+	widget = glade_xml_get_widget (gxml, "spinbutton1");
+	gtk_spin_button_set_digits(GTK_SPIN_BUTTON(widget), xconfig->send_delay);
+		
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
@@ -774,8 +778,8 @@ void xneur_save_preference(GladeXML *gxml)
 	fill_binds(8, gxml, "entry19", FALSE);
 	fill_binds(9, gxml, "entry20", FALSE);
 
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox1");
-	xconfig->set_manual_mode(xconfig, gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton7");
+	xconfig->set_manual_mode(xconfig, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton1");
 	xconfig->grab_mouse = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
@@ -815,6 +819,10 @@ void xneur_save_preference(GladeXML *gxml)
 	fill_pixmaps(1, gxml, "entry36", FALSE);
 	fill_pixmaps(2, gxml, "entry37", FALSE);
 	fill_pixmaps(3, gxml, "entry38", FALSE);
+	
+	// Delay Before Send
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton1");
+	xconfig->send_delay = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound));
 	
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);
