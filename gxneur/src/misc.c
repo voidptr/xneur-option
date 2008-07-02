@@ -632,7 +632,8 @@ void xneur_preference(void)
 	
 	// Delay Before Send
 	widget = glade_xml_get_widget (gxml, "spinbutton1");
-	gtk_spin_button_set_digits(GTK_SPIN_BUTTON(widget), xconfig->send_delay);
+	printf("%d\n", xconfig->send_delay);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->send_delay);
 		
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
