@@ -269,7 +269,7 @@ static void init_libxnconfig(void)
 		exit(EXIT_FAILURE);
 	}
 
-	error_msg(_("Using libxnconfig API version %d.%d (build with %d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
+	//error_msg(_("Using libxnconfig API version %d.%d (build with %d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
 	printf(_("Using libxnconfig API version %d.%d (build with %d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
 
 	if (!xconfig->load(xconfig))
