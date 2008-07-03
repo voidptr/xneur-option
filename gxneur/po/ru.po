@@ -160,7 +160,7 @@ msgstr "включить четвертую раскладку"
 
 #: ../glade/config.glade:1073
 msgid "<b>Key Bindings</b>"
-msgstr "Комбинации клавиш"
+msgstr "<b>Комбинации клавиш</b>"
 
 #: ../glade/config.glade:1098
 msgid "Flush Internal Buffer On Mouse Click"
@@ -204,7 +204,7 @@ msgstr "Принудительный ручной режим для этих п�
 
 #: ../glade/config.glade:1627
 msgid "<b>Applications</b>"
-msgstr "Приложения"
+msgstr "<b>Приложения</b>"
 
 #: ../glade/config.glade:1652
 msgid "Play Sounds"
@@ -317,3 +317,22 @@ msgstr ""
 msgid "File Editing"
 msgstr "Редактирование файла"
 
+#: src/trayicon.c:100
+msgid "Disable Input Autocorrection"
+msgstr "Отключить автокоррекцию ввода"
+
+#: src/trayicon.c:105
+msgid "Enable Input Autocorrection"
+msgstr "Включить автокоррекцию ввода"
+
+#: src/trayicon.c:182
+msgid "X Neural Switcher RUNNING ("
+msgstr "X Neural Switcher РАБОТАЕТ ("
+
+#: src/trayicon.c:187
+msgid "X Neural Switcher STOPPED ("
+msgstr "X Neural Switcher ОСТАНОВЛЕН ("
+
+#: src/misc.c:312
+msgid "Current Version"
+msgstr "Текущая версия"

@@ -309,3 +309,23 @@ msgstr ""
 #: ../glade/list.glade:7
 msgid "File Editing"
 msgstr ""
+
+#: src/trayicon.c:100
+msgid "Disable Input Autocorrection"
+msgstr ""
+
+#: src/trayicon.c:105
+msgid "Enable Input Autocorrection"
+msgstr ""
+
+#: src/trayicon.c:182
+msgid "X Neural Switcher RUNNING ("
+msgstr ""
+
+#: src/trayicon.c:187
+msgid "X Neural Switcher STOPPED ("
+msgstr ""
+
+#: src/misc.c:312
+msgid "Current Version"
+msgstr ""
