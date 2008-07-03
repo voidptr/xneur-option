@@ -156,7 +156,7 @@ msgstr "Включить третью раскладку"
 
 #: ../glade/config.glade:1046
 msgid "Enable Fourth Layout"
-msgstr "включить четвертую раскладку"
+msgstr "Включить четвертую раскладку"
 
 #: ../glade/config.glade:1073
 msgid "<b>Key Bindings</b>"
