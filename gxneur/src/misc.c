@@ -263,19 +263,19 @@ static void init_libxnconfig(void)
 
 	if (major_version != XNEUR_NEEDED_MAJOR_VERSION)
 	{
-		error_msg("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.x\n", XNEUR_NEEDED_MAJOR_VERSION);
-		printf("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.x\n", XNEUR_NEEDED_MAJOR_VERSION);
+		error_msg(_("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.x\n"), XNEUR_NEEDED_MAJOR_VERSION);
+		printf(_("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.x\n"), XNEUR_NEEDED_MAJOR_VERSION);
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
 
-	//error_msg("Using libxnconfig API version %d.%d (build with %d.%d)\n", major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
-	printf("Using libxnconfig API version %d.%d (build with %d.%d)\n", major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
+	error_msg(_("Using libxnconfig API version %d.%d (build with %d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
+	printf(_("Using libxnconfig API version %d.%d (build with %d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
 
 	if (!xconfig->load(xconfig))
 	{
-		error_msg("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall XNeur package!\n");
-		printf("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall XNeur package!\n");
+		error_msg(_("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"));
+		printf(_("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"));
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
