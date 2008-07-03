@@ -64,6 +64,29 @@ static const int total_modifiers			= sizeof(modifier_names) / sizeof(modifier_na
 static const int total_all_modifiers			= sizeof(all_modifiers) / sizeof(all_modifiers[0]);
 static const int total_languages			= sizeof(language_names) / sizeof(language_names[0]);
 
+static void error_msg(const char *msg, ...)
+{
+	int len = strlen(msg) + 2;
+
+	va_list ap;
+	va_start(ap, msg);
+	
+	char *buffer = (char *) malloc(1024);
+	vsprintf(buffer, msg, ap);
+	buffer[len] = 0;
+	
+	GtkWidget *dialog = gtk_message_dialog_new (NULL,
+											GTK_DIALOG_DESTROY_WITH_PARENT,
+											GTK_MESSAGE_ERROR,
+											GTK_BUTTONS_CLOSE,
+											buffer);
+	gtk_dialog_run (GTK_DIALOG (dialog));
+	gtk_widget_destroy (dialog);	
+	
+	free(buffer);
+	va_end(ap);
+}
+
 static char* concat_bind(int action)
 {
 	char *text = (char *) malloc((24 + 1 + strlen(xconfig->hotkeys[action].key)) * sizeof(char));
@@ -240,16 +263,19 @@ static void init_libxnconfig(void)
 
 	if (major_version != XNEUR_NEEDED_MAJOR_VERSION)
 	{
-		printf("Wrong XNeur configuration library api version.\nPlease install libxnconfig version %d.x\n", XNEUR_NEEDED_MAJOR_VERSION);
+		error_msg("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.x\n", XNEUR_NEEDED_MAJOR_VERSION);
+		printf("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.x\n", XNEUR_NEEDED_MAJOR_VERSION);
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
 
+	//error_msg("Using libxnconfig API version %d.%d (build with %d.%d)\n", major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
 	printf("Using libxnconfig API version %d.%d (build with %d.%d)\n", major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
 
 	if (!xconfig->load(xconfig))
 	{
-		printf("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall package!\n");
+		error_msg("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall XNeur package!\n");
+		printf("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall XNeur package!\n");
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
@@ -260,7 +286,10 @@ void xneur_start(void)
 	init_libxnconfig();
 
 	if (!g_spawn_command_line_async("xneur", NULL))
-		fprintf(stderr, "ERROR: Couldn't start xneur\nVerify that it installed\n");
+	{
+		error_msg("Couldn't start xneur\nVerify that it installed\n");
+		fprintf(stderr, "Couldn't start xneur\nVerify that it installed\n");
+	}
 }
 
 void xneur_exit(void)

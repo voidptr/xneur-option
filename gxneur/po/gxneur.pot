@@ -310,6 +310,33 @@ msgstr ""
 msgid "File Editing"
 msgstr ""
 
+#: src/misc.c:266 src/misc.c:267
+#, c-format
+msgid ""
+"Wrong XNeur configuration library api version.\n"
+"Please, install libxnconfig version %d.x\n"
+msgstr ""
+
+#: src/misc.c:272 src/misc.c:273
+#, c-format
+msgid "Using libxnconfig API version %d.%d (build with %d.%d)\n"
+msgstr ""
+
+#: src/misc.c:277 src/misc.c:278
+#, c-format
+msgid ""
+"XNeur config broken!\n"
+"Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+msgstr ""
+
+#: src/trayicon.c:78
+msgid "Stop Daemon"
+msgstr ""
+
+#: src/trayicon.c:83
+msgid "Run Daemon"
+msgstr ""
+
 #: src/trayicon.c:100
 msgid "Disable Input Autocorrection"
 msgstr ""
@@ -329,3 +356,4 @@ msgstr ""
 #: src/misc.c:312
 msgid "Current Version"
 msgstr ""
+
