@@ -881,7 +881,7 @@ char* xneur_get_dict_path(GladeXML *gxml, int layout_no, const char *file_name)
 
 	const char *dir_name = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 
-	return xconfig->get_home_dict_path(dir_name, file_name);
+	return xconfig->get_global_dict_path(dir_name, file_name);
 }
 
 char* xneur_get_home_dict_path(GladeXML *gxml, int layout_no, const char *file_name)

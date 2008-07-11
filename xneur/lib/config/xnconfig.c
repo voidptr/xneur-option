@@ -847,7 +847,8 @@ struct _xneur_config* xneur_config_init(void)
 		
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;
-
+	p->get_global_dict_path		= get_file_path_name;
+	
 	p->get_library_version		= xneur_config_get_library_version;
 	p->get_bool_name		= xneur_config_get_bool_name;
 

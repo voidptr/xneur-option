@@ -163,6 +163,7 @@ struct _xneur_config
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw
 
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
+	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);
 	const char* (*get_bool_name) (int option);
 
 	int   (*load) (struct _xneur_config *p);
