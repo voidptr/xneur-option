@@ -28,6 +28,7 @@
 #include <qgroupbox.h>
 #include <qlayout.h>
 #include <qcheckbox.h>
+#include <qmessagebox.h>
 #include <kkeydialog.h>
 #include <kglobalaccel.h>
 #include <kshortcut.h>
@@ -73,14 +74,12 @@ void KXNPushButton::update(int nn) {
 }
 
 
-void KXNPushButton::click1() {
+void KXNPushButton::click_open() {
     if ( lang ) {
 	KXNeurApp *knapp = (KXNeurApp *)KApplication::kApplication();
-	// emit set_file(knapp->xnconf->get_file_path_name(lang, file)); get_dict_path
-	emit set_file(knapp->xnconf->get_home_dict_path(lang, file));
+	emit set_file(knapp->xnconf->get_global_dict_path(lang, file));
     }
 }
-
 
 KXNeurPage::KXNeurPage( QWidget* parent, const char* name, WFlags fl )
  : QWidget( parent, name, fl )
@@ -202,7 +201,7 @@ XNeurPage::XNeurPage( QWidget* parent, const char* name, WFlags fl )
 	dict[i] = new KXNPushButton(i18n("Dictionary..."), group1);
 	dict[i]->lang = lang_code_list[i];
 	dict[i]->file = (char *)"dict";
-	connect(dict[i], SIGNAL(clicked()), dict[i], SLOT(click1()));
+	connect(dict[i], SIGNAL(clicked()), dict[i], SLOT(click_open()));
 	connect(dict[i], SIGNAL(set_file(char *)), this, SLOT(open_file(char *)));
 	dict[i]->setEnabled(false);
 	glayout->addWidget(dict[i], i+1, 2);
@@ -210,7 +209,7 @@ XNeurPage::XNeurPage( QWidget* parent, const char* name, WFlags fl )
 	regexp[i] = new KXNPushButton(i18n("Regular Expressions..."), group1);
 	regexp[i]->lang = lang_code_list[i];
 	regexp[i]->file = (char *)"regexp";
-	connect(regexp[i], SIGNAL(clicked()), regexp[i], SLOT(click1()));
+	connect(regexp[i], SIGNAL(clicked()), regexp[i], SLOT(click_open()));
 	connect(regexp[i], SIGNAL(set_file(char *)), this, SLOT(open_file(char *)));
 	regexp[i]->setEnabled(false);
 	glayout->addWidget(regexp[i], i+1, 3);
@@ -256,7 +255,6 @@ XNeurPage::~XNeurPage()
 {
 }
 
-
 void XNeurPage::open_file(char * path)
 {
     bool ok;
@@ -274,8 +272,11 @@ void XNeurPage::open_file(char * path)
 		ts2 << text;
 		fl.close();
 	    }
-	    else
+	    else {
 		qDebug("can't open for write %s\n", path);
+		QMessageBox::critical(0, "XNeur", i18n("can't open for write ") + path);
+			//printf("can't open for write %s\n", path);
+		}
 	}
 	/* else
 	    printf("calcel\n");*/

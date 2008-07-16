@@ -60,7 +60,7 @@ signals:
 
 public slots:
     void update(int nn);
-    void click1();
+    void click_open();
 };
 
 class KXNLineEdit : public QLineEdit
