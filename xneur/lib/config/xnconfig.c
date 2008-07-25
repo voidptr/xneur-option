@@ -128,6 +128,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 
 			p->set_manual_mode(p, manual);
+			p->manual_mode = manual; 
 			break;
 		}
 		case 1: // Get Applications Names
@@ -581,7 +582,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# It's a X Neural Switcher configuration file by XNeur\n# All values writted XNeur\n\n");
 
 	fprintf(stream, "# Config version\nVersion %s\n\n", VERSION);
-	fprintf(stream, "# Work in manual mode\nManualMode %s\n\n", p->get_bool_name(p->is_manual_mode(p)));
+	fprintf(stream, "# Work in manual mode\nManualMode %s\n\n", p->get_bool_name(p->manual_mode));
 
 	fprintf(stream, "# Level of messages program will write to output\n");
 	fprintf(stream, "#LogLevel Error\n");

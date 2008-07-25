@@ -362,7 +362,7 @@ void xneur_preference(void)
 
 	// Mode set
 	GtkWidget *widget = glade_xml_get_widget (gxml, "checkbutton7");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->is_manual_mode(xconfig));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->manual_mode);
 
 	// Exclude App set
 	GtkWidget *treeview = glade_xml_get_widget (gxml, "treeview1");
@@ -813,7 +813,7 @@ void xneur_save_preference(GladeXML *gxml)
 	fill_binds(9, gxml, "entry20", FALSE);
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton7");
-	xconfig->set_manual_mode(xconfig, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
+	xconfig->manual_mode = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton1");
 	xconfig->grab_mouse = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

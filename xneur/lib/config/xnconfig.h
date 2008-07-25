@@ -146,6 +146,7 @@ struct _xneur_config
 	struct _xneur_hotkey *hotkeys;			// Array of hotkeys used in program
 	struct _xneur_file *sounds;			// Array of sounds for actions
 
+	int   manual_mode;				// Enable manual processing mode
 	int   log_level;				// Maximum level of log messages to print
 	int   send_delay;				// Delay before send event (in milliseconds)
 	int   total_languages;				// Total languages to work with
