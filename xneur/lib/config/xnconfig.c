@@ -74,6 +74,7 @@ static char* get_word(char **string)
 
 #define get_option_index(options, option) \
 	get_option_index_size(options, option, sizeof(options) / sizeof(options[0]));
+
 static int get_option_index_size(const char *options[], char *option, int options_count)
 {
 	for (int i = 0; i < options_count; i++)
@@ -109,6 +110,9 @@ static void parse_line(struct _xneur_config *p, char *line)
 		return;
 	}
 
+	char *full_app_name = malloc((strlen(line) + 1) * sizeof(char));
+	full_app_name = strcpy(full_app_name, line);
+
 	char *param = get_word(&line);
 	if (param == NULL)
 	{
@@ -133,7 +137,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 1: // Get Applications Names
 		{
-			p->excluded_apps->add(p->excluded_apps, param);
+			p->excluded_apps->add(p->excluded_apps, full_app_name);
 			break;
 		}
 		case 2: // Get Keyboard Binds
@@ -207,12 +211,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 8: // Get Auto Processing Applications
 		{
-			p->auto_apps->add(p->auto_apps, param);
+			p->auto_apps->add(p->auto_apps, full_app_name);
 			break;
 		}
 		case 9: // Get Manual Processing Applications
 		{
-			p->manual_apps->add(p->manual_apps, param);
+			p->manual_apps->add(p->manual_apps, full_app_name);
 			break;
 		}
 		case 10: // Get Mouse Grab Mode
@@ -309,12 +313,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 19: // layout remember for each application
 		{
-			p->layout_remember_apps->add(p->layout_remember_apps, param);
+			p->layout_remember_apps->add(p->layout_remember_apps, full_app_name);
 			break;
 		}
 		case 20: // Get Draw Flag Applications
 		{
-			p->draw_flag_apps->add(p->draw_flag_apps, param);
+			p->draw_flag_apps->add(p->draw_flag_apps, full_app_name);
 			break;
 		}
 		case 21: // Flags
@@ -342,6 +346,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			break;
 		}
 	}
+	free(full_app_name);
 }
 
 static int parse_config_file(struct _xneur_config *p, const char *dir_name, const char *file_name)
