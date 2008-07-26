@@ -60,7 +60,7 @@ signals:
 
 public slots:
     void update(int nn);
-    void click_open();
+    void click1();
 };
 
 class KXNLineEdit : public QLineEdit
@@ -84,7 +84,7 @@ public:
     ~KXNeurPage();
 
     QVBoxLayout *vlayout, *vlayout1, *vlayout2;
-    QCheckBox *run_xneur, *autostart, *sw_mode, *force_run, *mouse_mode, *edu_mode, *save_sel_text;
+    QCheckBox *run_xneur, *autostart, *sw_mode, *force_run, *mouse_mode, *edu_mode, *save_sel_text, *save_kbd_log;
     QComboBox *in_tray, *xneur_mode;
     QGroupBox *group1, *group2;
     QHBox *box2;

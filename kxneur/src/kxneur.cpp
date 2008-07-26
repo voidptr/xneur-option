@@ -130,8 +130,7 @@ bool KXNeurApp::xneur_stop()
 	    xnconf->set_pid(xnconf, 0);
 	else {
 #ifndef XN_END
-	    printf("stop -- fail 1\n");
-	    fflush(stdout);
+	    qDebug("stop -- fail 1\n");
 #endif
             return false;
 	}
@@ -168,10 +167,11 @@ bool KXNeurApp::xnconf_reload()
     }
     int major_v, minor_v;
     xnconf->get_library_version(&major_v, &minor_v);
-    if ( major_v != XNEUR_NEEDED_MAJOR_VERSION ) {
+
+    if ( major_v != XNEUR_MAJOR_VERSION && minor_v != XNEUR_MINOR_VERSION ) {
                 // qDebug("Wrong XNeur configuration library api version.\nPlease install libxnconfig version %d.x\n", XNEUR_NEEDED_MAJOR_VERSION);
 		QMessageBox::critical(0, "XNeur", i18n("Wrong XNeur configuration library api version.\nPlease install libxnconfig version ")+
-			QString::number(XNEUR_NEEDED_MAJOR_VERSION)+".x");
+			QString::number(XNEUR_MAJOR_VERSION)+".x");
                 xnconf->uninit(xnconf);
 		quit();
     }
@@ -187,9 +187,11 @@ bool KXNeurApp::xnconf_reload()
 
 void KXNeurApp::slotUpdateMode()
 {
-    // xnconf_reload();
-    xnconf->set_manual_mode(xnconf, !xnconf->is_manual_mode(xnconf));
-	
+    if ( xnconf->is_manual_mode(xnconf) )
+	xnconf->set_manual_mode(xnconf, 0);
+    else
+	xnconf->set_manual_mode(xnconf, 1);
+
     xnconf_gets();
 }
 
@@ -198,15 +200,16 @@ void KXNeurApp::xnconf_gets()
 {
     cnt_langs = xnconf->total_languages;
 
-    if ( xnconf->is_manual_mode(xnconf) ) {
-		trayicon->mode->setText(i18n("Set auto mode"));
-		trayicon->mode->setIcon("exec"); // mics, gear	
-		// printf("manual\n");
+
+    if ( xnconf->xneur_data->manual_mode ) {
+	trayicon->mode->setText(i18n("Set auto mode"));
+	trayicon->mode->setIcon("exec"); // mics, gear
+	// printf("auto\n");
     }
     else {
-		trayicon->mode->setText(i18n("Set manual mode"));
-		trayicon->mode->setIcon("embedjs");
-		// printf("auto\n");
+	trayicon->mode->setText(i18n("Set manual mode"));
+	trayicon->mode->setIcon("embedjs");
+	// printf("manual\n");
     }
 }
 

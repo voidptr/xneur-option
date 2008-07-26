@@ -28,7 +28,6 @@
 #include <qgroupbox.h>
 #include <qlayout.h>
 #include <qcheckbox.h>
-#include <qmessagebox.h>
 #include <kkeydialog.h>
 #include <kglobalaccel.h>
 #include <kshortcut.h>
@@ -74,12 +73,14 @@ void KXNPushButton::update(int nn) {
 }
 
 
-void KXNPushButton::click_open() {
+void KXNPushButton::click1() {
     if ( lang ) {
 	KXNeurApp *knapp = (KXNeurApp *)KApplication::kApplication();
+	// emit set_file(knapp->xnconf->get_dict_path(lang, file));
 	emit set_file(knapp->xnconf->get_global_dict_path(lang, file));
     }
 }
+
 
 KXNeurPage::KXNeurPage( QWidget* parent, const char* name, WFlags fl )
  : QWidget( parent, name, fl )
@@ -134,6 +135,9 @@ KXNeurPage::KXNeurPage( QWidget* parent, const char* name, WFlags fl )
     save_sel_text = new QCheckBox(i18n("Save Selection After Change Selected Text"), group2);
     vlayout2->addWidget(save_sel_text);
     // QWhatsThis::add(save_sel_text, i18n(""));
+
+    save_kbd_log = new QCheckBox(i18n("Save Keyboard Log"), group2);
+    vlayout2->addWidget(save_kbd_log);
 
     box2 = new QHBox(group2);
     vlayout2->addWidget(box2);
@@ -201,7 +205,7 @@ XNeurPage::XNeurPage( QWidget* parent, const char* name, WFlags fl )
 	dict[i] = new KXNPushButton(i18n("Dictionary..."), group1);
 	dict[i]->lang = lang_code_list[i];
 	dict[i]->file = (char *)"dict";
-	connect(dict[i], SIGNAL(clicked()), dict[i], SLOT(click_open()));
+	connect(dict[i], SIGNAL(clicked()), dict[i], SLOT(click1()));
 	connect(dict[i], SIGNAL(set_file(char *)), this, SLOT(open_file(char *)));
 	dict[i]->setEnabled(false);
 	glayout->addWidget(dict[i], i+1, 2);
@@ -209,7 +213,7 @@ XNeurPage::XNeurPage( QWidget* parent, const char* name, WFlags fl )
 	regexp[i] = new KXNPushButton(i18n("Regular Expressions..."), group1);
 	regexp[i]->lang = lang_code_list[i];
 	regexp[i]->file = (char *)"regexp";
-	connect(regexp[i], SIGNAL(clicked()), regexp[i], SLOT(click_open()));
+	connect(regexp[i], SIGNAL(clicked()), regexp[i], SLOT(click1()));
 	connect(regexp[i], SIGNAL(set_file(char *)), this, SLOT(open_file(char *)));
 	regexp[i]->setEnabled(false);
 	glayout->addWidget(regexp[i], i+1, 3);
@@ -255,6 +259,7 @@ XNeurPage::~XNeurPage()
 {
 }
 
+
 void XNeurPage::open_file(char * path)
 {
     bool ok;
@@ -272,11 +277,8 @@ void XNeurPage::open_file(char * path)
 		ts2 << text;
 		fl.close();
 	    }
-	    else {
+	    else
 		qDebug("can't open for write %s\n", path);
-		QMessageBox::critical(0, "XNeur", i18n("can't open for write ") + path);
-			//printf("can't open for write %s\n", path);
-		}
 	}
 	/* else
 	    printf("calcel\n");*/
@@ -450,13 +452,33 @@ void KXNeurConf::LoadSettings()
     kxneur_page->in_tray->setCurrentItem( KXNeurSettings::ShowInTray() );
     kxneur_page->sw_mode->setChecked( KXNeurSettings::SwitcherMode() );
 
-	kxneur_page->mouse_mode->setChecked(knapp->xnconf->grab_mouse);
+    // if ( knapp->xnconf->mouse_processing_mode == MOUSE_GRAB_DISABLE )
+    if ( knapp->xnconf->grab_mouse )
+	kxneur_page->mouse_mode->setChecked(true);
+    else
+	kxneur_page->mouse_mode->setChecked(false);
 
-	kxneur_page->edu_mode->setChecked(knapp->xnconf->educate);
+    // if ( knapp->xnconf->education_mode == EDUCATION_MODE_DISABLE )
+    if ( knapp->xnconf->educate )
+	kxneur_page->edu_mode->setChecked(true);
+    else
+	kxneur_page->edu_mode->setChecked(false);
 
-	kxneur_page->save_sel_text->setChecked(knapp->xnconf->save_selection);
+    // if ( knapp->xnconf->save_selection_mode == SELECTION_SAVE_DISABLED )
+    if ( knapp->xnconf->save_selection )
+	kxneur_page->save_sel_text->setChecked(true);
+    else
+	kxneur_page->save_sel_text->setChecked(false);
 
-	kxneur_page->xneur_mode->setCurrentItem(knapp->xnconf->is_manual_mode(knapp->xnconf));
+    if (knapp->xnconf->save_keyboard_log )
+	kxneur_page->save_kbd_log->setChecked(true);
+    else
+	kxneur_page->save_kbd_log->setChecked(false);
+
+    if ( knapp->xnconf->xneur_data->manual_mode )
+	kxneur_page->xneur_mode->setCurrentItem(1);
+    else
+	kxneur_page->xneur_mode->setCurrentItem(0);
 
     xneur_page->send_delay->setValue(knapp->xnconf->send_delay);
 
@@ -519,7 +541,10 @@ void KXNeurConf::LoadSettings()
 
     xneur_page->default_group->setCurrentItem(knapp->xnconf->default_group);
 
-	xneur_page->remem_win->setChecked(knapp->xnconf->remember_layout);
+    if ( knapp->xnconf->remember_layout )
+	xneur_page->remem_win->setChecked(true);
+    else
+	xneur_page->remem_win->setChecked(false);
 
     for (int i = 0 ; i < knapp->xnconf->layout_remember_apps->data_count ; i++ )
 	xneur_page->list->insertItem(knapp->xnconf->layout_remember_apps->data[i].string);
@@ -567,13 +592,30 @@ void KXNeurConf::SaveSettings()
 
     knapp->xnconf->clear(knapp->xnconf);
 
-	knapp->xnconf->grab_mouse = kxneur_page->mouse_mode->isChecked();
+    if ( kxneur_page->mouse_mode->isChecked() )
+	knapp->xnconf->grab_mouse = 1;
+    else
+	knapp->xnconf->grab_mouse = 0;
 
-	knapp->xnconf->educate = kxneur_page->edu_mode->isChecked();
+    if ( kxneur_page->edu_mode->isChecked() )
+	knapp->xnconf->educate = 1;
+    else
+	knapp->xnconf->educate = 0;
 
-	knapp->xnconf->save_selection = kxneur_page->save_sel_text->isChecked();
+    if ( kxneur_page->save_sel_text->isChecked() )
+	knapp->xnconf->save_selection = 1;
+    else
+	knapp->xnconf->save_selection = 0;
 
-	knapp->xnconf->set_manual_mode(knapp->xnconf, kxneur_page->xneur_mode->currentItem());
+    if ( kxneur_page->save_kbd_log->isChecked() )
+	knapp->xnconf->save_keyboard_log = 1;
+    else
+	knapp->xnconf->save_keyboard_log = 0;
+
+    if ( kxneur_page->xneur_mode->currentItem() )
+	knapp->xnconf->xneur_data->manual_mode = 1;
+    else
+	knapp->xnconf->xneur_data->manual_mode = 0;
 
     knapp->xnconf->send_delay = xneur_page->send_delay->value();
 
@@ -587,7 +629,10 @@ void KXNeurConf::SaveSettings()
 	    knapp->xnconf->add_language(knapp->xnconf, lang_name, lang_dir, lang_group);
 	}
 
-	knapp->xnconf->remember_layout = xneur_page->remem_win->isChecked() ;
+    if ( xneur_page->remem_win->isChecked() )
+	knapp->xnconf->remember_layout = 1;
+    else
+	knapp->xnconf->remember_layout = 0;
 
     for ( int i = 0 ; i < xneur_page->list->numRows() ; i++ )
 	knapp->xnconf->layout_remember_apps->add(knapp->xnconf->layout_remember_apps, xneur_page->list->text(i).latin1());
@@ -615,7 +660,10 @@ void KXNeurConf::SaveSettings()
     for ( int i = 0 ; i < prog_page->list[2]->numRows() ; i++ )
 	knapp->xnconf->manual_apps->add(knapp->xnconf->manual_apps, prog_page->list[2]->text(i).latin1());
 
-	knapp->xnconf->play_sounds = snd_page->enable_snd->isChecked();
+    if ( snd_page->enable_snd->isChecked() )
+	knapp->xnconf->play_sounds = 1;
+    else
+	knapp->xnconf->play_sounds = 0;
 
     for ( int i = 0 ; i < MAX_SOUNDS ; i++ ) {
 	if ( knapp->xnconf->sounds[i].file )
@@ -626,10 +674,10 @@ void KXNeurConf::SaveSettings()
     knapp->xnconf->save(knapp->xnconf);
     knapp->xnconf->reload(knapp->xnconf);
 
-    if ( knapp->xneur_stop() )
+/*    if ( knapp->xneur_stop() )
 	knapp->xneur_start();
     else
-	qDebug("without restart\n");
+	qDebug("without restart\n");*/
 
     KXNeurSettings::writeConfig();
 }

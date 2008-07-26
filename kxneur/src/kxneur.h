@@ -30,13 +30,14 @@ extern "C" {
 #include <xneur/xnconfig.h>
 }
 
-#define XNEUR_NEEDED_MAJOR_VERSION      4
+#define XNEUR_MAJOR_VERSION      4
+#define XNEUR_MINOR_VERSION      0
 #define MAX_LANGUAGES 4
 #define SHOW_ICON 0
 #define SHOW_LANG 1
 #define SHOW_ALL -1
 
-#define XN_END
+// #define XN_END
 
 class KXNKeyboard;
 class KXNeurTray;
@@ -58,8 +59,8 @@ public:
 };
 
 // moc not conceive #define
-class KXNeurApp : public KUniqueApplication
-// class KXNeurApp : public KApplication
+// class KXNeurApp : public KUniqueApplication
+class KXNeurApp : public KApplication
 {
     Q_OBJECT
 public:
