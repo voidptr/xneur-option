@@ -37,7 +37,7 @@ extern "C" {
 #define SHOW_LANG 1
 #define SHOW_ALL -1
 
-// #define XN_END
+#define XN_END
 
 class KXNKeyboard;
 class KXNeurTray;
@@ -59,8 +59,8 @@ public:
 };
 
 // moc not conceive #define
-// class KXNeurApp : public KUniqueApplication
-class KXNeurApp : public KApplication
+class KXNeurApp : public KUniqueApplication
+// class KXNeurApp : public KApplication
 {
     Q_OBJECT
 public:
