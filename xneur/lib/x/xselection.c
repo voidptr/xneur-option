@@ -69,5 +69,9 @@ void on_selection_converted(void)
 void do_selection_request(void)
 {
 	Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
-	XConvertSelection(main_window->display, XA_PRIMARY, target, None, main_window->window, CurrentTime);
+	int status = XConvertSelection(main_window->display, XA_PRIMARY, target, None, main_window->window, CurrentTime);
+	if (status == BadAtom)
+		log_message(ERROR, "Failed to convert selection with error BadAtom");
+	else if (status == BadWindow)
+		log_message(ERROR, "Failed to convert selection with error BadWindow");
 }
