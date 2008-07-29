@@ -335,6 +335,11 @@ static void xprogram_process_input(struct _xprogram *p)
 			case LeaveNotify:
 			case EnterNotify:
 			{
+				if (type == LeaveNotify)
+					log_message(TRACE, "Received LeaveNotify (event type %d)", type);
+				if (type == EnterNotify)
+					log_message(TRACE, "Received EnterNotify (event type %d)", type);
+				
 				p->last_layout = get_active_keyboard_group();
 
 				p->update(p);
@@ -509,6 +514,7 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 				// Add symbol to internal bufer
 				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
+				
 				return;
 			}
 	
