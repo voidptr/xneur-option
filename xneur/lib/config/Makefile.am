@@ -2,20 +2,22 @@ INCLUDES = -DPACKAGE_SYSCONFDIR_DIR=\""@sysconfdir@/xneur"\" -DPACKAGE_SHAREDIR_
 
 lib_LTLIBRARIES = libxnconfig.la
 
+xnincludedir = $(includedir)/xneur
+xninclude_HEADERS = xnconfig.h
+
+noinst_HEADERS =		\
+	xnconfig_files.h	\
+	xnconfig_memory.h
+
 libxnconfig_la_SOURCES =	\
 	xnconfig_files.c	\
-	xnconfig_files.h	\
 	xnconfig.c		\
 	xnconfig.h		\
-	xnconfig_memory.c	\
-	xnconfig_memory.h
+	xnconfig_memory.c
 
 libxnconfig_la_CFLAGS = -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/x
 libxnconfig_la_LDFLAGS = -version-info 9:0:0
 libxnconfig_la_LIBADD = ../misc/libxnmisc.la
-
-configdir = @includedir@/xneur
-config_DATA = xnconfig.h
 
 EXTRA_DIST = $(config_DATA)
 

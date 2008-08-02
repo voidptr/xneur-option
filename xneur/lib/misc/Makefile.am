@@ -1,23 +1,24 @@
 noinst_LTLIBRARIES = libxnmisc.la
 
-libxnmisc_la_SOURCES =		\
+xnconfigdir = $(includedir)/xneur
+xnconfig_HEADERS = list_char.h
+
+noinst_HEADERS =		\
 	colors.h		\
-	debug.c			\
 	debug.h			\
-	list_char.c		\
-	list_char.h		\
-	log.c			\
 	log.h			\
-	text.c			\
 	text.h			\
 	types.h			\
-	utils.c			\
 	utils.h			\
-	regexp.h		\
+	regexp.h
+
+libxnmisc_la_SOURCES =		\
+	debug.c			\
+	list_char.c		\
+	log.c			\
+	text.c			\
+	utils.c			\
 	regexp.c		
 
 libxnmisc_la_CFLAGS = @PCRE_CFLAGS@
 libxnmisc_la_LDFLAGS = -static @PCRE_LIBS@
-
-configdir = @includedir@/xneur
-config_DATA = list_char.h

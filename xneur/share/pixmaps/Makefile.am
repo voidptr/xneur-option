@@ -1,4 +1,4 @@
-pixmapsdir = @datadir@/xneur/pixmaps
+pixmapsdir = @datarootdir@/xneur/pixmaps
 pixmaps_DATA =			\
 	Russian.xpm		\
 	Ukrainian.xpm		\

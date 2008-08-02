@@ -1,4 +1,4 @@
-frdir = @datadir@/xneur/fr
+frdir = @datarootdir@/xneur/fr
 fr_DATA =			\
 	dict			\
 	proto			\

@@ -1,4 +1,4 @@
-kzdir = @datadir@/xneur/kz
+kzdir = @datarootdir@/xneur/kz
 kz_DATA =			\
 	dict			\
 	proto			\

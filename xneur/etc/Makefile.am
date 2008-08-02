@@ -1,4 +1,4 @@
-xneurrcdir = @sysconfdir@/xneur
+xneurrcdir = $(sysconfdir)/xneur
 xneurrc_DATA =			\
 	xneurrc			\
 	xneurrc-uk		\
