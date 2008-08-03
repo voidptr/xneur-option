@@ -19,7 +19,7 @@ noinst_DATA =			\
 	TODO			\
 	ChangeLog
 
-pkgconfigdir = $(libdir)/pkgconfig
+pkgconfigdir = @libdir@/pkgconfig
 pkgconfig_DATA = xnconfig.pc
 
 EXTRA_DIST = $(noinst_DATA) $(pkgconfig_DATA) xnconfig.pc.in xneur.1 xneurrc.5
