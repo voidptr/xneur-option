@@ -54,7 +54,7 @@ static int locale_create(void)
 	}
 
 	char *locale = setlocale(LC_CTYPE, "");
-	if (locale == NULL || (strstr(locale, "UTF-8") == NULL && strstr(locale, "utf8") == NULL) )
+	if (locale == NULL || (strstr(locale, "UTF") == NULL && strstr(locale, "utf") == NULL) )
 	{
 		log_message(ERROR, "Your default locale is not UTF-8");
 		return FALSE;
