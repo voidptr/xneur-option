@@ -46,6 +46,7 @@ void on_button17_clicked(GtkButton *button, gpointer user_data);
 void on_button18_clicked(GtkButton *button, gpointer user_data);
 void on_button29_clicked(GtkButton *button, gpointer user_data);
 void on_button30_clicked(GtkButton *button, gpointer user_data);
+void on_button31_clicked(GtkButton *button, gpointer user_data);
 
 void on_window2_delete_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 

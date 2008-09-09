@@ -43,12 +43,14 @@ static struct _xbtable btable[MAX_HOTKEYS] =	{
 							{0, 0, 0},
 							{0, 0, 0},
 							{0, 0, 0},
+							{0, 0, 0},
 							{0, 0, 0}
 						};
 static const char *normal_action_names[] =	{
 							"Change Last Word", "Change Last String", "Change Mode", 
 							"Change Selected", "Translit Selected", "Changecase Selected",
-							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4"
+							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4",
+							"Replace Word"
 						};
 extern struct _xneur_config *xconfig;
 	

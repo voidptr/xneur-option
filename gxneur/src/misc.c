@@ -480,7 +480,8 @@ void xneur_preference(void)
 	fill_binds(7, gxml, "entry18", TRUE);
 	fill_binds(8, gxml, "entry19", TRUE);
 	fill_binds(9, gxml, "entry20", TRUE);
-
+	fill_binds(10, gxml, "entry1", TRUE);
+	
 	// Set Callbacks for hotkeys entry
 	widget= glade_xml_get_widget (gxml, "entry11");
 	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
@@ -522,6 +523,10 @@ void xneur_preference(void)
 	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
 	widget = glade_xml_get_widget (gxml, "entry20");
 	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+	widget= glade_xml_get_widget (gxml, "entry1");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	widget = glade_xml_get_widget (gxml, "entry1");
+	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
 	
 	// Set callbacks for clear buttons
 	widget = glade_xml_get_widget (gxml, "button11");
@@ -544,7 +549,8 @@ void xneur_preference(void)
 	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button29_clicked), gxml);
 	widget = glade_xml_get_widget (gxml, "button30");
 	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button30_clicked), gxml);
-			
+	widget = glade_xml_get_widget (gxml, "button31");
+	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button31_clicked), gxml);		
 	
 	// Languages
 	for (int lang = 0; lang < xconfig->total_languages && lang < MAX_LANGUAGES; lang++)
@@ -608,6 +614,7 @@ void xneur_preference(void)
 	fill_sounds(11, gxml, "entry32", TRUE);
 	fill_sounds(12, gxml, "entry33", TRUE);
 	fill_sounds(13, gxml, "entry34", TRUE);
+	fill_sounds(14, gxml, "entry2", TRUE);
 	
 	// Set Callbacks for Dict and Regexp
 	widget= glade_xml_get_widget (gxml, "button8");
@@ -811,7 +818,8 @@ void xneur_save_preference(GladeXML *gxml)
 	fill_binds(7, gxml, "entry18", FALSE);
 	fill_binds(8, gxml, "entry19", FALSE);
 	fill_binds(9, gxml, "entry20", FALSE);
-
+	fill_binds(10, gxml, "entry1", FALSE);
+	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton7");
 	xconfig->manual_mode = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
@@ -848,6 +856,7 @@ void xneur_save_preference(GladeXML *gxml)
 	fill_sounds(11, gxml, "entry32", FALSE);
 	fill_sounds(12, gxml, "entry33", FALSE);
 	fill_sounds(13, gxml, "entry34", FALSE);
+	fill_sounds(14, gxml, "entry2", FALSE);
 	
 	fill_pixmaps(0, gxml, "entry35", FALSE);
 	fill_pixmaps(1, gxml, "entry36", FALSE);

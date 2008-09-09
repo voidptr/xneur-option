@@ -618,6 +618,12 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			play_file(action);
 			break;
 		}
+		case ACTION_REPLACE_WORD:
+		{
+			play_file(SOUND_REPLACE_WORD);
+			return TRUE;
+			break;
+		}
 	}
 
 	// When CHANGE_STRING or CHANGE_WORD actions occured

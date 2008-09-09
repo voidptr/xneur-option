@@ -81,7 +81,7 @@ static int get_add_id(struct _list_char *list, const char *string)
 	return 0;
 }
 
-static int find_id(struct _list_char *list, const char *string, int mode)
+int list_find_id(struct _list_char *list, const char *string, int mode)
 {
 	if (mode == BY_PLAIN)
 	{
@@ -117,6 +117,14 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 	}
 
 	return -1;
+}
+
+char *list_get_by_id(struct _list_char *list, int id)
+{
+	if (id > list->data_count - 1)
+		return NULL;
+	
+	return list->data[id].string;
 }
 
 struct _list_char_data* list_char_add_last(struct _list_char *list, const char *string)
@@ -159,7 +167,7 @@ struct _list_char_data* list_char_add(struct _list_char *list, const char *strin
 
 void list_char_rem(struct _list_char *list, const char *string)
 {
-	int id = find_id(list, string, BY_PLAIN);
+	int id = list_find_id(list, string, BY_PLAIN);
 	if (id == -1)
 		return;
 
@@ -168,7 +176,7 @@ void list_char_rem(struct _list_char *list, const char *string)
 
 struct _list_char_data* list_char_find(struct _list_char *list, const char *string, int mode)
 {
-	int id = find_id(list, string, mode);
+	int id = list_find_id(list, string, mode);
 	if (id == -1)
 		return NULL;
 
@@ -300,6 +308,7 @@ struct _list_char* list_char_init(void)
 	list->clone		= list_char_clone;
 	list->sort		= list_char_sort;
 	list->exist		= list_char_exist;
-	
+	list->find_id   = list_find_id;
+	list->get_by_id	= list_get_by_id;
 	return list;
 }

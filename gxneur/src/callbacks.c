@@ -267,6 +267,13 @@ void on_button30_clicked(GtkButton *button, gpointer user_data)
 	clear_hotkey_text("entry20", user_data);
 }
 
+void on_button31_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+		
+	clear_hotkey_text("entry1", user_data);
+}
+
 void on_window2_delete_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
 	if (widget || event || user_data){};

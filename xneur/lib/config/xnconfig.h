@@ -34,8 +34,8 @@
 #define PIXMAPDIR			"pixmaps"
 
 #define MAX_FLAGS			4
-#define MAX_SOUNDS			14
-#define MAX_HOTKEYS			10
+#define MAX_SOUNDS			15
+#define MAX_HOTKEYS			11
 
 enum _flag_action
 {
@@ -61,6 +61,7 @@ enum _sound_action
 	SOUND_CHANGE_SELECTED,
 	SOUND_TRANSLIT_SELECTED,
 	SOUND_CHANGECASE_SELECTED,
+	SOUND_REPLACE_WORD,
 	SOUND_NONE,
 };
 
@@ -76,6 +77,7 @@ enum _hotkey_action
 	ACTION_ENABLE_LAYOUT_1,
 	ACTION_ENABLE_LAYOUT_2,
 	ACTION_ENABLE_LAYOUT_3,
+	ACTION_REPLACE_WORD,
 	ACTION_NONE,
 };
 
@@ -163,6 +165,8 @@ struct _xneur_config
 	struct _list_char *draw_flag_apps;
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw
 
+	struct _list_char *replace_words; // Array of words to replace
+	
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);
 	const char* (*get_bool_name) (int option);

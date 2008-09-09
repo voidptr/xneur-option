@@ -48,18 +48,20 @@ static const char *option_names[] = 	{
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
-						"DrawFlagApp", "AddFlagPixmap", "SaveLog"
+						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceWord"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
-						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4"
+						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
+						"ReplaceWord"
 					};
 static const char *sound_names[] =	{
 						"PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"AutomaticChangeWord", "ManualChangeWord", "ChangeString", 
-						"ChangeSelected", "TranslitSelected", "ChangecaseSelected"
+						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
+						"ReplaceWord"
 					};
 
 static int load_lang = -1;
@@ -110,8 +112,8 @@ static void parse_line(struct _xneur_config *p, char *line)
 		return;
 	}
 
-	char *full_app_name = malloc((strlen(line) + 1) * sizeof(char));
-	full_app_name = strcpy(full_app_name, line);
+	char *full_string = malloc((strlen(line) + 1) * sizeof(char));
+	full_string = strcpy(full_string, line);
 
 	char *param = get_word(&line);
 	if (param == NULL)
@@ -137,7 +139,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 1: // Get Applications Names
 		{
-			p->excluded_apps->add(p->excluded_apps, full_app_name);
+			p->excluded_apps->add(p->excluded_apps, full_string);
 			break;
 		}
 		case 2: // Get Keyboard Binds
@@ -211,12 +213,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 8: // Get Auto Processing Applications
 		{
-			p->auto_apps->add(p->auto_apps, full_app_name);
+			p->auto_apps->add(p->auto_apps, full_string);
 			break;
 		}
 		case 9: // Get Manual Processing Applications
 		{
-			p->manual_apps->add(p->manual_apps, full_app_name);
+			p->manual_apps->add(p->manual_apps, full_string);
 			break;
 		}
 		case 10: // Get Mouse Grab Mode
@@ -313,12 +315,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 19: // layout remember for each application
 		{
-			p->layout_remember_apps->add(p->layout_remember_apps, full_app_name);
+			p->layout_remember_apps->add(p->layout_remember_apps, full_string);
 			break;
 		}
 		case 20: // Get Draw Flag Applications
 		{
-			p->draw_flag_apps->add(p->draw_flag_apps, full_app_name);
+			p->draw_flag_apps->add(p->draw_flag_apps, full_string);
 			break;
 		}
 		case 21: // Flags
@@ -345,8 +347,13 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->save_keyboard_log = index;
 			break;
 		}
+		case 23: // Get Words for Replacing
+		{
+			p->replace_words->add(p->replace_words, full_string);
+			break;
+		}
 	}
-	free(full_app_name);
+	free(full_string);
 }
 
 static int parse_config_file(struct _xneur_config *p, const char *dir_name, const char *file_name)
@@ -647,6 +654,13 @@ static int xneur_config_save(struct _xneur_config *p)
 	}
 	fprintf(stream, "\n");
 
+	fprintf(stream, "# Word Replacing\n");
+	for (int words = 0; words < p->replace_words->data_count; words++)
+	{
+		fprintf(stream, "ReplaceWord %s\n", p->replace_words->data[words].string); 
+	}
+	fprintf(stream, "\n");
+			
 	fprintf(stream, "# This option enable or disable sound playing\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#PlaySounds No\n");
@@ -850,7 +864,8 @@ struct _xneur_config* xneur_config_init(void)
 	p->layout_remember_apps		= list_char_init();
 	p->window_layouts		= list_char_init();
 	p->draw_flag_apps		= list_char_init();
-		
+	p->replace_words		= list_char_init();
+	
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;
 	p->get_global_dict_path		= get_file_path_name;
