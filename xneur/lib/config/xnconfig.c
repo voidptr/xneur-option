@@ -655,6 +655,8 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# Word Replacing\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#ReplaceWord xneur X Neural Switcher\n");
 	for (int words = 0; words < p->replace_words->data_count; words++)
 	{
 		fprintf(stream, "ReplaceWord %s\n", p->replace_words->data[words].string); 

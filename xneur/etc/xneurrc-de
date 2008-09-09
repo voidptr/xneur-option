@@ -46,6 +46,11 @@ AddBind EnableLayout1 Control F2
 AddBind EnableLayout2 Control F3
 AddBind EnableLayout3 Control F4
 AddBind EnableLayout4 Control F5
+AddBind ReplaceWord Tab
+
+# Word Replacing
+# Example:
+#ReplaceWord xneur X Neural Switcher
 
 # This option enable or disable sound playing
 # Example:
@@ -67,6 +72,7 @@ AddSound ChangeString switch.wav
 AddSound ChangeSelected switch.wav
 AddSound TranslitSelected switch.wav
 AddSound ChangecaseSelected switch.wav
+AddSound ReplaceWord switch.wav
 
 # This option enable or disable mouse processing
 # Example:
