@@ -356,7 +356,19 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			case SelectionNotify:
 			{
-				p->process_selection(p);
+				log_message(TRACE, "Received SelectionNotify (event type %d)", type);
+				p->process_selection_notify(p);
+				break;
+			}
+			case SelectionRequest:
+			{
+				log_message(TRACE, "Received SelectionRequest (event type %d) from window %d", type, p->event->event.xany.window);
+				p->process_selection_notify(p);
+				break;
+			}
+			case SelectionClear: 
+			{
+				log_message(TRACE, "Received SelectionClear (event type %d)", type);
 				break;
 			}
 			case ButtonPress:
@@ -408,12 +420,66 @@ static void xprogram_change_lang(struct _xprogram *p, int new_lang)
 	switch_lang(new_lang);
 }
 
-static void xprogram_process_selection(struct _xprogram *p)
+static void xprogram_process_selection_notify(struct _xprogram *p)
 {
+	if (p->selected_mode == ACTION_NONE)
+	{
+		XEvent event;
+		XSelectionRequestEvent *req = &p->event->event.xselectionrequest;
+		event.type	= SelectionNotify;
+		event.xselection.type = SelectionNotify;
+		event.xselection.display = main_window->display;
+		event.xselection.requestor = req->requestor;
+		event.xselection.selection = req->selection;
+		event.xselection.target = req->target;
+		event.xselection.property = req->property;
+		event.xselection.time = CurrentTime;
+
+		XSendEvent (main_window->display, req->requestor, TRUE, None, &event);
+			
+		on_selection_converted();
+		return;
+	}
+	
+	if (p->selected_mode == ACTION_REPLACE_WORD)
+	{
+		const char *word = get_last_word(p->string->content);
+		for (int words = 0; words < xconfig->replace_words->data_count; words++)
+		{	
+			char *string = strdup(xconfig->replace_words->data[words].string);
+			if (strcmp(strsep(&string, " "), word) == 0)
+			{
+				log_message(DEBUG, "Processing word '%s'", get_last_word(p->string->content));
+				log_message(DEBUG, "Replace by '%s' in window %d", string, p->focus->owner_window);
+				
+				set_selected_text(&p->event->event.xselection, string);
+				
+				char *event_text = get_selected_text(&p->event->event.xselection);
+				log_message(DEBUG, "Primary buffer is '%s'", event_text);
+				
+				Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
+				Atom selection = XInternAtom(main_window->display, "PRIMARY", FALSE);
+				XSetSelectionOwner (main_window->display, selection, 25166403, CurrentTime);
+				XConvertSelection(main_window->display, selection, target, None, 25166403, CurrentTime);
+			
+				int bcount = p->string->cur_pos;
+				p->event->send_backspaces(p->event, bcount);
+						
+				p->string->save_and_clear(p->string, p->focus->owner_window);
+				p->selected_mode = ACTION_NONE;
+				return;
+			}
+		}
+		return;
+	}
+	
 	char *event_text = get_selected_text(&p->event->event.xselection);
 	if (event_text == NULL)
+	{
+		p->selected_mode = ACTION_NONE;
 		return;
-
+	}
+	
 	char *selected_text = strdup(event_text);
 	XFree(event_text);
 
@@ -457,6 +523,7 @@ static void xprogram_process_selection(struct _xprogram *p)
 	
 	p->string->save_and_clear(p->string, p->focus->owner_window);
 	free(selected_text);
+	p->selected_mode = ACTION_NONE;
 }
 
 static void xprogram_on_key_action(struct _xprogram *p)
@@ -575,7 +642,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		case ACTION_CHANGECASE_SELECTED:
 		{
 			p->selected_mode = action;
-			do_selection_request();
+			do_selection_notify();
 			return TRUE;
 		}
 		case ACTION_CHANGE_STRING:	// User needs to change current string
@@ -618,11 +685,26 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			play_file(action);
 			break;
 		}
-		case ACTION_REPLACE_WORD:
+		case ACTION_REPLACE_WORD: // User needs to replace acronym
 		{
-			play_file(SOUND_REPLACE_WORD);
-			return TRUE;
-			break;
+			// Check last word to acronym list
+			const char *word = get_last_word(p->string->content);
+			if (!word)
+				return FALSE;
+			
+			for (int words = 0; words < xconfig->replace_words->data_count; words++)
+			{
+				char *string = strdup(xconfig->replace_words->data[words].string);
+				if (strcmp(strsep(&string, " "), word) == 0)
+				{
+					p->selected_mode = action;
+					do_selection_notify();
+					
+					play_file(SOUND_REPLACE_WORD);
+					return TRUE;
+				};
+			}
+			return FALSE;
 		}
 	}
 
@@ -793,7 +875,7 @@ struct _xprogram* xprogram_init(void)
 	p->check_last_word		= xprogram_check_last_word;
 	p->change_word			= xprogram_change_word;
 	p->add_word_to_dict		= xprogram_add_word_to_dict;
-	p->process_selection		= xprogram_process_selection;
+	p->process_selection_notify	= xprogram_process_selection_notify;
 	p->change_lang			= xprogram_change_lang;
 	p->send_string_silent		= xprogram_send_string_silent;
 

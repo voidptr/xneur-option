@@ -40,7 +40,7 @@ struct _xprogram
 	
 	int  last_layout;
 	int  last_window;
-
+	
 	void (*cursor_update) (struct _xprogram *p);
 	void (*layout_update) (struct _xprogram *p);
 	void (*update) (struct _xprogram *p);
@@ -51,7 +51,7 @@ struct _xprogram
 	void (*check_last_word) (struct _xprogram *p);
 	void (*change_word) (struct _xprogram *p, int new_lang);
 	void (*add_word_to_dict) (struct _xprogram *p, int new_lang);
-	void (*process_selection) (struct _xprogram *p);
+	void (*process_selection_notify) (struct _xprogram *p);
 	void (*change_lang) (struct _xprogram *p, int new_lang);
 	void (*send_string_silent) (struct _xprogram *p, int send_backspaces);
 	void (*uninit) (struct _xprogram *p);

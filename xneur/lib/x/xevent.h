@@ -34,7 +34,9 @@ struct _xevent
 	KeyCode backspace;		// Backspace key code
 	KeyCode left;			// Left Arrow key code
 	KeyCode right;			// Right Arrow key code
-
+	KeyCode copy;			// Right Arrow key code
+	KeyCode paste;
+	
 	KeySym (*get_cur_keysym) (struct _xevent *p);
 	int (*get_cur_modifiers) (struct _xevent *p);
 

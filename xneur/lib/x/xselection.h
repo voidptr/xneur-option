@@ -20,7 +20,9 @@
 #ifndef _XSELECTION_H_
 #define _XSELECTION_H_
 
+void set_selected_text(XSelectionEvent *event, char* text);
 char* get_selected_text(XSelectionEvent *event);
 void  on_selection_converted(void);
-void  do_selection_request(void);
+//void  do_selection_request(void);
+void  do_selection_notify(void);
 #endif /* _XSELECTION_H_ */

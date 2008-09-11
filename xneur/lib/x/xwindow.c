@@ -65,7 +65,7 @@ static int xwindow_create(struct _xwindow *p)
 		XCloseDisplay(display);
 		return FALSE;
 	}
-
+	
 	// Create flag window
 	XSetWindowAttributes attrs;
 	attrs.override_redirect = True;

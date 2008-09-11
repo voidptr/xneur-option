@@ -107,6 +107,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		return FOCUS_UNCHANGED;
 	}
 
+	log_message(DEBUG, "Focused window %d", new_window);
 	// Up to heighted window
 	p->parent_window = new_window;
 	while (TRUE)

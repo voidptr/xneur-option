@@ -32,10 +32,41 @@
 
 extern struct _xwindow *main_window;
 
+void set_selected_text(XSelectionEvent *event, char* text)
+{
+	log_message(DEBUG, "Text for pasting to buffer '%s'", text);
+	Atom target = XInternAtom(main_window->display, "UTF8_STRING", False);
+	int status = XChangeProperty(main_window->display,
+		event->requestor,
+		event->property,
+		target,
+		8,
+		PropModeReplace,
+		(unsigned char*) text,
+		strlen(text));
+		
+	if (status == TRUE)
+		return;
+	
+	switch (status)
+	{
+		case BadAtom:
+			log_message(ERROR, "Failed to convert selection with error BadAtom");
+		case BadWindow:
+			log_message(ERROR, "Failed to convert selection with error BadWindow");
+		case BadAlloc:
+			log_message(ERROR, "Failed to convert selection with error BadAlloc");
+		case BadMatch:
+			log_message(ERROR, "Failed to convert selection with error BadMatch");
+		case BadValue:
+			log_message(ERROR, "Failed to convert selection with error BadValue");
+	}
+}
+
 char* get_selected_text(XSelectionEvent *event)
 {
 	if (event->property == None)
-        {
+	{
 		log_message(DEBUG, "Convert to selection target return None answer");
 		return NULL;
 	}
@@ -66,12 +97,17 @@ void on_selection_converted(void)
 	XSetSelectionOwner(main_window->display, XA_PRIMARY, None, CurrentTime);
 }
 
-void do_selection_request(void)
+void do_selection_notify(void)
 {
 	Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
+	
+	if (XGetSelectionOwner(main_window->display, XA_PRIMARY) == None) 
+		XSetSelectionOwner (main_window->display, XA_PRIMARY, main_window->window, CurrentTime);
+
 	int status = XConvertSelection(main_window->display, XA_PRIMARY, target, None, main_window->window, CurrentTime);
 	if (status == BadAtom)
 		log_message(ERROR, "Failed to convert selection with error BadAtom");
 	else if (status == BadWindow)
 		log_message(ERROR, "Failed to convert selection with error BadWindow");
 }
+
