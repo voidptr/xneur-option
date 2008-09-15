@@ -59,7 +59,7 @@ static const char *action_names[] =	{
 static const char *sound_names[] =	{
 						"PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-						"AutomaticChangeWord", "ManualChangeWord", "ChangeString", 
+						"AutomaticChangeWord", "ManualChangeWord", "ChangeString",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
 						"ReplaceWord"
 					};
@@ -112,12 +112,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 		return;
 	}
 
-	char *full_string = malloc((strlen(line) + 1) * sizeof(char));
-	full_string = strcpy(full_string, line);
+	char *full_string = strdup(line);
 
 	char *param = get_word(&line);
 	if (param == NULL)
 	{
+		free(full_string);
 		log_message(WARNING, "Param mismatch for option %s", option);
 		return;
 	}
@@ -134,7 +134,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 
 			p->set_manual_mode(p, manual);
-			p->manual_mode = manual; 
+			p->manual_mode = manual;
 			break;
 		}
 		case 1: // Get Applications Names
@@ -357,7 +357,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 }
 
 static int parse_config_file(struct _xneur_config *p, const char *dir_name, const char *file_name)
-{	
+{
 	struct _list_char *list = load_list(dir_name, file_name, FALSE);
 	if (list == NULL)
 	{
@@ -392,7 +392,7 @@ static void free_structures(struct _xneur_config *p)
 	p->layout_remember_apps->uninit(p->layout_remember_apps);
 	p->excluded_apps->uninit(p->excluded_apps);
 	p->draw_flag_apps->uninit(p->draw_flag_apps);
-	
+
 	if (p->version != NULL)
 	{
 		free(p->version);
@@ -442,7 +442,7 @@ static void free_structures(struct _xneur_config *p)
 		if (p->hotkeys[action].key != NULL)
 			free(p->hotkeys[action].key);
 	}
-	
+
 	for (int sound = 0; sound < MAX_SOUNDS; sound++)
 	{
 		if (p->sounds[sound].file != NULL)
@@ -454,7 +454,7 @@ static void free_structures(struct _xneur_config *p)
 		if (p->flags[flag].file != NULL)
 			free(p->flags[flag].file);
 	}
-	
+
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
 	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
@@ -508,7 +508,8 @@ static void xneur_config_set_manual_mode(struct _xneur_config *p, int manual_mod
 static int xneur_config_is_manual_mode(struct _xneur_config *p)
 {
 	return (p->xneur_data->manual_mode == TRUE);
-}
+}
+
 static int xneur_config_load(struct _xneur_config *p)
 {
 	if (!parse_config_file(p, NULL, CONFIG_NAME))
@@ -559,7 +560,7 @@ static int xneur_config_load(struct _xneur_config *p)
 		if (!parse_config_file(p, lang_dir, LANGDEF_NAME))
 			return FALSE;
 	}
-	
+
 	return TRUE;
 }
 
@@ -613,7 +614,7 @@ static int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "# Define initial keyboard layout for all new applications\n");
 	fprintf(stream, "DefaultXkbGroup %d\n\n", p->default_group);
-	
+
 	fprintf(stream, "# Add Applications names to exclude it from procces with xneur\n");
 	fprintf(stream, "# Xneur will not process the input for this applications\n");
 	fprintf(stream, "# Example:\n");
@@ -659,15 +660,15 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#ReplaceWord xneur X Neural Switcher\n");
 	for (int words = 0; words < p->replace_words->data_count; words++)
 	{
-		fprintf(stream, "ReplaceWord %s\n", p->replace_words->data[words].string); 
+		fprintf(stream, "ReplaceWord %s\n", p->replace_words->data[words].string);
 	}
 	fprintf(stream, "\n");
-			
+
 	fprintf(stream, "# This option enable or disable sound playing\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#PlaySounds No\n");
 	fprintf(stream, "PlaySounds %s\n\n", p->get_bool_name(p->play_sounds));
-	
+
 	fprintf(stream, "# Binds sounds for some actions\n");
 	for (int sound = 0; sound < MAX_SOUNDS; sound++)
 	{
@@ -677,7 +678,7 @@ static int xneur_config_save(struct _xneur_config *p)
 			fprintf(stream, "AddSound %s %s\n", sound_names[sound], p->sounds[sound].file);
 	}
 	fprintf(stream, "\n");
-	
+
 	fprintf(stream, "# This option enable or disable mouse processing\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#GrabMouse Yes\n");
@@ -700,7 +701,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	for (int i = 0; i < p->layout_remember_apps->data_count; i++)
 		fprintf(stream, "LayoutRememberModeForApp %s\n", p->layout_remember_apps->data[i].string);
 	fprintf(stream, "\n");
-	
+
 	fprintf(stream, "# This option enable or disable saving selection text\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#SaveSelectionMode No\n");
@@ -708,10 +709,10 @@ static int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "# This option define delay before sendind events to application (in milliseconds between 0 to 50).\n");
 	fprintf(stream, "SendDelay %d\n\n", p->send_delay);
-	
+
 	fprintf(stream, "# Binds pixmaps for some layouts (pixmap only in xpm format)\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.xpm\n");			
+	fprintf(stream, "#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.xpm\n");
 	for (int flag = 0; flag < MAX_FLAGS; flag++)
 	{
 		if (p->flags[flag].file == NULL)
@@ -720,19 +721,19 @@ static int xneur_config_save(struct _xneur_config *p)
 		fprintf(stream, "AddFlagPixmap %s %s\n", flag_names[flag], p->flags[flag].file);
 	}
 	fprintf(stream, "\n");
-			
+
 	fprintf(stream, "# Add Applications names to draw flag in window\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#DrawFlagApp Gedit\n");
 	for (int i = 0; i < p->draw_flag_apps->data_count; i++)
 		fprintf(stream, "DrawFlagApp %s\n", p->draw_flag_apps->data[i].string);
 	fprintf(stream, "\n");
-			
+
 	fprintf(stream, "# This option enable or disable logging keyboard\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#SaveLog No\n");
 	fprintf(stream, "SaveLog %s\n\n", p->get_bool_name(p->save_keyboard_log));
-			
+
 	fprintf(stream, "# That's all\n");
 
 	fclose(stream);
@@ -746,7 +747,7 @@ static int xneur_config_replace(struct _xneur_config *p)
 	char *config_backup_file_path_name	= get_file_path_name(NULL, CONFIG_BCK_NAME);
 
 	log_message(LOG, "Moving config file from %s to %s", config_file_path_name, config_backup_file_path_name);
-	
+
 	remove(config_backup_file_path_name);
 
 	if (rename(config_file_path_name, config_backup_file_path_name) != 0)
@@ -768,7 +769,7 @@ static void xneur_config_save_dicts(struct _xneur_config *p, int lang)
 {
 	if (!p->educate)
 		return;
-	
+
 	log_message(LOG, "Saving %s dictionary", p->get_lang_name(p, lang));
 
 	save_list(p->languages[lang].dicts, p->get_lang_dir(p, lang), DICT_NAME);
@@ -819,7 +820,7 @@ static void xneur_config_add_language(struct _xneur_config *p, const char *name,
 	p->languages[p->total_languages].name	= strdup(name);
 	p->languages[p->total_languages].dir	= strdup(dir);
 	p->languages[p->total_languages].group	= group;
-	
+
 	p->total_languages++;
 }
 
@@ -835,7 +836,7 @@ static void xneur_config_uninit(struct _xneur_config *p)
 	free(p->hotkeys);
 	free(p->sounds);
 	free(p->flags);
-	
+
 	free(p);
 }
 
@@ -843,7 +844,7 @@ struct _xneur_config* xneur_config_init(void)
 {
 	struct _xneur_config *p = (struct _xneur_config *) malloc(sizeof(struct _xneur_config));
 	bzero(p, sizeof(struct _xneur_config));
-		
+
 	if (!check_memory_attached(p))
 	{
 		free(p);
@@ -858,7 +859,7 @@ struct _xneur_config* xneur_config_init(void)
 
 	p->flags = (struct _xneur_file *) malloc(MAX_FLAGS * sizeof(struct _xneur_file));
 	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
-	
+
 	p->log_level			= LOG;
 	p->excluded_apps		= list_char_init();
 	p->auto_apps			= list_char_init();
@@ -867,11 +868,11 @@ struct _xneur_config* xneur_config_init(void)
 	p->window_layouts		= list_char_init();
 	p->draw_flag_apps		= list_char_init();
 	p->replace_words		= list_char_init();
-	
+
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;
 	p->get_global_dict_path		= get_file_path_name;
-	
+
 	p->get_library_version		= xneur_config_get_library_version;
 	p->get_bool_name		= xneur_config_get_bool_name;
 
