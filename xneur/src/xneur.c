@@ -72,9 +72,9 @@ static void xneur_check_config_version(int final)
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
-		
+
 	log_message(LOG, "Configuration file replaced to default one");
-	
+
 	xneur_reload(0);
 }
 
@@ -99,7 +99,7 @@ static void xneur_load_config(int final)
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
-	
+
 	xneur_check_config_version(final);
 
 	log_message(LOG, "Log level is set to %s", xconfig->get_log_level_name(xconfig));
@@ -119,10 +119,8 @@ static void xneur_load_config(int final)
 
 	log_message(LOG, "Words list to replace has %d records", xconfig->replace_words->data_count);
 	for (int words = 0; words < xconfig->replace_words->data_count; words++)
-	{
-		log_message(DEBUG, "'%s'", xconfig->replace_words->data[words].string); 
-	}
-	
+		log_message(DEBUG, "'%s'", xconfig->replace_words->data[words].string);
+
 	log_message(LOG, "Default group for all new windows set to %d", xconfig->default_group);
 	log_message(LOG, "Manual mode set to %s", xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
 	log_message(LOG, "Mouse processing mode set to %s", xconfig->get_bool_name(xconfig->grab_mouse));
@@ -156,7 +154,7 @@ static void xneur_cleanup(void)
 {
 	sound_uninit();
 	log_message(DEBUG, "Current sound data is freed");
-	
+
 	if (xprogram != NULL)
 		xprogram->uninit(xprogram);
 
@@ -191,7 +189,7 @@ static void xneur_reload(int status)
 	log_message(LOG, "Caught SIGHUP, reloading configuration file");
 
 	sound_uninit();
-	
+
 	if (xconfig != NULL)
 		xconfig->uninit(xconfig);
 

@@ -78,7 +78,7 @@ static int get_auto_action(KeySym key, int modifier_mask)
 	// Null symbol
 	if (key == 0)
 		return KLB_NO_ACTION;
-	
+
 	// Cursor keys
 	if (IsCursorKey(key))
 		return KLB_CLEAR;
@@ -143,12 +143,12 @@ static int get_auto_action(KeySym key, int modifier_mask)
 		case XK_question:
 			return KLB_SPACE;
 	}
-	
+
 	if (modifier_mask & ControlMask || modifier_mask & Mod1Mask || modifier_mask & Mod4Mask)
 		return KLB_NO_ACTION;
 
 	int sound;
-	int lang = get_cur_lang(); 
+	int lang = get_cur_lang();
 	switch (lang)
 	{
 		default:
@@ -190,8 +190,8 @@ static void xprogram_cursor_update(struct _xprogram *p)
 	int root_x, root_y, win_x, win_y;
 	Window root_window, child_window;
 	unsigned int dummyU;
-					
-	XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);			
+
+	XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);
 
 	p->cursor->show_flag(p->cursor, root_x + 10, root_y + 10);
 }
@@ -217,7 +217,7 @@ static void xprogram_layout_update(struct _xprogram *p)
 		sprintf(text_to_find, "%s", last_app_name);
 	else
 		sprintf(text_to_find, "%d", (int) p->last_window);
-	
+
 	if (last_app_name != NULL)
 		free(last_app_name);
 
@@ -225,7 +225,7 @@ static void xprogram_layout_update(struct _xprogram *p)
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
 		sprintf(window_layouts, "%s %d", text_to_find, lang);
-		
+
 		if (!xconfig->window_layouts->exist(xconfig->window_layouts, window_layouts, BY_PLAIN))
 			continue;
 
@@ -235,7 +235,7 @@ static void xprogram_layout_update(struct _xprogram *p)
 	// Save layout for old window
 	sprintf(window_layouts, "%s %d", text_to_find, p->last_layout);
 	xconfig->window_layouts->add(xconfig->window_layouts, window_layouts);
-	
+
 	struct _list_char_data* curr_app = NULL;
 
 	char *curr_app_name = get_wm_class_name(p->focus->owner_window);
@@ -303,7 +303,7 @@ static void xprogram_process_input(struct _xprogram *p)
 	while (1)
 	{
 		int type = p->event->get_next_event(p->event);
-		
+
 		if (p->event->event.xany.window == main_window->flag_window)
 			continue;
 
@@ -318,6 +318,7 @@ static void xprogram_process_input(struct _xprogram *p)
 					log_message(LOG, "Exitting from main cycle");
 					return;
 				}
+				break;
 			}
 			case KeyPress:
 			{
@@ -331,15 +332,16 @@ static void xprogram_process_input(struct _xprogram *p)
 				break;
 			}
 			case FocusIn:
-				log_message(TRACE, "Received FocusIn (event type %d)", type);
 			case LeaveNotify:
 			case EnterNotify:
 			{
-				if (type == LeaveNotify)
+				if (type == FocusIn)
+					log_message(TRACE, "Received FocusIn (event type %d)", type);
+				else if (type == LeaveNotify)
 					log_message(TRACE, "Received LeaveNotify (event type %d)", type);
-				if (type == EnterNotify)
+				else if (type == EnterNotify)
 					log_message(TRACE, "Received EnterNotify (event type %d)", type);
-				
+
 				p->last_layout = get_active_keyboard_group();
 
 				p->update(p);
@@ -366,42 +368,39 @@ static void xprogram_process_input(struct _xprogram *p)
 				p->process_selection_notify(p);
 				break;
 			}
-			case SelectionClear: 
+			case SelectionClear:
 			{
 				log_message(TRACE, "Received SelectionClear (event type %d)", type);
 				break;
 			}
 			case ButtonPress:
 			{
-				// Falling down
 				p->string->save_and_clear(p->string, p->focus->owner_window);
 				log_message(TRACE, "Received ButtonPress on window %d  (event type %d)", p->event->event.xbutton.window, type);
-								
+
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
-
 				break;
 			}
 			case MotionNotify:
 			{
 				//log_message(TRACE, "Received Motion Notify");
-				p->cursor_update(p);	
-				break;				
+				p->cursor_update(p);
+				break;
 			}
 			case PropertyNotify:
 			{
-				
 				if (XInternAtom(main_window->display, "XKLAVIER_STATE", FALSE) == p->event->event.xproperty.atom)
 				{
 					log_message(TRACE, "Received Property Notify (layout switch event) (event type %d)", type);
-					
+
 					// Flush string
 					//p->string->clear(p->string);
-					
+
 					// Update flag
 					p->cursor_update(p);
 				}
-			
+
 				break;
 			}
 			default:
@@ -424,62 +423,65 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 {
 	if (p->selected_mode == ACTION_NONE)
 	{
-		XEvent event;
-		XSelectionRequestEvent *req = &p->event->event.xselectionrequest;
-		event.type	= SelectionNotify;
-		event.xselection.type = SelectionNotify;
-		event.xselection.display = main_window->display;
-		event.xselection.requestor = req->requestor;
-		event.xselection.selection = req->selection;
-		event.xselection.target = req->target;
-		event.xselection.property = req->property;
-		event.xselection.time = CurrentTime;
+		XSelectionRequestEvent *req	= &p->event->event.xselectionrequest;
+		event.type			= SelectionNotify;
+		event.xselection.type		= SelectionNotify;
+		event.xselection.display	= main_window->display;
+		event.xselection.requestor	= req->requestor;
+		event.xselection.selection	= req->selection;
+		event.xselection.target		= req->target;
+		event.xselection.property	= req->property;
+		event.xselection.time		= CurrentTime;
 
-		XSendEvent (main_window->display, req->requestor, TRUE, None, &event);
-			
+		XEvent event;
+		XSendEvent(main_window->display, req->requestor, TRUE, None, &event);
+
 		on_selection_converted();
 		return;
 	}
-	
+
 	if (p->selected_mode == ACTION_REPLACE_WORD)
 	{
 		const char *word = get_last_word(p->string->content);
 		for (int words = 0; words < xconfig->replace_words->data_count; words++)
-		{	
-			char *string = strdup(xconfig->replace_words->data[words].string);
-			if (strcmp(strsep(&string, " "), word) == 0)
+		{
+			char *string		= strdup(xconfig->replace_words->data[words].string);
+			char *replacement	= strsep(&string, " ");
+
+			if (strcmp(replacement, word) != 0)
 			{
-				log_message(DEBUG, "Processing word '%s'", get_last_word(p->string->content));
-				log_message(DEBUG, "Replace by '%s' in window %d", string, p->focus->owner_window);
-				
-				set_selected_text(&p->event->event.xselection, string);
-				
-				char *event_text = get_selected_text(&p->event->event.xselection);
-				log_message(DEBUG, "Primary buffer is '%s'", event_text);
-				
-				Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
-				Atom selection = XInternAtom(main_window->display, "PRIMARY", FALSE);
-				XSetSelectionOwner (main_window->display, selection, 25166403, CurrentTime);
-				XConvertSelection(main_window->display, selection, target, None, 25166403, CurrentTime);
-			
-				int bcount = p->string->cur_pos;
-				p->event->send_backspaces(p->event, bcount);
-						
-				p->string->save_and_clear(p->string, p->focus->owner_window);
-				p->selected_mode = ACTION_NONE;
-				return;
+				free(replacement);
+				continue;
 			}
+
+			log_message(DEBUG, "Processing word '%s'", word);
+			log_message(DEBUG, "Replace to '%s' in window %d", string, p->focus->owner_window);
+
+			set_selected_text(&p->event->event.xselection, string);
+
+			Atom target	= XInternAtom(main_window->display, "UTF8_STRING", FALSE);
+			Atom selection	= XInternAtom(main_window->display, "PRIMARY", FALSE);
+
+			XSetSelectionOwner(main_window->display, selection, 25166403, CurrentTime);
+			XConvertSelection(main_window->display, selection, target, None, 25166403, CurrentTime);
+
+			p->event->send_backspaces(p->event, p->string->cur_pos);
+			p->string->save_and_clear(p->string, p->focus->owner_window);
+			p->selected_mode = ACTION_NONE;
+
+			free(replacement)
+			break;
 		}
 		return;
 	}
-	
+
 	char *event_text = get_selected_text(&p->event->event.xselection);
 	if (event_text == NULL)
 	{
 		p->selected_mode = ACTION_NONE;
 		return;
 	}
-	
+
 	char *selected_text = strdup(event_text);
 	XFree(event_text);
 
@@ -490,6 +492,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		convert_text_to_translit(&selected_text);
 
 	p->string->set_content(p->string, selected_text);
+	free(selected_text);
 
 	if (p->selected_mode == ACTION_CHANGECASE_SELECTED)
 	{
@@ -498,20 +501,20 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	}
 	else
 		p->change_lang(p, get_next_lang(get_cur_lang()));
-	
-	if (p->selected_mode == ACTION_CHANGECASE_SELECTED)
+
+	if (p->selected_mode == ACTION_CHANGE_SELECTED)
+		play_file(SOUND_CHANGE_SELECTED);
+	else if (p->selected_mode == ACTION_CHANGECASE_SELECTED)
 		play_file(SOUND_CHANGECASE_SELECTED);
 	else if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
 		play_file(SOUND_TRANSLIT_SELECTED);
-	else if (p->selected_mode == ACTION_CHANGE_SELECTED)
-		play_file(SOUND_CHANGE_SELECTED);
-	
+
 	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
-	
-	// Block events of keyboard 
+
+	// Block events of keyboard
 	set_event_mask(p->focus->owner_window, None);
 	grab_spec_keys(p->focus->owner_window, FALSE);
-	
+
 	p->send_string_silent(p, FALSE);
 
 	on_selection_converted();
@@ -520,9 +523,8 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		p->event->send_selection(p->event, p->string->cur_pos);
 
 	p->update(p);
-	
+
 	p->string->save_and_clear(p->string, p->focus->owner_window);
-	free(selected_text);
 	p->selected_mode = ACTION_NONE;
 }
 
@@ -531,12 +533,12 @@ static void xprogram_on_key_action(struct _xprogram *p)
 	KeySym key = p->event->get_cur_keysym(p->event);
 
 	int modifier_mask = p->event->get_cur_modifiers(p->event);
-	if (p->modifier_mask != NO_MODIFIER_MASK) 
+	if (p->modifier_mask != NO_MODIFIER_MASK)
 	{
 		p->event->event.xkey.state = p->modifier_mask;
 		p->modifier_mask = NO_MODIFIER_MASK;
 	}
-	
+
 	enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
 	if (p->perform_manual_action(p, manual_action))
 		return;
@@ -573,7 +575,7 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			// Save event
 			XEvent tmp = p->event->event;
 			char sym = main_window->xkeymap->get_cur_ascii_char(main_window->xkeymap, p->event->event);
-			
+
 			if (action == KLB_ADD_SYM)
 			{
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
@@ -581,19 +583,19 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 				// Add symbol to internal bufer
 				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
-				
+
 				return;
 			}
-	
+
 			// Block events of keyboard (push to event queue)
 			set_event_mask(p->focus->owner_window, None);
 			grab_spec_keys(p->focus->owner_window, FALSE);
-			grab_keyboard(p->focus->owner_window, TRUE); 
-			
+			grab_keyboard(p->focus->owner_window, TRUE);
+
 			// Checking word
-			if (p->changed_manual == MANUAL_FLAG_UNSET)	
+			if (p->changed_manual == MANUAL_FLAG_UNSET)
 				p->check_last_word(p);
-			
+
 			// Restore event
 			p->event->event = tmp;
 
@@ -605,19 +607,19 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			p->event->send_next_event(p->event);
 
 			// Resend blocked events back to window (from the event queue)
-			while (XEventsQueued(main_window->display, QueuedAlready)) 
+			while (XEventsQueued(main_window->display, QueuedAlready))
 			{
 				p->event->get_next_event(p->event);
 				if (p->event->event.xany.window == main_window->flag_window)
 					continue;
 				p->event->send_next_event(p->event);
 			}
-			
-			// Unblock keyboard 
-			grab_keyboard(p->focus->owner_window, FALSE);					
+
+			// Unblock keyboard
+			grab_keyboard(p->focus->owner_window, FALSE);
 			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 			grab_spec_keys(p->focus->owner_window, TRUE);
-			
+
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			return;
 		}
@@ -648,11 +650,11 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		case ACTION_CHANGE_STRING:	// User needs to change current string
 		{
 			p->change_lang(p, get_next_lang(get_cur_lang()));
-			
+
 			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
 			p->send_string_silent(p, TRUE);
-			p->update(p);			
-			
+			p->update(p);
+
 			play_file(SOUND_CHANGE_STRING);
 			p->cursor_update(p);
 			break;
@@ -671,18 +673,33 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 
 			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 			grab_spec_keys(p->focus->owner_window, TRUE);
-			
+
 			play_file(SOUND_MANUAL_CHANGE_WORD);
 			p->cursor_update(p);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_0:
+		{
+			switch_group(0);
+			play_file(SOUND_ENABLE_LAYOUT_0);
+			break;
+		}
 		case ACTION_ENABLE_LAYOUT_1:
+		{
+			switch_group(1);
+			play_file(SOUND_ENABLE_LAYOUT_1);
+			break;
+		}
 		case ACTION_ENABLE_LAYOUT_2:
+		{
+			switch_group(2);
+			play_file(SOUND_ENABLE_LAYOUT_2);
+			break;
+		}
 		case ACTION_ENABLE_LAYOUT_3:
 		{
-			switch_group(action - ACTION_ENABLE_LAYOUT_0);
-			play_file(action);
+			switch_group(3);
+			play_file(SOUND_ENABLE_LAYOUT_3);
 			break;
 		}
 		case ACTION_REPLACE_WORD: // User needs to replace acronym
@@ -691,18 +708,25 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			const char *word = get_last_word(p->string->content);
 			if (!word)
 				return FALSE;
-			
+
 			for (int words = 0; words < xconfig->replace_words->data_count; words++)
 			{
-				char *string = strdup(xconfig->replace_words->data[words].string);
-				if (strcmp(strsep(&string, " "), word) == 0)
+				char *string		= strdup(xconfig->replace_words->data[words].string);
+				char *replacement	= strsep(&string, " ");
+
+				if (strcmp(replacement, word) != 0)
 				{
-					p->selected_mode = action;
-					do_selection_notify();
-					
-					play_file(SOUND_REPLACE_WORD);
-					return TRUE;
-				};
+					free(replacement);
+					continue;
+				}
+
+				p->selected_mode = action;
+				do_selection_notify();
+
+				play_file(SOUND_REPLACE_WORD);
+
+				free(replacement);
+				return TRUE;
 			}
 			return FALSE;
 		}
@@ -758,13 +782,13 @@ static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces
 		bcount = 0;
 
 	p->event->send_backspaces(p->event, bcount);		// Delete old string
-	p->event->send_string(p->event, p->string);			// Send new string
+	p->event->send_string(p->event, p->string);		// Send new string
 }
 
 static void xprogram_change_word(struct _xprogram *p, int new_lang)
 {
 	int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
-	
+
 	// Shift fields to point to begin of word
 	p->string->content		+= offset;
 	p->string->keycode		+= offset;
@@ -773,7 +797,7 @@ static void xprogram_change_word(struct _xprogram *p, int new_lang)
 
 	p->change_lang(p, new_lang);
 	p->send_string_silent(p, TRUE);
-	
+
 	// Revert fields back
 	p->string->content		-= offset;
 	p->string->keycode		-= offset;
@@ -786,7 +810,7 @@ static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 	char *word = get_last_word(p->string->content);
 	if (word == NULL)
 		return;
-	
+
 	int len = strlen(word);
 	char *low_word = lower_word(word, len);
 
@@ -816,7 +840,7 @@ static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 	{
 		log_message(DEBUG, "Remove word '%s' from %s dictionary", low_word, xconfig->get_lang_name(xconfig, curr_lang));
 		curr_dicts->rem(curr_dicts, low_word);
-		xconfig->save_dicts(xconfig, curr_lang); 
+		xconfig->save_dicts(xconfig, curr_lang);
 	}
 
 	struct _list_char *new_dicts = xconfig->languages[new_lang].dicts;
@@ -824,7 +848,7 @@ static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 	{
 		log_message(DEBUG, "Add word '%s' in %s dictionary", low_word, xconfig->get_lang_name(xconfig, new_lang));
 		new_dicts->add(new_dicts, low_word);
-		xconfig->save_dicts(xconfig, new_lang); 
+		xconfig->save_dicts(xconfig, new_lang);
 	}
 
 	free(low_word);
@@ -857,14 +881,14 @@ struct _xprogram* xprogram_init(void)
 	}
 
 	p->modifier_mask		= NO_MODIFIER_MASK;
-	
+
 	p->event			= xevent_init();		// X Event processor
 	p->focus			= xfocus_init();		// X Input Focus and Pointer processor
 	p->string			= xstring_init();		// Input string buffer
 	p->cursor			= xcursor_init();
-	
+
 	// Function mapping
-	p->uninit			= xprogram_uninit; 
+	p->uninit			= xprogram_uninit;
 	p->cursor_update		= xprogram_cursor_update;
 	p->layout_update		= xprogram_layout_update;
 	p->update			= xprogram_update;

@@ -50,8 +50,6 @@ struct _list_char
 	int  (*exist) (struct _list_char *list, const char *string, int mode);
 	void (*rem)   (struct _list_char *list, const char *string);
 	void (*sort)  (struct _list_char *list);
-	int	 (*find_id) (struct _list_char *list, const char *string, int mode);
-	char*   (*get_by_id)(struct _list_char *list, int id);
 };
 
 struct _list_char* list_char_init(void);

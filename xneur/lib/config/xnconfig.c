@@ -34,7 +34,7 @@
 
 #include "xnconfig.h"
 
-#define LIBRARY_VERSION_MAJOR		4
+#define LIBRARY_VERSION_MAJOR		5
 #define LIBRARY_VERSION_MINOR		0
 #define OPTIONS_DELIMETER		" "
 
@@ -659,9 +659,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#ReplaceWord xneur X Neural Switcher\n");
 	for (int words = 0; words < p->replace_words->data_count; words++)
-	{
 		fprintf(stream, "ReplaceWord %s\n", p->replace_words->data[words].string);
-	}
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# This option enable or disable sound playing\n");
