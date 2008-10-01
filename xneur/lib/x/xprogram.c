@@ -424,6 +424,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	if (p->selected_mode == ACTION_NONE)
 	{
 		XSelectionRequestEvent *req	= &p->event->event.xselectionrequest;
+		XEvent event;
 		event.type			= SelectionNotify;
 		event.xselection.type		= SelectionNotify;
 		event.xselection.display	= main_window->display;
@@ -433,7 +434,6 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		event.xselection.property	= req->property;
 		event.xselection.time		= CurrentTime;
 
-		XEvent event;
 		XSendEvent(main_window->display, req->requestor, TRUE, None, &event);
 
 		on_selection_converted();
@@ -469,7 +469,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			p->string->save_and_clear(p->string, p->focus->owner_window);
 			p->selected_mode = ACTION_NONE;
 
-			free(replacement)
+			free(replacement);
 			break;
 		}
 		return;
