@@ -48,20 +48,20 @@ static const char *option_names[] = 	{
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
-						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceWord"
+						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceAbbreviation"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-						"ReplaceWord"
+						"ReplaceAbbreviation"
 					};
 static const char *sound_names[] =	{
 						"PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"AutomaticChangeWord", "ManualChangeWord", "ChangeString",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
-						"ReplaceWord"
+						"ReplaceAbbreviation"
 					};
 
 static int load_lang = -1;
@@ -657,9 +657,9 @@ static int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "# Word Replacing\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#ReplaceWord xneur X Neural Switcher\n");
+	fprintf(stream, "#ReplaceAbbreviation xneur X Neural Switcher\n");
 	for (int words = 0; words < p->replace_words->data_count; words++)
-		fprintf(stream, "ReplaceWord %s\n", p->replace_words->data[words].string);
+		fprintf(stream, "ReplaceAbbreviation %s\n", p->replace_words->data[words].string);
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# This option enable or disable sound playing\n");

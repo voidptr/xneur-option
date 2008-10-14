@@ -32,37 +32,6 @@
 
 extern struct _xwindow *main_window;
 
-void set_selected_text(XSelectionEvent *event, char* text)
-{
-	log_message(DEBUG, "Text for pasting to buffer '%s'", text);
-	Atom target = XInternAtom(main_window->display, "UTF8_STRING", False);
-	int status = XChangeProperty(main_window->display,
-		event->requestor,
-		event->property,
-		target,
-		8,
-		PropModeReplace,
-		(unsigned char*) text,
-		strlen(text));
-		
-	if (status == Success)
-		return;
-		
-	switch (status)
-	{
-		case BadAtom:
-			log_message(ERROR, "Failed to convert selection with error BadAtom");
-		case BadWindow:
-			log_message(ERROR, "Failed to convert selection with error BadWindow");
-		case BadAlloc:
-			log_message(ERROR, "Failed to convert selection with error BadAlloc");
-		case BadMatch:
-			log_message(ERROR, "Failed to convert selection with error BadMatch");
-		case BadValue:
-			log_message(ERROR, "Failed to convert selection with error BadValue");
-	}
-}
-
 char* get_selected_text(XSelectionEvent *event)
 {
 	if (event->property == None)

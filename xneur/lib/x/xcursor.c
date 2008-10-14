@@ -250,16 +250,19 @@ struct _xcursor* xcursor_init(void)
 
 void xcursor_load_pixmaps(struct _xcursor *p)
 {
+	if (p) {};
 	return;
 }
 
 void xcursor_show_flag(struct _xcursor *p, int x, int y)
 {
+	if (p || x || y) {};
 	return;
 }
 
 void xcursor_hide_flag(struct _xcursor *p)
 {
+	if (p) {};
 	return;
 }
 

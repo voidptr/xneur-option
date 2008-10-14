@@ -362,17 +362,6 @@ static void xprogram_process_input(struct _xprogram *p)
 				p->process_selection_notify(p);
 				break;
 			}
-			case SelectionRequest:
-			{
-				log_message(TRACE, "Received SelectionRequest (event type %d) from window %d", type, p->event->event.xany.window);
-				p->process_selection_notify(p);
-				break;
-			}
-			case SelectionClear:
-			{
-				log_message(TRACE, "Received SelectionClear (event type %d)", type);
-				break;
-			}
 			case ButtonPress:
 			{
 				p->string->save_and_clear(p->string, p->focus->owner_window);
@@ -421,74 +410,6 @@ static void xprogram_change_lang(struct _xprogram *p, int new_lang)
 
 static void xprogram_process_selection_notify(struct _xprogram *p)
 {
-	if (p->selected_mode == ACTION_NONE)
-	{
-		XSelectionRequestEvent *req	= &p->event->event.xselectionrequest;
-		XEvent event;
-		event.type			= SelectionNotify;
-		event.xselection.type		= SelectionNotify;
-		event.xselection.display	= main_window->display;
-		event.xselection.requestor	= req->requestor;
-		event.xselection.selection	= req->selection;
-		event.xselection.target		= req->target;
-		event.xselection.property	= req->property;
-		event.xselection.time		= CurrentTime;
-
-		XSendEvent(main_window->display, req->requestor, TRUE, None, &event);
-
-		on_selection_converted();
-		return;
-	}
-
-	if (p->selected_mode == ACTION_REPLACE_WORD)
-	{
-		const char *word = get_last_word(p->string->content);
-		for (int words = 0; words < xconfig->replace_words->data_count; words++)
-		{
-			char *string		= strdup(xconfig->replace_words->data[words].string);
-			char *replacement	= strsep(&string, " ");
-
-			if (strcmp(replacement, word) != 0)
-			{
-				free(replacement);
-				continue;
-			}
-
-			log_message(DEBUG, "Processing word '%s'", word);
-			log_message(DEBUG, "Replace to '%s' in window %d", string, main_window->window);
-
-			set_selected_text(&(p->event->event.xselection), string);
-
-			Atom type;
-			int format, status;
-			unsigned long len, bytes_left, dummy;
-			unsigned char *data;
-			XGetWindowProperty (main_window->display, main_window->window, p->event->event.xselection.property, 0, 0, 0,	AnyPropertyType,
-					&type, &format,	&len, &bytes_left, &data);
-			if (bytes_left > 0)
-			{
-				status = XGetWindowProperty (main_window->display, main_window->window, p->event->event.xselection.property, 0,bytes_left,0,
-							AnyPropertyType, &type,&format,	&len, &dummy, &data);
-				if (status == Success)
-				{
-					log_message(DEBUG, "Text to send is '%s'", data);
-					XFree(data);
-				}
-			}
-			
-			log_message(DEBUG, "Text to send is '%s' (over func)", get_selected_text(&p->event->event.xselection));
-			p->event->send_backspaces(p->event, p->string->cur_pos);
-			p->string->save_and_clear(p->string, p->focus->owner_window);
-			p->selected_mode = ACTION_NONE;
-
-			on_selection_converted();
-			
-			free(replacement);
-			break;
-		}
-		return;
-	}
-
 	char *event_text = get_selected_text(&p->event->event.xselection);
 	if (event_text == NULL)
 	{
@@ -716,10 +637,12 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			play_file(SOUND_ENABLE_LAYOUT_3);
 			break;
 		}
-		case ACTION_REPLACE_WORD: // User needs to replace acronym
+		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
 		{
 			// Check last word to acronym list
-			const char *word = get_last_word(p->string->content);
+			//const char *word = get_last_word(p->string->content);
+			const char *word = get_last_word(p->string->get_utf_string(p->string));
+			
 			if (!word)
 				return FALSE;
 
@@ -727,19 +650,35 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			{
 				char *string		= strdup(xconfig->replace_words->data[words].string);
 				char *replacement	= strsep(&string, " ");
-
+				
 				if (strcmp(replacement, word) != 0)
 				{
 					free(replacement);
 					continue;
 				}
+				// Replace Abbreviation
+				printf("Found Abbreviation '%s' '%s'. Replacing to '%s'...\n", replacement, word, string);
+				
+				///*
+				set_event_mask(p->focus->owner_window, None);
+				grab_spec_keys(p->focus->owner_window, FALSE);
 
-				p->selected_mode = action;
-				on_selection_converted();
-				do_selection_notify();
+				char *tmp = malloc((strlen(string) + 1) * sizeof(char));
+				strcpy(tmp, string);
+				tmp[strlen(string)] = ' ';
+				tmp[strlen(string)+1] = '\0';
+				//char *tmp = strdup(string);
+				
+				p->event->send_backspaces(p->event, strlen(get_last_word(p->string->content)));
+				p->string->set_content(p->string, tmp);
+				p->send_string_silent(p, FALSE);
+				
+				set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+				grab_spec_keys(p->focus->owner_window, TRUE);
 
-				play_file(SOUND_REPLACE_WORD);
-
+				play_file(SOUND_REPLACE_ABBREVIATION);
+				p->string->save_and_clear(p->string, p->focus->owner_window);
+				//*/
 				free(replacement);
 				return TRUE;
 			}
