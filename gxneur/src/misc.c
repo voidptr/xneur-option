@@ -74,12 +74,12 @@ static void error_msg(const char *msg, ...)
 	char *buffer = (char *) malloc(1024);
 	vsprintf(buffer, msg, ap);
 	buffer[len] = 0;
-	
+
 	GtkWidget *dialog = gtk_message_dialog_new (NULL,
 											GTK_DIALOG_DESTROY_WITH_PARENT,
 											GTK_MESSAGE_ERROR,
 											GTK_BUTTONS_CLOSE,
-											buffer);
+											"%s", buffer);
 	gtk_dialog_run (GTK_DIALOG (dialog));
 	gtk_widget_destroy (dialog);	
 	
