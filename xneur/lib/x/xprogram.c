@@ -455,20 +455,34 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			}
 
 			log_message(DEBUG, "Processing word '%s'", word);
-			log_message(DEBUG, "Replace to '%s' in window %d", string, p->focus->owner_window);
+			log_message(DEBUG, "Replace to '%s' in window %d", string, main_window->window);
 
-			set_selected_text(&p->event->event.xselection, string);
+			set_selected_text(&(p->event->event.xselection), string);
 
-			Atom target	= XInternAtom(main_window->display, "UTF8_STRING", FALSE);
-			Atom selection	= XInternAtom(main_window->display, "PRIMARY", FALSE);
-
-			XSetSelectionOwner(main_window->display, selection, 25166403, CurrentTime);
-			XConvertSelection(main_window->display, selection, target, None, 25166403, CurrentTime);
-
+			Atom type;
+			int format, status;
+			unsigned long len, bytes_left, dummy;
+			unsigned char *data;
+			XGetWindowProperty (main_window->display, main_window->window, p->event->event.xselection.property, 0, 0, 0,	AnyPropertyType,
+					&type, &format,	&len, &bytes_left, &data);
+			if (bytes_left > 0)
+			{
+				status = XGetWindowProperty (main_window->display, main_window->window, p->event->event.xselection.property, 0,bytes_left,0,
+							AnyPropertyType, &type,&format,	&len, &dummy, &data);
+				if (status == Success)
+				{
+					log_message(DEBUG, "Text to send is '%s'", data);
+					XFree(data);
+				}
+			}
+			
+			log_message(DEBUG, "Text to send is '%s' (over func)", get_selected_text(&p->event->event.xselection));
 			p->event->send_backspaces(p->event, p->string->cur_pos);
 			p->string->save_and_clear(p->string, p->focus->owner_window);
 			p->selected_mode = ACTION_NONE;
 
+			on_selection_converted();
+			
 			free(replacement);
 			break;
 		}
@@ -721,6 +735,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 				}
 
 				p->selected_mode = action;
+				on_selection_converted();
 				do_selection_notify();
 
 				play_file(SOUND_REPLACE_WORD);

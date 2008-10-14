@@ -148,9 +148,11 @@ void grab_keyboard(Window window, int is_grab)
 {
 	int status;
 	if (is_grab)
-		status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, TRUE, GrabModeAsync, GrabModeAsync);
+		//status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, TRUE, GrabModeAsync, GrabModeAsync);
+		status = XGrabKeyboard(main_window->display, window, TRUE, GrabModeAsync, GrabModeAsync, CurrentTime);
 	else
-		status = XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
+		//status = XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
+		status = XUngrabKeyboard(main_window->display, CurrentTime);
 	
 	if (status == BadValue)
 		log_message(ERROR, "Failed to %s keyboard with error BadValue", grab_ungrab[is_grab]);

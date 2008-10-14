@@ -45,9 +45,9 @@ void set_selected_text(XSelectionEvent *event, char* text)
 		(unsigned char*) text,
 		strlen(text));
 		
-	if (status == TRUE)
+	if (status == Success)
 		return;
-	
+		
 	switch (status)
 	{
 		case BadAtom:
@@ -100,11 +100,12 @@ void on_selection_converted(void)
 void do_selection_notify(void)
 {
 	Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
+	Atom selection = XInternAtom(main_window->display, "PRIMARY", FALSE);
 	
-	if (XGetSelectionOwner(main_window->display, XA_PRIMARY) == None) 
-		XSetSelectionOwner (main_window->display, XA_PRIMARY, main_window->window, CurrentTime);
+	if (XGetSelectionOwner(main_window->display, selection) == None) 
+		XSetSelectionOwner(main_window->display, selection, main_window->window, CurrentTime);
 
-	int status = XConvertSelection(main_window->display, XA_PRIMARY, target, None, main_window->window, CurrentTime);
+	int status = XConvertSelection(main_window->display, selection, target, None, main_window->window, CurrentTime);
 	if (status == BadAtom)
 		log_message(ERROR, "Failed to convert selection with error BadAtom");
 	else if (status == BadWindow)
