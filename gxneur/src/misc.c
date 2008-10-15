@@ -972,12 +972,6 @@ int is_correct_hotkey(gchar **key_stat)
 		return -1;
 
 	last--;
-	for (int i = 0; i < total_all_modifiers; i++)
-	{
-		if (g_strcasecmp(key_stat[last], all_modifiers[i]) == 0)
-			return -1;
-	}
-
 	if (g_strcasecmp(key_stat[last], _("Press any key")) == 0)
 		return -1;
 
