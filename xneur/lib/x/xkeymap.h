@@ -38,9 +38,9 @@ struct _xkeymap
 	int keysyms_per_keycode;
 	int keyboard_groups_count;
 
-	char  (*get_ascii)(struct _xkeymap *p, const char *sym);
+	char  (*get_ascii)(struct _xkeymap *p, const char *sym, KeyCode *kc, int *modifier);
 	char  (*get_cur_ascii_char) (struct _xkeymap *p, XEvent e);
-	void  (*convert_text_to_ascii)(struct _xkeymap *p, char *text);
+	void  (*convert_text_to_ascii)(struct _xkeymap *p, char *text, KeyCode *kc, int *kc_mod);
 	void  (*char_to_keycode)(struct _xkeymap *p, char ch, KeyCode *kc, int *modifier);
 	void  (*print_keymaps)(struct _xkeymap *p);
 	char* (*lower_by_keymaps)(struct _xkeymap *p, int gr, char *text);

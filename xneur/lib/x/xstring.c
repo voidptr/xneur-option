@@ -150,9 +150,13 @@ static int xstring_is_space_last(struct _xstring *p)
 	return FALSE;
 }
 
+#include "xswitchlang.h"
+
 static void xstring_set_content(struct _xstring *p, const char *new_content)
 {
-	p->cur_pos = strlen(new_content);
+	char *content = strdup(new_content);
+	
+	p->cur_pos = strlen(content);
 	if (p->cur_pos >= p->cur_size)
 		set_new_size(p, p->cur_pos + 1);
 
@@ -162,11 +166,25 @@ static void xstring_set_content(struct _xstring *p, const char *new_content)
 	p->content[p->cur_pos] = NULLSYM;
 	if (!p->cur_pos)
 		return;
+	
+	memcpy(p->content, content, p->cur_pos);
+	main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, p->content, p->keycode, p->keycode_modifiers);
+	
+	p->cur_pos = strlen(p->content);
+	set_new_size(p, p->cur_pos + 1);
 
-	memcpy(p->content, new_content, p->cur_pos);
+	if (p->content == NULL || p->keycode == NULL || p->keycode_modifiers == NULL)
+		return;
+	
+	p->content[p->cur_pos] = NULLSYM;
+	if (!p->cur_pos)
+		return;
 
-	for (int i = 0; i < p->cur_pos; i++)
-		main_window->xkeymap->char_to_keycode(main_window->xkeymap, p->content[i], &p->keycode[i], &p->keycode_modifiers[i]);
+	free(content);
+	
+	//for (int i = 0; i < p->cur_pos; i++)
+		//main_window->xkeymap->char_to_keycode(main_window->xkeymap, p->content[i], &p->keycode[i], &p->keycode_modifiers[i]);
+	//p->set_key_code(p, get_cur_lang());
 }
 
 static void xstring_change_case(struct _xstring *p)

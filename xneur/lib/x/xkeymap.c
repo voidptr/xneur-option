@@ -179,7 +179,7 @@ static void xkeymap_char_to_keycode(struct _xkeymap *p, char ch, KeyCode *kc, in
 	free(symbol);
 }
 
-static char xkeymap_get_ascii(struct _xkeymap *p, const char *sym)
+static char xkeymap_get_ascii(struct _xkeymap *p, const char *sym, KeyCode *kc, int *modifier)
 {
 	XEvent event		= create_basic_event();
 
@@ -239,6 +239,8 @@ static char xkeymap_get_ascii(struct _xkeymap *p, const char *sym)
 
 						free(prev_symbols);
 						free(symbol);
+						*kc		= event.xkey.keycode;
+						*modifier	= get_keycode_mod(lang) | event.xkey.state;
 						return sym;
 					}
 				}
@@ -277,7 +279,7 @@ static char xkeymap_get_cur_ascii_char(struct _xkeymap *p, XEvent e)
 	return ' ';
 }
 
-static void xkeymap_convert_text_to_ascii(struct _xkeymap *p, char *text)
+static void xkeymap_convert_text_to_ascii(struct _xkeymap *p, char *text, KeyCode *kc, int *kc_mod)
 {
 	int text_len = strlen(text);
 
@@ -286,18 +288,19 @@ static void xkeymap_convert_text_to_ascii(struct _xkeymap *p, char *text)
 	{
 		if (isascii(text[i]) || isspace(text[i]))
 		{
+			p->char_to_keycode(p, text[i], &kc[j], &kc_mod[j]);
 			text[j++] = text[i];
 			continue;
 		}
 
-		char new_symbol = p->get_ascii(p, &text[i]);
+		char new_symbol = p->get_ascii(p, &text[i], &kc[j], &kc_mod[j]);
 
 		for(; i < text_len - 1; i++)
 		{
 			if (isascii(text[i + 1]) || isspace(text[i + 1]))
 				break;
-
-			if (p->get_ascii(p, &text[i + 1]) != NULLSYM)
+			
+			if (p->get_ascii(p, &text[i + 1], &kc[i + 1], &kc_mod[i + 1]) != NULLSYM)
 				break;
 		}
 

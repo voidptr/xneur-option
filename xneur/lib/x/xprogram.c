@@ -420,9 +420,6 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	char *selected_text = strdup(event_text);
 	XFree(event_text);
 
-	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED)
-		main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, selected_text);
-
 	if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
 		convert_text_to_translit(&selected_text);
 
@@ -640,7 +637,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
 		{
 			// Check last word to acronym list
-			//const char *word = get_last_word(p->string->content);
+			// FIX_ME!!! Possible memory leak
 			const char *word = get_last_word(p->string->get_utf_string(p->string));
 			
 			if (!word)
@@ -657,20 +654,20 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 					continue;
 				}
 				// Replace Abbreviation
-				printf("Found Abbreviation '%s' '%s'. Replacing to '%s'...\n", replacement, word, string);
+				log_message (DEBUG, "Found Abbreviation '%s' '%s'. Replacing to '%s'...", replacement, word, string);
 				
-				///*
 				set_event_mask(p->focus->owner_window, None);
 				grab_spec_keys(p->focus->owner_window, FALSE);
+
+				p->event->send_backspaces(p->event, strlen(get_last_word(p->string->content)));
 
 				char *tmp = malloc((strlen(string) + 1) * sizeof(char));
 				strcpy(tmp, string);
 				tmp[strlen(string)] = ' ';
 				tmp[strlen(string)+1] = '\0';
-				//char *tmp = strdup(string);
-				
-				p->event->send_backspaces(p->event, strlen(get_last_word(p->string->content)));
 				p->string->set_content(p->string, tmp);
+				free(tmp);
+	
 				p->send_string_silent(p, FALSE);
 				
 				set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
@@ -678,7 +675,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 
 				play_file(SOUND_REPLACE_ABBREVIATION);
 				p->string->save_and_clear(p->string, p->focus->owner_window);
-				//*/
+
 				free(replacement);
 				return TRUE;
 			}
