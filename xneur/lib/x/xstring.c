@@ -150,8 +150,6 @@ static int xstring_is_space_last(struct _xstring *p)
 	return FALSE;
 }
 
-#include "xswitchlang.h"
-
 static void xstring_set_content(struct _xstring *p, const char *new_content)
 {
 	char *content = strdup(new_content);
@@ -181,10 +179,6 @@ static void xstring_set_content(struct _xstring *p, const char *new_content)
 		return;
 
 	free(content);
-	
-	//for (int i = 0; i < p->cur_pos; i++)
-		//main_window->xkeymap->char_to_keycode(main_window->xkeymap, p->content[i], &p->keycode[i], &p->keycode_modifiers[i]);
-	//p->set_key_code(p, get_cur_lang());
 }
 
 static void xstring_change_case(struct _xstring *p)

@@ -599,6 +599,10 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton6");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->save_keyboard_log);
 	
+	// Ignore Keyboard Layout Mode
+	widget = glade_xml_get_widget (gxml, "checkbutton8");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->abbr_ignore_layout);
+	
 	// Sound Paths Preference
 	fill_sounds(0, gxml, "entry21", TRUE);
 	fill_sounds(1, gxml, "entry22", TRUE);
@@ -840,6 +844,9 @@ void xneur_save_preference(GladeXML *gxml)
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton6");
 	xconfig->save_keyboard_log = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton8");
+	xconfig->abbr_ignore_layout = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	// Sound Paths Preference
 	fill_sounds(0, gxml, "entry21", FALSE);

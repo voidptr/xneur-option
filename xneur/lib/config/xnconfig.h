@@ -161,7 +161,9 @@ struct _xneur_config
 	int   remember_layout;				// Remember layout for each of window
 	int   save_selection;				// Save selection after convert
 	int   save_keyboard_log;			// Save keyboard log
-
+	
+	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
+	
 	struct _list_char *draw_flag_apps;
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw
 

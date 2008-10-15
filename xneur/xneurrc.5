@@ -63,6 +63,17 @@ Here, <action> stands for an action of XNeur, <key> stands for a special key.
 
 [key] takes the values defined in your latin keyboard. Skip this value if hot key undefined.
 .TP 8
+.B ReplaceAbbreviationIgnoreLayout <param>
+This option enable or disable of the ignore keyboard layout for abbreviations list.
+
+Here, <param> takes the values "Yes", "No".
+.TP 8
+.B ReplaceAbbreviation <abbreviation> <full_text>
+Define an abbreviation, which be replased to full text.
+
+Here, <abbreviation> is abreviation and <full_text> is text.
+Multiple entries for this option in a single configuration file are allowed, like "one abbreviation - one option ReplaceAbbreviation". 
+.TP 8
 .B PlaySound <param>
 This option enable or disable sound playing.
 

@@ -129,6 +129,7 @@ static void xneur_load_config(int final)
 	log_message(LOG, "Save selection mode set to %s", xconfig->get_bool_name(xconfig->save_selection));
 	log_message(LOG, "Sound playing mode set to %s", xconfig->get_bool_name(xconfig->play_sounds));
 	log_message(LOG, "Logging keyboard mode set to %s", xconfig->get_bool_name(xconfig->save_keyboard_log));
+	log_message(LOG, "Ignore keyboard layout for abbreviations mode set to %s", xconfig->get_bool_name(xconfig->abbr_ignore_layout));
 }
 
 static void xneur_set_lock(void)

@@ -48,7 +48,13 @@ AddBind EnableLayout3 Control F4
 AddBind EnableLayout4 Control F5
 AddBind ReplaceAbbreviation Tab
 
-# Abbreviation Replacing
+# Word Replacing
+# Ignore keyboard layout for abbreviations list
+# Example:
+#ReplaceAbbreviationIgnoreLayout No
+ReplaceAbbreviationIgnoreLayout Yes
+
+# Abbreviations list
 # Example:
 #ReplaceAbbreviation xneur X Neural Switcher
 

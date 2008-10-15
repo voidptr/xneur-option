@@ -48,7 +48,8 @@ static const char *option_names[] = 	{
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
-						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceAbbreviation"
+						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceAbbreviation",
+						"ReplaceAbbreviationIgnoreLayout"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -352,6 +353,18 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->replace_words->add(p->replace_words, full_string);
 			break;
 		}
+		case 24: // Ignore keyboard layout for abbreviations
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, "Invalid value for ignore keyboard layout for abbreviations mode specified");
+				break;
+			}
+
+			p->abbr_ignore_layout = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -574,6 +587,7 @@ static void xneur_config_clear(struct _xneur_config *p)
 	p->layout_remember_apps	= list_char_init();
 	p->excluded_apps	= list_char_init();
 	p->draw_flag_apps	= list_char_init();
+	//p->replace_words	= list_char_init();
 }
 
 static int xneur_config_save(struct _xneur_config *p)
@@ -655,7 +669,12 @@ static int xneur_config_save(struct _xneur_config *p)
 	}
 	fprintf(stream, "\n");
 
-	fprintf(stream, "# Word Replacing\n");
+	fprintf(stream, "# Word Replacing\n# Ignore keyboard layout for abbreviations list\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#ReplaceAbbreviationIgnoreLayout No\n");
+	fprintf(stream, "ReplaceAbbreviationIgnoreLayout %s\n\n", p->get_bool_name(p->abbr_ignore_layout));
+			
+	fprintf(stream, "# Abbreviations list\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#ReplaceAbbreviation xneur X Neural Switcher\n");
 	for (int words = 0; words < p->replace_words->data_count; words++)

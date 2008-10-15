@@ -558,6 +558,8 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 	}
 }
 
+#include <ctype.h>
+
 static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action action)
 {
 	switch (action)
@@ -638,7 +640,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		{
 			// Check last word to acronym list
 			// FIX_ME!!! Possible memory leak
-			const char *word = get_last_word(p->string->get_utf_string(p->string));
+			char *word = get_last_word(p->string->get_utf_string(p->string));
 			
 			if (!word)
 				return FALSE;
@@ -647,6 +649,20 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			{
 				char *string		= strdup(xconfig->replace_words->data[words].string);
 				char *replacement	= strsep(&string, " ");
+
+				if (xconfig->abbr_ignore_layout)
+				{
+					KeyCode *dummy_kc = malloc(strlen(replacement) * sizeof(KeyCode));
+					int *dummy_kc_mod = malloc(strlen(replacement) * sizeof(int));
+					main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, replacement, dummy_kc, dummy_kc_mod);
+					
+					dummy_kc = realloc(dummy_kc, strlen(word) * sizeof(KeyCode));
+					dummy_kc_mod = realloc(dummy_kc_mod, strlen(word) * sizeof(int));
+					main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, word, dummy_kc, dummy_kc_mod);
+					
+					free(dummy_kc);
+					free(dummy_kc_mod);
+				}
 				
 				if (strcmp(replacement, word) != 0)
 				{
@@ -657,7 +673,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 				log_message (DEBUG, "Found Abbreviation '%s' '%s'. Replacing to '%s'...", replacement, word, string);
 				
 				set_event_mask(p->focus->owner_window, None);
-				grab_spec_keys(p->focus->owner_window, FALSE);
+				grab_spec_keys(p->focus->owner_window, FALSE);				
 
 				p->event->send_backspaces(p->event, strlen(get_last_word(p->string->content)));
 
