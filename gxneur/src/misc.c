@@ -51,6 +51,7 @@ static GtkListStore *store_auto_app			= NULL;
 static GtkListStore *store_manual_app			= NULL;
 static GtkListStore *store_layout_app			= NULL;
 static GtkListStore *store_draw_flag_app			= NULL;
+static GtkListStore *store_abbreviation			= NULL;
 
 static const char *modifier_names[]			= {"Shift", "Control", "Alt", "Super"};
 static const char *all_modifiers[]			= {"Control", "Shift", "Alt", "Super", "Control_R", "Shift_R", "Alt_R", "Super_R", "Control_L", "Shift_L", "Alt_L", "Super_L"};
@@ -603,6 +604,43 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton8");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->abbr_ignore_layout);
 	
+	// Abbreviations List set
+	treeview = glade_xml_get_widget (gxml, "treeview6");
+
+	store_abbreviation = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_abbreviation));
+	gtk_widget_show(treeview);
+
+	for (int i = 0; i < xconfig->replace_words->data_count; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_abbreviation), &iter);
+		char *string		= strdup(xconfig->replace_words->data[i].string);
+		char *replacement	= strsep(&string, " ");
+		gtk_list_store_set(GTK_LIST_STORE(store_abbreviation), &iter, 
+												0, replacement,
+												1, string, 
+												-1);
+		free(replacement);
+	}
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Abbreviation"), cell, "text", 0, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Full Text"), cell, "text", 1, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	// Button Add Abbreviation
+	widget = glade_xml_get_widget (gxml, "button32");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_abbreviation), G_OBJECT(treeview));
+	
+	// Button Remove Abbreviation
+	widget = glade_xml_get_widget (gxml, "button33");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_abbreviation), G_OBJECT(treeview));
+
 	// Sound Paths Preference
 	fill_sounds(0, gxml, "entry21", TRUE);
 	fill_sounds(1, gxml, "entry22", TRUE);
@@ -714,6 +752,11 @@ void xneur_add_draw_flag_app(void)
 	add_item(store_draw_flag_app);
 }
 
+void xneur_add_abbreviation(void)
+{
+	//add_item(store_draw_flag_app);
+}
+
 void xneur_rem_exclude_app(GtkWidget *widget)
 {
 	remove_item(widget, store_exclude_app);
@@ -737,6 +780,11 @@ void xneur_rem_layout_app(GtkWidget *widget)
 void xneur_rem_draw_flag_app(GtkWidget *widget)
 {
 	remove_item(widget, store_draw_flag_app);
+}
+
+void xneur_rem_abbreviation(GtkWidget *widget)
+{
+	remove_item(widget, store_abbreviation);
 }
 
 gboolean save_exclude_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
