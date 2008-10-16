@@ -33,6 +33,7 @@
 
 #define GLADE_FILE_ABOUT PACKAGE_GLADE_FILE_DIR"/about.glade"
 #define GLADE_FILE_CONFIG PACKAGE_GLADE_FILE_DIR"/config.glade"
+#define GLADE_FILE_ABBREVIATION_ADD PACKAGE_GLADE_FILE_DIR"/abbr_add.glade"
 
 #include "support.h"
 #include "callbacks.h"
@@ -754,7 +755,23 @@ void xneur_add_draw_flag_app(void)
 
 void xneur_add_abbreviation(void)
 {
-	//add_item(store_draw_flag_app);
+	GladeXML *gxml = glade_xml_new (GLADE_FILE_ABBREVIATION_ADD, NULL, NULL);
+	
+	glade_xml_signal_autoconnect (gxml);
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+
+	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+	if (window_icon_pixbuf)
+	{
+		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+		gdk_pixbuf_unref (window_icon_pixbuf);
+	}
+	
+	gtk_widget_show(window);
+	
+	// Button OK
+	//widget = glade_xml_get_widget (gxml, "button1");
+	//g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
 }
 
 void xneur_rem_exclude_app(GtkWidget *widget)
