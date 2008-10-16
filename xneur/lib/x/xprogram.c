@@ -676,14 +676,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 				grab_spec_keys(p->focus->owner_window, FALSE);				
 
 				p->event->send_backspaces(p->event, strlen(get_last_word(p->string->content)));
-
-				char *tmp = malloc((strlen(string) + 1) * sizeof(char));
-				strcpy(tmp, string);
-				tmp[strlen(string)] = ' ';
-				tmp[strlen(string)+1] = '\0';
-				p->string->set_content(p->string, tmp);
-				free(tmp);
-	
+				p->string->set_content(p->string, string);
 				p->send_string_silent(p, FALSE);
 				
 				set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
