@@ -645,9 +645,9 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			if (!word)
 				return FALSE;
 
-			for (int words = 0; words < xconfig->replace_words->data_count; words++)
+			for (int words = 0; words < xconfig->abbreviations->data_count; words++)
 			{
-				char *string		= strdup(xconfig->replace_words->data[words].string);
+				char *string		= strdup(xconfig->abbreviations->data[words].string);
 				char *replacement	= strsep(&string, " ");
 
 				if (xconfig->abbr_ignore_layout)

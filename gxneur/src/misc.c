@@ -612,11 +612,11 @@ void xneur_preference(void)
 	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_abbreviation));
 	gtk_widget_show(treeview);
 
-	for (int i = 0; i < xconfig->replace_words->data_count; i++)
+	for (int i = 0; i < xconfig->abbreviations->data_count; i++)
 	{
 		GtkTreeIter iter;
 		gtk_list_store_append(GTK_LIST_STORE(store_abbreviation), &iter);
-		char *string		= strdup(xconfig->replace_words->data[i].string);
+		char *string		= strdup(xconfig->abbreviations->data[i].string);
 		char *replacement	= strsep(&string, " ");
 		gtk_list_store_set(GTK_LIST_STORE(store_abbreviation), &iter, 
 												0, replacement,
@@ -753,6 +753,34 @@ void xneur_add_draw_flag_app(void)
 	add_item(store_draw_flag_app);
 }
 
+static void xneur_insert_abbreviation(GladeXML *gxml)
+{
+	GtkWidget *entry1 = glade_xml_get_widget (gxml, "entry1");
+	GtkWidget *entry2 = glade_xml_get_widget (gxml, "entry2");
+	const gchar *abbreviation = gtk_entry_get_text(GTK_ENTRY(entry1));
+	const gchar *full_text = gtk_entry_get_text(GTK_ENTRY(entry2));
+	if (strlen(abbreviation) == 0) 
+	{
+		error_msg("Abbreviation is empty!");
+		return;
+	}
+	if (strlen(full_text) == 0) 
+	{
+		error_msg("Full Text is empty!");
+		return;
+	}
+	
+	GtkTreeIter iter;
+	gtk_list_store_append(GTK_LIST_STORE(store_abbreviation), &iter);
+	gtk_list_store_set(GTK_LIST_STORE(store_abbreviation), &iter, 
+											0, gtk_entry_get_text(GTK_ENTRY(entry1)),
+											1, gtk_entry_get_text(GTK_ENTRY(entry2)), 
+										   -1);
+	
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+	gtk_widget_destroy(window);
+}
+
 void xneur_add_abbreviation(void)
 {
 	GladeXML *gxml = glade_xml_new (GLADE_FILE_ABBREVIATION_ADD, NULL, NULL);
@@ -770,8 +798,8 @@ void xneur_add_abbreviation(void)
 	gtk_widget_show(window);
 	
 	// Button OK
-	//widget = glade_xml_get_widget (gxml, "button1");
-	//g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
+	GtkWidget *widget = glade_xml_get_widget (gxml, "button1");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_insert_abbreviation), gxml);
 }
 
 void xneur_rem_exclude_app(GtkWidget *widget)
@@ -849,6 +877,29 @@ gboolean save_draw_flag_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter 
 	return FALSE;
 }
 
+gboolean save_abbreviation(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	//save_list(store_abbreviation, xconfig->abbreviations, iter);
+	gchar *abbreviation;
+	gchar *full_text;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_abbreviation), iter, 0, &abbreviation, 1, &full_text, -1);
+	
+	printf("%s\n", abbreviation);
+	printf("%s\n", full_text);
+	int ptr_len = strlen(abbreviation) + strlen(full_text) + 2;
+	gchar *ptr = malloc(ptr_len* sizeof(gchar));
+	snprintf(ptr, ptr_len, "%s %s", abbreviation, full_text);
+	xconfig->abbreviations->add(xconfig->abbreviations, ptr);
+
+	g_free(abbreviation);
+	g_free(full_text);
+	g_free(ptr);
+
+	return FALSE;
+}
+
 void xneur_save_preference(GladeXML *gxml)
 {
 	xconfig->clear(xconfig);
@@ -876,6 +927,7 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_manual_app), save_manual_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_layout_app), save_layout_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_draw_flag_app), save_draw_flag_app, NULL);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_abbreviation), save_abbreviation, NULL);
 	
 	fill_binds(0, gxml, "entry11", FALSE);
 	fill_binds(1, gxml, "entry12", FALSE);

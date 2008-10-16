@@ -167,7 +167,7 @@ struct _xneur_config
 	struct _list_char *draw_flag_apps;
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw
 
-	struct _list_char *replace_words;		// Array of words to replace
+	struct _list_char *abbreviations;		// Array of words to replace
 
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);

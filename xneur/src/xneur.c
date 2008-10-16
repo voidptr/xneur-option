@@ -117,10 +117,6 @@ static void xneur_load_config(int final)
 
 	log_message(DEBUG, "Configuration load complete");
 
-	log_message(LOG, "Words list to replace has %d records", xconfig->replace_words->data_count);
-	for (int words = 0; words < xconfig->replace_words->data_count; words++)
-		log_message(DEBUG, "'%s'", xconfig->replace_words->data[words].string);
-
 	log_message(LOG, "Default group for all new windows set to %d", xconfig->default_group);
 	log_message(LOG, "Manual mode set to %s", xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
 	log_message(LOG, "Mouse processing mode set to %s", xconfig->get_bool_name(xconfig->grab_mouse));
