@@ -31,6 +31,7 @@ struct _xevent
 {
 	Window owner_window;		// Window that recieves/sends event
 	XEvent event;			// Event to process
+	XEvent default_event;
 	KeyCode backspace;		// Backspace key code
 	KeyCode left;			// Left Arrow key code
 	KeyCode right;			// Right Arrow key code

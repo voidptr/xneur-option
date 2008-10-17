@@ -34,12 +34,15 @@
 
 static const char *grab_ungrab[2] = {"ungrab", "grab"};
 
-const KeySym spec_keys[] =	{   
-					XK_Return, XK_Tab, XK_space, XK_slash, XK_backslash, 
-					XK_question, XK_minus, XK_plus, XK_equal
+const KeySym mod_keys[] =	{   
+					XK_Shift_L, XK_Shift_R, XK_Caps_Lock,
+					XK_Control_L, XK_Control_R, 
+					XK_Alt_L, XK_Alt_R, XK_Meta_L,
+					XK_Num_Lock, XK_Super_L, XK_Hyper_L,
+					XK_Mode_switch, XK_ISO_Level3_Shift
 				};
 
-static const int total_spec_keys = sizeof(spec_keys) / sizeof(spec_keys[0]);
+static const int total_mod_keys = sizeof(mod_keys) / sizeof(mod_keys[0]);
 
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
@@ -135,23 +138,35 @@ void grab_key(Window window, KeyCode kc, int is_grab)
 
 void grab_spec_keys(Window window, int is_grab)
 {
-	for (int i = 0; i < total_spec_keys; i++)
+	int status;
+	if (is_grab)
 	{
-		KeyCode kc = XKeysymToKeycode(main_window->display, spec_keys[i]);
-		if (kc == 0)
-			continue;
-		grab_key(window, kc, is_grab);		
-	}
+		// Grab all keys...
+		status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, TRUE, GrabModeAsync, GrabModeAsync);
+		// ...without ModKeys.
+		for (int i = 0; i < total_mod_keys; i++)
+		{
+			KeyCode kc = XKeysymToKeycode(main_window->display, mod_keys[i]);
+			if (kc == 0)
+				continue;
+			grab_key(window, kc, FALSE);		
+		}
+	}	
+	else
+		status = XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
+	
+	if (status == BadValue)
+		log_message(ERROR, "Failed to %s keyboard with error BadValue", grab_ungrab[is_grab]);
+	else if (status == BadWindow)
+		log_message(ERROR, "Failed to %s keyboard with error BadWindow", grab_ungrab[is_grab]);
 }
 
 void grab_keyboard(Window window, int is_grab)
 {
 	int status;
 	if (is_grab)
-		//status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, TRUE, GrabModeAsync, GrabModeAsync);
 		status = XGrabKeyboard(main_window->display, window, TRUE, GrabModeAsync, GrabModeAsync, CurrentTime);
 	else
-		//status = XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
 		status = XUngrabKeyboard(main_window->display, CurrentTime);
 	
 	if (status == BadValue)

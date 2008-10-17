@@ -101,6 +101,7 @@ static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 
 	XSendEvent(main_window->display, p->owner_window, TRUE, KeyPressMask, &p->event);
 
+	/*
 	p->event.type			= KeyRelease;
 	p->event.xkey.type		= KeyRelease;
 	p->event.xkey.time		= CurrentTime;
@@ -109,6 +110,7 @@ static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 		usleep(xconfig->send_delay);
 
 	XSendEvent(main_window->display, p->owner_window, TRUE, KeyReleaseMask, &p->event);
+	*/
 }
 
 static void xevent_send_backspaces(struct _xevent *p, int count)
@@ -163,8 +165,20 @@ static int xevent_get_next_event(struct _xevent *p)
 
 static void xevent_send_next_event(struct _xevent *p)
 {
-	if (p->event.type == KeyPress || p->event.type == KeyRelease)
-		p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_cur_lang()];
+	// Processing CapsLock
+	if (p->event.xkey.state & LockMask)
+	{
+		if (p->event.xkey.state & ShiftMask)
+		{
+			p->event.xkey.state	&= ~ShiftMask;
+		}
+		else
+		{
+			p->event.xkey.state	|= ShiftMask;
+		}
+	}
+	
+	p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_cur_lang()];
 
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);
 }

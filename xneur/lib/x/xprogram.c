@@ -323,12 +323,20 @@ static void xprogram_process_input(struct _xprogram *p)
 			case KeyPress:
 			{
 				log_message(TRACE, "Received KeyPress (event type %d)", type);
+				// Save received event
+				p->event->default_event = p->event->event;
+				// Processing received event 
 				p->on_key_action(p);
+				// Restore event
+				p->event->event = p->event->default_event;
+				p->event->send_next_event(p->event);
 				break;
 			}
 			case KeyRelease:
 			{
 				log_message(TRACE, "Received KeyRelease (event type %d)", type);
+				// Resend special key back to window
+				p->event->send_next_event(p->event);
 				break;
 			}
 			case FocusIn:
@@ -504,8 +512,6 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 			p->last_action = action;
 
-			// Save event
-			XEvent tmp = p->event->event;
 			char sym = main_window->xkeymap->get_cur_ascii_char(main_window->xkeymap, p->event->event);
 
 			if (action == KLB_ADD_SYM)
@@ -526,18 +532,17 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 			// Checking word
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
-				p->check_last_word(p);
-
-			// Restore event
-			p->event->event = tmp;
+				p->check_last_word(p); 
 
 			// Add symbol to internal bufer
 			int modifier_mask = groups[get_cur_lang()] | p->event->get_cur_modifiers(p->event);
 			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, modifier_mask);
 
-			// Resend special key back to window
+			// Send Event
+			p->event->event = p->event->default_event;
 			p->event->send_next_event(p->event);
-
+			p->event->default_event.xkey.keycode = 0;
+			
 			// Resend blocked events back to window (from the event queue)
 			while (XEventsQueued(main_window->display, QueuedAlready))
 			{
@@ -558,8 +563,6 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 	}
 }
 
-#include <ctype.h>
-
 static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action action)
 {
 	switch (action)
@@ -571,6 +574,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			xconfig->set_manual_mode(xconfig, !xconfig->is_manual_mode(xconfig));
 
 			log_message(DEBUG, "Manual mode changed to %s", xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
+			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
 		}
 		case ACTION_CHANGE_SELECTED:
@@ -579,6 +583,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		{
 			p->selected_mode = action;
 			do_selection_notify();
+			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
 		}
 		case ACTION_CHANGE_STRING:	// User needs to change current string
@@ -610,29 +615,34 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 
 			play_file(SOUND_MANUAL_CHANGE_WORD);
 			p->cursor_update(p);
+			p->event->default_event.xkey.keycode = 0;
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_0:
 		{
 			switch_group(0);
+			p->event->default_event.xkey.keycode = 0;
 			play_file(SOUND_ENABLE_LAYOUT_0);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_1:
 		{
 			switch_group(1);
+			p->event->default_event.xkey.keycode = 0;
 			play_file(SOUND_ENABLE_LAYOUT_1);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_2:
 		{
 			switch_group(2);
+			p->event->default_event.xkey.keycode = 0;
 			play_file(SOUND_ENABLE_LAYOUT_2);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_3:
 		{
 			switch_group(3);
+			p->event->default_event.xkey.keycode = 0;
 			play_file(SOUND_ENABLE_LAYOUT_3);
 			break;
 		}
@@ -686,6 +696,9 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 				p->string->save_and_clear(p->string, p->focus->owner_window);
 
 				free(replacement);
+				
+				p->event->default_event.xkey.keycode = 0;
+				
 				return TRUE;
 			}
 			return FALSE;
