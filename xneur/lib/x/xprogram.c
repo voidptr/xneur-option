@@ -535,11 +535,11 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 				p->check_last_word(p); 
 
 			// Add symbol to internal bufer
+			p->event->event = p->event->default_event;
 			int modifier_mask = groups[get_cur_lang()] | p->event->get_cur_modifiers(p->event);
 			p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, modifier_mask);
 
 			// Send Event
-			p->event->event = p->event->default_event;
 			p->event->send_next_event(p->event);
 			p->event->default_event.xkey.keycode = 0;
 			
