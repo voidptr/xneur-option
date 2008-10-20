@@ -157,6 +157,26 @@ static int xevent_get_cur_modifiers(struct _xevent *p)
 	return mask;
 }
 
+static int get_all_cur_modifiers(struct _xevent *p)
+{
+	int mask = 0;
+	if (p->event.xkey.state & ShiftMask)
+		mask += (1 << 0);
+	if (p->event.xkey.state & LockMask)
+		mask += (1 << 1);
+	if (p->event.xkey.state & ControlMask)
+		mask += (1 << 2);
+	if (p->event.xkey.state & Mod1Mask)
+		mask += (1 << 3);
+	if (p->event.xkey.state & Mod2Mask)
+		mask += (1 << 4);
+	if (p->event.xkey.state & Mod3Mask)
+		mask += (1 << 5);
+	if (p->event.xkey.state & Mod4Mask)
+		mask += (1 << 6);
+	return mask;
+}
+
 static int xevent_get_next_event(struct _xevent *p)
 {
 	XNextEvent(main_window->display, &(p->event));
@@ -165,20 +185,7 @@ static int xevent_get_next_event(struct _xevent *p)
 
 static void xevent_send_next_event(struct _xevent *p)
 {
-	// Processing CapsLock
-	if (p->event.xkey.state & LockMask)
-	{
-		if (p->event.xkey.state & ShiftMask)
-		{
-			p->event.xkey.state	&= ~ShiftMask;
-		}
-		else
-		{
-			p->event.xkey.state	|= ShiftMask;
-		}
-	}
-	
-	p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_cur_lang()];
+	p->event.xkey.state = get_all_cur_modifiers(p) | groups[get_cur_lang()];
 
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);
 }

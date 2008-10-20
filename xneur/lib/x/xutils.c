@@ -153,7 +153,7 @@ void grab_spec_keys(Window window, int is_grab)
 		}
 	}	
 	else
-		status = XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
+		status = XUngrabKeyboard(main_window->display, CurrentTime);
 	
 	if (status == BadValue)
 		log_message(ERROR, "Failed to %s keyboard with error BadValue", grab_ungrab[is_grab]);
