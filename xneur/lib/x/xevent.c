@@ -148,20 +148,6 @@ static int xevent_get_cur_modifiers(struct _xevent *p)
 	int mask = 0;
 	if (p->event.xkey.state & ShiftMask)
 		mask += (1 << 0);
-	if (p->event.xkey.state & ControlMask)
-		mask += (1 << 2);
-	if (p->event.xkey.state & Mod1Mask)
-		mask += (1 << 3);
-	if (p->event.xkey.state & Mod4Mask)
-		mask += (1 << 6);
-	return mask;
-}
-
-static int get_all_cur_modifiers(struct _xevent *p)
-{
-	int mask = 0;
-	if (p->event.xkey.state & ShiftMask)
-		mask += (1 << 0);
 	if (p->event.xkey.state & LockMask)
 		mask += (1 << 1);
 	if (p->event.xkey.state & ControlMask)
@@ -185,7 +171,7 @@ static int xevent_get_next_event(struct _xevent *p)
 
 static void xevent_send_next_event(struct _xevent *p)
 {
-	p->event.xkey.state = get_all_cur_modifiers(p) | groups[get_cur_lang()];
+	p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_cur_lang()];
 
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);
 }

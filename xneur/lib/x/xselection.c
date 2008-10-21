@@ -63,7 +63,8 @@ char* get_selected_text(XSelectionEvent *event)
 
 void on_selection_converted(void)
 {
-	XSetSelectionOwner(main_window->display, XA_PRIMARY, None, CurrentTime);
+	Atom selection = XInternAtom(main_window->display, "PRIMARY", FALSE);
+	XSetSelectionOwner(main_window->display, selection, None, CurrentTime);
 }
 
 void do_selection_notify(void)

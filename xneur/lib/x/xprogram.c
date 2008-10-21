@@ -370,6 +370,12 @@ static void xprogram_process_input(struct _xprogram *p)
 				p->process_selection_notify(p);
 				break;
 			}
+			case SelectionRequest:
+			{
+				log_message(TRACE, "Received SelectionRequest (event type %d)", type);
+				p->process_selection_notify(p);
+				break;
+			}
 			case ButtonPress:
 			{
 				p->string->save_and_clear(p->string, p->focus->owner_window);
@@ -527,8 +533,6 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 			// Block events of keyboard (push to event queue)
 			set_event_mask(p->focus->owner_window, None);
-			grab_spec_keys(p->focus->owner_window, FALSE);
-			grab_keyboard(p->focus->owner_window, TRUE);
 
 			// Checking word
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
@@ -542,20 +546,9 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			// Send Event
 			p->event->send_next_event(p->event);
 			p->event->default_event.xkey.keycode = 0;
-			
-			// Resend blocked events back to window (from the event queue)
-			while (XEventsQueued(main_window->display, QueuedAlready))
-			{
-				p->event->get_next_event(p->event);
-				if (p->event->event.xany.window == main_window->flag_window)
-					continue;
-				p->event->send_next_event(p->event);
-			}
-
+						
 			// Unblock keyboard
-			grab_keyboard(p->focus->owner_window, FALSE);
 			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
-			grab_spec_keys(p->focus->owner_window, TRUE);
 
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			return;
