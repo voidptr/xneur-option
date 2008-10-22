@@ -126,8 +126,8 @@ static void xneur_load_config(int final)
 	log_message(LOG, "Sound playing mode set to %s", xconfig->get_bool_name(xconfig->play_sounds));
 	log_message(LOG, "Logging keyboard mode set to %s", xconfig->get_bool_name(xconfig->save_keyboard_log));
 	log_message(LOG, "Ignore keyboard layout for abbreviations mode set to %s", xconfig->get_bool_name(xconfig->abbr_ignore_layout));
-	log_message(LOG, "Change of iNCIDENTAL CapsLock mode set to %s", xconfig->get_bool_name(xconfig->change_incidental_caps));
-	log_message(LOG, "Change of two CApital letter mode set to %s", xconfig->get_bool_name(xconfig->change_two_capital_letter));
+	log_message(LOG, "Correct of iNCIDENTAL CapsLock mode set to %s", xconfig->get_bool_name(xconfig->correct_incidental_caps));
+	log_message(LOG, "Correct of two CApital letter mode set to %s", xconfig->get_bool_name(xconfig->correct_two_capital_letter));
 }
 
 

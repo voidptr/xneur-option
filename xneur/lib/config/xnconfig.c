@@ -49,7 +49,7 @@ static const char *option_names[] = 	{
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceAbbreviation",
-						"ReplaceAbbreviationIgnoreLayout", "ChangeIncidentalCaps", "ChangeTwoCapitalLetter"
+						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -62,7 +62,7 @@ static const char *sound_names[] =	{
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"AutomaticChangeWord", "ManualChangeWord", "ChangeString",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
-						"ReplaceAbbreviation", "ChangeIncidentalCaps", "ChangeTwoCapitalLetter"
+						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter"
 					};
 
 static int load_lang = -1;
@@ -374,7 +374,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->change_incidental_caps = index;
+			p->correct_incidental_caps = index;
 			break;
 		}
 		case 26: // Change two CApital letter Mode
@@ -386,7 +386,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->change_two_capital_letter = index;
+			p->correct_two_capital_letter = index;
 			break;
 		}
 	}
@@ -775,15 +775,15 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#SaveLog No\n");
 	fprintf(stream, "SaveLog %s\n\n", p->get_bool_name(p->save_keyboard_log));
 
-	fprintf(stream, "# This option enable or disable change of iNCIDENTAL CapsLock\n");
+	fprintf(stream, "# This option enable or disable correction of iNCIDENTAL CapsLock\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#ChangeIncidentalCaps Yes\n");
-	fprintf(stream, "ChangeIncidentalCaps %s\n\n", p->get_bool_name(p->change_incidental_caps));
+	fprintf(stream, "#CorrectIncidentalCaps Yes\n");
+	fprintf(stream, "CorrectIncidentalCaps %s\n\n", p->get_bool_name(p->correct_incidental_caps));
 
-	fprintf(stream, "# This option enable or disable change of two CApital letter\n");
+	fprintf(stream, "# This option enable or disable correction of two CApital letter\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#ChangeTwoCapitalLetter Yes\n");
-	fprintf(stream, "ChangeTwoCapitalLetter %s\n\n", p->get_bool_name(p->change_two_capital_letter));
+	fprintf(stream, "#CorrectTwoCapitalLetter Yes\n");
+	fprintf(stream, "CorrectTwoCapitalLetter %s\n\n", p->get_bool_name(p->correct_two_capital_letter));
 			
 	fprintf(stream, "# That's all\n");
 

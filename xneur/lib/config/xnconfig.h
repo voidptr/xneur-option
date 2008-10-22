@@ -62,8 +62,8 @@ enum _sound_action
 	SOUND_TRANSLIT_SELECTED,
 	SOUND_CHANGECASE_SELECTED,
 	SOUND_REPLACE_ABBREVIATION,
-	SOUND_CHANGE_INCIDENTAL_CAPS,
-	SOUND_CHANGE_TWO_CAPITAL_LETTER,
+	SOUND_CORR_INCIDENTAL_CAPS,
+	SOUND_CORR_TWO_CAPITAL_LETTER,
 	SOUND_NONE,
 };
 
@@ -85,12 +85,12 @@ enum _hotkey_action
 
 enum _change_action
 {
-	CHANGE_INCIDENTAL_CAPS = -2,
-	CHANGE_TWO_CAPITAL_LETTER,
-	CHANGE_ENABLE_LAYOUT_0,
-	CHANGE_ENABLE_LAYOUT_1,
-	CHANGE_ENABLE_LAYOUT_2,
-	CHANGE_ENABLE_LAYOUT_3,
+	CORR_INCIDENTAL_CAPS = -2,
+	CORR_TWO_CAPITAL_LETTER,
+	ENABLE_LAYOUT_0,
+	ENABLE_LAYOUT_1,
+	ENABLE_LAYOUT_2,
+	ENABLE_LAYOUT_3,
 };
 
 struct _xneur_language
@@ -157,8 +157,8 @@ struct _xneur_config
 	int   remember_layout;				// Remember layout for each of window
 	int   save_selection;				// Save selection after convert
 	int   save_keyboard_log;			// Save keyboard log
-	int   change_incidental_caps;		// Change iNCIDENTAL CapsLock
-	int   change_two_capital_letter;	// Change two CApital letter
+	int   correct_incidental_caps;		// Change iNCIDENTAL CapsLock
+	int   correct_two_capital_letter;	// Change two CApital letter
 	
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
 	

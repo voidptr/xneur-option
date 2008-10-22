@@ -424,7 +424,7 @@ static void xprogram_change_lang(struct _xprogram *p, int new_lang)
 
 static void xprogram_change_incidental_caps(struct _xprogram *p)
 {
-	log_message(DEBUG, "Changing iNCIDENTAL CapsLock");
+	log_message(DEBUG, "Correcting iNCIDENTAL CapsLock");
 	// Change modifier mask
 	p->string->set_uncaps_mask(p->string);
 	// Change CAPS if need
@@ -443,7 +443,7 @@ static void xprogram_change_incidental_caps(struct _xprogram *p)
 
 static void xprogram_change_two_capital_letter(struct _xprogram *p)
 {
-	log_message(DEBUG, "Changing two CApital letter");
+	log_message(DEBUG, "Correcting two CApital letter");
 	// Change modifier mask
 	p->string->keycode_modifiers[1] = p->string->keycode_modifiers[1] & (~ShiftMask);
 }
@@ -558,11 +558,11 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			set_event_mask(p->focus->owner_window, None);
 
 			// Check two capital letter
-			if (xconfig->change_two_capital_letter)
+			if (xconfig->correct_two_capital_letter)
 				p->check_tcl_last_word(p);
 			
 			// Check incidental caps
-			if (xconfig->change_incidental_caps)
+			if (xconfig->correct_incidental_caps)
 				p->check_caps_last_word(p); 
 			
 			// Checking word
@@ -778,8 +778,8 @@ static void xprogram_check_caps_last_word(struct _xprogram *p)
 				return;
 		}
 		
-		p->change_word(p, CHANGE_INCIDENTAL_CAPS);
-		play_file(SOUND_CHANGE_INCIDENTAL_CAPS);
+		p->change_word(p, CORR_INCIDENTAL_CAPS);
+		play_file(SOUND_CORR_INCIDENTAL_CAPS);
 		return;
 	}
 	
@@ -797,8 +797,8 @@ static void xprogram_check_tcl_last_word(struct _xprogram *p)
 			if (p->string->keycode_modifiers[offset+i] & ShiftMask)
 				return;
 		
-		p->change_word(p, CHANGE_TWO_CAPITAL_LETTER);
-		play_file(SOUND_CHANGE_TWO_CAPITAL_LETTER);
+		p->change_word(p, CORR_TWO_CAPITAL_LETTER);
+		play_file(SOUND_CORR_TWO_CAPITAL_LETTER);
 		return;
 	}
 	
@@ -835,20 +835,20 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 
 	switch (action)
 	{
-		case CHANGE_INCIDENTAL_CAPS:
+		case CORR_INCIDENTAL_CAPS:
 		{
 			p->change_incidental_caps(p);
 			break;
 		}
-		case CHANGE_TWO_CAPITAL_LETTER:
+		case CORR_TWO_CAPITAL_LETTER:
 		{
 			p->change_two_capital_letter(p);
 			break;
 		}
-		case CHANGE_ENABLE_LAYOUT_0:
-		case CHANGE_ENABLE_LAYOUT_1:
-		case CHANGE_ENABLE_LAYOUT_2:
-		case CHANGE_ENABLE_LAYOUT_3:
+		case ENABLE_LAYOUT_0:
+		case ENABLE_LAYOUT_1:
+		case ENABLE_LAYOUT_2:
+		case ENABLE_LAYOUT_3:
 		{
 			p->change_lang(p, action);
 			break;
