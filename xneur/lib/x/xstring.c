@@ -57,7 +57,7 @@ static void set_new_size(struct _xstring *p, int new_size)
 	p->keycode_modifiers	= (int *) realloc(p->keycode_modifiers, p->cur_size * sizeof(int));
 }
 
-static void xstring_set_key_code(struct _xstring *p, int lang)
+static void xstring_set_lang_mask(struct _xstring *p, int lang)
 {
 	int keycode_mod		= get_keycode_mod(xconfig->get_lang_group(xconfig, lang));
 	int languages_mask	= get_languages_mask();
@@ -68,6 +68,13 @@ static void xstring_set_key_code(struct _xstring *p, int lang)
 		p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~languages_mask);
 		p->keycode_modifiers[i] = p->keycode_modifiers[i] | keycode_mod;
 	}
+}
+
+static void xstring_set_uncaps_mask(struct _xstring *p)
+{
+	// Set uncaps bit
+	for (int i = 0; i < p->cur_pos; i++)
+		p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~LockMask);
 }
 
 static void xstring_save_log(struct _xstring *p, char *file_name, Window window)
@@ -290,7 +297,8 @@ struct _xstring* xstring_init(void)
 	p->save_log		= xstring_save_log;
 	p->save_and_clear	= xstring_save_and_clear;
 	p->is_space_last	= xstring_is_space_last;
-	p->set_key_code		= xstring_set_key_code;
+	p->set_lang_mask		= xstring_set_lang_mask;
+	p->set_uncaps_mask		= xstring_set_uncaps_mask;
 	p->set_content		= xstring_set_content;
 	p->change_case		= xstring_change_case;
 	p->add_symbol		= xstring_add_symbol;

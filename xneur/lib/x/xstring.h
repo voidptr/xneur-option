@@ -35,7 +35,8 @@ struct _xstring
 	void (*save_log) (struct _xstring *p, char *path, Window window);
 	void (*save_and_clear) (struct _xstring *p, Window window);
 	int  (*is_space_last) (struct _xstring *p);
-	void (*set_key_code) (struct _xstring *p, int group);
+	void (*set_lang_mask) (struct _xstring *p, int group);
+	void (*set_uncaps_mask) (struct _xstring *p);
 	void (*set_content) (struct _xstring *p, const char *new_content);
 	void (*change_case) (struct _xstring *p);
 	void (*add_symbol) (struct _xstring *p, char sym, KeyCode keycode, int modifier);

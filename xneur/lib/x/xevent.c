@@ -191,7 +191,8 @@ struct _xevent* xevent_init(void)
 	p->backspace		= XKeysymToKeycode(main_window->display, XK_BackSpace);
 	p->left			= XKeysymToKeycode(main_window->display, XK_Left);
 	p->right		= XKeysymToKeycode(main_window->display, XK_Right);
-
+	p->caps			= XKeysymToKeycode(main_window->display, XK_Caps_Lock);
+	
 	// Functions mapping
 	p->get_next_event	= xevent_get_next_event;
 	p->send_next_event	= xevent_send_next_event;

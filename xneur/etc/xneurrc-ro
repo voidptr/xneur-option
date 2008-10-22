@@ -79,6 +79,8 @@ AddSound ChangeSelected switch.wav
 AddSound TranslitSelected switch.wav
 AddSound ChangecaseSelected switch.wav
 AddSound ReplaceAbbreviation switch.wav
+AddSound ChangeIncidentalCaps 
+AddSound ChangeTwoCapitalLetter 
 
 # This option enable or disable mouse processing
 # Example:
@@ -121,5 +123,15 @@ AddFlagPixmap Layout4Flag
 #DrawFlagApp Gedit
 DrawFlagApp Gedit
 DrawFlagApp Pidgin
+
+# This option enable or disable change of iNCIDENTAL CapsLock
+# Example:
+#ChangeIncidentalCaps Yes
+ChangeIncidentalCaps No
+
+# This option enable or disable change of two CApital letter
+# Example:
+#ChangeTwoCapitalLetter Yes
+ChangeTwoCapitalLetter No
 
 # That's all

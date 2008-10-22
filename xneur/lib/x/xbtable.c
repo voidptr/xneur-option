@@ -93,6 +93,11 @@ static void bind_action(enum _hotkey_action action)
 
 enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
 {
+	// Reset Caps and Num mask
+	mask &= ~LockMask;
+	mask &= ~Mod2Mask;
+	mask &= ~Mod3Mask;
+	
 	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
 	{
 		if (btable[action].key_sym != key_sym && btable[action].key_sym_shift != key_sym)

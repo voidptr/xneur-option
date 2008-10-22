@@ -34,7 +34,7 @@
 #define PIXMAPDIR			"pixmaps"
 
 #define MAX_FLAGS			4
-#define MAX_SOUNDS			15
+#define MAX_SOUNDS			17
 #define MAX_HOTKEYS			11
 
 enum _flag_action
@@ -62,6 +62,8 @@ enum _sound_action
 	SOUND_TRANSLIT_SELECTED,
 	SOUND_CHANGECASE_SELECTED,
 	SOUND_REPLACE_ABBREVIATION,
+	SOUND_CHANGE_INCIDENTAL_CAPS,
+	SOUND_CHANGE_TWO_CAPITAL_LETTER,
 	SOUND_NONE,
 };
 
@@ -81,20 +83,14 @@ enum _hotkey_action
 	ACTION_NONE,
 };
 
-enum _hotkey_modifier
+enum _change_action
 {
-	MODIFIER_NONE = 0,
-	MODIFIER_SHIFT,
-	MODIFIER_CONTROL,
-	MODIFIER_ALT,
-};
-
-enum _hotkey_key
-{
-	KEY_NONE = 0,
-	KEY_BREAK,
-	KEY_SCROLL_LOCK,
-	KEY_PRINT_SCREEN,
+	CHANGE_INCIDENTAL_CAPS = -2,
+	CHANGE_TWO_CAPITAL_LETTER,
+	CHANGE_ENABLE_LAYOUT_0,
+	CHANGE_ENABLE_LAYOUT_1,
+	CHANGE_ENABLE_LAYOUT_2,
+	CHANGE_ENABLE_LAYOUT_3,
 };
 
 struct _xneur_language
@@ -161,6 +157,8 @@ struct _xneur_config
 	int   remember_layout;				// Remember layout for each of window
 	int   save_selection;				// Save selection after convert
 	int   save_keyboard_log;			// Save keyboard log
+	int   change_incidental_caps;		// Change iNCIDENTAL CapsLock
+	int   change_two_capital_letter;	// Change two CApital letter
 	
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
 	

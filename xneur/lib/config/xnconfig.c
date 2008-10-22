@@ -49,7 +49,7 @@ static const char *option_names[] = 	{
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceAbbreviation",
-						"ReplaceAbbreviationIgnoreLayout"
+						"ReplaceAbbreviationIgnoreLayout", "ChangeIncidentalCaps", "ChangeTwoCapitalLetter"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -62,7 +62,7 @@ static const char *sound_names[] =	{
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"AutomaticChangeWord", "ManualChangeWord", "ChangeString",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
-						"ReplaceAbbreviation"
+						"ReplaceAbbreviation", "ChangeIncidentalCaps", "ChangeTwoCapitalLetter"
 					};
 
 static int load_lang = -1;
@@ -363,6 +363,30 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 
 			p->abbr_ignore_layout = index;
+			break;
+		}
+		case 25: // Change iNCIDENTAL CapsLock Mode
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, "Invalid value for change iNCIDENTAL CapsLock Mode mode specified");
+				break;
+			}
+
+			p->change_incidental_caps = index;
+			break;
+		}
+		case 26: // Change two CApital letter Mode
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, "Invalid value for change two CApital letter mode specified");
+				break;
+			}
+
+			p->change_two_capital_letter = index;
 			break;
 		}
 	}
@@ -690,7 +714,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	for (int sound = 0; sound < MAX_SOUNDS; sound++)
 	{
 		if (p->sounds[sound].file == NULL)
-			fprintf(stream, "AddSound %s\n", sound_names[sound]);
+			fprintf(stream, "AddSound %s \n", sound_names[sound]);
 		else
 			fprintf(stream, "AddSound %s %s\n", sound_names[sound], p->sounds[sound].file);
 	}
@@ -751,6 +775,16 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#SaveLog No\n");
 	fprintf(stream, "SaveLog %s\n\n", p->get_bool_name(p->save_keyboard_log));
 
+	fprintf(stream, "# This option enable or disable change of iNCIDENTAL CapsLock\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#ChangeIncidentalCaps Yes\n");
+	fprintf(stream, "ChangeIncidentalCaps %s\n\n", p->get_bool_name(p->change_incidental_caps));
+
+	fprintf(stream, "# This option enable or disable change of two CApital letter\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#ChangeTwoCapitalLetter Yes\n");
+	fprintf(stream, "ChangeTwoCapitalLetter %s\n\n", p->get_bool_name(p->change_two_capital_letter));
+			
 	fprintf(stream, "# That's all\n");
 
 	fclose(stream);

@@ -418,8 +418,35 @@ static void xprogram_process_input(struct _xprogram *p)
 static void xprogram_change_lang(struct _xprogram *p, int new_lang)
 {
 	log_message(DEBUG, "Changing language from %s to %s", xconfig->get_lang_name(xconfig, get_cur_lang()), xconfig->get_lang_name(xconfig, new_lang));
-	p->string->set_key_code(p->string, new_lang);
+	p->string->set_lang_mask(p->string, new_lang);
 	switch_lang(new_lang);
+}
+
+static void xprogram_change_incidental_caps(struct _xprogram *p)
+{
+	log_message(DEBUG, "Changing iNCIDENTAL CapsLock");
+	// Change modifier mask
+	p->string->set_uncaps_mask(p->string);
+	// Change CAPS if need
+	if (get_key_state(XK_Caps_Lock))
+	{
+		log_message(DEBUG, "Caps ENABLED");
+		int xkb_opcode, xkb_event, xkb_error;
+		int xkb_lmaj = XkbMajorVersion;
+		int xkb_lmin = XkbMinorVersion;
+		if (XkbLibraryVersion(&xkb_lmaj, &xkb_lmin) && XkbQueryExtension(main_window->display, &xkb_opcode, &xkb_event, &xkb_error,
+			       &xkb_lmaj, &xkb_lmin))
+			{
+				XkbLockModifiers (main_window->display, XkbUseCoreKbd, LockMask, 0);
+			}
+	}
+}
+
+static void xprogram_change_two_capital_letter(struct _xprogram *p)
+{
+	log_message(DEBUG, "Changing two CApital letter");
+	// Change modifier mask
+	p->string->keycode_modifiers[1] = p->string->keycode_modifiers[1] & (~ShiftMask);
 }
 
 static void xprogram_process_selection_notify(struct _xprogram *p)
@@ -478,13 +505,9 @@ static void xprogram_on_key_action(struct _xprogram *p)
 {
 	KeySym key = p->event->get_cur_keysym(p->event);
 
+	// Delete language modifier mask
 	int modifier_mask = p->event->get_cur_modifiers(p->event);
-	if (p->modifier_mask != NO_MODIFIER_MASK)
-	{
-		p->event->event.xkey.state = p->modifier_mask;
-		p->modifier_mask = NO_MODIFIER_MASK;
-	}
-
+	
 	enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
 	if (p->perform_manual_action(p, manual_action))
 		return;
@@ -526,7 +549,8 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 					p->changed_manual = MANUAL_FLAG_UNSET;
 
 				// Add symbol to internal bufer
-				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, p->event->event.xkey.state);
+				int modifier_mask = groups[get_cur_lang()] | p->event->get_cur_modifiers(p->event);
+				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, modifier_mask);
 
 				return;
 			}
@@ -534,9 +558,17 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			// Block events of keyboard (push to event queue)
 			set_event_mask(p->focus->owner_window, None);
 
+			// Check incidental caps
+			if (xconfig->change_incidental_caps)
+				p->check_caps_last_word(p); 
+			
+			// Check two capital letter
+			if (xconfig->change_two_capital_letter)
+				p->check_tcl_last_word(p);
+			
 			// Checking word
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
-				p->check_last_word(p); 
+				p->check_lang_last_word(p); 
 
 			// Add symbol to internal bufer
 			p->event->event = p->event->default_event;
@@ -704,7 +736,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 	return TRUE;
 }
 
-static void xprogram_check_last_word(struct _xprogram *p)
+static void xprogram_check_lang_last_word(struct _xprogram *p)
 {
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
 		return;
@@ -733,6 +765,47 @@ static void xprogram_check_last_word(struct _xprogram *p)
 	p->cursor_update(p);
 }
 
+static void xprogram_check_caps_last_word(struct _xprogram *p)
+{
+	int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+	
+	if ((p->string->keycode_modifiers[offset] & LockMask) && (p->string->keycode_modifiers[offset] & ShiftMask))
+	{
+		for (int i = 1; i < p->string->cur_pos - offset; i++)
+		{
+			if ((p->string->keycode_modifiers[offset+i] & LockMask) && (p->string->keycode_modifiers[offset+i] & ShiftMask))
+				return;
+			if (!(p->string->keycode_modifiers[offset+i] & LockMask))
+				return;
+		}
+		
+		p->change_word(p, CHANGE_INCIDENTAL_CAPS);
+		play_file(SOUND_CHANGE_INCIDENTAL_CAPS);
+		return;
+	}
+	
+	return;
+}
+
+static void xprogram_check_tcl_last_word(struct _xprogram *p)
+{
+	int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+	
+	if ((p->string->keycode_modifiers[offset] & ShiftMask) &&
+		(p->string->keycode_modifiers[offset+1] & ShiftMask))
+	{
+		for (int i = 2; i < p->string->cur_pos - offset; i++)
+			if (p->string->keycode_modifiers[offset+i] & ShiftMask)
+				return;
+		
+		p->change_word(p, CHANGE_TWO_CAPITAL_LETTER);
+		play_file(SOUND_CHANGE_TWO_CAPITAL_LETTER);
+		return;
+	}
+	
+	return;
+}
+
 static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)
 {
 	if (p->string->cur_pos == 0)
@@ -751,7 +824,7 @@ static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces
 	p->event->send_string(p->event, p->string);		// Send new string
 }
 
-static void xprogram_change_word(struct _xprogram *p, int new_lang)
+static void xprogram_change_word(struct _xprogram *p, enum _change_action action)
 {
 	int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
 
@@ -761,7 +834,27 @@ static void xprogram_change_word(struct _xprogram *p, int new_lang)
 	p->string->keycode_modifiers	+= offset;
 	p->string->cur_pos		-= offset;
 
-	p->change_lang(p, new_lang);
+	switch (action)
+	{
+		case CHANGE_INCIDENTAL_CAPS:
+		{
+			p->change_incidental_caps(p);
+			break;
+		}
+		case CHANGE_TWO_CAPITAL_LETTER:
+		{
+			p->change_two_capital_letter(p);
+			break;
+		}
+		case CHANGE_ENABLE_LAYOUT_0:
+		case CHANGE_ENABLE_LAYOUT_1:
+		case CHANGE_ENABLE_LAYOUT_2:
+		case CHANGE_ENABLE_LAYOUT_3:
+		{
+			p->change_lang(p, action);
+			break;
+		}
+	}
 	p->send_string_silent(p, TRUE);
 
 	// Revert fields back
@@ -862,11 +955,15 @@ struct _xprogram* xprogram_init(void)
 	p->process_input		= xprogram_process_input;
 	p->perform_auto_action		= xprogram_perform_auto_action;
 	p->perform_manual_action	= xprogram_perform_manual_action;
-	p->check_last_word		= xprogram_check_last_word;
+	p->check_lang_last_word		= xprogram_check_lang_last_word;
+	p->check_caps_last_word		= xprogram_check_caps_last_word;
+	p->check_tcl_last_word		= xprogram_check_tcl_last_word;
 	p->change_word			= xprogram_change_word;
 	p->add_word_to_dict		= xprogram_add_word_to_dict;
 	p->process_selection_notify	= xprogram_process_selection_notify;
 	p->change_lang			= xprogram_change_lang;
+	p->change_incidental_caps = xprogram_change_incidental_caps;
+	p->change_two_capital_letter = xprogram_change_two_capital_letter;
 	p->send_string_silent		= xprogram_send_string_silent;
 
 	return p;
