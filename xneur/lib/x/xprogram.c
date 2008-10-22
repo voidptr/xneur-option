@@ -430,7 +430,6 @@ static void xprogram_change_incidental_caps(struct _xprogram *p)
 	// Change CAPS if need
 	if (get_key_state(XK_Caps_Lock))
 	{
-		log_message(DEBUG, "Caps ENABLED");
 		int xkb_opcode, xkb_event, xkb_error;
 		int xkb_lmaj = XkbMajorVersion;
 		int xkb_lmin = XkbMinorVersion;
@@ -558,13 +557,13 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			// Block events of keyboard (push to event queue)
 			set_event_mask(p->focus->owner_window, None);
 
-			// Check incidental caps
-			if (xconfig->change_incidental_caps)
-				p->check_caps_last_word(p); 
-			
 			// Check two capital letter
 			if (xconfig->change_two_capital_letter)
 				p->check_tcl_last_word(p);
+			
+			// Check incidental caps
+			if (xconfig->change_incidental_caps)
+				p->check_caps_last_word(p); 
 			
 			// Checking word
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
