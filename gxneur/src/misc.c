@@ -34,7 +34,7 @@
 #define GLADE_FILE_ABOUT PACKAGE_GLADE_FILE_DIR"/about.glade"
 #define GLADE_FILE_CONFIG PACKAGE_GLADE_FILE_DIR"/config.glade"
 #define GLADE_FILE_ABBREVIATION_ADD PACKAGE_GLADE_FILE_DIR"/abbr_add.glade"
-#define GLADE_FILE_CHOOSE PACKAGE_GLADE_FILE_DIR"/edit_sound.glade"
+#define GLADE_FILE_CHOOSE PACKAGE_GLADE_FILE_DIR"/choose_file.glade"
 
 #include "support.h"
 #include "callbacks.h"
