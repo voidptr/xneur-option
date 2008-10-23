@@ -790,6 +790,8 @@ static void xprogram_check_tcl_last_word(struct _xprogram *p)
 {
 	int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
 	
+	if (p->string->cur_pos - offset <= 2)
+		return;
 	if ((p->string->keycode_modifiers[offset] & ShiftMask) &&
 		(p->string->keycode_modifiers[offset+1] & ShiftMask))
 	{

@@ -80,7 +80,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		XGetInputFocus(main_window->display, &new_window, &revert_to);
 
 		// Catch not empty and not system window 
-		if (new_window != None && new_window > 10)
+		if (new_window != None && new_window > 1000)
 			break;
 
 		log_message(DEBUG, "New window empty");

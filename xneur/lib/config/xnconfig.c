@@ -289,7 +289,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->sounds[sound].file = strdup(get_word(&line));
+			char *file = strdup(get_word(&line));
+			if (strlen(file) != 0)
+			{
+				p->sounds[sound].file = get_file_path_name(SOUNDDIR, file);
+				free(file);
+			}
 			break;
 		}
 		case 17: // Play Sound
@@ -333,7 +338,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->flags[flag].file = strdup(get_word(&line));
+			char *file = strdup(get_word(&line));
+			if (strlen(file) != 0)
+			{
+				p->flags[flag].file = get_file_path_name(PIXMAPDIR, file);
+				free(file);
+			}
 			break;
 		}
 		case 22: // Save Keyboard Log

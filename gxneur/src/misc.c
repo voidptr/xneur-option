@@ -34,6 +34,7 @@
 #define GLADE_FILE_ABOUT PACKAGE_GLADE_FILE_DIR"/about.glade"
 #define GLADE_FILE_CONFIG PACKAGE_GLADE_FILE_DIR"/config.glade"
 #define GLADE_FILE_ABBREVIATION_ADD PACKAGE_GLADE_FILE_DIR"/abbr_add.glade"
+#define GLADE_FILE_CHOOSE PACKAGE_GLADE_FILE_DIR"/edit_sound.glade"
 
 #include "support.h"
 #include "callbacks.h"
@@ -53,11 +54,31 @@ static GtkListStore *store_manual_app			= NULL;
 static GtkListStore *store_layout_app			= NULL;
 static GtkListStore *store_draw_flag_app			= NULL;
 static GtkListStore *store_abbreviation			= NULL;
+static GtkListStore *store_sound			= NULL;
+static GtkListStore *store_pixmap			= NULL;
+
+static GtkTreeView *tmp_treeview	= NULL;
 
 static const char *modifier_names[]			= {"Shift", "Control", "Alt", "Super"};
 static const char *all_modifiers[]			= {"Control", "Shift", "Alt", "Super", "Control_R", "Shift_R", "Alt_R", "Super_R", "Control_L", "Shift_L", "Alt_L", "Super_L"};
 static const char *language_names[]			= {"English", "Russian", "Ukrainian", "Belarusian", "French", "Romanian", "Kazakh", "German"};
 static char *dirs[]					= {"en", "ru", "uk", "be", "fr", "ro", "kz", "de"};
+
+static const char *sound_names[]			=   {
+										"Press Key On Layout 1", "Press Key On Layout 2", "Press Key On Layout 3",
+										"Press Key On Layout 4", "Enable Layout 1", "Enable Layout 2",
+										"Enable Layout 3", "Enable Layout 4", "Automatic Change Word",
+										"Manual Change Word", "Change String", "Change Selected Text",
+										"Translit Selected Text", "Changecase Selected Text", "Replace Abbreviation",
+										"Correct Incidental Caps", "Correct Two Capital Letter"
+										};
+static const int total_sound_names = sizeof(sound_names) / sizeof(sound_names[0]);
+
+static const char *pixmap_names[]	=   {
+										"Flag Pixmap For Layout 1", "Flag Pixmap For Layout 2", "Flag Pixmap For Layout 3",
+										"Flag Pixmap For Layout 4"
+										};
+static const int total_pixmap_names = sizeof(pixmap_names) / sizeof(pixmap_names[0]);
 
 static const char *language_name_boxes[MAX_LANGUAGES]	= {"combobox21", "combobox22", "combobox23", "combobox24"};
 static const char *language_combo_boxes[MAX_LANGUAGES]	= {"combobox13", "combobox14", "combobox15", "combobox16"};
@@ -156,36 +177,6 @@ static void fill_binds(int action, GladeXML *gxml, const char *label, gboolean f
 	char *binds = concat_bind(action);
 	gtk_entry_set_text(GTK_ENTRY(widget_bind), binds);
 	free(binds);
-}
-
-static void fill_sounds(int sound, GladeXML *gxml, const char *label, gboolean fill_combobox)
-{
-	GtkWidget *widget_bind = glade_xml_get_widget (gxml, label);
-	if (fill_combobox)
-	{
-		gtk_entry_set_text(GTK_ENTRY(widget_bind), xconfig->sounds[sound].file);
-		return;
-	}
-
-	if (xconfig->sounds[sound].file != NULL)
-		free(xconfig->sounds[sound].file);
-
-	xconfig->sounds[sound].file = strdup(gtk_entry_get_text(GTK_ENTRY(widget_bind)));
-}
-
-static void fill_pixmaps(int pixmap, GladeXML *gxml, const char *label, gboolean fill_combobox)
-{
-	GtkWidget *widget_bind = glade_xml_get_widget (gxml, label);
-	if (fill_combobox)
-	{
-		gtk_entry_set_text(GTK_ENTRY(widget_bind), xconfig->flags[pixmap].file);
-		return;
-	}
-
-	if (xconfig->flags[pixmap].file != NULL)
-		free(xconfig->flags[pixmap].file);
-
-	xconfig->flags[pixmap].file = strdup(gtk_entry_get_text(GTK_ENTRY(widget_bind)));
 }
 
 static void add_item(GtkListStore *store)
@@ -643,22 +634,38 @@ void xneur_preference(void)
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_abbreviation), G_OBJECT(treeview));
 
 	// Sound Paths Preference
-	fill_sounds(0, gxml, "entry21", TRUE);
-	fill_sounds(1, gxml, "entry22", TRUE);
-	fill_sounds(2, gxml, "entry23", TRUE);
-	fill_sounds(3, gxml, "entry24", TRUE);
-	fill_sounds(4, gxml, "entry25", TRUE);
-	fill_sounds(5, gxml, "entry26", TRUE);
-	fill_sounds(6, gxml, "entry27", TRUE);
-	fill_sounds(7, gxml, "entry28", TRUE);
-	fill_sounds(8, gxml, "entry29", TRUE);
-	fill_sounds(9, gxml, "entry30", TRUE);
-	fill_sounds(10, gxml, "entry31", TRUE);
-	fill_sounds(11, gxml, "entry32", TRUE);
-	fill_sounds(12, gxml, "entry33", TRUE);
-	fill_sounds(13, gxml, "entry34", TRUE);
-	fill_sounds(14, gxml, "entry2", TRUE);
+	// Sound List set
+	treeview = glade_xml_get_widget (gxml, "treeview7");
+
+	store_sound = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_sound));
+	gtk_widget_show(treeview);
+
+	for (int i = 0; i < total_sound_names; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_sound), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_sound), &iter, 
+												0, _(sound_names[i]),
+												1, xconfig->sounds[i].file, 
+												-1);
+	}
 	
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Action"), cell, "text", 0, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Sound"), cell, "text", 1, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	// Button Edit Sound
+	widget = glade_xml_get_widget (gxml, "button34");
+	tmp_treeview = GTK_TREE_VIEW(treeview);
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_sound), G_OBJECT(treeview));
+
 	// Set Callbacks for Dict and Regexp
 	widget= glade_xml_get_widget (gxml, "button8");
 	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button8_clicked), gxml);
@@ -678,10 +685,35 @@ void xneur_preference(void)
 	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button26_clicked), gxml);
 	
 	// Flags Paths Preference
-	fill_pixmaps(0, gxml, "entry35", TRUE);
-	fill_pixmaps(1, gxml, "entry36", TRUE);
-	fill_pixmaps(2, gxml, "entry37", TRUE);
-	fill_pixmaps(3, gxml, "entry38", TRUE);
+	// Pixmap List set
+	treeview = glade_xml_get_widget (gxml, "treeview8");
+
+	store_pixmap = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_pixmap));
+	gtk_widget_show(treeview);
+
+	for (int i = 0; i < total_pixmap_names; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_pixmap), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_pixmap), &iter, 
+												0, _(pixmap_names[i]),
+												1, xconfig->flags[i].file, 
+												-1);
+	}
+	
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Description"), cell, "text", 0, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Pixmap"), cell, "text", 1, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	// Button Edit Pixmap
+	widget = glade_xml_get_widget (gxml, "button35");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_pixmap), G_OBJECT(treeview));
 	
 	// Draw Flag App Set
 	treeview = glade_xml_get_widget (gxml, "treeview5");
@@ -810,6 +842,118 @@ void xneur_add_abbreviation(void)
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_insert_abbreviation), gxml);
 }
 
+static void xneur_replace_sound(GladeXML *gxml)
+{
+	GtkTreeModel *model = GTK_TREE_MODEL(store_sound);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		GtkWidget *filechooser = glade_xml_get_widget (gxml, "filechooserdialog1");
+	
+		gtk_list_store_set(GTK_LIST_STORE(store_sound), &iter, 
+											1, gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser)), 
+										   -1);
+	}
+	
+	GtkWidget *window = glade_xml_get_widget (gxml, "filechooserdialog1");
+	gtk_widget_destroy(window);
+}
+
+void xneur_edit_sound(GtkWidget *treeview)
+{
+	tmp_treeview = GTK_TREE_VIEW(treeview);
+	GtkTreeModel *model = GTK_TREE_MODEL(store_sound);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		GladeXML *gxml = glade_xml_new (GLADE_FILE_CHOOSE, NULL, NULL);
+	
+		glade_xml_signal_autoconnect (gxml);
+		GtkWidget *window = glade_xml_get_widget (gxml, "filechooserdialog1");
+		
+		char *file;
+		gtk_tree_model_get(GTK_TREE_MODEL(store_sound), &iter, 1, &file, -1);
+		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(window), file);
+		
+		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+		if (window_icon_pixbuf)
+		{
+			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+			gdk_pixbuf_unref (window_icon_pixbuf);
+		}
+	
+		gtk_widget_show(window);
+		
+		// Button OK
+		GtkWidget *widget = glade_xml_get_widget (gxml, "button5");
+		g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_replace_sound), gxml);
+	}
+}
+
+static void xneur_replace_pixmap(GladeXML *gxml)
+{
+	GtkTreeModel *model = GTK_TREE_MODEL(store_pixmap);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		GtkWidget *filechooser = glade_xml_get_widget (gxml, "filechooserdialog1");
+	
+		gtk_list_store_set(GTK_LIST_STORE(store_pixmap), &iter, 
+											1, gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser)), 
+										   -1);
+	}
+	
+	GtkWidget *window = glade_xml_get_widget (gxml, "filechooserdialog1");
+	gtk_widget_destroy(window);
+}
+
+void xneur_edit_pixmap(GtkWidget *treeview)
+{
+	tmp_treeview = GTK_TREE_VIEW(treeview);
+	GtkTreeModel *model = GTK_TREE_MODEL(store_pixmap);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		GladeXML *gxml = glade_xml_new (GLADE_FILE_CHOOSE, NULL, NULL);
+	
+		glade_xml_signal_autoconnect (gxml);
+		GtkWidget *window = glade_xml_get_widget (gxml, "filechooserdialog1");
+		
+		char *file;
+		gtk_tree_model_get(GTK_TREE_MODEL(store_pixmap), &iter, 1, &file, -1);
+		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(window), file);
+		
+		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+		if (window_icon_pixbuf)
+		{
+			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+			gdk_pixbuf_unref (window_icon_pixbuf);
+		}
+	
+		gtk_widget_show(window);
+		
+		// Button OK
+		GtkWidget *widget = glade_xml_get_widget (gxml, "button5");
+		g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_replace_pixmap), gxml);
+	}
+}
+
 void xneur_rem_exclude_app(GtkWidget *widget)
 {
 	remove_item(widget, store_exclude_app);
@@ -889,13 +1033,10 @@ gboolean save_abbreviation(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *
 {
 	if (model || path || user_data){};
 
-	//save_list(store_abbreviation, xconfig->abbreviations, iter);
 	gchar *abbreviation;
 	gchar *full_text;
 	gtk_tree_model_get(GTK_TREE_MODEL(store_abbreviation), iter, 0, &abbreviation, 1, &full_text, -1);
-	
-	printf("%s\n", abbreviation);
-	printf("%s\n", full_text);
+
 	int ptr_len = strlen(abbreviation) + strlen(full_text) + 2;
 	gchar *ptr = malloc(ptr_len* sizeof(gchar));
 	snprintf(ptr, ptr_len, "%s %s", abbreviation, full_text);
@@ -905,6 +1046,46 @@ gboolean save_abbreviation(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *
 	g_free(full_text);
 	g_free(ptr);
 
+	return FALSE;
+}
+
+gboolean save_sound(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	gchar *file_path;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_sound), iter, 1, &file_path, -1);
+	
+	int i = atoi(gtk_tree_path_to_string(path));
+	if (xconfig->sounds[i].file != NULL)
+		free(xconfig->sounds[i].file);
+	
+	if (file_path != NULL)
+	{
+		xconfig->sounds[i].file = strdup(file_path);
+		g_free(file_path);
+	}
+	
+	return FALSE;
+}
+
+gboolean save_pixmap(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	gchar *file_path;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_pixmap), iter, 1, &file_path, -1);
+	
+	int i = atoi(gtk_tree_path_to_string(path));
+	if (xconfig->flags[i].file != NULL)
+		free(xconfig->flags[i].file);
+	
+	if (file_path != NULL)
+	{
+		xconfig->flags[i].file = strdup(file_path);
+		g_free(file_path);
+	}
+	
 	return FALSE;
 }
 
@@ -936,6 +1117,8 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_layout_app), save_layout_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_draw_flag_app), save_draw_flag_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_abbreviation), save_abbreviation, NULL);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_sound), save_sound, NULL);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_pixmap), save_pixmap, NULL);
 	
 	fill_binds(0, gxml, "entry11", FALSE);
 	fill_binds(1, gxml, "entry12", FALSE);
@@ -972,28 +1155,6 @@ void xneur_save_preference(GladeXML *gxml)
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton8");
 	xconfig->abbr_ignore_layout = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
-	
-	// Sound Paths Preference
-	fill_sounds(0, gxml, "entry21", FALSE);
-	fill_sounds(1, gxml, "entry22", FALSE);
-	fill_sounds(2, gxml, "entry23", FALSE);
-	fill_sounds(3, gxml, "entry24", FALSE);
-	fill_sounds(4, gxml, "entry25", FALSE);
-	fill_sounds(5, gxml, "entry26", FALSE);
-	fill_sounds(6, gxml, "entry27", FALSE);
-	fill_sounds(7, gxml, "entry28", FALSE);
-	fill_sounds(8, gxml, "entry29", FALSE);
-	fill_sounds(9, gxml, "entry30", FALSE);
-	fill_sounds(10, gxml, "entry31", FALSE);
-	fill_sounds(11, gxml, "entry32", FALSE);
-	fill_sounds(12, gxml, "entry33", FALSE);
-	fill_sounds(13, gxml, "entry34", FALSE);
-	fill_sounds(14, gxml, "entry2", FALSE);
-	
-	fill_pixmaps(0, gxml, "entry35", FALSE);
-	fill_pixmaps(1, gxml, "entry36", FALSE);
-	fill_pixmaps(2, gxml, "entry37", FALSE);
-	fill_pixmaps(3, gxml, "entry38", FALSE);
 	
 	// Delay Before Send
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton1");
