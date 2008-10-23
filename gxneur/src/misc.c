@@ -751,12 +751,12 @@ void xneur_preference(void)
 	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->log_level);
 	
 	// Correct two capital letter mode
-	widget = glade_xml_get_widget (gxml, "checkbutton9");
+	widget = glade_xml_get_widget (gxml, "checkbutton10");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_two_capital_letter);
 
 	// Correct iNCIDENTAL CapsLock mode
-	widget = glade_xml_get_widget (gxml, "checkbutton10");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_two_capital_letter);
+	widget = glade_xml_get_widget (gxml, "checkbutton9");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_incidental_caps);
 
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
@@ -1164,10 +1164,10 @@ void xneur_save_preference(GladeXML *gxml)
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox1");
 	xconfig->log_level = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound));
 	
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton9");
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton10");
 	xconfig->correct_two_capital_letter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton10");
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton9");
 	xconfig->correct_incidental_caps = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
