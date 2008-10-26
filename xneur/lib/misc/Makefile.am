@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libxnmisc.la
 
-xnconfigdir = @includedir@/xneur
+xnconfigdir = $(includedir)/xneur
 xnconfig_HEADERS = list_char.h
 
 noinst_HEADERS =		\

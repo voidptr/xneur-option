@@ -2,7 +2,7 @@ INCLUDES = -DPACKAGE_SYSCONFDIR_DIR=\""@sysconfdir@/xneur"\" -DPACKAGE_SHAREDIR_
 
 lib_LTLIBRARIES = libxnconfig.la
 
-xnincludedir = @includedir@/xneur
+xnincludedir = $(includedir)/xneur
 xninclude_HEADERS = xnconfig.h
 
 noinst_HEADERS =		\
