@@ -170,6 +170,10 @@ void sound_init(void)
 		return;
 
 	alutInit(NULL, NULL);
+	alGetError();
+	ALCcontext *pContext = alcGetCurrentContext();
+	ALCdevice *pDevice = alcGetContextsDevice(pContext);
+	log_message(TRACE, "Initializing ALCdevice: %s ", alcGetString(pDevice, ALC_DEVICE_SPECIFIER));
 }
 
 void sound_uninit(void)
@@ -185,10 +189,10 @@ void *play_file_thread(void *param)
 	char *path = (char *) param;
 	log_message(TRACE, "Play sound sample %s (use OpenAL library)", path);
 
+	free(path);
 	ALuint AlutBuffer = alutCreateBufferFromFile(path);
 	if (!AlutBuffer)
 	{
-		free(path);
 		log_message(ERROR, "Failed to create OpenAL buffer");
 		return NULL;
 	}
@@ -198,15 +202,20 @@ void *play_file_thread(void *param)
 	alSourcei(AlutSource, AL_BUFFER, AlutBuffer);
 	alSourcePlay(AlutSource);
 
+	ALint result;
+	alGetSourcei(AlutSource, AL_SOURCE_STATE, &result);
+	if ( result == AL_PLAYING) {
+		sleep(1);
+		alGetSourcei(AlutSource, AL_SOURCE_STATE, &result);
+	}
+
 	do
 		alDeleteSources(1, &AlutSource);
 	while (alGetError() != AL_NO_ERROR);
-
 	do
 		alDeleteBuffers(1, &AlutBuffer);
 	while (alGetError() != AL_NO_ERROR);
 
-	free(path);
 	return NULL;
 }
 
