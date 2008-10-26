@@ -131,8 +131,8 @@ static int get_auto_action(KeySym key, int modifier_mask)
 		case XK_Delete:
 			return KLB_NO_ACTION;
 		case XK_Return:
-			return KLB_ENTER;
 		case XK_Tab:
+			return KLB_ENTER;
 		case XK_space:
 		case XK_equal:
 		case XK_plus:
@@ -535,6 +535,11 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 		case KLB_SPACE:
 		case KLB_ADD_SYM:
 		{
+			if ((action == KLB_ENTER) && (xconfig->dont_process_when_press_enter))
+			{
+				action = KLB_ADD_SYM;
+			}
+			
 			if (p->changed_manual == MANUAL_FLAG_SET)
 				p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 
@@ -582,6 +587,12 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
+			
+			if ((action == KLB_ENTER) && (xconfig->flush_buffer_when_press_enter))
+			{
+				p->string->save_and_clear(p->string, p->focus->owner_window);
+			}
+			
 			return;
 		}
 	}

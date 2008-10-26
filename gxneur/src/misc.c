@@ -675,7 +675,7 @@ void xneur_preference(void)
 	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button7_clicked), gxml);
 	widget = glade_xml_get_widget (gxml, "button6");
 	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button6_clicked), gxml);
-	widget= glade_xml_get_widget (gxml, "button23");
+	widget = glade_xml_get_widget (gxml, "button23");
 	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button23_clicked), gxml);
 	widget = glade_xml_get_widget (gxml, "button24");
 	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button24_clicked), gxml);
@@ -757,6 +757,14 @@ void xneur_preference(void)
 	// Correct iNCIDENTAL CapsLock mode
 	widget = glade_xml_get_widget (gxml, "checkbutton9");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_incidental_caps);
+
+	// Flush internal buffer when pressed Enter mode
+	widget = glade_xml_get_widget (gxml, "checkbutton11");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->flush_buffer_when_press_enter);
+
+	// Don't process word when pressed Enter mode
+	widget = glade_xml_get_widget (gxml, "checkbutton12");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->dont_process_when_press_enter);
 
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
@@ -1169,6 +1177,12 @@ void xneur_save_preference(GladeXML *gxml)
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton9");
 	xconfig->correct_incidental_caps = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton11");
+	xconfig->flush_buffer_when_press_enter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton12");
+	xconfig->dont_process_when_press_enter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);

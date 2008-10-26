@@ -49,7 +49,8 @@ static const char *option_names[] = 	{
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceAbbreviation",
-						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter"
+						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
+						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -380,7 +381,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for change iNCIDENTAL CapsLock Mode mode specified");
+				log_message(WARNING, "Invalid value for change iNCIDENTAL CapsLock mode specified");
 				break;
 			}
 
@@ -397,6 +398,30 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 
 			p->correct_two_capital_letter = index;
+			break;
+		}
+		case 27: // Flush internal buffer when pressed Enter Mode
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, "Invalid value for flush internal buffer when pressed Enter mode specified");
+				break;
+			}
+
+			p->flush_buffer_when_press_enter = index;
+			break;
+		}
+		case 28: // Don't process word when pressed Enter Mode
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, "Invalid value for don't processing word when pressed Enter mode specified");
+				break;
+			}
+
+			p->dont_process_when_press_enter = index;
 			break;
 		}
 	}
@@ -794,6 +819,16 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CorrectTwoCapitalLetter Yes\n");
 	fprintf(stream, "CorrectTwoCapitalLetter %s\n\n", p->get_bool_name(p->correct_two_capital_letter));
+			
+	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Enter or Tab\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#FlushBufferWhenPressEnter Yes\n");
+	fprintf(stream, "FlushBufferWhenPressEnter %s\n\n", p->get_bool_name(p->flush_buffer_when_press_enter));
+
+	fprintf(stream, "# This option disable or enable processing word when pressed Enter or Tab\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#DontProcessWhenPressEnter Yes\n");
+	fprintf(stream, "DontProcessWhenPressEnter %s\n\n", p->get_bool_name(p->dont_process_when_press_enter));
 			
 	fprintf(stream, "# That's all\n");
 

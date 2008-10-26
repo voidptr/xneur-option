@@ -134,4 +134,14 @@ CorrectIncidentalCaps No
 #CorrectTwoCapitalLetter Yes
 CorrectTwoCapitalLetter No
 
+# This option enable or disable flushing internal buffer when pressed Enter or Tab
+# Example:
+#FlushBufferWhenPressEnter Yes
+FlushBufferWhenPressEnter No
+
+# This option disable or enable processing word when pressed Enter or Tab
+# Example:
+#DontProcessWhenPressEnter Yes
+DontProcessWhenPressEnter No
+
 # That's all

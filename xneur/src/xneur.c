@@ -128,6 +128,8 @@ static void xneur_load_config(int final)
 	log_message(LOG, "Ignore keyboard layout for abbreviations mode set to %s", xconfig->get_bool_name(xconfig->abbr_ignore_layout));
 	log_message(LOG, "Correct of iNCIDENTAL CapsLock mode set to %s", xconfig->get_bool_name(xconfig->correct_incidental_caps));
 	log_message(LOG, "Correct of two CApital letter mode set to %s", xconfig->get_bool_name(xconfig->correct_two_capital_letter));
+	log_message(LOG, "Flush internal buffer when pressed Enter or Tab mode set to %s", xconfig->get_bool_name(xconfig->flush_buffer_when_press_enter));
+	log_message(LOG, "Don't process word when pressed Enter or Tab mode set to %s", xconfig->get_bool_name(xconfig->dont_process_when_press_enter));
 }
 
 
