@@ -1,9 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR XNeur Team
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Copyright (C) 2008 XNeur Team
+# This file is distributed under the same license as the GXNEUR package.
+# ANDREW KUZNETSOV <andrewcrew@rambler.ru>, 2008.
 #
-#, fuzzy
+
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -16,37 +15,143 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../glade/config.glade:7
+msgid "Flag Pixmap For Layout 4"
+msgstr ""
+
+msgid "Flag Pixmap For Layout 3"
+msgstr ""
+
+msgid "Flag Pixmap For Layout 2"
+msgstr ""
+
+msgid "Flag Pixmap For Layout 1"
+msgstr ""
+
+msgid "Press Key On Layout 1"
+msgstr ""
+
+msgid "Press Key On Layout 2"
+msgstr ""
+
+msgid "Press Key On Layout 3"
+msgstr ""
+
+msgid "Press Key On Layout 4"
+msgstr ""
+
+msgid "Enable Layout 1"
+msgstr ""
+
+msgid "Enable Layout 2"
+msgstr ""
+
+msgid "Enable Layout 3"
+msgstr ""
+
+msgid "Enable Layout 4"
+msgstr ""
+
+msgid "Automatic Change Word"
+msgstr ""
+
+msgid "Manual Change Word"
+msgstr ""
+
+msgid "Change String"
+msgstr ""
+
+msgid "Change Selected Text"
+msgstr ""
+
+msgid "Translit Selected Text"
+msgstr ""
+
+msgid "Changecase Selected Text"
+msgstr ""
+
+msgid "Correct Incidental Caps"
+msgstr ""
+
+msgid "Correct Two Capital Letter"
+msgstr ""
+
+#: glade/abbr_add.glade:7
+msgid "Add Abbreviation..."
+msgstr ""
+
+#: glade/abbr_add.glade:77
+msgid "gtk-cancel"
+msgstr ""
+
+#: glade/abbr_add.glade:88
+msgid "gtk-ok"
+msgstr ""
+
+#: glade/about.glade:7
+msgid "gXNeur About..."
+msgstr ""
+
+#: glade/about.glade:15
+msgid ""
+"\n"
+"\t\t<b>X Neural Switcher for Gnome</b>\t\t\n"
+"\t\tGTK2 frontend for XNeur\t\t\n"
+"\n"
+"AUTHORS:\n"
+"Andrew Crew Kuznetsov\n"
+"Nikolay Yankin"
+msgstr ""
+
+#: glade/choose_file.glade:7
+msgid "Choose File..."
+msgstr ""
+
+#: glade/config.glade:7
 msgid "XNeur Settings"
 msgstr ""
 
-#: ../glade/config.glade:34
+#: glade/config.glade:34
 msgid "Enable Manual Switching Mode"
 msgstr ""
 
-#: ../glade/config.glade:47
+#: glade/config.glade:47
+msgid "Correct iNCIDENTAL CapsLock"
+msgstr ""
+
+#: glade/config.glade:61
+msgid "Correct two CApital letter"
+msgstr ""
+
+#: glade/config.glade:75
 msgid "Enable Auto-Learn Mode"
 msgstr ""
 
-#: ../glade/config.glade:61
+#: glade/config.glade:89
 msgid "Keep Selection After Changing Selected Text"
 msgstr ""
 
-#: ../glade/config.glade:75
+#: glade/config.glade:103
 msgid "Enable Keyboard Logging"
 msgstr ""
 
-#: ../glade/config.glade:100
+#: glade/config.glade:117
+msgid "Flush internal buffer when pressed Enter or Tab"
+msgstr ""
+
+#: glade/config.glade:131
+msgid "Don't process word when pressed Enter or Tab"
+msgstr ""
+
+#: glade/config.glade:156
 msgid "<b>General</b>"
 msgstr ""
 
-#: ../glade/config.glade:142
+#: glade/config.glade:198
 msgid "Initial Layout Number "
 msgstr ""
 
-#: ../glade/config.glade:154 ../glade/config.glade:383
-#: ../glade/config.glade:400 ../glade/config.glade:417
-#: ../glade/config.glade:434
+#: glade/config.glade:210 glade/config.glade:438 glade/config.glade:455
+#: glade/config.glade:472 glade/config.glade:489
 msgid ""
 "0\n"
 "1\n"
@@ -54,13 +159,13 @@ msgid ""
 "3"
 msgstr ""
 
-#: ../glade/config.glade:172 ../glade/config.glade:189
-#: ../glade/config.glade:206 ../glade/config.glade:223
+#: glade/config.glade:228 glade/config.glade:245 glade/config.glade:262
+#: glade/config.glade:279
 msgid "Regular Expressions..."
 msgstr ""
 
-#: ../glade/config.glade:239 ../glade/config.glade:258
-#: ../glade/config.glade:277 ../glade/config.glade:296
+#: glade/config.glade:295 glade/config.glade:314 glade/config.glade:333
+#: glade/config.glade:352
 msgid ""
 "\n"
 "English\n"
@@ -73,212 +178,145 @@ msgid ""
 "German"
 msgstr ""
 
-#: ../glade/config.glade:316 ../glade/config.glade:333
-#: ../glade/config.glade:350 ../glade/config.glade:367
+#: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
+#: glade/config.glade:422
 msgid "Dictionary..."
 msgstr ""
 
-#: ../glade/config.glade:452
+#: glade/config.glade:507
 msgid "Number\t"
 msgstr ""
 
-#: ../glade/config.glade:465
+#: glade/config.glade:520
 msgid "Layout"
 msgstr ""
 
-#: ../glade/config.glade:492
+#: glade/config.glade:547
 msgid "Remember Keyboard Layout For Each Copies Of Application"
 msgstr ""
 
-#: ../glade/config.glade:540 ../glade/config.glade:1153
-#: ../glade/config.glade:1390 ../glade/config.glade:1473
-#: ../glade/config.glade:1559
-msgid "Add..."
+#: glade/config.glade:596 glade/config.glade:1222 glade/config.glade:1402
+#: glade/config.glade:1486 glade/config.glade:1573 glade/config.glade:1853
+msgid "gtk-add"
 msgstr ""
 
-#: ../glade/config.glade:553 ../glade/config.glade:1166
-#: ../glade/config.glade:1403 ../glade/config.glade:1486
-#: ../glade/config.glade:1572
-msgid "Remove"
+#: glade/config.glade:609 glade/config.glade:1235 glade/config.glade:1415
+#: glade/config.glade:1499 glade/config.glade:1586 glade/config.glade:1864
+msgid "gtk-remove"
 msgstr ""
 
-#: ../glade/config.glade:578
+#: glade/config.glade:634
 msgid "Exceptions (One Keyboard Layout For All Copies Of Application)"
 msgstr ""
 
-#: ../glade/config.glade:608
+#: glade/config.glade:664
 msgid "<b>Layouts</b>"
 msgstr ""
 
-#: ../glade/config.glade:636 ../glade/config.glade:652
-#: ../glade/config.glade:668 ../glade/config.glade:684
-#: ../glade/config.glade:700 ../glade/config.glade:716
-#: ../glade/config.glade:732 ../glade/config.glade:748
-#: ../glade/config.glade:764 ../glade/config.glade:780
-msgid "Clear"
+#: glade/config.glade:692 glade/config.glade:709 glade/config.glade:726
+#: glade/config.glade:743 glade/config.glade:760 glade/config.glade:777
+#: glade/config.glade:794 glade/config.glade:811 glade/config.glade:828
+#: glade/config.glade:845 glade/config.glade:1793
+msgid "gtk-clear"
 msgstr ""
 
-#: ../glade/config.glade:805
+#: glade/config.glade:871
 msgid "Replace Selected Text"
 msgstr ""
 
-#: ../glade/config.glade:818
+#: glade/config.glade:884
 msgid "Change Processing Mode"
 msgstr ""
 
-#: ../glade/config.glade:831
+#: glade/config.glade:897
 msgid "Replace Last String "
 msgstr ""
 
-#: ../glade/config.glade:844
+#: glade/config.glade:910
 msgid "Replace / Cancel Replace "
 msgstr ""
 
-#: ../glade/config.glade:855
+#: glade/config.glade:921
 msgid "Transliterate Selected Text"
 msgstr ""
 
-#: ../glade/config.glade:868
+#: glade/config.glade:934
 msgid "Change Case Of Selected Text "
 msgstr ""
 
-#: ../glade/config.glade:951
+#: glade/config.glade:1017
 msgid "Enable First Layout  "
 msgstr ""
 
-#: ../glade/config.glade:964
+#: glade/config.glade:1030
 msgid "Enable Secondary Layout"
 msgstr ""
 
-#: ../glade/config.glade:977
+#: glade/config.glade:1043
 msgid "Enable Third Layout"
 msgstr ""
 
-#: ../glade/config.glade:1046
+#: glade/config.glade:1112
 msgid "Enable Fourth Layout"
 msgstr ""
 
-#: ../glade/config.glade:1073
+#: glade/config.glade:1139
 msgid "<b>Key Bindings</b>"
 msgstr ""
 
-#: ../glade/config.glade:1098
+#: glade/config.glade:1164
 msgid "Flush Internal Buffer On Mouse Click"
 msgstr ""
 
-#: ../glade/config.glade:1191
+#: glade/config.glade:1260
 msgid "Draw Flag Beside Of Mouse For These Applications"
 msgstr ""
 
-#: ../glade/config.glade:1263
-msgid "Flag Pixmap For Layout 4"
+#: glade/config.glade:1314 glade/config.glade:1717
+msgid "gtk-edit"
 msgstr ""
 
-#: ../glade/config.glade:1276
-msgid "Flag Pixmap For Layout 3"
-msgstr ""
-
-#: ../glade/config.glade:1289
-msgid "Flag Pixmap For Layout 2"
-msgstr ""
-
-#: ../glade/config.glade:1302
-msgid "Flag Pixmap For Layout 1"
-msgstr ""
-
-#: ../glade/config.glade:1333
+#: glade/config.glade:1344
 msgid "<b>Mouse</b>"
 msgstr ""
 
-#: ../glade/config.glade:1428
+#: glade/config.glade:1440
 msgid "Do Not Process These Applications"
 msgstr ""
 
-#: ../glade/config.glade:1511
+#: glade/config.glade:1524
 msgid "Force Automatic Mode For These Applications"
 msgstr ""
 
-#: ../glade/config.glade:1597
+#: glade/config.glade:1611
 msgid "Force Manual Mode For These Applications"
 msgstr ""
 
-#: ../glade/config.glade:1627
+#: glade/config.glade:1641
 msgid "<b>Applications</b>"
 msgstr ""
 
-#: ../glade/config.glade:1652
+#: glade/config.glade:1666
 msgid "Play Sounds"
 msgstr ""
 
-#: ../glade/config.glade:1680
-msgid "Press Key On Layout 1"
-msgstr ""
-
-#: ../glade/config.glade:1691
-msgid "Press Key On Layout 2"
-msgstr ""
-
-#: ../glade/config.glade:1704
-msgid "Press Key On Layout 3"
-msgstr ""
-
-#: ../glade/config.glade:1717
-msgid "Press Key On Layout 4"
-msgstr ""
-
-#: ../glade/config.glade:1730
-msgid "Enable Layout 1"
-msgstr ""
-
-#: ../glade/config.glade:1743
-msgid "Enable Layout 2"
-msgstr ""
-
-#: ../glade/config.glade:1756
-msgid "Enable Layout 3"
-msgstr ""
-
-#: ../glade/config.glade:1769
-msgid "Enable Layout 4"
-msgstr ""
-
-#: ../glade/config.glade:1782
-msgid "Automatic Change Word"
-msgstr ""
-
-#: ../glade/config.glade:1795
-msgid "Manual Change Word"
-msgstr ""
-
-#: ../glade/config.glade:1808
-msgid "Change String"
-msgstr ""
-
-#: ../glade/config.glade:1821
-msgid "Change Selected Text"
-msgstr ""
-
-#: ../glade/config.glade:1834
-msgid "Translit Selected Text"
-msgstr ""
-
-#: ../glade/config.glade:1847
-msgid "Changecase Selected Text"
-msgstr ""
-
-#: ../glade/config.glade:2059
+#: glade/config.glade:1747
 msgid "<b>Sounds</b>"
 msgstr ""
 
-#: ../glade/config.glade:2086
-msgid "Delay Before Sending Events (in milliseconds)"
+#: glade/config.glade:1775
+msgid "Replace Abbreviation"
 msgstr ""
 
-#: ../glade/config.glade:2097
-msgid "Level Of Program Messages Will Write To Output"
+#: glade/config.glade:1811
+msgid "Ignore Keyboard Layout For Abbreviations"
 msgstr ""
 
-#: ../glade/config.glade:2124
+#: glade/config.glade:1897
+msgid "<b>Autoreplace</b>"
+msgstr ""
+
+#: glade/config.glade:1923
 msgid ""
 "Error\n"
 "Warning\n"
@@ -287,46 +325,80 @@ msgid ""
 "Trace"
 msgstr ""
 
-#: ../glade/config.glade:2157
+#: glade/config.glade:1957
+msgid "Level Of Program Messages Will Write To Output"
+msgstr ""
+
+#: glade/config.glade:1970
+msgid "Delay Before Sending Events (in milliseconds)"
+msgstr ""
+
+#: glade/config.glade:1989
 msgid "<b>Advanced</b>"
 msgstr ""
 
-#: ../glade/about.glade:7
-msgid "gXNeur About..."
-msgstr ""
-
-#: ../glade/about.glade:15
-msgid ""
-"\n"
-"\t\t<b>X Neural Switcher for Gnome</b>\t\t\n"
-"\t\tGTK2 frontend for XNeur\t\t\n"
-"\n"
-"AUTHORS:\n"
-"Andrew Crew Kuznetsov\n"
-"Nikolay Yankin"
-msgstr ""
-
-#: ../glade/list.glade:7
+#: glade/list.glade:7
 msgid "File Editing"
 msgstr ""
 
-#: src/misc.c:266 src/misc.c:267
+#: src/callbacks.c:188 src/misc.c:1288
+msgid "Press any key"
+msgstr ""
+
+#: src/misc.c:259 src/misc.c:260
 #, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
 "Please, install libxnconfig version %d.x\n"
 msgstr ""
 
-#: src/misc.c:272 src/misc.c:273
+#: src/misc.c:266
 #, c-format
 msgid "Using libxnconfig API version %d.%d (build with %d.%d)\n"
 msgstr ""
 
-#: src/misc.c:277 src/misc.c:278
+#: src/misc.c:270 src/misc.c:271
 #, c-format
 msgid ""
 "XNeur config broken!\n"
 "Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+msgstr ""
+
+#: src/misc.c:334
+msgid "Current Version"
+msgstr ""
+
+#: src/misc.c:376 src/misc.c:402 src/misc.c:429 src/misc.c:455 src/misc.c:734
+msgid "Application"
+msgstr ""
+
+#: src/misc.c:620
+msgid "Abbreviation"
+msgstr ""
+
+#: src/misc.c:625
+msgid "Full Text"
+msgstr ""
+
+#: src/misc.c:655
+msgid "Action"
+msgstr ""
+
+#: src/misc.c:660
+msgid "Sound"
+msgstr ""
+
+#: src/misc.c:706
+msgid "Description"
+msgstr ""
+
+#: src/misc.c:711
+msgid "Pixmap"
+msgstr ""
+
+#: src/support.c:80 src/support.c:104
+#, c-format
+msgid "Couldn't find pixmap file: %s"
 msgstr ""
 
 #: src/trayicon.c:78
@@ -353,6 +425,6 @@ msgstr ""
 msgid "X Neural Switcher STOPPED ("
 msgstr ""
 
-#: src/misc.c:312
-msgid "Current Version"
+#: src/trayicon.c:209
+msgid "X Neural Switcher"
 msgstr ""
