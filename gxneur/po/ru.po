@@ -124,7 +124,7 @@ msgstr "Включить ручной режим переключения"
 
 #: glade/config.glade:47
 msgid "Correct iNCIDENTAL CapsLock"
-msgstr "Исправлять сЛУЧАЙНЫЙ КапсЛок"
+msgstr "Исправлять сЛУЧАЙНЫЙ CapsLock"
 
 #: glade/config.glade:61
 msgid "Correct two CApital letter"
