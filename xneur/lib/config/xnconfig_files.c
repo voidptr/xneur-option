@@ -69,6 +69,9 @@ static char* get_file_content(const char *file_name)
 
 char* get_file_path_name(const char *dir_name, const char *file_name)
 {
+	if (file_name == NULL) 
+		return NULL;
+	
 #define SEARCH_IN(DIRECTORY) \
 	if (dir_name == NULL)\
 		snprintf(path_file, max_path_len, "%s/%s", DIRECTORY, file_name);\

@@ -147,7 +147,7 @@ static int get_auto_action(KeySym key, int modifier_mask)
 	if (modifier_mask & ControlMask || modifier_mask & Mod1Mask || modifier_mask & Mod4Mask)
 		return KLB_NO_ACTION;
 
-	int sound;
+	int sound = SOUND_NONE;
 	int lang = get_cur_lang();
 	switch (lang)
 	{
@@ -169,7 +169,7 @@ static int get_auto_action(KeySym key, int modifier_mask)
 		}
 		case 3:
 		{
-			sound = SOUND_PRESS_KEY_LAYOUT_0;
+			sound = SOUND_PRESS_KEY_LAYOUT_3;
 			break;
 		}
 	}
