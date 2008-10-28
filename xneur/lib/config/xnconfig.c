@@ -290,6 +290,9 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
+			if (line == NULL)
+				break;
+			
 			char *file = strdup(get_word(&line));
 			if (strlen(file) != 0)
 			{
@@ -339,6 +342,9 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
+			if (line == NULL)
+				break;
+			
 			char *file = strdup(get_word(&line));
 			if (strlen(file) != 0)
 			{
