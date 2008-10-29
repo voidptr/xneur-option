@@ -72,9 +72,6 @@ void do_selection_notify(void)
 	Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
 	Atom selection = XInternAtom(main_window->display, "PRIMARY", FALSE);
 	
-	if (XGetSelectionOwner(main_window->display, selection) == None) 
-		XSetSelectionOwner(main_window->display, selection, main_window->window, CurrentTime);
-
 	int status = XConvertSelection(main_window->display, selection, target, None, main_window->window, CurrentTime);
 	if (status == BadAtom)
 		log_message(ERROR, "Failed to convert selection with error BadAtom");

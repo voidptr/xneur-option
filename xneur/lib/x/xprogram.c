@@ -328,15 +328,19 @@ static void xprogram_process_input(struct _xprogram *p)
 				// Processing received event 
 				p->on_key_action(p);
 				// Restore event
-				p->event->event = p->event->default_event;
-				p->event->send_next_event(p->event);
+				if (p->event->default_event.xkey.keycode != 0)
+				{
+					p->event->event = p->event->default_event;
+					p->event->send_next_event(p->event);
+				}
 				break;
 			}
 			case KeyRelease:
 			{
 				log_message(TRACE, "Received KeyRelease (event type %d)", type);
 				// Resend special key back to window
-				p->event->send_next_event(p->event);
+				if (p->event->default_event.xkey.keycode != 0)
+					p->event->send_next_event(p->event);
 				break;
 			}
 			case FocusIn:
