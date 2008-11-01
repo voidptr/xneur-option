@@ -145,9 +145,9 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 
 	XkbStateRec xkbState;
 	XkbGetState(main_window->display, XkbUseCoreKbd, &xkbState);
-
+	
 	// if for layout not defined xpm file then unmap window and stop procedure
-	if (xconfig->flags[xkbState.group].file[0] == NULLSYM)
+	if (xconfig->flags[xkbState.group].file == NULL)
 	{
 		unmap_window(w_attributes);
 		return;
