@@ -189,8 +189,8 @@ void *play_file_thread(void *param)
 	char *path = (char *) param;
 	log_message(TRACE, "Play sound sample %s (use OpenAL library)", path);
 
-	free(path);
 	ALuint AlutBuffer = alutCreateBufferFromFile(path);
+	free(path);
 	if (!AlutBuffer)
 	{
 		log_message(ERROR, "Failed to create OpenAL buffer");
