@@ -1,3 +1,16 @@
+November 02 2008
+Version 0.9.2 released.
+KDE application events receive bugfix
+Cancel UTF checking
+Add abbreviations replacement function
+Fix Wine and SDL apps processing
+Add new features:
+	correction incidental caps
+	correction two capital letter
+	flush internal buffer when press Enter and Tab
+	don't process when press Enter and Tab
+Lot of bugfixes
+
 July 23 2008
 Version 0.9.1 released.
 KDE application events receive bugfix
