@@ -92,7 +92,7 @@ KXNeurPage::KXNeurPage( QWidget* parent, const char* name, WFlags fl )
     vlayout->setAlignment( Qt::AlignTop );
 
     group1 = new QGroupBox(i18n("KXNeur (front-end) options "), this);
-    vlayout1 = new QVBoxLayout(group1, 16, 8);
+    vlayout1 = new QVBoxLayout(group1, 16, 3);
     vlayout1->setAlignment( Qt::AlignTop );
 
     run_xneur = new QCheckBox(i18n("Run NXeur with start KXNeur"), group1);
@@ -121,8 +121,20 @@ KXNeurPage::KXNeurPage( QWidget* parent, const char* name, WFlags fl )
     vlayout->addWidget(group1);
 
     group2 = new QGroupBox(i18n("XNeur (daemon) options "), this);
-    vlayout2 = new QVBoxLayout(group2, 16, 8);
+    vlayout2 = new QVBoxLayout(group2, 16, 3);
     vlayout2->setAlignment( Qt::AlignTop );
+
+    fix_caps_lock = new QCheckBox(i18n("Change iNCIDENTAL CapsLock"), group2);
+    vlayout2->addWidget(fix_caps_lock);
+
+    fix_two_big = new QCheckBox(i18n("Change two CApital letter"), group2);
+    vlayout2->addWidget(fix_two_big);
+
+    flush_buf_on_enter = new QCheckBox(i18n("Flush internal buffer when pressed Enter"), group2);
+    vlayout2->addWidget(flush_buf_on_enter);
+
+    not_work_on_enter = new QCheckBox(i18n("Don't correct word when pressed Enter"), group2);
+    vlayout2->addWidget(not_work_on_enter);
 
     edu_mode = new QCheckBox(i18n("Enable Education Mode"), group2);
     vlayout2->addWidget(edu_mode);
@@ -385,7 +397,7 @@ SndPage::SndPage( QWidget* parent, const char* name, WFlags fl )
     grid->setMargin(5);
     grid->setFrameShape(QFrame::GroupBoxPanel);
 
-    for ( int i = 0 ; i < MAX_SOUNDS ; i++ ) {
+    for ( int i = 0 ; i < MAX_SOUNDS-3 ; i++ ) {
         switch ( i ) {
 	    case  0 : new QLabel(i18n("Press Key On Layout 1 "), grid); break;
 	    case  1 : new QLabel(i18n("Press Key On Layout 2 "), grid); break;
@@ -401,6 +413,10 @@ SndPage::SndPage( QWidget* parent, const char* name, WFlags fl )
 	    case 11 : new QLabel(i18n("Change Selected Text "), grid); break;
 	    case 12 : new QLabel(i18n("Translit Selected Text "), grid); break;
 	    case 13 : new QLabel(i18n("Changecase Selected Text "), grid); break;
+// ??? 
+//	    case 14 : new QLabel(i18n("Replace Abbreviation "), grid); break; 
+//	    case 15 : new QLabel(i18n("Correct Incidental Caps "), grid); break;
+//	    case 16 : new QLabel(i18n("Correct Two Capital Letter "), grid); break;
 	}
 	edit[i] = new KXNLineEdit(grid);
 	btn[i] = new QPushButton(grid);
@@ -420,8 +436,10 @@ SndPage::~SndPage()
 
 
 KXNeurConf::KXNeurConf(KXNeurApp *app, QWidget *parent)
- : KConfigDialog(parent, i18n("Settings"), KXNeurSettings::self(), KDialogBase::IconList, Ok|/*Apply|*/Cancel|Help, Ok, true), knapp(app)
+ : KConfigDialog(parent, i18n("Settings"), KXNeurSettings::self(), KDialogBase::IconList, Ok|Cancel|Help, Ok, true)
 {
+    knapp = app;
+
     kxneur_page = new KXNeurPage(0, "KXNeurPage");
     xneur_page = new XNeurPage(0, "XNeurPage");
     keys_page = new KeysPage(0, "KeysPage");
@@ -437,14 +455,17 @@ KXNeurConf::KXNeurConf(KXNeurApp *app, QWidget *parent)
     LoadSettings();
 }
 
-
 KXNeurConf::~KXNeurConf()
 {
+    delete kxneur_page;
+    delete xneur_page;
+    delete keys_page;
+    delete snd_page;
+    delete prog_page;
 }
 
 void KXNeurConf::LoadSettings()
 {
-    knapp->xnconf_reload();
 
     kxneur_page->run_xneur->setChecked( KXNeurSettings::RunXNeur() );
     kxneur_page->force_run->setChecked( KXNeurSettings::ForceRun() );
@@ -452,19 +473,36 @@ void KXNeurConf::LoadSettings()
     kxneur_page->in_tray->setCurrentItem( KXNeurSettings::ShowInTray() );
     kxneur_page->sw_mode->setChecked( KXNeurSettings::SwitcherMode() );
 
-    // if ( knapp->xnconf->mouse_processing_mode == MOUSE_GRAB_DISABLE )
+    if ( knapp->xnconf->correct_incidental_caps )
+	kxneur_page->fix_caps_lock->setChecked(true);
+    else
+	kxneur_page->fix_caps_lock->setChecked(false);
+
+    if ( knapp->xnconf->correct_two_capital_letter )
+	kxneur_page->fix_two_big->setChecked(true);
+    else
+	kxneur_page->fix_two_big->setChecked(false);
+
+    if ( knapp->xnconf->flush_buffer_when_press_enter )
+	kxneur_page->flush_buf_on_enter->setChecked(true);
+    else
+	kxneur_page->flush_buf_on_enter->setChecked(false);
+
+    if ( knapp->xnconf->dont_process_when_press_enter )
+	kxneur_page->not_work_on_enter->setChecked(true);
+    else
+	kxneur_page->not_work_on_enter->setChecked(false);
+
     if ( knapp->xnconf->grab_mouse )
 	kxneur_page->mouse_mode->setChecked(true);
     else
 	kxneur_page->mouse_mode->setChecked(false);
 
-    // if ( knapp->xnconf->education_mode == EDUCATION_MODE_DISABLE )
     if ( knapp->xnconf->educate )
 	kxneur_page->edu_mode->setChecked(true);
     else
 	kxneur_page->edu_mode->setChecked(false);
 
-    // if ( knapp->xnconf->save_selection_mode == SELECTION_SAVE_DISABLED )
     if ( knapp->xnconf->save_selection )
 	kxneur_page->save_sel_text->setChecked(true);
     else
@@ -475,7 +513,8 @@ void KXNeurConf::LoadSettings()
     else
 	kxneur_page->save_kbd_log->setChecked(false);
 
-    if ( knapp->xnconf->xneur_data->manual_mode )
+    // if ( knapp->xnconf->xneur_data->manual_mode )
+    if ( knapp->xnconf->manual_mode )
 	kxneur_page->xneur_mode->setCurrentItem(1);
     else
 	kxneur_page->xneur_mode->setCurrentItem(0);
@@ -533,6 +572,7 @@ void KXNeurConf::LoadSettings()
 	}
 	else
 	     xneur_page->default_group->insertItem("group "+QString::number(i));
+
 	xneur_page->num[i]->setCurrentItem(knapp->xnconf->get_lang_group(knapp->xnconf, i));
 	xneur_page->num[i]->setEnabled(true);
 	xneur_page->regexp[i]->setEnabled(true);
@@ -561,6 +601,7 @@ void KXNeurConf::LoadSettings()
     keys->insert("Enable Secondary Layout ",     i18n("Enable Secondary Layout "),     QString::null, KeyFromXNConf(7), 0, this, NULL);
     keys->insert("Enable Thrid Layout ",         i18n("Enable Thrid Layout "),         QString::null, KeyFromXNConf(8), 0, this, NULL);
     keys->insert("Enable Fourth Layout ",        i18n("Enable Fourth Layout "),        QString::null, KeyFromXNConf(9), 0, this, NULL);
+    // keys->insert("Replace Abbreviation ",        i18n("Replace Abbreviation "),        QString::null, KeyFromXNConf(10), 0, this, NULL);
 
     keys_page->keyChooser = new KKeyChooser(keys, keys_page);
     keys_page->vlayout->addWidget(keys_page->keyChooser);
@@ -577,20 +618,40 @@ void KXNeurConf::LoadSettings()
 
     snd_page->enable_snd->setChecked( knapp->xnconf->play_sounds );
 
-    for (int i = 0 ; i < MAX_SOUNDS ; i++)
+    for (int i = 0 ; i < MAX_SOUNDS-3 ; i++)
 	snd_page->edit[i]->setText(knapp->xnconf->sounds[i].file);
 
 }
 
 void KXNeurConf::SaveSettings()
 {
-    KXNeurSettings::setRunXNeur( kxneur_page->run_xneur->isChecked() );
-    KXNeurSettings::setForceRun( kxneur_page->force_run->isChecked() );
-    KXNeurSettings::setAutostart( kxneur_page->autostart->isChecked() );
-    KXNeurSettings::setShowInTray( kxneur_page->in_tray->currentItem() );
-    KXNeurSettings::setSwitcherMode( kxneur_page->sw_mode->isChecked() );
+    KXNeurSettings::setRunXNeur( 
+	kxneur_page->run_xneur->isChecked() );
+    KXNeurSettings::setForceRun( 
+	kxneur_page->force_run->isChecked() );
+    KXNeurSettings::setAutostart( 
+	kxneur_page->autostart->isChecked() );
+    KXNeurSettings::setShowInTray( 
+	kxneur_page->in_tray->currentItem() );
+    KXNeurSettings::setSwitcherMode( 
+	kxneur_page->sw_mode->isChecked() );
 
     knapp->xnconf->clear(knapp->xnconf);
+
+    if ( kxneur_page->fix_caps_lock->isChecked() )
+	knapp->xnconf->correct_incidental_caps = 1;
+    else
+	knapp->xnconf->correct_incidental_caps = 0;
+
+    if ( kxneur_page->fix_two_big->isChecked() )
+	knapp->xnconf->correct_two_capital_letter = 1;
+    else
+	knapp->xnconf->correct_two_capital_letter = 0;
+
+    if ( kxneur_page->flush_buf_on_enter->isChecked() )
+	knapp->xnconf->flush_buffer_when_press_enter = 1;
+    else
+	knapp->xnconf->dont_process_when_press_enter = 0;
 
     if ( kxneur_page->mouse_mode->isChecked() )
 	knapp->xnconf->grab_mouse = 1;
@@ -613,9 +674,9 @@ void KXNeurConf::SaveSettings()
 	knapp->xnconf->save_keyboard_log = 0;
 
     if ( kxneur_page->xneur_mode->currentItem() )
-	knapp->xnconf->xneur_data->manual_mode = 1;
+	knapp->xnconf->manual_mode = 1;
     else
-	knapp->xnconf->xneur_data->manual_mode = 0;
+	knapp->xnconf->manual_mode = 0;
 
     knapp->xnconf->send_delay = xneur_page->send_delay->value();
 
@@ -650,6 +711,8 @@ void KXNeurConf::SaveSettings()
     KeyToXNConf(7, keys->shortcut("Enable Secondary Layout "    ).keyCodeQt());
     KeyToXNConf(8, keys->shortcut("Enable Thrid Layout "        ).keyCodeQt());
     KeyToXNConf(9, keys->shortcut("Enable Fourth Layout "       ).keyCodeQt());
+    // KeyToXNConf(10, keys->shortcut("Replace Abbreviation "       ).keyCodeQt());
+
 
     for ( int i = 0 ; i < prog_page->list[0]->numRows() ; i++ )
 	knapp->xnconf->excluded_apps->add(knapp->xnconf->excluded_apps, prog_page->list[0]->text(i).latin1());
@@ -665,7 +728,7 @@ void KXNeurConf::SaveSettings()
     else
 	knapp->xnconf->play_sounds = 0;
 
-    for ( int i = 0 ; i < MAX_SOUNDS ; i++ ) {
+    for ( int i = 0 ; i < MAX_SOUNDS-3 ; i++ ) {
 	if ( knapp->xnconf->sounds[i].file )
 	    free(knapp->xnconf->sounds[i].file);
 	knapp->xnconf->sounds[i].file = qstrdup(snd_page->edit[i]->text().utf8());
@@ -708,9 +771,9 @@ int KXNeurConf::KeyFromXNConf(int action)
     if ( knapp->xnconf->hotkeys[action].modifiers & 0x8 )
 	shc += KKey::QtWIN;
     int ccc = kc.key2code(knapp->xnconf->hotkeys[action].key);
-    // printf("%d : %s == %x -> ", action, knapp->xnconf->hotkeys[action].key, ccc);
+    // qDebug("%d : %s == %x -> ", action, knapp->xnconf->hotkeys[action].key, ccc);
     shc += ccc;
-    // printf("%x\n", shc);
+    // qDebug("%x\n", shc);
     orig_keys[action] = shc;
     return shc;
 }
@@ -721,7 +784,7 @@ void KXNeurConf::KeyToXNConf(int a, int c)
 
     if ( (cod & 0xffff) == 0 ) {
 	qDebug("not found key for action %d: key code = %x; restore old key\n", action, cod); // kdelibs have bug with Ctrl+Break
-	fflush(stdout);
+	// fflush(stdout);
         cod = orig_keys[action];
 	// return;
     }

@@ -24,9 +24,9 @@
 #include "kxnkeyboard.h"
 
 static const char description[] =
-    I18N_NOOP("KXNeur (KDE X Neural Switcher) is XNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.9.1 only");
+    I18N_NOOP("KXNeur (KDE X Neural Switcher) is XNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.9.2 only");
 
-static const char version[] = "0.9.1";
+static const char version[] = "0.9.2";
 
 static KCmdLineOptions options[] =
 {
@@ -45,7 +45,8 @@ int main(int argc, char **argv)
     KCmdLineArgs::init(argc, argv, &about);
     KCmdLineArgs::addCmdLineOptions( options );
 #ifdef XN_END
-    if (!KUniqueApplication::start()) {
+    // KUniqueApplication::addCmdLineOptions();
+    if ( !KUniqueApplication::start() ) {
         // fprintf(stderr, "KXNeur is already running!\n");
         QApplication::exit(0);
     }

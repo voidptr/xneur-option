@@ -36,7 +36,7 @@ KXNeurSettings::KXNeurSettings()
     addItem( itemRunXNeur, QString::fromLatin1( "RunXNeur" ) );
 
     KConfigSkeleton::ItemBool  *itemAutostart;
-    itemAutostart = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "AutoStart" ), autostart, true );
+    itemAutostart = new KConfigSkeleton::ItemBool( currentGroup(), QString::fromLatin1( "AutoStart" ), autostart, false );
     addItem( itemAutostart, QString::fromLatin1( "AutoStart" ) );
 
     KConfigSkeleton::ItemInt  *itemShowInTray;

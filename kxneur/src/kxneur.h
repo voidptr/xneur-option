@@ -37,7 +37,7 @@ extern "C" {
 #define SHOW_LANG 1
 #define SHOW_ALL -1
 
-#define XN_END
+// #define XN_END
 
 class KXNKeyboard;
 class KXNeurTray;
@@ -58,9 +58,12 @@ public:
     int menuid;
 };
 
+#ifdef XN_END
 // moc not conceive #define
-class KXNeurApp : public KUniqueApplication
-// class KXNeurApp : public KApplication
+// class KXNeurApp : public KUniqueApplication
+#else
+class KXNeurApp : public KApplication
+#endif
 {
     Q_OBJECT
 public:
@@ -69,7 +72,7 @@ public:
 
     bool xneur_start();
     bool xneur_stop();
-    bool xnconf_reload();
+    // bool xnconf_reload();
 
 public:
     struct _xneur_config *xnconf;
@@ -83,7 +86,7 @@ public slots:
     void slotPref();
 
 private:
-    int xneur_pid;
+    // int xneur_pid;
     KXNeurTray *trayicon;
     KXNKeyboard *xnkb;
     // XNLangVector langs;

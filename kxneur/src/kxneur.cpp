@@ -50,7 +50,7 @@ KXNeurApp::KXNeurApp()
     setMainWidget( trayicon );
     trayicon->show();
 
-    xneur_pid = 0;
+    // xneur_pid = 0;
     xnconf = NULL;
     cur_lang = -1;
     prev_lang = -1;
@@ -64,7 +64,7 @@ KXNeurApp::KXNeurApp()
 	trayicon->run->setText(i18n("Start xneur daemon"));
 	trayicon->run->setIcon("fork");
 	trayicon->mode->setEnabled(false);
-	xnconf_reload();
+	// xnconf_reload();
     }
     cur_lang = xnkb->getGroupNo();
     refreshLang();
@@ -85,37 +85,51 @@ KXNeurApp::~KXNeurApp()
 
 bool KXNeurApp::xneur_start()
 {
-    if ( !xnconf_reload() ) {
-#ifndef XN_END
-	qDebug("start -- fail 0\n");
-#endif
-	return false;
-    }
-    xneur_pid = xnconf->get_pid(xnconf);
-    if ( xneur_pid > 0 )
+    int major_v, minor_v;
+
+    if ( xnconf )
 	if (!xneur_stop()) {
 #ifndef XN_END
 	    qDebug("start -- fail 1\n");
 #endif
 	    return false;
 	}
-    QStringList args;
-    if ( KXNeurSettings::self()->ForceRun() )
-	args << "-f";
-    kdeinitExec("xneur", args, 0, &xneur_pid, 0);
-    if ( xneur_pid > 0 ) {
-	xnconf_reload();
-	xnconf_gets();
-	trayicon->run->setText(i18n("Stop xneur daemon"));
-	trayicon->run->setIcon("cancel"); // stop, no, remove
-	trayicon->mode->setEnabled(true);
+	else
+	    xnconf = NULL;
+    xnconf = xneur_config_init();
+    if ( xnconf > 0 ) {
+	xnconf->get_library_version(&major_v, &minor_v);
+	if ( major_v != XNEUR_MAJOR_VERSION && minor_v != XNEUR_MINOR_VERSION ) {
+		qDebug("Wrong XNeur configuration library api version.\nPlease install libxnconfig version %d.x\n", XNEUR_MAJOR_VERSION);
+		QMessageBox::critical(0, "XNeur", i18n("Wrong XNeur configuration library api version.\nPlease install libxnconfig version ")+
+			QString::number(XNEUR_MAJOR_VERSION)+".x");
+                xnconf->uninit(xnconf);
+		quit();
+	}
+	// xnconf_reload();
+	if ( !xnconf->load(xnconf) ) {
+		qDebug("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall XNeur package!\n");
+		QMessageBox::critical(0, "XNeur", i18n("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"));
+                xnconf->uninit(xnconf);
+		quit();
+	}
+        QStringList args;
+        if ( KXNeurSettings::self()->ForceRun() )
+	    args << "-f";
+	if ( kdeinitExec("xneur", args, 0, NULL, 0) == 0 ) {
+	    xnconf_gets();
+	    trayicon->run->setText(i18n("Stop xneur daemon"));
+	    trayicon->run->setIcon("cancel"); // stop, no, remove
+	    trayicon->mode->setEnabled(true);
 #ifndef XN_END
-	qDebug("start -- ok\n");
+	    qDebug("start -- ok\n");
 #endif
-	return true;
+	    return true;
+	}
+	qDebug("Couldn't start xneur\nVerify that it installed\n");
+	QMessageBox::critical(0, "XNeur", i18n("Couldn't start xneur\nVerify that it installed\n"));
     }
-    xneur_pid = 0;
-    // xnconf = NULL;
+    xnconf = NULL;
 #ifndef XN_END
     qDebug("start -- fail 2\n");
 #endif
@@ -125,17 +139,15 @@ bool KXNeurApp::xneur_start()
 
 bool KXNeurApp::xneur_stop()
 {
-    if ( xneur_pid > 0 ) {
-	if ( xnconf->kill(xnconf) )
-	    xnconf->set_pid(xnconf, 0);
-	else {
+    if ( xnconf && xnconf->get_pid(xnconf) ) {
+	if ( !xnconf->kill(xnconf) ) {
 #ifndef XN_END
 	    qDebug("stop -- fail 1\n");
 #endif
             return false;
 	}
-	xneur_pid = 0;
-	// xnconf = NULL;
+	xnconf->uninit(xnconf);
+	xnconf = NULL;
 	trayicon->run->setText(i18n("Start xneur daemon"));
 	trayicon->run->setIcon("fork"); // launch
 	trayicon->mode->setEnabled(false);
@@ -144,7 +156,9 @@ bool KXNeurApp::xneur_stop()
 #endif
 	return true;
     }
-    // qDebug("stop -- fail 3\n");
+#ifndef XN_END
+    qDebug("stop -- fail 3\n");
+#endif
     return false;
 }
 
@@ -153,37 +167,6 @@ void KXNeurApp::slotExit()
 {
     xneur_stop();
 }
-
-
-bool KXNeurApp::xnconf_reload()
-{
-    if (xnconf != NULL)
-	xnconf->uninit(xnconf);
-    if ( ( xnconf = xneur_config_init() ) == NULL ) {
-#ifndef XN_END
-	qDebug("reload -- fail\n");
-#endif
-	return false;
-    }
-    int major_v, minor_v;
-    xnconf->get_library_version(&major_v, &minor_v);
-
-    if ( major_v != XNEUR_MAJOR_VERSION && minor_v != XNEUR_MINOR_VERSION ) {
-                // qDebug("Wrong XNeur configuration library api version.\nPlease install libxnconfig version %d.x\n", XNEUR_NEEDED_MAJOR_VERSION);
-		QMessageBox::critical(0, "XNeur", i18n("Wrong XNeur configuration library api version.\nPlease install libxnconfig version ")+
-			QString::number(XNEUR_MAJOR_VERSION)+".x");
-                xnconf->uninit(xnconf);
-		quit();
-    }
-    if ( !xnconf->load(xnconf) ) {
-	xnconf->uninit(xnconf);
-	QMessageBox::critical(0, "XNeur", i18n("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall package!"));
-	// printf("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall package!\n");
-	quit();
-    }
-    return true;
-}
-
 
 void KXNeurApp::slotUpdateMode()
 {
@@ -201,7 +184,7 @@ void KXNeurApp::xnconf_gets()
     cnt_langs = xnconf->total_languages;
 
 
-    if ( xnconf->xneur_data->manual_mode ) {
+    if ( xnconf->manual_mode ) {
 	trayicon->mode->setText(i18n("Set auto mode"));
 	trayicon->mode->setIcon("exec"); // mics, gear
 	// printf("auto\n");
@@ -216,7 +199,7 @@ void KXNeurApp::xnconf_gets()
 
 void KXNeurApp::slotUpdateRun()
 {
-    if ( xneur_pid > 0 )
+    if ( xnconf )
 	xneur_stop();
     else
 	xneur_start();
@@ -225,14 +208,11 @@ void KXNeurApp::slotUpdateRun()
 
 void KXNeurApp::slotPref()
 {
-    KXNeurConf dlg(this);
+    KXNeurConf *dlg = new KXNeurConf(this);
 
-    // bool st = xneur_stop();
-    dlg.exec();
-    /*if ( st )
-	xneur_start();
-    else
-	printf("without restart\n");*/
+    dlg->exec();
+
+    delete dlg;
 
     refreshLang();
     trayicon->setPixmap(langs[cur_lang]->pic);
@@ -264,19 +244,15 @@ void KXNeurApp::refreshLang()
     int i = 0;
 
 
-    // for ( i = 0 ; i < langs.count() ; i++ )
     for ( ; i < MAX_LANGUAGES ; i++ ) {
 	if ( langs[i] != NULL ) {
 	    trayicon->menu->removeItem(langs[i]->menuid);
-            // langs.clear();
 	    delete langs[i];
 	}
 	langs[i] = NULL;
     }
 
     i = 0;
-    // langs.resize(lngs.count());
-
     for ( QStringList::Iterator iter = lngs.begin(); iter != lngs.end() ; iter++, i++ ) {
 	if ( i >= MAX_LANGUAGES ) {
 	    qDebug("Error: found more then 4 langs!!!");
@@ -285,15 +261,12 @@ void KXNeurApp::refreshLang()
 	}
 	lng = *iter;
 	QString code = all_langs->readEntry(lng);
-	// printf("%s - %s\n", lng.latin1(), code.latin1());
 	if ( code == QString::null ) {
 	    langs[i] = new XNLang(i18n("* Unknown lang *"));
-	    // langs.insert(i, new XNLang(i18n("* Unknown lang *")));
 	    langs[i]->lg = QString::number(i);
 	    langs[i]->supp_lg = -1;
 	}
 	else {
-	    // langs.insert(i, new XNLang(lng));
 	    langs[i] = new XNLang(lng);
 	    langs[i]->lg = code;
 	    langs[i]->supp_lg = 0;
@@ -354,7 +327,6 @@ void KXNeurApp::setNextLang()
     }
     else {
         groupno = cur_lang + 1;
-	// if ( groupno >= (int)langs.count() )
 	if ( groupno >= MAX_LANGUAGES || langs[groupno] == NULL )
 	    groupno = 0;
 	// qDebug("ring mode");
@@ -365,8 +337,7 @@ void KXNeurApp::setNextLang()
 
 void KXNeurApp::setMenuLang(int nn)
 {
-    // printf("click lang %d\n", nn);
-    // for ( uint i = 0 ; i < langs.count() ; i++ )
+    // qDebug("click lang %d\n", nn);
     for ( uint i = 0 ; i < MAX_LANGUAGES && langs[i] != NULL ; i++ )
 	if ( langs[i]->menuid == nn ) {
 	    xnkb->setGroupNo(i);

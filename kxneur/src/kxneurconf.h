@@ -84,7 +84,7 @@ public:
     ~KXNeurPage();
 
     QVBoxLayout *vlayout, *vlayout1, *vlayout2;
-    QCheckBox *run_xneur, *autostart, *sw_mode, *force_run, *mouse_mode, *edu_mode, *save_sel_text, *save_kbd_log;
+    QCheckBox *run_xneur, *autostart, *sw_mode, *force_run, *mouse_mode, *edu_mode, *save_sel_text, *fix_caps_lock, *fix_two_big, *save_kbd_log, *flush_buf_on_enter, *not_work_on_enter;
     QComboBox *in_tray, *xneur_mode;
     QGroupBox *group1, *group2;
     QHBox *box2;
