@@ -1,0 +1,461 @@
+# Hebrew translation for xneur
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the xneur package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: xneur\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2008-10-16 13:14+0400\n"
+"PO-Revision-Date: 2008-11-13 10:04+0000\n"
+"Last-Translator: Crew <Unknown>\n"
+"Language-Team: Hebrew <he@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2008-11-13 12:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+
+msgid "Flag Pixmap For Layout 4"
+msgstr "סימון מפת סמלים לפריסה 4"
+
+msgid "Flag Pixmap For Layout 3"
+msgstr "סימון מפת סמלים לפריסה 3"
+
+msgid "Flag Pixmap For Layout 2"
+msgstr "סימון מפת סמלים לפריסה 2"
+
+msgid "Flag Pixmap For Layout 1"
+msgstr "סימון מפת סמלים לפריסה 1"
+
+msgid "Press Key On Layout 1"
+msgstr "לחץ על מקש בפריסה 1"
+
+msgid "Press Key On Layout 2"
+msgstr "לחץ על מקש בפריסה 2"
+
+msgid "Press Key On Layout 3"
+msgstr "לחץ על מקש בפריסה 3"
+
+msgid "Press Key On Layout 4"
+msgstr "לחץ על מקש בפריסה 4"
+
+msgid "Enable Layout 1"
+msgstr "אפשר פריסה 1"
+
+msgid "Enable Layout 2"
+msgstr "אפשר פריסה 2"
+
+msgid "Enable Layout 3"
+msgstr "אפשר פריסה 3"
+
+msgid "Enable Layout 4"
+msgstr "אפשר פריסה 4"
+
+msgid "Automatic Change Word"
+msgstr "שינוי מילה אוטומטי"
+
+msgid "Manual Change Word"
+msgstr "שינוי מילה ידני"
+
+msgid "Change String"
+msgstr "שנה מחרוזת"
+
+msgid "Change Selected Text"
+msgstr "שנה את הטקסט הנבחר"
+
+msgid "Translit Selected Text"
+msgstr "שעתק את הטקסט הנבחר"
+
+msgid "Changecase Selected Text"
+msgstr "החלף רישיות לטקסט הנבחר"
+
+msgid "Correct Incidental Caps"
+msgstr "תקן אותיות גדולות מקריות"
+
+msgid "Correct Two Capital Letter"
+msgstr "תקן אותיות גדולות כפולות"
+
+#: glade/abbr_add.glade:7
+msgid "Add Abbreviation..."
+msgstr "הוסף ראשי תיבות..."
+
+#: glade/abbr_add.glade:77
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: glade/abbr_add.glade:88
+msgid "gtk-ok"
+msgstr "gtk-ok"
+
+#: glade/about.glade:7
+msgid "gXNeur About..."
+msgstr "אודות gXNeur..."
+
+#: glade/about.glade:15
+msgid ""
+"\n"
+"\t\t<b>X Neural Switcher for Gnome</b>\t\t\n"
+"\t\tGTK2 frontend for XNeur\t\t\n"
+"\n"
+"AUTHORS:\n"
+"Andrew Crew Kuznetsov\n"
+"Nikolay Yankin"
+msgstr ""
+"\n"
+"\t\t<b>X מחליף עצבי עבור  Gnome</b>\t\t\n"
+"\t\tמנשק GTK2 fעבור XNeur\t\t\n"
+"\n"
+"יוצרים:\n"
+"Andrew Crew Kuznetsov\n"
+"Nikolay Yankin"
+
+#: glade/choose_file.glade:7
+msgid "Choose File..."
+msgstr "בחר קובץ..."
+
+#: glade/config.glade:7
+msgid "XNeur Settings"
+msgstr "הגדרות XNeur"
+
+#: glade/config.glade:34
+msgid "Enable Manual Switching Mode"
+msgstr "אפשר מצב החלפה ידני"
+
+#: glade/config.glade:47
+msgid "Correct iNCIDENTAL CapsLock"
+msgstr "תקן CapsLock מקרי"
+
+#: glade/config.glade:61
+msgid "Correct two CApital letter"
+msgstr "תקן כפל אותיות גדולות"
+
+#: glade/config.glade:75
+msgid "Enable Auto-Learn Mode"
+msgstr "מצב למידה אוטומטי"
+
+#: glade/config.glade:89
+msgid "Keep Selection After Changing Selected Text"
+msgstr "שמור על הבחירה לאחר שינוי הטקסט הנבחר"
+
+#: glade/config.glade:103
+msgid "Enable Keyboard Logging"
+msgstr "אפשר מעקב אחר המקלדת"
+
+#: glade/config.glade:117
+msgid "Flush internal buffer when pressed Enter or Tab"
+msgstr "נקה את החוצץ הפנימי בעת לחיצה על Enter או על Tab"
+
+#: glade/config.glade:131
+msgid "Don't process word when pressed Enter or Tab"
+msgstr "אל תעבד את המילה אם נלחצו Enter או Tab"
+
+#: glade/config.glade:156
+msgid "<b>General</b>"
+msgstr "<b>כללי</b>"
+
+#: glade/config.glade:198
+msgid "Initial Layout Number "
+msgstr "מספר הפריסה הראשוני "
+
+#: glade/config.glade:210 glade/config.glade:438 glade/config.glade:455
+#: glade/config.glade:472 glade/config.glade:489
+msgid ""
+"0\n"
+"1\n"
+"2\n"
+"3"
+msgstr ""
+"0\n"
+"1\n"
+"2\n"
+"3"
+
+#: glade/config.glade:228 glade/config.glade:245 glade/config.glade:262
+#: glade/config.glade:279
+msgid "Regular Expressions..."
+msgstr "ביטויים רגולריים..."
+
+#: glade/config.glade:295 glade/config.glade:314 glade/config.glade:333
+#: glade/config.glade:352
+msgid ""
+"\n"
+"English\n"
+"Russian\n"
+"Ukrainian\n"
+"Belarusian\n"
+"French\n"
+"Romanian\n"
+"Kazakh\n"
+"German"
+msgstr ""
+"\n"
+"English\n"
+"Russian\n"
+"Ukrainian\n"
+"Belarusian\n"
+"French\n"
+"Romanian\n"
+"Kazakh\n"
+"German"
+
+#: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
+#: glade/config.glade:422
+msgid "Dictionary..."
+msgstr "מילון..."
+
+#: glade/config.glade:507
+msgid "Number\t"
+msgstr "מספר\t"
+
+#: glade/config.glade:520
+msgid "Layout"
+msgstr "פריסה"
+
+#: glade/config.glade:547
+msgid "Remember Keyboard Layout For Each Copies Of Application"
+msgstr "זכור את פריסת המקלדת עבור כל עותק של היישום בנפרד"
+
+#: glade/config.glade:596 glade/config.glade:1222 glade/config.glade:1402
+#: glade/config.glade:1486 glade/config.glade:1573 glade/config.glade:1853
+msgid "gtk-add"
+msgstr "gtk-add"
+
+#: glade/config.glade:609 glade/config.glade:1235 glade/config.glade:1415
+#: glade/config.glade:1499 glade/config.glade:1586 glade/config.glade:1864
+msgid "gtk-remove"
+msgstr "gtk-remove"
+
+#: glade/config.glade:634
+msgid "Exceptions (One Keyboard Layout For All Copies Of Application)"
+msgstr "חריגות (פריסת מקלדת אחת לכל העותקים של היישום)"
+
+#: glade/config.glade:664
+msgid "<b>Layouts</b>"
+msgstr "<b>פריסות</b>"
+
+#: glade/config.glade:692 glade/config.glade:709 glade/config.glade:726
+#: glade/config.glade:743 glade/config.glade:760 glade/config.glade:777
+#: glade/config.glade:794 glade/config.glade:811 glade/config.glade:828
+#: glade/config.glade:845 glade/config.glade:1793
+msgid "gtk-clear"
+msgstr "gtk-clear"
+
+#: glade/config.glade:871
+msgid "Replace Selected Text"
+msgstr "החלף את הטקסט הנבחר"
+
+#: glade/config.glade:884
+msgid "Change Processing Mode"
+msgstr "שנה את מצב העיבוד"
+
+#: glade/config.glade:897
+msgid "Replace Last String "
+msgstr "החלף את המחרוזת האחרונה "
+
+#: glade/config.glade:910
+msgid "Replace / Cancel Replace "
+msgstr "החלף / בטל את החלפת "
+
+#: glade/config.glade:921
+msgid "Transliterate Selected Text"
+msgstr "שעתק את הטקסט הנבחר"
+
+#: glade/config.glade:934
+msgid "Change Case Of Selected Text "
+msgstr "שנה את הרישיות של הטקסט הנבחר "
+
+#: glade/config.glade:1017
+msgid "Enable First Layout  "
+msgstr "אפשר את הפריסה הראשונה  "
+
+#: glade/config.glade:1030
+msgid "Enable Secondary Layout"
+msgstr "אפשר את הפריסה השניה"
+
+#: glade/config.glade:1043
+msgid "Enable Third Layout"
+msgstr "אפשר את הפריסה השלישית"
+
+#: glade/config.glade:1112
+msgid "Enable Fourth Layout"
+msgstr "אפשר את הפריסה הרביעית"
+
+#: glade/config.glade:1139
+msgid "<b>Key Bindings</b>"
+msgstr "<b>צירופי מקשים</b>"
+
+#: glade/config.glade:1164
+msgid "Flush Internal Buffer On Mouse Click"
+msgstr "נקה את החוצץ הפנימי בעת לחיצת עכבר"
+
+#: glade/config.glade:1260
+msgid "Draw Flag Beside Of Mouse For These Applications"
+msgstr "צייר דגלון ליד העכבר עבור יישומים אלו"
+
+#: glade/config.glade:1314 glade/config.glade:1717
+msgid "gtk-edit"
+msgstr "gtk-edit"
+
+#: glade/config.glade:1344
+msgid "<b>Mouse</b>"
+msgstr "<b>עכבר</b>"
+
+#: glade/config.glade:1440
+msgid "Do Not Process These Applications"
+msgstr "אל תעבד יישומים אלו"
+
+#: glade/config.glade:1524
+msgid "Force Automatic Mode For These Applications"
+msgstr "הכרח מצב אוטומטי עבור יישומים אלו"
+
+#: glade/config.glade:1611
+msgid "Force Manual Mode For These Applications"
+msgstr "הכרח מצב ידני עבור יישומים אלו"
+
+#: glade/config.glade:1641
+msgid "<b>Applications</b>"
+msgstr "<b>יישומים</b>"
+
+#: glade/config.glade:1666
+msgid "Play Sounds"
+msgstr "השמע צלילים"
+
+#: glade/config.glade:1747
+msgid "<b>Sounds</b>"
+msgstr "<b>צלילים</b>"
+
+#: glade/config.glade:1775
+msgid "Replace Abbreviation"
+msgstr "החלף ראשי תיבות"
+
+#: glade/config.glade:1811
+msgid "Ignore Keyboard Layout For Abbreviations"
+msgstr "התעלם מפריסת המקלדת עבור ראשי תיבות"
+
+#: glade/config.glade:1897
+msgid "<b>Autoreplace</b>"
+msgstr "<b>החלפה אוטומטית</b>"
+
+#: glade/config.glade:1923
+msgid ""
+"Error\n"
+"Warning\n"
+"Log\n"
+"Debug\n"
+"Trace"
+msgstr ""
+"Error\n"
+"Warning\n"
+"Log\n"
+"Debug\n"
+"Trace"
+
+#: glade/config.glade:1957
+msgid "Level Of Program Messages Will Write To Output"
+msgstr "הודעות ברמת התוכנה ייכתבו לפלט"
+
+#: glade/config.glade:1970
+msgid "Delay Before Sending Events (in milliseconds)"
+msgstr "השהייה לפני שליחת האירועים (במילישניות)"
+
+#: glade/config.glade:1989
+msgid "<b>Advanced</b>"
+msgstr "<b>מתקדם</b>"
+
+#: glade/list.glade:7
+msgid "File Editing"
+msgstr "עריכת קבצים"
+
+#: src/callbacks.c:188 src/misc.c:1288
+msgid "Press any key"
+msgstr "לחץ על מקש כלשהו"
+
+#: src/misc.c:259 src/misc.c:260
+#, c-format
+msgid ""
+"Wrong XNeur configuration library api version.\n"
+"Please, install libxnconfig version %d.x\n"
+msgstr ""
+"גירסת ספריית תצורת api שגויה של XNeur.\n"
+"אנא, התקן את libxnconfig גירסה %d.x\n"
+
+#: src/misc.c:266
+#, c-format
+msgid "Using libxnconfig API version %d.%d (build with %d.%d)\n"
+msgstr "עושה שימוש ב־API של libxnconfig גירסה %d.%d (נבנה באמצעות %d.%d)\n"
+
+#: src/misc.c:270 src/misc.c:271
+#, c-format
+msgid ""
+"XNeur config broken!\n"
+"Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+msgstr ""
+"תצורת XNeur פגומה!\n"
+"אנא, הסר את ~/.xneur/xneurrc והתקן מחדש את החבילה XNeur!\n"
+
+#: src/misc.c:334
+msgid "Current Version"
+msgstr "גירסה נוכחית"
+
+#: src/misc.c:376 src/misc.c:402 src/misc.c:429 src/misc.c:455 src/misc.c:734
+msgid "Application"
+msgstr "יישום"
+
+#: src/misc.c:620
+msgid "Abbreviation"
+msgstr "ראשי תיבות"
+
+#: src/misc.c:625
+msgid "Full Text"
+msgstr "טקסט מלא"
+
+#: src/misc.c:655
+msgid "Action"
+msgstr "פעולה"
+
+#: src/misc.c:660
+msgid "Sound"
+msgstr "צליל"
+
+#: src/misc.c:706
+msgid "Description"
+msgstr "תיאור"
+
+#: src/misc.c:711
+msgid "Pixmap"
+msgstr "מפת סמלים"
+
+#: src/support.c:80 src/support.c:104
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "לא ניתן למצוא את קובץ מפת הסמלים: %s"
+
+#: src/trayicon.c:78
+msgid "Stop Daemon"
+msgstr "הפסק את הסוכן"
+
+#: src/trayicon.c:83
+msgid "Run Daemon"
+msgstr "הפעל את הסוכן"
+
+#: src/trayicon.c:100
+msgid "Disable Input Autocorrection"
+msgstr "בטל את תיקון הקלט האוטומטי"
+
+#: src/trayicon.c:105
+msgid "Enable Input Autocorrection"
+msgstr "אפשר את תיקון הקלט האוטומטי"
+
+#: src/trayicon.c:182
+msgid "X Neural Switcher RUNNING ("
+msgstr "X המחליף העצבי פעיל ("
+
+#: src/trayicon.c:187
+msgid "X Neural Switcher STOPPED ("
+msgstr "X המחליף העצבי הופסק ("
+
+#: src/trayicon.c:209
+msgid "X Neural Switcher"
+msgstr "X המחליף העצבי"
