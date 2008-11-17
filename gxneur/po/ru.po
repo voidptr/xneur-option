@@ -8,13 +8,14 @@ msgstr ""
 "Project-Id-Version: gxneur\n"
 "Report-Msgid-Bugs-To: web@softodrom.ru\n"
 "POT-Creation-Date: 2008-10-16 13:14+0400\n"
-"PO-Revision-Date: 2008-07-02 17:16+0400\n"
-"Last-Translator: Andrew Crew Kuznetsov <andrewcrew@rambler.ru >\n"
+"PO-Revision-Date: 2008-11-13 10:07+0000\n"
+"Last-Translator: Crew <Unknown>\n"
 "Language-Team: русский\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Launchpad-Export-Date: 2008-11-17 10:21+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 msgid "Flag Pixmap For Layout 4"
 msgstr "Рисунок флага для раскладки 4"
@@ -82,11 +83,11 @@ msgstr "Добавить Сокращение..."
 
 #: glade/abbr_add.glade:77
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
 #: glade/abbr_add.glade:88
 msgid "gtk-ok"
-msgstr ""
+msgstr "gtk-ok"
 
 #: glade/about.glade:7
 msgid "gXNeur About..."
@@ -156,7 +157,7 @@ msgstr "<b>Общее</b>"
 
 #: glade/config.glade:198
 msgid "Initial Layout Number "
-msgstr "Номер раскладки по умолчанию"
+msgstr "Номер раскладки по умолчанию "
 
 #: glade/config.glade:210 glade/config.glade:438 glade/config.glade:455
 #: glade/config.glade:472 glade/config.glade:489
@@ -166,6 +167,10 @@ msgid ""
 "2\n"
 "3"
 msgstr ""
+"0\n"
+"1\n"
+"2\n"
+"3"
 
 #: glade/config.glade:228 glade/config.glade:245 glade/config.glade:262
 #: glade/config.glade:279
@@ -202,7 +207,7 @@ msgstr "Словарь..."
 
 #: glade/config.glade:507
 msgid "Number\t"
-msgstr "Номер"
+msgstr "Номер\t"
 
 #: glade/config.glade:520
 msgid "Layout"
@@ -215,12 +220,12 @@ msgstr "Запоминать раскладку отдельно для кажд
 #: glade/config.glade:596 glade/config.glade:1222 glade/config.glade:1402
 #: glade/config.glade:1486 glade/config.glade:1573 glade/config.glade:1853
 msgid "gtk-add"
-msgstr ""
+msgstr "gtk-add"
 
 #: glade/config.glade:609 glade/config.glade:1235 glade/config.glade:1415
 #: glade/config.glade:1499 glade/config.glade:1586 glade/config.glade:1864
 msgid "gtk-remove"
-msgstr ""
+msgstr "gtk-remove"
 
 #: glade/config.glade:634
 msgid "Exceptions (One Keyboard Layout For All Copies Of Application)"
@@ -235,7 +240,7 @@ msgstr "<b>Раскладки</b>"
 #: glade/config.glade:794 glade/config.glade:811 glade/config.glade:828
 #: glade/config.glade:845 glade/config.glade:1793
 msgid "gtk-clear"
-msgstr ""
+msgstr "gtk-clear"
 
 #: glade/config.glade:871
 msgid "Replace Selected Text"
@@ -247,11 +252,11 @@ msgstr "Смена режима работы"
 
 #: glade/config.glade:897
 msgid "Replace Last String "
-msgstr "Замена последней строки"
+msgstr "Замена последней строки "
 
 #: glade/config.glade:910
 msgid "Replace / Cancel Replace "
-msgstr "Замена / Отмена замены"
+msgstr "Замена / Отмена замены "
 
 #: glade/config.glade:921
 msgid "Transliterate Selected Text"
@@ -259,11 +264,11 @@ msgstr "Транслитерация выделеного текста"
 
 #: glade/config.glade:934
 msgid "Change Case Of Selected Text "
-msgstr "Смена регистра выделеного текста"
+msgstr "Смена регистра выделеного текста "
 
 #: glade/config.glade:1017
 msgid "Enable First Layout  "
-msgstr "Включить первую раскладку"
+msgstr "Включить первую раскладку  "
 
 #: glade/config.glade:1030
 msgid "Enable Secondary Layout"
@@ -291,7 +296,7 @@ msgstr "Рисовать флаг рядом с курсором для этих
 
 #: glade/config.glade:1314 glade/config.glade:1717
 msgid "gtk-edit"
-msgstr ""
+msgstr "gtk-edit"
 
 #: glade/config.glade:1344
 msgid "<b>Mouse</b>"
@@ -341,6 +346,11 @@ msgid ""
 "Debug\n"
 "Trace"
 msgstr ""
+"Error\n"
+"Warning\n"
+"Log\n"
+"Debug\n"
+"Trace"
 
 #: glade/config.glade:1957
 msgid "Level Of Program Messages Will Write To Output"
@@ -420,7 +430,7 @@ msgstr "Изображение"
 #: src/support.c:80 src/support.c:104
 #, c-format
 msgid "Couldn't find pixmap file: %s"
-msgstr ""
+msgstr "Не найден файл изображения: %s"
 
 #: src/trayicon.c:78
 msgid "Stop Daemon"
