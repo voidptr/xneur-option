@@ -17,64 +17,40 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Flag Pixmap For Layout 4"
+msgid "Flag pixmap for Layout 4"
 msgstr ""
 
-msgid "Flag Pixmap For Layout 3"
+msgid "Flag pixmap for Layout 3"
 msgstr ""
 
-msgid "Flag Pixmap For Layout 2"
+msgid "Flag pixmap for Layout 2"
 msgstr ""
 
-msgid "Flag Pixmap For Layout 1"
+msgid "Flag pixmap for Layout 1"
 msgstr ""
 
-msgid "Press Key On Layout 1"
+msgid "Keypress on Layout 1"
 msgstr "Націсканьне клявішы (раскладка 1)"
 
-msgid "Press Key On Layout 2"
+msgid "Keypress on Layout 2"
 msgstr "Націсканьне клявішы (раскладка 2)"
 
-msgid "Press Key On Layout 3"
+msgid "Keypress on Layout 3"
 msgstr "Націсканьне клявішы (раскладка 3)"
 
-msgid "Press Key On Layout 4"
+msgid "Keypress on Layout 4"
 msgstr "Націсканьне клявішы (раскладка 4)"
 
-msgid "Enable Layout 1"
-msgstr "Уключэньне раскладкі 1"
-
-msgid "Enable Layout 2"
-msgstr "Уключэньне раскладкі 2"
-
-msgid "Enable Layout 3"
-msgstr "Уключэньне раскладкі 3"
-
-msgid "Enable Layout 4"
-msgstr "Уключэньне раскладкі 4"
-
-msgid "Automatic Change Word"
+msgid "Correct word automatically"
 msgstr "Аўтаматычная замена слова"
 
-msgid "Manual Change Word"
+msgid "Correct word manually"
 msgstr "Ручная замена слова"
 
-msgid "Change String"
-msgstr "Замена радка"
-
-msgid "Change Selected Text"
-msgstr "Замена вылучанага тэксту"
-
-msgid "Translit Selected Text"
-msgstr "Трансьлітэрацыя вылучанага тэксту"
-
-msgid "Changecase Selected Text"
-msgstr "Зьмена рэгістра вылучанага тэксту"
-
-msgid "Correct Incidental Caps"
+msgid "Abbreviation field is empty!"
 msgstr ""
 
-msgid "Correct Two Capital Letter"
+msgid "Expansion text field is empty!"
 msgstr ""
 
 #: glade/abbr_add.glade:7
@@ -120,35 +96,35 @@ msgid "XNeur Settings"
 msgstr "Налады XNeur"
 
 #: glade/config.glade:34
-msgid "Enable Manual Switching Mode"
+msgid "Use manual switching mode"
 msgstr "Ручны рэжым працы"
 
 #: glade/config.glade:47
-msgid "Correct iNCIDENTAL CapsLock"
+msgid "Correct aCCIDENTAL caps"
 msgstr ""
 
 #: glade/config.glade:61
-msgid "Correct two CApital letter"
+msgid "Correct TWo INitial caps"
 msgstr ""
 
 #: glade/config.glade:75
-msgid "Enable Auto-Learn Mode"
+msgid "Enable auto-learning mode"
 msgstr "Уключыць рэжым саманавучаньня"
 
 #: glade/config.glade:89
-msgid "Keep Selection After Changing Selected Text"
+msgid "Keep selection after changing selected text"
 msgstr "Пакідаць вылучэньне пасьля зьмены вылучанага тэксту"
 
 #: glade/config.glade:103
-msgid "Enable Keyboard Logging"
+msgid "Enable keyboard logging"
 msgstr ""
 
 #: glade/config.glade:117
-msgid "Flush internal buffer when pressed Enter or Tab"
+msgid "Flush internal buffer on Enter or Tab"
 msgstr ""
 
 #: glade/config.glade:131
-msgid "Don't process word when pressed Enter or Tab"
+msgid "Don't process words on Enter or Tab"
 msgstr ""
 
 #: glade/config.glade:156
@@ -156,7 +132,7 @@ msgid "<b>General</b>"
 msgstr ""
 
 #: glade/config.glade:198
-msgid "Initial Layout Number "
+msgid "Initial layout number:"
 msgstr "Раскладка па змаўчаньні "
 
 #: glade/config.glade:210 glade/config.glade:438 glade/config.glade:455
@@ -201,7 +177,7 @@ msgid "Layout"
 msgstr "Раскладка"
 
 #: glade/config.glade:547
-msgid "Remember Keyboard Layout For Each Copies Of Application"
+msgid "Remember keyboard layout for each application instance"
 msgstr ""
 
 #: glade/config.glade:596 glade/config.glade:1222 glade/config.glade:1402
@@ -215,7 +191,7 @@ msgid "gtk-remove"
 msgstr ""
 
 #: glade/config.glade:634
-msgid "Exceptions (One Keyboard Layout For All Copies Of Application)"
+msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr ""
 
 #: glade/config.glade:664
@@ -230,55 +206,55 @@ msgid "gtk-clear"
 msgstr ""
 
 #: glade/config.glade:871
-msgid "Replace Selected Text"
+msgid "Correct selected text"
 msgstr "Замена вылучанага тэксту"
 
 #: glade/config.glade:884
-msgid "Change Processing Mode"
+msgid "Switch between processing modes"
 msgstr "Зьмена рэжыму працы"
 
 #: glade/config.glade:897
-msgid "Replace Last String "
-msgstr "Замена апошняга радка "
+msgid "Correct last line"
+msgstr "Замена апошняга радка"
 
 #: glade/config.glade:910
-msgid "Replace / Cancel Replace "
-msgstr "Замена / Адмена замены "
+msgid "Correct/Undo correction"
+msgstr "Замена/Адмена замены"
 
 #: glade/config.glade:921
-msgid "Transliterate Selected Text"
+msgid "Transliterate selected text"
 msgstr "Трансьлітэрацыя вылучанага тэксту"
 
 #: glade/config.glade:934
-msgid "Change Case Of Selected Text "
-msgstr "Зьмена рэгістра вылучанага тэксту "
+msgid "Change case of selected text"
+msgstr "Зьмена рэгістра вылучанага тэксту"
 
 #: glade/config.glade:1017
-msgid "Enable First Layout  "
-msgstr "Уключыць першую раскладку  "
+msgid "Switch to Layout 1"
+msgstr "Уключыць першую раскладку"
 
 #: glade/config.glade:1030
-msgid "Enable Secondary Layout"
+msgid "Switch to Layout 2"
 msgstr "Уключыць другую раскладку"
 
 #: glade/config.glade:1043
-msgid "Enable Third Layout"
+msgid "Switch to Layout 3"
 msgstr "Уключыць трэцюю раскладку"
 
 #: glade/config.glade:1112
-msgid "Enable Fourth Layout"
+msgid "Switch to Layout 4"
 msgstr "Уключыць чацьвертую раскладку"
 
 #: glade/config.glade:1139
-msgid "<b>Key Bindings</b>"
+msgid "<b>Hotkeys</b>"
 msgstr "<b>Спалучэнні клявішаў</b>"
 
 #: glade/config.glade:1164
-msgid "Flush Internal Buffer On Mouse Click"
+msgid "Flush internal buffer on mouse click"
 msgstr ""
 
 #: glade/config.glade:1260
-msgid "Draw Flag Beside Of Mouse For These Applications"
+msgid "Draw flag next to mouse cursor for these applications"
 msgstr ""
 
 #: glade/config.glade:1314 glade/config.glade:1717
@@ -290,15 +266,15 @@ msgid "<b>Mouse</b>"
 msgstr ""
 
 #: glade/config.glade:1440
-msgid "Do Not Process These Applications"
+msgid "Ignore these applications"
 msgstr "Не апрацоўваць наступыя праграмы:"
 
 #: glade/config.glade:1524
-msgid "Force Automatic Mode For These Applications"
+msgid "Force automatic mode for these applications"
 msgstr "Прымусовы аўтаматычны рэжым для наступых праграмаў:"
 
 #: glade/config.glade:1611
-msgid "Force Manual Mode For These Applications"
+msgid "Force manual mode for these applications"
 msgstr "Прымусовы ручны рэжым для наступых праграмаў:"
 
 #: glade/config.glade:1641
@@ -306,7 +282,7 @@ msgid "<b>Applications</b>"
 msgstr "<b>Праграмы</b>"
 
 #: glade/config.glade:1666
-msgid "Play Sounds"
+msgid "Enable sounds"
 msgstr "Граць гукі"
 
 #: glade/config.glade:1747
@@ -314,15 +290,15 @@ msgid "<b>Sounds</b>"
 msgstr "<b>Гукі</b>"
 
 #: glade/config.glade:1775
-msgid "Replace Abbreviation"
+msgid "Expand abbreviations"
 msgstr ""
 
 #: glade/config.glade:1811
-msgid "Ignore Keyboard Layout For Abbreviations"
+msgid "Ignore keyboard layout for abbreviations"
 msgstr ""
 
 #: glade/config.glade:1897
-msgid "<b>Autoreplace</b>"
+msgid "<b>Abbreviations</b>"
 msgstr ""
 
 #: glade/config.glade:1923
@@ -335,11 +311,11 @@ msgid ""
 msgstr ""
 
 #: glade/config.glade:1957
-msgid "Level Of Program Messages Will Write To Output"
+msgid "Log verbosity level"
 msgstr ""
 
 #: glade/config.glade:1970
-msgid "Delay Before Sending Events (in milliseconds)"
+msgid "Delay before sending events (in milliseconds)"
 msgstr ""
 
 #: glade/config.glade:1989
@@ -355,6 +331,7 @@ msgid "Press any key"
 msgstr "Націснуць якую заўгодна клявішу"
 
 #: src/misc.c:259 src/misc.c:260
+#, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
 "Please, install libxnconfig version %d.x\n"
@@ -368,6 +345,7 @@ msgid "Using libxnconfig API version %d.%d (build with %d.%d)\n"
 msgstr "Выкарыстоўваецца вэрсія API libxnconfig %d.%d (зборка з %d.%d)\n"
 
 #: src/misc.c:270 src/misc.c:271
+#, c-format
 msgid ""
 "XNeur config broken!\n"
 "Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
@@ -383,12 +361,18 @@ msgstr "Бягучая вэрсія"
 msgid "Application"
 msgstr "Праграма"
 
+msgid "Abbreviation:"
+msgstr ""
+
 #: src/misc.c:620
 msgid "Abbreviation"
 msgstr ""
 
+msgid "Expansion text:"
+msgstr ""
+
 #: src/misc.c:625
-msgid "Full Text"
+msgid "Expansion text"
 msgstr ""
 
 #: src/misc.c:655
@@ -413,30 +397,32 @@ msgid "Couldn't find pixmap file: %s"
 msgstr "Ня знойдзеный файл растравай карты: %s"
 
 #: src/trayicon.c:78
-msgid "Stop Daemon"
+msgid "Stop daemon"
 msgstr "Спыніць дэман"
 
 #: src/trayicon.c:83
-msgid "Run Daemon"
+msgid "Start daemon"
 msgstr "Запусьціць дэман"
 
 #: src/trayicon.c:100
-msgid "Disable Input Autocorrection"
+msgid "Disable input auto-correction"
 msgstr "Адкл. аўтакарэкцыю ўводу"
 
 #: src/trayicon.c:105
-msgid "Enable Input Autocorrection"
+msgid "Enable input auto-correction"
 msgstr "Укл. аўтакарэкцыю ўводу"
 
 #: src/trayicon.c:182
-msgid "X Neural Switcher RUNNING ("
-msgstr "X Neural Switcher ПРАЦУЕ ("
+msgid "X Neural Switcher running ("
+msgstr "X Neural Switcher працуе ("
 
 #: src/trayicon.c:187
-msgid "X Neural Switcher STOPPED ("
-msgstr "X Neural Switcher СПЫНЕНЫ ("
+msgid "X Neural Switcher stopped ("
+msgstr "X Neural Switcher спынены ("
 
 #: src/trayicon.c:209
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher запушчаны"
 
+#~ msgid "Change case of selected textt"
+#~ msgstr "Зьмена рэгістра вылучанага тэксту"

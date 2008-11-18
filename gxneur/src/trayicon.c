@@ -75,12 +75,12 @@ GtkWidget* create_menu_icon(struct _tray_icon *tray, gboolean runned, int state)
 	gchar *menu_icon;
 	if (runned == TRUE)
 	{
-		menu_text = _("Stop Daemon");
+		menu_text = _("Stop daemon");
 		menu_icon = "gtk-stop";
 	}
 	else
 	{
-		menu_text = _("Run Daemon");
+		menu_text = _("Start daemon");
 		menu_icon = "gtk-execute";
 	}
 
@@ -97,12 +97,12 @@ GtkWidget* create_menu_icon(struct _tray_icon *tray, gboolean runned, int state)
 	// State
 	if (state == 0) // Auto
 	{
-		menu_text = _("Disable Input Autocorrection");
+		menu_text = _("Disable input auto-correction");
 		menu_icon = "gtk-disconnect";
 	}
 	else // Manual
 	{
-		menu_text = _("Enable Input Autocorrection");
+		menu_text = _("Enable input auto-correction");
 		menu_icon = "gtk-connect";
 	}
 
@@ -179,12 +179,12 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 	if (runned == TRUE)
 	{
 		saturation = 1.0;
-		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher RUNNING ("), layout_name, ")");
+		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher running ("), layout_name, ")");
 	}
 	else
 	{
 		saturation = 0.25;
-		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher STOPPED ("), layout_name, ")");
+		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher stopped ("), layout_name, ")");
 	}
 
 	int init_clock = 0;

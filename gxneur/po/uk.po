@@ -17,65 +17,41 @@ msgstr ""
 "X-Launchpad-Export-Date: 2008-11-14 17:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-msgid "Flag Pixmap For Layout 4"
+msgid "Flag pixmap for Layout 4"
 msgstr "Зображення прапору для розкладки 4"
 
-msgid "Flag Pixmap For Layout 3"
+msgid "Flag pixmap for Layout 3"
 msgstr "Зображення прапору для розкладки 3"
 
-msgid "Flag Pixmap For Layout 2"
+msgid "Flag pixmap for Layout 2"
 msgstr "Зображення прапору для розкладки 2"
 
-msgid "Flag Pixmap For Layout 1"
+msgid "Flag pixmap for Layout 1"
 msgstr "Зображення прапору для розкладки 1"
 
-msgid "Press Key On Layout 1"
+msgid "Keypress on Layout 1"
 msgstr "Натискання клавіші при розкладці 1"
 
-msgid "Press Key On Layout 2"
+msgid "Keypress on Layout 2"
 msgstr "Натискання клавіші при розкладці 2"
 
-msgid "Press Key On Layout 3"
+msgid "Keypress on Layout 3"
 msgstr "Натискання клавіші при розкладці 3"
 
-msgid "Press Key On Layout 4"
+msgid "Keypress on Layout 4"
 msgstr "Натискання клавіші при розкладці 4"
 
-msgid "Enable Layout 1"
-msgstr "Включити Розкладку 1"
-
-msgid "Enable Layout 2"
-msgstr "Включити Розкладку 2"
-
-msgid "Enable Layout 3"
-msgstr "Включити Розкладку 3"
-
-msgid "Enable Layout 4"
-msgstr "Включити Розкладку 4"
-
-msgid "Automatic Change Word"
+msgid "Correct word automatically"
 msgstr "Автоматичне змінювання слова"
 
-msgid "Manual Change Word"
+msgid "Correct word manually"
 msgstr "Ручне змінювання слова"
 
-msgid "Change String"
-msgstr "Зміна строки"
+msgid "Abbreviation field is empty!"
+msgstr "Скорочення пусто!"
 
-msgid "Change Selected Text"
-msgstr "Заміна виділеного тексту"
-
-msgid "Translit Selected Text"
-msgstr "Транслітерація виділеного тексту"
-
-msgid "Changecase Selected Text"
-msgstr "Зміна регістру виділеного тексту"
-
-msgid "Correct Incidental Caps"
-msgstr "Виправлення випадкового капслоку"
-
-msgid "Correct Two Capital Letter"
-msgstr "Виправлення двох заглавних літер"
+msgid "Expansion text field is empty!"
+msgstr "Повний текст пуст!"
 
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
@@ -120,35 +96,35 @@ msgid "XNeur Settings"
 msgstr "Налаштування XNeur"
 
 #: glade/config.glade:34
-msgid "Enable Manual Switching Mode"
+msgid "Use manual switching mode"
 msgstr "Включити ручний режим перемикання"
 
 #: glade/config.glade:47
-msgid "Correct iNCIDENTAL CapsLock"
+msgid "Correct aCCIDENTAL caps"
 msgstr "Виправляти вИПАДКОВИЙ CapsLock"
 
 #: glade/config.glade:61
-msgid "Correct two CApital letter"
+msgid "Correct TWo INitial caps"
 msgstr "Виправляти дві ЗАглавні літери"
 
 #: glade/config.glade:75
-msgid "Enable Auto-Learn Mode"
+msgid "Enable auto-learning mode"
 msgstr "Включити режим самонавчання"
 
 #: glade/config.glade:89
-msgid "Keep Selection After Changing Selected Text"
+msgid "Keep selection after changing selected text"
 msgstr "Зберігати виділення після зміни виділеного тексту"
 
 #: glade/config.glade:103
-msgid "Enable Keyboard Logging"
+msgid "Enable keyboard logging"
 msgstr "Включити зверігання тексту, що було набрано, у файл журналу"
 
 #: glade/config.glade:117
-msgid "Flush internal buffer when pressed Enter or Tab"
+msgid "Flush internal buffer on Enter or Tab"
 msgstr "Скидувати внутрішній буфер, коли нажато Enter або Tab"
 
 #: glade/config.glade:131
-msgid "Don't process word when pressed Enter or Tab"
+msgid "Don't process words on Enter or Tab"
 msgstr "Не перевіряти слово при натисканні Enter або Tab"
 
 #: glade/config.glade:156
@@ -156,7 +132,7 @@ msgid "<b>General</b>"
 msgstr "<b>Загальні</b>"
 
 #: glade/config.glade:198
-msgid "Initial Layout Number "
+msgid "Initial layout number:"
 msgstr "Розкладка за замовченням "
 
 #: glade/config.glade:210 glade/config.glade:438 glade/config.glade:455
@@ -214,7 +190,7 @@ msgid "Layout"
 msgstr "Розкладка"
 
 #: glade/config.glade:547
-msgid "Remember Keyboard Layout For Each Copies Of Application"
+msgid "Remember keyboard layout for each application instance"
 msgstr "Запам'ятовувати розкладку окремо для кожної копії програми"
 
 #: glade/config.glade:596 glade/config.glade:1222 glade/config.glade:1402
@@ -228,7 +204,7 @@ msgid "gtk-remove"
 msgstr "gtk-remove"
 
 #: glade/config.glade:634
-msgid "Exceptions (One Keyboard Layout For All Copies Of Application)"
+msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr "Виключення (одна розкладка для всіх копій програми)"
 
 #: glade/config.glade:664
@@ -243,55 +219,55 @@ msgid "gtk-clear"
 msgstr "gtk-clear"
 
 #: glade/config.glade:871
-msgid "Replace Selected Text"
+msgid "Correct selected text"
 msgstr "Заміна виділеного тексту"
 
 #: glade/config.glade:884
-msgid "Change Processing Mode"
+msgid "Switch between processing modes"
 msgstr "Зміна режиму роботи"
 
 #: glade/config.glade:897
-msgid "Replace Last String "
-msgstr "Заміна останнього рядка "
+msgid "Correct last line"
+msgstr "Заміна останнього рядка"
 
 #: glade/config.glade:910
-msgid "Replace / Cancel Replace "
-msgstr "Заміна / Відміна Заміни "
+msgid "Correct/Undo correction"
+msgstr "Заміна/Відміна Заміни"
 
 #: glade/config.glade:921
-msgid "Transliterate Selected Text"
+msgid "Transliterate selected text"
 msgstr "Транслітерація виділеного тексту"
 
 #: glade/config.glade:934
-msgid "Change Case Of Selected Text "
-msgstr "Зміна регістру виділеного тексту "
+msgid "Change case of selected text"
+msgstr "Зміна регістру виділеного тексту"
 
 #: glade/config.glade:1017
-msgid "Enable First Layout  "
-msgstr "Включити першу розкладку  "
+msgid "Switch to Layout 1"
+msgstr "Включити першу розкладку"
 
 #: glade/config.glade:1030
-msgid "Enable Secondary Layout"
+msgid "Switch to Layout 2"
 msgstr "Включити другу розкладку"
 
 #: glade/config.glade:1043
-msgid "Enable Third Layout"
+msgid "Switch to Layout 3"
 msgstr "Включити третю розкладку"
 
 #: glade/config.glade:1112
-msgid "Enable Fourth Layout"
+msgid "Switch to Layout 4"
 msgstr "Включити четверту розкладку"
 
 #: glade/config.glade:1139
-msgid "<b>Key Bindings</b>"
+msgid "<b>Hotkeys</b>"
 msgstr "<b>Поєднання клавіш</b>"
 
 #: glade/config.glade:1164
-msgid "Flush Internal Buffer On Mouse Click"
+msgid "Flush internal buffer on mouse click"
 msgstr "Скидувати внутрішній буфер за кліком мишкою"
 
 #: glade/config.glade:1260
-msgid "Draw Flag Beside Of Mouse For These Applications"
+msgid "Draw flag next to mouse cursor for these applications"
 msgstr "Зображувати прапор поряд з курсором для цих програм"
 
 #: glade/config.glade:1314 glade/config.glade:1717
@@ -303,15 +279,15 @@ msgid "<b>Mouse</b>"
 msgstr "Миша"
 
 #: glade/config.glade:1440
-msgid "Do Not Process These Applications"
+msgid "Ignore these applications"
 msgstr "Не обробляти ці програми"
 
 #: glade/config.glade:1524
-msgid "Force Automatic Mode For These Applications"
+msgid "Force automatic mode for these applications"
 msgstr "Список для примусової автоматичної обробки:"
 
 #: glade/config.glade:1611
-msgid "Force Manual Mode For These Applications"
+msgid "Force manual mode for these applications"
 msgstr "Список для примусової ручної обробки:"
 
 #: glade/config.glade:1641
@@ -319,7 +295,7 @@ msgid "<b>Applications</b>"
 msgstr "<b>Приложения</b>"
 
 #: glade/config.glade:1666
-msgid "Play Sounds"
+msgid "Enable sounds"
 msgstr "Грати звуки"
 
 #: glade/config.glade:1747
@@ -327,16 +303,16 @@ msgid "<b>Sounds</b>"
 msgstr "<b>Звуки</b>"
 
 #: glade/config.glade:1775
-msgid "Replace Abbreviation"
+msgid "Expand abbreviations"
 msgstr "Заміна скорочень"
 
 #: glade/config.glade:1811
-msgid "Ignore Keyboard Layout For Abbreviations"
+msgid "Ignore keyboard layout for abbreviations"
 msgstr "Ігнорувати розкладку для скорочень"
 
 #: glade/config.glade:1897
-msgid "<b>Autoreplace</b>"
-msgstr "Автозаміна"
+msgid "<b>Abbreviations</b>"
+msgstr "<b>Скорочення</b>"
 
 #: glade/config.glade:1923
 msgid ""
@@ -353,11 +329,11 @@ msgstr ""
 "Trace"
 
 #: glade/config.glade:1957
-msgid "Level Of Program Messages Will Write To Output"
+msgid "Log verbosity level"
 msgstr "Рівень докладності повідомлень, що виводяться"
 
 #: glade/config.glade:1970
-msgid "Delay Before Sending Events (in milliseconds)"
+msgid "Delay before sending events (in milliseconds)"
 msgstr "Затримка перед відправленням подій (в мілісекундах)"
 
 #: glade/config.glade:1989
@@ -403,12 +379,18 @@ msgstr "Поточна версія"
 msgid "Application"
 msgstr "Приложение"
 
+msgid "Abbreviation:"
+msgstr "Скорочення:"
+
 #: src/misc.c:620
 msgid "Abbreviation"
 msgstr "Скорочення"
 
+msgid "Expansion text:"
+msgstr "Повний текст:"
+
 #: src/misc.c:625
-msgid "Full Text"
+msgid "Expansion text"
 msgstr "Повний текст"
 
 #: src/misc.c:655
@@ -433,29 +415,32 @@ msgid "Couldn't find pixmap file: %s"
 msgstr "Не вдається знайти файл зображення: %s"
 
 #: src/trayicon.c:78
-msgid "Stop Daemon"
+msgid "Stop daemon"
 msgstr "Зупинити демон"
 
 #: src/trayicon.c:83
-msgid "Run Daemon"
+msgid "Start daemon"
 msgstr "Запустити демон"
 
 #: src/trayicon.c:100
-msgid "Disable Input Autocorrection"
+msgid "Disable input auto-correction"
 msgstr "Відключити автокорекцію введення"
 
 #: src/trayicon.c:105
-msgid "Enable Input Autocorrection"
+msgid "Enable input auto-correction"
 msgstr "Включити автокорекцію введення"
 
 #: src/trayicon.c:182
-msgid "X Neural Switcher RUNNING ("
+msgid "X Neural Switcher running ("
 msgstr "X Neural Switcher запущений ("
 
 #: src/trayicon.c:187
-msgid "X Neural Switcher STOPPED ("
+msgid "X Neural Switcher stopped ("
 msgstr "X Neural Switcher зупинений ("
 
 #: src/trayicon.c:209
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
+
+#~ msgid "Change case of selected textt"
+#~ msgstr "Зміна регістру виділеного тексту"

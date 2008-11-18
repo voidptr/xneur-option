@@ -65,18 +65,18 @@ static const char *language_names[]			= {"English", "Russian", "Ukrainian", "Bel
 static char *dirs[]					= {"en", "ru", "uk", "be", "fr", "ro", "kz", "de"};
 
 static const char *sound_names[]			=   {
-										"Press Key On Layout 1", "Press Key On Layout 2", "Press Key On Layout 3",
-										"Press Key On Layout 4", "Enable Layout 1", "Enable Layout 2",
-										"Enable Layout 3", "Enable Layout 4", "Automatic Change Word",
-										"Manual Change Word", "Change String", "Change Selected Text",
-										"Translit Selected Text", "Changecase Selected Text", "Replace Abbreviation",
-										"Correct Incidental Caps", "Correct Two Capital Letter"
+										"Keypress on Layout 1", "Keypress on Layout 2", "Keypress on Layout 3",
+										"Keypress on Layout 4", "Switch to Layout 1", "Switch to Layout 2",
+										"Switch to Layout 3", "Switch to Layout 4", "Correct word automatically",
+										"Correct word manually", "Correct last line", "Correct selected text",
+										"Transliterate selected text", "Change case of selected text", "Expand abbreviations",
+										"Correct aCCIDENTAL caps", "Correct TWo INitial caps"
 										};
 static const int total_sound_names = sizeof(sound_names) / sizeof(sound_names[0]);
 
 static const char *pixmap_names[]	=   {
-										"Flag Pixmap For Layout 1", "Flag Pixmap For Layout 2", "Flag Pixmap For Layout 3",
-										"Flag Pixmap For Layout 4"
+										"Flag pixmap for Layout 1", "Flag pixmap for Layout 2", "Flag pixmap for Layout 3",
+										"Flag pixmap for Layout 4"
 										};
 static const int total_pixmap_names = sizeof(pixmap_names) / sizeof(pixmap_names[0]);
 
@@ -622,7 +622,7 @@ void xneur_preference(void)
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	cell = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("Full Text"), cell, "text", 1, NULL);
+	column = gtk_tree_view_column_new_with_attributes(_("Expansion text"), cell, "text", 1, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// Button Add Abbreviation
@@ -809,12 +809,12 @@ static void xneur_insert_abbreviation(GladeXML *gxml)
 	const gchar *full_text = gtk_entry_get_text(GTK_ENTRY(entry2));
 	if (strlen(abbreviation) == 0) 
 	{
-		error_msg("Abbreviation is empty!");
+		error_msg(_("Abbreviation field is empty!"));
 		return;
 	}
 	if (strlen(full_text) == 0) 
 	{
-		error_msg("Full Text is empty!");
+		error_msg(_("Expansion text field is empty!"));
 		return;
 	}
 	
