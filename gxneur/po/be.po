@@ -10,24 +10,26 @@ msgstr ""
 "Project-Id-Version: gxneur 0.6.2\n"
 "Report-Msgid-Bugs-To: web@softodrom.ru\n"
 "POT-Creation-Date: 2008-10-16 13:14+0400\n"
-"PO-Revision-Date: 2007-02-13 00:53+0300\n"
-"Last-Translator:  <>\n"
+"PO-Revision-Date: 2008-11-20 15:42+0000\n"
+"Last-Translator: Crew <Unknown>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2008-11-21 18:28+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 msgid "Flag pixmap for Layout 4"
-msgstr ""
+msgstr "Малюнак сьцяга для раскладкі 4"
 
 msgid "Flag pixmap for Layout 3"
-msgstr ""
+msgstr "Малюнак сьцяга для раскладкі 3"
 
 msgid "Flag pixmap for Layout 2"
-msgstr ""
+msgstr "Малюнак сьцяга для раскладкі 2"
 
 msgid "Flag pixmap for Layout 1"
-msgstr ""
+msgstr "Малюнак сьцяга для раскладкі 1"
 
 msgid "Keypress on Layout 1"
 msgstr "Націсканьне клявішы (раскладка 1)"
@@ -48,22 +50,22 @@ msgid "Correct word manually"
 msgstr "Ручная замена слова"
 
 msgid "Abbreviation field is empty!"
-msgstr ""
+msgstr "Поле скарота пустое!"
 
 msgid "Expansion text field is empty!"
-msgstr ""
+msgstr "Поле поўнага тэксту пустое!"
 
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
-msgstr ""
+msgstr "Дадаць скарот…"
 
 #: glade/abbr_add.glade:77
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
 #: glade/abbr_add.glade:88
 msgid "gtk-ok"
-msgstr ""
+msgstr "gtk-ok"
 
 #: glade/about.glade:7
 msgid "gXNeur About..."
@@ -89,7 +91,7 @@ msgstr ""
 
 #: glade/choose_file.glade:7
 msgid "Choose File..."
-msgstr ""
+msgstr "Выбраць файл…"
 
 #: glade/config.glade:7
 msgid "XNeur Settings"
@@ -101,11 +103,11 @@ msgstr "Ручны рэжым працы"
 
 #: glade/config.glade:47
 msgid "Correct aCCIDENTAL caps"
-msgstr ""
+msgstr "вЫПРАЎЛЯЦЬ вЫПАДКОВЫ cAPSlOCK"
 
 #: glade/config.glade:61
 msgid "Correct TWo INitial caps"
-msgstr ""
+msgstr "Выпраўляць ДЗьве ВЯлікія ЛІтары"
 
 #: glade/config.glade:75
 msgid "Enable auto-learning mode"
@@ -117,23 +119,23 @@ msgstr "Пакідаць вылучэньне пасьля зьмены вылу
 
 #: glade/config.glade:103
 msgid "Enable keyboard logging"
-msgstr ""
+msgstr "Уключыць захаваньне набранага тэксту ў часопіс"
 
 #: glade/config.glade:117
 msgid "Flush internal buffer on Enter or Tab"
-msgstr ""
+msgstr "Ачышаць унутраны буфэр праз Enter або Tab"
 
 #: glade/config.glade:131
 msgid "Don't process words on Enter or Tab"
-msgstr ""
+msgstr "Не правяраць словы пасьля націсканьня Enter або Tab"
 
 #: glade/config.glade:156
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Агульнае</b>"
 
 #: glade/config.glade:198
 msgid "Initial layout number:"
-msgstr "Раскладка па змаўчаньні "
+msgstr "Нумар раскладкі па змаўчаньні"
 
 #: glade/config.glade:210 glade/config.glade:438 glade/config.glade:455
 #: glade/config.glade:472 glade/config.glade:489
@@ -143,6 +145,10 @@ msgid ""
 "2\n"
 "3"
 msgstr ""
+"0\n"
+"1\n"
+"2\n"
+"3"
 
 #: glade/config.glade:228 glade/config.glade:245 glade/config.glade:262
 #: glade/config.glade:279
@@ -162,6 +168,15 @@ msgid ""
 "Kazakh\n"
 "German"
 msgstr ""
+"\n"
+"English\n"
+"Russian\n"
+"Ukrainian\n"
+"Belarusian\n"
+"French\n"
+"Romanian\n"
+"Kazakh\n"
+"German"
 
 #: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
 #: glade/config.glade:422
@@ -178,21 +193,21 @@ msgstr "Раскладка"
 
 #: glade/config.glade:547
 msgid "Remember keyboard layout for each application instance"
-msgstr ""
+msgstr "Захоўваць раскладку асобна для кожнай копіі праграмы"
 
 #: glade/config.glade:596 glade/config.glade:1222 glade/config.glade:1402
 #: glade/config.glade:1486 glade/config.glade:1573 glade/config.glade:1853
 msgid "gtk-add"
-msgstr ""
+msgstr "gtk-add"
 
 #: glade/config.glade:609 glade/config.glade:1235 glade/config.glade:1415
 #: glade/config.glade:1499 glade/config.glade:1586 glade/config.glade:1864
 msgid "gtk-remove"
-msgstr ""
+msgstr "gtk-remove"
 
 #: glade/config.glade:634
 msgid "Exceptions (One keyboard layout for all application instances)"
-msgstr ""
+msgstr "Выключэньні (аднолькавая раскладка для ўсіх копій праграмы)"
 
 #: glade/config.glade:664
 msgid "<b>Layouts</b>"
@@ -203,7 +218,7 @@ msgstr "<b>Раскладкі</b>"
 #: glade/config.glade:794 glade/config.glade:811 glade/config.glade:828
 #: glade/config.glade:845 glade/config.glade:1793
 msgid "gtk-clear"
-msgstr ""
+msgstr "gtk-clear"
 
 #: glade/config.glade:871
 msgid "Correct selected text"
@@ -247,23 +262,23 @@ msgstr "Уключыць чацьвертую раскладку"
 
 #: glade/config.glade:1139
 msgid "<b>Hotkeys</b>"
-msgstr "<b>Спалучэнні клявішаў</b>"
+msgstr "<b>Спалучэньні клявішаў</b>"
 
 #: glade/config.glade:1164
 msgid "Flush internal buffer on mouse click"
-msgstr ""
+msgstr "Ачышчаць унутраны буфэр пасьля кліка мышкай"
 
 #: glade/config.glade:1260
 msgid "Draw flag next to mouse cursor for these applications"
-msgstr ""
+msgstr "Маляваць сьцяг побач з указальнікам мышы для гэтых праграм"
 
 #: glade/config.glade:1314 glade/config.glade:1717
 msgid "gtk-edit"
-msgstr ""
+msgstr "gtk-edit"
 
 #: glade/config.glade:1344
 msgid "<b>Mouse</b>"
-msgstr ""
+msgstr "<b>Мыш</b>"
 
 #: glade/config.glade:1440
 msgid "Ignore these applications"
@@ -291,15 +306,15 @@ msgstr "<b>Гукі</b>"
 
 #: glade/config.glade:1775
 msgid "Expand abbreviations"
-msgstr ""
+msgstr "Замяняць скароты поўным тэкстам"
 
 #: glade/config.glade:1811
 msgid "Ignore keyboard layout for abbreviations"
-msgstr ""
+msgstr "Ігнараваць раскладку для скаротаў"
 
 #: glade/config.glade:1897
 msgid "<b>Abbreviations</b>"
-msgstr ""
+msgstr "<b>Скароты</b>"
 
 #: glade/config.glade:1923
 msgid ""
@@ -309,14 +324,19 @@ msgid ""
 "Debug\n"
 "Trace"
 msgstr ""
+"Error\n"
+"Warning\n"
+"Log\n"
+"Debug\n"
+"Trace"
 
 #: glade/config.glade:1957
 msgid "Log verbosity level"
-msgstr ""
+msgstr "Узровень падрабязнасьці часопіса"
 
 #: glade/config.glade:1970
 msgid "Delay before sending events (in milliseconds)"
-msgstr ""
+msgstr "Затрымка перад адсылкай падзеяў (у мілісэкундах)"
 
 #: glade/config.glade:1989
 msgid "<b>Advanced</b>"
@@ -362,22 +382,22 @@ msgid "Application"
 msgstr "Праграма"
 
 msgid "Abbreviation:"
-msgstr ""
+msgstr "Скарот:"
 
 #: src/misc.c:620
 msgid "Abbreviation"
-msgstr ""
+msgstr "Скарот"
 
 msgid "Expansion text:"
-msgstr ""
+msgstr "Поўны тэкст:"
 
 #: src/misc.c:625
 msgid "Expansion text"
-msgstr ""
+msgstr "Поўны тэкст"
 
 #: src/misc.c:655
 msgid "Action"
-msgstr ""
+msgstr "Дзеянне"
 
 #: src/misc.c:660
 msgid "Sound"
@@ -385,11 +405,11 @@ msgstr "Гук"
 
 #: src/misc.c:706
 msgid "Description"
-msgstr ""
+msgstr "Апісанне"
 
 #: src/misc.c:711
 msgid "Pixmap"
-msgstr ""
+msgstr "Малюнак"
 
 #: src/support.c:80 src/support.c:104
 #, c-format
