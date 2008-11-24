@@ -245,6 +245,14 @@ static const char* get_dir_by_index(int index)
 	return dirs[index - 1];
 }
 
+static const char* get_lang_by_index(int index)
+{
+	if (index == 0)
+		return NULL;
+
+	return language_names[index - 1];
+}
+
 static void init_libxnconfig(void)
 {
 	if (xconfig != NULL)
@@ -282,8 +290,8 @@ void xneur_start(void)
 
 	if (!g_spawn_command_line_async("xneur", NULL))
 	{
-		error_msg("Couldn't start xneur\nVerify that it installed\n");
-		fprintf(stderr, "Couldn't start xneur\nVerify that it installed\n");
+		error_msg(_("Couldn't start xneur\nVerify that it installed\n"));
+		fprintf(stderr, _("Couldn't start xneur\nVerify that it installed\n"));
 	}
 }
 
@@ -1268,7 +1276,7 @@ void xneur_save_preference(GladeXML *gxml)
 		if (gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)) == -1)
 			continue;
 
-		const char *lang_name = gtk_combo_box_get_active_text(GTK_COMBO_BOX(widgetPtrToBefound));
+		const char *lang_name = get_lang_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 		const char *lang_dir = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 		int lang_group = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound2));
 

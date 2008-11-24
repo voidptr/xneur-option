@@ -55,17 +55,20 @@ msgstr "Поле скарота пустое!"
 msgid "Expansion text field is empty!"
 msgstr "Поле поўнага тэксту пустое!"
 
+msgid "Key bind field is empty!"
+msgstr ""
+
+msgid "User action field is empty!"
+msgstr ""
+
+msgid ""
+"Couldn't start xneur\n"
+"Verify that it installed\n"
+msgstr ""
+
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
 msgstr "Дадаць скарот…"
-
-#: glade/abbr_add.glade:77
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: glade/abbr_add.glade:88
-msgid "gtk-ok"
-msgstr "gtk-ok"
 
 #: glade/about.glade:7
 msgid "gXNeur About..."
@@ -88,6 +91,25 @@ msgstr ""
 "АЎТАРЫ:\n"
 "Андрэй Crew Кузьняцоў\n"
 "Мікалай Янкін"
+
+#: glade/action_add.glade:7
+msgid "Add user action..."
+msgstr ""
+
+#: glade/action_add.glade:24
+msgid "Key bind:"
+msgstr ""
+
+#: glade/action_add.glade:46
+msgid "User action:"
+msgstr ""
+
+msgid "Key bind"
+msgstr ""
+
+#: glade/action_add.glade:46
+msgid "User action"
+msgstr ""
 
 #: glade/choose_file.glade:7
 msgid "Choose File..."
@@ -169,13 +191,13 @@ msgid ""
 "German"
 msgstr ""
 "\n"
-"English\n"
-"Russian\n"
-"Ukrainian\n"
-"Belarusian\n"
-"French\n"
-"Romanian\n"
-"Kazakh\n"
+"Ангельская\n"
+"Расейская\n"
+"Украінская\n"
+"Беларуская\n"
+"Француская\n"
+"Румынская\n"
+"Казахская\n"
 "German"
 
 #: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
@@ -195,16 +217,6 @@ msgstr "Раскладка"
 msgid "Remember keyboard layout for each application instance"
 msgstr "Захоўваць раскладку асобна для кожнай копіі праграмы"
 
-#: glade/config.glade:596 glade/config.glade:1222 glade/config.glade:1402
-#: glade/config.glade:1486 glade/config.glade:1573 glade/config.glade:1853
-msgid "gtk-add"
-msgstr "gtk-add"
-
-#: glade/config.glade:609 glade/config.glade:1235 glade/config.glade:1415
-#: glade/config.glade:1499 glade/config.glade:1586 glade/config.glade:1864
-msgid "gtk-remove"
-msgstr "gtk-remove"
-
 #: glade/config.glade:634
 msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr "Выключэньні (аднолькавая раскладка для ўсіх копій праграмы)"
@@ -212,13 +224,6 @@ msgstr "Выключэньні (аднолькавая раскладка для
 #: glade/config.glade:664
 msgid "<b>Layouts</b>"
 msgstr "<b>Раскладкі</b>"
-
-#: glade/config.glade:692 glade/config.glade:709 glade/config.glade:726
-#: glade/config.glade:743 glade/config.glade:760 glade/config.glade:777
-#: glade/config.glade:794 glade/config.glade:811 glade/config.glade:828
-#: glade/config.glade:845 glade/config.glade:1793
-msgid "gtk-clear"
-msgstr "gtk-clear"
 
 #: glade/config.glade:871
 msgid "Correct selected text"
@@ -272,10 +277,6 @@ msgstr "Ачышчаць унутраны буфэр пасьля кліка м�
 msgid "Draw flag next to mouse cursor for these applications"
 msgstr "Маляваць сьцяг побач з указальнікам мышы для гэтых праграм"
 
-#: glade/config.glade:1314 glade/config.glade:1717
-msgid "gtk-edit"
-msgstr "gtk-edit"
-
 #: glade/config.glade:1344
 msgid "<b>Mouse</b>"
 msgstr "<b>Мыш</b>"
@@ -324,11 +325,6 @@ msgid ""
 "Debug\n"
 "Trace"
 msgstr ""
-"Error\n"
-"Warning\n"
-"Log\n"
-"Debug\n"
-"Trace"
 
 #: glade/config.glade:1957
 msgid "Log verbosity level"
@@ -361,8 +357,8 @@ msgstr ""
 
 #: src/misc.c:266
 #, c-format
-msgid "Using libxnconfig API version %d.0.%d (build with %d.%d)\n"
-msgstr "Выкарыстоўваецца вэрсія API libxnconfig %d.%d (зборка з %d.0.%d)\n"
+msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
+msgstr "Выкарыстоўваецца вэрсія API libxnconfig %d.0.%d (зборка з %d.0.%d)\n"
 
 #: src/misc.c:270 src/misc.c:271
 #, c-format
@@ -443,6 +439,3 @@ msgstr "X Neural Switcher спынены ("
 #: src/trayicon.c:209
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher запушчаны"
-
-#~ msgid "Change case of selected textt"
-#~ msgstr "Зьмена рэгістра вылучанага тэксту"

@@ -53,17 +53,22 @@ msgstr "Сокращение пусто!"
 msgid "Expansion text field is empty!"
 msgstr "Полный текст пуст!"
 
+msgid "Key bind field is empty!"
+msgstr "Комбинация клавиш пуста!"
+
+msgid "User action field is empty!"
+msgstr "Пользовательское действие пусто!"
+
+msgid ""
+"Couldn't start xneur\n"
+"Verify that it installed\n"
+msgstr ""
+"Невозможно запустить xneur\n"
+"Проверьте, что он установлен\n"
+
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
 msgstr "Добавить Сокращение..."
-
-#: glade/abbr_add.glade:77
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: glade/abbr_add.glade:88
-msgid "gtk-ok"
-msgstr "gtk-ok"
 
 #: glade/about.glade:7
 msgid "gXNeur About..."
@@ -86,6 +91,25 @@ msgstr ""
 "АВТОРЫ:\n"
 "Андрей Crew Кузнецов\n"
 "Николай Янкин"
+
+#: glade/action_add.glade:7
+msgid "Add user action..."
+msgstr "Добавить пользовательское действие..."
+
+#: glade/action_add.glade:24
+msgid "Key bind:"
+msgstr "Комбинация клавиш:"
+
+#: glade/action_add.glade:46
+msgid "User action:"
+msgstr "Пользовательское действие:"
+
+msgid "Key bind"
+msgstr "Комбинация клавиш"
+
+#: glade/action_add.glade:46
+msgid "User action"
+msgstr "Пользовательское действие"
 
 #: glade/choose_file.glade:7
 msgid "Choose File..."
@@ -167,14 +191,14 @@ msgid ""
 "German"
 msgstr ""
 "\n"
-"English\n"
-"Russian\n"
-"Ukrainian\n"
-"Belarusian\n"
-"French\n"
-"Romanian\n"
-"Kazakh\n"
-"German"
+"Английский\n"
+"Русский\n"
+"Украинский\n"
+"Белорусский\n"
+"Французский\n"
+"Румынский\n"
+"Казахский\n"
+"Немецкий"
 
 #: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
 #: glade/config.glade:422
@@ -193,16 +217,6 @@ msgstr "Раскладка"
 msgid "Remember keyboard layout for each application instance"
 msgstr "Запоминать раскладку отдельно для каждой копии приложения"
 
-#: glade/config.glade:596 glade/config.glade:1222 glade/config.glade:1402
-#: glade/config.glade:1486 glade/config.glade:1573 glade/config.glade:1853
-msgid "gtk-add"
-msgstr "gtk-add"
-
-#: glade/config.glade:609 glade/config.glade:1235 glade/config.glade:1415
-#: glade/config.glade:1499 glade/config.glade:1586 glade/config.glade:1864
-msgid "gtk-remove"
-msgstr "gtk-remove"
-
 #: glade/config.glade:634
 msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr "Исключения (одна раскладка для всех копий приложения)"
@@ -210,13 +224,6 @@ msgstr "Исключения (одна раскладка для всех коп
 #: glade/config.glade:664
 msgid "<b>Layouts</b>"
 msgstr "<b>Раскладки</b>"
-
-#: glade/config.glade:692 glade/config.glade:709 glade/config.glade:726
-#: glade/config.glade:743 glade/config.glade:760 glade/config.glade:777
-#: glade/config.glade:794 glade/config.glade:811 glade/config.glade:828
-#: glade/config.glade:845 glade/config.glade:1793
-msgid "gtk-clear"
-msgstr "gtk-clear"
 
 #: glade/config.glade:871
 msgid "Correct selected text"
@@ -270,10 +277,6 @@ msgstr "Сбрасывать внутренний буфер при щелчке
 msgid "Draw flag next to mouse cursor for these applications"
 msgstr "Рисовать флаг рядом с курсором для этих приложений"
 
-#: glade/config.glade:1314 glade/config.glade:1717
-msgid "gtk-edit"
-msgstr "gtk-edit"
-
 #: glade/config.glade:1344
 msgid "<b>Mouse</b>"
 msgstr "<b>Мышь</b>"
@@ -322,11 +325,11 @@ msgid ""
 "Debug\n"
 "Trace"
 msgstr ""
-"Error\n"
-"Warning\n"
-"Log\n"
-"Debug\n"
-"Trace"
+"Ошибки\n"
+"Предупреждения\n"
+"Лог\n"
+"Отладка\n"
+"Трассировка"
 
 #: glade/config.glade:1957
 msgid "Log verbosity level"
@@ -441,6 +444,3 @@ msgstr "X Neural Switcher остановлен ("
 #: src/trayicon.c:209
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
-
-#~ msgid "Change case of selected textt"
-#~ msgstr "Смена регистра выделеного текста"
