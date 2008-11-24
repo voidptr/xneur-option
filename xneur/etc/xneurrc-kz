@@ -2,7 +2,7 @@
 # All values writted XNeur
 
 # Config version
-Version 0.9.2
+Version 0.9.3
 
 # Work in manual mode
 ManualMode No
@@ -143,5 +143,9 @@ FlushBufferWhenPressEnter No
 # Example:
 #DontProcessWhenPressEnter Yes
 DontProcessWhenPressEnter No
+
+# This option add user action when pressed key bind
+# Example:\n");
+#AddAction Control Alt f firefox"
 
 # That's all

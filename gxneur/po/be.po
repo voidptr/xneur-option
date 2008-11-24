@@ -354,15 +354,15 @@ msgstr "Націснуць якую заўгодна клявішу"
 #, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
-"Please, install libxnconfig version %d.x\n"
+"Please, install libxnconfig version %d.0.%d\n"
 msgstr ""
 "Няправільная вэрсія api бібліятэкі канфігурацыі XNeur.\n"
-"Калі ласка, усталюйце libxnconfig вэрсіі %d.x\n"
+"Калі ласка, усталюйце libxnconfig вэрсіі %d.0.%d\n"
 
 #: src/misc.c:266
 #, c-format
-msgid "Using libxnconfig API version %d.%d (build with %d.%d)\n"
-msgstr "Выкарыстоўваецца вэрсія API libxnconfig %d.%d (зборка з %d.%d)\n"
+msgid "Using libxnconfig API version %d.0.%d (build with %d.%d)\n"
+msgstr "Выкарыстоўваецца вэрсія API libxnconfig %d.%d (зборка з %d.0.%d)\n"
 
 #: src/misc.c:270 src/misc.c:271
 #, c-format

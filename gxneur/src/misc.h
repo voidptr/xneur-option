@@ -52,6 +52,9 @@ void xneur_rem_draw_flag_app(GtkWidget *widget);
 void xneur_add_abbreviation(void);
 void xneur_rem_abbreviation(GtkWidget *widget);
 
+void xneur_add_action(void);
+void xneur_rem_action(GtkWidget *widget);
+
 void xneur_save_preference(GladeXML *gxml);
 void xneur_dontsave_preference(GladeXML *gxml);
 

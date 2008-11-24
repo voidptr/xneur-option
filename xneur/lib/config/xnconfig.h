@@ -127,6 +127,12 @@ struct _xneur_data
 	int manual_mode;
 };
 
+struct _xneur_action
+{
+	struct _xneur_hotkey *action_hotkey;
+	struct _list_char *action_command;
+};
+
 struct _xneur_config
 {
 	char *version;
@@ -168,6 +174,8 @@ struct _xneur_config
 	struct _xneur_file *flags;			// Array of flag pixmaps for draw
 
 	struct _list_char *abbreviations;		// Array of words to replace
+
+	struct _xneur_action *actions;
 
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);

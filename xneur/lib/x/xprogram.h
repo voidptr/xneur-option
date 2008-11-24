@@ -48,6 +48,7 @@ struct _xprogram
 	void (*process_input) (struct _xprogram *p);
 	int  (*perform_manual_action) (struct _xprogram *p, enum _hotkey_action action);
 	void (*perform_auto_action) (struct _xprogram *p, int action);
+	void (*perform_user_action) (struct _xprogram *p, int action);
 	void (*check_lang_last_word) (struct _xprogram *p);
 	void (*check_caps_last_word) (struct _xprogram *p);
 	void (*check_tcl_last_word) (struct _xprogram *p);

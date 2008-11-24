@@ -35,6 +35,7 @@
 #define GLADE_FILE_CONFIG PACKAGE_GLADE_FILE_DIR"/config.glade"
 #define GLADE_FILE_ABBREVIATION_ADD PACKAGE_GLADE_FILE_DIR"/abbr_add.glade"
 #define GLADE_FILE_CHOOSE PACKAGE_GLADE_FILE_DIR"/choose_file.glade"
+#define GLADE_FILE_ACTION_ADD PACKAGE_GLADE_FILE_DIR"/action_add.glade"
 
 #include "support.h"
 #include "callbacks.h"
@@ -43,8 +44,8 @@
 #include "misc.h"
 
 #define MAX_LANGUAGES			4
-#define XNEUR_NEEDED_MAJOR_VERSION	5
-#define XNEUR_BUILD_MINOR_VERSION	0
+#define XNEUR_NEEDED_MAJOR_VERSION	9
+#define XNEUR_BUILD_MINOR_VERSION	3
 	
 struct _xneur_config *xconfig				= NULL;
 	
@@ -56,6 +57,7 @@ static GtkListStore *store_draw_flag_app			= NULL;
 static GtkListStore *store_abbreviation			= NULL;
 static GtkListStore *store_sound			= NULL;
 static GtkListStore *store_pixmap			= NULL;
+static GtkListStore *store_action			= NULL;
 
 static GtkTreeView *tmp_treeview	= NULL;
 
@@ -254,16 +256,16 @@ static void init_libxnconfig(void)
 	int major_version, minor_version;
 	xconfig->get_library_version(&major_version, &minor_version);
 
-	if (major_version != XNEUR_NEEDED_MAJOR_VERSION)
+	if ((major_version != XNEUR_NEEDED_MAJOR_VERSION) || (minor_version != XNEUR_BUILD_MINOR_VERSION))
 	{
-		error_msg(_("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.x\n"), XNEUR_NEEDED_MAJOR_VERSION);
-		printf(_("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.x\n"), XNEUR_NEEDED_MAJOR_VERSION);
+		error_msg(_("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.0.%d\n"), XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
+		printf(_("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.0.%d\n"), XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
 
-	//error_msg(_("Using libxnconfig API version %d.%d (build with %d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
-	printf(_("Using libxnconfig API version %d.%d (build with %d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
+	//error_msg(_("Using libxnconfig API version %d.0.%d (build with %d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
+	printf(_("Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
 
 	if (!xconfig->load(xconfig))
 	{
@@ -766,6 +768,56 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton12");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->dont_process_when_press_enter);
 
+	// User Actions List set
+	treeview = glade_xml_get_widget (gxml, "treeview9");
+
+	store_action = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_action));
+	gtk_widget_show(treeview);
+
+	for (int action = 0; action < xconfig->actions->action_command->data_count; action++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_action), &iter);
+		
+		char *text = (char *) malloc((24 + 1 + strlen(xconfig->actions->action_hotkey[action].key)) * sizeof(char));
+		text[0] = '\0';
+
+		for (int i = 0; i < total_modifiers; i++)
+		{
+			if ((xconfig->actions->action_hotkey[action].modifiers & (0x1 << i)) == 0)
+				continue;
+
+			strcat(text, modifier_names[i]);
+			strcat(text, "+");
+		}
+
+		strcat(text, xconfig->actions->action_hotkey[action].key);
+		
+		gtk_list_store_set(GTK_LIST_STORE(store_action), &iter, 
+												0, text,
+												1, xconfig->actions->action_command->data[action].string, 
+												-1);
+		free(text);
+	}
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Key bind"), cell, "text", 0, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("User action"), cell, "text", 1, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	// Button Add User Action
+	widget = glade_xml_get_widget (gxml, "button36");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_action), G_OBJECT(treeview));
+	
+	// Button Remove User Action
+	widget = glade_xml_get_widget (gxml, "button37");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_action), G_OBJECT(treeview));
+
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
@@ -848,6 +900,58 @@ void xneur_add_abbreviation(void)
 	// Button OK
 	GtkWidget *widget = glade_xml_get_widget (gxml, "button1");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_insert_abbreviation), gxml);
+}
+
+static void xneur_insert_action(GladeXML *gxml)
+{
+	GtkWidget *entry1 = glade_xml_get_widget (gxml, "entry1");
+	GtkWidget *entry2 = glade_xml_get_widget (gxml, "entry2");
+	const gchar *key_bind = gtk_entry_get_text(GTK_ENTRY(entry1));
+	const gchar *action = gtk_entry_get_text(GTK_ENTRY(entry2));
+	if (strlen(key_bind) == 0) 
+	{
+		error_msg(_("Key bind field is empty!"));
+		return;
+	}
+	if (strlen(action) == 0) 
+	{
+		error_msg(_("User action field is empty!"));
+		return;
+	}
+	
+	GtkTreeIter iter;
+	gtk_list_store_append(GTK_LIST_STORE(store_action), &iter);
+	gtk_list_store_set(GTK_LIST_STORE(store_action), &iter, 
+											0, gtk_entry_get_text(GTK_ENTRY(entry1)),
+											1, gtk_entry_get_text(GTK_ENTRY(entry2)), 
+										   -1);
+	
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+	gtk_widget_destroy(window);
+}
+
+void xneur_add_action(void)
+{
+	GladeXML *gxml = glade_xml_new (GLADE_FILE_ACTION_ADD, NULL, NULL);
+	
+	glade_xml_signal_autoconnect (gxml);
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+
+	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+	if (window_icon_pixbuf)
+	{
+		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+		gdk_pixbuf_unref (window_icon_pixbuf);
+	}
+	
+	GtkWidget *widget= glade_xml_get_widget (gxml, "entry1");
+	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+	
+	gtk_widget_show(window);
+	
+	// Button OK
+	widget = glade_xml_get_widget (gxml, "button1");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_insert_action), gxml);
 }
 
 static void xneur_replace_sound(GladeXML *gxml)
@@ -992,6 +1096,11 @@ void xneur_rem_abbreviation(GtkWidget *widget)
 	remove_item(widget, store_abbreviation);
 }
 
+void xneur_rem_action(GtkWidget *widget)
+{
+	remove_item(widget, store_action);
+}
+
 gboolean save_exclude_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
 {
 	if (model || path || user_data){};
@@ -1053,6 +1162,56 @@ gboolean save_abbreviation(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *
 	g_free(abbreviation);
 	g_free(full_text);
 	g_free(ptr);
+
+	return FALSE;
+}
+
+gboolean save_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	gchar *key_bind;
+	gchar *action_text;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_action), iter, 0, &key_bind, 1, &action_text, -1);
+
+	char **key_stat = g_strsplit(key_bind, "+", 4);
+
+	int last = is_correct_hotkey(key_stat);
+	if (last == -1)
+	{
+		g_strfreev(key_stat);
+		return FALSE;
+	}
+	
+	int action = xconfig->actions->action_command->data_count;
+	xconfig->actions->action_hotkey =  (struct _xneur_hotkey *) realloc(xconfig->actions->action_hotkey, (action + 1) * sizeof(struct _xneur_hotkey));
+			
+	xconfig->actions->action_hotkey[action].modifiers = 0;
+	
+	for (int i = 0; i <= last; i++)
+	{
+		int assigned = FALSE;
+		for (int j = 0; j < total_modifiers; j++) 
+ 		{ 
+			if (g_strcasecmp(key_stat[i], modifier_names[j]) != 0) 
+				continue; 
+
+			assigned = TRUE;
+			xconfig->actions->action_hotkey[action].modifiers |= (0x1 << j); 
+			break; 
+		} 
+
+		if (assigned == FALSE)
+		{
+			xconfig->actions->action_hotkey[action].key = strdup(key_stat[i]); 
+			xconfig->actions->action_command->add_last(xconfig->actions->action_command, action_text);
+		}
+	}
+
+	g_strfreev(key_stat);
+	
+	g_free(key_bind);
+	g_free(action_text);
 
 	return FALSE;
 }
@@ -1127,6 +1286,7 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_abbreviation), save_abbreviation, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_sound), save_sound, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_pixmap), save_pixmap, NULL);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_action), save_action, NULL);
 	
 	fill_binds(0, gxml, "entry11", FALSE);
 	fill_binds(1, gxml, "entry12", FALSE);

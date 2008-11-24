@@ -87,6 +87,7 @@ static void xneur_init(void)
 	}
 
 	bind_manual_actions();
+	bind_user_actions();
 }
 
 static void xneur_load_config(int final)
@@ -131,7 +132,6 @@ static void xneur_load_config(int final)
 	log_message(LOG, "Flush internal buffer when pressed Enter or Tab mode set to %s", xconfig->get_bool_name(xconfig->flush_buffer_when_press_enter));
 	log_message(LOG, "Don't process word when pressed Enter or Tab mode set to %s", xconfig->get_bool_name(xconfig->dont_process_when_press_enter));
 }
-
 
 static void xneur_set_lock(void)
 {

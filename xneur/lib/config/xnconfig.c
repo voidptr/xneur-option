@@ -34,8 +34,8 @@
 
 #include "xnconfig.h"
 
-#define LIBRARY_VERSION_MAJOR		5
-#define LIBRARY_VERSION_MINOR		0
+#define LIBRARY_VERSION_MAJOR		9
+#define LIBRARY_VERSION_MINOR		3
 #define OPTIONS_DELIMETER		" "
 
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
@@ -50,7 +50,7 @@ static const char *option_names[] = 	{
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
-						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter"
+						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -297,8 +297,10 @@ static void parse_line(struct _xneur_config *p, char *line)
 			if (strlen(file) != 0)
 			{
 				p->sounds[sound].file = get_file_path_name(SOUNDDIR, file);
-				free(file);
 			}
+			if (file != NULL)
+				free(file);
+			
 			break;
 		}
 		case 17: // Play Sound
@@ -430,6 +432,39 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->dont_process_when_press_enter = index;
 			break;
 		}
+		case 29: // User actions
+		{
+			int action = p->actions->action_command->data_count;
+			p->actions->action_hotkey =  (struct _xneur_hotkey *) realloc(p->actions->action_hotkey, (action + 1) * sizeof(struct _xneur_hotkey));
+			p->actions->action_hotkey[action].key = NULL;
+			p->actions->action_hotkey[action].modifiers = 0;
+			
+			while (TRUE)
+			{
+				
+				if (param == NULL)
+					break;
+
+				if (param[0] == '\0')
+					continue;
+				
+				int index = get_option_index(modifier_names, param);
+
+				if (index == -1)
+				{
+					if (param != NULL)
+						p->actions->action_hotkey[action].key = strdup(param);
+					if (line != NULL)
+						p->actions->action_command->add_last(p->actions->action_command, line);
+					break;
+				}	
+				else
+					p->actions->action_hotkey[action].modifiers |= (1 << index);
+
+				param = get_word(&line);
+			}
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -464,13 +499,16 @@ static int check_memory_attached(struct _xneur_config *p)
 
 static void free_structures(struct _xneur_config *p)
 {
+	int total_user_actions = p->actions->action_command->data_count;
+	
 	p->window_layouts->uninit(p->window_layouts);
 	p->manual_apps->uninit(p->manual_apps);
 	p->auto_apps->uninit(p->auto_apps);
 	p->layout_remember_apps->uninit(p->layout_remember_apps);
 	p->excluded_apps->uninit(p->excluded_apps);
 	p->draw_flag_apps->uninit(p->draw_flag_apps);
-
+	p->actions->action_command->uninit(p->actions->action_command);
+	
 	if (p->version != NULL)
 	{
 		free(p->version);
@@ -515,6 +553,12 @@ static void free_structures(struct _xneur_config *p)
 		p->languages = NULL;
 	}
 
+	for (int user_action = 0; user_action < total_user_actions; user_action++)
+	{
+		if (p->actions->action_hotkey[user_action].key != NULL)
+			free(p->actions->action_hotkey[user_action].key);
+	}
+		
 	for (int action = 0; action < MAX_HOTKEYS; action++)
 	{
 		if (p->hotkeys[action].key != NULL)
@@ -533,6 +577,7 @@ static void free_structures(struct _xneur_config *p)
 			free(p->flags[flag].file);
 	}
 
+	bzero(p->actions->action_hotkey, total_user_actions * sizeof(struct _xneur_hotkey));
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
 	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
@@ -653,6 +698,7 @@ static void xneur_config_clear(struct _xneur_config *p)
 	p->excluded_apps	= list_char_init();
 	p->draw_flag_apps	= list_char_init();
 	p->abbreviations	= list_char_init();
+	p->actions->action_command = list_char_init();
 }
 
 static int xneur_config_save(struct _xneur_config *p)
@@ -836,6 +882,25 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#DontProcessWhenPressEnter Yes\n");
 	fprintf(stream, "DontProcessWhenPressEnter %s\n\n", p->get_bool_name(p->dont_process_when_press_enter));
 			
+	fprintf(stream, "# This option add user action when pressed key bind\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#AddAction Control Alt f firefox\n");
+	for (int action = 0; action < p->actions->action_command->data_count; action++)
+	{
+		fprintf(stream, "AddAction ");
+
+		const int total_modifiers = sizeof(modifier_names) / sizeof(modifier_names[0]);
+		for (int i = 0; i < total_modifiers; i++)
+		{
+			if (p->actions->action_hotkey[action].modifiers & (1 << i))
+				fprintf(stream, "%s ", modifier_names[i]);
+		}
+
+		fprintf(stream, "%s %s\n", p->actions->action_hotkey[action].key
+								, p->actions->action_command->data[action].string);
+	}
+	fprintf(stream, "\n");
+			
 	fprintf(stream, "# That's all\n");
 
 	fclose(stream);
@@ -934,11 +999,13 @@ static const char* xneur_config_get_log_level_name(struct _xneur_config *p)
 static void xneur_config_uninit(struct _xneur_config *p)
 {
 	free_structures(p);
-
+	
 	free(p->hotkeys);
 	free(p->sounds);
 	free(p->flags);
-
+	
+	free(p->actions);
+	
 	free(p);
 }
 
@@ -971,6 +1038,11 @@ struct _xneur_config* xneur_config_init(void)
 	p->draw_flag_apps		= list_char_init();
 	p->abbreviations		= list_char_init();
 
+	p->actions = (struct _xneur_action *) malloc(sizeof(struct _xneur_action));
+	p->actions->action_hotkey = (struct _xneur_hotkey *) malloc(sizeof(struct _xneur_hotkey));
+	bzero(p->actions->action_hotkey, sizeof(struct _xneur_hotkey));
+	p->actions->action_command	= list_char_init();
+	
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;
 	p->get_global_dict_path		= get_file_path_name;

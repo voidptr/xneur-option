@@ -511,12 +511,25 @@ static void xprogram_on_key_action(struct _xprogram *p)
 	// Delete language modifier mask
 	int modifier_mask = p->event->get_cur_modifiers(p->event);
 	
+	int user_action = get_user_action(key, modifier_mask);
+	p->perform_user_action(p, user_action);
+	
 	enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
 	if (p->perform_manual_action(p, manual_action))
 		return;
 
 	int auto_action = get_auto_action(key, modifier_mask);
 	p->perform_auto_action(p, auto_action);
+}
+
+static void xprogram_perform_user_action(struct _xprogram *p, int action)
+{
+	if (p) {};
+	if (action < 0) 
+		return;
+	
+	log_message(DEBUG, "Execute user action \"%s\"", xconfig->actions->action_command->data[action].string); 
+	system(xconfig->actions->action_command->data[action].string);
 }
 
 static void xprogram_perform_auto_action(struct _xprogram *p, int action)
@@ -975,6 +988,7 @@ struct _xprogram* xprogram_init(void)
 	p->process_input		= xprogram_process_input;
 	p->perform_auto_action		= xprogram_perform_auto_action;
 	p->perform_manual_action	= xprogram_perform_manual_action;
+	p->perform_user_action		= xprogram_perform_user_action;
 	p->check_lang_last_word		= xprogram_check_lang_last_word;
 	p->check_caps_last_word		= xprogram_check_caps_last_word;
 	p->check_tcl_last_word		= xprogram_check_tcl_last_word;
