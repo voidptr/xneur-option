@@ -826,6 +826,10 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "button37");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_action), G_OBJECT(treeview));
 
+	// Button Edit User Action
+	widget = glade_xml_get_widget (gxml, "button38");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_action), G_OBJECT(treeview));
+							 
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
@@ -960,6 +964,70 @@ void xneur_add_action(void)
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button1");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_insert_action), gxml);
+}
+
+static void xneur_replace_action(GladeXML *gxml)
+{
+	GtkTreeModel *model = GTK_TREE_MODEL(store_action);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		GtkWidget *widget1= glade_xml_get_widget (gxml, "entry1");
+		GtkWidget *widget2= glade_xml_get_widget (gxml, "entry2");
+		gtk_list_store_set(GTK_LIST_STORE(store_action), &iter, 
+											0, gtk_entry_get_text(GTK_ENTRY(widget1)),
+											1, gtk_entry_get_text(GTK_ENTRY(widget2)), 
+										   -1);
+	}
+	
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+	gtk_widget_destroy(window);
+}
+
+void xneur_edit_action(GtkWidget *treeview)
+{
+	tmp_treeview = GTK_TREE_VIEW(treeview);
+	GtkTreeModel *model = GTK_TREE_MODEL(store_action);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		GladeXML *gxml = glade_xml_new (GLADE_FILE_ACTION_ADD, NULL, NULL);
+	
+		glade_xml_signal_autoconnect (gxml);
+		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+		
+		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+		if (window_icon_pixbuf)
+		{
+			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+			gdk_pixbuf_unref (window_icon_pixbuf);
+		}
+	
+		char *key_bind;
+		char *user_action;
+		gtk_tree_model_get(GTK_TREE_MODEL(store_action), &iter, 0, &key_bind, 1, &user_action, -1);
+		
+		GtkWidget *widget= glade_xml_get_widget (gxml, "entry1");
+		g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+		gtk_entry_set_text(GTK_ENTRY(widget), key_bind);
+		
+		widget= glade_xml_get_widget (gxml, "entry2");
+		gtk_entry_set_text(GTK_ENTRY(widget), user_action);
+		
+		gtk_widget_show(window);
+		
+		// Button OK
+		widget = glade_xml_get_widget (gxml, "button1");
+		g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_replace_action), gxml);
+	}
 }
 
 static void xneur_replace_sound(GladeXML *gxml)

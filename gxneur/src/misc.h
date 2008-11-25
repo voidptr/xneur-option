@@ -54,6 +54,7 @@ void xneur_rem_abbreviation(GtkWidget *widget);
 
 void xneur_add_action(void);
 void xneur_rem_action(GtkWidget *widget);
+void xneur_edit_action(GtkWidget *treeview);
 
 void xneur_save_preference(GladeXML *gxml);
 void xneur_dontsave_preference(GladeXML *gxml);
