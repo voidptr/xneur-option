@@ -531,14 +531,14 @@ static void xprogram_perform_user_action(struct _xprogram *p, int action)
 	
 	log_message(DEBUG, "Execute user action \"%s\"", xconfig->actions->action_command->data[action].string); 
 	
-	pthread_attr_t sound_thread_attr;
-	pthread_attr_init(&sound_thread_attr);
-	pthread_attr_setdetachstate(&sound_thread_attr, PTHREAD_CREATE_DETACHED);
+	pthread_attr_t action_thread_attr;
+	pthread_attr_init(&action_thread_attr);
+	pthread_attr_setdetachstate(&action_thread_attr, PTHREAD_CREATE_DETACHED);
 
-	pthread_t sound_thread;
-	pthread_create(&sound_thread, &sound_thread_attr,(void *) &system, (void *) xconfig->actions->action_command->data[action].string);
+	pthread_t action_thread;
+	pthread_create(&action_thread, &action_thread_attr,(void *) &system, (void *) xconfig->actions->action_command->data[action].string);
 	
-	pthread_attr_destroy(&sound_thread_attr);
+	pthread_attr_destroy(&action_thread_attr);
 }
 
 static void xprogram_perform_auto_action(struct _xprogram *p, int action)
