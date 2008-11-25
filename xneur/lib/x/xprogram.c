@@ -54,6 +54,7 @@
 #include "conversion.h"
 #include "sound.h"
 
+#include "xOSD.h"
 #include "xprogram.h"
 
 #define KLB_NO_ACTION           0	// Modifier, function etc
@@ -531,6 +532,8 @@ static void xprogram_perform_user_action(struct _xprogram *p, int action)
 	
 	log_message(DEBUG, "Execute user action \"%s\"", xconfig->actions->action_command->data[action].string); 
 	
+	osd_show("Run \"%s\"", xconfig->actions->action_command->data[action].string);
+	
 	pthread_attr_t action_thread_attr;
 	pthread_attr_init(&action_thread_attr);
 	pthread_attr_setdetachstate(&action_thread_attr, PTHREAD_CREATE_DETACHED);
@@ -677,6 +680,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			play_file(SOUND_MANUAL_CHANGE_WORD);
 			p->cursor_update(p);
 			p->event->default_event.xkey.keycode = 0;
+			
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_0:

@@ -33,6 +33,7 @@
 #include "xprogram.h"
 #include "xbtable.h"
 #include "xswitchlang.h"
+#include "xOSD.h"
 
 #include "types.h"
 #include "utils.h"
@@ -179,7 +180,9 @@ static void xneur_terminate(int status)
 	if (status){}
 
 	log_message(DEBUG, "Caught SIGTERM/SIGINT, terminating");
-
+	osd_show("X Neural Switcher stopped");
+	sleep(1);
+	
 	xneur_cleanup();
 
 	exit(EXIT_SUCCESS);
@@ -189,7 +192,8 @@ static void xneur_reload(int status)
 {
 	status = status; // To prevent warnings
 	log_message(LOG, "Caught SIGHUP, reloading configuration file");
-
+	osd_show("X Neural Switcher reloaded");
+	
 	sound_uninit();
 
 	if (xconfig != NULL)
@@ -321,7 +325,8 @@ int main(int argc, char *argv[])
 	xneur_init();
 
 	log_message(DEBUG, "Init program structure complete");
-
+	osd_show("X Neural Switcher started");
+	
 	xntrap(SIGTERM, xneur_terminate);
 	xntrap(SIGINT, xneur_terminate);
 	xntrap(SIGHUP, xneur_reload);

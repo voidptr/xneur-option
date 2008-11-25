@@ -130,6 +130,32 @@ if test "x$with_aspell" != "xno"; then
 	AC_SUBST(ASPELL_LIBS)
 fi
 
+AC_ARG_WITH(xosd, [  --without-osd	  Compile without xosd support])
+if test "x$with_xosd" != "xno"; then
+	found_xosd_bin_dir=""
+	for xosd_dir in /usr/local /usr $prefix
+	do
+		if test -f "$xosd_dir/bin/xosd-config"; then
+			found_xosd_bin_dir="$xosd_dir/bin"
+		fi
+	done
+
+	AC_MSG_CHECKING([for xosd-config bin])
+	if test "x$found_xosd_bin_dir" != "x"; then
+		AC_MSG_RESULT([found at $found_xosd_bin_dir])
+	else
+		AC_MSG_RESULT([no])
+		AC_MSG_ERROR([Can't locate your xosd-config bin])
+	fi
+
+	AC_DEFINE(WITH_XOSD, 1, [Define if you want xosd support])
+	XOSD_LIBS=`xosd-config --libs`
+	XOSD_CFLAGS=`xosd-config --cflags`
+
+	AC_SUBST(XOSD_CFLAGS)
+	AC_SUBST(XOSD_LIBS)
+fi
+
 CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
 AC_SUBST(CFLAGS)
 
@@ -187,6 +213,14 @@ if test "x$with_xpm" != "xno"; then
 cat <<EOF
 	Xpm compiler flags:		$XPM_CFLAGS
 	Xpm linker flags:		$XPM_LIBS
+
+EOF
+fi
+
+if test "x$with_xosd" != "xno"; then
+cat <<EOF
+	Xosd compiler flags:		$XOSD_CFLAGS
+	Xosd linker flags:		$XOSD_LIBS
 
 EOF
 fi
