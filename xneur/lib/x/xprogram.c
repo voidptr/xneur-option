@@ -29,6 +29,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <signal.h>
+#include <pthread.h>
 
 #include "xnconfig.h"
 #include "xnconfig_files.h"
@@ -522,7 +523,6 @@ static void xprogram_on_key_action(struct _xprogram *p)
 	p->perform_auto_action(p, auto_action);
 }
 
-#include <unistd.h>
 static void xprogram_perform_user_action(struct _xprogram *p, int action)
 {
 	if (p) {};
@@ -531,13 +531,14 @@ static void xprogram_perform_user_action(struct _xprogram *p, int action)
 	
 	log_message(DEBUG, "Execute user action \"%s\"", xconfig->actions->action_command->data[action].string); 
 	
-	char *cmd = malloc(strlen(xconfig->actions->action_command->data[action].string) + 2);
-	cmd = strcpy(cmd, xconfig->actions->action_command->data[action].string);
-	cmd = strcat(cmd, "&");
+	pthread_attr_t sound_thread_attr;
+	pthread_attr_init(&sound_thread_attr);
+	pthread_attr_setdetachstate(&sound_thread_attr, PTHREAD_CREATE_DETACHED);
+
+	pthread_t sound_thread;
+	pthread_create(&sound_thread, &sound_thread_attr,(void *) &system, (void *) xconfig->actions->action_command->data[action].string);
 	
-	system(cmd);
-	
-	free(cmd);
+	pthread_attr_destroy(&sound_thread_attr);
 }
 
 static void xprogram_perform_auto_action(struct _xprogram *p, int action)
