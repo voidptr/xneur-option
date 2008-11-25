@@ -522,6 +522,7 @@ static void xprogram_on_key_action(struct _xprogram *p)
 	p->perform_auto_action(p, auto_action);
 }
 
+#include <unistd.h>
 static void xprogram_perform_user_action(struct _xprogram *p, int action)
 {
 	if (p) {};
@@ -529,7 +530,14 @@ static void xprogram_perform_user_action(struct _xprogram *p, int action)
 		return;
 	
 	log_message(DEBUG, "Execute user action \"%s\"", xconfig->actions->action_command->data[action].string); 
-	system(xconfig->actions->action_command->data[action].string);
+	
+	char *cmd = malloc(strlen(xconfig->actions->action_command->data[action].string) + 2);
+	cmd = strcpy(cmd, xconfig->actions->action_command->data[action].string);
+	cmd = strcat(cmd, "&");
+	
+	system(cmd);
+	
+	free(cmd);
 }
 
 static void xprogram_perform_auto_action(struct _xprogram *p, int action)
