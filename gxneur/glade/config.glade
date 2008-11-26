@@ -955,6 +955,7 @@ German</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button11">
+                                <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -965,14 +966,16 @@ German</property>
                               <packing>
                                 <property name="left_attach">2</property>
                                 <property name="right_attach">3</property>
-                                <property name="y_options">GTK_FILL</property>
+                                <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button12">
+                                <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="border_width">1</property>
                                 <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
                                 <property name="response_id">0</property>
@@ -987,6 +990,7 @@ German</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button13">
+                                <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1004,6 +1008,7 @@ German</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button14">
+                                <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1021,6 +1026,7 @@ German</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button15">
+                                <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1038,6 +1044,7 @@ German</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button16">
+                                <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1055,6 +1062,7 @@ German</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button17">
+                                <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1072,6 +1080,7 @@ German</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button18">
+                                <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1089,6 +1098,7 @@ German</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button29">
+                                <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1106,6 +1116,7 @@ German</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button30">
+                                <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1129,6 +1140,7 @@ German</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
+                            <property name="padding">3</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
