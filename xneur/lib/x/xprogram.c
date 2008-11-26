@@ -264,14 +264,14 @@ static void xprogram_layout_update(struct _xprogram *p)
 		free(window_layouts);
 
 		switch_lang(lang);
-		log_message(DEBUG, "Restore layout group to %d", xconfig->get_lang_group(xconfig, lang));
+		log_message(DEBUG, _("Restore layout group to %d"), xconfig->get_lang_group(xconfig, lang));
 		return;
 	}
 
 	free(text_to_find);
 	free(window_layouts);
 
-	log_message(DEBUG, "Store default layout group to %d", xconfig->default_group);
+	log_message(DEBUG, _("Store default layout group to %d"), xconfig->default_group);
 	switch_group(xconfig->default_group);
 }
 
@@ -317,14 +317,14 @@ static void xprogram_process_input(struct _xprogram *p)
 				XClientMessageEvent *cme = (XClientMessageEvent *) &(p->event->event);
 				if (cme->message_type == main_window->close_atom)
 				{
-					log_message(LOG, "Exitting from main cycle");
+					log_message(LOG, _("Exitting from main cycle"));
 					return;
 				}
 				break;
 			}
 			case KeyPress:
 			{
-				log_message(TRACE, "Received KeyPress (event type %d)", type);
+				log_message(TRACE, _("Received KeyPress (event type %d)"), type);
 				// Save received event
 				p->event->default_event = p->event->event;
 				// Processing received event 
@@ -339,7 +339,7 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			case KeyRelease:
 			{
-				log_message(TRACE, "Received KeyRelease (event type %d)", type);
+				log_message(TRACE, _("Received KeyRelease (event type %d)"), type);
 				// Resend special key back to window
 				if (p->event->default_event.xkey.keycode != 0)
 					p->event->send_next_event(p->event);
@@ -350,11 +350,11 @@ static void xprogram_process_input(struct _xprogram *p)
 			case EnterNotify:
 			{
 				if (type == FocusIn)
-					log_message(TRACE, "Received FocusIn (event type %d)", type);
+					log_message(TRACE, _("Received FocusIn (event type %d)"), type);
 				else if (type == LeaveNotify)
-					log_message(TRACE, "Received LeaveNotify (event type %d)", type);
+					log_message(TRACE, _("Received LeaveNotify (event type %d)"), type);
 				else if (type == EnterNotify)
-					log_message(TRACE, "Received EnterNotify (event type %d)", type);
+					log_message(TRACE, _("Received EnterNotify (event type %d)"), type);
 
 				p->last_layout = get_active_keyboard_group();
 
@@ -364,7 +364,7 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			case FocusOut:
 			{
-				log_message(TRACE, "Received FocusOut (event type %d)", type);
+				log_message(TRACE, _("Received FocusOut (event type %d)"), type);
 
 				p->last_layout = get_active_keyboard_group();
 				p->update(p);
@@ -372,20 +372,20 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			case SelectionNotify:
 			{
-				log_message(TRACE, "Received SelectionNotify (event type %d)", type);
+				log_message(TRACE, _("Received SelectionNotify (event type %d)"), type);
 				p->process_selection_notify(p);
 				break;
 			}
 			case SelectionRequest:
 			{
-				log_message(TRACE, "Received SelectionRequest (event type %d)", type);
+				log_message(TRACE, _("Received SelectionRequest (event type %d)"), type);
 				p->process_selection_notify(p);
 				break;
 			}
 			case ButtonPress:
 			{
 				p->string->save_and_clear(p->string, p->focus->owner_window);
-				log_message(TRACE, "Received ButtonPress on window %d  (event type %d)", p->event->event.xbutton.window, type);
+				log_message(TRACE, _("Received ButtonPress on window %d  (event type %d)"), p->event->event.xbutton.window, type);
 
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
@@ -393,7 +393,7 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			case MotionNotify:
 			{
-				//log_message(TRACE, "Received Motion Notify");
+				//log_message(TRACE, _("Received Motion Notify"));
 				p->cursor_update(p);
 				break;
 			}
@@ -401,7 +401,7 @@ static void xprogram_process_input(struct _xprogram *p)
 			{
 				if (XInternAtom(main_window->display, "XKLAVIER_STATE", FALSE) == p->event->event.xproperty.atom)
 				{
-					log_message(TRACE, "Received Property Notify (layout switch event) (event type %d)", type);
+					log_message(TRACE, _("Received Property Notify (layout switch event) (event type %d)"), type);
 
 					// Flush string
 					//p->string->clear(p->string);
@@ -414,7 +414,7 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			default:
 			{
-				log_message(DEBUG, "Uncatched event with type %d)", type);
+				log_message(DEBUG, _("Uncatched event with type %d)"), type);
 				break;
 			}
 		}
@@ -423,14 +423,14 @@ static void xprogram_process_input(struct _xprogram *p)
 
 static void xprogram_change_lang(struct _xprogram *p, int new_lang)
 {
-	log_message(DEBUG, "Changing language from %s to %s", xconfig->get_lang_name(xconfig, get_cur_lang()), xconfig->get_lang_name(xconfig, new_lang));
+	log_message(DEBUG, _("Changing language from %s to %s"), xconfig->get_lang_name(xconfig, get_cur_lang()), xconfig->get_lang_name(xconfig, new_lang));
 	p->string->set_lang_mask(p->string, new_lang);
 	switch_lang(new_lang);
 }
 
 static void xprogram_change_incidental_caps(struct _xprogram *p)
 {
-	log_message(DEBUG, "Correcting iNCIDENTAL CapsLock");
+	log_message(DEBUG, _("Correcting iNCIDENTAL CapsLock"));
 	// Change modifier mask
 	p->string->set_uncaps_mask(p->string);
 	// Change CAPS if need
@@ -449,7 +449,7 @@ static void xprogram_change_incidental_caps(struct _xprogram *p)
 
 static void xprogram_change_two_capital_letter(struct _xprogram *p)
 {
-	log_message(DEBUG, "Correcting two CApital letter");
+	log_message(DEBUG, _("Correcting two CApital letter"));
 	// Change modifier mask
 	p->string->keycode_modifiers[1] = p->string->keycode_modifiers[1] & (~ShiftMask);
 }
@@ -530,9 +530,9 @@ static void xprogram_perform_user_action(struct _xprogram *p, int action)
 	if (action < 0) 
 		return;
 	
-	log_message(DEBUG, "Execute user action \"%s\"", xconfig->actions->action_command->data[action].string); 
+	log_message(DEBUG, _("Execute user action \"%s\""), xconfig->actions->action_command->data[action].string); 
 	
-	osd_show("Run \"%s\"", xconfig->actions->action_command->data[action].string);
+	osd_show(_("Run \"%s\""), xconfig->actions->action_command->data[action].string);
 	
 	pthread_attr_t action_thread_attr;
 	pthread_attr_init(&action_thread_attr);
@@ -637,7 +637,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		{
 			xconfig->set_manual_mode(xconfig, !xconfig->is_manual_mode(xconfig));
 
-			log_message(DEBUG, "Manual mode changed to %s", xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
+			log_message(DEBUG, _("Manual mode changed to %s"), xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
 		}
@@ -745,7 +745,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 					continue;
 				}
 				// Replace Abbreviation
-				log_message (DEBUG, "Found Abbreviation '%s' '%s'. Replacing to '%s'...", replacement, word, string);
+				log_message (DEBUG, _("Found Abbreviation '%s' '%s'. Replacing to '%s'."), replacement, word, string);
 				
 				set_event_mask(p->focus->owner_window, None);
 				grab_spec_keys(p->focus->owner_window, FALSE);				
@@ -793,7 +793,7 @@ static void xprogram_check_lang_last_word(struct _xprogram *p)
 	int new_lang = get_word_lang(word, cur_lang);
 	if (new_lang == NO_LANGUAGE)
 	{
-		log_message(DEBUG, "No language found to change to");
+		log_message(DEBUG, _("No language found to change to"));
 		return;
 	}
 
@@ -856,11 +856,11 @@ static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces
 {
 	if (p->string->cur_pos == 0)
 	{
-		log_message(DEBUG, "No string to change");
+		log_message(DEBUG, _("No string to change"));
 		return;
 	}
 
-	log_message(DEBUG, "Processing string '%s'", p->string->content);
+	log_message(DEBUG, _("Processing string '%s'"), p->string->content);
 
 	int bcount = p->string->cur_pos;
 	if (send_backspaces == FALSE)
@@ -943,7 +943,7 @@ static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 	struct _list_char *curr_dicts = xconfig->languages[curr_lang].dicts;
 	if (curr_dicts->exist(curr_dicts, low_word, BY_PLAIN))
 	{
-		log_message(DEBUG, "Remove word '%s' from %s dictionary", low_word, xconfig->get_lang_name(xconfig, curr_lang));
+		log_message(DEBUG, _("Remove word '%s' from %s dictionary"), low_word, xconfig->get_lang_name(xconfig, curr_lang));
 		curr_dicts->rem(curr_dicts, low_word);
 		xconfig->save_dicts(xconfig, curr_lang);
 	}
@@ -951,7 +951,7 @@ static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 	struct _list_char *new_dicts = xconfig->languages[new_lang].dicts;
 	if (!new_dicts->exist(new_dicts, low_word, BY_PLAIN))
 	{
-		log_message(DEBUG, "Add word '%s' in %s dictionary", low_word, xconfig->get_lang_name(xconfig, new_lang));
+		log_message(DEBUG, _("Add word '%s' in %s dictionary"), low_word, xconfig->get_lang_name(xconfig, new_lang));
 		new_dicts->add(new_dicts, low_word);
 		xconfig->save_dicts(xconfig, new_lang);
 	}
@@ -969,7 +969,7 @@ static void xprogram_uninit(struct _xprogram *p)
 
 	free(p);
 
-	log_message(DEBUG, "Program is freed");
+	log_message(DEBUG, _("Program is freed"));
 }
 
 struct _xprogram* xprogram_init(void)

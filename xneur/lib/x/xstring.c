@@ -274,7 +274,7 @@ static void xstring_uninit(struct _xstring *p)
 	free(p->content);
 	free(p);
 
-	log_message(DEBUG, "String is freed");
+	log_message(DEBUG, _("String is freed"));
 }
 
 struct _xstring* xstring_init(void)

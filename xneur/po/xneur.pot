@@ -1,411 +1,862 @@
 # Copyright (C) 2008 XNeur Team
-# This file is distributed under the same license as the GXNEUR package.
-# ANDREW KUZNETSOV <andrewcrew@rambler.ru>, 2008.
+# This file is distributed under GPL v2 or later license as the xneur package.
+# Andrew Kuznetsov, 2008.
 #
 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: web@softodrom.ru\n"
-"POT-Creation-Date: 2008-10-16 13:14+0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-26 18:33+0300\n"
+"PO-Revision-Date: 2008-11-26 18:33+0300\n"
+"Last-Translator: Andrew Kuznetsov\n"
+"Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Flag pixmap for Layout 4"
+#: src/xneur.c:54
+msgid "Checking configuration file version..."
 msgstr ""
 
-msgid "Flag pixmap for Layout 3"
+#: src/xneur.c:58
+msgid "User configuration file version is OK!"
 msgstr ""
 
-msgid "Flag pixmap for Layout 2"
+#: src/xneur.c:62
+msgid "Configuration file version is out of date!"
 msgstr ""
 
-msgid "Flag pixmap for Layout 1"
-msgstr ""
-
-msgid "Keypress on Layout 1"
-msgstr ""
-
-msgid "Keypress on Layout 2"
-msgstr ""
-
-msgid "Keypress on Layout 3"
-msgstr ""
-
-msgid "Keypress on Layout 4"
-msgstr ""
-
-msgid "Correct word automatically"
-msgstr ""
-
-msgid "Correct word manually"
-msgstr ""
-
-msgid "Abbreviation field is empty!"
-msgstr ""
-
-msgid "Expansion text field is empty!"
-msgstr ""
-
-msgid "Key bind field is empty!"
-msgstr ""
-
-msgid "User action field is empty!"
-msgstr ""
-
-msgid "Couldn't start xneur\nVerify that it installed\n"
-msgstr ""
-
-#: glade/abbr_add.glade:7
-msgid "Add Abbreviation..."
-msgstr ""
-
-#: glade/about.glade:7
-msgid "gXNeur About..."
-msgstr ""
-
-#: glade/about.glade:15
+#: src/xneur.c:72
 msgid ""
-"\n"
-"\t\t<b>X Neural Switcher for Gnome</b>\t\t\n"
-"\t\tGTK2 frontend for XNeur\t\t\n"
-"\n"
-"AUTHORS:\n"
-"Andrew Crew Kuznetsov\n"
-"Nikolay Yankin"
+"Default configuration file not founded in system! Please, reinstall XNeur!"
 msgstr ""
 
-#: glade/action_add.glade:7
-msgid "Add user action..."
+#: src/xneur.c:77
+msgid "Configuration file replaced to default one"
 msgstr ""
 
-#: glade/action_add.glade:24
-msgid "Key bind:"
+#: src/xneur.c:96
+msgid "Loading configuration"
 msgstr ""
 
-#: glade/action_add.glade:46
-msgid "User action:"
-msgstr ""
-
-msgid "Key bind"
-msgstr ""
-
-#: glade/action_add.glade:46
-msgid "User action"
-msgstr ""
-
-#: glade/choose_file.glade:7
-msgid "Choose File..."
-msgstr ""
-
-#: glade/config.glade:7
-msgid "XNeur Settings"
-msgstr ""
-
-#: glade/config.glade:34
-msgid "Use manual switching mode"
-msgstr ""
-
-#: glade/config.glade:47
-msgid "Correct aCCIDENTAL caps"
-msgstr ""
-
-#: glade/config.glade:61
-msgid "Correct TWo INitial caps"
-msgstr ""
-
-#: glade/config.glade:75
-msgid "Enable auto-learning mode"
-msgstr ""
-
-#: glade/config.glade:89
-msgid "Keep selection after changing selected text"
-msgstr ""
-
-#: glade/config.glade:103
-msgid "Enable keyboard logging"
-msgstr ""
-
-#: glade/config.glade:117
-msgid "Flush internal buffer on Enter or Tab"
-msgstr ""
-
-#: glade/config.glade:131
-msgid "Don't process words on Enter or Tab"
-msgstr ""
-
-#: glade/config.glade:156
-msgid "<b>General</b>"
-msgstr ""
-
-#: glade/config.glade:198
-msgid "Initial layout number:"
-msgstr ""
-
-#: glade/config.glade:210 glade/config.glade:438 glade/config.glade:455
-#: glade/config.glade:472 glade/config.glade:489
+#: src/xneur.c:100
 msgid ""
-"0\n"
-"1\n"
-"2\n"
-"3"
+"Configuration file damaged! Please, remove old file before starting xneur!"
 msgstr ""
 
-#: glade/config.glade:228 glade/config.glade:245 glade/config.glade:262
-#: glade/config.glade:279
-msgid "Regular Expressions..."
-msgstr ""
-
-#: glade/config.glade:295 glade/config.glade:314 glade/config.glade:333
-#: glade/config.glade:352
-msgid ""
-"\n"
-"English\n"
-"Russian\n"
-"Ukrainian\n"
-"Belarusian\n"
-"French\n"
-"Romanian\n"
-"Kazakh\n"
-"German"
-msgstr ""
-
-#: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
-#: glade/config.glade:422
-msgid "Dictionary..."
-msgstr ""
-
-#: glade/config.glade:507
-msgid "Number\t"
-msgstr ""
-
-#: glade/config.glade:520
-msgid "Layout"
-msgstr ""
-
-#: glade/config.glade:547
-msgid "Remember keyboard layout for each application instance"
-msgstr ""
-
-#: glade/config.glade:634
-msgid "Exceptions (One keyboard layout for all application instances)"
-msgstr ""
-
-#: glade/config.glade:664
-msgid "<b>Layouts</b>"
-msgstr ""
-
-#: glade/config.glade:871
-msgid "Correct selected text"
-msgstr ""
-
-#: glade/config.glade:884
-msgid "Switch between processing modes"
-msgstr ""
-
-#: glade/config.glade:897
-msgid "Correct last line"
-msgstr ""
-
-#: glade/config.glade:910
-msgid "Correct/Undo correction"
-msgstr ""
-
-#: glade/config.glade:921
-msgid "Transliterate selected text"
-msgstr ""
-
-#: glade/config.glade:934
-msgid "Change case of selected text"
-msgstr ""
-
-#: glade/config.glade:1017
-msgid "Switch to Layout 1"
-msgstr ""
-
-#: glade/config.glade:1030
-msgid "Switch to Layout 2"
-msgstr ""
-
-#: glade/config.glade:1043
-msgid "Switch to Layout 3"
-msgstr ""
-
-#: glade/config.glade:1112
-msgid "Switch to Layout 4"
-msgstr ""
-
-#: glade/config.glade:1139
-msgid "<b>Hotkeys</b>"
-msgstr ""
-
-#: glade/config.glade:1164
-msgid "Flush internal buffer on mouse click"
-msgstr ""
-
-#: glade/config.glade:1260
-msgid "Draw flag next to mouse cursor for these applications"
-msgstr ""
-
-#: glade/config.glade:1344
-msgid "<b>Mouse</b>"
-msgstr ""
-
-#: glade/config.glade:1440
-msgid "Ignore these applications"
-msgstr ""
-
-#: glade/config.glade:1524
-msgid "Force automatic mode for these applications"
-msgstr ""
-
-#: glade/config.glade:1611
-msgid "Force manual mode for these applications"
-msgstr ""
-
-#: glade/config.glade:1641
-msgid "<b>Applications</b>"
-msgstr ""
-
-#: glade/config.glade:1666
-msgid "Enable sounds"
-msgstr ""
-
-#: glade/config.glade:1747
-msgid "<b>Sounds</b>"
-msgstr ""
-
-#: glade/config.glade:1775
-msgid "Expand abbreviations"
-msgstr ""
-
-#: glade/config.glade:1811
-msgid "Ignore keyboard layout for abbreviations"
-msgstr ""
-
-#: glade/config.glade:1897
-msgid "<b>Abbreviations</b>"
-msgstr ""
-
-#: glade/config.glade:1923
-msgid ""
-"Error\n"
-"Warning\n"
-"Log\n"
-"Debug\n"
-"Trace"
-msgstr ""
-
-#: glade/config.glade:1957
-msgid "Log verbosity level"
-msgstr ""
-
-#: glade/config.glade:1970
-msgid "Delay before sending events (in milliseconds)"
-msgstr ""
-
-#: glade/config.glade:1989
-msgid "<b>Advanced</b>"
-msgstr ""
-
-#: glade/list.glade:7
-msgid "File Editing"
-msgstr ""
-
-#: src/callbacks.c:188 src/misc.c:1288
-msgid "Press any key"
-msgstr ""
-
-#: src/misc.c:259 src/misc.c:260
+#: src/xneur.c:107
 #, c-format
+msgid "Log level is set to %s"
+msgstr ""
+
+#: src/xneur.c:108
+#, c-format
+msgid "Total detected %d languages"
+msgstr ""
+
+#: src/xneur.c:114
+#, c-format
+msgid "%s dictionary has %d records"
+msgstr ""
+
+#: src/xneur.c:115
+#, c-format
+msgid "%s proto has %d records"
+msgstr ""
+
+#: src/xneur.c:116
+#, c-format
+msgid "%s big proto has %d records"
+msgstr ""
+
+#: src/xneur.c:117
+#, c-format
+msgid "%s regexp has %d records"
+msgstr ""
+
+#: src/xneur.c:120
+msgid "Configuration load complete"
+msgstr ""
+
+#: src/xneur.c:122
+#, c-format
+msgid "Default group for all new windows set to %d"
+msgstr ""
+
+#: src/xneur.c:123
+#, c-format
+msgid "Manual mode set to %s"
+msgstr ""
+
+#: src/xneur.c:124
+#, c-format
+msgid "Mouse processing mode set to %s"
+msgstr ""
+
+#: src/xneur.c:125
+#, c-format
+msgid "Education mode set to %s"
+msgstr ""
+
+#: src/xneur.c:126
+#, c-format
+msgid "Layout remember mode set to %s"
+msgstr ""
+
+#: src/xneur.c:127
+#, c-format
+msgid "Save selection mode set to %s"
+msgstr ""
+
+#: src/xneur.c:128
+#, c-format
+msgid "Sound playing mode set to %s"
+msgstr ""
+
+#: src/xneur.c:129
+#, c-format
+msgid "Logging keyboard mode set to %s"
+msgstr ""
+
+#: src/xneur.c:130
+#, c-format
+msgid "Ignore keyboard layout for abbreviations mode set to %s"
+msgstr ""
+
+#: src/xneur.c:131
+#, c-format
+msgid "Correct of iNCIDENTAL CapsLock mode set to %s"
+msgstr ""
+
+#: src/xneur.c:132
+#, c-format
+msgid "Correct of two CApital letter mode set to %s"
+msgstr ""
+
+#: src/xneur.c:133
+#, c-format
+msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
+msgstr ""
+
+#: src/xneur.c:134
+#, c-format
+msgid "Don't process word when pressed Enter or Tab mode set to %s"
+msgstr ""
+
+#: src/xneur.c:135
+#, c-format
+msgid "Show OSD mode set to %s"
+msgstr ""
+
+#: src/xneur.c:145
+#, c-format
+msgid " already running with pid %d"
+msgstr ""
+
+#: src/xneur.c:154
+#, c-format
+msgid " pid is %d"
+msgstr ""
+
+#: src/xneur.c:160
+msgid "Current sound data is freed"
+msgstr ""
+
+#: src/xneur.c:165
+msgid "Current program info is freed"
+msgstr ""
+
+#: src/xneur.c:172
+msgid "Current configuration data is freed"
+msgstr ""
+
+#: src/xneur.c:183
+msgid "Caught SIGTERM/SIGINT, terminating"
+msgstr ""
+
+#: src/xneur.c:184
+msgid "X Neural Switcher stopped"
+msgstr ""
+
+#: src/xneur.c:195
+msgid "Caught SIGHUP, reloading configuration file"
+msgstr ""
+
+#: src/xneur.c:196
+msgid "X Neural Switcher reloaded"
+msgstr ""
+
+#: src/xneur.c:206 src/xneur.c:309
+msgid "Can't init libxnconfig"
+msgstr ""
+
+#: src/xneur.c:319
+msgid "Failed to init program structure"
+msgstr ""
+
+#: src/xneur.c:328
+msgid "Init program structure complete"
+msgstr ""
+
+#: src/xneur.c:329
+msgid "X Neural Switcher started"
+msgstr ""
+
+#: lib/ai/detection.c:99
+#, c-format
+msgid "   [-] Skip checking by language proto of size %d (word is very short)"
+msgstr ""
+
+#: lib/ai/detection.c:106
+#, c-format
+msgid "   [-] This word is ok for %s proto of size %d"
+msgstr ""
+
+#: lib/ai/detection.c:110
+#, c-format
+msgid "   [*] This word has hits for %s proto of size %d"
+msgstr ""
+
+#: lib/ai/detection.c:120
+#, c-format
+msgid "   [*] This word has hits for %s language proto of size %d"
+msgstr ""
+
+#: lib/ai/detection.c:124
+#, c-format
+msgid "   [+] This word has no hits for %s language proto of size %d"
+msgstr ""
+
+#: lib/ai/detection.c:128
+#, c-format
+msgid "   [-] This word has hits in all languages proto of size %d"
+msgstr ""
+
+#: lib/ai/detection.c:138
+#, c-format
+msgid "   [+] Found this word in %s language dictionary"
+msgstr ""
+
+#: lib/ai/detection.c:143
+msgid "   [-] This word not found in any dictionaries"
+msgstr ""
+
+#: lib/ai/detection.c:153
+#, c-format
+msgid "   [+] Found this word in %s language regular expressions file"
+msgstr ""
+
+#: lib/ai/detection.c:158
+msgid "   [-] This word not found in any regular expressions files"
+msgstr ""
+
+#: lib/ai/detection.c:179
+#, c-format
+msgid "   [-] This word is ok for %s letter order"
+msgstr ""
+
+#: lib/ai/detection.c:191
+#, c-format
+msgid "   [+] This word has no hits by letter order for %s language"
+msgstr ""
+
+#: lib/ai/detection.c:195
+msgid "   [-] This word has hits by letter order for all languages"
+msgstr ""
+
+#: lib/ai/detection.c:203
+#, c-format
+msgid "   [-] This word is ok for %s first letter check"
+msgstr ""
+
+#: lib/ai/detection.c:215
+#, c-format
+msgid "   [+] This word has no hits by no first letter for %s language proto"
+msgstr ""
+
+#: lib/ai/detection.c:219
+msgid "   [-] This word has hits by no first letter for all languages"
+msgstr ""
+
+#: lib/ai/detection.c:228
+msgid "   [-] Skip aspell checking (word is very short)"
+msgstr ""
+
+#: lib/ai/detection.c:270
+#, c-format
+msgid "   [+] Found this word in %s aspell dictionary"
+msgstr ""
+
+#: lib/ai/detection.c:278
+#, c-format
+msgid "   [!] Error aspell checking for %s aspell dictionary"
+msgstr ""
+
+#: lib/ai/detection.c:285
+msgid "   [-] This word has no hits for all aspell dictionaries"
+msgstr ""
+
+#: lib/ai/detection.c:303
+#, c-format
+msgid "Processing word '%s'"
+msgstr ""
+
+#: lib/ai/detection.c:333
+msgid "End word processing"
+msgstr ""
+
+#: lib/config/xnconfig.c:114
+#, c-format
+msgid "Unrecognized option \"%s\" detected"
+msgstr ""
+
+#: lib/config/xnconfig.c:124
+#, c-format
+msgid "Param mismatch for option %s"
+msgstr ""
+
+#: lib/config/xnconfig.c:135
+msgid "Invalid value for manual mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:153
+msgid "Invalid value for action name specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:180
+msgid "Invalid value for log level specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:195
+msgid "Argument number mismatch for AddLanguage option"
+msgstr ""
+
+#: lib/config/xnconfig.c:232
+msgid "Invalid value for mouse grab mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:244
+msgid "Invalid value for education mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:261
+msgid "Invalid value for remember layout mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:273
+msgid "Invalid value for save selection mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:290
+msgid "Invalid value for sound action name specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:312
+msgid "Invalid value for play sounds mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:324
+msgid "Send delay must be between 0 and 50"
+msgstr ""
+
+#: lib/config/xnconfig.c:344
+msgid "Invalid value for flag layout name specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:364
+msgid "Invalid value for save keyboard log mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:381
 msgid ""
-"Wrong XNeur configuration library api version.\n"
-"Please, install libxnconfig version %d.0.%d\n"
+"Invalid value for ignore keyboard layout for abbreviations mode specified"
 msgstr ""
 
-#: src/misc.c:266
-#, c-format
-msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
+#: lib/config/xnconfig.c:393
+msgid "Invalid value for change iNCIDENTAL CapsLock mode specified"
 msgstr ""
 
-#: src/misc.c:270 src/misc.c:271
-#, c-format
+#: lib/config/xnconfig.c:405
+msgid "Invalid value for change two CApital letter mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:417
 msgid ""
-"XNeur config broken!\n"
-"Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+"Invalid value for flush internal buffer when pressed Enter mode specified"
 msgstr ""
 
-#: src/misc.c:334
-msgid "Current Version"
+#: lib/config/xnconfig.c:429
+msgid ""
+"Invalid value for don't processing word when pressed Enter mode specified"
 msgstr ""
 
-#: src/misc.c:376 src/misc.c:402 src/misc.c:429 src/misc.c:455 src/misc.c:734
-msgid "Application"
+#: lib/config/xnconfig.c:474
+msgid "Invalid value for show OSD mode specified"
 msgstr ""
 
-msgid "Abbreviation:"
-msgstr ""
-
-#: src/misc.c:620
-msgid "Abbreviation"
-msgstr ""
-
-msgid "Expansion text:"
-msgstr ""
-
-#: src/misc.c:625
-msgid "Expansion text"
-msgstr ""
-
-#: src/misc.c:655
-msgid "Action"
-msgstr ""
-
-#: src/misc.c:660
-msgid "Sound"
-msgstr ""
-
-#: src/misc.c:706
-msgid "Description"
-msgstr ""
-
-#: src/misc.c:711
-msgid "Pixmap"
-msgstr ""
-
-#: src/support.c:80 src/support.c:104
+#: lib/config/xnconfig.c:490
 #, c-format
-msgid "Couldn't find pixmap file: %s"
+msgid "Can't find config file %s"
 msgstr ""
 
-#: src/trayicon.c:78
-msgid "Stop daemon"
+#: lib/config/xnconfig.c:656
+msgid "No languages specified in config file"
 msgstr ""
 
-#: src/trayicon.c:83
-msgid "Start daemon"
+#: lib/config/xnconfig.c:668
+#, c-format
+msgid "Can't find dictionary file for %s language"
 msgstr ""
 
-#: src/trayicon.c:100
-msgid "Disable input auto-correction"
+#: lib/config/xnconfig.c:675
+#, c-format
+msgid "Can't find protos file for %s language"
 msgstr ""
 
-#: src/trayicon.c:105
-msgid "Enable input auto-correction"
+#: lib/config/xnconfig.c:682
+#, c-format
+msgid "Can't find big protos file for %s language"
 msgstr ""
 
-#: src/trayicon.c:182
-msgid "X Neural Switcher running ("
+#: lib/config/xnconfig.c:689
+#, c-format
+msgid "Can't find regexp file for %s language"
 msgstr ""
 
-#: src/trayicon.c:187
-msgid "X Neural Switcher stopped ("
+#: lib/config/xnconfig.c:721
+#, c-format
+msgid "Saving main config to %s"
 msgstr ""
 
-#: src/trayicon.c:209
-msgid "X Neural Switcher"
+#: lib/config/xnconfig.c:726
+#, c-format
+msgid "Can't create file %s"
+msgstr ""
+
+#: lib/config/xnconfig.c:934
+#, c-format
+msgid "Moving config file from %s to %s"
+msgstr ""
+
+#: lib/config/xnconfig.c:940
+msgid "Can't move file!"
+msgstr ""
+
+#: lib/config/xnconfig.c:958
+#, c-format
+msgid "Saving %s dictionary"
+msgstr ""
+
+#: lib/config/xnconfig.c:998
+msgid "Can't add language with empty name or dir"
+msgstr ""
+
+#: lib/config/xnconfig_memory.c:40
+msgid "Can't generate shared memory segment key"
+msgstr ""
+
+#: lib/config/xnconfig_memory.c:58
+msgid "Can't get exist shared memory segment id"
+msgstr ""
+
+#: lib/config/xnconfig_memory.c:64
+msgid "Can't remove an old shared memory segment"
+msgstr ""
+
+#: lib/config/xnconfig_memory.c:71
+msgid "Can't create new shared memory segment"
+msgstr ""
+
+#: lib/misc/debug.c:54
+#, c-format
+msgid "Allocating memory pointer %p (at %s:%d)"
+msgstr ""
+
+#: lib/misc/debug.c:73
+#, c-format
+msgid "Freeing invalid memory pointer %p (at %s:%d)"
+msgstr ""
+
+#: lib/misc/debug.c:75
+#, c-format
+msgid "Freeing memory pointer %p (at %s:%d)"
+msgstr ""
+
+#: lib/misc/debug.c:93
+#, c-format
+msgid "Duping memory pointer %p (at %s:%d)"
+msgstr ""
+
+#: lib/misc/debug.c:115
+#, c-format
+msgid "Reallocating invalid memory pointer %p (at %s:%d)"
+msgstr ""
+
+#: lib/misc/debug.c:117
+#, c-format
+msgid "(Re)Freeing memory pointer %p (at %s:%d)"
+msgstr ""
+
+#: lib/misc/debug.c:127
+#, c-format
+msgid "(Re)Allocating memory pointer %p (at %s:%d)"
+msgstr ""
+
+#: lib/misc/debug.c:150
+#, c-format
+msgid "Total %d unfreed memory pointers"
+msgstr ""
+
+#: lib/misc/debug.c:153
+#, c-format
+msgid "Unfreed memory pointer %s (allocated at file %s:%d)"
+msgstr ""
+
+#: lib/misc/utils.c:39
+msgid "Can't trap signal"
+msgstr ""
+
+#: lib/sound/sound.c:124
+#, c-format
+msgid "Play sound sample %s (use Gstreamer engine)"
+msgstr ""
+
+#: lib/sound/sound.c:138
+msgid "Failed to create gstreamer context"
+msgstr ""
+
+#: lib/sound/sound.c:176
+#, c-format
+msgid "Initializing ALCdevice: %s "
+msgstr ""
+
+#: lib/sound/sound.c:190
+#, c-format
+msgid "Play sound sample %s (use OpenAL library)"
+msgstr ""
+
+#: lib/sound/sound.c:196
+msgid "Failed to create OpenAL buffer"
+msgstr ""
+
+#: lib/sound/sound.c:236
+#, c-format
+msgid "Play sound sample %s (use ALSA library)"
+msgstr ""
+
+#: lib/x/xbtable.c:68
+#, c-format
+msgid "   No key set for action \"%s\""
+msgstr ""
+
+#: lib/x/xbtable.c:94 lib/x/xbtable.c:156
+#, c-format
+msgid "   Action \"%s\" with mod_mask %d and key \"%s (%s)\""
+msgstr ""
+
+#: lib/x/xbtable.c:117
+msgid ""
+"Binded hotkeys actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
+msgstr ""
+
+#: lib/x/xbtable.c:180
+msgid ""
+"Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win"
+"(64)):"
+msgstr ""
+
+#: lib/x/xcursor.c:117
+msgid "Can't create GC"
+msgstr ""
+
+#: lib/x/xcursor.c:221 lib/x/xcursor.c:273
+msgid "Current cursor is freed"
+msgstr ""
+
+#: lib/x/xevent.c:183
+msgid "Event is freed"
+msgstr ""
+
+#: lib/x/xfocus.c:86
+msgid "New window empty"
+msgstr ""
+
+#: lib/x/xfocus.c:110
+#, c-format
+msgid "Focused window %d"
+msgstr ""
+
+#: lib/x/xfocus.c:130
+#, c-format
+msgid "Process new window (ID %d) with name '%s' (status %s, mode %s)"
+msgstr ""
+
+#: lib/x/xfocus.c:216
+msgid "Focus is freed"
+msgstr ""
+
+#: lib/x/xkeymap.c:52
+msgid "Couldn't set default locale"
+msgstr ""
+
+#: lib/x/xkeymap.c:58
+msgid "Your default locale is not UTF-8"
+msgstr ""
+
+#: lib/x/xkeymap.c:60
+#, c-format
+msgid "Using locale %s"
+msgstr ""
+
+#: lib/x/xkeymap.c:133
+#, c-format
+msgid "Too many keyboard layouts (max %d)"
+msgstr ""
+
+#: lib/x/xkeymap.c:143
+msgid "Unable to get keyboard mapping table"
+msgstr ""
+
+#: lib/x/xkeymap.c:393
+msgid "Keymap is freed"
+msgstr ""
+
+#: lib/x/xOSD.c:71
+#, c-format
+msgid "Show OSD \"%s\""
+msgstr ""
+
+#: lib/x/xprogram.c:267
+#, c-format
+msgid "Restore layout group to %d"
+msgstr ""
+
+#: lib/x/xprogram.c:274
+#, c-format
+msgid "Store default layout group to %d"
+msgstr ""
+
+#: lib/x/xprogram.c:320
+msgid "Exitting from main cycle"
+msgstr ""
+
+#: lib/x/xprogram.c:327
+#, c-format
+msgid "Received KeyPress (event type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:342
+#, c-format
+msgid "Received KeyRelease (event type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:353
+#, c-format
+msgid "Received FocusIn (event type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:355
+#, c-format
+msgid "Received LeaveNotify (event type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:357
+#, c-format
+msgid "Received EnterNotify (event type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:367
+#, c-format
+msgid "Received FocusOut (event type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:375
+#, c-format
+msgid "Received SelectionNotify (event type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:381
+#, c-format
+msgid "Received SelectionRequest (event type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:388
+#, c-format
+msgid "Received ButtonPress on window %d  (event type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:404
+#, c-format
+msgid "Received Property Notify (layout switch event) (event type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:417
+#, c-format
+msgid "Uncatched event with type %d)"
+msgstr ""
+
+#: lib/x/xprogram.c:426
+#, c-format
+msgid "Changing language from %s to %s"
+msgstr ""
+
+#: lib/x/xprogram.c:433
+msgid "Correcting iNCIDENTAL CapsLock"
+msgstr ""
+
+#: lib/x/xprogram.c:452
+msgid "Correcting two CApital letter"
+msgstr ""
+
+#: lib/x/xprogram.c:533
+#, c-format
+msgid "Execute user action \"%s\""
+msgstr ""
+
+#: lib/x/xprogram.c:535
+#, c-format
+msgid "Run \"%s\""
+msgstr ""
+
+#: lib/x/xprogram.c:640
+#, c-format
+msgid "Manual mode changed to %s"
+msgstr ""
+
+#: lib/x/xprogram.c:748
+#, c-format
+msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
+msgstr ""
+
+#: lib/x/xprogram.c:796
+msgid "No language found to change to"
+msgstr ""
+
+#: lib/x/xprogram.c:859
+msgid "No string to change"
+msgstr ""
+
+#: lib/x/xprogram.c:863
+#, c-format
+msgid "Processing string '%s'"
+msgstr ""
+
+#: lib/x/xprogram.c:946
+#, c-format
+msgid "Remove word '%s' from %s dictionary"
+msgstr ""
+
+#: lib/x/xprogram.c:954
+#, c-format
+msgid "Add word '%s' in %s dictionary"
+msgstr ""
+
+#: lib/x/xprogram.c:972
+msgid "Program is freed"
+msgstr ""
+
+#: lib/x/xselection.c:39
+msgid "Convert to selection target return None answer"
+msgstr ""
+
+#: lib/x/xselection.c:51
+msgid "Selected text length is 0"
+msgstr ""
+
+#: lib/x/xselection.c:57
+msgid "Failed to get selected text data"
+msgstr ""
+
+#: lib/x/xselection.c:77
+msgid "Failed to convert selection with error BadAtom"
+msgstr ""
+
+#: lib/x/xselection.c:79
+msgid "Failed to convert selection with error BadWindow"
+msgstr ""
+
+#: lib/x/xstring.c:277
+msgid "String is freed"
+msgstr ""
+
+#: lib/x/xswitchlang.c:54
+msgid "Can't find language for this XKB Group"
+msgstr ""
+
+#: lib/x/xswitchlang.c:73 lib/x/xswitchlang.c:102
+msgid "Failed to allocate keyboard descriptor"
+msgstr ""
+
+#: lib/x/xswitchlang.c:83 lib/x/xswitchlang.c:112
+msgid "Failed to get keyboard group names"
+msgstr ""
+
+#: lib/x/xswitchlang.c:120
+msgid "No keyboard layout found"
+msgstr ""
+
+#: lib/x/xswitchlang.c:124
+msgid "Keyboard layouts present in system:"
+msgstr ""
+
+#: lib/x/xswitchlang.c:138
+#, c-format
+msgid "   XKB Group '%s' not defined in configuration file (group %d)"
+msgstr ""
+
+#: lib/x/xswitchlang.c:142
+#, c-format
+msgid "   XKB Group '%s' must be for '%s' language (group %d)"
+msgstr ""
+
+#: lib/x/xswitchlang.c:148
+#, c-format
+msgid "Total %d valid keyboard layouts detected"
+msgstr ""
+
+#: lib/x/xutils.c:118
+#, c-format
+msgid "Failed to %s mouse with error BadCursor"
+msgstr ""
+
+#: lib/x/xutils.c:120
+#, c-format
+msgid "Failed to %s mouse with error BadValue"
+msgstr ""
+
+#: lib/x/xutils.c:122
+#, c-format
+msgid "Failed to %s mouse with error BadWindow"
+msgstr ""
+
+#: lib/x/xutils.c:134 lib/x/xutils.c:159 lib/x/xutils.c:173
+#, c-format
+msgid "Failed to %s keyboard with error BadValue"
+msgstr ""
+
+#: lib/x/xutils.c:136 lib/x/xutils.c:161 lib/x/xutils.c:175
+#, c-format
+msgid "Failed to %s keyboard with error BadWindow"
+msgstr ""
+
+#: lib/x/xwindow.c:56
+msgid "Can't connect to XServer"
+msgstr ""
+
+#: lib/x/xwindow.c:64
+msgid "Can't create program window"
+msgstr ""
+
+#: lib/x/xwindow.c:76
+msgid "Can't create flag window"
+msgstr ""
+
+#: lib/x/xwindow.c:104
+#, c-format
+msgid "Main window with id %d created"
+msgstr ""
+
+#: lib/x/xwindow.c:137
+msgid "Window is freed"
 msgstr ""

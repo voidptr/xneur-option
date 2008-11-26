@@ -36,7 +36,7 @@ void xntrap(int sig, sg_handler handler)
 
 	if (sigaction(sig, &sa, NULL) == -1)
 	{
-		log_message(ERROR, "Can't trap signal");
+		log_message(ERROR, _("Can't trap signal"));
 		exit(EXIT_FAILURE);
 	}
 }

@@ -37,7 +37,7 @@ static int get_memory_id(int segment_size, int *need_init)
 	key_t segment_key = ftok("/", getuid());
 	if (segment_key == -1)
 	{
-		log_message(ERROR, "Can't generate shared memory segment key");
+		log_message(ERROR, _("Can't generate shared memory segment key"));
 		return -1;
 	}
 
@@ -55,20 +55,20 @@ static int get_memory_id(int segment_size, int *need_init)
 	shm_id = shmget(segment_key, 0, SEGMENT_PERMISSIONS);
 	if (shm_id == -1)
 	{
-		log_message(ERROR, "Can't get exist shared memory segment id");
+		log_message(ERROR, _("Can't get exist shared memory segment id"));
 		return -1;
 	}
 
 	if (shmctl(shm_id, IPC_RMID, NULL) != 0)
 	{
-		log_message(ERROR, "Can't remove an old shared memory segment");
+		log_message(ERROR, _("Can't remove an old shared memory segment"));
 		return -1;
 	}
 
 	shm_id = shmget(segment_key, segment_size, SEGMENT_PERMISSIONS | IPC_CREAT);
 	if (shm_id == -1)
 	{
-		log_message(ERROR, "Can't create new shared memory segment");
+		log_message(ERROR, _("Can't create new shared memory segment"));
 		return -1;
 	}
 

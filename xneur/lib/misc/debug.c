@@ -51,7 +51,7 @@ void* xndebug_malloc(int len, char *file, int line)
 	char *pointer = (char *) malloc(pointer_len * sizeof(char));
 	sprintf(pointer, "%p", mem);
 
-	log_message(TRACE, "Allocating memory pointer %p (at %s:%d)", mem, file, line);
+	log_message(TRACE, _("Allocating memory pointer %p (at %s:%d)"), mem, file, line);
 
 	struct _list_char_data *data = allocates->add(allocates, pointer);
 	data->debug_value = line;
@@ -70,9 +70,9 @@ void xndebug_free(void *mem, char *file, int line)
 	sprintf(pointer, "%p", mem);
 
 	if (!allocates->exist(allocates, pointer, BY_PLAIN))
-		log_message(ERROR, "Freeing invalid memory pointer %p (at %s:%d)", mem, file, line);
+		log_message(ERROR, _("Freeing invalid memory pointer %p (at %s:%d)"), mem, file, line);
 	else
-		log_message(TRACE, "Freeing memory pointer %p (at %s:%d)", mem, file, line);
+		log_message(TRACE, _("Freeing memory pointer %p (at %s:%d)"), mem, file, line);
 
 	allocates->rem(allocates, pointer);
 
@@ -90,7 +90,7 @@ char* xndebug_strdup(const char *str, char *file, int line)
 	char *pointer = (char *) malloc(pointer_len * sizeof(char));
 	sprintf(pointer, "%p", mem);
 
-	log_message(TRACE, "Duping memory pointer %p (at %s:%d)", str, file, line);
+	log_message(TRACE, _("Duping memory pointer %p (at %s:%d)"), str, file, line);
 
 	struct _list_char_data *data = allocates->add(allocates, pointer);
 	data->debug_value = line;
@@ -112,9 +112,9 @@ void* xndebug_realloc(void *mem, int len, char *file, int line)
 		sprintf(pointer, "%p", mem);
 
 		if (!allocates->exist(allocates, pointer, BY_PLAIN))
-			log_message(ERROR, "Reallocating invalid memory pointer %p (at %s:%d)", mem, file, line);
+			log_message(ERROR, _("Reallocating invalid memory pointer %p (at %s:%d)"), mem, file, line);
 		else
-			log_message(TRACE, "(Re)Freeing memory pointer %p (at %s:%d)", mem, file, line);
+			log_message(TRACE, _("(Re)Freeing memory pointer %p (at %s:%d)"), mem, file, line);
 		allocates->rem(allocates, pointer);
 	}
 
@@ -124,7 +124,7 @@ void* xndebug_realloc(void *mem, int len, char *file, int line)
 	{
 		sprintf(pointer, "%p", new_mem);
 
-		log_message(TRACE, "(Re)Allocating memory pointer %p (at %s:%d)", new_mem, file, line);
+		log_message(TRACE, _("(Re)Allocating memory pointer %p (at %s:%d)"), new_mem, file, line);
 
 		struct _list_char_data *data = allocates->add(allocates, pointer);
 		data->debug_value = line;
@@ -147,10 +147,10 @@ void xndebug_uninit(void)
 		return;
 	}
 
-	log_message(WARNING, "Total %d unfreed memory pointers", allocates->data_count);
+	log_message(WARNING, _("Total %d unfreed memory pointers"), allocates->data_count);
 
 	for (int i = 0; i < allocates->data_count; i++)
-		log_message(WARNING, "Unfreed memory pointer %s (allocated at file %s:%d)", allocates->data[i].string, allocates->data[i].debug_string, allocates->data[i].debug_value);
+		log_message(WARNING, _("Unfreed memory pointer %s (allocated at file %s:%d)"), allocates->data[i].string, allocates->data[i].debug_string, allocates->data[i].debug_value);
 
 	allocates->uninit(allocates);
 }

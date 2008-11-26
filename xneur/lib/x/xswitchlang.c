@@ -51,7 +51,7 @@ int get_cur_lang(void)
 	if (lang != -1)
 		return lang;
 
-	log_message(ERROR, "Can't find language for this XKB Group");
+	log_message(ERROR, _("Can't find language for this XKB Group"));
 	return 0;
 }
 
@@ -70,7 +70,7 @@ int get_keyboard_groups_count(void)
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)
 	{
-		log_message(ERROR, "Failed to allocate keyboard descriptor");
+		log_message(ERROR, _("Failed to allocate keyboard descriptor"));
 		return 0;
 	}
 	
@@ -80,7 +80,7 @@ int get_keyboard_groups_count(void)
 	
 	if (kbd_desc_ptr->names == NULL)
 	{
-		log_message(ERROR, "Failed to get keyboard group names");
+		log_message(ERROR, _("Failed to get keyboard group names"));
 		return 0;
 	}
 
@@ -99,7 +99,7 @@ int print_keyboard_groups(void)
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)
 	{
-		log_message(ERROR, "Failed to allocate keyboard descriptor");
+		log_message(ERROR, _("Failed to allocate keyboard descriptor"));
 		return FALSE;
 	}
 	
@@ -109,7 +109,7 @@ int print_keyboard_groups(void)
 	if (kbd_desc_ptr->names == NULL)
 	{
 		XCloseDisplay(display);
-		log_message(ERROR, "Failed to get keyboard group names");
+		log_message(ERROR, _("Failed to get keyboard group names"));
 		return FALSE;
 	}
 
@@ -117,11 +117,11 @@ int print_keyboard_groups(void)
 	if (groups_count == 0)
 	{
 		XCloseDisplay(display);
-		log_message(ERROR, "No keyboard layout found");
+		log_message(ERROR, _("No keyboard layout found"));
 		return FALSE;
 	}
 
-	log_message(LOG, "Keyboard layouts present in system:");
+	log_message(LOG, _("Keyboard layouts present in system:"));
 
 	int valid_count = 0;
 	for (int group = 0; group < groups_count; group++)
@@ -135,16 +135,16 @@ int print_keyboard_groups(void)
 
 		if (lang_name == NULL)
 		{
-			log_message(ERROR, "   XKB Group '%s' not defined in configuration file (group %d)", group_name, group);
+			log_message(ERROR, _("   XKB Group '%s' not defined in configuration file (group %d)"), group_name, group);
 			continue;
 		}
 
-		log_message(LOG, "   XKB Group '%s' must be for '%s' language (group %d)", group_name, lang_name, group);
+		log_message(LOG, _("   XKB Group '%s' must be for '%s' language (group %d)"), group_name, lang_name, group);
 		valid_count++;
 	}
 	
 	XCloseDisplay(display);
 
-	log_message(LOG, "Total %d valid keyboard layouts detected", valid_count);
+	log_message(LOG, _("Total %d valid keyboard layouts detected"), valid_count);
 	return TRUE;
 }

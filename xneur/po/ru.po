@@ -1,0 +1,870 @@
+# Copyright (C) 2008 XNeur Team
+# This file is distributed under GPL v2 or later license as the xneur package.
+# Andrew Kuznetsov, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: xneur 0.9.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-26 18:33+0300\n"
+"PO-Revision-Date: 2008-11-26 18:33+0300\n"
+"Last-Translator: Andrew Kuznetsov\n"
+"Language-Team: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/xneur.c:54
+msgid "Checking configuration file version..."
+msgstr "Проверка версии конфигурационного файла..."
+
+#: src/xneur.c:58
+msgid "User configuration file version is OK!"
+msgstr "Пользовательский конфигурационный файл в порядке!"
+
+#: src/xneur.c:62
+msgid "Configuration file version is out of date!"
+msgstr "Конфигурационный файл устарел!"
+
+#: src/xneur.c:72
+msgid ""
+"Default configuration file not founded in system! Please, reinstall XNeur!"
+msgstr ""
+"Конфигурационный файл не найден в системе! Пожалуйста, переустановите XNeur!"
+
+#: src/xneur.c:77
+msgid "Configuration file replaced to default one"
+msgstr "Конфигурационный файл заменен на файл по умолчанию"
+
+#: src/xneur.c:96
+msgid "Loading configuration"
+msgstr "Загрузка конфигурации"
+
+#: src/xneur.c:100
+msgid ""
+"Configuration file damaged! Please, remove old file before starting xneur!"
+msgstr ""
+"Конфигурационный файл поврежден! Пожалуйста, удалите старый файл перед "
+"запуском xneur!"
+
+#: src/xneur.c:107
+#, c-format
+msgid "Log level is set to %s"
+msgstr "Уровень подробности выводимых сообщений установлен в значение %s"
+
+#: src/xneur.c:108
+#, c-format
+msgid "Total detected %d languages"
+msgstr "Всего обнаружено %d языка"
+
+#: src/xneur.c:114
+#, c-format
+msgid "%s dictionary has %d records"
+msgstr "Словарь %s содержит %d записи"
+
+#: src/xneur.c:115
+#, c-format
+msgid "%s proto has %d records"
+msgstr "Прото-язык %s содержит %d записи"
+
+#: src/xneur.c:116
+#, c-format
+msgid "%s big proto has %d records"
+msgstr "Большой прото-язык %s содержит %d записи"
+
+#: src/xneur.c:117
+#, c-format
+msgid "%s regexp has %d records"
+msgstr "Набор регулярных выражений %s содержит %d записи"
+
+#: src/xneur.c:120
+msgid "Configuration load complete"
+msgstr "Конфигурационный файл успешно загружен"
+
+#: src/xneur.c:122
+#, c-format
+msgid "Default group for all new windows set to %d"
+msgstr "Группа по умолчанию для всех новых окон установлена в значение %d"
+
+#: src/xneur.c:123
+#, c-format
+msgid "Manual mode set to %s"
+msgstr "Ручной режим установлен в значение %s"
+
+#: src/xneur.c:124
+#, c-format
+msgid "Mouse processing mode set to %s"
+msgstr "Режим обработки событий мыши установлен в значение %s"
+
+#: src/xneur.c:125
+#, c-format
+msgid "Education mode set to %s"
+msgstr "Режим самообучения установлен в значение %s"
+
+#: src/xneur.c:126
+#, c-format
+msgid "Layout remember mode set to %s"
+msgstr "Режим запоминания раскладки установлен в значение %s"
+
+#: src/xneur.c:127
+#, c-format
+msgid "Save selection mode set to %s"
+msgstr "Режим сохранения выделения установлен в значение %s"
+
+#: src/xneur.c:128
+#, c-format
+msgid "Sound playing mode set to %s"
+msgstr "Режим проигрывания звука установлен в значение %s"
+
+#: src/xneur.c:129
+#, c-format
+msgid "Logging keyboard mode set to %s"
+msgstr "Режим сохранения набираемого пользователем текста установлен в значение %s"
+
+#: src/xneur.c:130
+#, c-format
+msgid "Ignore keyboard layout for abbreviations mode set to %s"
+msgstr "Режим игнорирования раскладки для сокращений установлен в значение %s"
+
+#: src/xneur.c:131
+#, c-format
+msgid "Correct of iNCIDENTAL CapsLock mode set to %s"
+msgstr "Режим исправления сЛУЧАЙНОГО КапсЛока установлен в значение %s"
+
+#: src/xneur.c:132
+#, c-format
+msgid "Correct of two CApital letter mode set to %s"
+msgstr "Режим исправления двух ПРописных букв установлен в значение %s"
+
+#: src/xneur.c:133
+#, c-format
+msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
+msgstr "Режим сброса внутреннего буфера при нажатии Ввод или Таб установлен в значение %s"
+
+#: src/xneur.c:134
+#, c-format
+msgid "Don't process word when pressed Enter or Tab mode set to %s"
+msgstr "Режим необрабатывания слов при нажатии Ввод или Таб установлен в значение %s"
+
+#: src/xneur.c:135
+#, c-format
+msgid "Show OSD mode set to %s"
+msgstr "Режим показа OSD установлен в значение %s"
+
+#: src/xneur.c:145
+#, c-format
+msgid " already running with pid %d"
+msgstr " уже запущен с pid %d"
+
+#: src/xneur.c:154
+#, c-format
+msgid " pid is %d"
+msgstr " pid равен %d"
+
+#: src/xneur.c:160
+msgid "Current sound data is freed"
+msgstr "Текущие данные звука очищены"
+
+#: src/xneur.c:165
+msgid "Current program info is freed"
+msgstr "Текущие данные программы очищены"
+
+#: src/xneur.c:172
+msgid "Current configuration data is freed"
+msgstr "Текущие данные конфигурации очищены"
+
+#: src/xneur.c:183
+msgid "Caught SIGTERM/SIGINT, terminating"
+msgstr "Получен сигнал SIGTERM/SIGINT, останов"
+
+#: src/xneur.c:184
+msgid "X Neural Switcher stopped"
+msgstr "X Neural Switcher остановлен"
+
+#: src/xneur.c:195
+msgid "Caught SIGHUP, reloading configuration file"
+msgstr "Получен сигнал SIGHUP, перезагрузка конфигурационного файла"
+
+#: src/xneur.c:196
+msgid "X Neural Switcher reloaded"
+msgstr "X Neural Switcher перезагружен"
+
+#: src/xneur.c:206 src/xneur.c:309
+msgid "Can't init libxnconfig"
+msgstr "Невозможно инициировать библиотеку libxnconfig"
+
+#: src/xneur.c:319
+msgid "Failed to init program structure"
+msgstr "Ошибка инициализации програмной структуры"
+
+#: src/xneur.c:328
+msgid "Init program structure complete"
+msgstr "Инициализация програмной структуры выполнена"
+
+#: src/xneur.c:329
+msgid "X Neural Switcher started"
+msgstr "X Neural Switcher запущен"
+
+#: lib/ai/detection.c:99
+#, c-format
+msgid "   [-] Skip checking by language proto of size %d (word is very short)"
+msgstr "   [-] Пропуск проверки по прото-языку с размером %d (слово слишком короткое)"
+
+#: lib/ai/detection.c:106
+#, c-format
+msgid "   [-] This word is ok for %s proto of size %d"
+msgstr "   [-] Это слово в порядке для прото-языка %s с размером %d"
+
+#: lib/ai/detection.c:110
+#, c-format
+msgid "   [*] This word has hits for %s proto of size %d"
+msgstr "   [*] Это слово имеет совпадение для прото-языка %s с размером %d"
+
+#: lib/ai/detection.c:120
+#, c-format
+msgid "   [*] This word has hits for %s language proto of size %d"
+msgstr "   [*] Это слово имеет совпадение для прото-языка %s с размером %d"
+
+#: lib/ai/detection.c:124
+#, c-format
+msgid "   [+] This word has no hits for %s language proto of size %d"
+msgstr "   [+] Это слово не имеет совпадений для прото-языка %s с размером %d"
+
+#: lib/ai/detection.c:128
+#, c-format
+msgid "   [-] This word has hits in all languages proto of size %d"
+msgstr "   [-] Это слово имеет совпадение для всех прото-языков с размером %d"
+
+#: lib/ai/detection.c:138
+#, c-format
+msgid "   [+] Found this word in %s language dictionary"
+msgstr "   [+] Это слово найдено в словаре %s"
+
+#: lib/ai/detection.c:143
+msgid "   [-] This word not found in any dictionaries"
+msgstr "   [-] Это слово не найдено во всех словарях"
+
+#: lib/ai/detection.c:153
+#, c-format
+msgid "   [+] Found this word in %s language regular expressions file"
+msgstr "   [+] Это слово найдено в файле регулярных выражений %s"
+
+#: lib/ai/detection.c:158
+msgid "   [-] This word not found in any regular expressions files"
+msgstr "   [-] Это слово не найдено во всех файлах регулярных выражений"
+
+#: lib/ai/detection.c:179
+#, c-format
+msgid "   [-] This word is ok for %s letter order"
+msgstr "   [-] Это слово в порядке для последовательности букв языка %s"
+
+#: lib/ai/detection.c:191
+#, c-format
+msgid "   [+] This word has no hits by letter order for %s language"
+msgstr "   [+] Это слово не имеет совпадений для последовательности букв языка %s"
+
+#: lib/ai/detection.c:195
+msgid "   [-] This word has hits by letter order for all languages"
+msgstr "   [-] Это слово не имеет совпадений для последовательности букв для всех языков"
+
+#: lib/ai/detection.c:203
+#, c-format
+msgid "   [-] This word is ok for %s first letter check"
+msgstr "   [-] Это слово в порядке при проверке первой буквы языка %s"
+
+#: lib/ai/detection.c:215
+#, c-format
+msgid "   [+] This word has no hits by no first letter for %s language proto"
+msgstr "   [+] Это слово не имеет совпадений при проверке первой буквы языка %s"
+
+#: lib/ai/detection.c:219
+msgid "   [-] This word has hits by no first letter for all languages"
+msgstr "   [-] Это слово не имеет совпадений при проверке первой буквы для всех языков"
+
+#: lib/ai/detection.c:228
+msgid "   [-] Skip aspell checking (word is very short)"
+msgstr "   [-] Пропуск проверки по словарям aspell (слово слишком короткое)"
+
+#: lib/ai/detection.c:270
+#, c-format
+msgid "   [+] Found this word in %s aspell dictionary"
+msgstr "   [+] Это слово найдено в словаре aspell языка %s"
+
+#: lib/ai/detection.c:278
+#, c-format
+msgid "   [!] Error aspell checking for %s aspell dictionary"
+msgstr "   [!] Ошибка проверки по словарю aspell языка %s"
+
+#: lib/ai/detection.c:285
+msgid "   [-] This word has no hits for all aspell dictionaries"
+msgstr "   [-] Это слово не имеет совпадений при проверке по всем словарям aspell"
+
+#: lib/ai/detection.c:303
+#, c-format
+msgid "Processing word '%s'"
+msgstr "Обработка слова '%s'"
+
+#: lib/ai/detection.c:333
+msgid "End word processing"
+msgstr "Конец обработки слова"
+
+#: lib/config/xnconfig.c:114
+#, c-format
+msgid "Unrecognized option \"%s\" detected"
+msgstr "Обнаружена неизвестная опция \"%s\""
+
+#: lib/config/xnconfig.c:124
+#, c-format
+msgid "Param mismatch for option %s"
+msgstr "Несовпадение параметров для опции %s"
+
+#: lib/config/xnconfig.c:135
+msgid "Invalid value for manual mode specified"
+msgstr "Неправильное значение опции для ручного режима"
+
+#: lib/config/xnconfig.c:153
+msgid "Invalid value for action name specified"
+msgstr "Неправильное значение опции для названия действия"
+
+#: lib/config/xnconfig.c:180
+msgid "Invalid value for log level specified"
+msgstr "Неправильное значение опции для уровня отладочных сообщений"
+
+#: lib/config/xnconfig.c:195
+msgid "Argument number mismatch for AddLanguage option"
+msgstr "Несовпаденние числа аргументов для опции AddLanguage"
+
+#: lib/config/xnconfig.c:232
+msgid "Invalid value for mouse grab mode specified"
+msgstr "Неправильное значение опции для режима перехвата событий мыши"
+
+#: lib/config/xnconfig.c:244
+msgid "Invalid value for education mode specified"
+msgstr "Неправильное значение опции для режима обучения"
+
+#: lib/config/xnconfig.c:261
+msgid "Invalid value for remember layout mode specified"
+msgstr "Неправильное значение опции для режима запоминия раскладки"
+
+#: lib/config/xnconfig.c:273
+msgid "Invalid value for save selection mode specified"
+msgstr "Неправильное значение опции для режима сохранения выделения"
+
+#: lib/config/xnconfig.c:290
+msgid "Invalid value for sound action name specified"
+msgstr "Неправильное значение имени для проигрывания звука"
+
+#: lib/config/xnconfig.c:312
+msgid "Invalid value for play sounds mode specified"
+msgstr "Неправильное значение опции для режима проигрывания звука"
+
+#: lib/config/xnconfig.c:324
+msgid "Send delay must be between 0 and 50"
+msgstr "Задержка отправки должна быть от 0 до 50"
+
+#: lib/config/xnconfig.c:344
+msgid "Invalid value for flag layout name specified"
+msgstr "Неправильное значение имени флага раскладки"
+
+#: lib/config/xnconfig.c:364
+msgid "Invalid value for save keyboard log mode specified"
+msgstr "Неправильное значение опции для режима сохранения лога клавиатуры"
+
+#: lib/config/xnconfig.c:381
+msgid ""
+"Invalid value for ignore keyboard layout for abbreviations mode specified"
+msgstr ""
+"Неправильное значение опции для режима игнорирования раскладки для сокращений"
+
+#: lib/config/xnconfig.c:393
+msgid "Invalid value for change iNCIDENTAL CapsLock mode specified"
+msgstr "Неправильное значение опции для режима исправления сЛУЧАЙНОГО КапсЛока"
+
+#: lib/config/xnconfig.c:405
+msgid "Invalid value for change two CApital letter mode specified"
+msgstr "Неправильное значение опции для режима исправления двух ПРописных букв"
+
+#: lib/config/xnconfig.c:417
+msgid ""
+"Invalid value for flush internal buffer when pressed Enter mode specified"
+msgstr ""
+"Неправильное значение опции для режима сброса буфера при нажатии Ввод или Таб"
+
+#: lib/config/xnconfig.c:429
+msgid ""
+"Invalid value for don't processing word when pressed Enter mode specified"
+msgstr ""
+"Неправильное значение опции для режима отмены проверки слова при нажатии Ввод или Таб"
+
+#: lib/config/xnconfig.c:474
+msgid "Invalid value for show OSD mode specified"
+msgstr "Неправильное значение опции для режима показа OSD"
+
+#: lib/config/xnconfig.c:490
+#, c-format
+msgid "Can't find config file %s"
+msgstr "Не найден конфигурационный файл %s"
+
+#: lib/config/xnconfig.c:656
+msgid "No languages specified in config file"
+msgstr "В конфигурационном файле не определены языки"
+
+#: lib/config/xnconfig.c:668
+#, c-format
+msgid "Can't find dictionary file for %s language"
+msgstr "Не найден файл словаря для языка %s"
+
+#: lib/config/xnconfig.c:675
+#, c-format
+msgid "Can't find protos file for %s language"
+msgstr "Не найден файл прото-языка для языка %s"
+
+#: lib/config/xnconfig.c:682
+#, c-format
+msgid "Can't find big protos file for %s language"
+msgstr "Не найден файл большого прото-языка для языка %s"
+
+#: lib/config/xnconfig.c:689
+#, c-format
+msgid "Can't find regexp file for %s language"
+msgstr "Не найден файл регулярных выражений для языка %s"
+
+#: lib/config/xnconfig.c:721
+#, c-format
+msgid "Saving main config to %s"
+msgstr "Сохранение основной конфигурации в %s"
+
+#: lib/config/xnconfig.c:726
+#, c-format
+msgid "Can't create file %s"
+msgstr "Невозможно создать файл %s"
+
+#: lib/config/xnconfig.c:934
+#, c-format
+msgid "Moving config file from %s to %s"
+msgstr "Перемещение конфигурационного словаря из %s в %s"
+
+#: lib/config/xnconfig.c:940
+msgid "Can't move file!"
+msgstr "Невозможно переместить файл!"
+
+#: lib/config/xnconfig.c:958
+#, c-format
+msgid "Saving %s dictionary"
+msgstr "Сохранение словаря языка %s"
+
+#: lib/config/xnconfig.c:998
+msgid "Can't add language with empty name or dir"
+msgstr "Невозможно добавить язык с неопределенной папкой или именем"
+
+#: lib/config/xnconfig_memory.c:40
+msgid "Can't generate shared memory segment key"
+msgstr "Невозможно сгенерировать ключ общей области памяти"
+
+#: lib/config/xnconfig_memory.c:58
+msgid "Can't get exist shared memory segment id"
+msgstr "Невозможно проверить наличие идентефикатора общей области памяти"
+
+#: lib/config/xnconfig_memory.c:64
+msgid "Can't remove an old shared memory segment"
+msgstr "Невозможно удалить старую общую область памяти"
+
+#: lib/config/xnconfig_memory.c:71
+msgid "Can't create new shared memory segment"
+msgstr "Невозможно создать новую общую область памяти"
+
+#: lib/misc/debug.c:54
+#, c-format
+msgid "Allocating memory pointer %p (at %s:%d)"
+msgstr "Получен указатель на область памяти %p (на %s:%d)"
+
+#: lib/misc/debug.c:73
+#, c-format
+msgid "Freeing invalid memory pointer %p (at %s:%d)"
+msgstr "Освобожден неверный указатель на область памяти %p (на %s:%d)"
+
+#: lib/misc/debug.c:75
+#, c-format
+msgid "Freeing memory pointer %p (at %s:%d)"
+msgstr "Освобожден указатель на область памяти %p (на %s:%d)"
+
+#: lib/misc/debug.c:93
+#, c-format
+msgid "Duping memory pointer %p (at %s:%d)"
+msgstr "Контратипирование указателя на область памяти %p (на %s:%d)"
+
+#: lib/misc/debug.c:115
+#, c-format
+msgid "Reallocating invalid memory pointer %p (at %s:%d)"
+msgstr "Переполучен неверный указатель на область памяти %p (на %s:%d)"
+
+#: lib/misc/debug.c:117
+#, c-format
+msgid "(Re)Freeing memory pointer %p (at %s:%d)"
+msgstr "(Пере)Освобожден указатель на область памяти %p (на %s:%d)"
+
+#: lib/misc/debug.c:127
+#, c-format
+msgid "(Re)Allocating memory pointer %p (at %s:%d)"
+msgstr "(Пере)Получен указатель на область памяти %p (на %s:%d)"
+
+#: lib/misc/debug.c:150
+#, c-format
+msgid "Total %d unfreed memory pointers"
+msgstr "Всего неосвобождено %d указателей на область памяти"
+
+#: lib/misc/debug.c:153
+#, c-format
+msgid "Unfreed memory pointer %s (allocated at file %s:%d)"
+msgstr "Неосвобожден указатель на область памяти %s (получено в файле %s:%d)"
+
+#: lib/misc/utils.c:39
+msgid "Can't trap signal"
+msgstr "Невозможно поймать сигнал"
+
+#: lib/sound/sound.c:124
+#, c-format
+msgid "Play sound sample %s (use Gstreamer engine)"
+msgstr "Проигрывается звуковой клип %s (используется движок Gstreamer)"
+
+#: lib/sound/sound.c:138
+msgid "Failed to create gstreamer context"
+msgstr "Ошибка создания контекста gstreamer"
+
+#: lib/sound/sound.c:176
+#, c-format
+msgid "Initializing ALCdevice: %s "
+msgstr "Инициализация ALCdevice: %s "
+
+#: lib/sound/sound.c:190
+#, c-format
+msgid "Play sound sample %s (use OpenAL library)"
+msgstr "Проигрывается звуковой клип %s (используется библиотека OpenAL)"
+
+#: lib/sound/sound.c:196
+msgid "Failed to create OpenAL buffer"
+msgstr "Ошибка создания буфера OpenAL"
+
+#: lib/sound/sound.c:236
+#, c-format
+msgid "Play sound sample %s (use ALSA library)"
+msgstr "Проигрывается звуковой клип %s (используется библиотека ALSA)"
+
+#: lib/x/xbtable.c:68
+#, c-format
+msgid "   No key set for action \"%s\""
+msgstr "   Не заданы горячие клавиши для действия \"%s\""
+
+#: lib/x/xbtable.c:94 lib/x/xbtable.c:156
+#, c-format
+msgid "   Action \"%s\" with mod_mask %d and key \"%s (%s)\""
+msgstr "   Действие \"%s\" с маской-модификатором %d и клавишей \"%s (%s)\""
+
+#: lib/x/xbtable.c:117
+msgid ""
+"Binded hotkeys actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
+msgstr ""
+"Установлены горячие клавиши (маска-модификатор = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
+
+#: lib/x/xbtable.c:180
+msgid ""
+"Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win"
+"(64)):"
+msgstr ""
+"Установлены горячие клавиши пользовательских действий (маска-модификатор = Shift(1) + Ctrl(4) + Alt(8) + Win"
+"(64)):"
+
+#: lib/x/xcursor.c:117
+msgid "Can't create GC"
+msgstr "Невозможно создать графический контекст"
+
+#: lib/x/xcursor.c:221 lib/x/xcursor.c:273
+msgid "Current cursor is freed"
+msgstr "Текущие данные курсора очищены"
+
+#: lib/x/xevent.c:183
+msgid "Event is freed"
+msgstr "Текущие данные события очищены"
+
+#: lib/x/xfocus.c:86
+msgid "New window empty"
+msgstr "Новое окно пусто"
+
+#: lib/x/xfocus.c:110
+#, c-format
+msgid "Focused window %d"
+msgstr "Сфокусировано окно %d"
+
+#: lib/x/xfocus.c:130
+#, c-format
+msgid "Process new window (ID %d) with name '%s' (status %s, mode %s)"
+msgstr "Обрабатывается новое окно (ID %d) с именем '%s' (статус %s, режим %s)"
+
+#: lib/x/xfocus.c:216
+msgid "Focus is freed"
+msgstr "Текущие данные фокуса очищены"
+
+#: lib/x/xkeymap.c:52
+msgid "Couldn't set default locale"
+msgstr "Невозможно установить локаль по умолчанию"
+
+#: lib/x/xkeymap.c:58
+msgid "Your default locale is not UTF-8"
+msgstr "Ваша локаль по умолчанию не UTF-8"
+
+#: lib/x/xkeymap.c:60
+#, c-format
+msgid "Using locale %s"
+msgstr "Используется локаль %s"
+
+#: lib/x/xkeymap.c:133
+#, c-format
+msgid "Too many keyboard layouts (max %d)"
+msgstr "Слишком много раскладок клавиатуры (максимально %d)"
+
+#: lib/x/xkeymap.c:143
+msgid "Unable to get keyboard mapping table"
+msgstr "Невозвожно получить таблицу раскладки клавиатуры"
+
+#: lib/x/xkeymap.c:393
+msgid "Keymap is freed"
+msgstr "Текущие данные раскладки очищены"
+
+#: lib/x/xOSD.c:71
+#, c-format
+msgid "Show OSD \"%s\""
+msgstr "Показывается OSD \"%s\""
+
+#: lib/x/xprogram.c:267
+#, c-format
+msgid "Restore layout group to %d"
+msgstr "Восстановлена группа раскладки %d"
+
+#: lib/x/xprogram.c:274
+#, c-format
+msgid "Store default layout group to %d"
+msgstr "Установлена группа раскладки по умолчанию %d"
+
+#: lib/x/xprogram.c:320
+msgid "Exitting from main cycle"
+msgstr "Выход из основного цикла"
+
+#: lib/x/xprogram.c:327
+#, c-format
+msgid "Received KeyPress (event type %d)"
+msgstr "Получено KeyPress (тип события %d)"
+
+#: lib/x/xprogram.c:342
+#, c-format
+msgid "Received KeyRelease (event type %d)"
+msgstr "Получено KeyRelease (тип события %d)"
+
+#: lib/x/xprogram.c:353
+#, c-format
+msgid "Received FocusIn (event type %d)"
+msgstr "Получено FocusIn (тип события %d)"
+
+#: lib/x/xprogram.c:355
+#, c-format
+msgid "Received LeaveNotify (event type %d)"
+msgstr "Получено LeaveNotify (тип события %d)"
+
+#: lib/x/xprogram.c:357
+#, c-format
+msgid "Received EnterNotify (event type %d)"
+msgstr "Получено EnterNotify (тип события %d)"
+
+#: lib/x/xprogram.c:367
+#, c-format
+msgid "Received FocusOut (event type %d)"
+msgstr "Получено FocusOut (тип события %d)"
+
+#: lib/x/xprogram.c:375
+#, c-format
+msgid "Received SelectionNotify (event type %d)"
+msgstr "Получено SelectionNotify (тип события %d)"
+
+#: lib/x/xprogram.c:381
+#, c-format
+msgid "Received SelectionRequest (event type %d)"
+msgstr "Получено SelectionRequest (тип события %d)"
+
+#: lib/x/xprogram.c:388
+#, c-format
+msgid "Received ButtonPress on window %d  (event type %d)"
+msgstr "Получено ButtonPress в окне %d  (тип события %d)"
+
+#: lib/x/xprogram.c:404
+#, c-format
+msgid "Received Property Notify (layout switch event) (event type %d)"
+msgstr "Получено Property Notify (событие переключения раскладки) (тип события %d)"
+
+#: lib/x/xprogram.c:417
+#, c-format
+msgid "Uncatched event with type %d)"
+msgstr "Непойманое событие с типом %d"
+
+#: lib/x/xprogram.c:426
+#, c-format
+msgid "Changing language from %s to %s"
+msgstr "Смена языка с %s на %s"
+
+#: lib/x/xprogram.c:433
+msgid "Correcting iNCIDENTAL CapsLock"
+msgstr "Исправление сЛУЧАЙНОГО КапсЛока"
+
+#: lib/x/xprogram.c:452
+msgid "Correcting two CApital letter"
+msgstr "Исправление двух ПРописных букв"
+
+#: lib/x/xprogram.c:533
+#, c-format
+msgid "Execute user action \"%s\""
+msgstr "Выполнение поользовательского действия \"%s\""
+
+#: lib/x/xprogram.c:535
+#, c-format
+msgid "Run \"%s\""
+msgstr "Запущено \"%s\""
+
+#: lib/x/xprogram.c:640
+#, c-format
+msgid "Manual mode changed to %s"
+msgstr "Ручной режим изменен на %s"
+
+#: lib/x/xprogram.c:748
+#, c-format
+msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
+msgstr "Найдено сокращение '%s' '%s'. Замена на '%s'."
+
+#: lib/x/xprogram.c:796
+msgid "No language found to change to"
+msgstr "Не найдено языка для смены"
+
+#: lib/x/xprogram.c:859
+msgid "No string to change"
+msgstr "Нет строки для замены"
+
+#: lib/x/xprogram.c:863
+#, c-format
+msgid "Processing string '%s'"
+msgstr "Обработка строки '%s'"
+
+#: lib/x/xprogram.c:946
+#, c-format
+msgid "Remove word '%s' from %s dictionary"
+msgstr "Удалено слово '%s' из словаря %s"
+
+#: lib/x/xprogram.c:954
+#, c-format
+msgid "Add word '%s' in %s dictionary"
+msgstr "Добавлено слово '%s' в словарь %s"
+
+#: lib/x/xprogram.c:972
+msgid "Program is freed"
+msgstr "Текущие данные программы очищены"
+
+#: lib/x/xselection.c:39
+msgid "Convert to selection target return None answer"
+msgstr "Смена владельца выделения возвратила ответ None"
+
+#: lib/x/xselection.c:51
+msgid "Selected text length is 0"
+msgstr "Длина выделеного текста 0"
+
+#: lib/x/xselection.c:57
+msgid "Failed to get selected text data"
+msgstr "Ошибка получения выделеного текста"
+
+#: lib/x/xselection.c:77
+msgid "Failed to convert selection with error BadAtom"
+msgstr "Ошибка BadAtom при смене владельца выделения"
+
+#: lib/x/xselection.c:79
+msgid "Failed to convert selection with error BadWindow"
+msgstr "Ошибка BadWindow при смене владельца выделения"
+
+#: lib/x/xstring.c:277
+msgid "String is freed"
+msgstr "Текущие данные строки очищены"
+
+#: lib/x/xswitchlang.c:54
+msgid "Can't find language for this XKB Group"
+msgstr "Невозможно найти язык для этой группы XKB"
+
+#: lib/x/xswitchlang.c:73 lib/x/xswitchlang.c:102
+msgid "Failed to allocate keyboard descriptor"
+msgstr "Ошибка получения дескриптора клавиатуры"
+
+#: lib/x/xswitchlang.c:83 lib/x/xswitchlang.c:112
+msgid "Failed to get keyboard group names"
+msgstr "Ошибка получения имен клавиатурных групп"
+
+#: lib/x/xswitchlang.c:120
+msgid "No keyboard layout found"
+msgstr "Не найдена раскладка клавиатуры"
+
+#: lib/x/xswitchlang.c:124
+msgid "Keyboard layouts present in system:"
+msgstr "Системные клавиатурные раскладки:"
+
+#: lib/x/xswitchlang.c:138
+#, c-format
+msgid "   XKB Group '%s' not defined in configuration file (group %d)"
+msgstr "   Группа XKB '%s' не определена в конфигурационном файле (группа %d)"
+
+#: lib/x/xswitchlang.c:142
+#, c-format
+msgid "   XKB Group '%s' must be for '%s' language (group %d)"
+msgstr "   Группа XKB '%s' определяется для языка '%s' (группа %d)"
+
+#: lib/x/xswitchlang.c:148
+#, c-format
+msgid "Total %d valid keyboard layouts detected"
+msgstr "Всего найдено %d верных раскладок клавиатуры"
+
+#: lib/x/xutils.c:118
+#, c-format
+msgid "Failed to %s mouse with error BadCursor"
+msgstr "Ошибка BadCursor при %s мыши"
+
+#: lib/x/xutils.c:120
+#, c-format
+msgid "Failed to %s mouse with error BadValue"
+msgstr "Ошибка BadValue при %s мыши"
+
+#: lib/x/xutils.c:122
+#, c-format
+msgid "Failed to %s mouse with error BadWindow"
+msgstr "Ошибка BadWindow при %s мыши"
+
+#: lib/x/xutils.c:134 lib/x/xutils.c:159 lib/x/xutils.c:173
+#, c-format
+msgid "Failed to %s keyboard with error BadValue"
+msgstr "Ошибка BadValue при %s клавиатуры"
+
+#: lib/x/xutils.c:136 lib/x/xutils.c:161 lib/x/xutils.c:175
+#, c-format
+msgid "Failed to %s keyboard with error BadWindow"
+msgstr "Ошибка BadWindow при %s клавиатуры"
+
+#: lib/x/xwindow.c:56
+msgid "Can't connect to XServer"
+msgstr "Невозможно соединиться с ХСервером"
+
+#: lib/x/xwindow.c:64
+msgid "Can't create program window"
+msgstr "Невозможно создать основное окно программы"
+
+#: lib/x/xwindow.c:76
+msgid "Can't create flag window"
+msgstr "Невозможно создать окно флажка"
+
+#: lib/x/xwindow.c:104
+#, c-format
+msgid "Main window with id %d created"
+msgstr "Создано основное окно с id %d"
+
+#: lib/x/xwindow.c:137
+msgid "Window is freed"
+msgstr "Текущие данные окна очищены"

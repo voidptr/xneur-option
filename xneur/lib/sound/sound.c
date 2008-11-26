@@ -121,7 +121,7 @@ static void new_pad(GstElement *element, GstPad *pad, gpointer data)
 void *play_file_thread(void *param)
 {
 	char *path = (char *) param;
-	log_message(TRACE, "Play sound sample %s (use Gstreamer engine)", path);
+	log_message(TRACE, _("Play sound sample %s (use Gstreamer engine)"), path);
 
 	// Initialize GStreamer
 	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
@@ -135,7 +135,7 @@ void *play_file_thread(void *param)
 	if (!pipeline || !source || !parser || !sink) 
 	{
 		free(path);
-		log_message(ERROR, "Failed to create gstreamer context");
+		log_message(ERROR, _("Failed to create gstreamer context"));
 		return NULL;
   	}
 
@@ -173,7 +173,7 @@ void sound_init(void)
 	alGetError();
 	ALCcontext *pContext = alcGetCurrentContext();
 	ALCdevice *pDevice = alcGetContextsDevice(pContext);
-	log_message(TRACE, "Initializing ALCdevice: %s ", alcGetString(pDevice, ALC_DEVICE_SPECIFIER));
+	log_message(TRACE, _("Initializing ALCdevice: %s "), alcGetString(pDevice, ALC_DEVICE_SPECIFIER));
 }
 
 void sound_uninit(void)
@@ -187,13 +187,13 @@ void sound_uninit(void)
 void *play_file_thread(void *param)
 {
 	char *path = (char *) param;
-	log_message(TRACE, "Play sound sample %s (use OpenAL library)", path);
+	log_message(TRACE, _("Play sound sample %s (use OpenAL library)"), path);
 
 	ALuint AlutBuffer = alutCreateBufferFromFile(path);
 	free(path);
 	if (!AlutBuffer)
 	{
-		log_message(ERROR, "Failed to create OpenAL buffer");
+		log_message(ERROR, _("Failed to create OpenAL buffer"));
 		return NULL;
 	}
 
@@ -233,7 +233,7 @@ void sound_uninit(void)
 void *play_file_thread(void *param)
 {
 	char *path = (char *) param;
-	log_message(TRACE, "Play sound sample %s (use ALSA library)", path);
+	log_message(TRACE, _("Play sound sample %s (use ALSA library)"), path);
 	
 	char *command = malloc((strlen(path) + 6) * sizeof(char));
 	sprintf(command, "%s %s", "aplay", path);

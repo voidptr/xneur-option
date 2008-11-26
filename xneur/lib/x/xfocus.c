@@ -83,7 +83,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		if (new_window != None && new_window > 1000)
 			break;
 
-		log_message(DEBUG, "New window empty");
+		log_message(DEBUG, _("New window empty"));
 		usleep(1000);
 	}
 	
@@ -107,7 +107,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		return FOCUS_UNCHANGED;
 	}
 
-	log_message(DEBUG, "Focused window %d", new_window);
+	log_message(DEBUG, _("Focused window %d"), new_window);
 	// Up to heighted window
 	p->parent_window = new_window;
 	while (TRUE)
@@ -127,7 +127,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 	// Replace unfocused window to focused window
 	p->owner_window = new_window;
 
-	log_message(DEBUG, "Process new window (ID %d) with name '%s' (status %s, mode %s)", new_window, new_app_name, verbose_focus_status[*focus_status], verbose_forced_mode[*forced_mode]);
+	log_message(DEBUG, _("Process new window (ID %d) with name '%s' (status %s, mode %s)"), new_window, new_app_name, verbose_focus_status[*focus_status], verbose_forced_mode[*forced_mode]);
 	
 	if (new_app_name != NULL)
 		free(new_app_name);
@@ -213,7 +213,7 @@ static void xfocus_uninit(struct _xfocus *p)
 {
 	free(p);
 
-	log_message(DEBUG, "Focus is freed");
+	log_message(DEBUG, _("Focus is freed"));
 }
 
 struct _xfocus* xfocus_init(void)

@@ -180,7 +180,7 @@ static void xevent_uninit(struct _xevent *p)
 {
 	free(p);
 
-	log_message(DEBUG, "Event is freed");
+	log_message(DEBUG, _("Event is freed"));
 }
 
 struct _xevent* xevent_init(void)

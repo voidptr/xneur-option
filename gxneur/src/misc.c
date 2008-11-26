@@ -829,7 +829,11 @@ void xneur_preference(void)
 	// Button Edit User Action
 	widget = glade_xml_get_widget (gxml, "button38");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_action), G_OBJECT(treeview));
-							 
+			
+	// Show OSD
+	widget = glade_xml_get_widget (gxml, "checkbutton13");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->show_osd);
+	
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
@@ -1419,6 +1423,9 @@ void xneur_save_preference(GladeXML *gxml)
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton12");
 	xconfig->dont_process_when_press_enter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton13");
+	xconfig->show_osd = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);

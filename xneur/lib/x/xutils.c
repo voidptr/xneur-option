@@ -115,11 +115,11 @@ void grab_button(Window window, int is_grab)
 		status = XUngrabButton(main_window->display, Button1, AnyModifier, window);
 
 	if (status == BadCursor)
-		log_message(ERROR, "Failed to %s mouse with error BadCursor", grab_ungrab[is_grab]);
+		log_message(ERROR, _("Failed to %s mouse with error BadCursor"), grab_ungrab[is_grab]);
 	else if (status == BadValue)
-		log_message(ERROR, "Failed to %s mouse with error BadValue", grab_ungrab[is_grab]);
+		log_message(ERROR, _("Failed to %s mouse with error BadValue"), grab_ungrab[is_grab]);
 	else if (status == BadWindow)
-		log_message(ERROR, "Failed to %s mouse with error BadWindow", grab_ungrab[is_grab]);
+		log_message(ERROR, _("Failed to %s mouse with error BadWindow"), grab_ungrab[is_grab]);
 }
 
 void grab_key(Window window, KeyCode kc, int is_grab)
@@ -131,9 +131,9 @@ void grab_key(Window window, KeyCode kc, int is_grab)
 		status = XUngrabKey(main_window->display, kc, AnyModifier, window);
 	
 	if (status == BadValue)
-		log_message(ERROR, "Failed to %s keyboard with error BadValue", grab_ungrab[is_grab]);
+		log_message(ERROR, _("Failed to %s keyboard with error BadValue"), grab_ungrab[is_grab]);
 	else if (status == BadWindow)
-		log_message(ERROR, "Failed to %s keyboard with error BadWindow", grab_ungrab[is_grab]);
+		log_message(ERROR, _("Failed to %s keyboard with error BadWindow"), grab_ungrab[is_grab]);
 }
 
 void grab_spec_keys(Window window, int is_grab)
@@ -156,9 +156,9 @@ void grab_spec_keys(Window window, int is_grab)
 		status = XUngrabKeyboard(main_window->display, CurrentTime);
 	
 	if (status == BadValue)
-		log_message(ERROR, "Failed to %s keyboard with error BadValue", grab_ungrab[is_grab]);
+		log_message(ERROR, _("Failed to %s keyboard with error BadValue"), grab_ungrab[is_grab]);
 	else if (status == BadWindow)
-		log_message(ERROR, "Failed to %s keyboard with error BadWindow", grab_ungrab[is_grab]);
+		log_message(ERROR, _("Failed to %s keyboard with error BadWindow"), grab_ungrab[is_grab]);
 }
 
 void grab_keyboard(Window window, int is_grab)
@@ -170,9 +170,9 @@ void grab_keyboard(Window window, int is_grab)
 		status = XUngrabKeyboard(main_window->display, CurrentTime);
 	
 	if (status == BadValue)
-		log_message(ERROR, "Failed to %s keyboard with error BadValue", grab_ungrab[is_grab]);
+		log_message(ERROR, _("Failed to %s keyboard with error BadValue"), grab_ungrab[is_grab]);
 	else if (status == BadWindow)
-		log_message(ERROR, "Failed to %s keyboard with error BadWindow", grab_ungrab[is_grab]);
+		log_message(ERROR, _("Failed to %s keyboard with error BadWindow"), grab_ungrab[is_grab]);
 }
 
 char* get_wm_class_name(Window window)

@@ -114,7 +114,7 @@ static GC create_gc()
 	GC gc = XCreateGC(main_window->display, main_window->flag_window, valuemask, &values);
 	if (!gc)
 	{
-		log_message(ERROR, "Can't create GC");
+		log_message(ERROR, _("Can't create GC"));
 		return NULL;
 	}
 
@@ -218,7 +218,7 @@ void xcursor_uninit(struct _xcursor *p)
 
 	free(p);
 
-	log_message(DEBUG, "Current cursor is freed");
+	log_message(DEBUG, _("Current cursor is freed"));
 }
 
 struct _xcursor* xcursor_init(void)
@@ -270,7 +270,7 @@ void xcursor_uninit(struct _xcursor *p)
 {
 	free(p);
 
-	log_message(DEBUG, "Current cursor is freed");
+	log_message(DEBUG, _("Current cursor is freed"));
 }
 
 struct _xcursor* xcursor_init(void)

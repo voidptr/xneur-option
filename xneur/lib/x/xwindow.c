@@ -53,7 +53,7 @@ static int xwindow_create(struct _xwindow *p)
 	Display *display = XOpenDisplay(NULL);
 	if (!display)
 	{
-		log_message(ERROR, "Can't connect to XServer");
+		log_message(ERROR, _("Can't connect to XServer"));
 		return FALSE;
 	}
 
@@ -61,7 +61,7 @@ static int xwindow_create(struct _xwindow *p)
 	Window window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 1, 1, 0, 0, 0);
 	if (!window)
 	{
-		log_message(ERROR, "Can't create program window");
+		log_message(ERROR, _("Can't create program window"));
 		XCloseDisplay(display);
 		return FALSE;
 	}
@@ -73,7 +73,7 @@ static int xwindow_create(struct _xwindow *p)
 	Window flag_window = XCreateWindow(display, DefaultRootWindow(display), 0, 0, 1, 1,0, CopyFromParent, CopyFromParent, CopyFromParent, CWOverrideRedirect, &attrs);
 	if (!flag_window)
 	{
-		log_message(ERROR, "Can't create flag window");
+		log_message(ERROR, _("Can't create flag window"));
 		XCloseDisplay(display);
 		return FALSE;
 	}
@@ -101,7 +101,7 @@ static int xwindow_create(struct _xwindow *p)
 	p->window  	= window;
 	p->flag_window  = flag_window;
 	
-	log_message(LOG, "Main window with id %d created", window);
+	log_message(LOG, _("Main window with id %d created"), window);
 
 	XSynchronize(display, TRUE);
 	XFlush(display);
@@ -134,7 +134,7 @@ static void xwindow_uninit(struct _xwindow *p)
 	p->destroy(p);
 	free(p);
 
-	log_message(DEBUG, "Window is freed");
+	log_message(DEBUG, _("Window is freed"));
 }
 
 struct _xwindow* xwindow_init(void)

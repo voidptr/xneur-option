@@ -55,9 +55,9 @@ static int locale_create(void)
 
 	char *locale = setlocale(LC_CTYPE, "");
 	if (locale == NULL || (strstr(locale, "UTF") == NULL && strstr(locale, "utf") == NULL) )
-		log_message(WARNING, "Your default locale is not UTF-8");
+		log_message(WARNING, _("Your default locale is not UTF-8"));
 
-	log_message(LOG, "Using locale %s", locale);
+	log_message(LOG, _("Using locale %s"), locale);
 	return TRUE;
 }
 
@@ -130,7 +130,7 @@ static int init_keymaps(struct _xkeymap *p)
 	p->keyboard_groups_count = get_keyboard_groups_count();
 	if (p->keyboard_groups_count > max_groups_count)
 	{
-		log_message(ERROR, "Too many keyboard layouts (max %d)", max_groups_count);
+		log_message(ERROR, _("Too many keyboard layouts (max %d)"), max_groups_count);
 		return FALSE;
 	}
 
@@ -140,7 +140,7 @@ static int init_keymaps(struct _xkeymap *p)
 	p->keymap = XGetKeyboardMapping(main_window->display, p->min_keycode, p->max_keycode - p->min_keycode + 1, &(p->keysyms_per_keycode));
 	if (!p->keymap)
 	{
-		log_message(ERROR, "Unable to get keyboard mapping table");
+		log_message(ERROR, _("Unable to get keyboard mapping table"));
 		return FALSE;
 	}
 	return TRUE;
@@ -390,7 +390,7 @@ static void xkeymap_uninit(struct _xkeymap *p)
 		XFree(p->keymap);
 	free(p);
 
-	log_message(DEBUG, "Keymap is freed");
+	log_message(DEBUG, _("Keymap is freed"));
 }
 
 struct _xkeymap* xkeymap_init(void)

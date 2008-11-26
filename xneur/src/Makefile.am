@@ -1,3 +1,5 @@
+INCLUDES = 	-DLOCALEDIR=\""@localedir@"\"
+
 bin_PROGRAMS = xneur
 
 xneur_SOURCES =			\

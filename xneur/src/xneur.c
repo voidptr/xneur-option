@@ -27,6 +27,7 @@
 #include <getopt.h>
 #include <unistd.h>
 #include <string.h>
+#include <locale.h>
 
 #include "xnconfig.h"
 
@@ -51,15 +52,15 @@ static void xneur_reload(int status);
 
 static void xneur_check_config_version(int final)
 {
-	log_message(LOG, "Checking configuration file version...");
+	log_message(LOG, _("Checking configuration file version..."));
 
 	if (xconfig->version != NULL && strcmp(xconfig->version, VERSION) == 0)
 	{
-		log_message(LOG, "User configuration file version is OK!");
+		log_message(LOG, _("User configuration file version is OK!"));
 		return;
 	}
 
-	log_message(ERROR, "Configuration file version is out of date!");
+	log_message(ERROR, _("Configuration file version is out of date!"));
 
 	if (final)
 	{
@@ -69,12 +70,12 @@ static void xneur_check_config_version(int final)
 
 	if (!xconfig->replace(xconfig))
 	{
-		log_message(ERROR, "Default configuration file not founded in system! Please, reinstall XNeur!");
+		log_message(ERROR, _("Default configuration file not founded in system! Please, reinstall XNeur!"));
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
 
-	log_message(LOG, "Configuration file replaced to default one");
+	log_message(LOG, _("Configuration file replaced to default one"));
 
 	xneur_reload(0);
 }
@@ -93,46 +94,46 @@ static void xneur_init(void)
 
 static void xneur_load_config(int final)
 {
-	log_message(LOG, "Loading configuration");
+	log_message(LOG, _("Loading configuration"));
 
 	if (!xconfig->load(xconfig))
 	{
-		log_message(ERROR, "Configuration file damaged! Please, remove old file before starting xneur!");
+		log_message(ERROR, _("Configuration file damaged! Please, remove old file before starting xneur!"));
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
 
 	xneur_check_config_version(final);
 
-	log_message(LOG, "Log level is set to %s", xconfig->get_log_level_name(xconfig));
-	log_message(LOG, "Total detected %d languages", xconfig->total_languages);
+	log_message(LOG, _("Log level is set to %s"), xconfig->get_log_level_name(xconfig));
+	log_message(LOG, _("Total detected %d languages"), xconfig->total_languages);
 
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
 		char *lang_name = xconfig->get_lang_name(xconfig, lang);
 
-		log_message(DEBUG, "%s dictionary has %d records", lang_name, xconfig->languages[lang].dicts->data_count);
-		log_message(DEBUG, "%s proto has %d records", lang_name, xconfig->languages[lang].protos->data_count);
-		log_message(DEBUG, "%s big proto has %d records", lang_name, xconfig->languages[lang].big_protos->data_count);
-		log_message(DEBUG, "%s regexp has %d records", lang_name, xconfig->languages[lang].regexp->data_count);
+		log_message(DEBUG, _("%s dictionary has %d records"), lang_name, xconfig->languages[lang].dicts->data_count);
+		log_message(DEBUG, _("%s proto has %d records"), lang_name, xconfig->languages[lang].protos->data_count);
+		log_message(DEBUG, _("%s big proto has %d records"), lang_name, xconfig->languages[lang].big_protos->data_count);
+		log_message(DEBUG, _("%s regexp has %d records"), lang_name, xconfig->languages[lang].regexp->data_count);
 	}
 
-	log_message(DEBUG, "Configuration load complete");
+	log_message(DEBUG, _("Configuration load complete"));
 
-	log_message(LOG, "Default group for all new windows set to %d", xconfig->default_group);
-	log_message(LOG, "Manual mode set to %s", xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
-	log_message(LOG, "Mouse processing mode set to %s", xconfig->get_bool_name(xconfig->grab_mouse));
-	log_message(LOG, "Education mode set to %s", xconfig->get_bool_name(xconfig->educate));
-	log_message(LOG, "Layout remember mode set to %s", xconfig->get_bool_name(xconfig->remember_layout));
-	log_message(LOG, "Save selection mode set to %s", xconfig->get_bool_name(xconfig->save_selection));
-	log_message(LOG, "Sound playing mode set to %s", xconfig->get_bool_name(xconfig->play_sounds));
-	log_message(LOG, "Logging keyboard mode set to %s", xconfig->get_bool_name(xconfig->save_keyboard_log));
-	log_message(LOG, "Ignore keyboard layout for abbreviations mode set to %s", xconfig->get_bool_name(xconfig->abbr_ignore_layout));
-	log_message(LOG, "Correct of iNCIDENTAL CapsLock mode set to %s", xconfig->get_bool_name(xconfig->correct_incidental_caps));
-	log_message(LOG, "Correct of two CApital letter mode set to %s", xconfig->get_bool_name(xconfig->correct_two_capital_letter));
-	log_message(LOG, "Flush internal buffer when pressed Enter or Tab mode set to %s", xconfig->get_bool_name(xconfig->flush_buffer_when_press_enter));
-	log_message(LOG, "Don't process word when pressed Enter or Tab mode set to %s", xconfig->get_bool_name(xconfig->dont_process_when_press_enter));
-	log_message(LOG, "Show OSD mode set to %s", xconfig->get_bool_name(xconfig->show_osd));
+	log_message(LOG, _("Default group for all new windows set to %d"), xconfig->default_group);
+	log_message(LOG, _("Manual mode set to %s"), xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
+	log_message(LOG, _("Mouse processing mode set to %s"), xconfig->get_bool_name(xconfig->grab_mouse));
+	log_message(LOG, _("Education mode set to %s"), xconfig->get_bool_name(xconfig->educate));
+	log_message(LOG, _("Layout remember mode set to %s"), xconfig->get_bool_name(xconfig->remember_layout));
+	log_message(LOG, _("Save selection mode set to %s"), xconfig->get_bool_name(xconfig->save_selection));
+	log_message(LOG, _("Sound playing mode set to %s"), xconfig->get_bool_name(xconfig->play_sounds));
+	log_message(LOG, _("Logging keyboard mode set to %s"), xconfig->get_bool_name(xconfig->save_keyboard_log));
+	log_message(LOG, _("Ignore keyboard layout for abbreviations mode set to %s"), xconfig->get_bool_name(xconfig->abbr_ignore_layout));
+	log_message(LOG, _("Correct of iNCIDENTAL CapsLock mode set to %s"), xconfig->get_bool_name(xconfig->correct_incidental_caps));
+	log_message(LOG, _("Correct of two CApital letter mode set to %s"), xconfig->get_bool_name(xconfig->correct_two_capital_letter));
+	log_message(LOG, _("Flush internal buffer when pressed Enter or Tab mode set to %s"), xconfig->get_bool_name(xconfig->flush_buffer_when_press_enter));
+	log_message(LOG, _("Don't process word when pressed Enter or Tab mode set to %s"), xconfig->get_bool_name(xconfig->dont_process_when_press_enter));
+	log_message(LOG, _("Show OSD mode set to %s"), xconfig->get_bool_name(xconfig->show_osd));
 }
 
 static void xneur_set_lock(void)
@@ -142,7 +143,7 @@ static void xneur_set_lock(void)
 		int locked_pid = xconfig->get_pid(xconfig);
 		if (locked_pid != -1)
 		{
-			log_message(ERROR, PACKAGE " already running with pid %d", locked_pid);
+			log_message(ERROR, _(PACKAGE " already running with pid %d"), locked_pid);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -151,25 +152,25 @@ static void xneur_set_lock(void)
 
 	xconfig->set_pid(xconfig, process_id);
 
-	log_message(DEBUG, PACKAGE " pid is %d", process_id);
+	log_message(DEBUG, _(PACKAGE " pid is %d"), process_id);
 }
 
 static void xneur_cleanup(void)
 {
 	sound_uninit();
-	log_message(DEBUG, "Current sound data is freed");
+	log_message(DEBUG, _("Current sound data is freed"));
 
 	if (xprogram != NULL)
 		xprogram->uninit(xprogram);
 
-	log_message(DEBUG, "Current program info is freed");
+	log_message(DEBUG, _("Current program info is freed"));
 
 	if (xconfig != NULL)
 	{
 		xconfig->set_pid(xconfig, 0);
 		xconfig->uninit(xconfig);
 	}
-	log_message(DEBUG, "Current configuration data is freed");
+	log_message(DEBUG, _("Current configuration data is freed"));
 
 #ifdef WITH_DEBUG
 	xndebug_uninit();
@@ -180,8 +181,8 @@ static void xneur_terminate(int status)
 {
 	if (status){}
 
-	log_message(DEBUG, "Caught SIGTERM/SIGINT, terminating");
-	osd_show("X Neural Switcher stopped");
+	log_message(DEBUG, _("Caught SIGTERM/SIGINT, terminating"));
+	osd_show(_("X Neural Switcher stopped"));
 	sleep(1);
 	
 	xneur_cleanup();
@@ -192,8 +193,8 @@ static void xneur_terminate(int status)
 static void xneur_reload(int status)
 {
 	status = status; // To prevent warnings
-	log_message(LOG, "Caught SIGHUP, reloading configuration file");
-	osd_show("X Neural Switcher reloaded");
+	log_message(LOG, _("Caught SIGHUP, reloading configuration file"));
+	osd_show(_("X Neural Switcher reloaded"));
 	
 	sound_uninit();
 
@@ -203,7 +204,7 @@ static void xneur_reload(int status)
 	xconfig = xneur_config_init();
 	if (xconfig == NULL)
 	{
-		log_message(ERROR, "Can't init libxnconfig");
+		log_message(ERROR, _("Can't init libxnconfig"));
 		exit(EXIT_FAILURE);
 	}
 
@@ -299,6 +300,13 @@ static void xneur_reklama(void)
 
 int main(int argc, char *argv[])
 {
+#ifdef ENABLE_NLS
+	setlocale(LC_ALL, "");
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
+	textdomain(PACKAGE);
+#endif
+	
 	xneur_reklama();
 
 	xneur_get_options(argc, argv);
@@ -306,7 +314,7 @@ int main(int argc, char *argv[])
 	xconfig = xneur_config_init();
 	if (xconfig == NULL)
 	{
-		log_message(ERROR, "Can't init libxnconfig");
+		log_message(ERROR, _("Can't init libxnconfig"));
 		exit(EXIT_FAILURE);
 	}
 
@@ -316,7 +324,7 @@ int main(int argc, char *argv[])
 	xprogram = xprogram_init();
 	if (xprogram == NULL)
 	{
-		log_message(ERROR, "Failed to init program structure");
+		log_message(ERROR, _("Failed to init program structure"));
 		xconfig->set_pid(xconfig, 0);
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
@@ -325,8 +333,8 @@ int main(int argc, char *argv[])
 	sound_init();
 	xneur_init();
 
-	log_message(DEBUG, "Init program structure complete");
-	osd_show("X Neural Switcher started");
+	log_message(DEBUG, _("Init program structure complete"));
+	osd_show(_("X Neural Switcher started"));
 	
 	xntrap(SIGTERM, xneur_terminate);
 	xntrap(SIGINT, xneur_terminate);

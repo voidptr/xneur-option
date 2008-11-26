@@ -111,7 +111,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 	int index = get_option_index(option_names, option);
 	if (index == -1)
 	{
-		log_message(WARNING, "Unrecognized option \"%s\" detected", option);
+		log_message(WARNING, _("Unrecognized option \"%s\" detected"), option);
 		return;
 	}
 
@@ -121,7 +121,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 	if (param == NULL)
 	{
 		free(full_string);
-		log_message(WARNING, "Param mismatch for option %s", option);
+		log_message(WARNING, _("Param mismatch for option %s"), option);
 		return;
 	}
 
@@ -132,7 +132,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int manual = get_option_index(bool_names, param);
 			if (manual == -1)
 			{
-				log_message(WARNING, "Invalid value for manual mode specified");
+				log_message(WARNING, _("Invalid value for manual mode specified"));
 				break;
 			}
 
@@ -150,7 +150,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int action = get_option_index(action_names, param);
 			if (action == -1)
 			{
-				log_message(WARNING, "Invalid value for action name specified");
+				log_message(WARNING, _("Invalid value for action name specified"));
 				break;
 			}
 
@@ -177,7 +177,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(log_levels, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for log level specified");
+				log_message(WARNING, _("Invalid value for log level specified"));
 				break;
 			}
 
@@ -192,7 +192,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 
 			if (dir == NULL || group == NULL)
 			{
-				log_message(ERROR, "Argument number mismatch for AddLanguage option");
+				log_message(ERROR, _("Argument number mismatch for AddLanguage option"));
 				break;
 			}
 
@@ -229,7 +229,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for mouse grab mode specified");
+				log_message(WARNING, _("Invalid value for mouse grab mode specified"));
 				break;
 			}
 
@@ -241,7 +241,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for education mode specified");
+				log_message(WARNING, _("Invalid value for education mode specified"));
 				break;
 			}
 
@@ -258,7 +258,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for remember layout mode specified");
+				log_message(WARNING, _("Invalid value for remember layout mode specified"));
 				break;
 			}
 
@@ -270,7 +270,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for save selection mode specified");
+				log_message(WARNING, _("Invalid value for save selection mode specified"));
 				break;
 			}
 
@@ -287,7 +287,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int sound = get_option_index(sound_names, param);
 			if (sound == -1)
 			{
-				log_message(WARNING, "Invalid value for sound action name specified");
+				log_message(WARNING, _("Invalid value for sound action name specified"));
 				break;
 			}
 
@@ -309,7 +309,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for play sounds mode specified");
+				log_message(WARNING, _("Invalid value for play sounds mode specified"));
 				break;
 			}
 
@@ -321,7 +321,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->send_delay = atoi(param);
 			if (p->send_delay < 0 || p->send_delay > 50)
 			{
-				log_message(WARNING, "Send delay must be between 0 and 50");
+				log_message(WARNING, _("Send delay must be between 0 and 50"));
 				p->send_delay = 0;
 			}
 			break;
@@ -341,7 +341,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int flag = get_option_index(flag_names, param);
 			if (flag == -1)
 			{
-				log_message(WARNING, "Invalid value for flag layout name specified");
+				log_message(WARNING, _("Invalid value for flag layout name specified"));
 				break;
 			}
 
@@ -361,7 +361,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for save keyboard log mode specified");
+				log_message(WARNING, _("Invalid value for save keyboard log mode specified"));
 				break;
 			}
 
@@ -378,7 +378,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for ignore keyboard layout for abbreviations mode specified");
+				log_message(WARNING, _("Invalid value for ignore keyboard layout for abbreviations mode specified"));
 				break;
 			}
 
@@ -390,7 +390,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for change iNCIDENTAL CapsLock mode specified");
+				log_message(WARNING, _("Invalid value for change iNCIDENTAL CapsLock mode specified"));
 				break;
 			}
 
@@ -402,7 +402,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for change two CApital letter mode specified");
+				log_message(WARNING, _("Invalid value for change two CApital letter mode specified"));
 				break;
 			}
 
@@ -414,7 +414,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for flush internal buffer when pressed Enter mode specified");
+				log_message(WARNING, _("Invalid value for flush internal buffer when pressed Enter mode specified"));
 				break;
 			}
 
@@ -426,7 +426,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for don't processing word when pressed Enter mode specified");
+				log_message(WARNING, _("Invalid value for don't processing word when pressed Enter mode specified"));
 				break;
 			}
 
@@ -471,7 +471,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, "Invalid value for show OSD mode specified");
+				log_message(WARNING, _("Invalid value for show OSD mode specified"));
 				break;
 			}
 
@@ -487,7 +487,7 @@ static int parse_config_file(struct _xneur_config *p, const char *dir_name, cons
 	struct _list_char *list = load_list(dir_name, file_name, FALSE);
 	if (list == NULL)
 	{
-		log_message(ERROR, "Can't find config file %s", file_name);
+		log_message(ERROR, _("Can't find config file %s"), file_name);
 		return FALSE;
 	}
 
@@ -653,7 +653,7 @@ static int xneur_config_load(struct _xneur_config *p)
 
 	if (p->total_languages == 0)
 	{
-		log_message(ERROR, "No languages specified in config file");
+		log_message(ERROR, _("No languages specified in config file"));
 		return FALSE;
 	}
 
@@ -665,28 +665,28 @@ static int xneur_config_load(struct _xneur_config *p)
 		p->languages[lang].dicts = load_list(lang_dir, DICT_NAME, TRUE);
 		if (p->languages[lang].dicts == NULL)
 		{
-			log_message(ERROR, "Can't find dictionary file for %s language", lang_name);
+			log_message(ERROR, _("Can't find dictionary file for %s language"), lang_name);
 			return FALSE;
 		}
 
 		p->languages[lang].protos = load_list(lang_dir, PROTO_NAME, TRUE);
 		if (p->languages[lang].protos == NULL)
 		{
-			log_message(ERROR, "Can't find protos file for %s language", lang_name);
+			log_message(ERROR, _("Can't find protos file for %s language"), lang_name);
 			return FALSE;
 		}
 
 		p->languages[lang].big_protos = load_list(lang_dir, BIG_PROTO_NAME, TRUE);
 		if (p->languages[lang].big_protos == NULL)
 		{
-			log_message(ERROR, "Can't find big protos file for %s language", lang_name);
+			log_message(ERROR, _("Can't find big protos file for %s language"), lang_name);
 			return FALSE;
 		}
 
 		p->languages[lang].regexp = load_list(lang_dir, REGEXP_NAME, TRUE);
 		if (p->languages[lang].regexp == NULL)
 		{
-			log_message(ERROR, "Can't find regexp file for %s language", lang_name);
+			log_message(ERROR, _("Can't find regexp file for %s language"), lang_name);
 			return FALSE;
 		}
 
@@ -718,12 +718,12 @@ static int xneur_config_save(struct _xneur_config *p)
 {
  	char *config_file_path_name = get_home_file_path_name(NULL, CONFIG_NAME);
 
-	log_message(LOG, "Saving main config to %s", config_file_path_name);
+	log_message(LOG, _("Saving main config to %s"), config_file_path_name);
 
 	FILE *stream = fopen(config_file_path_name, "w");
 	if (stream == NULL)
 	{
-		log_message(ERROR, "Can't create file %s", config_file_path_name);
+		log_message(ERROR, _("Can't create file %s"), config_file_path_name);
 		free(config_file_path_name);
 		return FALSE;
 	}
@@ -931,13 +931,13 @@ static int xneur_config_replace(struct _xneur_config *p)
 	char *config_file_path_name		= get_file_path_name(NULL, CONFIG_NAME);
 	char *config_backup_file_path_name	= get_file_path_name(NULL, CONFIG_BCK_NAME);
 
-	log_message(LOG, "Moving config file from %s to %s", config_file_path_name, config_backup_file_path_name);
+	log_message(LOG, _("Moving config file from %s to %s"), config_file_path_name, config_backup_file_path_name);
 
 	remove(config_backup_file_path_name);
 
 	if (rename(config_file_path_name, config_backup_file_path_name) != 0)
 	{
-		log_message(ERROR, "Can't move file!", config_backup_file_path_name);
+		log_message(ERROR, _("Can't move file!"), config_backup_file_path_name);
 
 		free(config_file_path_name);
 		free(config_backup_file_path_name);
@@ -955,7 +955,7 @@ static void xneur_config_save_dicts(struct _xneur_config *p, int lang)
 	if (!p->educate)
 		return;
 
-	log_message(LOG, "Saving %s dictionary", p->get_lang_name(p, lang));
+	log_message(LOG, _("Saving %s dictionary"), p->get_lang_name(p, lang));
 
 	save_list(p->languages[lang].dicts, p->get_lang_dir(p, lang), DICT_NAME);
 }
@@ -995,7 +995,7 @@ static void xneur_config_add_language(struct _xneur_config *p, const char *name,
 {
 	if (name == NULL || dir == NULL)
 	{
-		log_message(ERROR, "Can't add language with empty name or dir");
+		log_message(ERROR, _("Can't add language with empty name or dir"));
 		return;
 	}
 
