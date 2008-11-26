@@ -30,7 +30,12 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
+#include "xnconfig.h"
+
+#include "debug.h"
 #include "log.h"
+
+extern struct _xneur_config *xconfig;
 
 static void osd_show_thread(void *osd_text)
 {
@@ -49,6 +54,9 @@ static void osd_show_thread(void *osd_text)
 
 void osd_show(char *osd_text, ...)
 {
+	if (!xconfig->show_osd)
+		return;
+	
 	va_list ap;
 	va_start(ap, osd_text);
 	
@@ -60,7 +68,7 @@ void osd_show(char *osd_text, ...)
 	pthread_attr_setdetachstate(&osd_thread_attr, PTHREAD_CREATE_DETACHED);
 
 	pthread_t osd_thread;
-	log_message(DEBUG, "Show OSD \"%s\"", buffer);
+	log_message(DEBUG, _("Show OSD \"%s\""), buffer);
 	pthread_create(&osd_thread, &osd_thread_attr, (void*) &osd_show_thread, (void *) buffer);
 	
 	pthread_attr_destroy(&osd_thread_attr);

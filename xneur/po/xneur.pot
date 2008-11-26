@@ -1,0 +1,411 @@
+# Copyright (C) 2008 XNeur Team
+# This file is distributed under the same license as the GXNEUR package.
+# ANDREW KUZNETSOV <andrewcrew@rambler.ru>, 2008.
+#
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: web@softodrom.ru\n"
+"POT-Creation-Date: 2008-10-16 13:14+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Flag pixmap for Layout 4"
+msgstr ""
+
+msgid "Flag pixmap for Layout 3"
+msgstr ""
+
+msgid "Flag pixmap for Layout 2"
+msgstr ""
+
+msgid "Flag pixmap for Layout 1"
+msgstr ""
+
+msgid "Keypress on Layout 1"
+msgstr ""
+
+msgid "Keypress on Layout 2"
+msgstr ""
+
+msgid "Keypress on Layout 3"
+msgstr ""
+
+msgid "Keypress on Layout 4"
+msgstr ""
+
+msgid "Correct word automatically"
+msgstr ""
+
+msgid "Correct word manually"
+msgstr ""
+
+msgid "Abbreviation field is empty!"
+msgstr ""
+
+msgid "Expansion text field is empty!"
+msgstr ""
+
+msgid "Key bind field is empty!"
+msgstr ""
+
+msgid "User action field is empty!"
+msgstr ""
+
+msgid "Couldn't start xneur\nVerify that it installed\n"
+msgstr ""
+
+#: glade/abbr_add.glade:7
+msgid "Add Abbreviation..."
+msgstr ""
+
+#: glade/about.glade:7
+msgid "gXNeur About..."
+msgstr ""
+
+#: glade/about.glade:15
+msgid ""
+"\n"
+"\t\t<b>X Neural Switcher for Gnome</b>\t\t\n"
+"\t\tGTK2 frontend for XNeur\t\t\n"
+"\n"
+"AUTHORS:\n"
+"Andrew Crew Kuznetsov\n"
+"Nikolay Yankin"
+msgstr ""
+
+#: glade/action_add.glade:7
+msgid "Add user action..."
+msgstr ""
+
+#: glade/action_add.glade:24
+msgid "Key bind:"
+msgstr ""
+
+#: glade/action_add.glade:46
+msgid "User action:"
+msgstr ""
+
+msgid "Key bind"
+msgstr ""
+
+#: glade/action_add.glade:46
+msgid "User action"
+msgstr ""
+
+#: glade/choose_file.glade:7
+msgid "Choose File..."
+msgstr ""
+
+#: glade/config.glade:7
+msgid "XNeur Settings"
+msgstr ""
+
+#: glade/config.glade:34
+msgid "Use manual switching mode"
+msgstr ""
+
+#: glade/config.glade:47
+msgid "Correct aCCIDENTAL caps"
+msgstr ""
+
+#: glade/config.glade:61
+msgid "Correct TWo INitial caps"
+msgstr ""
+
+#: glade/config.glade:75
+msgid "Enable auto-learning mode"
+msgstr ""
+
+#: glade/config.glade:89
+msgid "Keep selection after changing selected text"
+msgstr ""
+
+#: glade/config.glade:103
+msgid "Enable keyboard logging"
+msgstr ""
+
+#: glade/config.glade:117
+msgid "Flush internal buffer on Enter or Tab"
+msgstr ""
+
+#: glade/config.glade:131
+msgid "Don't process words on Enter or Tab"
+msgstr ""
+
+#: glade/config.glade:156
+msgid "<b>General</b>"
+msgstr ""
+
+#: glade/config.glade:198
+msgid "Initial layout number:"
+msgstr ""
+
+#: glade/config.glade:210 glade/config.glade:438 glade/config.glade:455
+#: glade/config.glade:472 glade/config.glade:489
+msgid ""
+"0\n"
+"1\n"
+"2\n"
+"3"
+msgstr ""
+
+#: glade/config.glade:228 glade/config.glade:245 glade/config.glade:262
+#: glade/config.glade:279
+msgid "Regular Expressions..."
+msgstr ""
+
+#: glade/config.glade:295 glade/config.glade:314 glade/config.glade:333
+#: glade/config.glade:352
+msgid ""
+"\n"
+"English\n"
+"Russian\n"
+"Ukrainian\n"
+"Belarusian\n"
+"French\n"
+"Romanian\n"
+"Kazakh\n"
+"German"
+msgstr ""
+
+#: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
+#: glade/config.glade:422
+msgid "Dictionary..."
+msgstr ""
+
+#: glade/config.glade:507
+msgid "Number\t"
+msgstr ""
+
+#: glade/config.glade:520
+msgid "Layout"
+msgstr ""
+
+#: glade/config.glade:547
+msgid "Remember keyboard layout for each application instance"
+msgstr ""
+
+#: glade/config.glade:634
+msgid "Exceptions (One keyboard layout for all application instances)"
+msgstr ""
+
+#: glade/config.glade:664
+msgid "<b>Layouts</b>"
+msgstr ""
+
+#: glade/config.glade:871
+msgid "Correct selected text"
+msgstr ""
+
+#: glade/config.glade:884
+msgid "Switch between processing modes"
+msgstr ""
+
+#: glade/config.glade:897
+msgid "Correct last line"
+msgstr ""
+
+#: glade/config.glade:910
+msgid "Correct/Undo correction"
+msgstr ""
+
+#: glade/config.glade:921
+msgid "Transliterate selected text"
+msgstr ""
+
+#: glade/config.glade:934
+msgid "Change case of selected text"
+msgstr ""
+
+#: glade/config.glade:1017
+msgid "Switch to Layout 1"
+msgstr ""
+
+#: glade/config.glade:1030
+msgid "Switch to Layout 2"
+msgstr ""
+
+#: glade/config.glade:1043
+msgid "Switch to Layout 3"
+msgstr ""
+
+#: glade/config.glade:1112
+msgid "Switch to Layout 4"
+msgstr ""
+
+#: glade/config.glade:1139
+msgid "<b>Hotkeys</b>"
+msgstr ""
+
+#: glade/config.glade:1164
+msgid "Flush internal buffer on mouse click"
+msgstr ""
+
+#: glade/config.glade:1260
+msgid "Draw flag next to mouse cursor for these applications"
+msgstr ""
+
+#: glade/config.glade:1344
+msgid "<b>Mouse</b>"
+msgstr ""
+
+#: glade/config.glade:1440
+msgid "Ignore these applications"
+msgstr ""
+
+#: glade/config.glade:1524
+msgid "Force automatic mode for these applications"
+msgstr ""
+
+#: glade/config.glade:1611
+msgid "Force manual mode for these applications"
+msgstr ""
+
+#: glade/config.glade:1641
+msgid "<b>Applications</b>"
+msgstr ""
+
+#: glade/config.glade:1666
+msgid "Enable sounds"
+msgstr ""
+
+#: glade/config.glade:1747
+msgid "<b>Sounds</b>"
+msgstr ""
+
+#: glade/config.glade:1775
+msgid "Expand abbreviations"
+msgstr ""
+
+#: glade/config.glade:1811
+msgid "Ignore keyboard layout for abbreviations"
+msgstr ""
+
+#: glade/config.glade:1897
+msgid "<b>Abbreviations</b>"
+msgstr ""
+
+#: glade/config.glade:1923
+msgid ""
+"Error\n"
+"Warning\n"
+"Log\n"
+"Debug\n"
+"Trace"
+msgstr ""
+
+#: glade/config.glade:1957
+msgid "Log verbosity level"
+msgstr ""
+
+#: glade/config.glade:1970
+msgid "Delay before sending events (in milliseconds)"
+msgstr ""
+
+#: glade/config.glade:1989
+msgid "<b>Advanced</b>"
+msgstr ""
+
+#: glade/list.glade:7
+msgid "File Editing"
+msgstr ""
+
+#: src/callbacks.c:188 src/misc.c:1288
+msgid "Press any key"
+msgstr ""
+
+#: src/misc.c:259 src/misc.c:260
+#, c-format
+msgid ""
+"Wrong XNeur configuration library api version.\n"
+"Please, install libxnconfig version %d.0.%d\n"
+msgstr ""
+
+#: src/misc.c:266
+#, c-format
+msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
+msgstr ""
+
+#: src/misc.c:270 src/misc.c:271
+#, c-format
+msgid ""
+"XNeur config broken!\n"
+"Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+msgstr ""
+
+#: src/misc.c:334
+msgid "Current Version"
+msgstr ""
+
+#: src/misc.c:376 src/misc.c:402 src/misc.c:429 src/misc.c:455 src/misc.c:734
+msgid "Application"
+msgstr ""
+
+msgid "Abbreviation:"
+msgstr ""
+
+#: src/misc.c:620
+msgid "Abbreviation"
+msgstr ""
+
+msgid "Expansion text:"
+msgstr ""
+
+#: src/misc.c:625
+msgid "Expansion text"
+msgstr ""
+
+#: src/misc.c:655
+msgid "Action"
+msgstr ""
+
+#: src/misc.c:660
+msgid "Sound"
+msgstr ""
+
+#: src/misc.c:706
+msgid "Description"
+msgstr ""
+
+#: src/misc.c:711
+msgid "Pixmap"
+msgstr ""
+
+#: src/support.c:80 src/support.c:104
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr ""
+
+#: src/trayicon.c:78
+msgid "Stop daemon"
+msgstr ""
+
+#: src/trayicon.c:83
+msgid "Start daemon"
+msgstr ""
+
+#: src/trayicon.c:100
+msgid "Disable input auto-correction"
+msgstr ""
+
+#: src/trayicon.c:105
+msgid "Enable input auto-correction"
+msgstr ""
+
+#: src/trayicon.c:182
+msgid "X Neural Switcher running ("
+msgstr ""
+
+#: src/trayicon.c:187
+msgid "X Neural Switcher stopped ("
+msgstr ""
+
+#: src/trayicon.c:209
+msgid "X Neural Switcher"
+msgstr ""

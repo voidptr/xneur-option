@@ -49,7 +49,7 @@ static int locale_create(void)
 {
 	if (setlocale(LC_ALL, "") == NULL)
 	{
-		log_message(ERROR, "Couldn't set default locale");
+		log_message(ERROR, _("Couldn't set default locale"));
 		return FALSE;
 	}
 

@@ -132,6 +132,7 @@ static void xneur_load_config(int final)
 	log_message(LOG, "Correct of two CApital letter mode set to %s", xconfig->get_bool_name(xconfig->correct_two_capital_letter));
 	log_message(LOG, "Flush internal buffer when pressed Enter or Tab mode set to %s", xconfig->get_bool_name(xconfig->flush_buffer_when_press_enter));
 	log_message(LOG, "Don't process word when pressed Enter or Tab mode set to %s", xconfig->get_bool_name(xconfig->dont_process_when_press_enter));
+	log_message(LOG, "Show OSD mode set to %s", xconfig->get_bool_name(xconfig->show_osd));
 }
 
 static void xneur_set_lock(void)

@@ -50,7 +50,8 @@ static const char *option_names[] = 	{
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
-						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction"
+						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
+						"ShowOSD"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -465,6 +466,18 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 			break;
 		}
+		case 30: // Show OSD
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, "Invalid value for show OSD mode specified");
+				break;
+			}
+
+			p->show_osd = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -780,6 +793,25 @@ static int xneur_config_save(struct _xneur_config *p)
 	}
 	fprintf(stream, "\n");
 
+	fprintf(stream, "# This option add user action when pressed key bind\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#AddAction Control Alt f firefox\n");
+	for (int action = 0; action < p->actions->action_command->data_count; action++)
+	{
+		fprintf(stream, "AddAction ");
+
+		const int total_modifiers = sizeof(modifier_names) / sizeof(modifier_names[0]);
+		for (int i = 0; i < total_modifiers; i++)
+		{
+			if (p->actions->action_hotkey[action].modifiers & (1 << i))
+				fprintf(stream, "%s ", modifier_names[i]);
+		}
+
+		fprintf(stream, "%s %s\n", p->actions->action_hotkey[action].key
+								, p->actions->action_command->data[action].string);
+	}
+	fprintf(stream, "\n");
+			
 	fprintf(stream, "# Word Replacing\n# Ignore keyboard layout for abbreviations list\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#ReplaceAbbreviationIgnoreLayout No\n");
@@ -882,24 +914,10 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#DontProcessWhenPressEnter Yes\n");
 	fprintf(stream, "DontProcessWhenPressEnter %s\n\n", p->get_bool_name(p->dont_process_when_press_enter));
 			
-	fprintf(stream, "# This option add user action when pressed key bind\n");
+	fprintf(stream, "# This option disable or enable show OSD\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#AddAction Control Alt f firefox\n");
-	for (int action = 0; action < p->actions->action_command->data_count; action++)
-	{
-		fprintf(stream, "AddAction ");
-
-		const int total_modifiers = sizeof(modifier_names) / sizeof(modifier_names[0]);
-		for (int i = 0; i < total_modifiers; i++)
-		{
-			if (p->actions->action_hotkey[action].modifiers & (1 << i))
-				fprintf(stream, "%s ", modifier_names[i]);
-		}
-
-		fprintf(stream, "%s %s\n", p->actions->action_hotkey[action].key
-								, p->actions->action_command->data[action].string);
-	}
-	fprintf(stream, "\n");
+	fprintf(stream, "#ShowOSD Yes\n");
+	fprintf(stream, "ShowOSD %s\n\n", p->get_bool_name(p->show_osd));
 			
 	fprintf(stream, "# That's all\n");
 

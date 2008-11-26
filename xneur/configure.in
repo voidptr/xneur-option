@@ -16,6 +16,9 @@ AC_HEADER_STDC
 
 PKG_PROG_PKG_CONFIG([0.20])
 
+AM_GNU_GETTEXT_VERSION([0.16.1])
+AM_GNU_GETTEXT([external])
+
 PKG_CHECK_MODULES(X11, [x11 >= 1.1], found_x11="yes", found_x11="no")
 if test "x$found_x11" = "xno"; then
 	AC_PATH_XTRA
@@ -159,7 +162,7 @@ fi
 CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
 AC_SUBST(CFLAGS)
 
-AC_OUTPUT([share/Makefile share/sounds/Makefile share/pixmaps/Makefile share/en/Makefile share/ru/Makefile share/uk/Makefile share/be/Makefile share/fr/Makefile share/ro/Makefile share/kz/Makefile share/de/Makefile  etc/Makefile lib/Makefile lib/ai/Makefile lib/config/Makefile lib/misc/Makefile lib/sound/Makefile lib/x/Makefile src/Makefile Makefile xnconfig.pc])
+AC_OUTPUT([share/Makefile share/sounds/Makefile share/pixmaps/Makefile share/en/Makefile share/ru/Makefile share/uk/Makefile share/be/Makefile share/fr/Makefile share/ro/Makefile share/kz/Makefile share/de/Makefile  etc/Makefile lib/Makefile lib/ai/Makefile lib/config/Makefile lib/misc/Makefile lib/sound/Makefile lib/x/Makefile src/Makefile po/Makefile.in Makefile xnconfig.pc])
 
 cat << EOF
 
