@@ -44,7 +44,7 @@
 #include "sound.h"
 
 struct _xneur_config *xconfig = NULL;
-//static struct _xprogram *xprogram = NULL;
+static struct _xprogram *xprogram = NULL;
 
 static int xneur_check_lock = TRUE;
 
@@ -160,8 +160,8 @@ static void xneur_cleanup(void)
 	sound_uninit();
 	log_message(DEBUG, _("Current sound data is freed"));
 
-	if (xconfig->xprogram != NULL)
-		xconfig->xprogram->uninit(xconfig->xprogram);
+	if (xprogram != NULL)
+		xprogram->uninit(xprogram);
 
 	log_message(DEBUG, _("Current program info is freed"));
 
@@ -321,8 +321,8 @@ int main(int argc, char *argv[])
 	xneur_set_lock();
 	xneur_load_config(FALSE);
 
-	xconfig->xprogram = xprogram_init();
-	if (xconfig->xprogram == NULL)
+	xprogram = xprogram_init();
+	if (xprogram == NULL)
 	{
 		log_message(ERROR, _("Failed to init program structure"));
 		xconfig->set_pid(xconfig, 0);
@@ -340,7 +340,7 @@ int main(int argc, char *argv[])
 	xntrap(SIGINT, xneur_terminate);
 	xntrap(SIGHUP, xneur_reload);
 
-	xconfig->xprogram->process_input(xconfig->xprogram);
+	xprogram->process_input(xprogram);
 
 	xneur_cleanup();
 
