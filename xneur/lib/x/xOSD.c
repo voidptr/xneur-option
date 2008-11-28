@@ -41,10 +41,9 @@ static void osd_show_thread(void *osd_text)
 {
 	xosd *osd;
 	osd = xosd_create (1);
-	//xosd_set_font(osd, "-*-freesans-*-*-*-*-*-*-*-*-*-*-*-u");
-	xosd_set_font(osd, "-*-*-*-*-*-*-32-*-*-*-*-*-*-u");
+	xosd_set_font(osd, xconfig->osd_font);
 	xosd_set_colour(osd, "Red");
-	xosd_set_timeout(osd, 3);
+	xosd_set_timeout(osd, 1);
 	xosd_set_shadow_offset(osd, 1);
 	xosd_set_align(osd, XOSD_right);
 	xosd_display (osd, 0, XOSD_string, (char *)osd_text);

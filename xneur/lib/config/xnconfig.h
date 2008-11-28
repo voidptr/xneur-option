@@ -34,7 +34,8 @@
 #define PIXMAPDIR			"pixmaps"
 
 #define MAX_FLAGS			4
-#define MAX_SOUNDS			17
+#define MAX_SOUNDS			21
+#define MAX_OSDS			21
 #define MAX_HOTKEYS			11
 
 enum _flag_action
@@ -47,7 +48,10 @@ enum _flag_action
 
 enum _sound_action
 {
-	SOUND_PRESS_KEY_LAYOUT_0 = 0,
+	SOUND_XNEUR_START = 0,
+	SOUND_XNEUR_RELOAD,
+	SOUND_XNEUR_STOP,
+	SOUND_PRESS_KEY_LAYOUT_0,
 	SOUND_PRESS_KEY_LAYOUT_1,
 	SOUND_PRESS_KEY_LAYOUT_2,
 	SOUND_PRESS_KEY_LAYOUT_3,
@@ -64,7 +68,34 @@ enum _sound_action
 	SOUND_REPLACE_ABBREVIATION,
 	SOUND_CORR_INCIDENTAL_CAPS,
 	SOUND_CORR_TWO_CAPITAL_LETTER,
+	SOUND_EXEC_USER_ACTION,
 	SOUND_NONE,
+};
+
+enum _osd_action
+{
+	OSD_XNEUR_START = 0,
+	OSD_XNEUR_RELOAD,
+	OSD_XNEUR_STOP,
+	OSD_PRESS_KEY_LAYOUT_0,
+	OSD_PRESS_KEY_LAYOUT_1,
+	OSD_PRESS_KEY_LAYOUT_2,
+	OSD_PRESS_KEY_LAYOUT_3,
+	OSD_ENABLE_LAYOUT_0,
+	OSD_ENABLE_LAYOUT_1,
+	OSD_ENABLE_LAYOUT_2,
+	OSD_ENABLE_LAYOUT_3,
+	OSD_AUTOMATIC_CHANGE_WORD,
+	OSD_MANUAL_CHANGE_WORD,
+	OSD_CHANGE_STRING,
+	OSD_CHANGE_SELECTED,
+	OSD_TRANSLIT_SELECTED,
+	OSD_CHANGECASE_SELECTED,
+	OSD_REPLACE_ABBREVIATION,
+	OSD_CORR_INCIDENTAL_CAPS,
+	OSD_CORR_TWO_CAPITAL_LETTER,
+	OSD_EXEC_USER_ACTION,
+	OSD_NONE,
 };
 
 enum _hotkey_action
@@ -149,6 +180,7 @@ struct _xneur_config
 	struct _xneur_language *languages;		// Array of languages used in program
 	struct _xneur_hotkey *hotkeys;			// Array of hotkeys used in program
 	struct _xneur_file *sounds;			// Array of sounds for actions
+	struct _xneur_file *osds;			// Array of OSDs for actions
 
 	int   manual_mode;				// Enable manual processing mode
 	int   log_level;				// Maximum level of log messages to print
@@ -169,6 +201,7 @@ struct _xneur_config
 	int   dont_process_when_press_enter;   // Don't correct word when pressed Enter
 
 	int   show_osd;					// Show OSD 
+	char  *osd_font;
 
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
 	

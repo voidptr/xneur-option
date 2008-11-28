@@ -56,6 +56,7 @@ static GtkListStore *store_layout_app			= NULL;
 static GtkListStore *store_draw_flag_app			= NULL;
 static GtkListStore *store_abbreviation			= NULL;
 static GtkListStore *store_sound			= NULL;
+static GtkListStore *store_osd			= NULL;
 static GtkListStore *store_pixmap			= NULL;
 static GtkListStore *store_action			= NULL;
 
@@ -67,12 +68,13 @@ static const char *language_names[]			= {"English", "Russian", "Ukrainian", "Bel
 static char *dirs[]					= {"en", "ru", "uk", "be", "fr", "ro", "kz", "de"};
 
 static const char *sound_names[]			=   {
+										"Xneur started", "Xneur reloaded", "Xneur stopped",
 										"Keypress on Layout 1", "Keypress on Layout 2", "Keypress on Layout 3",
 										"Keypress on Layout 4", "Switch to Layout 1", "Switch to Layout 2",
 										"Switch to Layout 3", "Switch to Layout 4", "Correct word automatically",
 										"Correct word manually", "Correct last line", "Correct selected text",
 										"Transliterate selected text", "Change case of selected text", "Expand abbreviations",
-										"Correct aCCIDENTAL caps", "Correct TWo INitial caps"
+										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Execute user action"
 										};
 static const int total_sound_names = sizeof(sound_names) / sizeof(sound_names[0]);
 
@@ -833,6 +835,38 @@ void xneur_preference(void)
 	// Show OSD
 	widget = glade_xml_get_widget (gxml, "checkbutton13");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->show_osd);
+	
+	// OSD Text Preference
+	// OSD List set
+	treeview = glade_xml_get_widget (gxml, "treeview10");
+
+	store_osd = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_osd));
+	gtk_widget_show(treeview);
+
+	for (int i = 0; i < total_sound_names; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_osd), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_osd), &iter, 
+												0, _(sound_names[i]),
+												1, xconfig->osds[i].file, 
+												-1);
+	}
+	
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Action"), cell, "text", 0, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Text"), cell, "text", 1, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	// OSD Font
+	widget = glade_xml_get_widget (gxml, "entry2");
+	gtk_entry_set_text(GTK_ENTRY(widget), xconfig->osd_font);
 	
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");

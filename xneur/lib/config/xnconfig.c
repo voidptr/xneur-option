@@ -51,7 +51,7 @@ static const char *option_names[] = 	{
 						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
-						"ShowOSD"
+						"ShowOSD", "AddOSD", "FontOSD"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -60,11 +60,13 @@ static const char *action_names[] =	{
 						"ReplaceAbbreviation"
 					};
 static const char *sound_names[] =	{
+						"XneurStart", "XneurReload", "XneurStop",
 						"PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"AutomaticChangeWord", "ManualChangeWord", "ChangeString",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
-						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter"
+						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
+						"ExecuteUserAction"
 					};
 
 static int load_lang = -1;
@@ -478,6 +480,28 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->show_osd = index;
 			break;
 		}
+		case 31: // OSDs
+		{
+			int osd = get_option_index(sound_names, param);
+			if (osd == -1)
+			{
+				log_message(WARNING, _("Invalid value for OSD action name specified"));
+				break;
+			}
+
+			if (line == NULL)
+				break;
+			
+			if (strlen(line) != 0)
+				p->osds[osd].file = strdup(line);
+			
+			break;
+		}
+		case 32: // Get Initial Xkb Group for all new windows
+		{
+			p->osd_font = strdup(param);
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -584,6 +608,12 @@ static void free_structures(struct _xneur_config *p)
 			free(p->sounds[sound].file);
 	}
 
+	for (int osd = 0; osd < MAX_OSDS; osd++)
+	{
+		if (p->osds[osd].file != NULL)
+			free(p->osds[osd].file);
+	}
+	
 	for (int flag = 0; flag < MAX_FLAGS; flag++)
 	{
 		if (p->flags[flag].file != NULL)
@@ -593,6 +623,7 @@ static void free_structures(struct _xneur_config *p)
 	bzero(p->actions->action_hotkey, total_user_actions * sizeof(struct _xneur_hotkey));
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
+	bzero(p->osds, MAX_OSDS * sizeof(struct _xneur_file));
 	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
 }
 
@@ -918,7 +949,22 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#ShowOSD Yes\n");
 	fprintf(stream, "ShowOSD %s\n\n", p->get_bool_name(p->show_osd));
+
+	fprintf(stream, "# This option set font for OSD\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u\n");
+	fprintf(stream, "ShowOSD %s\n\n", p->get_bool_name(p->show_osd));
 			
+	fprintf(stream, "# Binds OSDs for some actions\n");
+	for (int osd= 0; osd < MAX_OSDS; osd++)
+	{
+		if (p->osds[osd].file == NULL)
+			fprintf(stream, "AddOSD %s \n", sound_names[osd]);
+		else
+			fprintf(stream, "AddOSD %s %s\n", sound_names[osd], p->osds[osd].file);
+	}
+	fprintf(stream, "\n");
+
 	fprintf(stream, "# That's all\n");
 
 	fclose(stream);
@@ -1020,6 +1066,7 @@ static void xneur_config_uninit(struct _xneur_config *p)
 	
 	free(p->hotkeys);
 	free(p->sounds);
+	free(p->osds);
 	free(p->flags);
 	
 	free(p->actions);
@@ -1044,6 +1091,9 @@ struct _xneur_config* xneur_config_init(void)
 	p->sounds = (struct _xneur_file *) malloc(MAX_SOUNDS * sizeof(struct _xneur_file));
 	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
 
+	p->osds = (struct _xneur_file *) malloc(MAX_OSDS * sizeof(struct _xneur_file));
+	bzero(p->osds, MAX_OSDS * sizeof(struct _xneur_file));
+	
 	p->flags = (struct _xneur_file *) malloc(MAX_FLAGS * sizeof(struct _xneur_file));
 	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
 

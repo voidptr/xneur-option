@@ -182,8 +182,8 @@ static void xneur_terminate(int status)
 	if (status){}
 
 	log_message(DEBUG, _("Caught SIGTERM/SIGINT, terminating"));
-	osd_show(_("X Neural Switcher stopped"));
-	sleep(1);
+	osd_show(xconfig->osds[OSD_XNEUR_STOP].file);
+	sleep(3);
 	
 	xneur_cleanup();
 
@@ -194,7 +194,7 @@ static void xneur_reload(int status)
 {
 	status = status; // To prevent warnings
 	log_message(LOG, _("Caught SIGHUP, reloading configuration file"));
-	osd_show(_("X Neural Switcher reloaded"));
+	osd_show(xconfig->osds[OSD_XNEUR_RELOAD].file);
 	
 	sound_uninit();
 
@@ -334,7 +334,7 @@ int main(int argc, char *argv[])
 	xneur_init();
 
 	log_message(DEBUG, _("Init program structure complete"));
-	osd_show(_("X Neural Switcher started"));
+	osd_show(xconfig->osds[OSD_XNEUR_START].file);
 	
 	xntrap(SIGTERM, xneur_terminate);
 	xntrap(SIGINT, xneur_terminate);
