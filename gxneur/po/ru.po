@@ -115,6 +115,12 @@ msgstr "Пользовательское действие"
 msgid "Choose File..."
 msgstr "Выбор Файла..."
 
+msgid "OSD"
+msgstr "OSD"
+
+msgid "Show OSD"
+msgstr "Показывать OSD"
+
 #: glade/config.glade:7
 msgid "XNeur Settings"
 msgstr "Настройки XNeur"

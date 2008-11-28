@@ -113,6 +113,12 @@ msgstr ""
 msgid "Choose File..."
 msgstr "Обрати файл..."
 
+msgid "OSD"
+msgstr ""
+
+msgid "Show OSD"
+msgstr ""
+
 #: glade/config.glade:7
 msgid "XNeur Settings"
 msgstr "Налаштування XNeur"
