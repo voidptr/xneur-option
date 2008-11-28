@@ -167,7 +167,7 @@ msgstr "Текущие данные звука очищены"
 
 #: src/xneur.c:165
 msgid "Current program info is freed"
-msgstr "Текущие данные программы очищены"
+msgstr "Текущие данные программной информации очищены"
 
 #: src/xneur.c:172
 msgid "Current configuration data is freed"
