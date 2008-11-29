@@ -15,6 +15,24 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Xneur started"
+msgstr ""
+
+msgid "Xneur reloaded"
+msgstr ""
+
+msgid "Xneur stopped"
+msgstr ""
+
+msgid "Execute user action"
+msgstr ""
+
+msgid "Use command <b>xfontsel -print</b> to get new font."
+msgstr ""
+
+msgid "OSD Font"
+msgstr ""
+
 msgid "Flag pixmap for Layout 4"
 msgstr ""
 

@@ -17,6 +17,24 @@ msgstr ""
 "X-Launchpad-Export-Date: 2008-11-21 18:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
+msgid "Xneur started"
+msgstr ""
+
+msgid "Xneur reloaded"
+msgstr ""
+
+msgid "Xneur stopped"
+msgstr ""
+
+msgid "Execute user action"
+msgstr ""
+
+msgid "Use command <b>xfontsel -print</b> to get new font."
+msgstr ""
+
+msgid "OSD Font"
+msgstr ""
+
 msgid "Flag pixmap for Layout 4"
 msgstr "Зображення прапора для розкладки 4"
 
