@@ -56,6 +56,10 @@ void osd_show(char *osd_text, ...)
 {
 	if (!xconfig->show_osd)
 		return;
+	if (osd_text == NULL)
+		return;
+	if (strlen(osd_text) == 0)
+		return;
 	
 	va_list ap;
 	va_start(ap, osd_text);

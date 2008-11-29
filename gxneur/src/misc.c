@@ -192,8 +192,8 @@ static void add_item(GtkListStore *store)
 	char buffer[NAME_MAX];
 	if (fgets(buffer, NAME_MAX, fp) == NULL)
 		return;
-
-	if (fclose(fp))
+	
+	if (pclose(fp))
 		return;
 
 	const char* cap = "WM_CLASS(STRING)";
@@ -347,6 +347,28 @@ void xneur_about(void)
 	gtk_label_set_text(GTK_LABEL(widget), text);	
 
 	gtk_widget_show(window);
+}
+
+static void column_0_edited (GtkCellRendererText *renderer, gchar *path, gchar *new_text, GtkTreeView *treeview)
+{
+	if (renderer) {};
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+
+	model = gtk_tree_view_get_model (treeview);
+	if (gtk_tree_model_get_iter_from_string (model, &iter, path))
+		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, new_text, -1);
+}
+
+static void column_1_edited (GtkCellRendererText *renderer, gchar *path, gchar *new_text, GtkTreeView *treeview)
+{
+	if (renderer) {};
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+
+	model = gtk_tree_view_get_model (treeview);
+	if (gtk_tree_model_get_iter_from_string (model, &iter, path))
+		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 1, new_text, -1);
 }
 
 void xneur_preference(void)
@@ -631,10 +653,18 @@ void xneur_preference(void)
 	cell = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Abbreviation"), cell, "text", 0, NULL);
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "edited",
+						G_CALLBACK (column_0_edited),
+						(gpointer) treeview);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	cell = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Expansion text"), cell, "text", 1, NULL);
+	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "edited",
+						G_CALLBACK (column_1_edited),
+						(gpointer) treeview);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// Button Add Abbreviation
@@ -671,6 +701,10 @@ void xneur_preference(void)
 	cell = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Sound"), cell, "text", 1, NULL);
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "edited",
+						G_CALLBACK (column_1_edited),
+						(gpointer) treeview);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// Button Edit Sound
@@ -721,6 +755,10 @@ void xneur_preference(void)
 
 	cell = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Pixmap"), cell, "text", 1, NULL);
+	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "edited",
+						G_CALLBACK (column_1_edited),
+						(gpointer) treeview);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// Button Edit Pixmap
@@ -818,6 +856,10 @@ void xneur_preference(void)
 
 	cell = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("User action"), cell, "text", 1, NULL);
+	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "edited",
+						G_CALLBACK (column_1_edited),
+						(gpointer) treeview);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// Button Add User Action
@@ -862,6 +904,10 @@ void xneur_preference(void)
 	cell = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Text"), cell, "text", 1, NULL);
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "edited",
+						G_CALLBACK (column_1_edited),
+						(gpointer) treeview);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// OSD Font
@@ -1370,6 +1416,26 @@ gboolean save_pixmap(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, 
 	return FALSE;
 }
 
+gboolean save_osd(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	gchar *string;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_osd), iter, 1, &string, -1);
+	
+	int i = atoi(gtk_tree_path_to_string(path));
+	if (xconfig->osds[i].file != NULL)
+		free(xconfig->osds[i].file);
+	
+	if (string != NULL)
+	{
+		xconfig->osds[i].file = strdup(string);
+		g_free(string);
+	}
+	
+	return FALSE;
+}
+
 void xneur_save_preference(GladeXML *gxml)
 {
 	xconfig->clear(xconfig);
@@ -1401,6 +1467,7 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_sound), save_sound, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_pixmap), save_pixmap, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_action), save_action, NULL);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_osd), save_osd, NULL);
 	
 	fill_binds(0, gxml, "entry11", FALSE);
 	fill_binds(1, gxml, "entry12", FALSE);

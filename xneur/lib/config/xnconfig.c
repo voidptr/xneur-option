@@ -953,7 +953,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option set font for OSD\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u\n");
-	fprintf(stream, "ShowOSD %s\n\n", p->get_bool_name(p->show_osd));
+	fprintf(stream, "FontOSD %s\n\n", p->osd_font);
 			
 	fprintf(stream, "# Binds OSDs for some actions\n");
 	for (int osd= 0; osd < MAX_OSDS; osd++)

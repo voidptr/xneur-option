@@ -64,6 +64,9 @@ ReplaceAbbreviationIgnoreLayout Yes
 PlaySounds Yes
 
 # Binds sounds for some actions
+AddSound XneurStart 
+AddSound XneurReload 
+AddSound XneurStop 
 AddSound PressKeyLayout1 layout1type.wav
 AddSound PressKeyLayout2 layout2type.wav
 AddSound PressKeyLayout3 layout1type.wav
@@ -81,6 +84,7 @@ AddSound ChangecaseSelected switch.wav
 AddSound ReplaceAbbreviation switch.wav
 AddSound CorrectIncidentalCaps 
 AddSound CorrectTwoCapitalLetter 
+AddSound ExecuteUserAction
 
 # This option enable or disable mouse processing
 # Example:
@@ -147,5 +151,38 @@ DontProcessWhenPressEnter No
 # This option add user action when pressed key bind
 # Example:\n");
 #AddAction Control Alt f firefox"
+
+# This option disable or enable show OSD
+# Example:
+#ShowOSD Yes
+ShowOSD No
+
+# This option set font for OSD
+# Example:
+#FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
+FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
+
+# Binds OSDs for some actions
+AddOSD XneurStart
+AddOSD XneurReload
+AddOSD XneurStop
+AddOSD PressKeyLayout1  
+AddOSD PressKeyLayout2 
+AddOSD PressKeyLayout3  
+AddOSD PressKeyLayout4 
+AddOSD EnableLayout1 
+AddOSD EnableLayout2 
+AddOSD EnableLayout3 
+AddOSD EnableLayout4 
+AddOSD AutomaticChangeWord 
+AddOSD ManualChangeWord 
+AddOSD ChangeString 
+AddOSD ChangeSelected 
+AddOSD TranslitSelected 
+AddOSD ChangecaseSelected 
+AddOSD ReplaceAbbreviation 
+AddOSD CorrectIncidentalCaps 
+AddOSD CorrectTwoCapitalLetter 
+AddOSD ExecuteUserAction %s
 
 # That's all

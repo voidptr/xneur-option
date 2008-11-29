@@ -546,8 +546,6 @@ static void xprogram_perform_user_action(struct _xprogram *p, int action)
 	
 	log_message(DEBUG, _("Execute user action \"%s\""), xconfig->actions->action_command->data[action].string); 
 	
-	//osd_show(_("Run \"%s\""), xconfig->actions->action_command->data[action].string);
-	
 	pthread_attr_t action_thread_attr;
 	pthread_attr_init(&action_thread_attr);
 	pthread_attr_setdetachstate(&action_thread_attr, PTHREAD_CREATE_DETACHED);

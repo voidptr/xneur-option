@@ -183,7 +183,7 @@ static void xneur_terminate(int status)
 
 	log_message(DEBUG, _("Caught SIGTERM/SIGINT, terminating"));
 	osd_show(xconfig->osds[OSD_XNEUR_STOP].file);
-	sleep(3);
+	sleep(1);
 	
 	xneur_cleanup();
 
