@@ -1528,6 +1528,11 @@ void xneur_save_preference(GladeXML *gxml)
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton13");
 	xconfig->show_osd = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry2");
+	if (xconfig->osd_font != NULL)
+		free(xconfig->osd_font);
+	xconfig->osd_font = strdup((char *) gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
+	
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);
 
