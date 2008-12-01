@@ -397,26 +397,29 @@ SndPage::SndPage( QWidget* parent, const char* name, WFlags fl )
     grid->setMargin(5);
     grid->setFrameShape(QFrame::GroupBoxPanel);
 
-    for ( int i = 0 ; i < MAX_SOUNDS-3 ; i++ ) {
+    for ( int i = 0 ; i < MAX_SOUNDS; i++ ) {
         switch ( i ) {
-	    case  0 : new QLabel(i18n("Press Key On Layout 1 "), grid); break;
-	    case  1 : new QLabel(i18n("Press Key On Layout 2 "), grid); break;
-	    case  2 : new QLabel(i18n("Press Key On Layout 3 "), grid); break;
-	    case  3 : new QLabel(i18n("Press Key On Layout 4 "), grid); break;
-	    case  4 : new QLabel(i18n("Enable Layout 1 "), grid); break;
-	    case  5 : new QLabel(i18n("Enable Layout 2 "), grid); break;
-	    case  6 : new QLabel(i18n("Enable Layout 3 "), grid); break;
-	    case  7 : new QLabel(i18n("Enable Layout 4 "), grid); break;
-	    case  8 : new QLabel(i18n("Automatic Change Word "), grid); break;
-	    case  9 : new QLabel(i18n("Manual Change Word "), grid); break;
-	    case 10 : new QLabel(i18n("Change String "), grid); break;
-	    case 11 : new QLabel(i18n("Change Selected Text "), grid); break;
-	    case 12 : new QLabel(i18n("Translit Selected Text "), grid); break;
-	    case 13 : new QLabel(i18n("Changecase Selected Text "), grid); break;
-// ??? 
-//	    case 14 : new QLabel(i18n("Replace Abbreviation "), grid); break; 
-//	    case 15 : new QLabel(i18n("Correct Incidental Caps "), grid); break;
-//	    case 16 : new QLabel(i18n("Correct Two Capital Letter "), grid); break;
+	    case  0 : new QLabel(i18n("Xneur started "), grid); break;
+	    case  1 : new QLabel(i18n("Xneur reloaded "), grid); break;
+	    case  2 : new QLabel(i18n("Xneur stopped "), grid); break;
+	    case  3 : new QLabel(i18n("Press Key On Layout 1 "), grid); break;
+	    case  4 : new QLabel(i18n("Press Key On Layout 2 "), grid); break;
+	    case  5 : new QLabel(i18n("Press Key On Layout 3 "), grid); break;
+	    case  6 : new QLabel(i18n("Press Key On Layout 4 "), grid); break;
+	    case  7 : new QLabel(i18n("Enable Layout 1 "), grid); break;
+	    case  8 : new QLabel(i18n("Enable Layout 2 "), grid); break;
+	    case  9 : new QLabel(i18n("Enable Layout 3 "), grid); break;
+	    case 10 : new QLabel(i18n("Enable Layout 4 "), grid); break;
+	    case 11 : new QLabel(i18n("Automatic Change Word "), grid); break;
+	    case 12 : new QLabel(i18n("Manual Change Word "), grid); break;
+	    case 13 : new QLabel(i18n("Change String "), grid); break;
+	    case 14 : new QLabel(i18n("Change Selected Text "), grid); break;
+	    case 15 : new QLabel(i18n("Translit Selected Text "), grid); break;
+	    case 16 : new QLabel(i18n("Changecase Selected Text "), grid); break;
+	    case 17 : new QLabel(i18n("Expand abbreviations "), grid); break;
+	    case 18 : new QLabel(i18n("Correct aCCIDENTAL caps "), grid); break;
+	    case 19 : new QLabel(i18n("Correct TWo INitial caps "), grid); break;
+	    case 20 : new QLabel(i18n("Execute user action "), grid); break;
 	}
 	edit[i] = new KXNLineEdit(grid);
 	btn[i] = new QPushButton(grid);
@@ -434,6 +437,61 @@ SndPage::~SndPage()
 {
 }
 
+OsdPage::OsdPage( QWidget* parent, const char* name, WFlags fl )
+ : QWidget( parent, name, fl )
+{
+    if ( !name )
+	setName( "OsdPage" );
+
+    vlayout = new QVBoxLayout(this);
+    vlayout->setSpacing(5);
+
+    enable_osd = new QCheckBox(i18n("Enable OSD on XNeur actions"), this);
+    vlayout->addWidget(enable_osd);
+    osd_font = new QLineEdit(i18n("Use this font for OSD"), this);
+    vlayout->addWidget(osd_font);
+
+    grid = new QGrid(2, this);
+    grid->setSpacing(2);
+    grid->setMargin(5);
+    grid->setFrameShape(QFrame::GroupBoxPanel);
+
+    for ( int i = 0 ; i < MAX_OSDS; i++ ) {
+        switch ( i ) {
+	    case  0 : new QLabel(i18n("Xneur started "), grid); break;
+	    case  1 : new QLabel(i18n("Xneur reloaded "), grid); break;
+	    case  2 : new QLabel(i18n("Xneur stopped "), grid); break;
+	    case  3 : new QLabel(i18n("Press Key On Layout 1 "), grid); break;
+	    case  4 : new QLabel(i18n("Press Key On Layout 2 "), grid); break;
+	    case  5 : new QLabel(i18n("Press Key On Layout 3 "), grid); break;
+	    case  6 : new QLabel(i18n("Press Key On Layout 4 "), grid); break;
+	    case  7 : new QLabel(i18n("Enable Layout 1 "), grid); break;
+	    case  8 : new QLabel(i18n("Enable Layout 2 "), grid); break;
+	    case  9 : new QLabel(i18n("Enable Layout 3 "), grid); break;
+	    case 10 : new QLabel(i18n("Enable Layout 4 "), grid); break;
+	    case 11 : new QLabel(i18n("Automatic Change Word "), grid); break;
+	    case 12 : new QLabel(i18n("Manual Change Word "), grid); break;
+	    case 13 : new QLabel(i18n("Change String "), grid); break;
+	    case 14 : new QLabel(i18n("Change Selected Text "), grid); break;
+	    case 15 : new QLabel(i18n("Translit Selected Text "), grid); break;
+	    case 16 : new QLabel(i18n("Changecase Selected Text "), grid); break;
+	    case 17 : new QLabel(i18n("Expand abbreviations "), grid); break;
+	    case 18 : new QLabel(i18n("Correct aCCIDENTAL caps "), grid); break;
+	    case 19 : new QLabel(i18n("Correct TWo INitial caps "), grid); break;
+	    case 20 : new QLabel(i18n("Execute user action "), grid); break;
+	}
+	edit[i] = new KXNLineEdit(grid);
+    }
+
+    vlayout->addWidget(grid);
+    QWhatsThis::add(grid, i18n("List of OSDs"));
+
+    vlayout->setAlignment( Qt::AlignTop );
+}
+
+OsdPage::~OsdPage()
+{
+}
 
 KXNeurConf::KXNeurConf(KXNeurApp *app, QWidget *parent)
  : KConfigDialog(parent, i18n("Settings"), KXNeurSettings::self(), KDialogBase::IconList, Ok|Cancel|Help, Ok, true)
@@ -445,12 +503,14 @@ KXNeurConf::KXNeurConf(KXNeurApp *app, QWidget *parent)
     keys_page = new KeysPage(0, "KeysPage");
     prog_page = new ProgPage(0, "ProgPage");
     snd_page = new SndPage(0, "SndPage");
+    osd_page = new OsdPage(0, "OsdPage");
 
     addPage( kxneur_page, i18n("Common"), "keyboard_layout", i18n("Commons Options") ); // or pic = embedjs, exec
     addPage( xneur_page, i18n("Languages"), "locale", i18n("Languages Options") ); // or pic = 
     addPage( keys_page, i18n("Keys"), "key_bindings", i18n("Key Combinations") );
     addPage( prog_page, i18n("Programs"), "kwin", i18n("Exclusions for Program") );
     addPage( snd_page, i18n("Sounds"), "kmix", i18n("Sounds for Events") );
+    addPage( osd_page, i18n("OSD"), "kmix", i18n("OSD for Events") );
 
     LoadSettings();
 }
@@ -618,9 +678,13 @@ void KXNeurConf::LoadSettings()
 
     snd_page->enable_snd->setChecked( knapp->xnconf->play_sounds );
 
-    for (int i = 0 ; i < MAX_SOUNDS-3 ; i++)
+    for (int i = 0 ; i < MAX_SOUNDS ; i++)
 	snd_page->edit[i]->setText(knapp->xnconf->sounds[i].file);
 
+    osd_page->enable_osd->setChecked( knapp->xnconf->show_osd );
+    osd_page->osd_font->setText(i18n(knapp->xnconf->osd_font));
+    for (int i = 0 ; i < MAX_OSDS ; i++)
+	osd_page->edit[i]->setText(i18n(knapp->xnconf->osds[i].file));
 }
 
 void KXNeurConf::SaveSettings()

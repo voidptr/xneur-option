@@ -159,11 +159,26 @@ public:
     QCheckBox *enable_snd;
     // QHBox *hbox;
     QGrid *grid;
-    KXNLineEdit *edit[14];
-    QPushButton *btn[14];
+    KXNLineEdit *edit[21];
+    QPushButton *btn[21];
 
 };
 
+class OsdPage : public QWidget
+{
+
+public:
+    OsdPage( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    ~OsdPage();
+
+    QVBoxLayout *vlayout;
+    QCheckBox *enable_osd;
+    QLineEdit *osd_font;
+    // QHBox *hbox;
+    QGrid *grid;
+    KXNLineEdit *edit[21];
+
+};
 
 class KXNeurConf : public KConfigDialog
 {
@@ -180,6 +195,7 @@ private:
     KeysPage *keys_page;
     ProgPage *prog_page;
     SndPage *snd_page;
+    OsdPage *osd_page;
     KXNeurApp *knapp;
 
     KGlobalAccel *keys;
