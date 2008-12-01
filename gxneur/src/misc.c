@@ -902,7 +902,7 @@ void xneur_preference(void)
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	cell = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("Text"), cell, "text", 1, NULL);
+	column = gtk_tree_view_column_new_with_attributes(_("OSD Text"), cell, "text", 1, NULL);
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
 	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
 	g_signal_connect (G_OBJECT (cell), "edited",

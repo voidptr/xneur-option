@@ -35,6 +35,9 @@ msgstr ""
 msgid "OSD Font"
 msgstr ""
 
+msgid "OSD Text"
+msgstr ""
+
 msgid "Flag pixmap for Layout 4"
 msgstr "סימון מפת סמלים לפריסה 4"
 
