@@ -189,6 +189,20 @@ KeyConvert::KeyConvert()
     keys["z"] = Qt::Key_Z;
     codes[Qt::Key_Z] = "z";
 
+    keys["Tab"] = Qt::Key_Tab;
+    codes[Qt::Key_Tab] = "Tab"; 
+
+    keys["Return"] = Qt::Key_Return;
+    codes[Qt::Key_Return] = "Return"; 
+
+    keys["Space"] = Qt::Key_Return;
+    codes[Qt::Key_Return] = "Space"; 
+
+    keys["BackSpace"] = Qt::Key_BackSpace;
+    codes[Qt::Key_BackSpace] = "BackSpace"; 
+
+    keys["Escape"] = Qt::Key_Escape;
+    codes[Qt::Key_Escape] = "Escape"; 
 };
 
 KeyConvert::~KeyConvert()

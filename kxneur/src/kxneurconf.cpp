@@ -448,8 +448,15 @@ OsdPage::OsdPage( QWidget* parent, const char* name, WFlags fl )
 
     enable_osd = new QCheckBox(i18n("Enable OSD on XNeur actions"), this);
     vlayout->addWidget(enable_osd);
+
+    hlayout = new QHBoxLayout(vlayout);
+    QLabel *label = new QLabel(i18n("OSD Font "), this);
+    hlayout->addWidget(label);
     osd_font = new QLineEdit(i18n("Use this font for OSD"), this);
-    vlayout->addWidget(osd_font);
+    hlayout->addWidget(osd_font);
+
+    label = new QLabel(i18n("Use command \"xfontsel -print\" to get new font."), this);
+    vlayout->addWidget(label);
 
     grid = new QGrid(2, this);
     grid->setSpacing(2);
@@ -661,7 +668,7 @@ void KXNeurConf::LoadSettings()
     keys->insert("Enable Secondary Layout ",     i18n("Enable Secondary Layout "),     QString::null, KeyFromXNConf(7), 0, this, NULL);
     keys->insert("Enable Thrid Layout ",         i18n("Enable Thrid Layout "),         QString::null, KeyFromXNConf(8), 0, this, NULL);
     keys->insert("Enable Fourth Layout ",        i18n("Enable Fourth Layout "),        QString::null, KeyFromXNConf(9), 0, this, NULL);
-    // keys->insert("Replace Abbreviation ",        i18n("Replace Abbreviation "),        QString::null, KeyFromXNConf(10), 0, this, NULL);
+    keys->insert("Replace Abbreviation ",        i18n("Replace Abbreviation "),        QString::null, KeyFromXNConf(10), 0, this, NULL);
 
     keys_page->keyChooser = new KKeyChooser(keys, keys_page);
     keys_page->vlayout->addWidget(keys_page->keyChooser);
@@ -775,7 +782,7 @@ void KXNeurConf::SaveSettings()
     KeyToXNConf(7, keys->shortcut("Enable Secondary Layout "    ).keyCodeQt());
     KeyToXNConf(8, keys->shortcut("Enable Thrid Layout "        ).keyCodeQt());
     KeyToXNConf(9, keys->shortcut("Enable Fourth Layout "       ).keyCodeQt());
-    // KeyToXNConf(10, keys->shortcut("Replace Abbreviation "       ).keyCodeQt());
+    KeyToXNConf(10, keys->shortcut("Replace Abbreviation "       ).keyCodeQt());
 
 
     for ( int i = 0 ; i < prog_page->list[0]->numRows() ; i++ )
@@ -792,10 +799,25 @@ void KXNeurConf::SaveSettings()
     else
 	knapp->xnconf->play_sounds = 0;
 
-    for ( int i = 0 ; i < MAX_SOUNDS-3 ; i++ ) {
+    for ( int i = 0 ; i < MAX_SOUNDS ; i++ ) {
 	if ( knapp->xnconf->sounds[i].file )
 	    free(knapp->xnconf->sounds[i].file);
 	knapp->xnconf->sounds[i].file = qstrdup(snd_page->edit[i]->text().utf8());
+    }
+
+    if ( osd_page->enable_osd->isChecked() )
+	knapp->xnconf->show_osd = 1;
+    else
+	knapp->xnconf->show_osd = 0;
+
+    if ( knapp->xnconf->osd_font )
+	free(knapp->xnconf->osd_font);
+    knapp->xnconf->osd_font = qstrdup(osd_page->osd_font->text().utf8());
+
+    for ( int i = 0 ; i < MAX_OSDS ; i++ ) {
+	if ( knapp->xnconf->osds[i].file )
+	    free(knapp->xnconf->osds[i].file);
+	knapp->xnconf->osds[i].file = qstrdup(osd_page->edit[i]->text().utf8());
     }
 
     knapp->xnconf->save(knapp->xnconf);
@@ -835,7 +857,7 @@ int KXNeurConf::KeyFromXNConf(int action)
     if ( knapp->xnconf->hotkeys[action].modifiers & 0x8 )
 	shc += KKey::QtWIN;
     int ccc = kc.key2code(knapp->xnconf->hotkeys[action].key);
-    // qDebug("%d : %s == %x -> ", action, knapp->xnconf->hotkeys[action].key, ccc);
+    //qDebug("%d : %s == %x -> ", action, knapp->xnconf->hotkeys[action].key, ccc);
     shc += ccc;
     // qDebug("%x\n", shc);
     orig_keys[action] = shc;

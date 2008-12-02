@@ -159,8 +159,8 @@ public:
     QCheckBox *enable_snd;
     // QHBox *hbox;
     QGrid *grid;
-    KXNLineEdit *edit[21];
-    QPushButton *btn[21];
+    KXNLineEdit *edit[MAX_SOUNDS];
+    QPushButton *btn[MAX_SOUNDS];
 
 };
 
@@ -174,9 +174,10 @@ public:
     QVBoxLayout *vlayout;
     QCheckBox *enable_osd;
     QLineEdit *osd_font;
-    // QHBox *hbox;
+    //QLabel 
+    QHBoxLayout *hlayout;
     QGrid *grid;
-    KXNLineEdit *edit[21];
+    KXNLineEdit *edit[MAX_OSDS];
 
 };
 
@@ -187,7 +188,7 @@ public:
     KXNeurConf(KXNeurApp *app, QWidget *parent = 0);
     ~KXNeurConf();
 
-    int orig_keys[10];
+    int orig_keys[MAX_HOTKEYS];
 
 private:
     KXNeurPage *kxneur_page;
