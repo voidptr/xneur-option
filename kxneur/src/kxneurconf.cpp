@@ -500,6 +500,30 @@ OsdPage::~OsdPage()
 {
 }
 
+AbbrPage::AbbrPage( QWidget* parent, const char* name, WFlags fl )
+ : QWidget( parent, name, fl )
+{
+    if ( !name )
+	setName( "AbbrPage" );
+
+    vlayout = new QVBoxLayout(this);
+    vlayout->setSpacing(5);
+
+    ignore_layout = new QCheckBox(i18n("Ignore layout for abbreviations"), this);
+    vlayout->addWidget( ignore_layout );
+
+    /*grid = new QGrid(2, this);
+    grid->setSpacing(2);
+    grid->setMargin(5);
+    grid->setFrameShape(QFrame::GroupBoxPanel);
+    vlayout->addWidget( grid );*/
+    vlayout->setAlignment( Qt::AlignTop );
+}
+
+AbbrPage::~AbbrPage()
+{
+}
+
 KXNeurConf::KXNeurConf(KXNeurApp *app, QWidget *parent)
  : KConfigDialog(parent, i18n("Settings"), KXNeurSettings::self(), KDialogBase::IconList, Ok|Cancel|Help, Ok, true)
 {
@@ -511,6 +535,7 @@ KXNeurConf::KXNeurConf(KXNeurApp *app, QWidget *parent)
     prog_page = new ProgPage(0, "ProgPage");
     snd_page = new SndPage(0, "SndPage");
     osd_page = new OsdPage(0, "OsdPage");
+    abbr_page = new AbbrPage(0, "AbbrPage");
 
     addPage( kxneur_page, i18n("Common"), "keyboard_layout", i18n("Commons Options") ); // or pic = embedjs, exec
     addPage( xneur_page, i18n("Languages"), "locale", i18n("Languages Options") ); // or pic = 
@@ -518,7 +543,7 @@ KXNeurConf::KXNeurConf(KXNeurApp *app, QWidget *parent)
     addPage( prog_page, i18n("Programs"), "kwin", i18n("Exclusions for Program") );
     addPage( snd_page, i18n("Sounds"), "kmix", i18n("Sounds for Events") );
     addPage( osd_page, i18n("OSD"), "kmix", i18n("OSD for Events") );
-
+    addPage( abbr_page, i18n("Abbreviations"), "kmix", i18n("Replace Abbreviations Options") );
     LoadSettings();
 }
 
@@ -529,6 +554,8 @@ KXNeurConf::~KXNeurConf()
     delete keys_page;
     delete snd_page;
     delete prog_page;
+    delete osd_page;
+    delete abbr_page;
 }
 
 void KXNeurConf::LoadSettings()
@@ -672,9 +699,9 @@ void KXNeurConf::LoadSettings()
 
     keys_page->keyChooser = new KKeyChooser(keys, keys_page);
     keys_page->vlayout->addWidget(keys_page->keyChooser);
+
     // keys_page->vlayout->addWidget(new QLabel(i18n("kdelibs have bug with Ctrl+Break"), keys_page));
     QWhatsThis::add(keys_page->keyChooser, i18n("warning! kdelibs have bug with Ctrl+Break"));
-
 
     for (int i = 0 ; i < knapp->xnconf->excluded_apps->data_count ; i++ )
 	prog_page->list[0]->insertItem(knapp->xnconf->excluded_apps->data[i].string);
@@ -692,6 +719,8 @@ void KXNeurConf::LoadSettings()
     osd_page->osd_font->setText(i18n(knapp->xnconf->osd_font));
     for (int i = 0 ; i < MAX_OSDS ; i++)
 	osd_page->edit[i]->setText(i18n(knapp->xnconf->osds[i].file));
+
+    abbr_page->ignore_layout->setChecked( knapp->xnconf->abbr_ignore_layout );
 }
 
 void KXNeurConf::SaveSettings()
@@ -819,6 +848,11 @@ void KXNeurConf::SaveSettings()
 	    free(knapp->xnconf->osds[i].file);
 	knapp->xnconf->osds[i].file = qstrdup(osd_page->edit[i]->text().utf8());
     }
+
+    if ( abbr_page->ignore_layout->isChecked() )
+	knapp->xnconf->abbr_ignore_layout = 1;
+    else
+	knapp->xnconf->abbr_ignore_layout = 0; 
 
     knapp->xnconf->save(knapp->xnconf);
     knapp->xnconf->reload(knapp->xnconf);

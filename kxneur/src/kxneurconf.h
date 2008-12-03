@@ -43,6 +43,7 @@ class KXNListBox;
 class QSpinBox;
 class KKeyChooser;
 class KGlobalAccel;
+class QListView;
 
 
 class KXNPushButton : public QPushButton
@@ -181,6 +182,18 @@ public:
 
 };
 
+class AbbrPage : public QWidget
+{
+
+public:
+    AbbrPage( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    ~AbbrPage();
+
+    QVBoxLayout *vlayout;
+    QCheckBox *ignore_layout;
+    //QGrid *grid;
+};
+
 class KXNeurConf : public KConfigDialog
 {
 
@@ -197,6 +210,7 @@ private:
     ProgPage *prog_page;
     SndPage *snd_page;
     OsdPage *osd_page;
+    AbbrPage *abbr_page;
     KXNeurApp *knapp;
 
     KGlobalAccel *keys;
