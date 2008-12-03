@@ -528,7 +528,12 @@ static void xprogram_on_key_action(struct _xprogram *p)
 	int modifier_mask = p->event->get_cur_modifiers(p->event);
 	
 	int user_action = get_user_action(key, modifier_mask);
-	p->perform_user_action(p, user_action);
+	if (user_action >= 0) 
+	{
+		p->perform_user_action(p, user_action);
+	    p->event->default_event.xkey.keycode = 0;
+		return;
+	}
 	
 	enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
 	if (p->perform_manual_action(p, manual_action))
@@ -541,8 +546,6 @@ static void xprogram_on_key_action(struct _xprogram *p)
 static void xprogram_perform_user_action(struct _xprogram *p, int action)
 {
 	if (p) {};
-	if (action < 0) 
-		return;
 	
 	log_message(DEBUG, _("Execute user action \"%s\""), xconfig->actions->action_command->data[action].string); 
 	
