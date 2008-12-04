@@ -63,6 +63,13 @@ Here, <action> stands for an action of XNeur, <key> stands for a special key.
 
 [key] takes the values defined in your latin keyboard. Skip this value if hot key undefined.
 .TP 8
+.B AddAction [Control | Alt | Shift | Super] <key> <action>
+Defines hot keys for user actions.
+
+Here, <action> is user actions (e.g. firefox or gnome-terminal), <key> stands for a special key.
+
+<key> takes the values defined in your latin keyboard.
+.TP 8
 .B ReplaceAbbreviationIgnoreLayout <param>
 This option enable or disable of the ignore keyboard layout for abbreviations list.
 
@@ -82,9 +89,9 @@ Here, <param> takes the values "Yes", "No".
 .B AddSound <action> <sound>
 Binds sounds for some actions.
 
-Here, <action> takes the following values: "PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
+Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurStop", "PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 "EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-"AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation".
+"AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
 
 <sound> is .wav file placed in ~/.xneur/sounds or in basic place ({prefix}/share/xneur/sounds/).
 .TP 8
@@ -117,7 +124,7 @@ Here, <value> must be until 0 to 50.
 This option define pixmap for layout with <name>. 
 
 Here, <name> takes the following values: "Layout1Flag", "Layout2Flag", "Layout3Flag", "Layout4Flag".
-[pixmap] is .xpm file placed in ~/.xneur/pixmaps or in basic place ({prefix}/share/xneur/pixmaps/).
+[pixmap] is image file placed in ~/.xneur/pixmaps or in basic place ({prefix}/share/xneur/pixmaps/).
 .TP 8
 .B DrawFlagApp <app_name>
 Defines an application, in which the program will draw flag.
@@ -130,6 +137,45 @@ Multiple entries for this option in a single configuration file are allowed, lik
 This option enable or disable logging keyboard. Log places in ~/.xneur/xneurlog
 
 Here, <param> takes the values "Yes", "No". 
+.TP 8
+.B CorrectIncidentalCaps <param>
+This option enable or disable correction of iNCIDENTAL CapsLock.
+
+Here, <param> takes the values "Yes", "No". 
+.TP 8
+.B CorrectTwoCapitalLetter <param>
+This option enable or disable correction of two CApital letter.
+
+Here, <param> takes the values "Yes", "No". 
+.TP 8
+.B FlushBufferWhenPressEnter <param>
+This option enable or disable flushing internal buffer when pressed Enter or Tab.
+
+Here, <param> takes the values "Yes", "No". 
+.TP 8
+.B DontProcessWhenPressEnter <param>
+This option disable or enable processing word when pressed Enter or Tab.
+
+Here, <param> takes the values "Yes", "No". 
+.TP 8
+.B ShowOSD <param>
+This option disable or enable show OSD.
+
+Here, <param> takes the values "Yes", "No".
+.TP 8
+.B FontOSD <param>
+This option set font for OSD.
+
+Here, <param> takes the value, that can be received with command "xfontsel -print".
+.TP 8
+.B AddOSD <action> <text>
+Binds OSD for some actions.
+
+Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurStop", "PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
+"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
+"AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
+
+<text> is text will be displayed.
 
 
 .SH "SEE ALSO"
