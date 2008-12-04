@@ -89,10 +89,46 @@ if test "x$with_pcre" != "xno"; then
 	AC_DEFINE(WITH_PCRE, 1, [Define if you want pcre support])
 fi
 
-AC_ARG_WITH(xpm, [  --without-xpm	  Compile without xpm support])
-if test "x$with_xpm" != "xno"; then
-	PKG_CHECK_MODULES(XPM, [xpm ])
-	AC_DEFINE(WITH_XPM, 1, [Define if you want xmp support])
+AC_ARG_WITH(image, [  --with-image[[=ARG]]	  Compile with image support ARG=[[yes|no|imlib2|xpm]] [[default=yes]]])
+if test "x$with_image" != "xno"; then
+	if test "x$with_image" = "x"; then
+		with_image="imlib2"
+	fi
+
+	case $with_image in
+		imlib2|yes)
+				found_imlib2_bin_dir=""
+				for imlib2_dir in /usr/local /usr $prefix
+				do
+					if test -f "$imlib2_dir/bin/imlib2-config"; then
+						found_imlib2_bin_dir="$imlib2_dir/bin"
+					fi
+				done
+
+				AC_MSG_CHECKING([for imlib2-config bin])
+				if test "x$found_imlib2_bin_dir" != "x"; then
+					AC_MSG_RESULT([found at $found_imlib2_bin_dir])
+				else
+					AC_MSG_RESULT([no])
+					AC_MSG_ERROR([Can't locate your imlib2-config bin])
+				fi
+
+				AC_DEFINE(WITH_IMLIB2, 1, [Define if you want imlib2 support])
+				IMLIB2_LIBS=`imlib2-config --libs`
+				AC_SUBST(IMLIB2_LIBS)
+				IMLIB2_CFLAGS=`imlib2-config --cflags`
+				AC_SUBST(IMLIB2_CFLAGS)
+			;;
+		xpm)
+				PKG_CHECK_MODULES(XPM, [xpm ])
+				AC_DEFINE(WITH_XPM, 1, [Define if you want xmp support])
+			;;
+		*)
+			AC_MSG_ERROR([Unsupported image system selected, --with-image=[[yes|no|imlib2|xpml]]])
+			;;
+	esac
+
+	AC_DEFINE(WITH_IMAGE, 1, [Define if you want image support])
 fi
 
 AC_ARG_WITH(aspell, [  --without-aspell	  Compile without aspell support])
@@ -212,13 +248,22 @@ cat <<EOF
 EOF
 fi
 
-if test "x$with_xpm" != "xno"; then
-cat <<EOF
+case $with_image in
+	xpm|yes)
+cat << EOF
 	Xpm compiler flags:		$XPM_CFLAGS
 	Xpm linker flags:		$XPM_LIBS
 
 EOF
-fi
+		;;
+	imlib2)
+cat << EOF
+	Imlib2 compiler flags:		$IMLIB2_CFLAGS
+	Imlib2 linker flags:		$IMLIB2_LIBS
+
+EOF
+		;;
+esac
 
 if test "x$with_xosd" != "xno"; then
 cat <<EOF

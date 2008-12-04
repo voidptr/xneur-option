@@ -220,7 +220,7 @@ void *play_file_thread(void *param)
 }
 
 #endif
-#ifdef WITH_APLAY /* WITH_OPENAL */
+#ifdef WITH_APLAY /* WITH_APLAY */
 
 void sound_init(void)
 {

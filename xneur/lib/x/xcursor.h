@@ -17,14 +17,12 @@
  *
  */
 
-#ifndef _XCURSOR_H_
-#define _XCURSOR_H_
+#ifndef _XIMAGE_H_
+#define _XIMAGE_H_
  
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-
-#ifdef WITH_XPM
 
 #include <X11/Xutil.h>
 #include <X11/xpm.h>
@@ -33,30 +31,11 @@
 
 struct _xcursor
 {
-	Pixmap bitmap;
-	Pixmap bitmap_mask;
-	XpmAttributes Attrs;
-
-	GC gc;
-	
-	int last_layuot;
-
-	void (*show_flag) (struct _xcursor *p, int x, int y);
-	void (*hide_flag) (struct _xcursor *p);
+	void (*show_flag) (int x, int y);
+	void (*hide_flag) (void);
 	void (*uninit) (struct _xcursor *p);
 };
-
-#else
-
-struct _xcursor
-{
-	void (*show_flag) (struct _xcursor *p, int x, int y);
-	void (*hide_flag) (struct _xcursor *p);
-	void (*uninit) (struct _xcursor *p);
-};
-
-#endif /* WITH_XPM */
 
 struct _xcursor* xcursor_init(void);
 
-#endif /* _XCURSOR_H_ */
+#endif /* _XIMAGE_H_ */

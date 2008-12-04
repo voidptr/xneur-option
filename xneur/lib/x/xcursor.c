@@ -29,10 +29,9 @@
 #include "log.h"
 #include "types.h"
 
-#ifdef WITH_XPM
+#ifdef WITH_IMAGE
 
 #include <X11/Xutil.h>
-#include <X11/xpm.h>
 #include <X11/XKBlib.h>
 
 #include <unistd.h>
@@ -40,10 +39,34 @@
 
 #include "xnconfig_files.h"
 
-#include "xwindow.h"
-
+#include "xwindow.h"
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
+int last_layuot;
+
+#ifdef WITH_XPM
+
+#include <X11/xpm.h>
+
+Pixmap bitmap;
+Pixmap bitmap_mask;
+XpmAttributes Attrs;
+
+GC gc;
+	
+#elif WITH_IMLIB2
+
+#include <Imlib2.h>
+
+Visual  *vis;
+Colormap cm;
+int depth;
+
+Imlib_Image image, buffer;
+Imlib_Updates updates, current_update;
+int w = 0, h = 0;
+
+#endif
 
 static void unmap_window(XWindowAttributes w_attributes)
 {
@@ -51,6 +74,8 @@ static void unmap_window(XWindowAttributes w_attributes)
 		XUnmapWindow(main_window->display, main_window->flag_window);
 	XFlush(main_window->display);
 }
+
+#ifdef WITH_XPM
 
 static int ReadPixmapFromFile(char *FileName, Pixmap *phPm, Pixmap *phMask, XpmAttributes *pAttrs, Colormap hColorMap)
 {
@@ -81,7 +106,7 @@ static int ReadPixmapFromFile(char *FileName, Pixmap *phPm, Pixmap *phMask, XpmA
 
 	long N = 0;
 	for (long i = 0; i < sizeFile; i++)
-		N += (buffer[i] == '"' ? 1 : 0);
+	N += (buffer[i] == '"' ? 1 : 0);
 	N /= 2;
 
 	char **xpm = (char **) malloc(N * sizeof(char *));
@@ -89,7 +114,6 @@ static int ReadPixmapFromFile(char *FileName, Pixmap *phPm, Pixmap *phMask, XpmA
 	{
 		if (buffer[i] != '"')
 			continue;
-
 		xpm[k++] = buffer + ++i;
 		while (buffer[i] != '"')
 			i++;
@@ -104,8 +128,7 @@ static int ReadPixmapFromFile(char *FileName, Pixmap *phPm, Pixmap *phMask, XpmA
 	free(xpm);
 	free(buffer);
 	return 0;
-}
-
+}
 static GC create_gc()
 {
 	XGCValues values;			// Initial values for the GC
@@ -116,10 +139,8 @@ static GC create_gc()
 	{
 		log_message(ERROR, _("Can't create GC"));
 		return NULL;
-	}
-
-	int screen_num = DefaultScreen(main_window->display);
-
+	}
+	int screen_num = DefaultScreen(main_window->display);
 	// Allocate foreground and background colors for this GC
 	XSetForeground(main_window->display, gc, WhitePixel(main_window->display, screen_num));
 	XSetBackground(main_window->display, gc, BlackPixel(main_window->display, screen_num));
@@ -138,7 +159,7 @@ static GC create_gc()
 	return gc;
 }
 
-void xcursor_show_flag(struct _xcursor *p, int x, int y)
+void xcursor_show_flag(int x, int y)
 {
 	XWindowAttributes w_attributes;
 	XGetWindowAttributes(main_window->display, main_window->flag_window, &w_attributes);
@@ -154,15 +175,14 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 	}
 
 	// if current layout not equal last layout then load new pixmap
-	if (p->last_layuot != xkbState.group)
+	if (last_layuot != xkbState.group)
 	{
-		p->last_layuot = xkbState.group;
+		last_layuot = xkbState.group;
 
-		XFreePixmap(main_window->display, p->bitmap);
-		XFreePixmap(main_window->display, p->bitmap_mask);
-
-		p->bitmap = 0;
-		p->bitmap_mask = 0;
+		XFreePixmap(main_window->display, bitmap);
+		XFreePixmap(main_window->display, bitmap_mask);
+		bitmap = 0;
+		bitmap_mask = 0;
 
 		char *path = get_file_path_name(PIXMAPDIR, xconfig->flags[xkbState.group].file);
 		if (path == NULL)
@@ -171,10 +191,10 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 			return;
 		}
 
-		ReadPixmapFromFile(path, &p->bitmap, &p->bitmap_mask, &p->Attrs, XDefaultColormap(main_window->display, DefaultScreen(main_window->display)));
+		ReadPixmapFromFile(path, &bitmap, &bitmap_mask, &Attrs, XDefaultColormap(main_window->display, DefaultScreen(main_window->display)));
 		free(path);
 
-		if (p->bitmap == 0)
+		if (bitmap == 0)
 		{
 			unmap_window(w_attributes);
 			return;
@@ -185,20 +205,18 @@ void xcursor_show_flag(struct _xcursor *p, int x, int y)
 	if (w_attributes.map_state == IsUnmapped)
 		XMapWindow(main_window->display, main_window->flag_window);
 
-	XSetClipMask(main_window->display, p->gc, p->bitmap_mask);
-	XSetClipOrigin(main_window->display, p->gc, 0, 0);
-	XCopyArea(main_window->display, p->bitmap, main_window->flag_window, p->gc, 0, 0, p->Attrs.width, p->Attrs.height, 0, 0);
+	XSetClipMask(main_window->display, gc, bitmap_mask);
+	XSetClipOrigin(main_window->display, gc, 0, 0);
+	XCopyArea(main_window->display, bitmap, main_window->flag_window, gc, 0, 0, Attrs.width, Attrs.height, 0, 0);
 
 	XRaiseWindow(main_window->display, main_window->flag_window);
-	XMoveResizeWindow(main_window->display, main_window->flag_window, x, y, p->Attrs.width, p->Attrs.height);
+	XMoveResizeWindow(main_window->display, main_window->flag_window, x, y, Attrs.width, Attrs.height);
 
 	XFlush(main_window->display);
 }
 
-void xcursor_hide_flag(struct _xcursor *p)
+void xcursor_hide_flag(void)
 {
-	if (p){}
-
 	XWindowAttributes w_attributes;
 	XGetWindowAttributes(main_window->display, main_window->flag_window, &w_attributes);
 
@@ -209,11 +227,9 @@ void xcursor_uninit(struct _xcursor *p)
 {
 	Display *display = XOpenDisplay(NULL);
 
-	XFreePixmap(display, p->bitmap);
-	XFreePixmap(display, p->bitmap_mask);
-
-	XFreeGC(display, p->gc);
-
+	XFreePixmap(display, bitmap);
+	XFreePixmap(display, bitmap_mask);
+	XFreeGC(display, gc);
 	XCloseDisplay(display);
 
 	free(p);
@@ -225,17 +241,14 @@ struct _xcursor* xcursor_init(void)
 {
 	struct _xcursor *p = (struct _xcursor *) malloc(sizeof(struct _xcursor));
 	bzero(p, sizeof(struct _xcursor));
-
-	p->gc = create_gc();
-	if (p->gc == NULL)
+	gc = create_gc();
+	if (gc == NULL)
 	{
 		free(p);
 		return NULL;
 	}
-
 	XSync(main_window->display, False);
-
-	p->last_layuot = -1;
+	last_layuot = -1;
 
 	// Functions mapping
 	p->show_flag	= xcursor_show_flag;
@@ -245,39 +258,94 @@ struct _xcursor* xcursor_init(void)
 	return p;
 }
 
+#elif WITH_IMLIB2 /* WITH_IMLIB2 */
 
-#else /* WITH_XPM */
-
-void xcursor_load_pixmaps(struct _xcursor *p)
+void xcursor_show_flag(int x, int y)
 {
-	if (p) {};
-	return;
+	XWindowAttributes w_attributes;
+	XGetWindowAttributes(main_window->display, main_window->flag_window, &w_attributes);
+
+	// For set pixmap to window, need map window
+	if (w_attributes.map_state == IsUnmapped)
+		XMapWindow(main_window->display, main_window->flag_window);
+	
+	XkbStateRec xkbState;
+	XkbGetState(main_window->display, XkbUseCoreKbd, &xkbState);
+	
+	// if for layout not defined xpm file then unmap window and stop procedure
+	if (xconfig->flags[xkbState.group].file == NULL)
+	{
+		unmap_window(w_attributes);
+		return;
+	}
+
+	// if current layout not equal last layout then load new pixmap
+	if (last_layuot != xkbState.group)
+	{
+		last_layuot = xkbState.group;
+
+		char *path = get_file_path_name(PIXMAPDIR, xconfig->flags[xkbState.group].file);
+		if (path == NULL)
+		{
+			unmap_window(w_attributes);
+			return;
+		}
+
+		image = imlib_load_image(path);
+		free(path);
+
+		if (image == NULL)
+		{
+			unmap_window(w_attributes);
+			return;
+		}
+
+		imlib_context_set_image(image);
+		w = imlib_image_get_width();
+		h = imlib_image_get_height();
+		XResizeWindow(main_window->display, main_window->flag_window, w, h);
+	}	
+	
+	imlib_render_image_on_drawable_at_size(0, 0, w, h);
+	XRaiseWindow(main_window->display, main_window->flag_window);
+	XMoveWindow(main_window->display, main_window->flag_window, x, y);
+
+	XFlush(main_window->display);
 }
 
-void xcursor_show_flag(struct _xcursor *p, int x, int y)
+void xcursor_hide_flag(void)
 {
-	if (p || x || y) {};
-	return;
-}
+	XWindowAttributes w_attributes;
+	XGetWindowAttributes(main_window->display, main_window->flag_window, &w_attributes);
 
-void xcursor_hide_flag(struct _xcursor *p)
-{
-	if (p) {};
-	return;
+	unmap_window(w_attributes);
 }
 
 void xcursor_uninit(struct _xcursor *p)
 {
+	imlib_free_image();
 	free(p);
-
-	log_message(DEBUG, _("Current cursor is freed"));
 }
 
 struct _xcursor* xcursor_init(void)
 {
 	struct _xcursor *p = (struct _xcursor *) malloc(sizeof(struct _xcursor));
 	bzero(p, sizeof(struct _xcursor));
+	
+	last_layuot = -1;
+	
+	vis   = DefaultVisual(main_window->display, DefaultScreen(main_window->display));
+	cm    = DefaultColormap(main_window->display, DefaultScreen(main_window->display));
 
+	imlib_set_cache_size(2048 * 1024);
+
+	imlib_context_set_display(main_window->display);
+	imlib_context_set_visual(vis);
+	imlib_context_set_colormap(cm);
+	imlib_context_set_drawable(main_window->flag_window);
+
+	imlib_context_set_dither(1);
+	
 	// Functions mapping
 	p->show_flag	= xcursor_show_flag;
 	p->hide_flag	= xcursor_hide_flag;
@@ -286,4 +354,36 @@ struct _xcursor* xcursor_init(void)
 	return p;
 }
 
-#endif /* WITH_XPM */
+#endif
+
+#else /* WITH_IMAGE */
+
+void xcursor_show_flag(int x, int y)
+{
+	if (x || y) {};
+	return;
+}
+
+void xcursor_hide_flag(void)
+{
+}
+
+void xcursor_uninit(struct _xcursor *p)
+{
+	free(p);
+}
+
+struct _xcursor* xcursor_init(void)
+{
+	struct _xcursor *p = (struct _xcursor *) malloc(sizeof(struct _xcursor));
+	bzero(p, sizeof(struct _xcursor));
+	
+	// Functions mapping
+	p->show_flag	= xcursor_show_flag;
+	p->hide_flag	= xcursor_hide_flag;
+	p->uninit	= xcursor_uninit;
+
+	return p;
+}
+
+#endif /* WITH_IMAGE */

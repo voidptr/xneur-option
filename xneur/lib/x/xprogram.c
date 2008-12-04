@@ -191,7 +191,7 @@ static void xprogram_cursor_update(struct _xprogram *p)
 {
 	if (!p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
 	{
-		p->cursor->hide_flag(p->cursor);
+		p->cursor->hide_flag();
 		return;
 	}
 
@@ -201,7 +201,7 @@ static void xprogram_cursor_update(struct _xprogram *p)
 
 	XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);
 
-	p->cursor->show_flag(p->cursor, root_x + 10, root_y + 10);
+	p->cursor->show_flag(root_x + 10, root_y + 10);
 }
 
 static void xprogram_layout_update(struct _xprogram *p)

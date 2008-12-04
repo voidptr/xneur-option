@@ -1,12 +1,12 @@
 pixmapsdir = @datarootdir@/xneur/pixmaps
 pixmaps_DATA =			\
-	Russian.xpm		\
-	Ukrainian.xpm		\
-	English.xpm		\
-	Belarusian.xpm		\
-	French.xpm		\
-	Romanian.xpm		\
-	Kazakh.xpm		\
-	German.xpm		
+	Russian.png		\
+	Ukrainian.png		\
+	English.png		\
+	Belarusian.png		\
+	French.png		\
+	Romanian.png		\
+	Kazakh.png		\
+	German.png		
 
 EXTRA_DIST = $(pixmaps_DATA)
