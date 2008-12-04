@@ -901,9 +901,9 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option define delay before sendind events to application (in milliseconds between 0 to 50).\n");
 	fprintf(stream, "SendDelay %d\n\n", p->send_delay);
 
-	fprintf(stream, "# Binds pixmaps for some layouts (pixmap only in xpm format)\n");
+	fprintf(stream, "# Binds pixmaps for some layouts\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.xpm\n");
+	fprintf(stream, "#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.png\n");
 	for (int flag = 0; flag < MAX_FLAGS; flag++)
 	{
 		if (p->flags[flag].file == NULL)

@@ -114,11 +114,11 @@ SaveSelectionMode Yes
 # This option define delay before sendind events to application (in milliseconds until 0 to 50).
 SendDelay 1
 
-# Binds pixmaps for some layouts (pixmap only in xpm format)
+# Binds pixmaps for some layouts
 # Example:
-#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.xpm
-AddFlagPixmap Layout1Flag English.xpm
-AddFlagPixmap Layout2Flag Russian.xpm
+#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.png
+AddFlagPixmap Layout1Flag English.png
+AddFlagPixmap Layout2Flag Russian.png
 AddFlagPixmap Layout3Flag 
 AddFlagPixmap Layout4Flag 
 
