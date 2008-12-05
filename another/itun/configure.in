@@ -1,0 +1,41 @@
+AC_INIT(configure.in)
+AC_PREREQ(2.59)
+AC_CONFIG_HEADER(config.h)
+
+AC_CONFIG_MACRO_DIR(m4)
+AM_INIT_AUTOMAKE(itun, 0.1)
+
+AC_PROG_LIBTOOL
+AC_PROG_INSTALL
+
+AC_LANG_C
+AM_PROG_CC_C_O
+AC_PROG_MAKE_SET
+
+AC_HEADER_STDC
+
+PKG_PROG_PKG_CONFIG(0.20)
+
+AC_CHECK_HEADER(pcap.h,, AC_MSG_ERROR(cannot find pcap headers))
+AC_CHECK_LIB(pcap, pcap_lookupdev,, AC_MSG_ERROR(canot find pcap library))
+
+AC_CHECK_HEADER(pthread.h,, AC_MSG_ERROR(cannot find pthread headers))
+AC_CHECK_LIB(pthread, pthread_join,, AC_MSG_ERROR(cannot find pthread library))
+
+AC_CHECK_HEADER(libnet.h,, AC_MSG_ERROR(cannot find libnet headers))
+AC_CHECK_LIB(net, libnet_init,, AC_MSG_ERROR(cannot find libnet library))
+
+CFLAGS="-Wall -Wextra -g0 -fPIC -std=gnu99"
+
+AC_OUTPUT([src/Makefile Makefile])
+
+cat << EOF
+
+$PACKAGE $VERSION configured successfully:
+
+	Installing into:		$prefix
+
+	Compiler flags:			$CFLAGS
+	Linker flags:			$LDFLAGS
+
+EOF
