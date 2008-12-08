@@ -149,7 +149,7 @@ FlushBufferWhenPressEnter No
 DontProcessWhenPressEnter No
 
 # This option add user action when pressed key bind
-# Example:\n");
+# Example:;
 #AddAction Control Alt f firefox"
 
 # This option disable or enable show OSD

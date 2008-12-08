@@ -323,8 +323,10 @@ void xcursor_hide_flag(void)
 
 void xcursor_uninit(struct _xcursor *p)
 {
-	imlib_free_image();
+	if (image)
+		imlib_free_image();
 	free(p);
+	log_message(DEBUG, _("Current cursor is freed"));
 }
 
 struct _xcursor* xcursor_init(void)
@@ -371,6 +373,7 @@ void xcursor_hide_flag(void)
 void xcursor_uninit(struct _xcursor *p)
 {
 	free(p);
+	log_message(DEBUG, _("Current cursor is freed"));
 }
 
 struct _xcursor* xcursor_init(void)
