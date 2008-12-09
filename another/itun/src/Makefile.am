@@ -5,6 +5,8 @@ itun_SOURCES =			\
 	buffer.h		\
 	common.c		\
 	common.h		\
+	ring.c			\
+	ring.h			\
 	itun.c
 
 itunp_SOURCES =			\
@@ -12,4 +14,6 @@ itunp_SOURCES =			\
 	buffer.h		\
 	common.c		\
 	common.h		\
+	ring.c			\
+	ring.h			\
 	itunp.c

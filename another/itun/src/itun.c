@@ -14,90 +14,107 @@
 
 #define DEFAULT_PORT		"1771"
 
+struct init_params *params = NULL;
+
 struct connection_data
 {
-	struct init_params *params;
-	struct itun_buffer *program_buffer;
 	struct itun_buffer *proxy_buffer;
+	struct itun_buffer *client_buffer;
 
 	int connfd;
 	int connid;
-	int last_seq;
+
+	int receive_seq;
+	int send_seq;
+
+	pthread_t proxy_write;
+	pthread_t client_read;
+	pthread_t client_write;
 };
 
-static void send_connect_packet(struct connection_data *data)
+static void send_packet(struct connection_data *data, int type, void *payload, int size)
 {
-	struct itun_packet *packet = malloc(sizeof(struct itun_packet));
-	bzero(packet, sizeof(struct itun_packet));
+	struct itun_header *packet = malloc(sizeof(struct itun_header) + size);
+	bzero(packet, sizeof(struct itun_header) + size);
+
+	if (payload != NULL)
+		memcpy((char *) packet + sizeof(struct itun_header), payload, size);
 
 	packet->magic		= MAGIC_NUMBER;
 	packet->id		= data->connid;
-	packet->ip		= data->params->dst_ip;
-	packet->port		= atoi(data->params->proxy_port);
-	packet->state		= STATE_NEW_CONNECTION;
-	packet->seq		= data->last_seq++;
+	packet->type		= type;
+	packet->seq		= data->send_seq++;
+	packet->length		= size;
 
-	send_icmp_packet(data->params, packet, sizeof(struct itun_packet));
+	send_icmp_packet(params->src_ip, params->dst_ip, packet);
+
+	free(packet);
 }
 
-static struct connection_data* init_data(struct init_params *params, int connfd)
+static struct connection_data* init_data(int connfd)
 {
 	struct connection_data *data = malloc(sizeof(struct connection_data));
 	bzero(data, sizeof(struct connection_data));
 
-	data->params		= params;
-	data->program_buffer	= buffer_new();
 	data->proxy_buffer	= buffer_new();
+	data->client_buffer	= buffer_new();
 
 	data->connfd		= connfd;
 	data->connid		= params->last_id++;
-	data->last_seq		= 0;
 
 	return data;
 }
 
-void* do_proxy_read(void *arg)
+static void free_data(struct connection_data *data)
 {
-	arg = arg;
-
-	pthread_exit(NULL);
+	if (data->connfd != 0)
+		close(data->connfd);
+	if (data->proxy_write != 0)
+		pthread_cancel(data->proxy_write);
+	if (data->client_read != 0)
+		pthread_cancel(data->client_read);
+	if (data->client_write != 0)
+		pthread_cancel(data->client_write);
+	if (data->client_buffer != NULL)
+		buffer_free(data->client_buffer);
+	if (data->proxy_buffer != NULL)
+		buffer_free(data->proxy_buffer);
+	free(data);
 }
 
-void* do_proxy_write(void *arg)
+static void* do_client_write(void *arg)
 {
-	arg = arg;
-
-	pthread_exit(NULL);
-}
-
-void* do_client_write(void *arg)
-{
-	arg = arg;
-/*
-	struct connection_data *data	= (struct connection_data *) arg;
-	struct init_params *params	= data->params;
+	struct connection_data *data = (struct connection_data *) arg;
 
 	while (1)
 	{
-		libnet_ptag_t icmp_tag = libnet_build_icmpv4_echo(ICMP_ECHO, 0, 0, 0, 0, NULL, 0, params->libnet, 0);
-		if (icmp_tag == -1)
-			error("Can't build icmp packet: %s", libnet_geterror(params->libnet));
+		struct buffer_chunk *chunk = buffer_take(data->proxy_buffer);
 
-		libnet_ptag_t ip_tag = libnet_build_ipv4(LIBNET_IPV4_H + LIBNET_ICMPV4_ECHO_H, IPTOS_LOWDELAY | IPTOS_THROUGHPUT, rand(), 0, 128, IPPROTO_ICMP, 0, params->src_ip, params->dst_ip, NULL, 0, params->libnet, 0);
-		if (ip_tag == -1)
-			error("Can't build ip packet: %s", libnet_geterror(params->libnet));
+		int done = 0;
+		while (1)
+		{
+			int writed = write(data->connfd, chunk->data + done, chunk->size - done);
+			if (writed == -1)
+			{
+				if (errno != EINTR)
+					break;
+				continue;
+			}
 
-		int written = libnet_write(params->libnet);
-		if (written == -1)
-			error("Can't send icmp echo packet: %s", libnet_geterror(params->libnet));
+			if (writed == 0)
+				break;
 
-		printf("Sended %d bytes icmp-echo packet\n", written);
+			done += writed;
+			printf("L->C writed %d bytes to connection %d\n", writed, data->connid);
+		}
+
+		buffer_free_chunk(chunk);
 	}
-*/
+
 	pthread_exit(NULL);
 }
 
-void* do_client_read(void *arg)
+static void* do_client_read(void *arg)
 {
 	struct connection_data *data = (struct connection_data *) arg;
 
@@ -113,25 +130,126 @@ void* do_client_read(void *arg)
 			continue;
 		}
 
-		printf("readed: %d\n", readed);
 		if (readed == 0)
 			break;
 
-		buffer_add(data->program_buffer, temp_buf, readed);
+		temp_buf[readed] = 0;
 
-		temp_buf[readed] = '\0';
-		printf("%s", temp_buf);
+		printf("C->L readed %d bytes for connection %d\n", readed, data->connid);
+		printf("%s\n", temp_buf);
+
+		buffer_add(data->client_buffer, temp_buf, readed);
 	}
 
 	free(temp_buf);
 	close(data->connfd);
 
-	printf("Disconnected\n");
+	printf("Connection with client %d closed\n", data->connid);
+	send_packet(data, TYPE_CONNECTION_CLOSED, NULL, 0);
 
 	pthread_exit(NULL);
 }
 
-static void do_accept(struct init_params *params)
+static void* do_proxy_write(void *arg)
+{
+	struct connection_data *data = (struct connection_data *) arg;
+
+	while (1)
+	{
+		struct buffer_chunk *chunk = buffer_take(data->client_buffer);
+
+		printf("L->P writed %d bytes to connection %d\n", chunk->size, data->connid);
+
+		send_packet(data, TYPE_CLIENT_DATA, chunk->data, chunk->size);
+		buffer_free_chunk(chunk);
+	}
+
+	pthread_exit(NULL);
+}
+
+static void* do_proxy_read(void *arg)
+{
+	if (arg) {}
+
+	struct pcap_pkthdr *header;
+	const u_char *packet;
+	int result;
+
+	while ((result = pcap_next_ex(params->libpcap, &header, &packet)) >= 0)
+	{
+		if (result == 0)
+			continue;
+
+		struct itun_packet *itp = parse_packet(header->len, packet);
+		if (itp == NULL)
+			continue;
+
+		if (itp->icmp_type == ICMP_ECHOREPLY)
+		{
+			if ((itp->itun->type & PROXY_FLAG) == PROXY_FLAG)
+				continue;
+
+			printf("Received reply to packet %d for connection %d\n", itp->itun->seq, itp->itun->id);
+			continue;
+		}
+
+		if ((itp->itun->type & PROXY_FLAG) != PROXY_FLAG)
+			continue;
+
+		struct connection_data *data = (struct connection_data *) ring_get(params->connections, itp->itun->id);
+		if (data == NULL)
+		{
+			free(itp);
+			continue;
+		}
+
+		switch (itp->itun->type)
+		{
+			case TYPE_CONNECT_FAILED:
+			{
+				printf("Proxy connection %d failed to connect with server\n", data->connid);
+
+				ring_remove(params->connections, data->connid);
+
+				free_data(data);
+				break;
+			}
+			case TYPE_CONNECT_SUCCEED:
+			{
+				printf("Proxy connection %d connected succesefully\n", data->connid);
+
+				if (pthread_create(&data->client_read, NULL, do_client_read, (void *) data) == -1)
+					error("Error %d occured in pthread_create(client_read)", errno);
+
+				if (pthread_create(&data->client_write, NULL, do_client_write, (void *) data) == -1)
+					error("Error %d occured in pthread_create(client_write)", errno);
+				break;
+			}
+			case TYPE_CONNECTION_CLOSE:
+			{
+				printf("Proxy closed connection %d\n", data->connid);
+
+				send_packet(data, TYPE_CONNECTION_CLOSED, NULL, 0);
+
+				free_data(data);
+				break;
+			}
+			case TYPE_PROXY_DATA:
+			{
+				printf("P->L readed %d bytes for connection %d\n", itp->itun->length, data->connid);
+
+				buffer_add(data->proxy_buffer, itp->data, itp->itun->length);
+				break;
+			}
+		}
+
+		free(itp);
+	}
+
+	pthread_exit(NULL);
+}
+
+static void do_accept(void)
 {
 	struct addrinfo hints, *servinfo;
 	bzero(&hints, sizeof(struct addrinfo));
@@ -181,6 +299,11 @@ static void do_accept(struct init_params *params)
 	if (listen(sockfd, -1) == -1)
 		error("Error %d occured in listen(sockfd)", errno);
 
+	pthread_t proxy_read;
+
+	if (pthread_create(&proxy_read, NULL, do_proxy_read, NULL) == -1)
+		error("Error %d occured in pthread_create(proxy_read)", errno);
+
 	while (1)
 	{
 		int connfd = accept(sockfd, NULL, 0);
@@ -199,17 +322,19 @@ static void do_accept(struct init_params *params)
 		if (!set_socket_option(connfd, IPPROTO_TCP, TCP_NODELAY, 1))
 			error("Error %d occured in set_socket_option(conn_fd, TCP_NODELAY, 1)", errno);
 
-		struct connection_data *data = init_data(params, connfd);
+		struct connection_data *data = init_data(connfd);
 
-		pthread_t thread_read, thread_write;
-
-		if (pthread_create(&thread_read, NULL, do_proxy_read, (void *) data) == -1)
-			error("Error %d occured in pthread_create(proxy_read)", errno);
-
-		if (pthread_create(&thread_write, NULL, do_proxy_write, (void *) data) == -1)
+		if (pthread_create(&data->proxy_write, NULL, do_proxy_write, (void *) data) == -1)
 			error("Error %d occured in pthread_create(proxy_write)", errno);
 
-		send_connect_packet(data);
+		struct payload_connect payload;
+		bzero(&payload, sizeof(struct payload_connect));
+
+		payload.ip	= params->dst_ip;
+		payload.port	= atoi(params->proxy_port);
+
+		ring_add(params->connections, data, data->connid);
+		send_packet(data, TYPE_CONNECT, &payload, sizeof(struct payload_connect));
 	}
 }
 
@@ -218,9 +343,9 @@ static void print_usage(void)
 	printf("usage: itun [-h] [-a bind_address] [-p bind_port] proxy_address proxy_port\n");
 }
 
-static struct init_params* get_params(int argc, char *argv[])
+static void do_init(int argc, char *argv[])
 {
-	struct init_params *params = (struct init_params *) malloc(sizeof(struct init_params));
+	params = (struct init_params *) malloc(sizeof(struct init_params));
 	bzero(params, sizeof(struct init_params));
 
 	char opt;
@@ -242,7 +367,7 @@ static struct init_params* get_params(int argc, char *argv[])
 			{
 				print_usage();
 
-				free_params(params);
+				free_params();
 				exit(EXIT_SUCCESS);
 			}
 		}
@@ -252,7 +377,7 @@ static struct init_params* get_params(int argc, char *argv[])
 	{
 		print_usage();
 
-		free_params(params);
+		free_params();
 		exit(EXIT_SUCCESS);
 	}
 
@@ -262,21 +387,21 @@ static struct init_params* get_params(int argc, char *argv[])
 	if (params->bind_port == NULL)
 		params->bind_port = strdup(DEFAULT_PORT);
 
-	return params;
+	params->connections = ring_new();
 }
 
 int main(int argc, char *argv[])
 {
 	srand(time(NULL));
 
-	struct init_params *params = get_params(argc, argv);
+	do_init(argc, argv);
 
-	do_init_libnet(params);
-	do_init_libpcap(params);
+	do_init_libnet();
+	do_init_libpcap();
 
-	do_accept(params);
+	do_accept();
 
-	do_uninit(params);
+	do_uninit();
 
 	exit(EXIT_SUCCESS);
 }
