@@ -1,19 +1,27 @@
 bin_PROGRAMS = itun itunp
 
 itun_SOURCES =			\
-	buffer.c		\
-	buffer.h		\
+	data.c			\
+	data.h			\
 	common.c		\
 	common.h		\
-	ring.c			\
-	ring.h			\
+	connections.c		\
+	connections.h		\
+	packets.c		\
+	packets.h		\
+	params.c		\
+	params.h		\
 	itun.c
 
 itunp_SOURCES =			\
-	buffer.c		\
-	buffer.h		\
+	data.c			\
+	data.h			\
 	common.c		\
 	common.h		\
-	ring.c			\
-	ring.h			\
+	connections.c		\
+	connections.h		\
+	packets.c		\
+	packets.h		\
+	params.c		\
+	params.h		\
 	itunp.c

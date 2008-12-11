@@ -2,6 +2,10 @@
 #include <net/ethernet.h>
 #include <netinet/ip_icmp.h>
 
+#include "params.h"
+#include "connections.h"
+#include "packets.h"
+
 #include "common.h"
 
 #define PCAP_FILTER		"icmp"
@@ -21,6 +25,20 @@ void error(const char *msg, ...)
 	va_end(params);
 
 	exit(EXIT_FAILURE);
+}
+
+int set_socket_option(int sockfd, int level, int option, int value)
+{
+	return (setsockopt(sockfd, level, option, &value, sizeof(value)) != -1);
+}
+
+int add_fcntl(int sockfd, int add_fcntl)
+{
+	int fcntls = fcntl(sockfd, F_GETFL, 0);
+	if (fcntls == -1)
+		return 0;
+
+	return (fcntl(sockfd, F_SETFL, fcntls | add_fcntl) != -1);
 }
 
 struct itun_packet* parse_packet(u_int len, const u_char *packet)
@@ -57,73 +75,66 @@ struct itun_packet* parse_packet(u_int len, const u_char *packet)
 	if (len < sizeof(struct itun_header))
 		return NULL;
 
-	struct itun_header *itun = (struct itun_header *) packet;
+	struct itun_header *header = (struct itun_header *) packet;
 
-	if (itun->magic != MAGIC_NUMBER)
+	if (header->magic != MAGIC_NUMBER)
 		return NULL;
 
 	len	= len - sizeof(struct itun_header);
 	packet	= packet + sizeof(struct itun_header);
 
-	if (len != (u_int) itun->length)
+	if (len != (u_int) header->length)
 		return NULL;
 
 	struct itun_packet *info = malloc(sizeof(struct itun_packet));
+	bzero(info, sizeof(struct itun_packet));
 
-	info->itun	= itun;
 	info->icmp_type	= icmp->type;
 	info->src_ip	= ip->saddr;
 	info->dst_ip	= ip->daddr;
 
+	info->header = malloc(sizeof(struct itun_header));
+	memcpy(info->header, header, sizeof(struct itun_header));
+
 	if (len != 0)
-		info->data = (void *) packet;
+	{
+		info->data = malloc(len * sizeof(char));
+		memcpy(info->data, packet, len * sizeof(char));
+	}
 
 	return info;
 }
 
-void send_icmp_packet(int src_ip, int dst_ip, struct itun_header *packet)
+void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet)
 {
 	pthread_mutex_lock(&libnet_mutex);
 
-	libnet_ptag_t icmp_tag = libnet_build_icmpv4_echo(ICMP_ECHO, 0, 0, 0, 0, (void *) packet, sizeof(struct itun_header) + packet->length, params->libnet, 0);
-	if (icmp_tag == -1)
-		error("Can't build icmp packet: %s", libnet_geterror(params->libnet));
+	int size = sizeof(struct itun_header) + packet->header->length;
 
-	libnet_ptag_t ip_tag = libnet_build_ipv4(LIBNET_IPV4_H + LIBNET_ICMPV4_ECHO_H + sizeof(struct itun_header) + packet->length, IPTOS_LOWDELAY | IPTOS_THROUGHPUT, rand(), 0, 128, IPPROTO_ICMP, 0, src_ip, dst_ip, NULL, 0, params->libnet, 0);
+	char *data = malloc(size * sizeof(char));
+	memcpy(data, packet->header, sizeof(struct itun_header));
+	memcpy(data + sizeof(struct itun_header), packet->data, packet->header->length * sizeof(char));
+
+	libnet_ptag_t icmp_tag = libnet_build_icmpv4_echo(ICMP_ECHO, 0, 0, 0, 0, (u_char *) data, size, params->libnet, 0);
+	if (icmp_tag == -1)
+	{
+		free(data);
+		error("Can't build icmp packet: %s", libnet_geterror(params->libnet));
+	}
+
+	free(data);
+
+	libnet_ptag_t ip_tag = libnet_build_ipv4(LIBNET_IPV4_H + LIBNET_ICMPV4_ECHO_H + sizeof(struct itun_header) + packet->header->length, 0, rand(), 0, 64, IPPROTO_ICMP, 0, src_ip, dst_ip, NULL, 0, params->libnet, 0);
 	if (ip_tag == -1)
 		error("Can't build ip packet: %s", libnet_geterror(params->libnet));
 
-	int written = libnet_write(params->libnet);
-	if (written == -1)
+	int writed = libnet_write(params->libnet);
+	if (writed == -1)
 		error("Can't send icmp echo packet: %s", libnet_geterror(params->libnet));
 
 	libnet_clear_packet(params->libnet);
 
 	pthread_mutex_unlock(&libnet_mutex);
-}
-
-int set_socket_option(int sockfd, int level, int option, int value)
-{
-	return (setsockopt(sockfd, level, option, &value, sizeof(value)) != -1);
-}
-
-void free_params(void)
-{
-	if (params->bind_address != NULL)
-		free(params->bind_address);
-	if (params->bind_port != NULL)
-		free(params->bind_port);
-	if (params->proxy_address != NULL)
-		free(params->proxy_address);
-	if (params->proxy_port != NULL)
-		free(params->proxy_port);
-	if (params->libnet != NULL)
-		libnet_destroy(params->libnet);
-	if (params->libpcap != NULL)
-		pcap_close(params->libpcap);
-	if (params->connections != NULL)
-		ring_free(params->connections);
-	free(params);
 }
 
 void do_init_libnet(void)
@@ -210,5 +221,5 @@ void do_init_libpcap(void)
 void do_uninit(void)
 {
 	pthread_mutex_destroy(&libnet_mutex);
-	free_params();
+	params_free(params);
 }

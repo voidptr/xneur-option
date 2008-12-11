@@ -1,7 +1,6 @@
 
 #include <sys/socket.h>
-#include <net/ethernet.h>
-#include <netinet/ip_icmp.h>
+#include <sys/select.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -11,15 +10,18 @@
 
 #include <getopt.h>
 
-#include "buffer.h"
+#include "connections.h"
+#include "packets.h"
+#include "data.h"
 #include "common.h"
+#include "params.h"
 
-struct init_params *params = NULL;
+struct init_params *params	= NULL;
+pthread_t icmp_write		= 0;
 
 struct connection_data
 {
-	struct itun_buffer *client_buffer;
-	struct itun_buffer *server_buffer;
+	struct data_buffer *client_buffer;
 
 	int connfd;
 	int connid;
@@ -31,23 +33,27 @@ struct connection_data
 	int server_ip;
 	int server_port;
 
-	pthread_t client_write;
+	pthread_t server_connect;
 	pthread_t server_read;
 	pthread_t server_write;
 };
 
-static struct connection_data* init_data(struct itun_packet *packet, int connfd)
+static void print_usage(void)
+{
+	printf("usage: itunp [-h] [-a bind_address]\n");
+}
+
+static struct connection_data* init_connection_data(struct itun_packet *packet, int connfd)
 {
 	struct payload_connect *payload = (struct payload_connect *) packet->data;
 
 	struct connection_data *data = malloc(sizeof(struct connection_data));
 	bzero(data, sizeof(struct connection_data));
 
-	data->client_buffer	= buffer_new();
-	data->server_buffer	= buffer_new();
+	data->client_buffer	= data_new();
 
 	data->connfd		= connfd;
-	data->connid		= packet->itun->id;
+	data->connid		= packet->header->connid;
 
 	data->client_ip		= packet->dst_ip;
 	data->server_ip		= payload->ip;
@@ -56,54 +62,84 @@ static struct connection_data* init_data(struct itun_packet *packet, int connfd)
 	return data;
 }
 
-static void free_data(struct connection_data *data)
+static void free_connection_data(struct connection_data *data)
 {
 	if (data->connfd != 0)
 		close(data->connfd);
+
+	if (data->server_connect != 0)
+		pthread_cancel(data->server_connect);
 	if (data->server_read != 0)
 		pthread_cancel(data->server_read);
 	if (data->server_write != 0)
 		pthread_cancel(data->server_write);
-	if (data->client_write != 0)
-		pthread_cancel(data->client_write);
-	if (data->server_buffer != NULL)
-		buffer_free(data->server_buffer);
+
 	if (data->client_buffer != NULL)
-		buffer_free(data->client_buffer);
+		data_free(data->client_buffer);
+
+	connections_remove(params->connections, data->connid);
+
+	packets_drop(params->packets_send, data->connid);
+	packets_drop(params->packets_receive, data->connid);
+
 	free(data);
 }
 
 static void send_packet(struct connection_data *data, int type, void *payload, int size)
 {
-	struct itun_header *packet = malloc(sizeof(struct itun_header) + size);
-	bzero(packet, sizeof(struct itun_header) + size);
+	struct itun_packet *packet = malloc(sizeof(struct itun_packet));
+	bzero(packet, sizeof(struct itun_packet));
+
+	packet->header = malloc(sizeof(struct itun_header));
+	bzero(packet->header, sizeof(struct itun_header));
+
+	packet->header->magic		= MAGIC_NUMBER;
+	packet->header->connid		= data->connid;
+	packet->header->type		= type;
+	packet->header->seq		= data->send_seq++;
+	packet->header->length		= size;
+	packet->connection		= data;
 
 	if (payload != NULL)
-		memcpy((char *) packet + sizeof(struct itun_header), payload, size);
+	{
+		packet->data = malloc(size * sizeof(char));
+		memcpy(packet->data, payload, size);
+	}
 
-	packet->magic		= MAGIC_NUMBER;
-	packet->id		= data->connid;
-	packet->type		= type;
-	packet->seq		= data->send_seq++;
-	packet->length		= size;
-
+	packets_add(params->packets_send, packet);
 	send_icmp_packet(params->src_ip, data->client_ip, packet);
-
-	free(packet);
 }
 
-static void* do_client_write(void *arg)
+static void* do_server_write(void *arg)
 {
 	struct connection_data *data = (struct connection_data *) arg;
 
 	while (1)
 	{
-		struct buffer_chunk *chunk = buffer_take(data->server_buffer);
+		struct data_chunk *chunk = data_take(data->client_buffer);
 
-		printf("L->C writed %d bytes for connection %d\n", chunk->size, data->connid);
+		int done = 0;
+		while (done != chunk->size)
+		{
+			int writed = write(data->connfd, chunk->data + done, chunk->size - done);
+			if (writed == -1)
+			{
+				if (errno != EINTR)
+					error("Error %d while writing data to server", errno);
+				continue;
+			}
 
-		send_packet(data, TYPE_PROXY_DATA, chunk->data, chunk->size);
-		buffer_free_chunk(chunk);
+			if (writed == 0)
+				break;
+
+			done += writed;
+
+			printf("%s\n");
+			printf("L->S writed %d bytes for connection %d\n", writed, data->connid);
+			printf("%s\n", chunk->data);
+		}
+
+		data_free_chunk(chunk);
 	}
 
 	pthread_exit(NULL);
@@ -121,7 +157,7 @@ static void* do_server_read(void *arg)
 		if (readed == -1)
 		{
 			if (errno != EINTR)
-				break;
+				error("Error %d while reading data from server", errno);
 			continue;
 		}
 
@@ -130,10 +166,11 @@ static void* do_server_read(void *arg)
 
 		temp_buf[readed] = 0;
 
+		printf("\n");
 		printf("S->L readed %d bytes for connection %d\n", readed, data->connid);
 		printf("%s\n", temp_buf);
 
-		buffer_add(data->server_buffer, temp_buf, readed);
+		data_add(params->client_buffer, temp_buf, readed, data);
 	}
 
 	free(temp_buf);
@@ -145,47 +182,15 @@ static void* do_server_read(void *arg)
 	pthread_exit(NULL);
 }
 
-static void* do_server_write(void *arg)
-{
-	struct connection_data *data = (struct connection_data *) arg;
-
-	while (1)
-	{
-		struct buffer_chunk *chunk = buffer_take(data->client_buffer);
-
-		int done = 0;
-		while (1)
-		{
-			int writed = write(data->connfd, chunk->data + done, chunk->size - done);
-			if (writed == -1)
-			{
-				if (errno != EINTR)
-					break;
-				continue;
-			}
-
-			if (writed == 0)
-				break;
-
-			done += writed;
-			printf("L->S writed %d bytes to connection %d\n", writed, data->connid);
-		}
-
-		buffer_free_chunk(chunk);
-	}
-
-	pthread_exit(NULL);
-}
-
 static void* do_server_connect(void *arg)
 {
-	struct itun_packet *packet = (struct itun_packet *) arg;
+	struct connection_data *data = (struct connection_data *) arg;
 
 	int connfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (connfd == -1)
 		error("Can't open new socket");
 
-	struct connection_data *data = init_data(packet, connfd);
+	data->connfd = connfd;
 
 	struct sockaddr_in addr;
 	bzero(&addr, sizeof(struct sockaddr_in));
@@ -202,32 +207,136 @@ static void* do_server_connect(void *arg)
 		printf("Can't connect to %s:%d\n", inet_ntoa(saddr), data->server_port);
 
 		send_packet(data, TYPE_CONNECT_FAILED, NULL, 0);
-		free_data(data);
+		free_connection_data(data);
 		pthread_exit(NULL);
 	}
 
-	ring_add(params->connections, data, data->connid);
+	connections_add(params->connections, data, data->connid);
 	send_packet(data, TYPE_CONNECT_SUCCEED, NULL, 0);
 
-	if (pthread_create(&data->server_write, NULL, do_server_write, (void *) data) == -1)
-		error("Error %d occured in pthread_create(server_write)", errno);
+	data->server_connect = 0;
 
 	if (pthread_create(&data->server_read, NULL, do_server_read, (void *) data) == -1)
 		error("Error %d occured in pthread_create(server_read)", errno);
 
-	if (pthread_create(&data->client_write, NULL, do_client_write, (void *) data) == -1)
-		error("Error %d occured in pthread_create(client_write)", errno);
+	if (pthread_create(&data->server_write, NULL, do_server_write, (void *) data) == -1)
+		error("Error %d occured in pthread_create(server_write)", errno);
 
 	pthread_exit(NULL);
 }
 
-static void print_usage(void)
+static void* do_icmp_write(void *arg)
 {
-	printf("usage: itunp [-h] [-a bind_address]\n");
+	if (arg) {}
+
+	while (1)
+	{
+		struct data_chunk *chunk = data_take(params->client_buffer);
+
+		struct connection_data *data = (struct connection_data *) chunk->connection;
+
+		printf("L->I writed %d bytes for connection %d\n", chunk->size, data->connid);
+
+		send_packet(data, TYPE_PROXY_DATA, chunk->data, chunk->size);
+		data_free_chunk(chunk);
+	}
+
+	pthread_exit(NULL);
+}
+
+static void* do_icmp_parse(void *arg)
+{
+	if (arg) {}
+
+	while (1)
+	{
+		struct itun_packet *packet	= packets_take(params->packets_receive);
+		struct connection_data *data	= (struct connection_data *) packet->connection;
+
+		switch (packet->header->type)
+		{
+			case TYPE_CONNECT:
+			{
+				struct in_addr addr = {packet->src_ip};
+				char *from_ip = inet_ntoa(addr);
+
+				printf("Received connect packet from %s\n", from_ip);
+
+				if (packet->header->length != sizeof(struct payload_connect))
+				{
+					printf("Packet seems to be fragmented, skipping\n");
+					break;
+				}
+
+				struct connection_data *data = init_connection_data(packet, 0);
+
+				if (pthread_create(&data->server_connect, NULL, do_server_connect, (void *) data) == -1)
+					error("Error %d occured in pthread_create(server_connect)", errno);
+				break;
+			}
+			case TYPE_CLIENT_DATA:
+			{
+				printf("I->L readed %d bytes for connection %d\n", packet->header->length, data->connid);
+
+				data_add(data->client_buffer, packet->data, packet->header->length, data);
+				break;
+			}
+			case TYPE_CONNECTION_CLOSED:
+			{
+				printf("Client connecion %d closed succesefully\n", data->connid);
+				free_connection_data(data);
+				break;
+			}
+		}
+
+		packets_free_packet(packet);
+	}
+}
+
+static void* do_request_packets(void *arg)
+{
+	if (arg) {}
+
+	while (1)
+	{
+		while (1)
+		{
+			struct itun_packet *packet = packets_get_expired_packet(params->packets_send, MAX_PACKET_WAIT_TIME);
+			if (packet == NULL)
+				break;
+
+			if (packet->requests <= MAX_PACKET_REQUESTS)
+			{
+				printf("Resend packet with seq %d fo connection %d\n", packet->header->seq, packet->header->connid);
+				send_icmp_packet(params->src_ip, params->dst_ip, packet);
+				continue;
+			}
+
+			struct connection_data *data = (struct connection_data *) packet->connection;
+			if (data == NULL)
+				continue;
+
+			printf("Reached %d packet with seq %d loss, closing connection %d\n", packet->requests, packet->header->seq, data->connid);
+			free_connection_data(data);
+		}
+
+		usleep(1000);
+	}
+
+	pthread_exit(NULL);
 }
 
 static void do_accept(void)
 {
+	if (pthread_create(&icmp_write, NULL, do_icmp_write, NULL) == -1)
+		error("Error %d occured in pthread_create(icmp_write)", errno);
+
+	if (pthread_create(&params->icmp_parse, NULL, do_icmp_parse, NULL) == -1)
+		error("Error %d occured in pthread_create(icmp_parse)", errno);
+
+	if (pthread_create(&params->request_packets, NULL, do_request_packets, NULL) == -1)
+		error("Error %d occured in pthread_create(request_packets)", errno);
+
 	printf("Waiting for incoming packets\n");
 
 	struct pcap_pkthdr *header;
@@ -241,64 +350,34 @@ static void do_accept(void)
 
 		struct itun_packet *itp = parse_packet(header->len, packet);
 		if (itp == NULL)
+		{
+			printf("Wrong packet received, skipping\n");
 			continue;
+		}
 
 		if (itp->icmp_type == ICMP_ECHOREPLY)
 		{
-			if ((itp->itun->type & PROXY_FLAG) != PROXY_FLAG)
+			if ((itp->header->type & PROXY_FLAG) != PROXY_FLAG)
 				continue;
 
-			printf("Received reply to packet %d for connection %d\n", itp->itun->seq, itp->itun->id);
+			printf("Received reply to packet %d for connection %d\n", itp->header->seq, itp->header->connid);
+			packets_remove(params->packets_send, itp->header->seq, itp->header->connid);
 			continue;
 		}
 
-		if ((itp->itun->type & PROXY_FLAG) == PROXY_FLAG)
+		if ((itp->header->type & PROXY_FLAG) == PROXY_FLAG)
 			continue;
 
-		packets_add(itp);
-
-		struct connection_data *data = NULL;
-		if (itp->itun->type != TYPE_CONNECT)
-			data = (struct connection_data *) ring_get(params->connections, itp->itun->id);
-
-		switch (itp->itun->type)
+		struct connection_data *connection = NULL;
+		if (itp->header->type != TYPE_CONNECT)
 		{
-			case TYPE_CONNECT:
-			{
-				struct in_addr addr = {itp->src_ip};
-				char *from_ip = inet_ntoa(addr);
-
-				printf("Received connect packet from %s\n", from_ip);
-
-				if (itp->itun->length != sizeof(struct payload_connect))
-				{
-					printf("Packet seems to be fragmented, skipping\n");
-					break;
-				}
-
-				pthread_t thread_connect;
-
-				if (pthread_create(&thread_connect, NULL, do_server_connect, (void *) itp) == -1)
-					error("Error %d occured in pthread_create(server_connect)", errno);
-
-				break;
-			}
-			case TYPE_CLIENT_DATA:
-			{
-				printf("C->L readed %d bytes for connection %d\n", itp->itun->length, data->connid);
-
-				buffer_add(data->client_buffer, itp->data, itp->itun->length);
-				break;
-			}
-			case TYPE_CONNECTION_CLOSED:
-			{
-				printf("Client connecion %d closed succesefully\n", data->connid);
-				free_data(data);
-				break;
-			}
+			connection = (struct connection_data *) connections_get(params->connections, itp->header->connid);
+			if (connection == NULL)
+				continue;
 		}
 
-		free(itp);
+		itp->connection = connection;
+		packets_add(params->packets_receive, itp);
 	}
 
 	printf("Breaked\n");
@@ -306,8 +385,7 @@ static void do_accept(void)
 
 static void do_init(int argc, char *argv[])
 {
-	params = (struct init_params *) malloc(sizeof(struct init_params));
-	bzero(params, sizeof(struct init_params));
+	params = params_new();
 
 	char opt;
 	while ((opt = getopt(argc, argv, "ha:")) != -1)
@@ -323,13 +401,11 @@ static void do_init(int argc, char *argv[])
 			{
 				print_usage();
 
-				free_params();
+				params_free(params);
 				exit(EXIT_SUCCESS);
 			}
 		}
 	}
-
-	params->connections = ring_new();
 }
 
 int main(int argc, char *argv[])

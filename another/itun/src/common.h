@@ -2,12 +2,6 @@
 #ifndef _ITUN_COMMON_H_
 #define _ITUN_COMMON_H_
 
-#include <pthread.h>
-#include <libnet.h>
-#include <pcap.h>
-
-#include "ring.h"
-
 #define SOCKET_BUFFER_SIZE	65535
 #define PAYLOAD_SIZE		8096
 #define PCAP_BUFFER_SIZE	LIBNET_IPV4_H + LIBNET_ICMPV4_ECHO_H + sizeof(struct itun_packet) + PAYLOAD_SIZE
@@ -34,50 +28,12 @@ enum itun_types
 	TYPE_CLIENT_DATA,
 };
 
-struct itun_header
-{
-	int magic;
-	int id;
-	int type;
-	int seq;
-	int length;
-};
-
-struct itun_packet
-{
-	struct itun_header *itun;
-
-	int src_ip;
-	int dst_ip;
-	int icmp_type;
-
-	char *data;
-};
-
-struct init_params
-{
-	libnet_t *libnet;
-	pcap_t *libpcap;
-	struct ring_buffer *connections;
-
-	char *bind_address;
-	char *bind_port;
-
-	char *proxy_address;
-	char *proxy_port;
-
-	int src_ip;
-	int dst_ip;
-
-	int last_id;
-};
-
 void error(const char *msg, ...);
-void free_params(void);
+int set_socket_option(int sockfd, int level, int option, int value);
+int add_fcntl(int sockfd, int add_fcntl);
 
 struct itun_packet* parse_packet(u_int len, const u_char *packet);
-void send_icmp_packet(int src_ip, int dst_ip, struct itun_header *packet);
-int set_socket_option(int sockfd, int level, int option, int value);
+void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet);
 
 void do_uninit(void);
 void do_init_libpcap(void);
