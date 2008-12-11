@@ -9,9 +9,7 @@ AUTOMAKE_OPTIONS =		\
 
 noinst_DATA =			\
 	README			\
-	COPYING			\
 	AUTHORS			\
-	INSTALL			\
 	NEWS			\
 	TODO			\
 	ChangeLog
