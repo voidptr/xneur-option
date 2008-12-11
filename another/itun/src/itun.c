@@ -248,7 +248,7 @@ static void* do_icmp_read(void *arg)
 	if (arg) {}
 
 	struct pcap_pkthdr *header;
-	const u_char *packet;
+	const unsigned char *packet;
 	int result;
 
 	while ((result = pcap_next_ex(params->libpcap, &header, &packet)) >= 0)

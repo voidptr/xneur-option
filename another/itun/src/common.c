@@ -41,7 +41,7 @@ int add_fcntl(int sockfd, int add_fcntl)
 	return (fcntl(sockfd, F_SETFL, fcntls | add_fcntl) != -1);
 }
 
-struct itun_packet* parse_packet(u_int len, const u_char *packet)
+struct itun_packet* parse_packet(unsigned int len, const unsigned char *packet)
 {
 	if (len < sizeof(struct ether_header))
 		return NULL;
@@ -83,7 +83,7 @@ struct itun_packet* parse_packet(u_int len, const u_char *packet)
 	len	= len - sizeof(struct itun_header);
 	packet	= packet + sizeof(struct itun_header);
 
-	if (len != (u_int) header->length)
+	if (len != (unsigned int) header->length)
 		return NULL;
 
 	struct itun_packet *info = malloc(sizeof(struct itun_packet));
@@ -115,7 +115,7 @@ void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet)
 	memcpy(data, packet->header, sizeof(struct itun_header));
 	memcpy(data + sizeof(struct itun_header), packet->data, packet->header->length * sizeof(char));
 
-	libnet_ptag_t icmp_tag = libnet_build_icmpv4_echo(ICMP_ECHO, 0, 0, 0, 0, (u_char *) data, size, params->libnet, 0);
+	libnet_ptag_t icmp_tag = libnet_build_icmpv4_echo(ICMP_ECHO, 0, 0, 0, 0, (unsigned char *) data, size, params->libnet, 0);
 	if (icmp_tag == -1)
 	{
 		free(data);

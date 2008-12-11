@@ -32,7 +32,7 @@ void error(const char *msg, ...);
 int set_socket_option(int sockfd, int level, int option, int value);
 int add_fcntl(int sockfd, int add_fcntl);
 
-struct itun_packet* parse_packet(u_int len, const u_char *packet);
+struct itun_packet* parse_packet(unsigned int len, const unsigned char *packet);
 void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet);
 
 void do_uninit(void);

@@ -340,7 +340,7 @@ static void do_accept(void)
 	printf("Waiting for incoming packets\n");
 
 	struct pcap_pkthdr *header;
-	const u_char *packet;
+	const unsigned char *packet;
 	int result;
 
 	while ((result = pcap_next_ex(params->libpcap, &header, &packet)) >= 0)
