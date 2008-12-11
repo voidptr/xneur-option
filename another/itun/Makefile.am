@@ -6,3 +6,12 @@ SUBDIRS =			\
 AUTOMAKE_OPTIONS =		\
 	1.9			\
 	dist-bzip2
+
+noinst_DATA =			\
+	README			\
+	COPYING			\
+	AUTHORS			\
+	INSTALL			\
+	NEWS			\
+	TODO			\
+	ChangeLog
