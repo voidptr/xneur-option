@@ -260,6 +260,7 @@ static void* do_icmp_read(void *arg)
 			continue;
 		}
 
+/*
 		if (itp->icmp_type == ICMP_ECHOREPLY)
 		{
 			if ((itp->header->type & PROXY_FLAG) == PROXY_FLAG)
@@ -271,6 +272,10 @@ static void* do_icmp_read(void *arg)
 		}
 
 		if ((itp->header->type & PROXY_FLAG) != PROXY_FLAG)
+			continue;
+*/
+
+		if (itp->icmp_type != ICMP_ECHOREPLY)
 			continue;
 
 		struct connection_data *connection = (struct connection_data *) connections_get(params->connections, itp->header->connid);
@@ -290,6 +295,7 @@ static void* do_icmp_read(void *arg)
 static void* do_request_packets(void *arg)
 {
 	if (arg) {}
+	pthread_exit(NULL);
 
 	while (1)
 	{

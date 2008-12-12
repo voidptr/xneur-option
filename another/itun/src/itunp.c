@@ -293,6 +293,7 @@ static void* do_icmp_parse(void *arg)
 static void* do_request_packets(void *arg)
 {
 	if (arg) {}
+	pthread_exit(NULL);
 
 	while (1)
 	{
@@ -352,6 +353,7 @@ static void do_accept(void)
 			continue;
 		}
 
+/*
 		if (itp->icmp_type == ICMP_ECHOREPLY)
 		{
 			if ((itp->header->type & PROXY_FLAG) != PROXY_FLAG)
@@ -363,6 +365,10 @@ static void do_accept(void)
 		}
 
 		if ((itp->header->type & PROXY_FLAG) == PROXY_FLAG)
+			continue;
+*/
+
+		if (itp->icmp_type == ICMP_ECHOREPLY)
 			continue;
 
 		struct connection_data *connection = NULL;
