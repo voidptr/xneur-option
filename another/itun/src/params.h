@@ -25,10 +25,13 @@ struct init_params
 	char *bind_port;
 
 	char *proxy_address;
-	char *proxy_port;
 
-	int src_ip;
-	int dst_ip;
+	char *destination_address;
+	char *destination_port;
+
+	int bind_ip;
+	int proxy_ip;
+	int dest_ip;
 
 	int last_id;
 };

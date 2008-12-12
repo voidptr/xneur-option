@@ -9,12 +9,6 @@
 #define MAGIC_NUMBER		0x6E757469 // "itun"
 #define PROXY_FLAG		1 << 31
 
-struct payload_connect
-{
-	int ip;
-	int port;
-};
-
 enum itun_types
 {
 	TYPE_CONNECTED			= 1 | PROXY_FLAG,

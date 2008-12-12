@@ -24,10 +24,14 @@ void params_free(struct init_params *params)
 		free(params->bind_address);
 	if (params->bind_port != NULL)
 		free(params->bind_port);
+
 	if (params->proxy_address != NULL)
 		free(params->proxy_address);
-	if (params->proxy_port != NULL)
-		free(params->proxy_port);
+
+	if (params->destination_address != NULL)
+		free(params->destination_address);
+	if (params->destination_port != NULL)
+		free(params->destination_port);
 
 	if (params->packets_send != NULL)
 		packets_free(params->packets_send);

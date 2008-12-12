@@ -38,14 +38,9 @@ struct connection_data
 	pthread_t server_write;
 };
 
-static void print_usage(void)
-{
-	printf("usage: itunp [-h] [-a bind_address]\n");
-}
-
 static struct connection_data* init_connection_data(struct itun_packet *packet, int connfd)
 {
-	struct payload_connect *payload = (struct payload_connect *) packet->data;
+	struct itun_packet_connect *ipc = (struct itun_packet_connect *) packet->data;
 
 	struct connection_data *data = malloc(sizeof(struct connection_data));
 	bzero(data, sizeof(struct connection_data));
@@ -56,8 +51,8 @@ static struct connection_data* init_connection_data(struct itun_packet *packet, 
 	data->connid		= packet->header->connid;
 
 	data->client_ip		= packet->dst_ip;
-	data->server_ip		= payload->ip;
-	data->server_port	= payload->port;
+	data->server_ip		= ipc->ip;
+	data->server_port	= ipc->port;
 
 	return data;
 }
@@ -107,7 +102,7 @@ static void send_packet(struct connection_data *data, int type, void *payload, i
 	}
 
 	packets_add(params->packets_send, packet);
-	send_icmp_packet(params->src_ip, data->client_ip, packet);
+	send_icmp_packet(params->bind_ip, data->client_ip, packet);
 }
 
 static void* do_server_write(void *arg)
@@ -134,7 +129,7 @@ static void* do_server_write(void *arg)
 
 			done += writed;
 
-			printf("%s\n");
+			printf("\n");
 			printf("L->S writed %d bytes for connection %d\n", writed, data->connid);
 			printf("%s\n", chunk->data);
 		}
@@ -262,7 +257,7 @@ static void* do_icmp_parse(void *arg)
 
 				printf("Received connect packet from %s\n", from_ip);
 
-				if (packet->header->length != sizeof(struct payload_connect))
+				if (packet->header->length != sizeof(struct itun_packet_connect))
 				{
 					printf("Packet seems to be fragmented, skipping\n");
 					break;
@@ -305,16 +300,16 @@ static void* do_request_packets(void *arg)
 			if (packet == NULL)
 				break;
 
-			if (packet->requests <= MAX_PACKET_REQUESTS)
-			{
-				printf("Resend packet with seq %d fo connection %d\n", packet->header->seq, packet->header->connid);
-				send_icmp_packet(params->src_ip, params->dst_ip, packet);
-				continue;
-			}
-
 			struct connection_data *data = (struct connection_data *) packet->connection;
 			if (data == NULL)
 				continue;
+
+			if (packet->requests <= MAX_PACKET_REQUESTS)
+			{
+				printf("Resend packet with seq %d fo connection %d\n", packet->header->seq, packet->header->connid);
+				send_icmp_packet(params->bind_ip, data->client_ip, packet);
+				continue;
+			}
 
 			printf("Reached %d packet with seq %d loss, closing connection %d\n", packet->requests, packet->header->seq, data->connid);
 			free_connection_data(data);
@@ -381,6 +376,11 @@ static void do_accept(void)
 	}
 
 	printf("Breaked\n");
+}
+
+static void print_usage(void)
+{
+	printf("usage: itunp [-h] [-a bind_address]\n");
 }
 
 static void do_init(int argc, char *argv[])

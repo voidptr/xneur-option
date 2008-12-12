@@ -15,7 +15,7 @@
 #include "common.h"
 #include "params.h"
 
-#define DEFAULT_PORT		"1771"
+#define DEFAULT_PORT		"8000"
 
 struct init_params *params	= NULL;
 
@@ -35,11 +35,6 @@ struct connection_data
 	pthread_t client_read;
 	pthread_t client_write;
 };
-
-static void print_usage(void)
-{
-	printf("usage: itun [-h] [-a bind_address] [-p bind_port] proxy_address proxy_port\n");
-}
 
 static struct connection_data* init_connection_data(int connfd)
 {
@@ -96,7 +91,7 @@ static void send_packet(struct connection_data *data, int type, void *payload, i
 	}
 
 	packets_add(params->packets_send, packet);
-	send_icmp_packet(params->src_ip, params->dst_ip, packet);
+	send_icmp_packet(params->bind_ip, params->proxy_ip, packet);
 }
 
 static void* do_client_write(void *arg)
@@ -305,7 +300,7 @@ static void* do_request_packets(void *arg)
 			if (packet->requests <= MAX_PACKET_REQUESTS)
 			{
 				printf("Resend packet with seq %d fo connection %d\n", packet->header->seq, packet->header->connid);
-				send_icmp_packet(params->src_ip, params->dst_ip, packet);
+				send_icmp_packet(params->bind_ip, params->proxy_ip, packet);
 				continue;
 			}
 
@@ -402,15 +397,20 @@ static void do_accept(void)
 
 		struct connection_data *data = init_connection_data(connfd);
 
-		struct payload_connect payload;
-		bzero(&payload, sizeof(struct payload_connect));
+		struct itun_packet_connect ipc;
+		bzero(&ipc, sizeof(struct itun_packet_connect));
 
-		payload.ip	= params->dst_ip;
-		payload.port	= atoi(params->proxy_port);
+		ipc.ip		= params->dest_ip;
+		ipc.port	= atoi(params->destination_port);
 
 		connections_add(params->connections, data, data->connid);
-		send_packet(data, TYPE_CONNECT, &payload, sizeof(struct payload_connect));
+		send_packet(data, TYPE_CONNECT, &ipc, sizeof(struct itun_packet_connect));
 	}
+}
+
+static void print_usage(void)
+{
+	printf("usage: itun [-h] [-a bind_address] [-p bind_port] proxy_address destination_address destination_port\n");
 }
 
 static void do_init(int argc, char *argv[])
@@ -442,7 +442,7 @@ static void do_init(int argc, char *argv[])
 		}
 	}
 
-	if (argc < optind + 2)
+	if (argc < optind + 3)
 	{
 		print_usage();
 
@@ -450,11 +450,13 @@ static void do_init(int argc, char *argv[])
 		exit(EXIT_SUCCESS);
 	}
 
-	params->proxy_address	= strdup(argv[optind]);
-	params->proxy_port	= strdup(argv[optind + 1]);
-
 	if (params->bind_port == NULL)
 		params->bind_port = strdup(DEFAULT_PORT);
+
+	params->proxy_address		= strdup(argv[optind]);
+
+	params->destination_address	= strdup(argv[optind + 1]);
+	params->destination_port	= strdup(argv[optind + 2]);
 }
 
 int main(int argc, char *argv[])

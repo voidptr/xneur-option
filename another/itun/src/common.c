@@ -1,5 +1,9 @@
 
+#include <sys/types.h>
 #include <net/ethernet.h>
+#include <netinet/in.h>
+#include <netinet/in_systm.h>
+#include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 
 #include "params.h"
@@ -53,26 +57,26 @@ struct itun_packet* parse_packet(unsigned int len, const unsigned char *packet)
 	len	= len - sizeof(struct ether_header);
 	packet	= packet + sizeof(struct ether_header);
 
-	if (len < sizeof(struct iphdr))
+	if (len < LIBNET_IPV4_H)
 		return NULL;
 
-	struct iphdr *ip = (struct iphdr *) packet;
+	struct ip *iph = (struct ip *) packet;
 
-	if (ip->version != IPVERSION || ip->protocol != IPPROTO_ICMP)
+	if (iph->ip_v != IPVERSION || iph->ip_p != IPPROTO_ICMP)
 		return NULL;
 
-	len	= len - ip->ihl * 4;
-	packet	= packet + ip->ihl * 4;
+	len	= len - iph->ip_hl * 4;
+	packet	= packet + iph->ip_hl * 4;
 
 	if (len < sizeof(struct icmphdr))
 		return NULL;
 
-	struct icmphdr *icmp = (struct icmphdr *) packet;
+	struct icmp *icmph = (struct icmp *) packet;
 
-	len	= len - sizeof(struct icmphdr);
-	packet	= packet + sizeof(struct icmphdr);
+	len	= len - LIBNET_ICMPV4_ECHO_H;
+	packet	= packet + LIBNET_ICMPV4_ECHO_H;
 
-	if (len < sizeof(struct itun_header))
+	if (len < LIBNET_ICMPV4_ECHO_H)
 		return NULL;
 
 	struct itun_header *header = (struct itun_header *) packet;
@@ -89,9 +93,9 @@ struct itun_packet* parse_packet(unsigned int len, const unsigned char *packet)
 	struct itun_packet *info = malloc(sizeof(struct itun_packet));
 	bzero(info, sizeof(struct itun_packet));
 
-	info->icmp_type	= icmp->type;
-	info->src_ip	= ip->saddr;
-	info->dst_ip	= ip->daddr;
+	info->icmp_type	= icmph->icmp_type;
+	info->src_ip	= iph->ip_src.s_addr;
+	info->dst_ip	= iph->ip_dst.s_addr;
 
 	info->header = malloc(sizeof(struct itun_header));
 	memcpy(info->header, header, sizeof(struct itun_header));
@@ -115,7 +119,7 @@ void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet)
 	memcpy(data, packet->header, sizeof(struct itun_header));
 	memcpy(data + sizeof(struct itun_header), packet->data, packet->header->length * sizeof(char));
 
-	libnet_ptag_t icmp_tag = libnet_build_icmpv4_echo(ICMP_ECHO, 0, 0, 0, 0, (unsigned char *) data, size, params->libnet, 0);
+	libnet_ptag_t icmp_tag = libnet_build_icmpv4_echo(ICMP_ECHO, 0, 0, rand(), 0, (unsigned char *) data, size, params->libnet, 0);
 	if (icmp_tag == -1)
 	{
 		free(data);
@@ -132,6 +136,7 @@ void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet)
 	if (writed == -1)
 		error("Can't send icmp echo packet: %s", libnet_geterror(params->libnet));
 
+	printf("Writed %d bytes through libnet\n", writed);
 	libnet_clear_packet(params->libnet);
 
 	pthread_mutex_unlock(&libnet_mutex);
@@ -148,24 +153,31 @@ void do_init_libnet(void)
 		error("Failed to call libnet_init: %s", errbuf);
 
 	if (params->bind_address != NULL)
-		params->src_ip = libnet_name2addr4(params->libnet, params->bind_address, LIBNET_RESOLVE);
+		params->bind_ip = libnet_name2addr4(params->libnet, params->bind_address, LIBNET_RESOLVE);
 	else
-		params->src_ip = libnet_get_ipaddr4(params->libnet);
+		params->bind_ip = libnet_get_ipaddr4(params->libnet);
 
-	if (params->src_ip == -1)
+	if (params->bind_ip == -1)
 		error("Can't resolve bind address %s: %s", params->bind_address, libnet_geterror(params->libnet));
 
 	if (params->proxy_address != NULL)
 	{
-		params->dst_ip = libnet_name2addr4(params->libnet, params->proxy_address, LIBNET_RESOLVE);
-		if (params->dst_ip == -1)
+		params->proxy_ip = libnet_name2addr4(params->libnet, params->proxy_address, LIBNET_RESOLVE);
+		if (params->proxy_ip == -1)
 			error("Can't resolve proxy address %s: %s", params->proxy_address, libnet_geterror(params->libnet));
+	}
+
+	if (params->destination_address != NULL)
+	{
+		params->dest_ip = libnet_name2addr4(params->libnet, params->destination_address, LIBNET_RESOLVE);
+		if (params->dest_ip == -1)
+			error("Can't resolve destination address %s: %s", params->destination_address, libnet_geterror(params->libnet));
 	}
 
 	if (params->bind_address != NULL)
 		free(params->bind_address);
 
-	struct in_addr addr = {params->src_ip};
+	struct in_addr addr = {params->bind_ip};
 	params->bind_address = strdup(inet_ntoa(addr));
 
 	printf("Binded to ip %s\n", params->bind_address);
@@ -188,7 +200,7 @@ void do_init_libpcap(void)
 				continue;
 
 			struct sockaddr_in *addr = (struct sockaddr_in *) address->addr;
-			if (addr->sin_addr.s_addr == (u_int) params->src_ip)
+			if (addr->sin_addr.s_addr == (unsigned int) params->bind_ip)
 			{
 				printf("Found device %s for ip %s\n", device->name, params->bind_address);
 				bind_device = strdup(device->name);

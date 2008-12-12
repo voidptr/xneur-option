@@ -2,8 +2,14 @@
 #ifndef _ITUN_PACKETS_H_
 #define _ITUN_PACKETS_H_
 
-#define MAX_PACKET_WAIT_TIME	2
-#define MAX_PACKET_REQUESTS	5
+#define MAX_PACKET_WAIT_TIME	10
+#define MAX_PACKET_REQUESTS	20
+
+struct itun_packet_connect
+{
+	int ip;
+	int port;
+};
 
 struct itun_header
 {
