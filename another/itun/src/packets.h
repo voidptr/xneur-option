@@ -27,8 +27,7 @@ struct itun_packet
 	char *data;
 	void *connection;
 
-	int src_ip;
-	int dst_ip;
+	int client_ip;
 	int icmp_type;
 
 	int time;

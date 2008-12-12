@@ -50,7 +50,7 @@ static struct connection_data* init_connection_data(struct itun_packet *packet, 
 	data->connfd		= connfd;
 	data->connid		= packet->header->connid;
 
-	data->client_ip		= packet->dst_ip;
+	data->client_ip		= packet->client_ip;
 	data->server_ip		= ipc->ip;
 	data->server_port	= ipc->port;
 
@@ -93,7 +93,9 @@ static void send_packet(struct connection_data *data, int type, void *payload, i
 	packet->header->type		= type;
 	packet->header->seq		= data->send_seq++;
 	packet->header->length		= size;
+
 	packet->connection		= data;
+	packet->icmp_type		= ICMP_ECHOREPLY;
 
 	if (payload != NULL)
 	{
@@ -252,7 +254,7 @@ static void* do_icmp_parse(void *arg)
 		{
 			case TYPE_CONNECT:
 			{
-				struct in_addr addr = {packet->src_ip};
+				struct in_addr addr = {packet->client_ip};
 				char *from_ip = inet_ntoa(addr);
 
 				printf("Received connect packet from %s\n", from_ip);

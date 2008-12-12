@@ -82,7 +82,9 @@ static void send_packet(struct connection_data *data, int type, void *payload, i
 	packet->header->type		= type;
 	packet->header->seq		= data->send_seq++;
 	packet->header->length		= size;
+
 	packet->connection		= data;
+	packet->icmp_type		= ICMP_ECHO;
 
 	if (payload != NULL)
 	{

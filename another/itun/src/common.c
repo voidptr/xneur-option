@@ -94,8 +94,7 @@ struct itun_packet* parse_packet(unsigned int len, const unsigned char *packet)
 	bzero(info, sizeof(struct itun_packet));
 
 	info->icmp_type	= icmph->icmp_type;
-	info->src_ip	= iph->ip_src.s_addr;
-	info->dst_ip	= iph->ip_dst.s_addr;
+	info->client_ip	= iph->ip_src.s_addr;
 
 	info->header = malloc(sizeof(struct itun_header));
 	memcpy(info->header, header, sizeof(struct itun_header));
@@ -119,7 +118,7 @@ void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet)
 	memcpy(data, packet->header, sizeof(struct itun_header));
 	memcpy(data + sizeof(struct itun_header), packet->data, packet->header->length * sizeof(char));
 
-	libnet_ptag_t icmp_tag = libnet_build_icmpv4_echo(ICMP_ECHO, 0, 0, rand(), 0, (unsigned char *) data, size, params->libnet, 0);
+	libnet_ptag_t icmp_tag = libnet_build_icmpv4_echo(packet->icmp_type, 0, 0, rand(), 0, (unsigned char *) data, size, params->libnet, 0);
 	if (icmp_tag == -1)
 	{
 		free(data);
@@ -136,7 +135,6 @@ void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet)
 	if (writed == -1)
 		error("Can't send icmp echo packet: %s", libnet_geterror(params->libnet));
 
-	printf("Writed %d bytes through libnet\n", writed);
 	libnet_clear_packet(params->libnet);
 
 	pthread_mutex_unlock(&libnet_mutex);
@@ -179,8 +177,6 @@ void do_init_libnet(void)
 
 	struct in_addr addr = {params->bind_ip};
 	params->bind_address = strdup(inet_ntoa(addr));
-
-	printf("Binded to ip %s\n", params->bind_address);
 }
 
 void do_init_libpcap(void)

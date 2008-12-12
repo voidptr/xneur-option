@@ -301,8 +301,6 @@ struct itun_packet* packets_get_expired_packet(struct packets_buffer *buffer, in
 			if (cur_time - packet->time < expire_time)
 				continue;
 
-			printf("Found expired packet with seq %d\n", packet->header->seq);
-
 			packet->requests++;
 			packet->time = cur_time;
 
