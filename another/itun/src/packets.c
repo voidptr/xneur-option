@@ -158,6 +158,19 @@ static void packets_free_chunk(struct packets_chunk *chunk)
 	free(chunk->packets);
 }
 
+static void packets_check_avail(struct packets_buffer *buffer, struct packets_chunk *chunk)
+{
+	int need_seq = chunk->next_seq;
+	for (int i = 0; i < chunk->packets_count; i++)
+	{		
+		if (chunk->packets[i]->header->seq != need_seq)
+			break;
+
+		need_seq++;
+		sem_post(&buffer->avail);
+	}
+}
+
 void packets_free(struct packets_buffer *buffer)
 {
 	sem_destroy(&buffer->avail);
@@ -191,8 +204,7 @@ void packets_add(struct packets_buffer *buffer, struct itun_packet *packet)
 	printf("Adding packet with seq %d\n", packet_seq);
 
 	packets_add_packet(chunk, packet);
-	if (packet_seq == chunk->next_seq)
-		sem_post(&buffer->avail);
+	packets_check_avail(buffer, chunk);
 
 	pthread_mutex_unlock(&buffer->mutex);
 }
