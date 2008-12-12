@@ -123,14 +123,6 @@ void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet)
 	if (packet_header_tag == -1)
 		error("Can't build data packet: %s", libnet_geterror(params->libnet));
 
-/*
-	int size = sizeof(struct itun_header) + packet->header->length;
-
-	char *data = malloc(size * sizeof(char));
-	memcpy(data, packet->header, sizeof(struct itun_header));
-	memcpy(data + sizeof(struct itun_header), packet->data, packet->header->length * sizeof(char));
-*/
-
 	libnet_ptag_t icmp_tag = libnet_build_icmpv4_echo(packet->icmp_type, 0, 0, rand(), 0, NULL, 0, params->libnet, 0);
 	if (icmp_tag == -1)
 		error("Can't build icmp packet: %s", libnet_geterror(params->libnet));
@@ -142,6 +134,9 @@ void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet)
 	int writed = libnet_write(params->libnet);
 	if (writed == -1)
 		error("Can't send icmp echo packet: %s", libnet_geterror(params->libnet));
+
+	struct in_addr addr = {dst_ip};
+	printf("Sended packet to %s\n", inet_ntoa(addr));
 
 	libnet_clear_packet(params->libnet);
 

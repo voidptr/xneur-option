@@ -130,10 +130,7 @@ static void* do_server_write(void *arg)
 				break;
 
 			done += writed;
-
-			printf("\n");
 			printf("L->S writed %d bytes for connection %d\n", writed, data->connid);
-			printf("%s\n", chunk->data);
 		}
 
 		data_free_chunk(chunk);
@@ -161,12 +158,7 @@ static void* do_server_read(void *arg)
 		if (readed == 0)
 			break;
 
-		temp_buf[readed] = 0;
-
-		printf("\n");
 		printf("S->L readed %d bytes for connection %d\n", readed, data->connid);
-		printf("%s\n", temp_buf);
-
 		data_add(params->client_buffer, temp_buf, readed, data);
 	}
 
@@ -232,9 +224,19 @@ static void* do_icmp_write(void *arg)
 
 		struct connection_data *data = (struct connection_data *) chunk->connection;
 
-		printf("L->I writed %d bytes for connection %d\n", chunk->size, data->connid);
+		int done = 0;
+		while (done < chunk->size)
+		{
+			int tu_size = chunk->size - done;
+			if (chunk->size - done > MAX_TRANSFER_UNIT)
+				tu_size = MAX_TRANSFER_UNIT;
+				
+			send_packet(data, TYPE_PROXY_DATA, chunk->data + done, tu_size);
+			done += MAX_TRANSFER_UNIT;
 
-		send_packet(data, TYPE_PROXY_DATA, chunk->data, chunk->size);
+			printf("L->I writed %d bytes for connection %d\n", tu_size, data->connid);
+		}
+
 		data_free_chunk(chunk);
 	}
 
