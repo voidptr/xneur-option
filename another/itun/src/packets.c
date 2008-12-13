@@ -160,24 +160,30 @@ static void packets_free_chunk(struct packets_chunk *chunk)
 
 static void packets_check_avail(struct packets_buffer *buffer, struct packets_chunk *chunk)
 {
-	int need_seq = chunk->next_seq;
 	for (int i = 0; i < chunk->packets_count; i++)
-	{		
-		if (chunk->packets[i]->header->seq != need_seq)
+	{
+		struct itun_header *header = chunk->packets[i]->header;
+		if (header->seq > chunk->next_seq)
 			break;
+		if (header->seq < chunk->next_seq)
+			continue;
 
-		need_seq++;
+		chunk->next_seq++;
 		sem_post(&buffer->avail);
 	}
 }
 
 void packets_free(struct packets_buffer *buffer)
 {
+	pthread_mutex_lock(&buffer->mutex);
 	sem_destroy(&buffer->avail);
-	pthread_mutex_destroy(&buffer->mutex);
 
 	if (buffer->chunks != NULL)
 		free(buffer->chunks);
+
+	pthread_mutex_unlock(&buffer->mutex);
+	pthread_mutex_destroy(&buffer->mutex);
+
 	free(buffer);
 }
 
@@ -211,32 +217,32 @@ void packets_add(struct packets_buffer *buffer, struct itun_packet *packet)
 
 struct itun_packet* packets_take(struct packets_buffer *buffer)
 {
-	sem_wait(&buffer->avail);
+	if (sem_wait(&buffer->avail) != 0)
+		return NULL;
 	pthread_mutex_lock(&buffer->mutex);
 
-	struct itun_packet *packet = NULL;
 	for (int i = 0; i < buffer->chunks_count; i++)
 	{
 		struct packets_chunk *chunk = &(buffer->chunks[i]);
 		if (chunk->packets_count == 0)
 			continue;
 
-		packet = chunk->packets[0];
-		if (chunk->next_seq != packet->header->seq)
+		struct itun_packet *packet = chunk->packets[0];
+		if (packet->header->seq > chunk->next_seq)
 			continue;
 
-		chunk->next_seq++;
-
+		printf("Removing packet with seq %d\n", packet->header->seq);
 		packets_shift(chunk);
-		break;
+
+		pthread_mutex_unlock(&buffer->mutex);
+
+		return packet;
 	}
 
-	if (packet == NULL)
-		printf("Can't found next packet while sem val is > 0\n");
-
+	printf("Can't found next packet while sem val is > 0\n");
 	pthread_mutex_unlock(&buffer->mutex);
 
-	return packet;
+	return NULL;
 }
 
 void packets_free_packet(struct itun_packet *packet)

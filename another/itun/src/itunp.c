@@ -62,18 +62,10 @@ static void free_connection_data(struct connection_data *data)
 	if (data->connfd != 0)
 		close(data->connfd);
 
-	if (data->server_connect != 0)
-		pthread_cancel(data->server_connect);
-	if (data->server_read != 0)
-		pthread_cancel(data->server_read);
-	if (data->server_write != 0)
-		pthread_cancel(data->server_write);
-
 	if (data->client_buffer != NULL)
 		data_free(data->client_buffer);
 
 	connections_remove(params->connections, data->connid);
-
 	packets_drop(params->packets_send, data->connid);
 	packets_drop(params->packets_receive, data->connid);
 
@@ -103,7 +95,7 @@ static void send_packet(struct connection_data *data, int type, void *payload, i
 		memcpy(packet->data, payload, size);
 	}
 
-	packets_add(params->packets_send, packet);
+//	packets_add(params->packets_send, packet);
 	send_icmp_packet(params->bind_ip, data->client_ip, packet);
 }
 
@@ -114,6 +106,8 @@ static void* do_server_write(void *arg)
 	while (1)
 	{
 		struct data_chunk *chunk = data_take(data->client_buffer);
+		if (chunk == NULL || chunk->data == NULL)
+			break;
 
 		int done = 0;
 		while (done != chunk->size)
@@ -130,12 +124,16 @@ static void* do_server_write(void *arg)
 				break;
 
 			done += writed;
-			printf("L->S writed %d bytes for connection %d\n", writed, data->connid);
+			printf("L->S writed %d bytes\n", writed);
 		}
 
 		data_free_chunk(chunk);
 	}
 
+	printf("Shutting down server connection %d\n", data->connid);
+	shutdown(data->connfd, SHUT_WR);
+
+	free_connection_data(data);
 	pthread_exit(NULL);
 }
 
@@ -158,12 +156,11 @@ static void* do_server_read(void *arg)
 		if (readed == 0)
 			break;
 
-		printf("S->L readed %d bytes for connection %d\n", readed, data->connid);
+		printf("S->L readed %d bytes\n", readed);
 		data_add(params->client_buffer, temp_buf, readed, data);
 	}
 
 	free(temp_buf);
-	close(data->connfd);
 
 	printf("Connection with server %d closed\n", data->connid);
 	send_packet(data, TYPE_CONNECTION_CLOSE, NULL, 0);
@@ -221,6 +218,8 @@ static void* do_icmp_write(void *arg)
 	while (1)
 	{
 		struct data_chunk *chunk = data_take(params->client_buffer);
+		if (chunk == NULL)
+			break;
 
 		struct connection_data *data = (struct connection_data *) chunk->connection;
 
@@ -231,10 +230,10 @@ static void* do_icmp_write(void *arg)
 			if (chunk->size - done > MAX_TRANSFER_UNIT)
 				tu_size = MAX_TRANSFER_UNIT;
 				
+			printf("L->I writed %d bytes\n", tu_size);
+
 			send_packet(data, TYPE_PROXY_DATA, chunk->data + done, tu_size);
 			done += MAX_TRANSFER_UNIT;
-
-			printf("L->I writed %d bytes for connection %d\n", tu_size, data->connid);
 		}
 
 		data_free_chunk(chunk);
@@ -249,8 +248,11 @@ static void* do_icmp_parse(void *arg)
 
 	while (1)
 	{
-		struct itun_packet *packet	= packets_take(params->packets_receive);
-		struct connection_data *data	= (struct connection_data *) packet->connection;
+		struct itun_packet *packet = packets_take(params->packets_receive);
+		if (packet == NULL)
+			break;
+
+		struct connection_data *data = (struct connection_data *) packet->connection;
 
 		switch (packet->header->type)
 		{
@@ -275,21 +277,26 @@ static void* do_icmp_parse(void *arg)
 			}
 			case TYPE_CLIENT_DATA:
 			{
-				printf("I->L readed %d bytes for connection %d\n", packet->header->length, data->connid);
+				printf("I->L readed %d bytes\n", packet->header->length);
 
 				data_add(data->client_buffer, packet->data, packet->header->length, data);
 				break;
 			}
 			case TYPE_CONNECTION_CLOSED:
 			{
-				printf("Client connecion %d closed succesefully\n", data->connid);
-				free_connection_data(data);
+				printf("Client closed connection %d\n", data->connid);
+
+				shutdown(data->connfd, SHUT_RD);
+				data_add(data->client_buffer, NULL, 0, data);
+
 				break;
 			}
 		}
 
 		packets_free_packet(packet);
 	}
+
+	pthread_exit(NULL);
 }
 
 static void* do_request_packets(void *arg)
@@ -320,7 +327,7 @@ static void* do_request_packets(void *arg)
 			free_connection_data(data);
 		}
 
-		usleep(1000);
+		sleep(1);
 	}
 
 	pthread_exit(NULL);
@@ -361,7 +368,7 @@ static void do_accept(void)
 			if ((itp->header->type & PROXY_FLAG) != PROXY_FLAG)
 				continue;
 
-			printf("Received reply to packet %d for connection %d\n", itp->header->seq, itp->header->connid);
+			printf("Received reply to packet %d\n", itp->header->seq);
 			packets_remove(params->packets_send, itp->header->seq, itp->header->connid);
 			continue;
 		}

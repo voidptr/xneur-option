@@ -40,14 +40,18 @@ void data_free_chunk(struct data_chunk *chunk)
 
 void data_free(struct data_buffer *buffer)
 {
+	pthread_mutex_lock(&buffer->mutex);
 	sem_destroy(&buffer->avail);
-	pthread_mutex_destroy(&buffer->mutex);
 
 	for (int i = 0; i < buffer->chunks_count; i++)
 		data_free_chunk(buffer->chunks[i]);
 
 	if (buffer->chunks != NULL)
 		free(buffer->chunks);
+
+	pthread_mutex_unlock(&buffer->mutex);
+	pthread_mutex_destroy(&buffer->mutex);
+
 	free(buffer);
 }
 
@@ -58,8 +62,11 @@ void data_add(struct data_buffer *buffer, const char *data, int size, void *conn
 	struct data_chunk *chunk = malloc(sizeof(struct data_chunk));
 	bzero(chunk, sizeof(struct data_chunk));
 
-	chunk->data = malloc(size * sizeof(char));
-	memcpy(chunk->data + chunk->size, data, size * sizeof(char));
+	if (data != NULL)
+	{
+		chunk->data = malloc(size * sizeof(char));
+		memcpy(chunk->data + chunk->size, data, size * sizeof(char));
+	}
 
 	chunk->size		= size;
 	chunk->connection	= connection;
@@ -76,7 +83,8 @@ void data_add(struct data_buffer *buffer, const char *data, int size, void *conn
 
 struct data_chunk* data_take(struct data_buffer *buffer)
 {
-	sem_wait(&buffer->avail);
+	if (sem_wait(&buffer->avail) != 0)
+		return NULL;
 	pthread_mutex_lock(&buffer->mutex);
 
 	if (buffer->chunks_count == 0)
@@ -101,8 +109,6 @@ struct data_chunk* data_take(struct data_buffer *buffer)
 		buffer->chunks = NULL;
 	}
 	
-	printf("Shifted chunk from buffer\n");
-
 	pthread_mutex_unlock(&buffer->mutex);
 
 	return chunk;

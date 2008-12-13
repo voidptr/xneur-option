@@ -52,10 +52,14 @@ struct connections_buffer* connections_new(void)
 
 void connections_free(struct connections_buffer *buffer)
 {
-	pthread_mutex_destroy(&buffer->mutex);
+	pthread_mutex_lock(&buffer->mutex);
 
 	if (buffer->chunks != NULL)
 		free(buffer->chunks);
+
+	pthread_mutex_unlock(&buffer->mutex);
+	pthread_mutex_destroy(&buffer->mutex);
+
 	free(buffer);
 }
 
