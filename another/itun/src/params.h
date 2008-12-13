@@ -32,8 +32,6 @@ struct init_params
 	int bind_ip;
 	int proxy_ip;
 	int dest_ip;
-
-	int last_id;
 };
 
 struct init_params* params_new(void);

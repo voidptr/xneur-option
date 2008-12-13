@@ -8,20 +8,7 @@
 #define MAX_TRANSFER_UNIT	1000
 
 #define MAGIC_NUMBER		0x6E757469 // "itun"
-#define PROXY_FLAG		1 << 31
 
-enum itun_types
-{
-	TYPE_CONNECTED			= 1 | PROXY_FLAG,
-	TYPE_CONNECT_FAILED,
-	TYPE_CONNECT_SUCCEED,
-	TYPE_CONNECTION_CLOSE,
-	TYPE_PROXY_DATA,
-
-	TYPE_CONNECT			= 1,
-	TYPE_CONNECTION_CLOSED,
-	TYPE_CLIENT_DATA,
-};
 
 void error(const char *msg, ...);
 int set_socket_option(int sockfd, int level, int option, int value);

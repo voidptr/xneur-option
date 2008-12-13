@@ -77,7 +77,7 @@ void connections_add(struct connections_buffer *buffer, void *data, int id)
 
 	buffer->chunks_count++;
 
-	printf("Added connection %d at pos %d\n", id, buffer->chunks_count - 1);
+	printf("Added connection %d\n", id);
 
 	pthread_mutex_unlock(&buffer->mutex);
 }
@@ -121,7 +121,7 @@ void connections_remove(struct connections_buffer *buffer, int id)
 		buffer->chunks = NULL;
 	}
 
-	printf("Removed connection %d from pos %d\n", id, index);
+	printf("Removed connection %d\n", id);
 
 	pthread_mutex_unlock(&buffer->mutex);
 }

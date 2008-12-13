@@ -25,9 +25,7 @@ struct connection_data
 
 	int connfd;
 	int connid;
-
-	int receive_seq;
-	int send_seq;
+	int last_seq;
 
 	int client_ip;
 	int server_ip;
@@ -38,8 +36,11 @@ struct connection_data
 	pthread_t server_write;
 };
 
-static struct connection_data* init_connection_data(struct itun_packet *packet, int connfd)
+static struct connection_data* init_connection_data(struct itun_packet *packet)
 {
+	if (packet->header->length != sizeof(struct itun_packet_connect))
+		return NULL;
+
 	struct itun_packet_connect *ipc = (struct itun_packet_connect *) packet->data;
 
 	struct connection_data *data = malloc(sizeof(struct connection_data));
@@ -47,10 +48,9 @@ static struct connection_data* init_connection_data(struct itun_packet *packet, 
 
 	data->client_buffer	= data_new();
 
-	data->connfd		= connfd;
 	data->connid		= packet->header->connid;
-
 	data->client_ip		= packet->client_ip;
+
 	data->server_ip		= ipc->ip;
 	data->server_port	= ipc->port;
 
@@ -59,7 +59,7 @@ static struct connection_data* init_connection_data(struct itun_packet *packet, 
 
 static void free_connection_data(struct connection_data *data)
 {
-	if (data->connfd != 0)
+	if (data->connfd > 0)
 		close(data->connfd);
 
 	if (data->client_buffer != NULL)
@@ -83,7 +83,7 @@ static void send_packet(struct connection_data *data, int type, void *payload, i
 	packet->header->magic		= MAGIC_NUMBER;
 	packet->header->connid		= data->connid;
 	packet->header->type		= type;
-	packet->header->seq		= data->send_seq++;
+	packet->header->seq		= data->last_seq++;
 	packet->header->length		= size;
 
 	packet->connection		= data;
@@ -258,18 +258,14 @@ static void* do_icmp_parse(void *arg)
 		{
 			case TYPE_CONNECT:
 			{
+				struct connection_data *data = init_connection_data(packet);
+				if (data == NULL)
+					break;
+
 				struct in_addr addr = {packet->client_ip};
 				char *from_ip = inet_ntoa(addr);
 
 				printf("Received connect packet from %s\n", from_ip);
-
-				if (packet->header->length != sizeof(struct itun_packet_connect))
-				{
-					printf("Packet seems to be fragmented, skipping\n");
-					break;
-				}
-
-				struct connection_data *data = init_connection_data(packet, 0);
 
 				if (pthread_create(&data->server_connect, NULL, do_server_connect, (void *) data) == -1)
 					error("Error %d occured in pthread_create(server_connect)", errno);
@@ -380,12 +376,18 @@ static void do_accept(void)
 		if (itp->icmp_type == ICMP_ECHOREPLY)
 			continue;
 
-		struct connection_data *connection = NULL;
-		if (itp->header->type != TYPE_CONNECT)
+		struct connection_data *connection = (struct connection_data *) connections_get(params->connections, itp->header->connid);
+
+		if (itp->header->type == TYPE_CONNECT && connection != NULL)
 		{
-			connection = (struct connection_data *) connections_get(params->connections, itp->header->connid);
-			if (connection == NULL)
-				continue;
+			packets_free_packet(itp);
+			continue;
+		}
+
+		if (itp->header->type != TYPE_CONNECT && connection == NULL)
+		{
+			packets_free_packet(itp);
+			continue;
 		}
 
 		itp->connection = connection;

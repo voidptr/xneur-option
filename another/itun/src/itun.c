@@ -28,9 +28,7 @@ struct connection_data
 
 	int connfd;
 	int connid;
-
-	int receive_seq;
-	int send_seq;
+	int last_seq;
 
 	pthread_t client_read;
 	pthread_t client_write;
@@ -44,14 +42,14 @@ static struct connection_data* init_connection_data(int connfd)
 	data->proxy_buffer	= data_new();
 
 	data->connfd		= connfd;
-	data->connid		= params->last_id++;
+	data->connid		= rand();
 
 	return data;
 }
 
 void free_connection_data(struct connection_data *data)
 {
-	if (data->connfd != 0)
+	if (data->connfd > 0)
 		close(data->connfd);
 
 	if (data->proxy_buffer != NULL)
@@ -75,7 +73,7 @@ static void send_packet(struct connection_data *data, int type, void *payload, i
 	packet->header->magic		= MAGIC_NUMBER;
 	packet->header->connid		= data->connid;
 	packet->header->type		= type;
-	packet->header->seq		= data->send_seq++;
+	packet->header->seq		= data->last_seq++;
 	packet->header->length		= size;
 
 	packet->connection		= data;
@@ -315,7 +313,7 @@ static void* do_request_packets(void *arg)
 
 			if (packet->requests <= MAX_PACKET_REQUESTS)
 			{
-				printf("Resend packet with seq %d fo connection %d\n", packet->header->seq, packet->header->connid);
+				printf("Resend packet with seq %d for connection %d\n", packet->header->seq, packet->header->connid);
 				send_icmp_packet(params->bind_ip, params->proxy_ip, packet);
 				continue;
 			}
@@ -414,8 +412,6 @@ static void do_accept(void)
 		struct connection_data *data = init_connection_data(connfd);
 
 		struct itun_packet_connect ipc;
-		bzero(&ipc, sizeof(struct itun_packet_connect));
-
 		ipc.ip		= params->dest_ip;
 		ipc.port	= atoi(params->destination_port);
 
