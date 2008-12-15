@@ -9,6 +9,8 @@
 
 #define MAGIC_NUMBER		0x6E757469 // "itun"
 
+#define SHUTDOWN_READ		1
+#define SHUTDOWN_WRITE		2
 
 void error(const char *msg, ...);
 int set_socket_option(int sockfd, int level, int option, int value);

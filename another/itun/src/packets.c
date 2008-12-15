@@ -41,12 +41,37 @@ struct packets_buffer* packets_new(void)
 
 static struct packets_chunk* packets_add_chunk(struct packets_buffer *buffer, int connid)
 {
+	int lower = 0, upper = buffer->chunks_count - 1;
+	while (lower <= upper)
+	{
+		int cur = (lower + upper) / 2;
+		if (buffer->chunks[cur].connid > connid)
+			upper = cur - 1;
+		else if (buffer->chunks[cur].connid < connid)
+			lower = cur + 1;
+		else
+			return &(buffer->chunks[cur]);
+	}
+
 	buffer->chunks = realloc(buffer->chunks, (buffer->chunks_count + 1) * sizeof(struct packets_chunk));
 	buffer->chunks_count++;
 
-	struct packets_chunk *chunk = &(buffer->chunks[buffer->chunks_count - 1]);
-	bzero(chunk, sizeof(struct packets_chunk));
+	struct packets_chunk *chunk = NULL;
 
+	if (upper < 0)
+	{
+		memmove(buffer->chunks + 1, buffer->chunks, (buffer->chunks_count - 1) * sizeof(struct packets_chunk));
+		chunk = &buffer->chunks[0];
+	}
+	else if (lower >= buffer->chunks_count)
+		chunk = &buffer->chunks[buffer->chunks_count - 1];
+	else
+	{
+		memmove(buffer->chunks + lower + 1, buffer->chunks + lower, (buffer->chunks_count - lower - 1) * sizeof(struct packets_chunk));
+		chunk = &buffer->chunks[lower];
+	}
+
+	bzero(chunk, sizeof(struct packets_chunk));
 	chunk->connid = connid;
 
 	return chunk;
@@ -138,17 +163,15 @@ static void packets_add_packet(struct packets_chunk *chunk, struct itun_packet *
 static void packets_shift(struct packets_chunk *chunk)
 {
 	chunk->packets_count--;
-
-	if (chunk->packets_count != 0)
-	{
-		memcpy(chunk->packets, chunk->packets + 1, chunk->packets_count * sizeof(struct itun_packet *));
-		chunk->packets = realloc(chunk->packets, chunk->packets_count * sizeof(struct itun_packet *));
-	}
-	else
+	if (chunk->packets_count == 0)
 	{
 		free(chunk->packets);
 		chunk->packets = NULL;
+		return;
 	}
+
+	memcpy(chunk->packets, chunk->packets + 1, chunk->packets_count * sizeof(struct itun_packet *));
+	chunk->packets = realloc(chunk->packets, chunk->packets_count * sizeof(struct itun_packet *));
 }
 
 static void packets_free_chunk(struct packets_chunk *chunk)
@@ -207,7 +230,7 @@ void packets_add(struct packets_buffer *buffer, struct itun_packet *packet)
 
 	packet->time = time(NULL);
 
-	printf("Adding packet with seq %d\n", packet_seq);
+	printf("Adding packet with seq %d:%d\n", packet_seq, connid);
 
 	packets_add_packet(chunk, packet);
 	packets_check_avail(buffer, chunk);
@@ -217,32 +240,32 @@ void packets_add(struct packets_buffer *buffer, struct itun_packet *packet)
 
 struct itun_packet* packets_take(struct packets_buffer *buffer)
 {
-	if (sem_wait(&buffer->avail) != 0)
-		return NULL;
-	pthread_mutex_lock(&buffer->mutex);
-
-	for (int i = 0; i < buffer->chunks_count; i++)
+	while (1)
 	{
-		struct packets_chunk *chunk = &(buffer->chunks[i]);
-		if (chunk->packets_count == 0)
-			continue;
+		if (sem_wait(&buffer->avail) != 0)
+			return NULL;
+		pthread_mutex_lock(&buffer->mutex);
 
-		struct itun_packet *packet = chunk->packets[0];
-		if (packet->header->seq > chunk->next_seq)
-			continue;
+		for (int i = 0; i < buffer->chunks_count; i++)
+		{
+			struct packets_chunk *chunk = &(buffer->chunks[i]);
+			if (chunk->packets_count == 0)
+				continue;
 
-		printf("Removing packet with seq %d\n", packet->header->seq);
-		packets_shift(chunk);
+			struct itun_packet *packet = chunk->packets[0];
+			if (packet->header->seq > chunk->next_seq)
+				continue;
+
+			printf("Removing packet with seq %d:%d\n", packet->header->seq, chunk->connid);
+			packets_shift(chunk);
+
+			pthread_mutex_unlock(&buffer->mutex);
+
+			return packet;
+		}
 
 		pthread_mutex_unlock(&buffer->mutex);
-
-		return packet;
 	}
-
-	printf("Can't found next packet while sem val is > 0\n");
-	pthread_mutex_unlock(&buffer->mutex);
-
-	return NULL;
 }
 
 void packets_free_packet(struct itun_packet *packet)
@@ -268,9 +291,19 @@ void packets_drop(struct packets_buffer *buffer, int connid)
 	packets_free_chunk(&(buffer->chunks[index]));
 
 	buffer->chunks_count--;
+
+	if (buffer->chunks_count == 0)
+	{
+		free(buffer->chunks);
+		buffer->chunks = NULL;
+
+		pthread_mutex_unlock(&buffer->mutex);
+		return;
+	}
+
 	if (index != buffer->chunks_count)
-		memcpy(buffer->chunks + index, buffer->chunks + index + 1, (buffer->chunks_count - index) * sizeof(struct packets_chunk *));
-	buffer->chunks = realloc(buffer->chunks, buffer->chunks_count * sizeof(struct packets_chunk *));
+		memcpy(buffer->chunks + index, buffer->chunks + index + 1, (buffer->chunks_count - index) * sizeof(struct packets_chunk));
+	buffer->chunks = realloc(buffer->chunks, buffer->chunks_count * sizeof(struct packets_chunk));
 
 	pthread_mutex_unlock(&buffer->mutex);
 }

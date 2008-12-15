@@ -67,15 +67,39 @@ void connections_add(struct connections_buffer *buffer, void *data, int id)
 {
 	pthread_mutex_lock(&buffer->mutex);
 
+	int lower = 0, upper = buffer->chunks_count - 1;
+	while (lower <= upper)
+	{
+		int cur = (lower + upper) / 2;
+		if (buffer->chunks[cur].id > id)
+			upper = cur - 1;
+		else if (buffer->chunks[cur].id < id)
+			lower = cur + 1;
+		else
+			return;
+	}
+
 	buffer->chunks = realloc(buffer->chunks, (buffer->chunks_count + 1) * sizeof(struct connections_chunk));
+	buffer->chunks_count++;
 
-	struct connections_chunk *chunk = &buffer->chunks[buffer->chunks_count];
+	struct connections_chunk *chunk = NULL;
+
+	if (upper < 0)
+	{
+		memmove(buffer->chunks + 1, buffer->chunks, (buffer->chunks_count - 1) * sizeof(struct connections_chunk));
+		chunk = &buffer->chunks[0];
+	}
+	else if (lower >= buffer->chunks_count)
+		chunk = &buffer->chunks[buffer->chunks_count - 1];
+	else
+	{
+		memmove(buffer->chunks + lower + 1, buffer->chunks + lower, (buffer->chunks_count - lower - 1) * sizeof(struct connections_chunk));
+		chunk = &buffer->chunks[lower];
+	}
+
 	bzero(chunk, sizeof(struct connections_chunk));
-
 	chunk->data	= data;
 	chunk->id	= id;
-
-	buffer->chunks_count++;
 
 	printf("Added connection %d\n", id);
 
@@ -93,7 +117,6 @@ void* connections_get(struct connections_buffer *buffer, int id)
 		data = buffer->chunks[index].data;
 		
 	pthread_mutex_unlock(&buffer->mutex);
-
 	return data;
 }
 
@@ -109,17 +132,18 @@ void connections_remove(struct connections_buffer *buffer, int id)
 	}
 
 	buffer->chunks_count--;
-
-	if (index != buffer->chunks_count)
-	{
-		memcpy(buffer->chunks + index, buffer->chunks + index + 1, (buffer->chunks_count - index) * sizeof(struct connections_chunk));
-		buffer->chunks = realloc(buffer->chunks, buffer->chunks_count * sizeof(struct connections_chunk));
-	}
-	else
+	if (buffer->chunks_count == 0)
 	{
 		free(buffer->chunks);
 		buffer->chunks = NULL;
+
+		pthread_mutex_unlock(&buffer->mutex);
+		return;
 	}
+
+	if (index != buffer->chunks_count)
+		memcpy(buffer->chunks + index, buffer->chunks + index + 1, (buffer->chunks_count - index) * sizeof(struct connections_chunk));
+	buffer->chunks = realloc(buffer->chunks, buffer->chunks_count * sizeof(struct connections_chunk));
 
 	printf("Removed connection %d\n", id);
 

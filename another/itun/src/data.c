@@ -83,33 +83,34 @@ void data_add(struct data_buffer *buffer, const char *data, int size, void *conn
 
 struct data_chunk* data_take(struct data_buffer *buffer)
 {
-	if (sem_wait(&buffer->avail) != 0)
-		return NULL;
-	pthread_mutex_lock(&buffer->mutex);
-
-	if (buffer->chunks_count == 0)
+	while (1)
 	{
-		printf("Can't found chunk while sem val is > 0\n");
-		pthread_mutex_unlock(&buffer->mutex);
-		return NULL;
-	}
+		if (sem_wait(&buffer->avail) != 0)
+			return NULL;
+		pthread_mutex_lock(&buffer->mutex);
 
-	struct data_chunk *chunk = buffer->chunks[0];
+		if (buffer->chunks_count == 0)
+		{
+			pthread_mutex_unlock(&buffer->mutex);
+			continue;
+		}
 
-	buffer->chunks_count--;
+		struct data_chunk *chunk = buffer->chunks[0];
 
-	if (buffer->chunks_count != 0)
-	{
+		buffer->chunks_count--;
+		if (buffer->chunks_count == 0)
+		{
+			free(buffer->chunks);
+			buffer->chunks = NULL;
+
+			pthread_mutex_unlock(&buffer->mutex);
+			return chunk;
+		}
+
 		memcpy(buffer->chunks, buffer->chunks + 1, buffer->chunks_count * sizeof(struct data_chunk *));
 		buffer->chunks = realloc(buffer->chunks, buffer->chunks_count * sizeof(struct data_chunk *));
-	}
-	else
-	{
-		free(buffer->chunks);
-		buffer->chunks = NULL;
-	}
-	
-	pthread_mutex_unlock(&buffer->mutex);
 
-	return chunk;
+		pthread_mutex_unlock(&buffer->mutex);
+		return chunk;
+	}
 }

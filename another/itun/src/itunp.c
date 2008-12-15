@@ -26,6 +26,7 @@ struct connection_data
 	int connfd;
 	int connid;
 	int last_seq;
+	int closed;
 
 	int client_ip;
 	int server_ip;
@@ -59,6 +60,8 @@ static struct connection_data* init_connection_data(struct itun_packet *packet)
 
 static void free_connection_data(struct connection_data *data)
 {
+	printf("Freeing data of connection %d\n", data->connid);
+
 	if (data->connfd > 0)
 		close(data->connfd);
 
@@ -99,6 +102,21 @@ static void send_packet(struct connection_data *data, int type, void *payload, i
 	send_icmp_packet(params->bind_ip, data->client_ip, packet);
 }
 
+static void shutdown_connection(struct connection_data *data, int type)
+{
+	data->closed |= type;
+
+	if ((data->closed & SHUTDOWN_WRITE) != SHUTDOWN_WRITE || (data->closed & SHUTDOWN_READ) != SHUTDOWN_READ)
+		return;
+
+	free_connection_data(data);
+}
+
+static int is_shutdown_done(struct connection_data *data, int type)
+{
+	return ((data->closed & type) == type);
+}
+
 static void* do_server_write(void *arg)
 {
 	struct connection_data *data = (struct connection_data *) arg;
@@ -113,14 +131,7 @@ static void* do_server_write(void *arg)
 		while (done != chunk->size)
 		{
 			int writed = write(data->connfd, chunk->data + done, chunk->size - done);
-			if (writed == -1)
-			{
-				if (errno != EINTR)
-					error("Error %d while writing data to server", errno);
-				continue;
-			}
-
-			if (writed == 0)
+			if (writed <= 0)
 				break;
 
 			done += writed;
@@ -130,10 +141,15 @@ static void* do_server_write(void *arg)
 		data_free_chunk(chunk);
 	}
 
-	printf("Shutting down server connection %d\n", data->connid);
-	shutdown(data->connfd, SHUT_WR);
+	if (is_shutdown_done(data, SHUTDOWN_READ))
+		pthread_exit(NULL);
 
-	free_connection_data(data);
+	printf("Sending SHUTDOWN_READ for connection %d\n", data->connid);
+	send_packet(data, TYPE_SHUTDOWN_READ, NULL, 0);
+
+	shutdown(data->connfd, SHUT_WR);
+	shutdown_connection(data, SHUTDOWN_READ);
+
 	pthread_exit(NULL);
 }
 
@@ -146,14 +162,7 @@ static void* do_server_read(void *arg)
 	while (1)
 	{
 		int readed = read(data->connfd, temp_buf, SOCKET_BUFFER_SIZE);
-		if (readed == -1)
-		{
-			if (errno != EINTR)
-				error("Error %d while reading data from server", errno);
-			continue;
-		}
-
-		if (readed == 0)
+		if (readed <= 0)
 			break;
 
 		printf("S->L readed %d bytes\n", readed);
@@ -162,8 +171,8 @@ static void* do_server_read(void *arg)
 
 	free(temp_buf);
 
-	printf("Connection with server %d closed\n", data->connid);
-	send_packet(data, TYPE_CONNECTION_CLOSE, NULL, 0);
+	printf("Server finished sending data to connection %d\n", data->connid);
+	data_add(params->client_buffer, NULL, 0, data);
 
 	pthread_exit(NULL);
 }
@@ -222,6 +231,21 @@ static void* do_icmp_write(void *arg)
 			break;
 
 		struct connection_data *data = (struct connection_data *) chunk->connection;
+		if (chunk->data == NULL)
+		{
+			data_free_chunk(chunk);
+
+			if (is_shutdown_done(data, SHUTDOWN_WRITE))
+				continue;
+
+			printf("Sending SHUTDOWN_WRITE for connection %d\n", data->connid);
+			send_packet(data, TYPE_SHUTDOWN_WRITE, NULL, 0);
+
+			shutdown(data->connfd, SHUT_RD);
+			shutdown_connection(data, SHUTDOWN_WRITE);
+
+			continue;
+		}
 
 		int done = 0;
 		while (done < chunk->size)
@@ -232,7 +256,7 @@ static void* do_icmp_write(void *arg)
 				
 			printf("L->I writed %d bytes\n", tu_size);
 
-			send_packet(data, TYPE_PROXY_DATA, chunk->data + done, tu_size);
+			send_packet(data, TYPE_DATA, chunk->data + done, tu_size);
 			done += MAX_TRANSFER_UNIT;
 		}
 
@@ -271,20 +295,31 @@ static void* do_icmp_parse(void *arg)
 					error("Error %d occured in pthread_create(server_connect)", errno);
 				break;
 			}
-			case TYPE_CLIENT_DATA:
+			case TYPE_SHUTDOWN_READ:
+			{
+				if (is_shutdown_done(data, SHUTDOWN_WRITE))
+					break;
+
+				printf("Received SHUTDOWN_READ command\n");
+				data_add(params->client_buffer, NULL, 0, data);
+
+				break;
+			}
+			case TYPE_SHUTDOWN_WRITE:
+			{
+				if (is_shutdown_done(data, SHUTDOWN_READ))
+					break;
+
+				printf("Received SHUTDOWN_WRITE command\n");
+				data_add(data->client_buffer, NULL, 0, data);
+
+				break;
+			}
+			case TYPE_DATA:
 			{
 				printf("I->L readed %d bytes\n", packet->header->length);
 
 				data_add(data->client_buffer, packet->data, packet->header->length, data);
-				break;
-			}
-			case TYPE_CONNECTION_CLOSED:
-			{
-				printf("Client closed connection %d\n", data->connid);
-
-				shutdown(data->connfd, SHUT_RD);
-				data_add(data->client_buffer, NULL, 0, data);
-
 				break;
 			}
 		}
