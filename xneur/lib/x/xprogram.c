@@ -339,7 +339,7 @@ static void xprogram_process_input(struct _xprogram *p)
 				if (p->event->default_event.xkey.keycode != 0)
 				{
 					p->event->event = p->event->default_event;
-					p->event->send_next_event(p->event);
+					p->event->send_next_event(p->event);		
 				}
 				break;
 			}
@@ -631,7 +631,8 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			p->event->default_event.xkey.keycode = 0;
 						
 			// Unblock keyboard
-			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+		
+			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK);
 
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			

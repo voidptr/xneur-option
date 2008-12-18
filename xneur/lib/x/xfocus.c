@@ -63,7 +63,7 @@ static void set_mask_to_window(Window current_window, int mask)
 	
 	for (unsigned int i = 0; i < children_count; i++)
 		set_mask_to_window(children_return[i], mask);
-	
+
 	XFree(children_return);
 }
 
@@ -167,7 +167,7 @@ static void xfocus_update_events(struct _xfocus *p, int mode)
 	else
 	{
 		// Event masking
-		set_mask_to_window(p->parent_window, mask | EVENT_PRESS_MASK);
+		set_mask_to_window(p->parent_window, mask);
 		set_event_mask(p->owner_window, mask | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 
 		// Grabbing special key (Enter, Tab and other)
