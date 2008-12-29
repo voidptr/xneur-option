@@ -144,6 +144,9 @@ if test "x$with_aspell" != "xno"; then
 		if test -f "$aspell_dir/lib/libaspell.so"; then
 			found_aspell_lib_dir="$aspell_dir/lib"
 		fi
+		if test -f "$aspell_dir/lib64/libaspell.so"; then
+			found_aspell_lib_dir="$aspell_dir/lib64"
+		fi
 	done
 
 	AC_MSG_CHECKING([for aspell header])
