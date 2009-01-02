@@ -286,13 +286,14 @@ static void xprogram_update(struct _xprogram *p)
 	p->last_window = p->focus->owner_window;
 
 	int status = p->focus->get_focus_status(p->focus, &p->app_forced_mode, &p->app_focus_mode);
+	p->event->set_owner_window(p->event, p->focus->owner_window);
+	
+	if (status == FOCUS_UNCHANGED)
+		return;
 
-	if (status != FOCUS_UNCHANGED)
-	{
-		p->layout_update(p);
-		p->string->save_and_clear(p->string, p->last_window);
-	}
-
+	p->layout_update(p);
+	p->string->save_and_clear(p->string, p->last_window);
+		
 	if (status == FOCUS_NONE)
 		return;
 
@@ -300,7 +301,6 @@ static void xprogram_update(struct _xprogram *p)
 	if (p->app_focus_mode == FOCUS_EXCLUDED)
 		listen_mode = LISTEN_DONTGRAB_INPUT;
 
-	p->event->set_owner_window(p->event, p->focus->owner_window);
 	p->focus->update_events(p->focus, listen_mode);
 }
 
@@ -399,7 +399,7 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			case MotionNotify:
 			{
-				//log_message(TRACE, _("Received Motion Notify"));
+				//log_message(TRACE, _("Received Motion Notify on %d"), p->event->event.xmotion.window);
 				p->cursor_update(p);
 				break;
 			}

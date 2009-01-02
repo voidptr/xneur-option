@@ -63,7 +63,7 @@ static void set_mask_to_window(Window current_window, int mask)
 	
 	for (unsigned int i = 0; i < children_count; i++)
 		set_mask_to_window(children_return[i], mask);
-
+	
 	XFree(children_return);
 }
 
@@ -124,6 +124,8 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		XFree(children_return);
 	}	
 	
+	// Clear masking on unfocused window
+	p->update_events(p, LISTEN_DONTGRAB_INPUT);
 	// Replace unfocused window to focused window
 	p->owner_window = new_window;
 
@@ -158,7 +160,7 @@ static void xfocus_update_events(struct _xfocus *p, int mode)
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
 		// Event unmasking
-		set_mask_to_window(p->parent_window, mask);
+		set_mask_to_window(p->parent_window, None);
 		set_event_mask(p->owner_window, mask | FOCUS_CHANGE_MASK);
 
 		// Ungrabbing special key (Enter, Tab and other)
