@@ -13,7 +13,6 @@ enum itun_types
 	TYPE_SHUTDOWN_READ,
 	TYPE_SHUTDOWN_WRITE,
 	TYPE_DATA,
-    TYPE_DATA_RESEND,
 };
 
 struct itun_packet_connect
