@@ -119,7 +119,7 @@ void send_icmp_packet(int src_ip, int dst_ip, struct itun_packet *packet)
 			error("Can't build data packet: %s", libnet_geterror(params->libnet));
 	}
 
-	libnet_ptag_t packet_header_tag = libnet_build_data((unsigned char *)  packet->header, sizeof(struct itun_header), params->libnet, 0);
+	libnet_ptag_t packet_header_tag = libnet_build_data((unsigned char *) packet->header, sizeof(struct itun_header), params->libnet, 0);
 	if (packet_header_tag == -1)
 		error("Can't build data packet: %s", libnet_geterror(params->libnet));
 
