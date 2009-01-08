@@ -1,3 +1,9 @@
+January 09 2009:
+Version 0.9.3 released.
+Add OSD support
+New image library (imlib2) support
+i18n support in xneur
+
 November 02 2008
 Version 0.9.2 released.
 KDE application events receive bugfix

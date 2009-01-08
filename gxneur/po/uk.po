@@ -30,8 +30,7 @@ msgid "Execute user action"
 msgstr "Виконати дію користувача"
 
 msgid "Use command <b>xfontsel -print</b> to get new font."
-msgstr ""
-"Використайте команду <b>xfontsel -print</b> щоб отримати новий шрифт."
+msgstr "Використайте команду <b>xfontsel -print</b> щоб отримати новий шрифт."
 
 msgid "OSD Font"
 msgstr "Екранні шрифти"
@@ -391,8 +390,7 @@ msgstr ""
 #: src/misc.c:266
 #, c-format
 msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
-msgstr ""
-"Використовується libxnconfig API версії %d.0.%d (зібрано з %d.0.%d)\n"
+msgstr "Використовується libxnconfig API версії %d.0.%d (зібрано з %d.0.%d)\n"
 
 #: src/misc.c:270 src/misc.c:271
 #, c-format

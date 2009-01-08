@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: xneur\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-26 18:33+0300\n"
 "PO-Revision-Date: 2008-12-05 20:41+0000\n"
 "Last-Translator: Knedlyk <Unknown>\n"
@@ -215,8 +215,7 @@ msgstr "X Neural Switcher запущено"
 
 #: lib/ai/detection.c:99
 #, c-format
-msgid ""
-"   [-] Skip checking by language proto of size %d (word is very short)"
+msgid "   [-] Skip checking by language proto of size %d (word is very short)"
 msgstr ""
 
 #: lib/ai/detection.c:106
@@ -573,8 +572,8 @@ msgstr ""
 
 #: lib/x/xbtable.c:180
 msgid ""
-"Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + "
-"Win(64)):"
+"Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win"
+"(64)):"
 msgstr ""
 
 #: lib/x/xcursor.c:117
