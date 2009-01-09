@@ -172,7 +172,7 @@ if test "x$with_aspell" != "xno"; then
 	AC_SUBST(ASPELL_LIBS)
 fi
 
-AC_ARG_WITH(xosd, [  --without-osd	  Compile without xosd support])
+AC_ARG_WITH(xosd, [  --without-xosd	  Compile without xosd support])
 if test "x$with_xosd" != "xno"; then
 	found_xosd_bin_dir=""
 	for xosd_dir in /usr/local /usr $prefix
