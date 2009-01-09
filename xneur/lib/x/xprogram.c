@@ -44,7 +44,6 @@
 #include "xwindow.h"
 #include "xkeymap.h"
 #include "xutils.h"
-#include "xcursor.h"
 
 #include "types.h"
 #include "list_char.h"
@@ -185,23 +184,6 @@ static int get_auto_action(KeySym key, int modifier_mask)
 	osd_show(xconfig->osds[osd].file);
 	
 	return KLB_ADD_SYM;
-}
-
-static void xprogram_cursor_update(struct _xprogram *p)
-{
-	if (!p->focus->draw_flag(p->focus, p->event->event.xmotion.window))
-	{
-		p->cursor->hide_flag();
-		return;
-	}
-
-	int root_x, root_y, win_x, win_y;
-	Window root_window, child_window;
-	unsigned int dummyU;
-
-	XQueryPointer(main_window->display, p->focus->owner_window, &root_window, &child_window, &root_x, &root_y, &win_x, &win_y, &dummyU);
-
-	p->cursor->show_flag(root_x + 10, root_y + 10);
 }
 
 static void xprogram_layout_update(struct _xprogram *p)
@@ -356,16 +338,18 @@ static void xprogram_process_input(struct _xprogram *p)
 			case EnterNotify:
 			{
 				if (type == FocusIn)
+				{
 					log_message(TRACE, _("Received FocusIn (event type %d)"), type);
-				else if (type == LeaveNotify)
-					log_message(TRACE, _("Received LeaveNotify (event type %d)"), type);
-				else if (type == EnterNotify)
-					log_message(TRACE, _("Received EnterNotify (event type %d)"), type);
+					
+					p->last_layout = get_active_keyboard_group();
 
-				p->last_layout = get_active_keyboard_group();
+					p->update(p);
+				}
+				//else if (type == LeaveNotify)
+				//	log_message(TRACE, _("Received LeaveNotify (event type %d)"), type);
+				//else if (type == EnterNotify)
+				//	log_message(TRACE, _("Received EnterNotify (event type %d)"), type);
 
-				p->update(p);
-				p->cursor_update(p);
 				break;
 			}
 			case FocusOut:
@@ -397,12 +381,6 @@ static void xprogram_process_input(struct _xprogram *p)
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 				break;
 			}
-			case MotionNotify:
-			{
-				//log_message(TRACE, _("Received Motion Notify on %d"), p->event->event.xmotion.window);
-				p->cursor_update(p);
-				break;
-			}
 			case PropertyNotify:
 			{
 				if (XInternAtom(main_window->display, "XKLAVIER_STATE", FALSE) == p->event->event.xproperty.atom)
@@ -411,11 +389,7 @@ static void xprogram_process_input(struct _xprogram *p)
 
 					// Flush string
 					//p->string->clear(p->string);
-
-					// Update flag
-					p->cursor_update(p);
 				}
-
 				break;
 			}
 			default:
@@ -632,7 +606,7 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 						
 			// Unblock keyboard
 		
-			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK);
+			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK);
 
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			
@@ -679,7 +653,6 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 
 			play_file(SOUND_CHANGE_STRING);
 			osd_show(xconfig->osds[OSD_CHANGE_STRING].file);
-			p->cursor_update(p);
 			break;
 		}
 		case ACTION_CHANGE_WORD:	// User needs to cancel last change
@@ -694,12 +667,11 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 
 			p->change_word(p, next_lang);
 
-			set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 			grab_spec_keys(p->focus->owner_window, TRUE);
 
 			play_file(SOUND_MANUAL_CHANGE_WORD);
 			osd_show(xconfig->osds[OSD_MANUAL_CHANGE_WORD].file);
-			p->cursor_update(p);
 			p->event->default_event.xkey.keycode = 0;
 			
 			break;
@@ -779,7 +751,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 				p->string->set_content(p->string, string);
 				p->send_string_silent(p, FALSE);
 				
-				set_event_mask(p->focus->owner_window, POINTER_MOTION_MASK | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 				grab_spec_keys(p->focus->owner_window, TRUE);
 
 				play_file(SOUND_REPLACE_ABBREVIATION);
@@ -829,7 +801,6 @@ static void xprogram_check_lang_last_word(struct _xprogram *p)
 	p->change_word(p, new_lang);
 	play_file(SOUND_AUTOMATIC_CHANGE_WORD);
 	osd_show(xconfig->osds[OSD_AUTOMATIC_CHANGE_WORD].file);
-	p->cursor_update(p);
 }
 
 static void xprogram_check_caps_last_word(struct _xprogram *p)
@@ -993,7 +964,6 @@ static void xprogram_uninit(struct _xprogram *p)
 	p->focus->uninit(p->focus);
 	p->event->uninit(p->event);
 	p->string->uninit(p->string);
-	p->cursor->uninit(p->cursor);
 	main_window->uninit(main_window);
 
 	free(p);
@@ -1019,11 +989,9 @@ struct _xprogram* xprogram_init(void)
 	p->event			= xevent_init();		// X Event processor
 	p->focus			= xfocus_init();		// X Input Focus and Pointer processor
 	p->string			= xstring_init();		// Input string buffer
-	p->cursor			= xcursor_init();
 
 	// Function mapping
 	p->uninit			= xprogram_uninit;
-	p->cursor_update		= xprogram_cursor_update;
 	p->layout_update		= xprogram_layout_update;
 	p->update			= xprogram_update;
 	p->on_key_action		= xprogram_on_key_action;

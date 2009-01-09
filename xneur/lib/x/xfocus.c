@@ -41,17 +41,12 @@ extern struct _xwindow *main_window;
 const char *verbose_forced_mode[]	= {"Default", "Manual", "Automatic"};
 const char *verbose_focus_status[]	= {"Processed", "Changed Focus", "Unchanged Focus", "Excluded"};
 
-static void set_mask_to_window(Window current_window, int mask)
+static void grab_mouse_button (Window current_window, int grab)
 {
 	if (current_window == None)
 		return;
 	
-	set_event_mask(current_window, mask);
-	
-	if (mask == None)
-		grab_button(current_window, FALSE);
-	else
-		grab_button(current_window, TRUE);
+	grab_button(current_window, grab);
 	
 	unsigned int children_count;
 	Window root_window, parent_window;
@@ -62,7 +57,7 @@ static void set_mask_to_window(Window current_window, int mask)
 		return;
 	
 	for (unsigned int i = 0; i < children_count; i++)
-		set_mask_to_window(children_return[i], mask);
+		grab_mouse_button (children_return[i], grab);
 	
 	XFree(children_return);
 }
@@ -153,15 +148,11 @@ static int xfocus_get_focus_status(struct _xfocus *p, int *forced_mode, int *foc
 
 static void xfocus_update_events(struct _xfocus *p, int mode)
 {
-	// Mouse pointer motion masking and focus event masking every time for all windows
-	const int mask = POINTER_MOTION_MASK;
-	
-	// Grabbing ONLY after masking!!!
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
 		// Event unmasking
-		set_mask_to_window(p->parent_window, None);
-		set_event_mask(p->owner_window, mask | FOCUS_CHANGE_MASK);
+		grab_mouse_button(p->parent_window, FALSE);
+		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
 
 		// Ungrabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, FALSE);
@@ -169,46 +160,14 @@ static void xfocus_update_events(struct _xfocus *p, int mode)
 	else
 	{
 		// Event masking
-		set_mask_to_window(p->parent_window, mask);
-		set_event_mask(p->owner_window, mask | INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+		grab_mouse_button(p->parent_window, TRUE);
+		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 
 		// Grabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, TRUE);
 	}
 
 	p->last_parent_window = p->parent_window;
-}
-
-static int xfocus_draw_flag(struct _xfocus *p, Window event_window)
-{
-	char *app_name = get_wm_class_name(p->owner_window);
-	if (app_name == NULL)
-		return FALSE;
-	
-	if (!xconfig->draw_flag_apps->exist(xconfig->draw_flag_apps, app_name, BY_PLAIN))
-	{
-		free(app_name);
-		return FALSE;
-	}
-	free(app_name);
-
-	Window root_window, parent_window;
-	Window *children_return;
-	unsigned int dummyU;
-
-	// Get parent window for window over pointer
-	Window current_event_window = event_window;
-	while (TRUE)
-	{
-		int is_same_screen = XQueryTree(main_window->display, current_event_window, &root_window, &parent_window, &children_return, &dummyU);
-		if (!is_same_screen || parent_window == None || parent_window == root_window)
-			break;
-
-		current_event_window = parent_window;
-		XFree(children_return);
-	}
-
-	return (p->parent_window == current_event_window);
 }
 
 static void xfocus_uninit(struct _xfocus *p)
@@ -226,7 +185,6 @@ struct _xfocus* xfocus_init(void)
 	// Functions mapping
 	p->get_focus_status	= xfocus_get_focus_status;
 	p->update_events	= xfocus_update_events;
-	p->draw_flag		= xfocus_draw_flag;
 	p->uninit		= xfocus_uninit;
 
 	return p;

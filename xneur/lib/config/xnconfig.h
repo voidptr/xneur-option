@@ -205,9 +205,6 @@ struct _xneur_config
 
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
 	
-	struct _list_char *draw_flag_apps;
-	struct _xneur_file *flags;			// Array of flag pixmaps for draw
-
 	struct _list_char *abbreviations;		// Array of words to replace
 
 	struct _xneur_action *actions;

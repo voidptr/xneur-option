@@ -114,20 +114,6 @@ SaveSelectionMode Yes
 # This option define delay before sendind events to application (in milliseconds until 0 to 50).
 SendDelay 1
 
-# Binds pixmaps for some layouts
-# Example:
-#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.png
-AddFlagPixmap Layout1Flag English.png
-AddFlagPixmap Layout2Flag Belarusian.png
-AddFlagPixmap Layout3Flag 
-AddFlagPixmap Layout4Flag 
-
-# Add Applications names to draw flag in window
-# Example:
-#DrawFlagApp Gedit
-DrawFlagApp Gedit
-DrawFlagApp Pidgin
-
 # This option enable or disable correction of iNCIDENTAL CapsLock
 # Example:
 #CorrectIncidentalCaps Yes

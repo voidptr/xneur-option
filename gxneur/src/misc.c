@@ -730,67 +730,6 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "button26");
 	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button26_clicked), gxml);
 	
-	// Flags Paths Preference
-	// Pixmap List set
-	treeview = glade_xml_get_widget (gxml, "treeview8");
-
-	store_pixmap = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_pixmap));
-	gtk_widget_show(treeview);
-
-	for (int i = 0; i < total_pixmap_names; i++)
-	{
-		GtkTreeIter iter;
-		gtk_list_store_append(GTK_LIST_STORE(store_pixmap), &iter);
-		gtk_list_store_set(GTK_LIST_STORE(store_pixmap), &iter, 
-												0, _(pixmap_names[i]),
-												1, xconfig->flags[i].file, 
-												-1);
-	}
-	
-	cell = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("Description"), cell, "text", 0, NULL);
-	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
-
-	cell = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("Pixmap"), cell, "text", 1, NULL);
-	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
-	g_signal_connect (G_OBJECT (cell), "edited",
-						G_CALLBACK (column_1_edited),
-						(gpointer) treeview);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
-
-	// Button Edit Pixmap
-	widget = glade_xml_get_widget (gxml, "button35");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_pixmap), G_OBJECT(treeview));
-	
-	// Draw Flag App Set
-	treeview = glade_xml_get_widget (gxml, "treeview5");
-	
-	store_draw_flag_app = gtk_list_store_new(1, G_TYPE_STRING);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_draw_flag_app));
-	gtk_widget_show(treeview);	
-
-	for (int i = 0; i < xconfig->draw_flag_apps->data_count; i++)
-	{
-		GtkTreeIter iter;
-		gtk_list_store_append(GTK_LIST_STORE(store_draw_flag_app), &iter);
-		gtk_list_store_set(GTK_LIST_STORE(store_draw_flag_app), &iter, 0, xconfig->draw_flag_apps->data[i].string, -1);
-	}				
-
-	cell = gtk_cell_renderer_text_new();
-
-	column = gtk_tree_view_column_new_with_attributes(_("Application"), cell, "text", 0, NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
-
-	// Adding/Removing Draw Flag App
-	widget = glade_xml_get_widget (gxml, "button1");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_draw_flag_app), G_OBJECT(window));
-
-	widget = glade_xml_get_widget (gxml, "button10");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_draw_flag_app), G_OBJECT(treeview));
-	
 	// Delay Before Send
 	widget = glade_xml_get_widget (gxml, "spinbutton1");
 	printf("%d\n", xconfig->send_delay);
@@ -1297,15 +1236,6 @@ gboolean save_layout_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *it
 	return FALSE;
 }
 
-gboolean save_draw_flag_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
-{
-	if (model || path || user_data){};
-
-	save_list(store_draw_flag_app, xconfig->draw_flag_apps, iter);
-
-	return FALSE;
-}
-
 gboolean save_abbreviation(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
 {
 	if (model || path || user_data){};
@@ -1396,26 +1326,6 @@ gboolean save_sound(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, g
 	return FALSE;
 }
 
-gboolean save_pixmap(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
-{
-	if (model || path || user_data){};
-
-	gchar *file_path;
-	gtk_tree_model_get(GTK_TREE_MODEL(store_pixmap), iter, 1, &file_path, -1);
-	
-	int i = atoi(gtk_tree_path_to_string(path));
-	if (xconfig->flags[i].file != NULL)
-		free(xconfig->flags[i].file);
-	
-	if (file_path != NULL)
-	{
-		xconfig->flags[i].file = strdup(file_path);
-		g_free(file_path);
-	}
-	
-	return FALSE;
-}
-
 gboolean save_osd(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
 {
 	if (model || path || user_data){};
@@ -1462,10 +1372,8 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_auto_app), save_auto_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_manual_app), save_manual_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_layout_app), save_layout_app, NULL);
-	gtk_tree_model_foreach(GTK_TREE_MODEL(store_draw_flag_app), save_draw_flag_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_abbreviation), save_abbreviation, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_sound), save_sound, NULL);
-	gtk_tree_model_foreach(GTK_TREE_MODEL(store_pixmap), save_pixmap, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_action), save_action, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_osd), save_osd, NULL);
 	

@@ -27,7 +27,6 @@ struct _xprogram
 	struct _xevent *event;
 	struct _xfocus *focus;
 	struct _xstring *string;
-	struct _xcursor *cursor;
 	
 	int  last_action;
 	int  changed_manual;
@@ -41,7 +40,6 @@ struct _xprogram
 	int  last_layout;
 	int  last_window;
 	
-	void (*cursor_update) (struct _xprogram *p);
 	void (*layout_update) (struct _xprogram *p);
 	void (*update) (struct _xprogram *p);
 	void (*on_key_action) (struct _xprogram *p);

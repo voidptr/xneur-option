@@ -44,7 +44,6 @@ struct _xfocus
 
 	int  (*get_focus_status) (struct _xfocus *p, int *forced_mode, int *focus_status);
 	void (*update_events) (struct _xfocus *p, int mode);
-	int  (*draw_flag) (struct _xfocus *p, Window event_window);
 	void (*uninit) (struct _xfocus *p);
 };
 

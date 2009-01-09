@@ -41,14 +41,13 @@
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
 static const char *bool_names[] =	{"No", "Yes"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
-static const char *flag_names[] =	{"Layout1Flag", "Layout2Flag", "Layout3Flag", "Layout4Flag"};
 
 static const char *option_names[] = 	{
 						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "VowelLetter",
 						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
-						"DrawFlagApp", "AddFlagPixmap", "SaveLog", "ReplaceAbbreviation",
+						"SaveLog", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
 						"ShowOSD", "AddOSD", "FontOSD"
@@ -333,32 +332,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->layout_remember_apps->add(p->layout_remember_apps, full_string);
 			break;
 		}
-		case 20: // Get Draw Flag Applications
-		{
-			p->draw_flag_apps->add(p->draw_flag_apps, full_string);
-			break;
-		}
-		case 21: // Flags
-		{
-			int flag = get_option_index(flag_names, param);
-			if (flag == -1)
-			{
-				log_message(WARNING, _("Invalid value for flag layout name specified"));
-				break;
-			}
-
-			if (line == NULL)
-				break;
-			
-			char *file = strdup(get_word(&line));
-			if (strlen(file) != 0)
-			{
-				p->flags[flag].file = get_file_path_name(PIXMAPDIR, file);
-				free(file);
-			}
-			break;
-		}
-		case 22: // Save Keyboard Log
+		case 20: // Save Keyboard Log
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -370,12 +344,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->save_keyboard_log = index;
 			break;
 		}
-		case 23: // Get Words for Replacing
+		case 21: // Get Words for Replacing
 		{
 			p->abbreviations->add(p->abbreviations, full_string);
 			break;
 		}
-		case 24: // Ignore keyboard layout for abbreviations
+		case 22: // Ignore keyboard layout for abbreviations
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -387,7 +361,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->abbr_ignore_layout = index;
 			break;
 		}
-		case 25: // Change iNCIDENTAL CapsLock Mode
+		case 23: // Change iNCIDENTAL CapsLock Mode
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -399,7 +373,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->correct_incidental_caps = index;
 			break;
 		}
-		case 26: // Change two CApital letter Mode
+		case 24: // Change two CApital letter Mode
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -411,7 +385,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->correct_two_capital_letter = index;
 			break;
 		}
-		case 27: // Flush internal buffer when pressed Enter Mode
+		case 25: // Flush internal buffer when pressed Enter Mode
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -423,7 +397,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->flush_buffer_when_press_enter = index;
 			break;
 		}
-		case 28: // Don't process word when pressed Enter Mode
+		case 26: // Don't process word when pressed Enter Mode
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -435,7 +409,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->dont_process_when_press_enter = index;
 			break;
 		}
-		case 29: // User actions
+		case 27: // User actions
 		{
 			int action = p->actions->action_command->data_count;
 			p->actions->action_hotkey =  (struct _xneur_hotkey *) realloc(p->actions->action_hotkey, (action + 1) * sizeof(struct _xneur_hotkey));
@@ -468,7 +442,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 			break;
 		}
-		case 30: // Show OSD
+		case 28: // Show OSD
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -480,7 +454,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->show_osd = index;
 			break;
 		}
-		case 31: // OSDs
+		case 29: // OSDs
 		{
 			int osd = get_option_index(sound_names, param);
 			if (osd == -1)
@@ -497,7 +471,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			
 			break;
 		}
-		case 32: // Get Initial Xkb Group for all new windows
+		case 30: // Get Initial Xkb Group for all new windows
 		{
 			p->osd_font = strdup(param);
 			break;
@@ -543,7 +517,6 @@ static void free_structures(struct _xneur_config *p)
 	p->auto_apps->uninit(p->auto_apps);
 	p->layout_remember_apps->uninit(p->layout_remember_apps);
 	p->excluded_apps->uninit(p->excluded_apps);
-	p->draw_flag_apps->uninit(p->draw_flag_apps);
 	p->actions->action_command->uninit(p->actions->action_command);
 	
 	if (p->version != NULL)
@@ -614,17 +587,10 @@ static void free_structures(struct _xneur_config *p)
 			free(p->osds[osd].file);
 	}
 	
-	for (int flag = 0; flag < MAX_FLAGS; flag++)
-	{
-		if (p->flags[flag].file != NULL)
-			free(p->flags[flag].file);
-	}
-
 	bzero(p->actions->action_hotkey, total_user_actions * sizeof(struct _xneur_hotkey));
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
 	bzero(p->osds, MAX_OSDS * sizeof(struct _xneur_file));
-	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
 }
 
 static void xneur_config_reload(struct _xneur_config *p)
@@ -740,7 +706,6 @@ static void xneur_config_clear(struct _xneur_config *p)
 	p->auto_apps		= list_char_init();
 	p->layout_remember_apps	= list_char_init();
 	p->excluded_apps	= list_char_init();
-	p->draw_flag_apps	= list_char_init();
 	p->abbreviations	= list_char_init();
 	p->actions->action_command = list_char_init();
 }
@@ -901,25 +866,6 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option define delay before sendind events to application (in milliseconds between 0 to 50).\n");
 	fprintf(stream, "SendDelay %d\n\n", p->send_delay);
 
-	fprintf(stream, "# Binds pixmaps for some layouts\n");
-	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#AddFlagPixmap <Layout1Flag|Layout2Flag|Layout3Flag|Layout4Flag> English.png\n");
-	for (int flag = 0; flag < MAX_FLAGS; flag++)
-	{
-		if (p->flags[flag].file == NULL)
-			continue;
-
-		fprintf(stream, "AddFlagPixmap %s %s\n", flag_names[flag], p->flags[flag].file);
-	}
-	fprintf(stream, "\n");
-
-	fprintf(stream, "# Add Applications names to draw flag in window\n");
-	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#DrawFlagApp Gedit\n");
-	for (int i = 0; i < p->draw_flag_apps->data_count; i++)
-		fprintf(stream, "DrawFlagApp %s\n", p->draw_flag_apps->data[i].string);
-	fprintf(stream, "\n");
-
 	fprintf(stream, "# This option enable or disable logging keyboard\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#SaveLog No\n");
@@ -1067,7 +1013,6 @@ static void xneur_config_uninit(struct _xneur_config *p)
 	free(p->hotkeys);
 	free(p->sounds);
 	free(p->osds);
-	free(p->flags);
 	
 	free(p->actions);
 	
@@ -1094,16 +1039,12 @@ struct _xneur_config* xneur_config_init(void)
 	p->osds = (struct _xneur_file *) malloc(MAX_OSDS * sizeof(struct _xneur_file));
 	bzero(p->osds, MAX_OSDS * sizeof(struct _xneur_file));
 	
-	p->flags = (struct _xneur_file *) malloc(MAX_FLAGS * sizeof(struct _xneur_file));
-	bzero(p->flags, MAX_FLAGS * sizeof(struct _xneur_file));
-
 	p->log_level			= LOG;
 	p->excluded_apps		= list_char_init();
 	p->auto_apps			= list_char_init();
 	p->manual_apps			= list_char_init();
 	p->layout_remember_apps		= list_char_init();
 	p->window_layouts		= list_char_init();
-	p->draw_flag_apps		= list_char_init();
 	p->abbreviations		= list_char_init();
 
 	p->actions = (struct _xneur_action *) malloc(sizeof(struct _xneur_action));

@@ -23,7 +23,6 @@
 #define INPUT_HANDLE_MASK	PropertyChangeMask
 #define EVENT_PRESS_MASK	KeyPressMask 
 #define EVENT_RELEASE_MASK	KeyReleaseMask 
-#define POINTER_MOTION_MASK	PointerMotionMask
 #define FOCUS_CHANGE_MASK	FocusChangeMask | LeaveWindowMask | EnterWindowMask
 #define BUTTON_HANDLE_MASK	ButtonPressMask
 
