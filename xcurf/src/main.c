@@ -121,7 +121,7 @@ static void update_focus (void)
 		XGetInputFocus(display, &new_window, &revert_to);
 
 		// Catch not empty and not system window 
-		if (new_window)
+		if (new_window != None && new_window > 1000)
 			break;
 
 		printf("New window empty\n");
