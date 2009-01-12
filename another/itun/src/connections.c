@@ -115,7 +115,7 @@ void* connections_get(struct connections_buffer *buffer, int id)
 	int index = connections_get_index(buffer, id);
 	if (index != -1)
 		data = buffer->chunks[index].data;
-		
+
 	pthread_mutex_unlock(&buffer->mutex);
 	return data;
 }
