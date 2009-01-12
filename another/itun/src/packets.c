@@ -28,17 +28,6 @@ struct packets_buffer
 	sem_t avail;
 };
 
-struct packets_buffer* packets_new(void)
-{
-	struct packets_buffer *buffer = malloc(sizeof(struct packets_buffer));
-	bzero(buffer, sizeof(struct packets_buffer));
-
-	pthread_mutex_init(&buffer->mutex, NULL);
-	sem_init(&buffer->avail, 0, 0);
-
-	return buffer;
-}
-
 static struct packets_chunk* packets_add_chunk(struct packets_buffer *buffer, int connid)
 {
 	int lower = 0, upper = buffer->chunks_count - 1;
@@ -194,6 +183,17 @@ static void packets_check_avail(struct packets_buffer *buffer, struct packets_ch
 		chunk->next_seq++;
 		sem_post(&buffer->avail);
 	}
+}
+
+struct packets_buffer* packets_new(void)
+{
+	struct packets_buffer *buffer = malloc(sizeof(struct packets_buffer));
+	bzero(buffer, sizeof(struct packets_buffer));
+
+	pthread_mutex_init(&buffer->mutex, NULL);
+	sem_init(&buffer->avail, 0, 0);
+
+	return buffer;
 }
 
 void packets_free(struct packets_buffer *buffer)
