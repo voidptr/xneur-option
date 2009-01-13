@@ -48,7 +48,7 @@ static struct connection_data* init_connection_data(int connfd)
 	return data;
 }
 
-void free_connection_data(struct connection_data *data)
+static void free_connection_data(struct connection_data *data)
 {
 	if (data->connfd > 0)
 		close(data->connfd);
