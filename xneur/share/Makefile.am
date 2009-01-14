@@ -3,7 +3,7 @@ SUBDIRS =			\
 	en			\
 	uk			\
 	ru			\
-	be			\
+	by			\
 	fr			\
 	kz			\
 	ro			\

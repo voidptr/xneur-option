@@ -65,7 +65,7 @@ static GtkTreeView *tmp_treeview	= NULL;
 static const char *modifier_names[]			= {"Shift", "Control", "Alt", "Super"};
 static const char *all_modifiers[]			= {"Control", "Shift", "Alt", "Super", "Control_R", "Shift_R", "Alt_R", "Super_R", "Control_L", "Shift_L", "Alt_L", "Super_L"};
 static const char *language_names[]			= {"English", "Russian", "Ukrainian", "Belarusian", "French", "Romanian", "Kazakh", "German"};
-static char *dirs[]					= {"en", "ru", "uk", "be", "fr", "ro", "kz", "de"};
+static char *dirs[]					= {"en", "ru", "uk", "by", "fr", "ro", "kz", "de"};
 
 static const char *sound_names[]			=   {
 										"Xneur started", "Xneur reloaded", "Xneur stopped",
