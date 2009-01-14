@@ -2,7 +2,7 @@ xneurrcdir = $(sysconfdir)/xneur
 xneurrc_DATA =			\
 	xneurrc			\
 	xneurrc-uk		\
-	xneurrc-be		\
+	xneurrc-by		\
 	xneurrc-fr		\
 	xneurrc-kz		\
 	xneurrc-ro		\
