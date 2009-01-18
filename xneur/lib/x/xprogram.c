@@ -582,7 +582,7 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 			// Block events of keyboard (push to event queue)
 			set_event_mask(p->focus->owner_window, None);
-
+			
 			// Check two capital letter
 			if (xconfig->correct_two_capital_letter)
 				p->check_tcl_last_word(p);
@@ -605,16 +605,15 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			p->event->default_event.xkey.keycode = 0;
 						
 			// Unblock keyboard
-		
-			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK);
-
+			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+			
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			
 			if ((action == KLB_ENTER) && (xconfig->flush_buffer_when_press_enter))
 			{
 				p->string->save_and_clear(p->string, p->focus->owner_window);
 			}
-			
+
 			return;
 		}
 	}
