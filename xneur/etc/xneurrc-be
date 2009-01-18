@@ -17,7 +17,7 @@ LogLevel Debug
 # Define used languages
 # See Settings page on http://www.xneur.ru for details
 AddLanguage English en 0
-AddLanguage Belarusian by 1
+AddLanguage Belarusian be 1
 
 # Define initial keyboard layout for all new applications
 DefaultXkbGroup 0
