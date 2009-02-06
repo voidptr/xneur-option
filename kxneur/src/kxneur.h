@@ -31,7 +31,7 @@ extern "C" {
 }
 
 #define XNEUR_MAJOR_VERSION      9
-#define XNEUR_MINOR_VERSION      3
+#define XNEUR_MINOR_VERSION      4
 #define MAX_LANGUAGES 4
 #define SHOW_ICON 0
 #define SHOW_LANG 1
