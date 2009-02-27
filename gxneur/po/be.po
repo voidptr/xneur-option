@@ -216,6 +216,7 @@ msgid ""
 "Romanian\n"
 "Kazakh\n"
 "German"
+"Poland"
 msgstr ""
 "\n"
 "Ангельская\n"
@@ -225,7 +226,8 @@ msgstr ""
 "Француская\n"
 "Румынская\n"
 "Казахская\n"
-"Нямецкая"
+"Нямецкая\n"
+"Poland"
 
 #: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
 #: glade/config.glade:422
