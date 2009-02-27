@@ -5,6 +5,7 @@ pixmaps_DATA =			\
 	English.png		\
 	Belarusian.png		\
 	French.png		\
+	Poland.png		\
 	Romanian.png		\
 	Kazakh.png		\
 	German.png		\

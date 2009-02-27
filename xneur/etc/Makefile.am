@@ -6,6 +6,7 @@ xneurrc_DATA =			\
 	xneurrc-fr		\
 	xneurrc-kz		\
 	xneurrc-ro		\
-	xneurrc-de
+	xneurrc-de		\
+	xneurrc-pl
 
 EXTRA_DIST = $(xneurrc_DATA)

@@ -7,4 +7,5 @@ SUBDIRS =			\
 	fr			\
 	kz			\
 	ro			\
-	de
+	de			\
+	pl

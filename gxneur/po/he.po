@@ -213,7 +213,8 @@ msgid ""
 "French\n"
 "Romanian\n"
 "Kazakh\n"
-"German"
+"German\n"
+"Poland"
 msgstr ""
 
 #: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405

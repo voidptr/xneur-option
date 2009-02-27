@@ -1,8 +1,8 @@
 # Copyright (C) 2008 XNeur Team
 # This file is distributed under the same license as the GXNEUR package.
 # ANDREW KUZNETSOV <andrewcrew@rambler.ru>, 2008.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 msgid "Xneur started"
 msgstr "Xneur gestartet"
@@ -28,7 +28,9 @@ msgid "Execute user action"
 msgstr "Benutzerdefinierte Aktion ausführen"
 
 msgid "Use command <b>xfontsel -print</b> to get new font."
-msgstr "Benutzen Sie den Befehl <b>xfontsel -print</b>, um eine neue Schrift zu erhalten."
+msgstr ""
+"Benutzen Sie den Befehl <b>xfontsel -print</b>, um eine neue Schrift zu "
+"erhalten."
 
 msgid "OSD Font"
 msgstr "OSD-Font"
@@ -78,8 +80,11 @@ msgstr "Tastenkombination ist leer!"
 msgid "User action field is empty!"
 msgstr "Benutzeraktion ist leer!"
 
-msgid "Couldn't start xneur\nVerify that it installed\n"
-msgstr "Xneur konnte nicht gestartet werden\n"
+msgid ""
+"Couldn't start xneur\n"
+"Verify that it installed\n"
+msgstr ""
+"Xneur konnte nicht gestartet werden\n"
 "Überprüfen Sie, ob es installiert ist\n"
 
 #: glade/abbr_add.glade:7
@@ -210,7 +215,8 @@ msgid ""
 "French\n"
 "Romanian\n"
 "Kazakh\n"
-"German"
+"German\n"
+"Poland"
 msgstr ""
 "\n"
 "Englisch\n"
@@ -220,7 +226,8 @@ msgstr ""
 "Französisch\n"
 "Rumänisch\n"
 "Kasachisch\n"
-"Deutsch"
+"Deutsch\n"
+"Poland"
 
 #: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
 #: glade/config.glade:422
@@ -392,8 +399,10 @@ msgstr "Die libxnconfig API der Version %d.0.%d (kompiliert mit %d.0.%d)\n"
 msgid ""
 "XNeur config broken!\n"
 "Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
-msgstr "Die Konfigurationsdatei von XNeur ist defekt!\n"
-"Bitte entfernen Sie ~/.xneur/xneurrc und installieren Sie das Paket von XNeur neu!\n"
+msgstr ""
+"Die Konfigurationsdatei von XNeur ist defekt!\n"
+"Bitte entfernen Sie ~/.xneur/xneurrc und installieren Sie das Paket von "
+"XNeur neu!\n"
 
 #: src/misc.c:334
 msgid "Current Version"
@@ -436,7 +445,7 @@ msgstr "Bild"
 #: src/support.c:80 src/support.c:104
 #, c-format
 msgid "Couldn't find pixmap file: %s"
-msgstr "Bilddatei konnte nicht gefunden werden:"
+msgstr "Bilddatei konnte nicht gefunden werden: %s"
 
 #: src/trayicon.c:78
 msgid "Stop daemon"
@@ -465,4 +474,3 @@ msgstr "X Neural Switcher gestoppt ("
 #: src/trayicon.c:209
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
-

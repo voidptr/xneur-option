@@ -206,6 +206,7 @@ msgstr "Рэгулярныя выразы…"
 
 #: glade/config.glade:295 glade/config.glade:314 glade/config.glade:333
 #: glade/config.glade:352
+#, fuzzy
 msgid ""
 "\n"
 "English\n"
@@ -215,7 +216,8 @@ msgid ""
 "French\n"
 "Romanian\n"
 "Kazakh\n"
-"German"
+"German\n"
+"Poland"
 msgstr ""
 "\n"
 "Ангельская\n"

@@ -160,6 +160,8 @@ static int xevent_get_cur_modifiers(struct _xevent *p)
 		mask += (1 << 5);
 	if (p->event.xkey.state & Mod4Mask)
 		mask += (1 << 6);
+	if (p->event.xkey.state & Mod5Mask)
+		mask += (1 << 7);
 	return mask;
 }
 
