@@ -10,35 +10,35 @@ msgstr ""
 "Project-Id-Version: gxneur 0.6.2\n"
 "Report-Msgid-Bugs-To: web@softodrom.ru\n"
 "POT-Creation-Date: 2008-10-16 13:14+0400\n"
-"PO-Revision-Date: 2008-11-20 15:42+0000\n"
+"PO-Revision-Date: 2009-02-27 19:30+0000\n"
 "Last-Translator: Crew <Unknown>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-11-21 18:28+0000\n"
+"X-Launchpad-Export-Date: 2009-02-27 19:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 msgid "Xneur started"
-msgstr ""
+msgstr "Xneur запушчаны"
 
 msgid "Xneur reloaded"
-msgstr ""
+msgstr "Xneur перазапушчаны"
 
 msgid "Xneur stopped"
-msgstr ""
+msgstr "Xneur астаноўлены"
 
 msgid "Execute user action"
-msgstr ""
+msgstr "Выканаць дзеяньне юзера"
 
 msgid "Use command <b>xfontsel -print</b> to get new font."
-msgstr ""
+msgstr "Ужывайце каманду <b>xfontsel -print</b>, каб атрымаць новы шрыфт."
 
 msgid "OSD Font"
-msgstr ""
+msgstr "Шрыфт OSD"
 
 msgid "OSD Text"
-msgstr ""
+msgstr "Тэкст OSD"
 
 msgid "Flag pixmap for Layout 4"
 msgstr "Малюнак сьцяга для раскладкі 4"
@@ -77,10 +77,10 @@ msgid "Expansion text field is empty!"
 msgstr "Поле поўнага тэксту пустое!"
 
 msgid "Key bind field is empty!"
-msgstr ""
+msgstr "Поле прысваеньня клявiш пустое!"
 
 msgid "User action field is empty!"
-msgstr ""
+msgstr "Поле дзеяньня юзера пустое!"
 
 msgid ""
 "Couldn't start xneur\n"
@@ -115,32 +115,32 @@ msgstr ""
 
 #: glade/action_add.glade:7
 msgid "Add user action..."
-msgstr ""
+msgstr "Дадаць дзеяньне юзера..."
 
 #: glade/action_add.glade:24
 msgid "Key bind:"
-msgstr ""
+msgstr "Прысвоiць клявiшу:"
 
 #: glade/action_add.glade:46
 msgid "User action:"
-msgstr ""
+msgstr "Дзеяньне юзера:"
 
 msgid "Key bind"
-msgstr ""
+msgstr "Прысвоiць клявiшу"
 
 #: glade/action_add.glade:46
 msgid "User action"
-msgstr ""
+msgstr "Дзеяньне юзера"
 
 #: glade/choose_file.glade:7
 msgid "Choose File..."
 msgstr "Выбраць файл…"
 
 msgid "OSD"
-msgstr ""
+msgstr "OSD"
 
 msgid "Show OSD"
-msgstr ""
+msgstr "Паказваць OSD"
 
 #: glade/config.glade:7
 msgid "XNeur Settings"
@@ -152,7 +152,7 @@ msgstr "Ручны рэжым працы"
 
 #: glade/config.glade:47
 msgid "Correct aCCIDENTAL caps"
-msgstr "вЫПРАЎЛЯЦЬ вЫПАДКОВЫ cAPSlOCK"
+msgstr "вЫПРАЎЛЯЦЬ вЫПАДКОВЫ cAPSLOCK"
 
 #: glade/config.glade:61
 msgid "Correct TWo INitial caps"
@@ -164,7 +164,7 @@ msgstr "Уключыць рэжым саманавучаньня"
 
 #: glade/config.glade:89
 msgid "Keep selection after changing selected text"
-msgstr "Пакідаць вылучэньне пасьля зьмены вылучанага тэксту"
+msgstr "Трымаць выдзяленьне пасьля зьмены выдзеленага тэксту"
 
 #: glade/config.glade:103
 msgid "Enable keyboard logging"
@@ -172,11 +172,11 @@ msgstr "Уключыць захаваньне набранага тэксту ў
 
 #: glade/config.glade:117
 msgid "Flush internal buffer on Enter or Tab"
-msgstr "Ачышаць унутраны буфэр праз Enter або Tab"
+msgstr "Ачышаць унутраны буфэр праз Enter альбо Tab"
 
 #: glade/config.glade:131
 msgid "Don't process words on Enter or Tab"
-msgstr "Не правяраць словы пасьля націсканьня Enter або Tab"
+msgstr "Не правяраць словы пасьля націсканьня Enter альбо Tab"
 
 #: glade/config.glade:156
 msgid "<b>General</b>"
@@ -206,7 +206,6 @@ msgstr "Рэгулярныя выразы…"
 
 #: glade/config.glade:295 glade/config.glade:314 glade/config.glade:333
 #: glade/config.glade:352
-#, fuzzy
 msgid ""
 "\n"
 "English\n"
@@ -216,8 +215,7 @@ msgid ""
 "French\n"
 "Romanian\n"
 "Kazakh\n"
-"German\n"
-"Poland"
+"German"
 msgstr ""
 "\n"
 "Ангельская\n"
@@ -227,7 +225,7 @@ msgstr ""
 "Француская\n"
 "Румынская\n"
 "Казахская\n"
-"German"
+"Нямецкая"
 
 #: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
 #: glade/config.glade:422
@@ -256,7 +254,7 @@ msgstr "<b>Раскладкі</b>"
 
 #: glade/config.glade:871
 msgid "Correct selected text"
-msgstr "Замена вылучанага тэксту"
+msgstr "Замена выдзеленага тэксту"
 
 #: glade/config.glade:884
 msgid "Switch between processing modes"
@@ -268,15 +266,15 @@ msgstr "Замена апошняга радка"
 
 #: glade/config.glade:910
 msgid "Correct/Undo correction"
-msgstr "Замена/Адмена замены"
+msgstr "Выпраўленьне Замена/Адмена"
 
 #: glade/config.glade:921
 msgid "Transliterate selected text"
-msgstr "Трансьлітэрацыя вылучанага тэксту"
+msgstr "Транслітэрацыя выдзеленага тэксту"
 
 #: glade/config.glade:934
 msgid "Change case of selected text"
-msgstr "Зьмена рэгістра вылучанага тэксту"
+msgstr "Зьмена рэгістра выдзеленага тэксту"
 
 #: glade/config.glade:1017
 msgid "Switch to Layout 1"
@@ -354,6 +352,11 @@ msgid ""
 "Debug\n"
 "Trace"
 msgstr ""
+"Error\n"
+"Warning\n"
+"Log\n"
+"Debug\n"
+"Trace"
 
 #: glade/config.glade:1957
 msgid "Log verbosity level"
