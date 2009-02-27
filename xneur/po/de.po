@@ -438,7 +438,7 @@ msgstr "Bild"
 #: src/support.c:80 src/support.c:104
 #, c-format
 msgid "Couldn't find pixmap file: %s"
-msgstr "Bilddatei konnte nicht gefunden werden:"
+msgstr "Bilddatei konnte nicht gefunden werden: %s"
 
 #: src/trayicon.c:78
 msgid "Stop daemon"
