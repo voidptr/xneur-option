@@ -17,6 +17,7 @@
  *
  */
 
+#include <sys/stat.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -33,12 +34,234 @@
 
 #define NEW_LANG_DIR	"new"
 #define NEW_LANG_TEXT	"new.text"
-#define NEW_LANG_ALPH	"new.alphabet"
 
 extern struct _xwindow *main_window;
 
+static char* get_file_content(const char *file_name)
+{
+	struct stat sb;
+
+	if (stat(file_name, &sb) != 0 || sb.st_size < 0)
+		return NULL;
+
+	FILE *stream = fopen(file_name, "rb");
+	if (stream == NULL)
+		return NULL;
+
+	unsigned int file_len = sb.st_size;
+	
+	char *content = (char *) malloc((file_len + 2) * sizeof(char)); // + 1 '\0'
+	if (fread(content, 1, file_len, stream) != file_len)
+	{
+		free(content);
+		fclose(stream);
+		return NULL;
+	}
+
+	content[file_len] = '\0';
+	fclose(stream);
+
+	return content;
+}
+
 void generate_protos(void)
 {
+	printf("THIS OPTION FOR DEVELOPERS ONLY!\n");
+	printf("\nPlease, define new language group and press Enter to continue...\n");
+	printf("(see above keyboard layouts groups presented in system): \n");
+
+	int new_lang_group;
+	scanf("%d", &new_lang_group);
+
+	if (new_lang_group < 0 || new_lang_group > 3)
+	{
+		printf("New language group is bad! Aborting!\n");
+		exit(EXIT_SUCCESS);
+	}
+
+	printf("\nSpecified new language group: %d\n", new_lang_group);
+	
+	char *text = get_file_content(get_file_path_name(NEW_LANG_DIR, NEW_LANG_TEXT));
+	if (text == NULL)
+	{
+		printf("New language text file not find! Aborting!\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	struct _list_char *proto  = list_char_init();
+	struct _list_char *proto3 = list_char_init();
+
+	char *syll = (char *) malloc((3 + 1) * sizeof(char));
+	char *latin_syll = (char *) malloc((3 + 1) * sizeof(char));
+	// Print alphabet	
+	
+	for (int i = 24; i < 62; i++)
+	{
+		if (i == 36)
+			continue;
+			
+		char *symb = keycode_to_symbol(i, new_lang_group, 0);
+		if (symb != NULL)
+			printf("%s\n", symb);
+		
+		free(symb);
+		symb = keycode_to_symbol(i, new_lang_group, 1 << 7);
+		if (symb != NULL)
+			printf("%s\n", symb);
+		
+		char *sym_i = keycode_to_symbol(i, new_lang_group, 0);
+		if (sym_i == NULLSYM || iscntrl(sym_i[0]) || isspace(sym_i[0])) 
+			continue;
+		for (int j = 24; j < 62; j++)
+		{
+			if (j == 36)
+				continue;
+			
+			char *sym_j = keycode_to_symbol(j, new_lang_group, 0);
+			if (sym_j == NULLSYM || iscntrl(sym_j[0]) || isspace(sym_j[0])) 
+				continue;
+
+			strcpy(syll, sym_i);
+			strcat(syll, sym_j);
+			
+			strcpy(latin_syll, syll);
+			KeyCode *dummy_kc = malloc(strlen(latin_syll) * sizeof(KeyCode));
+			int *dummy_mod = malloc(strlen(latin_syll) * sizeof(int));
+			main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, latin_syll, dummy_kc, dummy_mod);
+			free(dummy_kc);
+			free(dummy_mod);
+			
+			if (proto->find(proto, latin_syll, BY_PLAIN))
+				continue;
+
+			if (strstr(text, syll) == NULL)
+			{		
+				proto->add(proto, latin_syll);
+				continue;
+			}
+			
+			for (int k = 24; k < 62; k++)
+			{
+				if (k == 36)
+					continue;
+			
+				char *sym_k = keycode_to_symbol(k, new_lang_group, 0);
+				if (sym_k == NULL || iscntrl(sym_k[0]) || isspace(sym_k[0])) 
+					continue;
+
+				strcpy(syll, sym_i);
+				strcat(syll, sym_j);
+				strcat(syll, sym_k);
+
+				strcpy(latin_syll, syll);
+				KeyCode *dummy_kc = malloc(strlen(latin_syll) * sizeof(KeyCode));
+				int *dummy_mod = malloc(strlen(latin_syll) * sizeof(int));
+				main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, latin_syll, dummy_kc, dummy_mod);
+				free(dummy_kc);
+				free(dummy_mod);
+				
+				if (proto3->find(proto3, latin_syll, BY_PLAIN))
+					continue;
+
+				if (strstr(text, syll) != NULL)
+					continue;
+
+				proto3->add(proto3, latin_syll);
+			}
+		}
+	}
+	
+	for (int i = 24; i < 62; i++)
+	{
+		if (i == 36)
+			continue;
+		
+		char *sym_i = keycode_to_symbol(i, new_lang_group, 1 << 7);
+		if (sym_i == NULLSYM || iscntrl(sym_i[0]) || isspace(sym_i[0])) 
+			continue;
+		for (int j = 24; j < 62; j++)
+		{
+			if (j == 36)
+				continue;
+			
+			char *sym_j = keycode_to_symbol(j, new_lang_group, 1 << 7);
+			if (sym_j == NULLSYM || iscntrl(sym_j[0]) || isspace(sym_j[0])) 
+				continue;
+
+			strcpy(syll, sym_i);
+			strcat(syll, sym_j);
+			
+			strcpy(latin_syll, syll);
+			KeyCode *dummy_kc = malloc(strlen(latin_syll) * sizeof(KeyCode));
+			int *dummy_mod = malloc(strlen(latin_syll) * sizeof(int));
+			main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, latin_syll, dummy_kc, dummy_mod);
+			free(dummy_kc);
+			free(dummy_mod);
+			
+			if (proto->find(proto, latin_syll, BY_PLAIN))
+				continue;
+
+			if (strstr(text, syll) == NULL)
+			{
+				proto->add(proto, latin_syll);
+				continue;
+			}
+			
+			for (int k = 24; k < 62; k++)
+			{
+				if (k == 36)
+					continue;
+			
+				char *sym_k = keycode_to_symbol(k, new_lang_group, 1 << 7);
+				if (sym_k == NULL || iscntrl(sym_k[0]) || isspace(sym_k[0])) 
+					continue;
+
+				strcpy(syll, sym_i);
+				strcat(syll, sym_j);
+				strcat(syll, sym_k);
+
+				strcpy(latin_syll, syll);
+				KeyCode *dummy_kc = malloc(strlen(latin_syll) * sizeof(KeyCode));
+				int *dummy_mod = malloc(strlen(latin_syll) * sizeof(int));
+				main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, latin_syll, dummy_kc, dummy_mod);
+				free(dummy_kc);
+				free(dummy_mod);
+				
+				if (proto3->find(proto3, latin_syll, BY_PLAIN))
+					continue;
+
+				if (strstr(text, syll) != NULL)
+					continue;
+
+				proto3->add(proto3, latin_syll);
+			}
+		}
+	}
+	
+	free(text);
+	
+	char *proto_file_path = get_file_path_name(NEW_LANG_DIR, "proto");
+	FILE *stream = fopen(proto_file_path, "w");
+	proto->save(proto, stream);
+	printf("Short proto writed (%d) to %s\n", proto->data_count, proto_file_path);
+	fclose(stream);
+	free(proto_file_path);
+	
+	char *proto3_file_path = get_file_path_name(NEW_LANG_DIR, "proto3");
+	stream = fopen(proto3_file_path, "w");
+	proto3->save(proto3, stream);
+	printf("Big proto writed (%d) to %s\n", proto3->data_count, proto3_file_path);
+	fclose(stream);
+	free(proto3_file_path);
+
+	proto->uninit(proto);
+	proto3->uninit(proto3);
+
+	free(syll);
+
+	printf("End of generation!\n");
+
+	//exit(EXIT_SUCCESS);
 /*
 	printf("THIS OPTION FOR DEVELOPERS ONLY!\n");
 	printf("\n1) Please, define new language group and press Enter to continue...\n");
@@ -124,24 +347,6 @@ void generate_protos(void)
 		}
 	}
 
-	char *proto_file_path = get_file_path_name(NEW_LANG_DIR, "proto");
-	save_list_to_file(proto, proto_file_path);
-	printf("Short proto writed (%d) to %s\n", proto->data_count, proto_file_path);
-	free(proto_file_path);
 	
-	char *proto3_file_path = get_file_path_name(NEW_LANG_DIR, "proto3");
-	save_list_to_file(proto3, proto3_file_path);
-	printf("Big proto writed (%d) to %s\n", proto3->data_count, proto3_file_path);
-	free(proto3_file_path);
-
-	proto->uninit(proto);
-	proto3->uninit(proto3);
-
-	free(low_text);
-	free(syll);
-
-	printf("End of generation!\n");
-
-	exit(EXIT_SUCCESS);
 */
 }

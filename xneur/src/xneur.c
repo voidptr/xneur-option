@@ -35,6 +35,7 @@
 #include "xbtable.h"
 #include "xswitchlang.h"
 #include "xOSD.h"
+#include "xkeymap.h"
 
 #include "types.h"
 #include "utils.h"
@@ -43,10 +44,12 @@
 #include "colors.h"
 #include "sound.h"
 
+#include "newlang_creation.h"
 struct _xneur_config *xconfig = NULL;
 static struct _xprogram *xprogram = NULL;
 
 static int xneur_check_lock = TRUE;
+static int xneur_generate_proto = FALSE;
 
 static void xneur_reload(int status);
 
@@ -223,6 +226,7 @@ static void xneur_usage(void)
 	printf("  -h, --help              This help!\n");
 	printf("  -a, --about             About for " PACKAGE "\n");
 	printf("  -f, --force             Skip check for other instances of " PACKAGE " runned\n");
+	printf("  -g, --generate          Generate proto for new language. THIS OPTION FOR DEVELOPERS ONLY!\n");
 }
 
 static void xneur_version(void)
@@ -250,6 +254,7 @@ static void xneur_get_options(int argc, char *argv[])
 			{ "help",		no_argument,	NULL,	'h' },
 			{ "about",		no_argument,	NULL,	'a' },
 			{ "force",		no_argument,	NULL,	'f' },
+			{ "generate",	no_argument,	NULL,	'g' },
 			{ NULL,			0,		NULL,	0 }
 	};
 
@@ -273,6 +278,12 @@ static void xneur_get_options(int argc, char *argv[])
 			case 'f':
 			{
 				xneur_check_lock = FALSE;
+				opted = FALSE;
+				break;
+			}
+			case 'g':
+			{
+				xneur_generate_proto = TRUE;
 				opted = FALSE;
 				break;
 			}
@@ -340,7 +351,10 @@ int main(int argc, char *argv[])
 	xntrap(SIGINT, xneur_terminate);
 	xntrap(SIGHUP, xneur_reload);
 
-	xprogram->process_input(xprogram);
+	if (xneur_generate_proto)
+		generate_protos();
+	else
+		xprogram->process_input(xprogram);
 
 	xneur_cleanup();
 
