@@ -129,7 +129,8 @@ struct _xneur_language
 	char *dir;
 	char *name;
 	int  group;
-
+	int  fixed;
+	
 	char *vowel_letter;
 	char *consonant_letter;
 	char *nofirst_letter;
@@ -228,7 +229,7 @@ struct _xneur_config
 	char* (*get_lang_name) (struct _xneur_config *p, int lang);
 	int   (*get_lang_group) (struct _xneur_config *p, int lang);
 	int   (*find_group_lang) (struct _xneur_config *p, int group);
-	void  (*add_language) (struct _xneur_config *p, const char *name, const char *dir, int group);
+	void  (*add_language) (struct _xneur_config *p, const char *name, const char *dir, int group, int fixed);
 	const char* (*get_log_level_name) (struct _xneur_config *p);
 	void  (*uninit) (struct _xneur_config *p);
 };

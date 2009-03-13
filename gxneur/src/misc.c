@@ -86,6 +86,7 @@ static const int total_pixmap_names = sizeof(pixmap_names) / sizeof(pixmap_names
 
 static const char *language_name_boxes[MAX_LANGUAGES]	= {"combobox21", "combobox22", "combobox23", "combobox24"};
 static const char *language_combo_boxes[MAX_LANGUAGES]	= {"combobox13", "combobox14", "combobox15", "combobox16"};
+static const char *language_fix_boxes[MAX_LANGUAGES]	= {"checkbutton14", "checkbutton15", "checkbutton16", "checkbutton17"};
 
 static const int total_modifiers			= sizeof(modifier_names) / sizeof(modifier_names[0]); 
 static const int total_all_modifiers			= sizeof(all_modifiers) / sizeof(all_modifiers[0]);
@@ -596,6 +597,9 @@ void xneur_preference(void)
 			gtk_combo_box_set_active(GTK_COMBO_BOX(name), j + 1);
 			break;
 		}
+		
+		widget = glade_xml_get_widget (gxml, language_fix_boxes[lang]);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->languages[lang].fixed);
 	}
 		
 	// Default Layout Group
@@ -1362,7 +1366,10 @@ void xneur_save_preference(GladeXML *gxml)
 		const char *lang_dir = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 		int lang_group = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound2));
 
-		xconfig->add_language(xconfig, lang_name, lang_dir, lang_group);
+		widgetPtrToBefound = glade_xml_get_widget (gxml, language_fix_boxes[i]);
+		int fixed = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	
+		xconfig->add_language(xconfig, lang_name, lang_dir, lang_group, fixed);
 	}
 	
 	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox25");

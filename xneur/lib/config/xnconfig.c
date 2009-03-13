@@ -40,6 +40,7 @@
 
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
 static const char *bool_names[] =	{"No", "Yes"};
+static const char *fix_names[]  =	{"Fixed"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
@@ -190,14 +191,23 @@ static void parse_line(struct _xneur_config *p, char *line)
 		{
 			char *dir	= get_word(&line);
 			char *group	= get_word(&line);
-
+			char *fixed = get_word(&line);
+			
 			if (dir == NULL || group == NULL)
 			{
 				log_message(ERROR, _("Argument number mismatch for AddLanguage option"));
 				break;
 			}
 
-			p->add_language(p, param, dir, atoi(group));
+			int fix_index = FALSE;
+			if (fixed != NULL)
+			{
+				int index = get_option_index(fix_names, (char *)fixed);
+				if (index == 0) // Fixed
+					fix_index = TRUE;
+			}
+			
+			p->add_language(p, param, dir, atoi(group), fix_index);
 			break;
 		}
 		case 5: // Get Vowel Letter
@@ -743,7 +753,13 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# See Settings page on http://www.xneur.ru for details\n");
 
 	for (int lang = 0; lang < p->total_languages; lang++)
-		fprintf(stream, "AddLanguage %s %s %d\n", p->languages[lang].name, p->languages[lang].dir, p->languages[lang].group);
+	{
+		fprintf(stream, "AddLanguage %s %s %d ", p->languages[lang].name, p->languages[lang].dir, p->languages[lang].group);
+		if (p->languages[lang].fixed)
+			fprintf(stream, "%s\n", fix_names[0]);
+		else
+			fprintf(stream, "\n");
+	}
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# Define initial keyboard layout for all new applications\n");
@@ -983,7 +999,7 @@ static int xneur_config_find_group_lang(struct _xneur_config *p, int group)
 	return -1;
 }
 
-static void xneur_config_add_language(struct _xneur_config *p, const char *name, const char *dir, int group)
+static void xneur_config_add_language(struct _xneur_config *p, const char *name, const char *dir, int group, int fixed)
 {
 	if (name == NULL || dir == NULL)
 	{
@@ -997,7 +1013,8 @@ static void xneur_config_add_language(struct _xneur_config *p, const char *name,
 	p->languages[p->total_languages].name	= strdup(name);
 	p->languages[p->total_languages].dir	= strdup(dir);
 	p->languages[p->total_languages].group	= group;
-
+	p->languages[p->total_languages].fixed	= fixed;
+	
 	p->total_languages++;
 }
 

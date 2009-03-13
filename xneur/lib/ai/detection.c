@@ -49,6 +49,11 @@
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
 	
+static int is_fixed_layout(int cur_lang)
+{
+	return xconfig->languages[cur_lang].fixed;
+}
+
 static int get_proto_hits(const char *word, int len, int lang)
 {
 	char *proto = (char *) malloc((PROTO_LEN + 1) * sizeof(char));
@@ -111,7 +116,7 @@ static int get_proto_lang(const char *word, int len, int cur_lang, int proto_len
 
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
-		if (lang == cur_lang)
+		if ((lang == cur_lang) || (is_fixed_layout(lang)))
 			continue;
 
 		int hits = get_proto_hits_function(word, len, lang);
@@ -133,6 +138,9 @@ static int get_dict_lang(const char *word)
 {
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
+		if (is_fixed_layout(lang))
+			continue;
+		
 		if (xconfig->languages[lang].dicts->exist(xconfig->languages[lang].dicts, word, BY_PLAIN))
 		{
 			log_message(DEBUG, _("   [+] Found this word in %s language dictionary"), xconfig->get_lang_name(xconfig, lang));
@@ -148,6 +156,9 @@ static int get_regexp_lang(const char *word)
 {
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
+		if (is_fixed_layout(lang))
+			continue;
+		
 		if (xconfig->languages[lang].regexp->exist(xconfig->languages[lang].regexp, word, BY_REGEXP))
 		{
 			log_message(DEBUG, _("   [+] Found this word in %s language regular expressions file"), xconfig->get_lang_name(xconfig, lang));
@@ -182,7 +193,7 @@ static int get_letter_order_lang(const char *word, int len, int cur_lang)
 
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
-		if (lang == cur_lang)
+		if ((lang == cur_lang) || (is_fixed_layout(lang)))
 			continue;
 
 		if (get_letter_order_hits(word, len, lang) == FALSE)
@@ -206,7 +217,7 @@ static int get_nofirst_letter_lang(const char *word, int cur_lang)
 
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
-		if (lang == cur_lang)
+		if ((lang == cur_lang) || (is_fixed_layout(lang)))
 			continue;
 
 		if (strrchr(xconfig->languages[cur_lang].nofirst_letter, word[0]) == NULL)
@@ -233,6 +244,9 @@ static int get_aspell_hits(const char *word, int len)
 	
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
+		if (is_fixed_layout(lang))
+			continue;
+		
 		char *lang_word = (char *) malloc(1 * sizeof(char));
 		if (lang_word == NULL)
 			continue;
@@ -289,6 +303,9 @@ static int get_aspell_hits(const char *word, int len)
 
 int get_word_lang(const char *word, int cur_lang)
 {
+	if (is_fixed_layout(cur_lang))
+		return NO_LANGUAGE;
+	
 	int len = strlen(word);
 
 	char *low_word = lower_word(word, len);

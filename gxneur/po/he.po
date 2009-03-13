@@ -85,6 +85,9 @@ msgid ""
 "Verify that it installed\n"
 msgstr ""
 
+msgid "Fixed"
+msgstr ""
+
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
 msgstr "הוסף ראשי תיבות..."

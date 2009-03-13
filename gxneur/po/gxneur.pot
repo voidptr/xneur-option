@@ -81,6 +81,9 @@ msgstr ""
 msgid "Couldn't start xneur\nVerify that it installed\n"
 msgstr ""
 
+msgid "Fixed"
+msgstr ""
+
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
 msgstr ""

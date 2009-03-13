@@ -87,6 +87,9 @@ msgid ""
 "Verify that it installed\n"
 msgstr ""
 
+msgid "Fixed"
+msgstr ""
+
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
 msgstr "Дадаць скарот…"
@@ -215,7 +218,7 @@ msgid ""
 "French\n"
 "Romanian\n"
 "Kazakh\n"
-"German"
+"German\n"
 "Poland"
 msgstr ""
 "\n"
@@ -227,7 +230,7 @@ msgstr ""
 "Румынская\n"
 "Казахская\n"
 "Нямецкая\n"
-"Poland"
+"Польская"
 
 #: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
 #: glade/config.glade:422

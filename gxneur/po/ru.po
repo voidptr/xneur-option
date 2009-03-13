@@ -88,6 +88,9 @@ msgstr ""
 "Невозможно запустить xneur\n"
 "Проверьте, что он установлен\n"
 
+msgid "Fixed"
+msgstr "Фиксированная"
+
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
 msgstr "Добавить Сокращение..."
