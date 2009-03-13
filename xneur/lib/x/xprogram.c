@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <pthread.h>
+#include <ctype.h>
 
 #include "xnconfig.h"
 #include "xnconfig_files.h"
@@ -829,17 +830,20 @@ static void xprogram_check_tcl_last_word(struct _xprogram *p)
 {
 	int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
 
+	if (!isalpha(p->string->content[offset]))
+		return;
+	
 	if (p->string->cur_pos - offset <= 2)
 		return;
 	else
-		if (p->string->content[offset+2] == ' ')
+		if (isblank(p->string->content[offset+2]))
 			return;
-
+	
 	if ((p->string->keycode_modifiers[offset] & ShiftMask) &&
 		(p->string->keycode_modifiers[offset+1] & ShiftMask))
 	{
 		for (int i = 2; i < p->string->cur_pos - offset; i++)
-			if (p->string->keycode_modifiers[offset+i] & ShiftMask)
+			if ((p->string->keycode_modifiers[offset+i] & ShiftMask) && (isalpha(p->string->content[offset+i])))
 				return;
 		
 		p->change_word(p, CORR_TWO_CAPITAL_LETTER);
