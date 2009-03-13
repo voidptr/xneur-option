@@ -34,6 +34,7 @@
 
 #include "xkeymap.h"
 #include "xwindow.h"
+#include "xswitchlang.h"
 
 #include "types.h"
 #include "utils.h"
@@ -304,6 +305,10 @@ static int get_aspell_hits(const char *word, int len)
 int get_word_lang(const char *word, int cur_lang)
 {
 	if (is_fixed_layout(cur_lang))
+		return NO_LANGUAGE;
+	
+	int group = get_active_keyboard_group();
+	if (xconfig->find_group_lang(xconfig, group) == -1)
 		return NO_LANGUAGE;
 	
 	int len = strlen(word);
