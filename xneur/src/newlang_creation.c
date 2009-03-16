@@ -71,7 +71,8 @@ void generate_protos(void)
 	printf("(see above keyboard layouts groups presented in system): \n");
 
 	int new_lang_group;
-	scanf("%d", &new_lang_group);
+	if (!scanf("%d", &new_lang_group))
+		exit(EXIT_SUCCESS);
 
 	if (new_lang_group < 0 || new_lang_group > 3)
 	{

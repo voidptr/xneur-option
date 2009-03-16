@@ -22,8 +22,15 @@
 
 #include <X11/Xutil.h>
 
+struct _xstring_content
+{
+	char *content;
+};
+
 struct _xstring
 {
+	struct _xstring_content *xcontent;
+
 	char *content;		// String itself
 	KeyCode *keycode;	// Array of string chars keycodes
 	int *keycode_modifiers;	// Array of string chars keycodes modifiers

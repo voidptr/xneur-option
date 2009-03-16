@@ -7,7 +7,7 @@ xneur_SOURCES =			\
 	newlang_creation.c	\
 	newlang_creation.h
 
-xneur_CFLAGS = -I@top_srcdir@/lib/ai -I@top_srcdir@/lib/config -I@top_srcdir@/lib/x -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/sound  @X11_CFLAGS@
+xneur_CFLAGS = -I@top_srcdir@/lib/ai -I@top_srcdir@/lib/config -I@top_srcdir@/lib/x -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/sound  @X11_CFLAGS@ @DEFAULT_CFLAGS@
 
 xneur_LDFLAGS = -L$(top_srcdir)/lib/ai -L$(top_srcdir)/lib/config -L$(top_srcdir)/lib/misc -L$(top_srcdir)/lib/x -L$(top_srcdir)/lib/sound  @X11_LIBS@
 

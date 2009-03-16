@@ -25,5 +25,5 @@ libxnx_la_SOURCES =		\
 	xOSD.c			\
 	xOSD.h
 
-libxnx_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc  -I@top_srcdir@/lib/sound -I@top_srcdir@/lib/ai @X11_CFLAGS@
+libxnx_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc  -I@top_srcdir@/lib/sound -I@top_srcdir@/lib/ai @X11_CFLAGS@ @DEFAULT_CFLAGS@
 libxnx_la_LDFLAGS = -static @X11_LIBS@ @XOSD_LIBS@

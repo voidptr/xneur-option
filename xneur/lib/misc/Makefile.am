@@ -20,5 +20,5 @@ libxnmisc_la_SOURCES =		\
 	utils.c			\
 	regexp.c
 
-libxnmisc_la_CFLAGS = @PCRE_CFLAGS@
+libxnmisc_la_CFLAGS = @PCRE_CFLAGS@ @DEFAULT_CFLAGS@
 libxnmisc_la_LDFLAGS = -static @PCRE_LIBS@

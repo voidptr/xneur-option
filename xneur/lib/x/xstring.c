@@ -211,6 +211,17 @@ static void xstring_add_symbol(struct _xstring *p, char sym, KeyCode keycode, in
 	p->keycode[p->cur_pos] = keycode;
 	p->keycode_modifiers[p->cur_pos] = modifier;
 
+	// xcontent
+	int languages_mask	= get_languages_mask();
+	modifier = modifier & (~languages_mask);
+	for (int i=0; i<xconfig->total_languages; i++)
+	{
+		int group = xconfig->get_lang_group(xconfig, i);
+		char *symbol = keycode_to_symbol(keycode, group, modifier);
+		//printf("%d %d - %s\n", group, modifier, symbol);
+		free (symbol);
+	}
+	
 	p->cur_pos++;
 	p->content[p->cur_pos] = NULLSYM;
 }
@@ -292,6 +303,12 @@ struct _xstring* xstring_init(void)
 	bzero(p->keycode, p->cur_size * sizeof(KeyCode));
 	bzero(p->keycode_modifiers, p->cur_size * sizeof(int));
 
+	p->xcontent = (struct _xstring_content *) malloc((xconfig->total_languages) * sizeof(struct _xstring_content));
+	for (int i=0; i<xconfig->total_languages; i++)
+	{
+		p->xcontent = malloc((xconfig->total_languages) * sizeof(char));
+	}
+	
 	// Functions mapping
 	p->clear		= xstring_clear;
 	p->save_log		= xstring_save_log;
