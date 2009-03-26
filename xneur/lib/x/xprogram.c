@@ -51,6 +51,7 @@
 #include "log.h"
 #include "text.h"
 #include "detection.h"
+#include "xdetection.h"
 #include "conversion.h"
 #include "sound.h"
 
@@ -774,6 +775,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 	return TRUE;
 }
 
+#include "xdetection.h"
 static void xprogram_check_lang_last_word(struct _xprogram *p)
 {
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
@@ -789,6 +791,9 @@ static void xprogram_check_lang_last_word(struct _xprogram *p)
 	int cur_lang = get_cur_lang();
 
 	int new_lang = get_word_lang(word, cur_lang);
+	
+	log_message(DEBUG, "Test new algo: %d", check_lang(p->string, cur_lang));
+	
 	if (new_lang == NO_LANGUAGE)
 	{
 		log_message(DEBUG, _("No language found to change to"));

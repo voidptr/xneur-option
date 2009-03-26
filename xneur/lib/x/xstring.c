@@ -144,6 +144,12 @@ static void xstring_clear(struct _xstring *p)
 
 	p->cur_pos = 0;
 	p->content[0] = NULLSYM;
+	
+	for (int i=0; i<xconfig->total_languages; i++)
+	{
+		p->xcontent[i].content = realloc(p->xcontent[i].content, sizeof(char));
+		p->xcontent[i].content[0] = NULLSYM;
+	}
 }
 
 static int xstring_is_space_last(struct _xstring *p)
@@ -217,8 +223,14 @@ static void xstring_add_symbol(struct _xstring *p, char sym, KeyCode keycode, in
 	for (int i=0; i<xconfig->total_languages; i++)
 	{
 		int group = xconfig->get_lang_group(xconfig, i);
-		char *symbol = keycode_to_symbol(keycode, group, modifier);
-		//printf("%d %d - %s\n", group, modifier, symbol);
+		char *symbol = keycode_to_symbol(keycode, group, modifier&(~ShiftMask));
+		
+		p->xcontent[i].content = (char *)realloc(p->xcontent[i].content, (strlen(p->xcontent[i].content)+strlen(symbol)+1)*sizeof(char));
+		p->xcontent[i].content = strcat(p->xcontent[i].content, symbol);
+		
+		p->xcontent[i].symbol_len = (int *)realloc(p->xcontent[i].symbol_len, (p->cur_pos+1) * sizeof(int));
+		p->xcontent[i].symbol_len[p->cur_pos] = strlen(symbol);
+
 		free (symbol);
 	}
 	
@@ -233,6 +245,9 @@ static void xstring_del_symbol(struct _xstring *p)
 
 	p->cur_pos--;
 	p->content[p->cur_pos] = NULLSYM;
+	
+	for (int i=0; i<xconfig->total_languages; i++)
+		p->xcontent[i].content[strlen(p->xcontent[i].content) - p->xcontent[i].symbol_len[p->cur_pos]] = NULLSYM;
 }
 
 static char *xstring_get_utf_string(struct _xstring *p)
@@ -283,6 +298,12 @@ static void xstring_uninit(struct _xstring *p)
 	free(p->keycode_modifiers);
 	free(p->keycode);
 	free(p->content);
+	for (int i=0; i<xconfig->total_languages; i++)
+	{
+		free(p->xcontent[i].content);
+		free(p->xcontent[i].symbol_len);
+	}
+	free(p->xcontent);
 	free(p);
 
 	log_message(DEBUG, _("String is freed"));
@@ -306,7 +327,9 @@ struct _xstring* xstring_init(void)
 	p->xcontent = (struct _xstring_content *) malloc((xconfig->total_languages) * sizeof(struct _xstring_content));
 	for (int i=0; i<xconfig->total_languages; i++)
 	{
-		p->xcontent = malloc((xconfig->total_languages) * sizeof(char));
+		p->xcontent[i].content = malloc(sizeof(char));
+		p->xcontent[i].content[0] = NULLSYM;
+		p->xcontent[i].symbol_len = malloc(sizeof(int));
 	}
 	
 	// Functions mapping

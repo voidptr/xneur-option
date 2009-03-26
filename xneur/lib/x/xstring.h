@@ -25,6 +25,7 @@
 struct _xstring_content
 {
 	char *content;
+	int *symbol_len;
 };
 
 struct _xstring

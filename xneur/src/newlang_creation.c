@@ -92,15 +92,32 @@ void generate_protos(void)
 	struct _list_char *proto  = list_char_init();
 	struct _list_char *proto3 = list_char_init();
 
-	char *syll = (char *) malloc((3 + 1) * sizeof(char));
-	char *latin_syll = (char *) malloc((3 + 1) * sizeof(char));
-	// Print alphabet	
+	char *syll = (char *) malloc((256 + 1) * sizeof(char));
 	
-	for (int i = 24; i < 62; i++)
+	/*for (int i = 1; i < 255; i++)
 	{
-		if (i == 36)
-			continue;
-			
+		char *symb = keycode_to_symbol(i, new_lang_group, 0);
+		if (symb != NULL)
+		{
+			if (isblank(symb[0]) || iscntrl(symb[0]) || isspace(symb[0]) || ispunct(symb[0]) || isdigit(symb[0]))
+				continue;
+		
+			printf("%s\n", symb);
+		}
+		free(symb);
+		symb = keycode_to_symbol(i, new_lang_group, 1<<7);
+		if (symb != NULL)
+		{
+			if (isblank(symb[0]) || iscntrl(symb[0]) || isspace(symb[0]) || ispunct(symb[0]) || isdigit(symb[0]))
+				continue;
+		
+			printf("%s\n", symb);
+		}
+	}
+	return;
+	*/
+	for (int i = 0; i < 255; i++)
+	{
 		char *symb = keycode_to_symbol(i, new_lang_group, 0);
 		if (symb != NULL)
 			printf("%s\n", symb);
@@ -111,130 +128,87 @@ void generate_protos(void)
 			printf("%s\n", symb);
 		
 		char *sym_i = keycode_to_symbol(i, new_lang_group, 0);
-		if (sym_i == NULLSYM || iscntrl(sym_i[0]) || isspace(sym_i[0])) 
+		if (isblank(sym_i[0]) || iscntrl(sym_i[0]) || isspace(sym_i[0]) || ispunct(sym_i[0]) || isdigit(sym_i[0]))
 			continue;
-		for (int j = 24; j < 62; j++)
+		for (int j = 0; j < 255; j++)
 		{
-			if (j == 36)
-				continue;
-			
 			char *sym_j = keycode_to_symbol(j, new_lang_group, 0);
-			if (sym_j == NULLSYM || iscntrl(sym_j[0]) || isspace(sym_j[0])) 
+			if (isblank(sym_j[0]) || iscntrl(sym_j[0]) || isspace(sym_j[0]) || ispunct(sym_j[0]) || isdigit(sym_j[0])) 
 				continue;
 
 			strcpy(syll, sym_i);
 			strcat(syll, sym_j);
-			
-			strcpy(latin_syll, syll);
-			KeyCode *dummy_kc = malloc(strlen(latin_syll) * sizeof(KeyCode));
-			int *dummy_mod = malloc(strlen(latin_syll) * sizeof(int));
-			main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, latin_syll, dummy_kc, dummy_mod);
-			free(dummy_kc);
-			free(dummy_mod);
-			
-			if (proto->find(proto, latin_syll, BY_PLAIN))
+
+			if (proto->find(proto, syll, BY_PLAIN))
 				continue;
 
 			if (strstr(text, syll) == NULL)
 			{		
-				proto->add(proto, latin_syll);
+				proto->add(proto, syll);
 				continue;
 			}
 			
-			for (int k = 24; k < 62; k++)
+			for (int k = 0; k < 255; k++)
 			{
-				if (k == 36)
-					continue;
-			
 				char *sym_k = keycode_to_symbol(k, new_lang_group, 0);
-				if (sym_k == NULL || iscntrl(sym_k[0]) || isspace(sym_k[0])) 
+				if (isblank(sym_k[0]) || iscntrl(sym_k[0]) || isspace(sym_k[0]) || ispunct(sym_k[0]) || isdigit(sym_k[0])) 
 					continue;
 
 				strcpy(syll, sym_i);
 				strcat(syll, sym_j);
 				strcat(syll, sym_k);
-
-				strcpy(latin_syll, syll);
-				KeyCode *dummy_kc = malloc(strlen(latin_syll) * sizeof(KeyCode));
-				int *dummy_mod = malloc(strlen(latin_syll) * sizeof(int));
-				main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, latin_syll, dummy_kc, dummy_mod);
-				free(dummy_kc);
-				free(dummy_mod);
-				
-				if (proto3->find(proto3, latin_syll, BY_PLAIN))
+	
+				if (proto3->find(proto3, syll, BY_PLAIN))
 					continue;
 
 				if (strstr(text, syll) != NULL)
 					continue;
 
-				proto3->add(proto3, latin_syll);
+				proto3->add(proto3, syll);
 			}
 		}
 	}
 	
-	for (int i = 24; i < 62; i++)
+	for (int i = 0; i < 255; i++)
 	{
-		if (i == 36)
-			continue;
-		
 		char *sym_i = keycode_to_symbol(i, new_lang_group, 1 << 7);
-		if (sym_i == NULLSYM || iscntrl(sym_i[0]) || isspace(sym_i[0])) 
+		if (isblank(sym_i[0]) || iscntrl(sym_i[0]) || isspace(sym_i[0]) || ispunct(sym_i[0]) || isdigit(sym_i[0]))
 			continue;
-		for (int j = 24; j < 62; j++)
+		for (int j = 0; j < 255; j++)
 		{
-			if (j == 36)
-				continue;
-			
 			char *sym_j = keycode_to_symbol(j, new_lang_group, 1 << 7);
-			if (sym_j == NULLSYM || iscntrl(sym_j[0]) || isspace(sym_j[0])) 
+			if (isblank(sym_j[0]) || iscntrl(sym_j[0]) || isspace(sym_j[0]) || ispunct(sym_j[0]) || isdigit(sym_j[0]))
 				continue;
 
 			strcpy(syll, sym_i);
 			strcat(syll, sym_j);
-			
-			strcpy(latin_syll, syll);
-			KeyCode *dummy_kc = malloc(strlen(latin_syll) * sizeof(KeyCode));
-			int *dummy_mod = malloc(strlen(latin_syll) * sizeof(int));
-			main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, latin_syll, dummy_kc, dummy_mod);
-			free(dummy_kc);
-			free(dummy_mod);
-			
-			if (proto->find(proto, latin_syll, BY_PLAIN))
+					
+			if (proto->find(proto, syll, BY_PLAIN))
 				continue;
 
 			if (strstr(text, syll) == NULL)
 			{
-				proto->add(proto, latin_syll);
+				proto->add(proto, syll);
 				continue;
 			}
 			
-			for (int k = 24; k < 62; k++)
+			for (int k = 0; k < 255; k++)
 			{
-				if (k == 36)
-					continue;
-			
 				char *sym_k = keycode_to_symbol(k, new_lang_group, 1 << 7);
-				if (sym_k == NULL || iscntrl(sym_k[0]) || isspace(sym_k[0])) 
+				if (isblank(sym_k[0]) || iscntrl(sym_k[0]) || isspace(sym_k[0]) || ispunct(sym_k[0]) || isdigit(sym_k[0])) 
 					continue;
 
 				strcpy(syll, sym_i);
 				strcat(syll, sym_j);
 				strcat(syll, sym_k);
 
-				strcpy(latin_syll, syll);
-				KeyCode *dummy_kc = malloc(strlen(latin_syll) * sizeof(KeyCode));
-				int *dummy_mod = malloc(strlen(latin_syll) * sizeof(int));
-				main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, latin_syll, dummy_kc, dummy_mod);
-				free(dummy_kc);
-				free(dummy_mod);
-				
-				if (proto3->find(proto3, latin_syll, BY_PLAIN))
+				if (proto3->find(proto3, syll, BY_PLAIN))
 					continue;
 
 				if (strstr(text, syll) != NULL)
 					continue;
 
-				proto3->add(proto3, latin_syll);
+				proto3->add(proto3, syll);
 			}
 		}
 	}
