@@ -118,21 +118,29 @@ void generate_protos(void)
 	*/
 	for (int i = 0; i < 255; i++)
 	{
-		char *symb = keycode_to_symbol(i, new_lang_group, 0);
+		printf("%d\n", i);
+		/*char *symb = keycode_to_symbol(i, new_lang_group, 0);
 		if (symb != NULL)
-			printf("%s\n", symb);
+			if !(isblank(symb[0]) || iscntrl(symb[0]) || isspace(symb[0]) || ispunct(symb[0]) || isdigit(symb[0]))
+				printf("%s\n", symb);
 		
 		free(symb);
 		symb = keycode_to_symbol(i, new_lang_group, 1 << 7);
-		if (symb != NULL)
-			printf("%s\n", symb);
 		
+		if (symb != NULL)
+			if (isblank(symb[0]) || iscntrl(symb[0]) || isspace(symb[0]) || ispunct(symb[0]) || isdigit(symb[0]))
+				printf("%s\n", symb);
+		*/
 		char *sym_i = keycode_to_symbol(i, new_lang_group, 0);
+		if (sym_i == NULL)
+			continue;
 		if (isblank(sym_i[0]) || iscntrl(sym_i[0]) || isspace(sym_i[0]) || ispunct(sym_i[0]) || isdigit(sym_i[0]))
 			continue;
 		for (int j = 0; j < 255; j++)
 		{
 			char *sym_j = keycode_to_symbol(j, new_lang_group, 0);
+			if (sym_j == NULL)
+				continue;
 			if (isblank(sym_j[0]) || iscntrl(sym_j[0]) || isspace(sym_j[0]) || ispunct(sym_j[0]) || isdigit(sym_j[0])) 
 				continue;
 
@@ -151,6 +159,8 @@ void generate_protos(void)
 			for (int k = 0; k < 255; k++)
 			{
 				char *sym_k = keycode_to_symbol(k, new_lang_group, 0);
+				if (sym_k == NULL)
+					continue;
 				if (isblank(sym_k[0]) || iscntrl(sym_k[0]) || isspace(sym_k[0]) || ispunct(sym_k[0]) || isdigit(sym_k[0])) 
 					continue;
 
@@ -172,11 +182,15 @@ void generate_protos(void)
 	for (int i = 0; i < 255; i++)
 	{
 		char *sym_i = keycode_to_symbol(i, new_lang_group, 1 << 7);
+		if (sym_i == NULL)
+			continue;
 		if (isblank(sym_i[0]) || iscntrl(sym_i[0]) || isspace(sym_i[0]) || ispunct(sym_i[0]) || isdigit(sym_i[0]))
 			continue;
 		for (int j = 0; j < 255; j++)
 		{
 			char *sym_j = keycode_to_symbol(j, new_lang_group, 1 << 7);
+			if (sym_j == NULL)
+				continue;
 			if (isblank(sym_j[0]) || iscntrl(sym_j[0]) || isspace(sym_j[0]) || ispunct(sym_j[0]) || isdigit(sym_j[0]))
 				continue;
 
@@ -195,6 +209,8 @@ void generate_protos(void)
 			for (int k = 0; k < 255; k++)
 			{
 				char *sym_k = keycode_to_symbol(k, new_lang_group, 1 << 7);
+				if (sym_k == NULL)
+					continue;
 				if (isblank(sym_k[0]) || iscntrl(sym_k[0]) || isspace(sym_k[0]) || ispunct(sym_k[0]) || isdigit(sym_k[0])) 
 					continue;
 
