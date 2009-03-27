@@ -224,7 +224,9 @@ static void xstring_add_symbol(struct _xstring *p, char sym, KeyCode keycode, in
 	{
 		int group = xconfig->get_lang_group(xconfig, i);
 		char *symbol = keycode_to_symbol(keycode, group, modifier&(~ShiftMask));
-		
+		if (symbol == NULL)
+			continue;
+
 		p->xcontent[i].content = (char *)realloc(p->xcontent[i].content, (strlen(p->xcontent[i].content)+strlen(symbol)+1)*sizeof(char));
 		p->xcontent[i].content = strcat(p->xcontent[i].content, symbol);
 		

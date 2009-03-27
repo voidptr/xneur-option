@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2008 XNeur Team
+ *  Copyright (C) 2006-2009 XNeur Team
  *
  */
 
@@ -29,13 +29,6 @@
 #include "regexp.h"
 
 #include "list_char.h"
-
-static void swap_data(struct _list_char *list, int one, int second)
-{
-	struct _list_char_data tmp = list->data[one];
-	list->data[one] = list->data[second];
-	list->data[second] = tmp;
-}
 
 static void rem_by_id(struct _list_char *list, int id)
 {
@@ -87,6 +80,7 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 	{
 		int first = 0;
 		int last = list->data_count - 1;
+		list->sort(list);
 
 		while (first <= last)
 		{
@@ -196,60 +190,24 @@ void list_char_sort(struct _list_char *list)
 	if (list->data_count <= 1)
 		return;
 
-	struct _list_char_data *data1, *data2;
+	struct _list_char_data *temp, *data1, *data2;
+	int i, j;
 
-	int i = 2;
-
-	do
+	for (i = 1; i < list->data_count; i++) 
 	{
-		int t = i;
-		while (t != 1)
+		temp = &list->data[i];
+		for (j = i - 1; j >= 0; j--) 
 		{
-			int k = t / 2;
-			data1 = &list->data[k - 1];
-			data2 = &list->data[t - 1];
-
-			if (strcmp(data1->string, data2->string) >= 0)
-				break;
-
-			swap_data(list, k - 1, t - 1);
-			t = k;
-		}
-		i++;
-	}
-	while (i <= list->data_count);
-
-	i = list->data_count - 1;
-
-	do
-	{
-		swap_data(list, i, 0);
-
-		int t = 1;
-		while (t != 0)
-		{
-			int k = 2 * t;
-			if (k > i)
-				break;
-
-			if (k < i)
+			data1 = &list->data[j];
+			if (strcmp(data1->string, temp->string) < 0) 
 			{
-				data1 = &list->data[k];
-				data2 = &list->data[k - 1];
-				if (strcmp(data1->string, data2->string) > 0)
-					k++;
-			}
-
-			data1 = &list->data[t - 1];
-			if (strcmp(data1->string, data2->string) >= 0)
 				break;
-
-			swap_data(list, k - 1, t - 1);
-			t = k;
+			}
+			data2 = &list->data[j+1];
+			data2 = data1;
 		}
-		i--;
+		data2 = temp;
 	}
-	while (i >= 1);
 }
 
 void list_char_load(struct _list_char *list, char *content)

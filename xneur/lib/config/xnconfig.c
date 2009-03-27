@@ -676,7 +676,7 @@ static int xneur_config_load(struct _xneur_config *p)
 			return FALSE;
 		}
 
-		p->languages[lang].protos = load_list(lang_dir, PROTO_NAME, TRUE);
+		p->languages[lang].protos = load_list(lang_dir, PROTO_NAME, FALSE);
 		if (p->languages[lang].protos == NULL)
 		{
 			log_message(ERROR, _("Can't find protos file for %s language"), lang_name);

@@ -4,7 +4,7 @@ xneurrc_DATA =			\
 	xneurrc-uk		\
 	xneurrc-be		\
 	xneurrc-fr		\
-	xneurrc-kz		\
+	xneurrc-kk		\
 	xneurrc-ro		\
 	xneurrc-de		\
 	xneurrc-pl

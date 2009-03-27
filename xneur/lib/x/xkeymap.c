@@ -83,6 +83,8 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 	int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
 	if (nbytes <= 0)
 		return NULL;
+	symbol[nbytes] = NULLSYM;
+
 	return symbol;
 }
 

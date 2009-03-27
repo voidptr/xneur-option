@@ -5,7 +5,7 @@ SUBDIRS =			\
 	ru			\
 	be			\
 	fr			\
-	kz			\
+	kk			\
 	ro			\
 	de			\
 	pl
