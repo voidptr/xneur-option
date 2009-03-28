@@ -44,8 +44,8 @@ static const char *fix_names[]  =	{"Fixed"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
-						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "VowelLetter",
-						"ConsonantLetter", "NoFirstLetter", "SetAutoApp", "SetManualApp", "GrabMouse",
+						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "Reserved1",
+						"Reserved2", "Reserved3", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"SaveLog", "ReplaceAbbreviation",
@@ -210,19 +210,16 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->add_language(p, param, dir, atoi(group), fix_index);
 			break;
 		}
-		case 5: // Get Vowel Letter
+		case 5: // Reserved1
 		{
-			p->languages[load_lang].vowel_letter = strdup(param);
 			break;
 		}
-		case 6: // Get Consonant Letter
+		case 6: // Reserved2
 		{
-			p->languages[load_lang].consonant_letter = strdup(param);
 			break;
 		}
-		case 7: // Get No First Letter
+		case 7: // Reserved3
 		{
-			p->languages[load_lang].nofirst_letter = strdup(param);
 			break;
 		}
 		case 8: // Get Auto Processing Applications
@@ -552,15 +549,6 @@ static void free_structures(struct _xneur_config *p)
 		if (p->languages[lang].regexp != NULL)
 			p->languages[lang].regexp->uninit(p->languages[lang].regexp);
 
-		if (p->languages[lang].vowel_letter != NULL)
-			free(p->languages[lang].vowel_letter);
-
-		if (p->languages[lang].consonant_letter != NULL)
-			free(p->languages[lang].consonant_letter);
-
-		if (p->languages[lang].nofirst_letter != NULL)
-			free(p->languages[lang].nofirst_letter);
-
 		free(p->languages[lang].name);
 		free(p->languages[lang].dir);
 	}
@@ -700,8 +688,6 @@ static int xneur_config_load(struct _xneur_config *p)
 		p->languages[lang].temp_dicts = p->languages[lang].dicts->clone(p->languages[lang].dicts);
 
 		load_lang = lang;
-		if (!parse_config_file(p, lang_dir, LANGDEF_NAME))
-			return FALSE;
 	}
 
 	return TRUE;

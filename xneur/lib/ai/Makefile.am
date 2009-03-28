@@ -3,8 +3,6 @@ noinst_LTLIBRARIES = libxnai.la
 libxnai_la_SOURCES =		\
 	conversion.c		\
 	conversion.h		\
-	detection.c		\
-	detection.h		\
 	xdetection.c		\
 	xdetection.h
 

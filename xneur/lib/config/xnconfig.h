@@ -27,7 +27,6 @@
 #define DICT_NAME			"dict"
 #define PROTO_NAME			"proto"
 #define BIG_PROTO_NAME			"proto3"
-#define LANGDEF_NAME			"langdef"
 #define REGEXP_NAME			"regexp"
 
 #define SOUNDDIR			"sounds"
@@ -130,10 +129,6 @@ struct _xneur_language
 	char *name;
 	int  group;
 	int  fixed;
-	
-	char *vowel_letter;
-	char *consonant_letter;
-	char *nofirst_letter;
 
 	struct _list_char *temp_dicts;
 	struct _list_char *dicts;
