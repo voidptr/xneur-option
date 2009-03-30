@@ -30,6 +30,7 @@
 
 #include "list_char.h"
 
+
 static void rem_by_id(struct _list_char *list, int id)
 {
 	free(list->data[id].string);
@@ -58,7 +59,7 @@ static int get_add_id(struct _list_char *list, const char *string)
 		int cur = (first + last) / 2;
 
 		struct _list_char_data *data = &list->data[cur];
-
+ 
 		int cmp_result = strcmp(data->string, string);
 		if (cmp_result == 0)
 			return cur;
@@ -86,7 +87,7 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 		{
 			int cur = (first + last) / 2;
 			struct _list_char_data *data = &list->data[cur];
-
+			//printf("%d %s %s\n", cur, data->string, string);
 			int cmp_result = strcmp(data->string, string);
 			if (cmp_result == 0)
 				return cur;
@@ -190,23 +191,21 @@ void list_char_sort(struct _list_char *list)
 	if (list->data_count <= 1)
 		return;
 
-	struct _list_char_data *temp, *data1, *data2;
+	char *temp;
 	int i, j;
 
 	for (i = 1; i < list->data_count; i++) 
 	{
-		temp = &list->data[i];
+		temp = list->data[i].string;
 		for (j = i - 1; j >= 0; j--) 
 		{
-			data1 = &list->data[j];
-			if (strcmp(data1->string, temp->string) < 0) 
+			if (strcmp(list->data[j].string, temp) < 0) 
 			{
 				break;
 			}
-			data2 = &list->data[j+1];
-			data2 = data1;
+			list->data[j+1].string = list->data[j].string; 
 		}
-		data2 = temp;
+		list->data[j+1].string = temp;
 	}
 }
 

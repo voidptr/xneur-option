@@ -787,11 +787,7 @@ static void xprogram_check_lang_last_word(struct _xprogram *p)
 		return;
 
 	int cur_lang = get_cur_lang();
-
-	//int new_lang = get_word_lang(word, cur_lang);
 	int new_lang = check_lang(p->string, cur_lang);
-		
-	log_message(DEBUG, "Test new algo: %d", check_lang(p->string, cur_lang));
 	
 	if (new_lang == NO_LANGUAGE)
 	{
@@ -919,51 +915,73 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 
 static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 {
-	char *word = get_last_word(p->string->content);
-	if (word == NULL)
+	char *tmp = get_last_word(p->string->content);	
+	if (tmp == NULL)
 		return;
-
-	int len = strlen(word);
-	char *low_word = lower_word(word, len);
-
-	len = trim_word(low_word, len);
-	if (len == 0)
-	{
-		free(low_word);
-		return;
-	}
 
 	int curr_lang = get_cur_lang();
 
+	tmp = get_last_word(p->string->xcontent[curr_lang].content);
+	char *curr_word = (char*)malloc(strlen(tmp) * sizeof(char));
+	if (curr_word == NULL)
+		return;
+	strcpy(curr_word, tmp);
+
+	int len = trim_word(curr_word, strlen(tmp));
+	if (len == 0)
+	{
+		free(curr_word);
+		return;
+	}
+	
 	struct _list_char *curr_temp_dicts = xconfig->languages[curr_lang].temp_dicts;
-	if (curr_temp_dicts->exist(curr_temp_dicts, low_word, BY_PLAIN))
-		curr_temp_dicts->rem(curr_temp_dicts, low_word);
+	if (curr_temp_dicts->exist(curr_temp_dicts, curr_word, BY_PLAIN))
+		curr_temp_dicts->rem(curr_temp_dicts, curr_word);
 
 	struct _list_char *new_temp_dicts = xconfig->languages[new_lang].temp_dicts;
-	if (!new_temp_dicts->exist(new_temp_dicts, low_word, BY_PLAIN))
+	tmp = get_last_word(p->string->xcontent[new_lang].content);
+	char *new_word = (char *)malloc(strlen(tmp) * sizeof(char));
+	if (new_word == NULL)
 	{
-		new_temp_dicts->add(new_temp_dicts, low_word);
-		free(low_word);
+		free(curr_word);
+		return;
+	}
+	strcpy(new_word, tmp);
+
+	len = trim_word(new_word, strlen(tmp));
+	if (len == 0)
+	{
+		free(curr_word);
+		free(new_word);
+		return;
+	}
+	
+	if (!new_temp_dicts->exist(new_temp_dicts, new_word, BY_PLAIN))
+	{
+		new_temp_dicts->add(new_temp_dicts, new_word);
+		free(curr_word);
+		free(new_word);
 		return;
 	}
 
 	struct _list_char *curr_dicts = xconfig->languages[curr_lang].dicts;
-	if (curr_dicts->exist(curr_dicts, low_word, BY_PLAIN))
+	if (curr_dicts->exist(curr_dicts, curr_word, BY_PLAIN))
 	{
-		log_message(DEBUG, _("Remove word '%s' from %s dictionary"), low_word, xconfig->get_lang_name(xconfig, curr_lang));
-		curr_dicts->rem(curr_dicts, low_word);
+		log_message(DEBUG, _("Remove word '%s' from %s dictionary"), curr_word, xconfig->get_lang_name(xconfig, curr_lang));
+		curr_dicts->rem(curr_dicts, curr_word);
 		xconfig->save_dicts(xconfig, curr_lang);
 	}
 
 	struct _list_char *new_dicts = xconfig->languages[new_lang].dicts;
-	if (!new_dicts->exist(new_dicts, low_word, BY_PLAIN))
+	if (!new_dicts->exist(new_dicts, new_word, BY_PLAIN))
 	{
-		log_message(DEBUG, _("Add word '%s' in %s dictionary"), low_word, xconfig->get_lang_name(xconfig, new_lang));
-		new_dicts->add(new_dicts, low_word);
+		log_message(DEBUG, _("Add word '%s' in %s dictionary"), new_word, xconfig->get_lang_name(xconfig, new_lang));
+		new_dicts->add(new_dicts, new_word);
 		xconfig->save_dicts(xconfig, new_lang);
 	}
-
-	free(low_word);
+	
+	free(curr_word);
+	free(new_word);
 }
 
 static void xprogram_uninit(struct _xprogram *p)
