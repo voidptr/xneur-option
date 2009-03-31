@@ -103,7 +103,9 @@ static int get_aspell_hits(char **word)
 			continue;
 
 		int len = strlen(word[lang]);
-		                 
+		if (len < 2)
+			continue;
+		
 		aspell_config_replace(spell_config, "lang", xconfig->languages[lang].dir);
 		AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
 		AspellSpeller *spell_checker = 0;

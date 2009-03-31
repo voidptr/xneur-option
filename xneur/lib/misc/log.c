@@ -21,6 +21,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <time.h>
 
 #include "colors.h"
 
@@ -44,37 +45,48 @@ void log_message(int level, const char *string, ...)
 	{
 		case ERROR:
 		{
-			modifier = RED_COLOR "[ERR]: " NORMAL_COLOR;
+			modifier = RED_COLOR "[ERR] " NORMAL_COLOR;
 			stream = stderr;
 			break;
 		}
 		case WARNING:
 		{
-			modifier = ORANGE_COLOR "[WRN]: " NORMAL_COLOR;
+			modifier = ORANGE_COLOR "[WRN] " NORMAL_COLOR;
 			break;
 		}
 		case LOG:
 		{
-			modifier = GREEN_COLOR "[LOG]: " NORMAL_COLOR;
+			modifier = GREEN_COLOR "[LOG] " NORMAL_COLOR;
 			break;
 		}
 		default:
 		case DEBUG:
 		{
-			modifier = TEAL_COLOR "[DBG]: " NORMAL_COLOR;
+			modifier = TEAL_COLOR "[DBG] " NORMAL_COLOR;
 			break;
 		}
 		case TRACE:
 		{
-			modifier = BLUE_COLOR "[TRA]: " NORMAL_COLOR;
+			modifier = BLUE_COLOR "[TRA] " NORMAL_COLOR;
 			break;
 		}
 	}
 
-	int len = strlen(string) + strlen(modifier) + 2;
+	time_t curtime = time(NULL);
+	struct tm *loctime = localtime(&curtime);
+	char *time_buffer = malloc(256 * sizeof(char));
+	time_buffer[0] = 0;
+	if (loctime != NULL)
+	{
+		char *tb = malloc(256 * sizeof(char));
+		strftime(tb, 256, "%T", loctime);
+		sprintf(time_buffer, "%s :", tb);
+	}
+	
+	int len = strlen(string) + strlen(modifier) + strlen(time_buffer) + 3;
 
 	char *buffer = (char *) malloc(len + 1);
-	snprintf(buffer, len, "%s%s\n", modifier, string);
+	snprintf(buffer, len, "%s%s%s\n", modifier, time_buffer, string);
 	buffer[len] = 0;
 
 	va_list ap;
@@ -83,6 +95,6 @@ void log_message(int level, const char *string, ...)
 	vfprintf(stream, buffer, ap);
 
 	free(buffer);
-
+	free(time_buffer);
 	va_end(ap);
 }
