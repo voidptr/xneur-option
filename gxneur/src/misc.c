@@ -64,8 +64,37 @@ static GtkTreeView *tmp_treeview	= NULL;
 
 static const char *modifier_names[]			= {"Shift", "Control", "Alt", "Super"};
 static const char *all_modifiers[]			= {"Control", "Shift", "Alt", "Super", "Control_R", "Shift_R", "Alt_R", "Super_R", "Control_L", "Shift_L", "Alt_L", "Super_L"};
-static const char *language_names[]			= {"English", "Russian", "Ukrainian", "Belarusian", "French", "Romanian", "Kazakh", "German", "Poland"};
-static char *dirs[]					= {"en", "ru", "uk", "be", "fr", "ro", "kk", "de", "pl"};
+static const char *language_names[]			= {"Belarusian", 
+	                                           "Bulgarian",
+	                                           "Czech",
+	                                           "German",
+                                               "English",
+	                                           "Estonian",
+                                               "French",
+                                               "Kazakh",
+                                               "Lithuanian",
+                                               "Latvian",
+                                               "Poland",
+                                               "Romanian",
+                                               "Russian", 
+                                               "Ukrainian",
+                                               "Uzbek"};
+
+static char *dirs[]					= {"be", 
+	                                   "bg", 
+	                                   "cs", 
+	                                   "de",
+                                       "en",
+	                                   "et", 
+	                                   "fr", 
+	                                   "kk", 
+	                                   "lt", 
+	                                   "lv", 
+	                                   "pl", 
+	                                   "ro", 
+	                                   "ru", 
+	                                   "uk", 
+	                                   "uz"};
 
 static const char *sound_names[]			=   {
 										"Xneur started", "Xneur reloaded", "Xneur stopped",

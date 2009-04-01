@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window2">
     <property name="visible">True</property>
     <property name="title" translatable="yes">XNeur Settings</property>
@@ -14,12 +14,12 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="border_width">3</property>
-            <property name="tab_pos">GTK_POS_LEFT</property>
+            <property name="tab_pos">left</property>
             <child>
               <widget class="GtkFrame" id="frame2">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <widget class="GtkAlignment" id="alignment2">
                     <property name="visible">True</property>
@@ -29,24 +29,25 @@
                         <property name="visible">True</property>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton7">
+                            <property name="label" translatable="yes">Use manual switching mode</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Use manual switching mode</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton9">
+                            <property name="label" translatable="yes">Correct aCCIDENTAL caps</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Correct aCCIDENTAL caps</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
@@ -56,11 +57,11 @@
                         </child>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton10">
+                            <property name="label" translatable="yes">Correct TWo INitial caps</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Correct TWo INitial caps</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
@@ -70,11 +71,11 @@
                         </child>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton2">
+                            <property name="label" translatable="yes">Enable auto-learning mode</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Enable auto-learning mode</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
@@ -84,11 +85,11 @@
                         </child>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton4">
+                            <property name="label" translatable="yes">Keep selection after changing selected text</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Keep selection after changing selected text</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
@@ -98,11 +99,11 @@
                         </child>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton6">
+                            <property name="label" translatable="yes">Enable keyboard logging</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Enable keyboard logging</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
@@ -112,11 +113,11 @@
                         </child>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton11">
+                            <property name="label" translatable="yes">Flush internal buffer on Enter or Tab</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Flush internal buffer on Enter or Tab</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
@@ -126,11 +127,11 @@
                         </child>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton12">
+                            <property name="label" translatable="yes">Don't process words on Enter or Tab</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Don't process words on Enter or Tab</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
@@ -157,15 +158,15 @@
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
               <widget class="GtkFrame" id="frame5">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <widget class="GtkAlignment" id="alignment5">
                     <property name="visible">True</property>
@@ -183,7 +184,7 @@
                               <widget class="GtkCheckButton" id="checkbutton17">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -197,7 +198,7 @@
                               <widget class="GtkCheckButton" id="checkbutton16">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -211,7 +212,7 @@
                               <widget class="GtkCheckButton" id="checkbutton15">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -222,25 +223,10 @@
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
                               <widget class="GtkCheckButton" id="checkbutton14">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -357,11 +343,11 @@
                             </child>
                             <child>
                               <widget class="GtkButton" id="button8">
+                                <property name="label" translatable="yes">Dictionary...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="label" translatable="yes">Dictionary...</property>
+                                <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -374,11 +360,11 @@
                             </child>
                             <child>
                               <widget class="GtkButton" id="button9">
+                                <property name="label" translatable="yes">Dictionary...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="label" translatable="yes">Dictionary...</property>
+                                <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -391,10 +377,10 @@
                             </child>
                             <child>
                               <widget class="GtkButton" id="button6">
+                                <property name="label" translatable="yes">Dictionary...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="label" translatable="yes">Dictionary...</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -407,11 +393,11 @@
                             </child>
                             <child>
                               <widget class="GtkButton" id="button7">
+                                <property name="label" translatable="yes">Dictionary...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="label" translatable="yes">Dictionary...</property>
+                                <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -426,15 +412,21 @@
                               <widget class="GtkComboBox" id="combobox21">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">
-English
-Russian
-Ukrainian
-Belarusian
-French
-Romanian
-Kazakh
+Belarusian 
+Bulgarian
+Czech
 German
-Poland</property>
+English
+Estonian
+French
+Kazakh
+Lithuanian
+Latvian
+Poland
+Romanian
+Russian 
+Ukrainian
+Uzbek</property>
                               </widget>
                               <packing>
                                 <property name="top_attach">1</property>
@@ -446,15 +438,21 @@ Poland</property>
                               <widget class="GtkComboBox" id="combobox22">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">
-English
-Russian
-Ukrainian
-Belarusian
-French
-Romanian
-Kazakh
+Belarusian 
+Bulgarian
+Czech
 German
-Poland</property>
+English
+Estonian
+French
+Kazakh
+Lithuanian
+Latvian
+Poland
+Romanian
+Russian 
+Ukrainian
+Uzbek</property>
                               </widget>
                               <packing>
                                 <property name="top_attach">2</property>
@@ -466,15 +464,21 @@ Poland</property>
                               <widget class="GtkComboBox" id="combobox23">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">
-English
-Russian
-Ukrainian
-Belarusian
-French
-Romanian
-Kazakh
+Belarusian 
+Bulgarian
+Czech
 German
-Poland</property>
+English
+Estonian
+French
+Kazakh
+Lithuanian
+Latvian
+Poland
+Romanian
+Russian 
+Ukrainian
+Uzbek</property>
                               </widget>
                               <packing>
                                 <property name="top_attach">3</property>
@@ -486,15 +490,21 @@ Poland</property>
                               <widget class="GtkComboBox" id="combobox24">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">
-English
-Russian
-Ukrainian
-Belarusian
-French
-Romanian
-Kazakh
+Belarusian 
+Bulgarian
+Czech
 German
-Poland</property>
+English
+Estonian
+French
+Kazakh
+Lithuanian
+Latvian
+Poland
+Romanian
+Russian 
+Ukrainian
+Uzbek</property>
                               </widget>
                               <packing>
                                 <property name="top_attach">4</property>
@@ -504,11 +514,11 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button23">
+                                <property name="label" translatable="yes">Regular Expressions...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="label" translatable="yes">Regular Expressions...</property>
+                                <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -521,11 +531,11 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button24">
+                                <property name="label" translatable="yes">Regular Expressions...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="label" translatable="yes">Regular Expressions...</property>
+                                <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -538,11 +548,11 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button25">
+                                <property name="label" translatable="yes">Regular Expressions...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="label" translatable="yes">Regular Expressions...</property>
+                                <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -555,11 +565,11 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button26">
+                                <property name="label" translatable="yes">Regular Expressions...</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="label" translatable="yes">Regular Expressions...</property>
+                                <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -600,10 +610,26 @@ Poland</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -618,11 +644,11 @@ Poland</property>
                         </child>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton3">
+                            <property name="label" translatable="yes">Remember keyboard layout for each application instance</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Remember keyboard layout for each application instance</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
@@ -636,7 +662,7 @@ Poland</property>
                             <property name="visible">True</property>
                             <property name="border_width">2</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">GTK_SHADOW_OUT</property>
+                            <property name="shadow_type">out</property>
                             <child>
                               <widget class="GtkAlignment" id="alignment1">
                                 <property name="visible">True</property>
@@ -649,9 +675,9 @@ Poland</property>
                                       <widget class="GtkScrolledWindow" id="scrolledwindow6">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
-                                        <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                        <property name="shadow_type">GTK_SHADOW_IN</property>
+                                        <property name="hscrollbar_policy">never</property>
+                                        <property name="vscrollbar_policy">automatic</property>
+                                        <property name="shadow_type">in</property>
                                         <child>
                                           <widget class="GtkTreeView" id="treeview4">
                                             <property name="visible">True</property>
@@ -661,30 +687,34 @@ Poland</property>
                                           </widget>
                                         </child>
                                       </widget>
+                                      <packing>
+                                        <property name="position">0</property>
+                                      </packing>
                                     </child>
                                     <child>
                                       <widget class="GtkVBox" id="vbox16">
                                         <property name="visible">True</property>
                                         <child>
                                           <widget class="GtkButton" id="button27">
+                                            <property name="label" translatable="yes">gtk-add</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="label" translatable="yes">gtk-add</property>
+                                            <property name="receives_default">False</property>
                                             <property name="use_stock">True</property>
-                                            <property name="response_id">0</property>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
                                           <widget class="GtkButton" id="button28">
+                                            <property name="label" translatable="yes">gtk-remove</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="label" translatable="yes">gtk-remove</property>
+                                            <property name="receives_default">False</property>
                                             <property name="use_stock">True</property>
-                                            <property name="response_id">0</property>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
@@ -741,16 +771,16 @@ Poland</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
               <widget class="GtkFrame" id="frame4">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <widget class="GtkAlignment" id="alignment4">
                     <property name="visible">True</property>
@@ -765,14 +795,13 @@ Poland</property>
                             <property name="n_columns">3</property>
                             <child>
                               <widget class="GtkButton" id="button11">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="border_width">1</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -782,13 +811,12 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button30">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -800,13 +828,12 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button29">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -818,13 +845,12 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button18">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -836,13 +862,12 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button17">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -854,13 +879,12 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button16">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -872,13 +896,12 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button15">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -890,13 +913,12 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button14">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -908,13 +930,12 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button13">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -926,14 +947,13 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button12">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="height_request">30</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="border_width">1</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -1210,6 +1230,9 @@ Poland</property>
                               </packing>
                             </child>
                           </widget>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                         <child>
                           <widget class="GtkHSeparator" id="hseparator3">
@@ -1229,9 +1252,9 @@ Poland</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                <property name="shadow_type">GTK_SHADOW_IN</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
                                 <child>
                                   <widget class="GtkTreeView" id="treeview9">
                                     <property name="visible">True</property>
@@ -1243,47 +1266,56 @@ Poland</property>
                                   </widget>
                                 </child>
                               </widget>
+                              <packing>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                             <child>
                               <widget class="GtkHButtonBox" id="hbuttonbox5">
                                 <property name="visible">True</property>
-                                <property name="layout_style">GTK_BUTTONBOX_START</property>
+                                <property name="layout_style">start</property>
                                 <child>
                                   <widget class="GtkButton" id="button36">
+                                    <property name="label" translatable="yes">gtk-add</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="border_width">3</property>
-                                    <property name="label" translatable="yes">gtk-add</property>
                                     <property name="use_stock">True</property>
-                                    <property name="response_id">0</property>
                                   </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkButton" id="button38">
+                                    <property name="label" translatable="yes">gtk-edit</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="border_width">3</property>
-                                    <property name="label" translatable="yes">gtk-edit</property>
                                     <property name="use_stock">True</property>
-                                    <property name="response_id">0</property>
                                   </widget>
                                   <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkButton" id="button37">
+                                    <property name="label" translatable="yes">gtk-remove</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="border_width">3</property>
-                                    <property name="label" translatable="yes">gtk-remove</property>
                                     <property name="use_stock">True</property>
-                                    <property name="response_id">0</property>
                                   </widget>
                                   <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
                                     <property name="position">2</property>
                                   </packing>
                                 </child>
@@ -1321,16 +1353,16 @@ Poland</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">2</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
               <widget class="GtkFrame" id="frame8">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <widget class="GtkAlignment" id="alignment8">
                     <property name="visible">True</property>
@@ -1340,16 +1372,17 @@ Poland</property>
                         <property name="visible">True</property>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton1">
+                            <property name="label" translatable="yes">Flush internal buffer on mouse click</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Flush internal buffer on mouse click</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -1395,16 +1428,16 @@ Poland</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">3</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
               <widget class="GtkFrame" id="frame6">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <widget class="GtkAlignment" id="alignment6">
                     <property name="visible">True</property>
@@ -1416,7 +1449,7 @@ Poland</property>
                           <widget class="GtkFrame" id="frame10">
                             <property name="visible">True</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">GTK_SHADOW_OUT</property>
+                            <property name="shadow_type">out</property>
                             <child>
                               <widget class="GtkAlignment" id="alignment10">
                                 <property name="visible">True</property>
@@ -1429,9 +1462,9 @@ Poland</property>
                                       <widget class="GtkScrolledWindow" id="scrolledwindow1">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
-                                        <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                        <property name="shadow_type">GTK_SHADOW_IN</property>
+                                        <property name="hscrollbar_policy">never</property>
+                                        <property name="vscrollbar_policy">automatic</property>
+                                        <property name="shadow_type">in</property>
                                         <child>
                                           <widget class="GtkTreeView" id="treeview1">
                                             <property name="visible">True</property>
@@ -1441,30 +1474,34 @@ Poland</property>
                                           </widget>
                                         </child>
                                       </widget>
+                                      <packing>
+                                        <property name="position">0</property>
+                                      </packing>
                                     </child>
                                     <child>
                                       <widget class="GtkVBox" id="vbox4">
                                         <property name="visible">True</property>
                                         <child>
                                           <widget class="GtkButton" id="button2">
+                                            <property name="label" translatable="yes">gtk-add</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="label" translatable="yes">gtk-add</property>
+                                            <property name="receives_default">False</property>
                                             <property name="use_stock">True</property>
-                                            <property name="response_id">0</property>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
                                           <widget class="GtkButton" id="button3">
+                                            <property name="label" translatable="yes">gtk-remove</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="label" translatable="yes">gtk-remove</property>
+                                            <property name="receives_default">False</property>
                                             <property name="use_stock">True</property>
-                                            <property name="response_id">0</property>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
@@ -1495,12 +1532,15 @@ Poland</property>
                               </packing>
                             </child>
                           </widget>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                         <child>
                           <widget class="GtkFrame" id="frame11">
                             <property name="visible">True</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">GTK_SHADOW_OUT</property>
+                            <property name="shadow_type">out</property>
                             <child>
                               <widget class="GtkAlignment" id="alignment11">
                                 <property name="visible">True</property>
@@ -1513,9 +1553,9 @@ Poland</property>
                                       <widget class="GtkScrolledWindow" id="scrolledwindow4">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
-                                        <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                        <property name="shadow_type">GTK_SHADOW_IN</property>
+                                        <property name="hscrollbar_policy">never</property>
+                                        <property name="vscrollbar_policy">automatic</property>
+                                        <property name="shadow_type">in</property>
                                         <child>
                                           <widget class="GtkTreeView" id="treeview2">
                                             <property name="visible">True</property>
@@ -1525,30 +1565,34 @@ Poland</property>
                                           </widget>
                                         </child>
                                       </widget>
+                                      <packing>
+                                        <property name="position">0</property>
+                                      </packing>
                                     </child>
                                     <child>
                                       <widget class="GtkVBox" id="vbox11">
                                         <property name="visible">True</property>
                                         <child>
                                           <widget class="GtkButton" id="button19">
+                                            <property name="label" translatable="yes">gtk-add</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="label" translatable="yes">gtk-add</property>
+                                            <property name="receives_default">False</property>
                                             <property name="use_stock">True</property>
-                                            <property name="response_id">0</property>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
                                           <widget class="GtkButton" id="button20">
+                                            <property name="label" translatable="yes">gtk-remove</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="label" translatable="yes">gtk-remove</property>
+                                            <property name="receives_default">False</property>
                                             <property name="use_stock">True</property>
-                                            <property name="response_id">0</property>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
@@ -1587,7 +1631,7 @@ Poland</property>
                           <widget class="GtkFrame" id="frame12">
                             <property name="visible">True</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">GTK_SHADOW_OUT</property>
+                            <property name="shadow_type">out</property>
                             <child>
                               <widget class="GtkAlignment" id="alignment12">
                                 <property name="visible">True</property>
@@ -1600,9 +1644,9 @@ Poland</property>
                                       <widget class="GtkScrolledWindow" id="scrolledwindow5">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
-                                        <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                        <property name="shadow_type">GTK_SHADOW_IN</property>
+                                        <property name="hscrollbar_policy">never</property>
+                                        <property name="vscrollbar_policy">automatic</property>
+                                        <property name="shadow_type">in</property>
                                         <child>
                                           <widget class="GtkTreeView" id="treeview3">
                                             <property name="visible">True</property>
@@ -1612,30 +1656,34 @@ Poland</property>
                                           </widget>
                                         </child>
                                       </widget>
+                                      <packing>
+                                        <property name="position">0</property>
+                                      </packing>
                                     </child>
                                     <child>
                                       <widget class="GtkVBox" id="vbox13">
                                         <property name="visible">True</property>
                                         <child>
                                           <widget class="GtkButton" id="button21">
+                                            <property name="label" translatable="yes">gtk-add</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="label" translatable="yes">gtk-add</property>
+                                            <property name="receives_default">False</property>
                                             <property name="use_stock">True</property>
-                                            <property name="response_id">0</property>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
                                           <widget class="GtkButton" id="button22">
+                                            <property name="label" translatable="yes">gtk-remove</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="label" translatable="yes">gtk-remove</property>
+                                            <property name="receives_default">False</property>
                                             <property name="use_stock">True</property>
-                                            <property name="response_id">0</property>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
@@ -1692,16 +1740,16 @@ Poland</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">4</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
               <widget class="GtkFrame" id="frame7">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <widget class="GtkAlignment" id="alignment7">
                     <property name="visible">True</property>
@@ -1711,16 +1759,17 @@ Poland</property>
                         <property name="visible">True</property>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton5">
+                            <property name="label" translatable="yes">Enable sounds</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Enable sounds</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -1736,9 +1785,9 @@ Poland</property>
                           <widget class="GtkScrolledWindow" id="scrolledwindow7">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
-                            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                            <property name="shadow_type">GTK_SHADOW_IN</property>
+                            <property name="hscrollbar_policy">never</property>
+                            <property name="vscrollbar_policy">automatic</property>
+                            <property name="shadow_type">in</property>
                             <child>
                               <widget class="GtkTreeView" id="treeview7">
                                 <property name="visible">True</property>
@@ -1757,17 +1806,21 @@ Poland</property>
                         <child>
                           <widget class="GtkHButtonBox" id="hbuttonbox3">
                             <property name="visible">True</property>
-                            <property name="layout_style">GTK_BUTTONBOX_START</property>
+                            <property name="layout_style">start</property>
                             <child>
                               <widget class="GtkButton" id="button34">
+                                <property name="label" translatable="yes">gtk-edit</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="border_width">3</property>
-                                <property name="label" translatable="yes">gtk-edit</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                           </widget>
                           <packing>
@@ -1798,16 +1851,16 @@ Poland</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">5</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
               <widget class="GtkFrame" id="frame13">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <widget class="GtkAlignment" id="alignment13">
                     <property name="visible">True</property>
@@ -1824,6 +1877,9 @@ Poland</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Expand abbreviations</property>
                               </widget>
+                              <packing>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                             <child>
                               <widget class="GtkEntry" id="entry1">
@@ -1837,12 +1893,11 @@ Poland</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button31">
+                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="label" translatable="yes">gtk-clear</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="position">2</property>
@@ -1852,15 +1907,16 @@ Poland</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton8">
+                            <property name="label" translatable="yes">Ignore keyboard layout for abbreviations</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Ignore keyboard layout for abbreviations</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
@@ -1873,8 +1929,8 @@ Poland</property>
                           <widget class="GtkScrolledWindow" id="scrolledwindow3">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                            <property name="shadow_type">GTK_SHADOW_IN</property>
+                            <property name="vscrollbar_policy">automatic</property>
+                            <property name="shadow_type">in</property>
                             <child>
                               <widget class="GtkTreeView" id="treeview6">
                                 <property name="visible">True</property>
@@ -1893,29 +1949,34 @@ Poland</property>
                         <child>
                           <widget class="GtkHButtonBox" id="hbuttonbox2">
                             <property name="visible">True</property>
-                            <property name="layout_style">GTK_BUTTONBOX_START</property>
+                            <property name="layout_style">start</property>
                             <child>
                               <widget class="GtkButton" id="button32">
+                                <property name="label" translatable="yes">gtk-add</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="border_width">3</property>
-                                <property name="label" translatable="yes">gtk-add</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button33">
+                                <property name="label" translatable="yes">gtk-remove</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="border_width">3</property>
-                                <property name="label" translatable="yes">gtk-remove</property>
                                 <property name="use_stock">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -1948,16 +2009,16 @@ Poland</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">6</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
               <widget class="GtkFrame" id="frame14">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <widget class="GtkAlignment" id="alignment14">
                     <property name="visible">True</property>
@@ -1967,16 +2028,17 @@ Poland</property>
                         <property name="visible">True</property>
                         <child>
                           <widget class="GtkCheckButton" id="checkbutton13">
+                            <property name="label" translatable="yes">Show OSD</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label" translatable="yes">Show OSD</property>
+                            <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="response_id">0</property>
                             <property name="draw_indicator">True</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -1992,6 +2054,7 @@ Poland</property>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -2036,9 +2099,9 @@ Poland</property>
                           <widget class="GtkScrolledWindow" id="scrolledwindow10">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
-                            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                            <property name="shadow_type">GTK_SHADOW_IN</property>
+                            <property name="hscrollbar_policy">never</property>
+                            <property name="vscrollbar_policy">automatic</property>
+                            <property name="shadow_type">in</property>
                             <child>
                               <widget class="GtkTreeView" id="treeview10">
                                 <property name="visible">True</property>
@@ -2076,16 +2139,16 @@ Poland</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">7</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
               <widget class="GtkFrame" id="frame3">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <widget class="GtkAlignment" id="alignment3">
                     <property name="visible">True</property>
@@ -2168,39 +2231,49 @@ Trace</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">8</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
           </widget>
+          <packing>
+            <property name="position">0</property>
+          </packing>
         </child>
         <child>
           <widget class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="button4">
+                <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
+                <property name="receives_default">False</property>
                 <property name="border_width">3</property>
-                <property name="label">gtk-cancel</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">0</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkButton" id="button5">
+                <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
+                <property name="receives_default">False</property>
                 <property name="border_width">3</property>
-                <property name="label">gtk-ok</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">0</property>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>

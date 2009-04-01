@@ -4,6 +4,7 @@ SUBDIRS =			\
 	bg			\
 	cs			\
 	de			\
+	en			\
 	et			\
 	fr			\
 	kk			\
