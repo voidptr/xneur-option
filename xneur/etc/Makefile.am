@@ -1,12 +1,18 @@
 xneurrcdir = $(sysconfdir)/xneur
 xneurrc_DATA =			\
 	xneurrc			\
-	xneurrc-uk		\
 	xneurrc-be		\
+	xneurrc-bg		\
+	xneurrc-cs		\
+	xneurrc-de		\
+	xneurrc-et		\
 	xneurrc-fr		\
 	xneurrc-kk		\
+	xneurrc-lt		\
+	xneurrc-lv		\
+	xneurrc-pl		\
 	xneurrc-ro		\
-	xneurrc-de		\
-	xneurrc-pl
+	xneurrc-uk		\
+	xneurrc-uz
 
 EXTRA_DIST = $(xneurrc_DATA)
