@@ -1,11 +1,16 @@
 SUBDIRS =			\
 	sounds			\
-	en			\
-	uk			\
-	ru			\
 	be			\
+	bg			\
+	cs			\
+	de			\
+	et			\
 	fr			\
 	kk			\
+	lt			\
+	lv			\
+	pl			\
 	ro			\
-	de			\
-	pl
+	ru			\
+	uk			\
+	uz
