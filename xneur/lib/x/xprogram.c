@@ -509,7 +509,7 @@ static void xprogram_on_key_action(struct _xprogram *p)
 	    p->event->default_event.xkey.keycode = 0;
 		return;
 	}
-	
+
 	enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
 	if (p->perform_manual_action(p, manual_action))
 		return;
@@ -664,7 +664,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 
 			set_event_mask(p->focus->owner_window, None);
 			grab_spec_keys(p->focus->owner_window, FALSE);
-
+			
 			p->change_word(p, next_lang);
 
 			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
@@ -673,6 +673,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			play_file(SOUND_MANUAL_CHANGE_WORD);
 			osd_show(xconfig->osds[OSD_MANUAL_CHANGE_WORD].file);
 			p->event->default_event.xkey.keycode = 0;
+
 			
 			break;
 		}
@@ -922,7 +923,7 @@ static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 	int curr_lang = get_cur_lang();
 
 	tmp = get_last_word(p->string->xcontent[curr_lang].content);
-	char *curr_word = (char*)malloc(strlen(tmp) * sizeof(char));
+	char *curr_word = (char*)malloc((strlen(tmp) + 1) * sizeof(char));
 	if (curr_word == NULL)
 		return;
 	strcpy(curr_word, tmp);
@@ -933,14 +934,14 @@ static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 		free(curr_word);
 		return;
 	}
-	
+
 	struct _list_char *curr_temp_dicts = xconfig->languages[curr_lang].temp_dicts;
 	if (curr_temp_dicts->exist(curr_temp_dicts, curr_word, BY_PLAIN))
 		curr_temp_dicts->rem(curr_temp_dicts, curr_word);
 
 	struct _list_char *new_temp_dicts = xconfig->languages[new_lang].temp_dicts;
 	tmp = get_last_word(p->string->xcontent[new_lang].content);
-	char *new_word = (char *)malloc(strlen(tmp) * sizeof(char));
+	char *new_word = (char *)malloc((strlen(tmp) + 1) * sizeof(char));
 	if (new_word == NULL)
 	{
 		free(curr_word);
@@ -955,7 +956,7 @@ static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 		free(new_word);
 		return;
 	}
-	
+
 	if (!new_temp_dicts->exist(new_temp_dicts, new_word, BY_PLAIN))
 	{
 		new_temp_dicts->add(new_temp_dicts, new_word);
@@ -979,7 +980,7 @@ static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 		new_dicts->add(new_dicts, new_word);
 		xconfig->save_dicts(xconfig, new_lang);
 	}
-	
+
 	free(curr_word);
 	free(new_word);
 }
