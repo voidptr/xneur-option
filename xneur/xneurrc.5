@@ -19,10 +19,10 @@ Defines level of diagnostic output to console.
 
 Here, <level> takes the values "Error", "Warning", "Log", "Debug", "Trace". By changing this parameter, the detail of output to console can be controlled. 
 .TP 8
-.B AddLanguage <language> <dir> <group>
+.B AddLanguage <language> <dir> <group> [Fixed]
 Defines the language, with which the program will work.
 
-Here, <language> stands for the language, for which the layout should be specified (English or Russian), <dir> is a subdirectory in ~/.xneur/, where a config file for this language is located, and <group> is layout number group for the language in the system (takes values from 0 to 3). 
+Here, <language> stands for the language, for which the layout should be specified (English or Russian), <dir> is a subdirectory in ~/.xneur/, where a config file for this language is located, and <group> is layout number group for the language in the system (takes values from 0 to 3). Add word "Fixed" at the line's end if this layout excluded from processing.
 .TP 8
 .B DefaultXkbGroup <group>
 Define initial keyboard layout for all new applications.
@@ -120,19 +120,6 @@ This option define delay in milliseconds before sendind events to application.
 
 Here, <value> must be until 0 to 50. 
 .TP 8
-.B AddFlagPixmap <name> [pixmap]
-This option define pixmap for layout with <name>. 
-
-Here, <name> takes the following values: "Layout1Flag", "Layout2Flag", "Layout3Flag", "Layout4Flag".
-[pixmap] is image file placed in ~/.xneur/pixmaps or in basic place ({prefix}/share/xneur/pixmaps/).
-.TP 8
-.B DrawFlagApp <app_name>
-Defines an application, in which the program will draw flag.
-
-Here, <app_name> is an identifier of the program window, input in which is processed by xneur.
-app_name can be obtained with the xprop utility.
-Multiple entries for this option in a single configuration file are allowed, like "one program - one option SetAutoApp".
-.TP 8
 .B SaveLog <param>
 This option enable or disable logging keyboard. Log places in ~/.xneur/xneurlog
 
@@ -175,7 +162,7 @@ Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurSt
 "EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 "AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
 
-<text> is text will be displayed.
+<text> is text will be displayed. For option "ExecuteUserAction" possible use pattern %s to display of the command.
 
 
 .SH "SEE ALSO"

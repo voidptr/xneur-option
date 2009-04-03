@@ -5,6 +5,8 @@ xneurrc_DATA =			\
 	xneurrc-bg		\
 	xneurrc-cs		\
 	xneurrc-de		\
+	xneurrc-el		\
+	xneurrc-es		\
 	xneurrc-et		\
 	xneurrc-fr		\
 	xneurrc-kk		\

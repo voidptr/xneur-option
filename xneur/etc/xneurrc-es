@@ -1,0 +1,174 @@
+# It's a default X Neural Switcher configuration file 
+# all values are default
+
+# Config version
+Version 0.9.4
+
+# Work in manual mode
+ManualMode No
+
+# Level of messages program will write to output
+#LogLevel Error
+#LogLevel Warning
+#LogLevel Log
+#LogLevel Debug
+LogLevel Debug
+
+# Define used languages
+# See Settings page on http://www.xneur.ru for details
+AddLanguage English en 0
+AddLanguage Spanish es 1
+
+# Define initial keyboard layout for all new applications
+DefaultXkbGroup 0
+
+# Add Applications names to exclude it from procces with xneur
+# Xneur will not process the input for this applications
+# Example:
+#ExcludeApp Gaim
+
+# Use this parameter to force set work mode in current application to Auto.
+# Example:
+#SetAutoApp Gedit
+
+# Use this parameter to force set work mode in current application to Manual.
+# Example:
+#SetManualApp Anjuta
+
+# Binds hotkeys for some actions
+AddBind ChangeWord Break
+AddBind ChangeString Control Pause
+AddBind ChangeMode Control Print
+AddBind ChangeSelected Shift Break
+AddBind TranslitSelected Alt Scroll_Lock
+AddBind ChangecaseSelected Control Alt Pause
+AddBind EnableLayout1 Control F2
+AddBind EnableLayout2 Control F3
+AddBind EnableLayout3 Control F4
+AddBind EnableLayout4 Control F5
+AddBind ReplaceAbbreviation Tab
+
+# Word Replacing
+# Ignore keyboard layout for abbreviations list
+# Example:
+#ReplaceAbbreviationIgnoreLayout No
+ReplaceAbbreviationIgnoreLayout Yes
+
+# Abbreviations list
+# Example:
+#ReplaceAbbreviation xneur X Neural Switcher
+
+# This option enable or disable sound playing
+# Example:
+#PlaySounds No
+PlaySounds Yes
+
+# Binds sounds for some actions
+AddSound XneurStart 
+AddSound XneurReload 
+AddSound XneurStop 
+AddSound PressKeyLayout1 layout1type.wav
+AddSound PressKeyLayout2 layout2type.wav
+AddSound PressKeyLayout3 layout1type.wav
+AddSound PressKeyLayout4 layout2type.wav
+AddSound EnableLayout1 layout1.wav
+AddSound EnableLayout2 layout2.wav
+AddSound EnableLayout3 layout1.wav
+AddSound EnableLayout4 layout2.wav
+AddSound AutomaticChangeWord itemback.wav
+AddSound ManualChangeWord switch.wav
+AddSound ChangeString switch.wav
+AddSound ChangeSelected switch.wav
+AddSound TranslitSelected switch.wav
+AddSound ChangecaseSelected switch.wav
+AddSound ReplaceAbbreviation switch.wav
+AddSound CorrectIncidentalCaps 
+AddSound CorrectTwoCapitalLetter 
+AddSound ExecuteUserAction
+
+# This option enable or disable mouse processing
+# Example:
+#GrabMouse Yes
+GrabMouse No
+
+# This option enable or disable self education of xneur
+# Example:
+#EducationMode No
+EducationMode Yes
+
+# This option enable or disable layout remember for each window
+# Example:
+#LayoutRememberMode No
+LayoutRememberMode Yes
+
+# Use this parameter to force enable layout remember for each application, not window.
+# Option "LayoutRememberMode" must be enabled.
+# Example:
+#LayoutRememberModeForApp Gaim
+
+# This option enable or disable saving selection text
+# Example:
+#SaveSelectionMode No
+SaveSelectionMode Yes
+
+# This option define delay before sendind events to application (in milliseconds until 0 to 50).
+SendDelay 1
+
+# This option enable or disable correction of iNCIDENTAL CapsLock
+# Example:
+#CorrectIncidentalCaps Yes
+CorrectIncidentalCaps No
+
+# This option enable or disable correction of two CApital letter
+# Example:
+#CorrectTwoCapitalLetter Yes
+CorrectTwoCapitalLetter No
+
+# This option enable or disable flushing internal buffer when pressed Enter or Tab
+# Example:
+#FlushBufferWhenPressEnter Yes
+FlushBufferWhenPressEnter No
+
+# This option disable or enable processing word when pressed Enter or Tab
+# Example:
+#DontProcessWhenPressEnter Yes
+DontProcessWhenPressEnter No
+
+# This option add user action when pressed key bind
+# Example:
+#AddAction Control Alt f firefox"
+
+# This option disable or enable show OSD
+# Example:
+#ShowOSD Yes
+ShowOSD No
+
+# This option set font for OSD
+# Example:
+#FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
+FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
+
+# Binds OSDs for some actions
+AddOSD XneurStart
+AddOSD XneurReload
+AddOSD XneurStop
+AddOSD PressKeyLayout1  
+AddOSD PressKeyLayout2 
+AddOSD PressKeyLayout3  
+AddOSD PressKeyLayout4 
+AddOSD EnableLayout1 
+AddOSD EnableLayout2 
+AddOSD EnableLayout3 
+AddOSD EnableLayout4 
+AddOSD AutomaticChangeWord 
+AddOSD ManualChangeWord 
+AddOSD ChangeString 
+AddOSD ChangeSelected 
+AddOSD TranslitSelected 
+AddOSD ChangecaseSelected 
+AddOSD ReplaceAbbreviation 
+AddOSD CorrectIncidentalCaps 
+AddOSD CorrectTwoCapitalLetter 
+AddOSD ExecuteUserAction %s
+
+# That's all

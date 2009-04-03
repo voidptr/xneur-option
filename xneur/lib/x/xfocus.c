@@ -69,6 +69,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 	*focus_status	= FOCUS_NONE;
 
 	Window new_window;
+	int show_message = TRUE;
 	while (TRUE)
 	{
 		int revert_to;
@@ -78,8 +79,12 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		if (new_window != None && new_window > 1000)
 			break;
 		
-		log_message(DEBUG, _("New window empty"));
-		usleep(1000);
+		if (show_message)
+		{
+			log_message(DEBUG, _("New window empty"));
+			show_message = FALSE;
+		}
+		usleep(10000);
 	}
 	
 	char *new_app_name = get_wm_class_name(new_window);
