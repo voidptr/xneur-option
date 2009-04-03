@@ -412,7 +412,7 @@
                               <widget class="GtkComboBox" id="combobox21">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">
-Belarusian 
+Belarusian
 Bulgarian
 Czech
 German
@@ -426,7 +426,7 @@ Lithuanian
 Latvian
 Poland
 Romanian
-Russian 
+Russian
 Ukrainian
 Uzbek</property>
                               </widget>
@@ -440,7 +440,7 @@ Uzbek</property>
                               <widget class="GtkComboBox" id="combobox22">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">
-Belarusian 
+Belarusian
 Bulgarian
 Czech
 German
@@ -454,7 +454,7 @@ Lithuanian
 Latvian
 Poland
 Romanian
-Russian 
+Russian
 Ukrainian
 Uzbek</property>
                               </widget>
@@ -468,7 +468,7 @@ Uzbek</property>
                               <widget class="GtkComboBox" id="combobox23">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">
-Belarusian 
+Belarusian
 Bulgarian
 Czech
 German
@@ -482,7 +482,7 @@ Lithuanian
 Latvian
 Poland
 Romanian
-Russian 
+Russian
 Ukrainian
 Uzbek</property>
                               </widget>
@@ -496,7 +496,7 @@ Uzbek</property>
                               <widget class="GtkComboBox" id="combobox24">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">
-Belarusian 
+Belarusian
 Bulgarian
 Czech
 German
@@ -510,7 +510,7 @@ Lithuanian
 Latvian
 Poland
 Romanian
-Russian 
+Russian
 Ukrainian
 Uzbek</property>
                               </widget>
