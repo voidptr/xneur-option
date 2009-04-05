@@ -1,6 +1,7 @@
 pixmapsdir = @datarootdir@/gxneur/pixmaps
 pixmaps_DATA =			\
 	gxneur.png		\
+	Armenian.png		\
 	Belarusian.png		\
 	Bulgarian.png		\
 	Czech.png		\

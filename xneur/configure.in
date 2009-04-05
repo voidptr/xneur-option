@@ -159,7 +159,7 @@ fi
 DEFAULT_CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
 AC_SUBST(DEFAULT_CFLAGS)
 
-AC_OUTPUT([share/Makefile share/sounds/Makefile share/be/Makefile share/bg/Makefile share/cs/Makefile share/de/Makefile share/el/Makefile share/en/Makefile share/es/Makefile share/et/Makefile share/fr/Makefile share/kk/Makefile share/lt/Makefile share/lv/Makefile share/pl/Makefile share/ro/Makefile share/ru/Makefile share/uk/Makefile share/uz/Makefile etc/Makefile lib/Makefile lib/ai/Makefile lib/config/Makefile lib/misc/Makefile lib/sound/Makefile lib/x/Makefile src/Makefile po/Makefile.in Makefile xnconfig.pc])
+AC_OUTPUT([share/Makefile share/sounds/Makefile share/be/Makefile share/bg/Makefile share/cs/Makefile share/de/Makefile share/el/Makefile share/en/Makefile share/es/Makefile share/et/Makefile share/fr/Makefile share/hy/Makefile share/kk/Makefile share/lt/Makefile share/lv/Makefile share/pl/Makefile share/ro/Makefile share/ru/Makefile share/uk/Makefile share/uz/Makefile etc/Makefile lib/Makefile lib/ai/Makefile lib/config/Makefile lib/misc/Makefile lib/sound/Makefile lib/x/Makefile src/Makefile po/Makefile.in Makefile xnconfig.pc])
 
 cat << EOF
 
