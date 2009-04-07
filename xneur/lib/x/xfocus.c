@@ -98,7 +98,6 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		else if (xconfig->manual_apps->exist(xconfig->manual_apps, new_app_name, BY_PLAIN))
 			*forced_mode = FORCE_MODE_MANUAL;
 	}
-
 	
 	Window old_window = p->owner_window;
 	if (new_window == old_window)

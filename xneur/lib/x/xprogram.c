@@ -458,7 +458,9 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		p->string->change_case(p->string);
 		p->change_lang(p, get_cur_lang());
 	}
-	else
+	else if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
+		p->change_lang(p, main_window->xkeymap->latin_group);
+	else	
 		p->change_lang(p, get_next_lang(get_cur_lang()));
 
 	if (p->selected_mode == ACTION_CHANGE_SELECTED)
