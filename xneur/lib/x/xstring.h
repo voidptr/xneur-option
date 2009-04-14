@@ -50,6 +50,8 @@ struct _xstring
 	void (*add_symbol) (struct _xstring *p, char sym, KeyCode keycode, int modifier);
 	void (*del_symbol) (struct _xstring *p);
 	char*(*get_utf_string) (struct _xstring *p);
+	void (*set_offset) (struct _xstring *p, int offset);
+	void (*unset_offset) (struct _xstring *p, int offset);
 	void (*uninit) (struct _xstring *p);
 };
 

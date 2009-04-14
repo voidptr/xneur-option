@@ -484,7 +484,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	set_event_mask(p->focus->owner_window, None);
 	grab_spec_keys(p->focus->owner_window, FALSE);
 
-	p->send_string_silent(p, FALSE);
+	p->change_word(p, CHANGE_SELECTION);
 
 	on_selection_converted();
 
@@ -576,16 +576,28 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
 					p->changed_manual = MANUAL_FLAG_UNSET;
 
+				// Block events of keyboard (push to event queue)
+				set_event_mask(p->focus->owner_window, None);
+
 				// Add symbol to internal bufer
+				p->event->event = p->event->default_event;
 				int modifier_mask = groups[get_cur_lang()] | p->event->get_cur_modifiers(p->event);
 				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, modifier_mask);
 
+				// Checking word
+				if (p->changed_manual == MANUAL_FLAG_UNSET)
+					if (p->check_lang_last_syllable(p))
+						p->event->default_event.xkey.keycode = 0;
+
+				// Unblock keyboard
+				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+			
 				return;
 			}
 
 			// Block events of keyboard (push to event queue)
 			set_event_mask(p->focus->owner_window, None);
-			
+
 			// Check two capital letter
 			if (xconfig->correct_two_capital_letter)
 				p->check_tcl_last_word(p);
@@ -609,8 +621,9 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 						
 			// Unblock keyboard
 			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
-			
-			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
+
+			//if (action != KLB_ADD_SYM)
+				p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			
 			if ((action == KLB_ENTER) && (xconfig->flush_buffer_when_press_enter))
 			{
@@ -647,10 +660,19 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		}
 		case ACTION_CHANGE_STRING:	// User needs to change current string
 		{
-			p->change_lang(p, get_next_lang(get_cur_lang()));
+			int new_lang = get_next_lang(get_cur_lang());
+			int action;
+			if (new_lang == 0)
+				action = CHANGE_STRING_TO_LAYOUT_0;
+			else if (new_lang == 1)
+				action = CHANGE_STRING_TO_LAYOUT_1;
+			else if (new_lang == 2)
+				action = CHANGE_STRING_TO_LAYOUT_2;
+			else
+				action = CHANGE_STRING_TO_LAYOUT_3;
+			
+			p->change_word(p, action);
 
-			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
-			p->send_string_silent(p, TRUE);
 			p->update(p);
 
 			play_file(SOUND_CHANGE_STRING);
@@ -659,15 +681,25 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		}
 		case ACTION_CHANGE_WORD:	// User needs to cancel last change
 		{
-			int next_lang = get_next_lang(get_cur_lang());
+			int new_lang = get_next_lang(get_cur_lang());
 
 			if (xconfig->educate)
-				p->add_word_to_dict(p, next_lang);
+				p->add_word_to_dict(p, new_lang);
 
 			set_event_mask(p->focus->owner_window, None);
 			grab_spec_keys(p->focus->owner_window, FALSE);
-			
-			p->change_word(p, next_lang);
+
+			int action;
+			if (new_lang == 0)
+				action = CHANGE_WORD_TO_LAYOUT_0;
+			else if (new_lang == 1)
+				action = CHANGE_WORD_TO_LAYOUT_1;
+			else if (new_lang == 2)
+				action = CHANGE_WORD_TO_LAYOUT_2;
+			else
+				action = CHANGE_WORD_TO_LAYOUT_3;
+	
+			p->change_word(p, action);
 
 			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 			grab_spec_keys(p->focus->owner_window, TRUE);
@@ -675,8 +707,6 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			play_file(SOUND_MANUAL_CHANGE_WORD);
 			osd_show(xconfig->osds[OSD_MANUAL_CHANGE_WORD].file);
 			p->event->default_event.xkey.keycode = 0;
-
-			
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_0:
@@ -744,15 +774,17 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 					free(replacement);
 					continue;
 				}
-				// Replace Abbreviation
-				log_message (DEBUG, _("Found Abbreviation '%s' '%s'. Replacing to '%s'."), replacement, word, string);
 				
 				set_event_mask(p->focus->owner_window, None);
 				grab_spec_keys(p->focus->owner_window, FALSE);				
 
+				// Replace Abbreviation
+				log_message (DEBUG, _("Found Abbreviation '%s' '%s'. Replacing to '%s'."), replacement, word, string);
+				
 				p->event->send_backspaces(p->event, strlen(get_last_word(p->string->content)));
 				p->string->set_content(p->string, string);
-				p->send_string_silent(p, FALSE);
+				
+				p->change_word(p, CHANGE_ABBREVIATION);
 				
 				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 				grab_spec_keys(p->focus->owner_window, TRUE);
@@ -762,7 +794,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 				p->string->save_and_clear(p->string, p->focus->owner_window);
 
 				free(replacement);
-				
+
 				p->event->default_event.xkey.keycode = 0;
 				
 				return TRUE;
@@ -777,17 +809,17 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 	return TRUE;
 }
 
-static void xprogram_check_lang_last_word(struct _xprogram *p)
+static int xprogram_check_lang_last_word(struct _xprogram *p)
 {
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
-		return;
+		return FALSE;
 
 	if (p->app_forced_mode != FORCE_MODE_AUTO && xconfig->is_manual_mode(xconfig))
-		return;
+		return FALSE;
 
 	const char *word = get_last_word(p->string->content);
 	if (!word)
-		return;
+		return FALSE;
 
 	int cur_lang = get_cur_lang();
 	int new_lang = check_lang(p->string, cur_lang);
@@ -795,15 +827,69 @@ static void xprogram_check_lang_last_word(struct _xprogram *p)
 	if (new_lang == NO_LANGUAGE)
 	{
 		log_message(DEBUG, _("No language found to change to"));
-		return;
+		return FALSE;
 	}
 
 	if (new_lang == cur_lang)
-		return;
+		return FALSE;
 
-	p->change_word(p, new_lang);
+	int change_action = CHANGE_WORD_TO_LAYOUT_0;
+	if (new_lang == 0)
+		change_action = CHANGE_WORD_TO_LAYOUT_0;
+	else if (new_lang == 1)
+		change_action = CHANGE_WORD_TO_LAYOUT_1;
+	else if (new_lang == 2)
+		change_action = CHANGE_WORD_TO_LAYOUT_2;
+	else
+		change_action = CHANGE_WORD_TO_LAYOUT_3;
+
+	p->change_word(p, change_action);
 	play_file(SOUND_AUTOMATIC_CHANGE_WORD);
 	osd_show(xconfig->osds[OSD_AUTOMATIC_CHANGE_WORD].file);
+	return TRUE;
+}
+
+static int xprogram_check_lang_last_syllable(struct _xprogram *p)
+{
+	if (p->app_forced_mode == FORCE_MODE_MANUAL)
+		return FALSE;
+
+	if (p->app_forced_mode != FORCE_MODE_AUTO && xconfig->is_manual_mode(xconfig))
+		return FALSE;
+
+	const char *word = get_last_word(p->string->content);
+	if (!word)
+		return FALSE;
+
+	if (strlen(word) < 3)
+		return FALSE;
+	
+	int cur_lang = get_cur_lang();
+	int new_lang = check_lang(p->string, cur_lang);
+	
+	if (new_lang == NO_LANGUAGE)
+	{
+		log_message(DEBUG, _("No language found to change to"));
+		return FALSE;
+	}
+
+	if (new_lang == cur_lang)
+		return FALSE;
+
+	int change_action = 0;
+	if (new_lang == 0)
+		change_action = CHANGE_SYLL_TO_LAYOUT_0;
+	else if (new_lang == 1)
+		change_action = CHANGE_SYLL_TO_LAYOUT_1;
+	else if (new_lang == 2)
+		change_action = CHANGE_SYLL_TO_LAYOUT_2;
+	else
+		change_action = CHANGE_SYLL_TO_LAYOUT_3;
+
+	p->change_word(p, change_action);
+	play_file(SOUND_AUTOMATIC_CHANGE_WORD);
+	osd_show(xconfig->osds[OSD_AUTOMATIC_CHANGE_WORD].file);
+	return TRUE;
 }
 
 static void xprogram_check_caps_last_word(struct _xprogram *p)
@@ -820,7 +906,7 @@ static void xprogram_check_caps_last_word(struct _xprogram *p)
 				return;
 		}
 		
-		p->change_word(p, CORR_INCIDENTAL_CAPS);
+		p->change_word(p, CHANGE_INCIDENTAL_CAPS);
 		play_file(SOUND_CORR_INCIDENTAL_CAPS);
 		osd_show(xconfig->osds[OSD_CORR_INCIDENTAL_CAPS].file);
 		return;
@@ -849,7 +935,7 @@ static void xprogram_check_tcl_last_word(struct _xprogram *p)
 			if ((p->string->keycode_modifiers[offset+i] & ShiftMask) && (isalpha(p->string->content[offset+i])))
 				return;
 		
-		p->change_word(p, CORR_TWO_CAPITAL_LETTER);
+		p->change_word(p, CHANGE_TWO_CAPITAL_LETTER);
 		play_file(SOUND_CORR_TWO_CAPITAL_LETTER);
 		osd_show(xconfig->osds[OSD_CORR_TWO_CAPITAL_LETTER].file);
 		return;
@@ -868,52 +954,203 @@ static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces
 
 	log_message(DEBUG, _("Processing string '%s'"), p->string->content);
 
-	int bcount = p->string->cur_pos;
-	if (send_backspaces == FALSE)
-		bcount = 0;
+	//int bcount = p->string->cur_pos;
+	//if (send_backspaces == FALSE)
+	//	bcount = 0;
 
+	int bcount = send_backspaces;
+	
 	p->event->send_backspaces(p->event, bcount);		// Delete old string
 	p->event->send_string(p->event, p->string);		// Send new string
 }
 
 static void xprogram_change_word(struct _xprogram *p, enum _change_action action)
 {
-	int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
-
-	// Shift fields to point to begin of word
-	p->string->content		+= offset;
-	p->string->keycode		+= offset;
-	p->string->keycode_modifiers	+= offset;
-	p->string->cur_pos		-= offset;
-
 	switch (action)
 	{
-		case CORR_INCIDENTAL_CAPS:
+		case CHANGE_INCIDENTAL_CAPS:
 		{
+			int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+			// Shift fields to point to begin of word
+			p->string->set_offset(p->string, offset);
+			
 			p->change_incidental_caps(p);
+
+			p->send_string_silent(p, p->string->cur_pos);
+
+			// Revert fields back
+			p->string->unset_offset(p->string, offset);
 			break;
 		}
-		case CORR_TWO_CAPITAL_LETTER:
+		case CHANGE_TWO_CAPITAL_LETTER:
 		{
+			int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+			// Shift fields to point to begin of word
+			p->string->set_offset(p->string, offset);
+			
 			p->change_two_capital_letter(p);
+
+			p->send_string_silent(p, p->string->cur_pos);
+
+			// Revert fields back
+			p->string->unset_offset(p->string, offset);
 			break;
 		}
-		case ENABLE_LAYOUT_0:
-		case ENABLE_LAYOUT_1:
-		case ENABLE_LAYOUT_2:
-		case ENABLE_LAYOUT_3:
+		case CHANGE_WORD_TO_LAYOUT_0:
 		{
-			p->change_lang(p, action);
+			int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+			// Shift fields to point to begin of word
+			p->string->set_offset(p->string, offset);
+			
+			p->change_lang(p, 0);
+
+			p->send_string_silent(p, p->string->cur_pos);
+
+			// Revert fields back
+			p->string->unset_offset(p->string, offset);
+			break;
+		}
+		case CHANGE_WORD_TO_LAYOUT_1:
+		{
+			int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+			// Shift fields to point to begin of word
+			p->string->set_offset(p->string, offset);
+			
+			p->change_lang(p, 1);
+
+			p->send_string_silent(p, p->string->cur_pos);
+
+			// Revert fields back
+			p->string->unset_offset(p->string, offset);
+			break;
+		}
+		case CHANGE_WORD_TO_LAYOUT_2:
+		{
+			int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+			// Shift fields to point to begin of word
+			p->string->set_offset(p->string, offset);
+			
+			p->change_lang(p, 2);
+
+			p->send_string_silent(p, p->string->cur_pos);
+
+			// Revert fields back
+			p->string->unset_offset(p->string, offset);
+			break;
+		}
+		case CHANGE_WORD_TO_LAYOUT_3:
+		{
+			int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+			// Shift fields to point to begin of word
+			p->string->set_offset(p->string, offset);
+			
+			p->change_lang(p, 3);
+
+			p->send_string_silent(p, p->string->cur_pos);
+
+			// Revert fields back
+			p->string->unset_offset(p->string, offset);
+			break;
+		}
+		case CHANGE_SYLL_TO_LAYOUT_0:
+		{
+			int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+			// Shift fields to point to begin of word
+			p->string->set_offset(p->string, offset);
+			
+			p->change_lang(p, 0);
+
+			p->send_string_silent(p, p->string->cur_pos - 1);
+
+			// Revert fields back
+			p->string->unset_offset(p->string, offset);
+			break;
+		}
+		case CHANGE_SYLL_TO_LAYOUT_1:
+		{
+			int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+			// Shift fields to point to begin of word
+			p->string->set_offset(p->string, offset);
+			
+			p->change_lang(p, 1);
+
+			p->send_string_silent(p, p->string->cur_pos - 1);
+
+			// Revert fields back
+			p->string->unset_offset(p->string, offset);
+			break;
+		}
+		case CHANGE_SYLL_TO_LAYOUT_2:
+		{
+			int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+			// Shift fields to point to begin of word
+			p->string->set_offset(p->string, offset);
+			
+			p->change_lang(p, 2);
+
+			p->send_string_silent(p, p->string->cur_pos - 1);
+
+			// Revert fields back
+			p->string->unset_offset(p->string, offset);
+			break;
+		}
+		case CHANGE_SYLL_TO_LAYOUT_3:
+		{
+			int offset = get_last_word_offset(p->string->content, p->string->cur_pos);
+			// Shift fields to point to begin of word
+			p->string->set_offset(p->string, offset);
+			
+			p->change_lang(p, 3);
+
+			p->send_string_silent(p, p->string->cur_pos - 1);
+
+			// Revert fields back
+			p->string->unset_offset(p->string, offset);
+			break;
+		}
+		case CHANGE_SELECTION:
+		{
+			p->send_string_silent(p, 0);
+			break;
+		}
+		case CHANGE_STRING_TO_LAYOUT_0:
+		{
+			p->change_lang(p, 0);
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
+			
+			p->send_string_silent(p, p->string->cur_pos);
+			break;
+		}
+		case CHANGE_STRING_TO_LAYOUT_1:
+		{
+			p->change_lang(p, 1);
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
+			
+			p->send_string_silent(p, p->string->cur_pos);
+			break;
+		}
+		case CHANGE_STRING_TO_LAYOUT_2:
+		{
+			p->change_lang(p, 2);
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
+			
+			p->send_string_silent(p, p->string->cur_pos);
+			break;
+		}
+		case CHANGE_STRING_TO_LAYOUT_3:
+		{
+			p->change_lang(p, 3);
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
+			
+			p->send_string_silent(p, p->string->cur_pos);
+			break;
+		}
+		case CHANGE_ABBREVIATION:
+		{
+			p->send_string_silent(p, 0);
 			break;
 		}
 	}
-	p->send_string_silent(p, TRUE);
-
-	// Revert fields back
-	p->string->content		-= offset;
-	p->string->keycode		-= offset;
-	p->string->keycode_modifiers	-= offset;
-	p->string->cur_pos		+= offset;
 }
 
 static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
@@ -1028,6 +1265,7 @@ struct _xprogram* xprogram_init(void)
 	p->perform_manual_action	= xprogram_perform_manual_action;
 	p->perform_user_action		= xprogram_perform_user_action;
 	p->check_lang_last_word		= xprogram_check_lang_last_word;
+	p->check_lang_last_syllable		= xprogram_check_lang_last_syllable;
 	p->check_caps_last_word		= xprogram_check_caps_last_word;
 	p->check_tcl_last_word		= xprogram_check_tcl_last_word;
 	p->change_word			= xprogram_change_word;

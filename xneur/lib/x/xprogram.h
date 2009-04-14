@@ -47,7 +47,8 @@ struct _xprogram
 	int  (*perform_manual_action) (struct _xprogram *p, enum _hotkey_action action);
 	void (*perform_auto_action) (struct _xprogram *p, int action);
 	void (*perform_user_action) (struct _xprogram *p, int action);
-	void (*check_lang_last_word) (struct _xprogram *p);
+	int  (*check_lang_last_word) (struct _xprogram *p);
+	int  (*check_lang_last_syllable) (struct _xprogram *p);
 	void (*check_caps_last_word) (struct _xprogram *p);
 	void (*check_tcl_last_word) (struct _xprogram *p);
 	void (*change_word) (struct _xprogram *p, enum _change_action action);

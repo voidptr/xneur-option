@@ -295,6 +295,24 @@ static void xstring_save_and_clear(struct _xstring *p, Window window)
 	p->clear(p);
 }
 
+static void xstring_set_offset(struct _xstring *p, int offset)
+{
+	// Shift fields to point to begin of word
+	p->content		+= offset;
+	p->keycode		+= offset;
+	p->keycode_modifiers	+= offset;
+	p->cur_pos		-= offset;
+}
+
+static void xstring_unset_offset(struct _xstring *p, int offset)
+{
+	// Revert fields back
+	p->content		-= offset;
+	p->keycode		-= offset;
+	p->keycode_modifiers	-= offset;
+	p->cur_pos		+= offset;
+}
+
 static void xstring_uninit(struct _xstring *p)
 {
 	free(p->keycode_modifiers);
@@ -346,6 +364,8 @@ struct _xstring* xstring_init(void)
 	p->add_symbol		= xstring_add_symbol;
 	p->del_symbol		= xstring_del_symbol;
 	p->get_utf_string	= xstring_get_utf_string;
+	p->set_offset		= xstring_set_offset;
+	p->unset_offset		= xstring_unset_offset;
 	p->uninit		= xstring_uninit;
 
 	return p;

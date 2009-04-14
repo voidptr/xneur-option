@@ -9,6 +9,6 @@ xneur_SOURCES =			\
 
 xneur_CFLAGS = -I@top_srcdir@/lib/ai -I@top_srcdir@/lib/config -I@top_srcdir@/lib/x -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/sound  @X11_CFLAGS@ @DEFAULT_CFLAGS@
 
-xneur_LDFLAGS = -L$(top_srcdir)/lib/ai -L$(top_srcdir)/lib/config -L$(top_srcdir)/lib/misc -L$(top_srcdir)/lib/x -L$(top_srcdir)/lib/sound  @X11_LIBS@
+xneur_LDFLAGS = -L$(top_srcdir)/lib/ai -L$(top_srcdir)/lib/config -L$(top_srcdir)/lib/misc -L$(top_srcdir)/lib/x -L$(top_srcdir)/lib/sound  @X11_LIBS@ -lpthread
 
 xneur_LDADD = ../lib/x/libxnx.la ../lib/ai/libxnai.la ../lib/config/libxnconfig.la ../lib/misc/libxnmisc.la ../lib/sound/libxnsound.la 
