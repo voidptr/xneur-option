@@ -622,8 +622,7 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			// Unblock keyboard
 			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 
-			//if (action != KLB_ADD_SYM)
-				p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
+			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			
 			if ((action == KLB_ENTER) && (xconfig->flush_buffer_when_press_enter))
 			{
@@ -953,14 +952,8 @@ static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces
 	}
 
 	log_message(DEBUG, _("Processing string '%s'"), p->string->content);
-
-	//int bcount = p->string->cur_pos;
-	//if (send_backspaces == FALSE)
-	//	bcount = 0;
-
-	int bcount = send_backspaces;
 	
-	p->event->send_backspaces(p->event, bcount);		// Delete old string
+	p->event->send_backspaces(p->event, send_backspaces);		// Delete old string
 	p->event->send_string(p->event, p->string);		// Send new string
 }
 
