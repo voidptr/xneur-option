@@ -45,7 +45,7 @@ static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
 						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "Reserved1",
-						"Reserved2", "Reserved3", "SetAutoApp", "SetManualApp", "GrabMouse",
+						"Reserved2", "CheckOnProcess", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"SaveLog", "ReplaceAbbreviation",
@@ -218,8 +218,16 @@ static void parse_line(struct _xneur_config *p, char *line)
 		{
 			break;
 		}
-		case 7: // Reserved3
+		case 7: // Check lang on input process
 		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for check language on input process mode specified"));
+				break;
+			}
+
+			p->check_lang_on_process = index;
 			break;
 		}
 		case 8: // Get Auto Processing Applications
@@ -911,6 +919,12 @@ static int xneur_config_save(struct _xneur_config *p)
 		else
 			fprintf(stream, "AddOSD %s %s\n", sound_names[osd], p->osds[osd].file);
 	}
+
+	fprintf(stream, "\n# This option disable or enable checking language on input process\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CheckOnProcess Yes\n");
+	fprintf(stream, "CheckOnProcess %s\n", p->get_bool_name(p->check_lang_on_process));
+
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# That's all\n");

@@ -668,6 +668,10 @@ void xneur_preference(void)
 	// Ignore Keyboard Layout Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton8");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->abbr_ignore_layout);
+
+	// Check language on input process 
+	widget = glade_xml_get_widget (gxml, "checkbutton18");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->check_lang_on_process);
 	
 	// Abbreviations List set
 	treeview = glade_xml_get_widget (gxml, "treeview6");
@@ -1477,6 +1481,9 @@ void xneur_save_preference(GladeXML *gxml)
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton13");
 	xconfig->show_osd = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton18");
+	xconfig->check_lang_on_process = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry2");
 	if (xconfig->osd_font != NULL)

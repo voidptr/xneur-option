@@ -137,6 +137,7 @@ static void xneur_load_config(int final)
 	log_message(LOG, _("Flush internal buffer when pressed Enter or Tab mode set to %s"), xconfig->get_bool_name(xconfig->flush_buffer_when_press_enter));
 	log_message(LOG, _("Don't process word when pressed Enter or Tab mode set to %s"), xconfig->get_bool_name(xconfig->dont_process_when_press_enter));
 	log_message(LOG, _("Show OSD mode set to %s"), xconfig->get_bool_name(xconfig->show_osd));
+	log_message(LOG, _("Check language on input process mode set to %s"), xconfig->get_bool_name(xconfig->check_lang_on_process));
 }
 
 static void xneur_set_lock(void)

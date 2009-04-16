@@ -576,22 +576,24 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
 					p->changed_manual = MANUAL_FLAG_UNSET;
 
-				// Block events of keyboard (push to event queue)
-				set_event_mask(p->focus->owner_window, None);
-
 				// Add symbol to internal bufer
-				p->event->event = p->event->default_event;
 				int modifier_mask = groups[get_cur_lang()] | p->event->get_cur_modifiers(p->event);
 				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, modifier_mask);
 
-				// Checking word
-				if (p->changed_manual == MANUAL_FLAG_UNSET)
-					if (p->check_lang_last_syllable(p))
-						p->event->default_event.xkey.keycode = 0;
+				if (xconfig->check_lang_on_process)
+				{
+					// Block events of keyboard (push to event queue)
+					set_event_mask(p->focus->owner_window, None);
 
-				// Unblock keyboard
-				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
-			
+					// Checking word
+					if (p->changed_manual == MANUAL_FLAG_UNSET)
+						if (p->check_lang_last_syllable(p))
+							p->event->default_event.xkey.keycode = 0;
+
+					// Unblock keyboard
+					set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+				}
+				
 				return;
 			}
 

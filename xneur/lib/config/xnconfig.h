@@ -205,6 +205,7 @@ struct _xneur_config
 	int   correct_two_capital_letter;	// Change two CApital letter
 	int   flush_buffer_when_press_enter;  // Flush internal buffer when pressed Enter
 	int   dont_process_when_press_enter;   // Don't correct word when pressed Enter
+	int   check_lang_on_process;		// Check lang on input process
 
 	int   show_osd;					// Show OSD 
 	char  *osd_font;

@@ -171,4 +171,9 @@ AddOSD CorrectIncidentalCaps
 AddOSD CorrectTwoCapitalLetter 
 AddOSD ExecuteUserAction %s
 
+# This option disable or enable checking language on input process
+# Example:
+#CheckOnProcess Yes
+CheckOnProcess No
+
 # That's all
