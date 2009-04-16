@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: gxneur 0.9.4\n"
 "Report-Msgid-Bugs-To: web@softodrom.ru\n"
-"POT-Creation-Date: 2008-10-16 13:14+0400\n"
+"POT-Creation-Date: 2009-04-16 14:23+0400\n"
 "PO-Revision-Date: 2009-01-31 15:40+0100\n"
 "Last-Translator: Photon <michael.kogan@gmx.net>\n"
 "Language-Team: German\n"
@@ -26,17 +26,6 @@ msgstr "Xneur gestoppt"
 
 msgid "Execute user action"
 msgstr "Benutzerdefinierte Aktion ausführen"
-
-msgid "Use command <b>xfontsel -print</b> to get new font."
-msgstr ""
-"Benutzen Sie den Befehl <b>xfontsel -print</b>, um eine neue Schrift zu "
-"erhalten."
-
-msgid "OSD Font"
-msgstr "OSD-Font"
-
-msgid "OSD Text"
-msgstr "OSD-Text"
 
 msgid "Flag pixmap for Layout 4"
 msgstr "Bild für die Flagge der Belegung 4"
@@ -68,31 +57,17 @@ msgstr "Automatische Wortkorrektur"
 msgid "Correct word manually"
 msgstr "Manuelle Wortkorrektur"
 
-msgid "Abbreviation field is empty!"
-msgstr "Abkürzung ist leer!"
-
-msgid "Expansion text field is empty!"
-msgstr "Volltext ist leer!"
-
-msgid "Key bind field is empty!"
-msgstr "Tastenkombination ist leer!"
-
-msgid "User action field is empty!"
-msgstr "Benutzeraktion ist leer!"
-
-msgid ""
-"Couldn't start xneur\n"
-"Verify that it installed\n"
-msgstr ""
-"Xneur konnte nicht gestartet werden\n"
-"Überprüfen Sie, ob es installiert ist\n"
-
-msgid "Fixed"
-msgstr ""
-
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
 msgstr "Abkürzung hinzufügen..."
+
+#: glade/abbr_add.glade:24
+msgid "Abbreviation:"
+msgstr "Abkürzung:"
+
+#: glade/abbr_add.glade:45
+msgid "Expansion text:"
+msgstr "Volltext:"
 
 #: glade/about.glade:7
 msgid "gXNeur About..."
@@ -128,69 +103,68 @@ msgstr "Tastenkombination:"
 msgid "User action:"
 msgstr "Benutzerdefinierte Aktion:"
 
-msgid "Key bind"
-msgstr "Tastenkombination"
-
-#: glade/action_add.glade:46
-msgid "User action"
-msgstr "Benutzerdefinierte Aktion"
-
 #: glade/choose_file.glade:7
 msgid "Choose File..."
 msgstr "Dateiauswahl..."
-
-msgid "OSD"
-msgstr "OSD"
-
-msgid "Show OSD"
-msgstr "OSD einblenden"
 
 #: glade/config.glade:7
 msgid "XNeur Settings"
 msgstr "XNeur-Einstellungen"
 
-#: glade/config.glade:34
+#: glade/config.glade:32
 msgid "Use manual switching mode"
 msgstr "Manuellen Umschaltmodus benutzen"
 
-#: glade/config.glade:47
+#: glade/config.glade:46
 msgid "Correct aCCIDENTAL caps"
 msgstr "vERSEHENTLICHE Caps korrigieren"
 
-#: glade/config.glade:61
+#: glade/config.glade:60
 msgid "Correct TWo INitial caps"
 msgstr "ZWei GRoßbuchstaben am WOrtanfang korrigieren"
 
-#: glade/config.glade:75
+#: glade/config.glade:74
 msgid "Enable auto-learning mode"
 msgstr "Auto-Lernmodus aktivieren"
 
-#: glade/config.glade:89
+#: glade/config.glade:88
 msgid "Keep selection after changing selected text"
 msgstr "Markierung nach einer Änderung des markierten Textes beibehalten"
 
-#: glade/config.glade:103
+#: glade/config.glade:102
 msgid "Enable keyboard logging"
 msgstr "Getippten Text in einer Log-Datei speichern"
 
-#: glade/config.glade:117
+#: glade/config.glade:116
 msgid "Flush internal buffer on Enter or Tab"
 msgstr "Internen Zwischenspeicher beim Druck von Enter oder Tab leeren"
 
-#: glade/config.glade:131
+#: glade/config.glade:130
 msgid "Don't process words on Enter or Tab"
 msgstr "Keine Wörter beim Druck von Enter oder Tab verarbeiten"
 
-#: glade/config.glade:156
+#: glade/config.glade:144
+msgid "Check language on input process"
+msgstr ""
+
+#: glade/config.glade:171
 msgid "<b>General</b>"
 msgstr "<b>Allgemein</b>"
 
-#: glade/config.glade:198
-msgid "Initial layout number:"
-msgstr "Nummer der Ausgangsbelegung:"
+#: glade/config.glade:257
+msgid "Fixed"
+msgstr ""
 
-#: glade/config.glade:210 glade/config.glade:438 glade/config.glade:455
-#: glade/config.glade:472 glade/config.glade:489
+#: glade/config.glade:270
+msgid "Layout"
+msgstr "Belegung"
+
+#: glade/config.glade:281
+msgid "Number\t"
+msgstr "Nummer\t"
+
+#: glade/config.glade:293 glade/config.glade:310 glade/config.glade:327
+#: glade/config.glade:344 glade/config.glade:612
 msgid ""
 "0\n"
 "1\n"
@@ -202,13 +176,13 @@ msgstr ""
 "2\n"
 "3"
 
-#: glade/config.glade:228 glade/config.glade:245 glade/config.glade:262
-#: glade/config.glade:279
-msgid "Regular Expressions..."
-msgstr "Reguläre Ausdrücke..."
+#: glade/config.glade:360 glade/config.glade:377 glade/config.glade:394
+#: glade/config.glade:410
+msgid "Dictionary..."
+msgstr "Wörterbuch..."
 
-#: glade/config.glade:295 glade/config.glade:314 glade/config.glade:333
-#: glade/config.glade:352
+#: glade/config.glade:428 glade/config.glade:457 glade/config.glade:486
+#: glade/config.glade:515
 msgid ""
 "\n"
 "Belarusian\n"
@@ -231,124 +205,134 @@ msgid ""
 "Uzbek"
 msgstr ""
 
-#: glade/config.glade:372 glade/config.glade:389 glade/config.glade:405
-#: glade/config.glade:422
-msgid "Dictionary..."
-msgstr "Wörterbuch..."
+#: glade/config.glade:543 glade/config.glade:560 glade/config.glade:577
+#: glade/config.glade:594
+msgid "Regular Expressions..."
+msgstr "Reguläre Ausdrücke..."
 
-#: glade/config.glade:507
-msgid "Number\t"
-msgstr "Nummer\t"
+#: glade/config.glade:630
+msgid "Initial layout number:"
+msgstr "Nummer der Ausgangsbelegung:"
 
-#: glade/config.glade:520
-msgid "Layout"
-msgstr "Belegung"
-
-#: glade/config.glade:547
+#: glade/config.glade:673
 msgid "Remember keyboard layout for each application instance"
 msgstr "Tastaturbelegung für jede Instanz eines Programms einzeln merken"
 
-#: glade/config.glade:634
+#: glade/config.glade:766
 msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr "Ausnahmen (eine Tastaturbelegung für alle Instanzen des Programms)"
 
-#: glade/config.glade:664
+#: glade/config.glade:796
 msgid "<b>Layouts</b>"
 msgstr "<b>Belegungen</b>"
 
-#: glade/config.glade:871
+#: glade/config.glade:1008
 msgid "Correct selected text"
 msgstr "Ausgewählten Text korrigieren"
 
-#: glade/config.glade:884
+#: glade/config.glade:1021
 msgid "Switch between processing modes"
 msgstr "Verarbeitungsmodi wechseln"
 
-#: glade/config.glade:897
+#: glade/config.glade:1034
 msgid "Correct last line"
 msgstr "Letzte Zeile korrigieren"
 
-#: glade/config.glade:910
+#: glade/config.glade:1047
 msgid "Correct/Undo correction"
 msgstr "Korrigieren/Korrektur rückgängig machen"
 
-#: glade/config.glade:921
+#: glade/config.glade:1058
 msgid "Transliterate selected text"
 msgstr "Markierten Text transliterieren"
 
-#: glade/config.glade:934
+#: glade/config.glade:1071
 msgid "Change case of selected text"
 msgstr "Groß- bzw. Kleinschreibung des markierten Textes wechseln"
 
-#: glade/config.glade:1017
+#: glade/config.glade:1154
 msgid "Switch to Layout 1"
 msgstr "Zu Belegung 1 wechseln"
 
-#: glade/config.glade:1030
+#: glade/config.glade:1167
 msgid "Switch to Layout 2"
 msgstr "Zu Belegung 2 wechseln"
 
-#: glade/config.glade:1043
+#: glade/config.glade:1180
 msgid "Switch to Layout 3"
 msgstr "Zu Belegung 3 wechseln"
 
-#: glade/config.glade:1112
+#: glade/config.glade:1249
 msgid "Switch to Layout 4"
 msgstr "Zu Belegung 4 wechseln"
 
-#: glade/config.glade:1139
+#: glade/config.glade:1378
 msgid "<b>Hotkeys</b>"
 msgstr "<b>Tastenkombinationen</b>"
 
-#: glade/config.glade:1164
+#: glade/config.glade:1401
 msgid "Flush internal buffer on mouse click"
 msgstr "Internen Zwischenspeicher bei Mausklick"
 
-#: glade/config.glade:1260
-msgid "Draw flag next to mouse cursor for these applications"
-msgstr "Für diese Anwendungen eine Flagge neben dem Mauszeiger zeichnen"
-
-#: glade/config.glade:1344
+#: glade/config.glade:1453
 msgid "<b>Mouse</b>"
 msgstr "<b>Maus</b>"
 
-#: glade/config.glade:1440
+#: glade/config.glade:1553
 msgid "Ignore these applications"
 msgstr "Diese Anwendungen ignorieren"
 
-#: glade/config.glade:1524
+#: glade/config.glade:1644
 msgid "Force automatic mode for these applications"
 msgstr "Automatischen Modus für diese Anwendungen erzwingen"
 
-#: glade/config.glade:1611
+#: glade/config.glade:1735
 msgid "Force manual mode for these applications"
 msgstr "Manuellen Modus für diese Anwendungen erzwingen"
 
-#: glade/config.glade:1641
+#: glade/config.glade:1765
 msgid "<b>Applications</b>"
 msgstr "<b>Anwendungen</b>"
 
-#: glade/config.glade:1666
+#: glade/config.glade:1788
 msgid "Enable sounds"
 msgstr "Klänge aktivieren"
 
-#: glade/config.glade:1747
+#: glade/config.glade:1876
 msgid "<b>Sounds</b>"
 msgstr "<b>Klänge</b>"
 
-#: glade/config.glade:1775
+#: glade/config.glade:1904
 msgid "Expand abbreviations"
 msgstr "Abkürzungen ersetzen"
 
-#: glade/config.glade:1811
+#: glade/config.glade:1941
 msgid "Ignore keyboard layout for abbreviations"
 msgstr "Belegung für Abkürzungen ignorieren"
 
-#: glade/config.glade:1897
+#: glade/config.glade:2034
 msgid "<b>Abbreviations</b>"
 msgstr "<b>Abkürzungen</b>"
 
-#: glade/config.glade:1923
+#: glade/config.glade:2057
+msgid "Show OSD"
+msgstr "OSD einblenden"
+
+#: glade/config.glade:2077
+msgid "OSD Font"
+msgstr "OSD-Font"
+
+#: glade/config.glade:2107
+msgid "Use command <b>xfontsel -print</b> to get new font."
+msgstr ""
+"Benutzen Sie den Befehl <b>xfontsel -print</b>, um eine neue Schrift zu "
+"erhalten."
+
+#: glade/config.glade:2164
+msgid "<b>OSD</b>"
+msgstr "<b>OSD</b>"
+
+#: glade/config.glade:2190
 msgid ""
 "Error\n"
 "Warning\n"
@@ -362,15 +346,15 @@ msgstr ""
 "Debug\n"
 "Trace"
 
-#: glade/config.glade:1957
+#: glade/config.glade:2224
 msgid "Log verbosity level"
 msgstr "Genauigkeitsstufe des Logs"
 
-#: glade/config.glade:1970
+#: glade/config.glade:2237
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Verzögerung beim Senden von Ereignissen (in Millisekunden)"
 
-#: glade/config.glade:1989
+#: glade/config.glade:2256
 msgid "<b>Advanced</b>"
 msgstr "<b>Erweitert</b>"
 
@@ -378,11 +362,11 @@ msgstr "<b>Erweitert</b>"
 msgid "File Editing"
 msgstr "Dateiverarbeitung"
 
-#: src/callbacks.c:188 src/misc.c:1288
+#: src/callbacks.c:188 src/misc.c:1594
 msgid "Press any key"
 msgstr "Beliebige Taste drücken"
 
-#: src/misc.c:259 src/misc.c:260
+#: src/misc.c:307 src/misc.c:308
 #, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
@@ -391,12 +375,12 @@ msgstr ""
 "Falsche Version der Konfigurationsbibliothek von XNeur\n"
 "Bitte installieren Sie libxnconfig der Version %d.0.%d\n"
 
-#: src/misc.c:266
+#: src/misc.c:314
 #, c-format
 msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
 msgstr "Die libxnconfig API der Version %d.0.%d (kompiliert mit %d.0.%d)\n"
 
-#: src/misc.c:270 src/misc.c:271
+#: src/misc.c:318 src/misc.c:319
 #, c-format
 msgid ""
 "XNeur config broken!\n"
@@ -406,43 +390,66 @@ msgstr ""
 "Bitte entfernen Sie ~/.xneur/xneurrc und installieren Sie das Paket von "
 "XNeur neu!\n"
 
-#: src/misc.c:334
+#: src/misc.c:331 src/misc.c:332
+#, c-format
+msgid ""
+"Couldn't start xneur\n"
+"Verify that it installed\n"
+msgstr ""
+"Xneur konnte nicht gestartet werden\n"
+"Überprüfen Sie, ob es installiert ist\n"
+
+#: src/misc.c:382
 msgid "Current Version"
 msgstr "Aktuelle Version"
 
-#: src/misc.c:376 src/misc.c:402 src/misc.c:429 src/misc.c:455 src/misc.c:734
+#: src/misc.c:446 src/misc.c:472 src/misc.c:499 src/misc.c:525
 msgid "Application"
 msgstr "Anwendung"
 
-msgid "Abbreviation:"
-msgstr "Abkürzung:"
-
-#: src/misc.c:620
+#: src/misc.c:697
 msgid "Abbreviation"
 msgstr "Abkürzung"
 
-msgid "Expansion text:"
-msgstr "Volltext:"
-
-#: src/misc.c:625
+#: src/misc.c:706
 msgid "Expansion text"
 msgstr "Volltext"
 
-#: src/misc.c:655
+#: src/misc.c:740 src/misc.c:882
 msgid "Action"
 msgstr "Aktion"
 
-#: src/misc.c:660
+#: src/misc.c:745
 msgid "Sound"
 msgstr "Klang"
 
-#: src/misc.c:706
-msgid "Description"
-msgstr "Beschreibung"
+#: src/misc.c:835
+msgid "Key bind"
+msgstr "Tastenkombination"
 
-#: src/misc.c:711
-msgid "Pixmap"
-msgstr "Bild"
+#: src/misc.c:840
+msgid "User action"
+msgstr "Benutzerdefinierte Aktion"
+
+#: src/misc.c:887
+msgid "OSD Text"
+msgstr "OSD-Text"
+
+#: src/misc.c:942
+msgid "Abbreviation field is empty!"
+msgstr "Abkürzung ist leer!"
+
+#: src/misc.c:947
+msgid "Expansion text field is empty!"
+msgstr "Volltext ist leer!"
+
+#: src/misc.c:991
+msgid "Key bind field is empty!"
+msgstr "Tastenkombination ist leer!"
+
+#: src/misc.c:996
+msgid "User action field is empty!"
+msgstr "Benutzeraktion ist leer!"
 
 #: src/support.c:80 src/support.c:104
 #, c-format
@@ -476,26 +483,3 @@ msgstr "X Neural Switcher gestoppt ("
 #: src/trayicon.c:209
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
-
-#~ msgid ""
-#~ "\n"
-#~ "English\n"
-#~ "Russian\n"
-#~ "Ukrainian\n"
-#~ "Belarusian\n"
-#~ "French\n"
-#~ "Romanian\n"
-#~ "Kazakh\n"
-#~ "German\n"
-#~ "Poland"
-#~ msgstr ""
-#~ "\n"
-#~ "Englisch\n"
-#~ "Russisch\n"
-#~ "Ukrainisch\n"
-#~ "Weißrussisch\n"
-#~ "Französisch\n"
-#~ "Rumänisch\n"
-#~ "Kasachisch\n"
-#~ "Deutsch\n"
-#~ "Poland"
