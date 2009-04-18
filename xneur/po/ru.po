@@ -544,7 +544,8 @@ msgid ""
 "Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win"
 "(64)):"
 msgstr ""
-"Установлены горячие клавиши пользовательских действий (маска-модификатор = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
+"Установлены горячие клавиши пользовательских действий (маска-модификатор = "
+"Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
 
 #: lib/x/xevent.c:185
 msgid "Event is freed"

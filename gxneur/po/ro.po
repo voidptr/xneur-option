@@ -1,0 +1,492 @@
+# Romanian translation for xneur
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# This file is distributed under the same license as the xneur package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: xneur\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-04-16 14:23+0400\n"
+"PO-Revision-Date: 2009-04-18 12:03+0000\n"
+"Last-Translator: Crew <Unknown>\n"
+"Language-Team: Romanian <ro@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2009-04-18 12:16+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+
+msgid "Xneur started"
+msgstr "Xneur pornit"
+
+msgid "Xneur reloaded"
+msgstr ""
+
+msgid "Xneur stopped"
+msgstr "Xneur oprit"
+
+msgid "Execute user action"
+msgstr "Executa acțiune utilizatorului"
+
+msgid "Flag pixmap for Layout 4"
+msgstr ""
+
+msgid "Flag pixmap for Layout 3"
+msgstr ""
+
+msgid "Flag pixmap for Layout 2"
+msgstr ""
+
+msgid "Flag pixmap for Layout 1"
+msgstr ""
+
+msgid "Keypress on Layout 1"
+msgstr ""
+
+msgid "Keypress on Layout 2"
+msgstr ""
+
+msgid "Keypress on Layout 3"
+msgstr ""
+
+msgid "Keypress on Layout 4"
+msgstr ""
+
+msgid "Correct word automatically"
+msgstr "Corecta cuvinte automatic"
+
+msgid "Correct word manually"
+msgstr "Corecta cuvinte manual"
+
+#: glade/abbr_add.glade:7
+msgid "Add Abbreviation..."
+msgstr "Adaugă abreviere..."
+
+#: glade/abbr_add.glade:24
+msgid "Abbreviation:"
+msgstr "Abreviere:"
+
+#: glade/abbr_add.glade:45
+msgid "Expansion text:"
+msgstr ""
+
+#: glade/about.glade:7
+msgid "gXNeur About..."
+msgstr "Despre gXneur"
+
+#: glade/about.glade:15
+msgid ""
+"\n"
+"\t\t<b>X Neural Switcher for Gnome</b>\t\t\n"
+"\t\tGTK2 frontend for XNeur\t\t\n"
+"\n"
+"AUTHORS:\n"
+"Andrew Crew Kuznetsov\n"
+"Nikolay Yankin"
+msgstr ""
+"\n"
+"\t\t<b>X Neural Switcher pentru Gnome</b>\t\t\n"
+"\t\tGTK2 frontend pentru XNeur\t\t\n"
+"\n"
+"AUTHORI:\n"
+"Andrei Crew Kuznețov\n"
+"Nikolai Iankin"
+
+#: glade/action_add.glade:7
+msgid "Add user action..."
+msgstr ""
+
+#: glade/action_add.glade:24
+msgid "Key bind:"
+msgstr ""
+
+#: glade/action_add.glade:46
+msgid "User action:"
+msgstr "Acțiune utilizatorului"
+
+#: glade/choose_file.glade:7
+msgid "Choose File..."
+msgstr "Alegeți fișier"
+
+#: glade/config.glade:7
+msgid "XNeur Settings"
+msgstr "Configurări Xneur"
+
+#: glade/config.glade:32
+msgid "Use manual switching mode"
+msgstr "Regim de schimbare manuală"
+
+#: glade/config.glade:46
+msgid "Correct aCCIDENTAL caps"
+msgstr ""
+
+#: glade/config.glade:60
+msgid "Correct TWo INitial caps"
+msgstr "Corecta DOi LIiere mare"
+
+#: glade/config.glade:74
+msgid "Enable auto-learning mode"
+msgstr "Folosi modul de autoinstruire"
+
+#: glade/config.glade:88
+msgid "Keep selection after changing selected text"
+msgstr ""
+
+#: glade/config.glade:102
+msgid "Enable keyboard logging"
+msgstr ""
+
+#: glade/config.glade:116
+msgid "Flush internal buffer on Enter or Tab"
+msgstr ""
+
+#: glade/config.glade:130
+msgid "Don't process words on Enter or Tab"
+msgstr ""
+
+#: glade/config.glade:144
+msgid "Check language on input process"
+msgstr ""
+
+#: glade/config.glade:171
+msgid "<b>General</b>"
+msgstr "<b>Setări generale</b>"
+
+#: glade/config.glade:257
+msgid "Fixed"
+msgstr "Fixat"
+
+#: glade/config.glade:270
+msgid "Layout"
+msgstr ""
+
+#: glade/config.glade:281
+msgid "Number\t"
+msgstr "Număr\t"
+
+#: glade/config.glade:293 glade/config.glade:310 glade/config.glade:327
+#: glade/config.glade:344 glade/config.glade:612
+msgid ""
+"0\n"
+"1\n"
+"2\n"
+"3"
+msgstr ""
+"0\n"
+"1\n"
+"2\n"
+"3"
+
+#: glade/config.glade:360 glade/config.glade:377 glade/config.glade:394
+#: glade/config.glade:410
+msgid "Dictionary..."
+msgstr "Dicționar"
+
+#: glade/config.glade:428 glade/config.glade:457 glade/config.glade:486
+#: glade/config.glade:515
+msgid ""
+"\n"
+"Belarusian\n"
+"Bulgarian\n"
+"Czech\n"
+"German\n"
+"Greek\n"
+"English\n"
+"Spanish\n"
+"Estonian\n"
+"French\n"
+"Armenian\n"
+"Kazakh\n"
+"Lithuanian\n"
+"Latvian\n"
+"Poland\n"
+"Romanian\n"
+"Russian\n"
+"Ukrainian\n"
+"Uzbek"
+msgstr ""
+"\n"
+"Bielorusa\n"
+"Bulgara\n"
+"Ctha\n"
+"Germana\n"
+"Greaca\n"
+"Engleza\n"
+"Spaniola\n"
+"Estona\n"
+"Franceza\n"
+"Armeana\n"
+"Kazaha\n"
+"Lituaniana\n"
+"Letona\n"
+"Poloneza\n"
+"Româna\n"
+"Rusa\n"
+"Ucraineana\n"
+"Uzbeca"
+
+#: glade/config.glade:543 glade/config.glade:560 glade/config.glade:577
+#: glade/config.glade:594
+msgid "Regular Expressions..."
+msgstr ""
+
+#: glade/config.glade:630
+msgid "Initial layout number:"
+msgstr ""
+
+#: glade/config.glade:673
+msgid "Remember keyboard layout for each application instance"
+msgstr ""
+
+#: glade/config.glade:766
+msgid "Exceptions (One keyboard layout for all application instances)"
+msgstr ""
+
+#: glade/config.glade:796
+msgid "<b>Layouts</b>"
+msgstr ""
+
+#: glade/config.glade:1008
+msgid "Correct selected text"
+msgstr "Corecta textul selecționat"
+
+#: glade/config.glade:1021
+msgid "Switch between processing modes"
+msgstr ""
+
+#: glade/config.glade:1034
+msgid "Correct last line"
+msgstr ""
+
+#: glade/config.glade:1047
+msgid "Correct/Undo correction"
+msgstr ""
+
+#: glade/config.glade:1058
+msgid "Transliterate selected text"
+msgstr ""
+
+#: glade/config.glade:1071
+msgid "Change case of selected text"
+msgstr ""
+
+#: glade/config.glade:1154
+msgid "Switch to Layout 1"
+msgstr ""
+
+#: glade/config.glade:1167
+msgid "Switch to Layout 2"
+msgstr ""
+
+#: glade/config.glade:1180
+msgid "Switch to Layout 3"
+msgstr ""
+
+#: glade/config.glade:1249
+msgid "Switch to Layout 4"
+msgstr ""
+
+#: glade/config.glade:1378
+msgid "<b>Hotkeys</b>"
+msgstr ""
+
+#: glade/config.glade:1401
+msgid "Flush internal buffer on mouse click"
+msgstr ""
+
+#: glade/config.glade:1453
+msgid "<b>Mouse</b>"
+msgstr "<b>Mouse</b>"
+
+#: glade/config.glade:1553
+msgid "Ignore these applications"
+msgstr ""
+
+#: glade/config.glade:1644
+msgid "Force automatic mode for these applications"
+msgstr ""
+
+#: glade/config.glade:1735
+msgid "Force manual mode for these applications"
+msgstr ""
+
+#: glade/config.glade:1765
+msgid "<b>Applications</b>"
+msgstr "<b>Aplicații</b>"
+
+#: glade/config.glade:1788
+msgid "Enable sounds"
+msgstr ""
+
+#: glade/config.glade:1876
+msgid "<b>Sounds</b>"
+msgstr "<b>Sunete</b>"
+
+#: glade/config.glade:1904
+msgid "Expand abbreviations"
+msgstr ""
+
+#: glade/config.glade:1941
+msgid "Ignore keyboard layout for abbreviations"
+msgstr ""
+
+#: glade/config.glade:2034
+msgid "<b>Abbreviations</b>"
+msgstr "<b>Abrevieri</b>"
+
+#: glade/config.glade:2057
+msgid "Show OSD"
+msgstr "Arată OSD"
+
+#: glade/config.glade:2077
+msgid "OSD Font"
+msgstr ""
+
+#: glade/config.glade:2107
+msgid "Use command <b>xfontsel -print</b> to get new font."
+msgstr ""
+
+#: glade/config.glade:2164
+msgid "<b>OSD</b>"
+msgstr ""
+
+#: glade/config.glade:2190
+msgid ""
+"Error\n"
+"Warning\n"
+"Log\n"
+"Debug\n"
+"Trace"
+msgstr ""
+
+#: glade/config.glade:2224
+msgid "Log verbosity level"
+msgstr ""
+
+#: glade/config.glade:2237
+msgid "Delay before sending events (in milliseconds)"
+msgstr ""
+
+#: glade/config.glade:2256
+msgid "<b>Advanced</b>"
+msgstr "<b>Avansat</b>"
+
+#: glade/list.glade:7
+msgid "File Editing"
+msgstr "Editare"
+
+#: src/callbacks.c:188 src/misc.c:1594
+msgid "Press any key"
+msgstr ""
+
+#: src/misc.c:307 src/misc.c:308
+#, c-format
+msgid ""
+"Wrong XNeur configuration library api version.\n"
+"Please, install libxnconfig version %d.0.%d\n"
+msgstr ""
+
+#: src/misc.c:314
+#, c-format
+msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
+msgstr ""
+
+#: src/misc.c:318 src/misc.c:319
+#, c-format
+msgid ""
+"XNeur config broken!\n"
+"Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+msgstr ""
+
+#: src/misc.c:331 src/misc.c:332
+#, c-format
+msgid ""
+"Couldn't start xneur\n"
+"Verify that it installed\n"
+msgstr ""
+
+#: src/misc.c:382
+msgid "Current Version"
+msgstr "Versiunea curentă"
+
+#: src/misc.c:446 src/misc.c:472 src/misc.c:499 src/misc.c:525
+msgid "Application"
+msgstr "Aplicație"
+
+#: src/misc.c:697
+msgid "Abbreviation"
+msgstr "Abreviere"
+
+#: src/misc.c:706
+msgid "Expansion text"
+msgstr ""
+
+#: src/misc.c:740 src/misc.c:882
+msgid "Action"
+msgstr "Acţiune"
+
+#: src/misc.c:745
+msgid "Sound"
+msgstr "Sunet"
+
+#: src/misc.c:835
+msgid "Key bind"
+msgstr ""
+
+#: src/misc.c:840
+msgid "User action"
+msgstr ""
+
+#: src/misc.c:887
+msgid "OSD Text"
+msgstr ""
+
+#: src/misc.c:942
+msgid "Abbreviation field is empty!"
+msgstr ""
+
+#: src/misc.c:947
+msgid "Expansion text field is empty!"
+msgstr ""
+
+#: src/misc.c:991
+msgid "Key bind field is empty!"
+msgstr ""
+
+#: src/misc.c:996
+msgid "User action field is empty!"
+msgstr ""
+
+#: src/support.c:80 src/support.c:104
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "N-am putut găsi fişierul pixmap: %s"
+
+#: src/trayicon.c:78
+msgid "Stop daemon"
+msgstr ""
+
+#: src/trayicon.c:83
+msgid "Start daemon"
+msgstr ""
+
+#: src/trayicon.c:100
+msgid "Disable input auto-correction"
+msgstr ""
+
+#: src/trayicon.c:105
+msgid "Enable input auto-correction"
+msgstr ""
+
+#: src/trayicon.c:182
+msgid "X Neural Switcher running ("
+msgstr ""
+
+#: src/trayicon.c:187
+msgid "X Neural Switcher stopped ("
+msgstr ""
+
+#: src/trayicon.c:209
+msgid "X Neural Switcher"
+msgstr ""

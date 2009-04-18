@@ -575,7 +575,7 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 			{
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
 					p->changed_manual = MANUAL_FLAG_UNSET;
-
+				
 				// Add symbol to internal bufer
 				int modifier_mask = groups[get_cur_lang()] | p->event->get_cur_modifiers(p->event);
 				p->string->add_symbol(p->string, sym, p->event->event.xkey.keycode, modifier_mask);
@@ -592,7 +592,7 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 					// Unblock keyboard
 					set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
-				}
+				}	
 				
 				return;
 			}
