@@ -29,6 +29,9 @@
 #include <string.h>
 #include <locale.h>
 
+#include <sys/time.h>
+#include <sys/resource.h>
+
 #include "xnconfig.h"
 
 #include "xprogram.h"
@@ -153,10 +156,13 @@ static void xneur_set_lock(void)
 	}
 
 	int process_id = getpid();
-
 	xconfig->set_pid(xconfig, process_id);
 
-	log_message(DEBUG, _(PACKAGE " pid is %d"), process_id);
+	int priority = getpriority(PRIO_PROCESS, process_id); 
+	
+	setpriority(PRIO_PROCESS, process_id, -19); 
+	priority = getpriority(PRIO_PROCESS, process_id);
+	log_message(DEBUG, _(PACKAGE" pid is %d with nice %d"), process_id, priority); 
 }
 
 static void xneur_cleanup(void)
@@ -318,6 +324,7 @@ int main(int argc, char *argv[])
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 	textdomain(PACKAGE);
 #endif
+
 	
 	xneur_reklama();
 
