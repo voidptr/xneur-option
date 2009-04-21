@@ -1,3 +1,10 @@
+April 21 2009:
+Version 0.9.4 released.
+Remove pixmap flag near of cursor
+Add Bulgarian, Czech, Greek, Estonian, Armenian, Lithuanian, Latvian, Poland, Spanish and Uzbek languages
+Transliteration ISO 9 (GOST 7.79-2000) 
+New algo for check language (optional)
+
 January 09 2009:
 Version 0.9.3 released.
 Add OSD support
