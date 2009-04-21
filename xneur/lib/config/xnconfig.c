@@ -72,7 +72,6 @@ static const char *sound_names[] =	{
 static int load_lang = -1;
 
 pid_t getsid(pid_t pid);
-//char* strsep(char **stringp, const char *delim);
 
 static char* get_word(char **string)
 {
@@ -191,8 +190,8 @@ static void parse_line(struct _xneur_config *p, char *line)
 		{
 			char *dir	= get_word(&line);
 			char *group	= get_word(&line);
-			char *fixed = get_word(&line);
-			
+			char *fixed	= get_word(&line);
+
 			if (dir == NULL || group == NULL)
 			{
 				log_message(ERROR, _("Argument number mismatch for AddLanguage option"));
@@ -202,11 +201,11 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int fix_index = FALSE;
 			if (fixed != NULL)
 			{
-				int index = get_option_index(fix_names, (char *)fixed);
+				int index = get_option_index(fix_names, fixed);
 				if (index == 0) // Fixed
 					fix_index = TRUE;
 			}
-			
+
 			p->add_language(p, param, dir, atoi(group), fix_index);
 			break;
 		}
@@ -309,7 +308,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 
 			if (line == NULL)
 				break;
-			
+
 			char *file = strdup(get_word(&line));
 			if (strlen(file) != 0)
 			{
@@ -317,7 +316,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 			if (file != NULL)
 				free(file);
-			
+
 			break;
 		}
 		case 17: // Play Sound
@@ -430,16 +429,16 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->actions->action_hotkey =  (struct _xneur_hotkey *) realloc(p->actions->action_hotkey, (action + 1) * sizeof(struct _xneur_hotkey));
 			p->actions->action_hotkey[action].key = NULL;
 			p->actions->action_hotkey[action].modifiers = 0;
-			
+
 			while (TRUE)
 			{
-				
+
 				if (param == NULL)
 					break;
 
 				if (param[0] == '\0')
 					continue;
-				
+
 				int index = get_option_index(modifier_names, param);
 
 				if (index == -1)
@@ -449,7 +448,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 					if (line != NULL)
 						p->actions->action_command->add_last(p->actions->action_command, line);
 					break;
-				}	
+				}
 				else
 					p->actions->action_hotkey[action].modifiers |= (1 << index);
 
@@ -480,10 +479,10 @@ static void parse_line(struct _xneur_config *p, char *line)
 
 			if (line == NULL)
 				break;
-			
+
 			if (strlen(line) != 0)
 				p->osds[osd].file = strdup(line);
-			
+
 			break;
 		}
 		case 30: // Get Initial Xkb Group for all new windows
@@ -526,14 +525,14 @@ static int check_memory_attached(struct _xneur_config *p)
 static void free_structures(struct _xneur_config *p)
 {
 	int total_user_actions = p->actions->action_command->data_count;
-	
+
 	p->window_layouts->uninit(p->window_layouts);
 	p->manual_apps->uninit(p->manual_apps);
 	p->auto_apps->uninit(p->auto_apps);
 	p->layout_remember_apps->uninit(p->layout_remember_apps);
 	p->excluded_apps->uninit(p->excluded_apps);
 	p->actions->action_command->uninit(p->actions->action_command);
-	
+
 	if (p->version != NULL)
 	{
 		free(p->version);
@@ -574,7 +573,7 @@ static void free_structures(struct _xneur_config *p)
 		if (p->actions->action_hotkey[user_action].key != NULL)
 			free(p->actions->action_hotkey[user_action].key);
 	}
-		
+
 	for (int action = 0; action < MAX_HOTKEYS; action++)
 	{
 		if (p->hotkeys[action].key != NULL)
@@ -592,7 +591,7 @@ static void free_structures(struct _xneur_config *p)
 		if (p->osds[osd].file != NULL)
 			free(p->osds[osd].file);
 	}
-	
+
 	bzero(p->actions->action_hotkey, total_user_actions * sizeof(struct _xneur_hotkey));
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
@@ -671,7 +670,7 @@ static int xneur_config_load(struct _xneur_config *p)
 			log_message(ERROR, _("Can't find dictionary file for %s language"), lang_name);
 			return FALSE;
 		}
-		
+
 		p->languages[lang].protos = load_list(lang_dir, PROTO_NAME, TRUE);
 		if (p->languages[lang].protos == NULL)
 		{
@@ -817,12 +816,12 @@ static int xneur_config_save(struct _xneur_config *p)
 								, p->actions->action_command->data[action].string);
 	}
 	fprintf(stream, "\n");
-			
+
 	fprintf(stream, "# Word Replacing\n# Ignore keyboard layout for abbreviations list\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#ReplaceAbbreviationIgnoreLayout No\n");
 	fprintf(stream, "ReplaceAbbreviationIgnoreLayout %s\n\n", p->get_bool_name(p->abbr_ignore_layout));
-			
+
 	fprintf(stream, "# Abbreviations list\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#ReplaceAbbreviation xneur X Neural Switcher\n");
@@ -890,7 +889,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CorrectTwoCapitalLetter Yes\n");
 	fprintf(stream, "CorrectTwoCapitalLetter %s\n\n", p->get_bool_name(p->correct_two_capital_letter));
-			
+
 	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Enter or Tab\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#FlushBufferWhenPressEnter Yes\n");
@@ -900,7 +899,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#DontProcessWhenPressEnter Yes\n");
 	fprintf(stream, "DontProcessWhenPressEnter %s\n\n", p->get_bool_name(p->dont_process_when_press_enter));
-			
+
 	fprintf(stream, "# This option disable or enable show OSD\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#ShowOSD Yes\n");
@@ -910,7 +909,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u\n");
 	fprintf(stream, "FontOSD %s\n\n", p->osd_font);
-			
+
 	fprintf(stream, "# Binds OSDs for some actions\n");
 	for (int osd= 0; osd < MAX_OSDS; osd++)
 	{
@@ -1014,7 +1013,7 @@ static void xneur_config_add_language(struct _xneur_config *p, const char *name,
 	p->languages[p->total_languages].dir	= strdup(dir);
 	p->languages[p->total_languages].group	= group;
 	p->languages[p->total_languages].fixed	= fixed;
-	
+
 	p->total_languages++;
 }
 
@@ -1026,13 +1025,13 @@ static const char* xneur_config_get_log_level_name(struct _xneur_config *p)
 static void xneur_config_uninit(struct _xneur_config *p)
 {
 	free_structures(p);
-	
+
 	free(p->hotkeys);
 	free(p->sounds);
 	free(p->osds);
-	
+
 	free(p->actions);
-	
+
 	free(p);
 }
 
@@ -1055,7 +1054,7 @@ struct _xneur_config* xneur_config_init(void)
 
 	p->osds = (struct _xneur_file *) malloc(MAX_OSDS * sizeof(struct _xneur_file));
 	bzero(p->osds, MAX_OSDS * sizeof(struct _xneur_file));
-	
+
 	p->log_level			= LOG;
 	p->excluded_apps		= list_char_init();
 	p->auto_apps			= list_char_init();
@@ -1068,7 +1067,7 @@ struct _xneur_config* xneur_config_init(void)
 	p->actions->action_hotkey = (struct _xneur_hotkey *) malloc(sizeof(struct _xneur_hotkey));
 	bzero(p->actions->action_hotkey, sizeof(struct _xneur_hotkey));
 	p->actions->action_command	= list_char_init();
-	
+
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;
 	p->get_global_dict_path		= get_file_path_name;

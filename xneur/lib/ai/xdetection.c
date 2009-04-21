@@ -49,7 +49,6 @@
 
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
-	
 
 static int is_fixed_layout(int cur_lang)
 {
@@ -62,15 +61,15 @@ static int get_dict_lang(char **word)
 	{
 		if (is_fixed_layout(lang))
 			continue;
-		
+
 		if (xconfig->languages[lang].dicts->exist(xconfig->languages[lang].dicts, word[lang], BY_PLAIN))
 		{
 			log_message(DEBUG, _("   [+] Found this word in %s language dictionary"), xconfig->get_lang_name(xconfig, lang));
 			return lang;
 		}
 	}
-	
-	log_message(DEBUG, _("   [-] This word not found in any dictionaries"));		
+
+	log_message(DEBUG, _("   [-] This word not found in any dictionaries"));
 	return NO_LANGUAGE;
 }
 
@@ -80,23 +79,23 @@ static int get_regexp_lang(char **word)
 	{
 		if (is_fixed_layout(lang))
 			continue;
-		
+
 		if (xconfig->languages[lang].regexp->exist(xconfig->languages[lang].regexp, word[lang], BY_REGEXP))
 		{
 			log_message(DEBUG, _("   [+] Found this word in %s language regular expressions file"), xconfig->get_lang_name(xconfig, lang));
 			return lang;
 		}
 	}
-	
+
 	log_message(DEBUG, _("   [-] This word not found in any regular expressions files"));
 	return NO_LANGUAGE;
 }
 
-#ifdef WITH_ASPELL 
+#ifdef WITH_ASPELL
 static int get_aspell_hits(char **word)
 {
 	AspellConfig *spell_config = new_aspell_config();
-	
+
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
 		if (is_fixed_layout(lang))
@@ -105,7 +104,7 @@ static int get_aspell_hits(char **word)
 		int len = strlen(word[lang]);
 		if (len < 2)
 			continue;
-		
+
 		aspell_config_replace(spell_config, "lang", xconfig->languages[lang].dir);
 		AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
 		AspellSpeller *spell_checker = 0;
@@ -125,10 +124,10 @@ static int get_aspell_hits(char **word)
 		{
 			log_message(DEBUG, _("   [!] Error aspell checking for %s aspell dictionary"), xconfig->get_lang_name(xconfig, lang));
 		}
-	
+
 		delete_aspell_speller(spell_checker);
 	}
-	
+
 	log_message(DEBUG, _("   [-] This word has no hits for all aspell dictionaries"));
 	return NO_LANGUAGE;
 }
@@ -138,11 +137,11 @@ static int get_proto_hits(char *word, int *sym_len, int len, int offset, int lan
 {
 	int local_offset = 0;
 	char *proto = (char *) malloc((256) * sizeof(char));
-	
+
 	int n_byte = 0;
 	for (int i = 0; i < PROTO_LEN; i++)
 		n_byte += sym_len[i];
-	
+
 	for (int i = 0; i <= len - offset - PROTO_LEN; i++)
 	{
 		proto = strncpy(proto, word+local_offset, n_byte);
@@ -153,7 +152,7 @@ static int get_proto_hits(char *word, int *sym_len, int len, int offset, int lan
 			free(proto);
 			return TRUE;
 		}
-		
+
 		local_offset += sym_len[i];
 	}
 
@@ -165,11 +164,11 @@ static int get_big_proto_hits(char *word, int *sym_len, int len, int offset, int
 {
 	int local_offset = 0;
 	char *proto = (char *) malloc((256) * sizeof(char));
-	
+
 	int n_byte = 0;
 	for (int i = 0; i < BIG_PROTO_LEN; i++)
 		n_byte += sym_len[i];
-	
+
 	for (int i = 0; i <= len - offset - BIG_PROTO_LEN; i++)
 	{
 		strncpy(proto, word+local_offset, n_byte);
@@ -180,7 +179,7 @@ static int get_big_proto_hits(char *word, int *sym_len, int len, int offset, int
 			free(proto);
 			return TRUE;
 		}
-		
+
 		local_offset += sym_len[i];
 	}
 
@@ -202,7 +201,7 @@ static int get_proto_lang(char **word, int **sym_len, int len, int offset, int c
 		log_message(DEBUG, _("   [-] Skip checking by language proto of size %d (word is very short)"), proto_len);
 		return NO_LANGUAGE;
 	}
-	
+
 	int hits = get_proto_hits_function(word[cur_lang], sym_len[cur_lang], len, offset, cur_lang);
 	if (hits == 0)
 	{
@@ -236,35 +235,35 @@ int check_lang(struct _xstring *p, int cur_lang)
 {
 	if (is_fixed_layout(cur_lang))
 		return NO_LANGUAGE;
-	
+
 	int group = get_active_keyboard_group();
 	if (xconfig->find_group_lang(xconfig, group) == -1)
 		return NO_LANGUAGE;
-	
+
 	int lang = NO_LANGUAGE;
 
 	char **word;
 	word = (char **)malloc((xconfig->total_languages+1) * sizeof(char*));
-	
+
 	int **sym_len;
 	sym_len = (int **)malloc((xconfig->total_languages+1) * sizeof(int*));
-	
+
 	for (int i=0; i<xconfig->total_languages; i++)
 	{
 		word[i] = get_last_word(p->xcontent[i].content);
 		log_message(DEBUG, _("Processing word '%s'"), word[i]);
 		sym_len[i] = p->xcontent[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
-	}	
-	
+	}
+
 	// Check by regexp
 	lang = get_regexp_lang(word);
-	
+
 	// Check by dictionary
 	if (lang == NO_LANGUAGE)
 		lang = get_dict_lang(word);
 
+#ifdef WITH_ASPELL
 	// Check by aspell
-#ifdef WITH_ASPELL 
 	if (lang == NO_LANGUAGE)
 		lang = get_aspell_hits(word);
 #endif
