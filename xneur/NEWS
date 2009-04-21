@@ -4,6 +4,8 @@ Remove pixmap flag near of cursor
 Add Bulgarian, Czech, Greek, Estonian, Armenian, Lithuanian, Latvian, Poland, Spanish and Uzbek languages
 Transliteration ISO 9 (GOST 7.79-2000) 
 New algo for check language (optional)
+Add option for layout fix
+Bug fix for diacritical sign
 
 January 09 2009:
 Version 0.9.3 released.
