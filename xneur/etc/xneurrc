@@ -12,7 +12,7 @@ ManualMode No
 #LogLevel Warning
 #LogLevel Log
 #LogLevel Debug
-LogLevel Trace
+LogLevel Debug
 
 # Define used languages
 # See Settings page on http://www.xneur.ru for details
