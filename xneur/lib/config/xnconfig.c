@@ -549,6 +549,12 @@ static void free_structures(struct _xneur_config *p)
 		p->version = NULL;
 	}
 
+	if (p->osd_font != NULL)
+	{
+		free(p->osd_font);
+		p->osd_font = NULL;
+	}
+
 	for (int lang = 0; lang < p->total_languages; lang++)
 	{
 		if (p->languages[lang].temp_dicts != NULL)
@@ -1043,6 +1049,7 @@ static void xneur_config_uninit(struct _xneur_config *p)
 	free(p->sounds);
 	free(p->osds);
 
+	free(p->actions->action_hotkey);
 	free(p->actions);
 
 	free(p);
@@ -1068,6 +1075,12 @@ struct _xneur_config* xneur_config_init(void)
 	p->osds = (struct _xneur_file *) malloc(MAX_OSDS * sizeof(struct _xneur_file));
 	bzero(p->osds, MAX_OSDS * sizeof(struct _xneur_file));
 
+	p->actions = (struct _xneur_action *) malloc(sizeof(struct _xneur_action));
+	bzero(p->actions, sizeof(struct _xneur_action));
+
+	p->actions->action_hotkey = (struct _xneur_hotkey *) malloc(sizeof(struct _xneur_hotkey));
+	bzero(p->actions->action_hotkey, sizeof(struct _xneur_hotkey));
+
 	p->log_level			= LOG;
 	p->excluded_apps		= list_char_init();
 	p->auto_apps			= list_char_init();
@@ -1075,11 +1088,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->layout_remember_apps		= list_char_init();
 	p->window_layouts		= list_char_init();
 	p->abbreviations		= list_char_init();
-
-	p->actions			= (struct _xneur_action *) malloc(sizeof(struct _xneur_action));
-	p->actions->action_hotkey	= (struct _xneur_hotkey *) malloc(sizeof(struct _xneur_hotkey));
-	bzero(p->actions->action_hotkey, sizeof(struct _xneur_hotkey));
-
 	p->actions->action_command	= list_char_init();
 
 	// Function mapping

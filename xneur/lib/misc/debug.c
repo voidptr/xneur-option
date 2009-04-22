@@ -114,7 +114,7 @@ void* xndebug_realloc(void *mem, int len, char *file, int line)
 		if (!allocates->exist(allocates, pointer, BY_PLAIN))
 			log_message(ERROR, _("Reallocating invalid memory pointer %p (at %s:%d)"), mem, file, line);
 		else
-			log_message(TRACE, _("(Re)Freeing memory pointer %p (at %s:%d)"), mem, file, line);
+			log_message(TRACE, _("Freeing memory pointer %p (at %s:%d)"), mem, file, line);
 		allocates->rem(allocates, pointer);
 	}
 
@@ -124,7 +124,7 @@ void* xndebug_realloc(void *mem, int len, char *file, int line)
 	{
 		sprintf(pointer, "%p", new_mem);
 
-		log_message(TRACE, _("(Re)Allocating memory pointer %p (at %s:%d)"), new_mem, file, line);
+		log_message(TRACE, _("Allocating memory pointer %p (at %s:%d)"), new_mem, file, line);
 
 		struct _list_char_data *data = allocates->add(allocates, pointer);
 		data->debug_value = line;

@@ -32,10 +32,10 @@
 
 static void swap_data(struct _list_char *list, int first, int second)
 {
-	struct _list_char_data *temp = &list->data[first];
+	struct _list_char_data temp = list->data[first];
 
-	memcpy(&list->data[first], &list->data[second], sizeof(struct _list_char_data));
-	memcpy(&list->data[second], temp, sizeof(struct _list_char_data));
+	list->data[first] = list->data[second];
+	list->data[second] = temp;
 }
 
 static void rem_by_id(struct _list_char *list, int id)
