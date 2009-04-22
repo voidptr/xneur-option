@@ -436,9 +436,9 @@ static void parse_line(struct _xneur_config *p, char *line)
 		case 27: // User actions
 		{
 			int action = p->actions->action_command->data_count;
-			p->actions->action_hotkey =  (struct _xneur_hotkey *) realloc(p->actions->action_hotkey, (action + 1) * sizeof(struct _xneur_hotkey));
-			p->actions->action_hotkey[action].key = NULL;
-			p->actions->action_hotkey[action].modifiers = 0;
+
+			p->actions->action_hotkey = (struct _xneur_hotkey *) realloc(p->actions->action_hotkey, (action + 1) * sizeof(struct _xneur_hotkey));
+			bzero(&p->actions->action_hotkey[action], sizeof(struct _xneur_hotkey));
 
 			while (TRUE)
 			{
@@ -456,11 +456,11 @@ static void parse_line(struct _xneur_config *p, char *line)
 					if (param != NULL)
 						p->actions->action_hotkey[action].key = strdup(param);
 					if (line != NULL)
-						p->actions->action_command->add_last(p->actions->action_command, line);
+						p->actions->action_command->add(p->actions->action_command, line);
 					break;
 				}
-				else
-					p->actions->action_hotkey[action].modifiers |= (1 << index);
+
+				p->actions->action_hotkey[action].modifiers |= (1 << index);
 
 				param = get_word(&line);
 			}
@@ -822,8 +822,7 @@ static int xneur_config_save(struct _xneur_config *p)
 				fprintf(stream, "%s ", modifier_names[i]);
 		}
 
-		fprintf(stream, "%s %s\n", p->actions->action_hotkey[action].key
-								, p->actions->action_command->data[action].string);
+		fprintf(stream, "%s %s\n", p->actions->action_hotkey[action].key, p->actions->action_command->data[action].string);
 	}
 	fprintf(stream, "\n");
 
