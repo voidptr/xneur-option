@@ -209,24 +209,26 @@ static void xstring_change_case(struct _xstring *p)
 
 static void xstring_rotate_layout(struct _xstring *p)
 {
-	int languages_mask	= get_languages_mask();
+	int languages_mask = get_languages_mask();
 
 	for (int i = 0; i < p->cur_pos; i++)
 	{
 		for (int lang = 0; lang < xconfig->total_languages; lang++)
 		{
 			int km = p->keycode_modifiers[i] & (~languages_mask);
-			if (p->keycode_modifiers[i] == (keyboard_groups[lang]|km))
-			{
-				int new_lang = lang + 1;
-				if (lang == xconfig->total_languages - 1)
-					new_lang = 0;
-				int keycode_mod	= get_keycode_mod(xconfig->get_lang_group(xconfig, new_lang));
 
-				p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~languages_mask);
-				p->keycode_modifiers[i] = (p->keycode_modifiers[i] | keycode_mod);
-				break;
-			}
+			if (p->keycode_modifiers[i] != (keyboard_groups[lang] | km))
+				continue;
+
+			int new_lang = lang + 1;
+			if (lang == xconfig->total_languages - 1)
+				new_lang = 0;
+
+			int keycode_mod	= get_keycode_mod(xconfig->get_lang_group(xconfig, new_lang));
+
+			p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~languages_mask);
+			p->keycode_modifiers[i] = p->keycode_modifiers[i] | keycode_mod;
+			break;
 		}
 	}
 }
@@ -391,7 +393,7 @@ struct _xstring* xstring_init(void)
 	p->set_uncaps_mask	= xstring_set_uncaps_mask;
 	p->set_content		= xstring_set_content;
 	p->change_case		= xstring_change_case;
-	p->rotate_layout		= xstring_rotate_layout;
+	p->rotate_layout	= xstring_rotate_layout;
 	p->add_symbol		= xstring_add_symbol;
 	p->del_symbol		= xstring_del_symbol;
 	p->get_utf_string	= xstring_get_utf_string;

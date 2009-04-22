@@ -463,54 +463,72 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		return;
 	}
 
-	char *selected_text = strdup(event_text);
+	if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
+		convert_text_to_translit(&event_text);
+
+	p->string->set_content(p->string, event_text);
 	XFree(event_text);
 
-	if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
-		convert_text_to_translit(&selected_text);
+	switch (p->selected_mode)
+	{
+		case ACTION_CHANGE_SELECTED:
+		{
+			p->string->rotate_layout(p->string);
 
-	p->string->set_content(p->string, selected_text);
-	free(selected_text);
+			play_file(SOUND_CHANGE_SELECTED);
+			osd_show(xconfig->osds[OSD_CHANGE_SELECTED].file);
 
-	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGE_CLIPBOARD)	
-		p->string->rotate_layout(p->string);
-	if (p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED)
-		p->string->change_case(p->string);
-	if (p->selected_mode == ACTION_TRANSLIT_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
-		p->change_lang(p, main_window->xkeymap->latin_group);
+			break;
+		}
+		case ACTION_CHANGE_CLIPBOARD:
+		{
+			p->string->rotate_layout(p->string);
 
-	if (p->selected_mode == ACTION_CHANGE_SELECTED)	
-	{
-		play_file(SOUND_CHANGE_SELECTED);
-		osd_show(xconfig->osds[OSD_CHANGE_SELECTED].file);
+			play_file(SOUND_CHANGE_CLIPBOARD);
+			osd_show(xconfig->osds[OSD_CHANGE_CLIPBOARD].file);
+
+			break;
+		}
+		case ACTION_CHANGECASE_SELECTED:
+		{
+			p->string->change_case(p->string);
+
+			play_file(SOUND_CHANGECASE_SELECTED);
+			osd_show(xconfig->osds[OSD_CHANGECASE_SELECTED].file);
+
+			break;
+		}
+		case ACTION_CHANGECASE_CLIPBOARD:
+		{
+			p->string->change_case(p->string);
+
+			play_file(SOUND_CHANGECASE_CLIPBOARD);
+			osd_show(xconfig->osds[OSD_CHANGECASE_CLIPBOARD].file);
+
+			break;
+		}
+		case ACTION_TRANSLIT_SELECTED:
+		{
+			p->change_lang(p, main_window->xkeymap->latin_group);
+
+			play_file(SOUND_TRANSLIT_SELECTED);
+			osd_show(xconfig->osds[OSD_TRANSLIT_SELECTED].file);
+
+			break;
+		}
+		case ACTION_TRANSLIT_CLIPBOARD:
+		{
+			p->change_lang(p, main_window->xkeymap->latin_group);
+
+			play_file(SOUND_TRANSLIT_CLIPBOARD);
+			osd_show(xconfig->osds[OSD_TRANSLIT_CLIPBOARD].file);
+
+			break;
+		}
 	}
-	if (p->selected_mode == ACTION_CHANGECASE_SELECTED)
-	{
-		play_file(SOUND_CHANGECASE_SELECTED);
-		osd_show(xconfig->osds[OSD_CHANGECASE_SELECTED].file);
-	}
-	if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
-	{
-		play_file(SOUND_TRANSLIT_SELECTED);
-		osd_show(xconfig->osds[OSD_TRANSLIT_SELECTED].file);
-	}
-	if (p->selected_mode == ACTION_CHANGE_CLIPBOARD)	
-	{
-		play_file(SOUND_CHANGE_CLIPBOARD);
-		osd_show(xconfig->osds[OSD_CHANGE_CLIPBOARD].file);
-	}
-	if (p->selected_mode == ACTION_CHANGECASE_CLIPBOARD)
-	{
-		play_file(SOUND_CHANGECASE_CLIPBOARD);
-		osd_show(xconfig->osds[OSD_CHANGECASE_CLIPBOARD].file);
-	}
-	if (p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
-	{
-		play_file(SOUND_TRANSLIT_CLIPBOARD);
-		osd_show(xconfig->osds[OSD_TRANSLIT_CLIPBOARD].file);
-	}
-	
-	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
+
+	// Disable receiving events
+	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 
 	// Block events of keyboard
 	set_event_mask(p->focus->owner_window, None);
@@ -525,6 +543,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			p->event->send_selection(p->event, p->string->cur_pos);
 		p->string->save_and_clear(p->string, p->focus->owner_window);
 	}
+
 	// Clipboard
 	if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
 	{
@@ -532,6 +551,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		on_clipboard_converted();
 		p->string->save_and_clear(p->string, p->focus->owner_window);
 	}
+
 	p->update(p);
 	p->selected_mode = ACTION_NONE;
 }
@@ -586,17 +606,17 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 	{
 		case KLB_NO_ACTION:
 		{
-			if (get_key_state(XK_Caps_Lock) && xconfig->disable_capslock)
-			{
-				int xkb_opcode, xkb_event, xkb_error;
-				int xkb_lmaj = XkbMajorVersion;
-				int xkb_lmin = XkbMinorVersion;
-				if (XkbLibraryVersion(&xkb_lmaj, &xkb_lmin) && XkbQueryExtension(main_window->display, &xkb_opcode, &xkb_event, &xkb_error,
-					       &xkb_lmaj, &xkb_lmin))
-				{
-					XkbLockModifiers (main_window->display, XkbUseCoreKbd, LockMask, 0);
-				}
-			}
+			if (!get_key_state(XK_Caps_Lock))
+				return;
+
+			if (!xconfig->disable_capslock)
+				return;
+
+			int xkb_opcode, xkb_event, xkb_error;
+			int xkb_lmaj = XkbMajorVersion;
+			int xkb_lmin = XkbMinorVersion;
+			if (XkbLibraryVersion(&xkb_lmaj, &xkb_lmin) && XkbQueryExtension(main_window->display, &xkb_opcode, &xkb_event, &xkb_error, &xkb_lmaj, &xkb_lmin))
+				XkbLockModifiers (main_window->display, XkbUseCoreKbd, LockMask, 0);
 			return;
 		}
 		case KLB_CLEAR:
@@ -613,10 +633,8 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 		case KLB_SPACE:
 		case KLB_ADD_SYM:
 		{
-			if ((action == KLB_ENTER) && (xconfig->dont_process_when_press_enter))
-			{
+			if (action == KLB_ENTER && xconfig->dont_process_when_press_enter)
 				action = KLB_ADD_SYM;
-			}
 
 			if (p->changed_manual == MANUAL_FLAG_SET)
 				p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
