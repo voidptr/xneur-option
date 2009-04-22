@@ -59,7 +59,7 @@ void* xndebug_malloc(int len, char *file, int line)
 
 	free(pointer);
 
-	return mem;	
+	return mem;
 }
 
 void xndebug_free(void *mem, char *file, int line)
@@ -94,11 +94,11 @@ char* xndebug_strdup(const char *str, char *file, int line)
 
 	struct _list_char_data *data = allocates->add(allocates, pointer);
 	data->debug_value = line;
-	data->debug_string = file; 
+	data->debug_string = file;
 
 	free(pointer);
 
-	return mem;	
+	return mem;
 }
 
 void* xndebug_realloc(void *mem, int len, char *file, int line)
@@ -128,7 +128,7 @@ void* xndebug_realloc(void *mem, int len, char *file, int line)
 
 		struct _list_char_data *data = allocates->add(allocates, pointer);
 		data->debug_value = line;
-		data->debug_string = file; 
+		data->debug_string = file;
 	}
 
 	free(pointer);
