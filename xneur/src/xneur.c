@@ -159,11 +159,11 @@ static void xneur_set_lock(void)
 	int process_id = getpid();
 	xconfig->set_pid(xconfig, process_id);
 
-	int priority = getpriority(PRIO_PROCESS, process_id); 
-	
-	setpriority(PRIO_PROCESS, process_id, -19); 
+	int priority = getpriority(PRIO_PROCESS, process_id);
+
+	setpriority(PRIO_PROCESS, process_id, -19);
 	priority = getpriority(PRIO_PROCESS, process_id);
-	log_message(DEBUG, _(PACKAGE" pid is %d with nice %d"), process_id, priority); 
+	log_message(DEBUG, _(PACKAGE" pid is %d with nice %d"), process_id, priority);
 }
 
 static void xneur_cleanup(void)
@@ -195,7 +195,7 @@ static void xneur_terminate(int status)
 	log_message(DEBUG, _("Caught SIGTERM/SIGINT, terminating"));
 	osd_show(xconfig->osds[OSD_XNEUR_STOP].file);
 	sleep(1);
-	
+
 	xneur_cleanup();
 
 	exit(EXIT_SUCCESS);
@@ -206,7 +206,7 @@ static void xneur_reload(int status)
 	status = status; // To prevent warnings
 	log_message(LOG, _("Caught SIGHUP, reloading configuration file"));
 	osd_show(xconfig->osds[OSD_XNEUR_RELOAD].file);
-	
+
 	sound_uninit();
 
 	if (xconfig != NULL)
@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
 	textdomain(PACKAGE);
 #endif
 
-	
+
 	xneur_reklama();
 
 	xneur_get_options(argc, argv);
@@ -355,7 +355,7 @@ int main(int argc, char *argv[])
 
 	log_message(DEBUG, _("Init program structure complete"));
 	osd_show(xconfig->osds[OSD_XNEUR_START].file);
-	
+
 	xntrap(SIGTERM, xneur_terminate);
 	xntrap(SIGINT, xneur_terminate);
 	xntrap(SIGHUP, xneur_reload);
