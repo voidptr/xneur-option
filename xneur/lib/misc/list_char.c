@@ -205,13 +205,13 @@ void list_char_sort(struct _list_char *list)
 			if (strcmp(data1->string, temp->string) < 0)
 				break;
 
-			*data2 = *data1;
+			memcpy(data2, data1, sizeof(struct _list_char_data));
 		}
 
 		if (data2 == temp)
 			continue;
 
-		*data2 = *temp;
+		memcpy(data2, temp, sizeof(struct _list_char_data));
 	}
 }
 
