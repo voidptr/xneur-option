@@ -211,18 +211,18 @@ struct _xneur_config
 	int   remember_layout;				// Remember layout for each of window
 	int   save_selection;				// Save selection after convert
 	int   save_keyboard_log;			// Save keyboard log
-	int   correct_incidental_caps;		// Change iNCIDENTAL CapsLock
-	int   correct_two_capital_letter;	// Change two CApital letter
-	int   flush_buffer_when_press_enter;  // Flush internal buffer when pressed Enter
-	int   dont_process_when_press_enter;   // Don't correct word when pressed Enter
-	int   check_lang_on_process;		// Check lang on input process
-	int   disable_capslock;			// Disable CapsLock use
+	int   correct_incidental_caps;			// Change iNCIDENTAL CapsLock
+	int   correct_two_capital_letter;		// Change two CApital letter
+	int   flush_buffer_when_press_enter;		// Flush internal buffer when pressed Enter
+	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter
+	int   check_lang_on_process;			// Check lang on input process
+	int   disable_capslock;				// Disable CapsLock use
 
-	int   show_osd;					// Show OSD 
+	int   show_osd;					// Show OSD
 	char  *osd_font;
 
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
-	
+
 	struct _list_char *abbreviations;		// Array of words to replace
 
 	struct _xneur_action *actions;
