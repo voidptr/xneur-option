@@ -47,11 +47,15 @@ static struct _xbtable btable[MAX_HOTKEYS] =	{
 							{0, 0, 0},
 							{0, 0, 0},
 							{0, 0, 0},
+							{0, 0, 0},
+							{0, 0, 0},
+							{0, 0, 0},
 							{0, 0, 0}
 						};
 static const char *normal_action_names[] =	{
 							"Change Last Word", "Change Last String", "Change Mode", 
 							"Change Selected", "Translit Selected", "Changecase Selected",
+							"Change Clipboard", "Translit Clipboard", "Changecase Clipboard",
 							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4",
 							"Replace Abbreviation"
 						};
@@ -127,7 +131,7 @@ static void bind_user_action(int action)
 	
 	if (xconfig->actions->action_hotkey[action].key == NULL)
 	{
-		//log_message(DEBUG, _("   No key set for action \"%s\""_(, normal_action_names[action]);
+		log_message(DEBUG, _("   No key set for action \"%s\""), normal_action_names[action]);
 		return;
 	}
 

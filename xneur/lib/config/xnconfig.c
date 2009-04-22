@@ -51,11 +51,12 @@ static const char *option_names[] = 	{
 						"SaveLog", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
-						"ShowOSD", "AddOSD", "FontOSD"
+						"ShowOSD", "AddOSD", "FontOSD",
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
+						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"ReplaceAbbreviation"
 					};
@@ -65,6 +66,7 @@ static const char *sound_names[] =	{
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"AutomaticChangeWord", "ManualChangeWord", "ChangeString",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
+						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"ExecuteUserAction"
 					};

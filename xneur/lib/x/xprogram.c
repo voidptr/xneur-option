@@ -40,6 +40,7 @@
 #include "xfocus.h"
 #include "xswitchlang.h"
 #include "xselection.h"
+#include "xclipboard.h"
 #include "xbtable.h"
 #include "xevent.h"
 #include "xwindow.h"
@@ -437,7 +438,25 @@ static void xprogram_change_two_capital_letter(struct _xprogram *p)
 
 static void xprogram_process_selection_notify(struct _xprogram *p)
 {
-	char *event_text = get_selected_text(&p->event->event.xselection);
+	char *event_text = NULL;
+	switch (p->selected_mode)
+	{
+		case ACTION_CHANGE_SELECTED:
+		case ACTION_TRANSLIT_SELECTED:
+		case ACTION_CHANGECASE_SELECTED:
+		{
+			event_text = get_selected_text(&p->event->event.xselection);
+			break;
+		}
+		case ACTION_CHANGE_CLIPBOARD:
+		case ACTION_TRANSLIT_CLIPBOARD:
+		case ACTION_CHANGECASE_CLIPBOARD:
+		{
+			event_text = get_clipboard_text(&p->event->event.xselection);
+			break;
+		}
+	}
+
 	if (event_text == NULL)
 	{
 		p->selected_mode = ACTION_NONE;
@@ -453,44 +472,67 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	p->string->set_content(p->string, selected_text);
 	free(selected_text);
 
-	if (p->selected_mode == ACTION_CHANGECASE_SELECTED)
-		p->string->change_case(p->string);
-	else if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
-		p->change_lang(p, main_window->xkeymap->latin_group);
-	else	
+	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGE_CLIPBOARD)	
 		p->string->rotate_layout(p->string);
-	
-	if (p->selected_mode == ACTION_CHANGE_SELECTED)
+	if (p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED)
+		p->string->change_case(p->string);
+	if (p->selected_mode == ACTION_TRANSLIT_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
+		p->change_lang(p, main_window->xkeymap->latin_group);
+
+	if (p->selected_mode == ACTION_CHANGE_SELECTED)	
 	{
 		play_file(SOUND_CHANGE_SELECTED);
 		osd_show(xconfig->osds[OSD_CHANGE_SELECTED].file);
 	}
-	else if (p->selected_mode == ACTION_CHANGECASE_SELECTED)
+	if (p->selected_mode == ACTION_CHANGECASE_SELECTED)
 	{
 		play_file(SOUND_CHANGECASE_SELECTED);
 		osd_show(xconfig->osds[OSD_CHANGECASE_SELECTED].file);
 	}
-	else if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
+	if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
 	{
 		play_file(SOUND_TRANSLIT_SELECTED);
 		osd_show(xconfig->osds[OSD_TRANSLIT_SELECTED].file);
 	}
+	if (p->selected_mode == ACTION_CHANGE_CLIPBOARD)	
+	{
+		play_file(SOUND_CHANGE_CLIPBOARD);
+		osd_show(xconfig->osds[OSD_CHANGE_CLIPBOARD].file);
+	}
+	if (p->selected_mode == ACTION_CHANGECASE_CLIPBOARD)
+	{
+		play_file(SOUND_CHANGECASE_CLIPBOARD);
+		osd_show(xconfig->osds[OSD_CHANGECASE_CLIPBOARD].file);
+	}
+	if (p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
+	{
+		play_file(SOUND_TRANSLIT_CLIPBOARD);
+		osd_show(xconfig->osds[OSD_TRANSLIT_CLIPBOARD].file);
+	}
+	
 	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);	// Disable receiving events
 
 	// Block events of keyboard
 	set_event_mask(p->focus->owner_window, None);
 	grab_spec_keys(p->focus->owner_window, FALSE);
 
-	p->change_word(p, CHANGE_SELECTION);
-
-	on_selection_converted();
-
-	if (xconfig->save_selection)
-		p->event->send_selection(p->event, p->string->cur_pos);
-
+	// Selection
+	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
+	{
+		p->change_word(p, CHANGE_SELECTION);
+		on_selection_converted();
+		if (xconfig->save_selection)
+			p->event->send_selection(p->event, p->string->cur_pos);
+		p->string->save_and_clear(p->string, p->focus->owner_window);
+	}
+	// Clipboard
+	if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
+	{
+		p->change_word(p, CHANGE_SELECTION);
+		on_clipboard_converted();
+		p->string->save_and_clear(p->string, p->focus->owner_window);
+	}
 	p->update(p);
-
-	p->string->save_and_clear(p->string, p->focus->owner_window);
 	p->selected_mode = ACTION_NONE;
 }
 
@@ -666,6 +708,15 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		{
 			p->selected_mode = action;
 			do_selection_notify();
+			p->event->default_event.xkey.keycode = 0;
+			return TRUE;
+		}
+		case ACTION_CHANGE_CLIPBOARD:
+		case ACTION_TRANSLIT_CLIPBOARD:
+		case ACTION_CHANGECASE_CLIPBOARD:
+		{
+			p->selected_mode = action;
+			do_clipboard_notify();
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
 		}
@@ -1123,6 +1174,10 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 		case CHANGE_SELECTION:
 		{
 			p->send_string_silent(p, 0);
+			break;
+		}
+		case CHANGE_CLIPBOARD:
+		{
 			break;
 		}
 		case CHANGE_STRING_TO_LAYOUT_0:

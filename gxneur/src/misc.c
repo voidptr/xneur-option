@@ -108,7 +108,9 @@ static const char *sound_names[]			=   {
 										"Keypress on Layout 4", "Switch to Layout 1", "Switch to Layout 2",
 										"Switch to Layout 3", "Switch to Layout 4", "Correct word automatically",
 										"Correct word manually", "Correct last line", "Correct selected text",
-										"Transliterate selected text", "Change case of selected text", "Expand abbreviations",
+										"Transliterate selected text", "Change case of selected text", 
+										"Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text",
+	                                    "Expand abbreviations",
 										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Execute user action"
 										};
 static const int total_sound_names = sizeof(sound_names) / sizeof(sound_names[0]);
