@@ -16,7 +16,7 @@
  *  Copyright (C) 2006-2008 XNeur Team
  *
  */
- 
+
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -60,10 +60,10 @@ void osd_show(char *osd_text, ...)
 		return;
 	if (strlen(osd_text) == 0)
 		return;
-	
+
 	va_list ap;
 	va_start(ap, osd_text);
-	
+
 	char *buffer = (char *) malloc(1024);
 	vsprintf(buffer, osd_text, ap);
 
@@ -74,9 +74,9 @@ void osd_show(char *osd_text, ...)
 	pthread_t osd_thread;
 	log_message(DEBUG, _("Show OSD \"%s\""), buffer);
 	pthread_create(&osd_thread, &osd_thread_attr, (void*) &osd_show_thread, (void *) buffer);
-	
+
 	pthread_attr_destroy(&osd_thread_attr);
-	
+
 	va_end(ap);
 }
 

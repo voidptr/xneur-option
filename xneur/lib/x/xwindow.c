@@ -29,7 +29,7 @@
 
 #include "xwindow.h"
 
-#define MWM_HINTS_DECORATIONS   (1L << 1) 
+#define MWM_HINTS_DECORATIONS   (1L << 1)
 #define PROP_MWM_HINTS_ELEMENTS 5
 
 typedef struct {
@@ -65,7 +65,7 @@ static int xwindow_create(struct _xwindow *p)
 		XCloseDisplay(display);
 		return FALSE;
 	}
-	
+
 	// Create flag window
 	XSetWindowAttributes attrs;
 	attrs.override_redirect = True;
@@ -85,9 +85,9 @@ static int xwindow_create(struct _xwindow *p)
 	mwmhints.decorations	= 0;
 
 	Atom motif_prop = XInternAtom(display, "_MOTIF_WM_HINTS", False);
-	
+
 	XChangeProperty(display, flag_window, motif_prop, motif_prop, 32, PropModeReplace, (unsigned char *) &mwmhints, PROP_MWM_HINTS_ELEMENTS);
-	
+
 	XWMHints wmhints;
 	bzero(&wmhints, sizeof(wmhints));
 	wmhints.flags = InputHint;
@@ -100,7 +100,7 @@ static int xwindow_create(struct _xwindow *p)
 	p->display 	= display;
 	p->window  	= window;
 	p->flag_window  = flag_window;
-	
+
 	log_message(LOG, _("Main window with id %d created"), window);
 
 	XSynchronize(display, TRUE);
@@ -113,7 +113,7 @@ static void xwindow_destroy(struct _xwindow *p)
 {
 	if (p->window == None)
 		return;
-	
+
 	p->window	= None;
 	p->flag_window	= None;
 }

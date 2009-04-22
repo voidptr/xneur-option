@@ -73,11 +73,11 @@ int get_keyboard_groups_count(void)
 		log_message(ERROR, _("Failed to allocate keyboard descriptor"));
 		return 0;
 	}
-	
+
 	Display *display = XOpenDisplay(NULL);
 	XkbGetNames(display, XkbGroupNamesMask, kbd_desc_ptr);
 	XCloseDisplay(display);
-	
+
 	if (kbd_desc_ptr->names == NULL)
 	{
 		log_message(ERROR, _("Failed to get keyboard group names"));
@@ -95,17 +95,17 @@ int get_keyboard_groups_count(void)
 }
 
 int print_keyboard_groups(void)
-{		
+{
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)
 	{
 		log_message(ERROR, _("Failed to allocate keyboard descriptor"));
 		return FALSE;
 	}
-	
+
 	Display *display = XOpenDisplay(NULL);
 	XkbGetNames(display, XkbGroupNamesMask, kbd_desc_ptr);
-	
+
 	if (kbd_desc_ptr->names == NULL)
 	{
 		XCloseDisplay(display);
@@ -142,7 +142,7 @@ int print_keyboard_groups(void)
 		log_message(LOG, _("   XKB Group '%s' must be for '%s' language (group %d)"), group_name, lang_name, group);
 		valid_count++;
 	}
-	
+
 	XCloseDisplay(display);
 
 	log_message(LOG, _("Total %d valid keyboard layouts detected"), valid_count);

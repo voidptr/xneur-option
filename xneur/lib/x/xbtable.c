@@ -37,9 +37,9 @@
 static struct _xbtable *ubtable;
 
 static struct _xbtable btable[MAX_HOTKEYS] =	{
-							{0, 0, 0}, 
 							{0, 0, 0},
-							{0, 0, 0}, 
+							{0, 0, 0},
+							{0, 0, 0},
 							{0, 0, 0},
 							{0, 0, 0},
 							{0, 0, 0},
@@ -53,20 +53,20 @@ static struct _xbtable btable[MAX_HOTKEYS] =	{
 							{0, 0, 0}
 						};
 static const char *normal_action_names[] =	{
-							"Change Last Word", "Change Last String", "Change Mode", 
+							"Change Last Word", "Change Last String", "Change Mode",
 							"Change Selected", "Translit Selected", "Changecase Selected",
 							"Change Clipboard", "Translit Clipboard", "Changecase Clipboard",
 							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4",
 							"Replace Abbreviation"
 						};
 extern struct _xneur_config *xconfig;
-	
+
 static void bind_action(enum _hotkey_action action)
 {
 	btable[action].modifier_mask	= 0;
 	btable[action].key_sym		= 0;
 	btable[action].key_sym_shift	= 0;
-	
+
 	if (xconfig->hotkeys[action].key == NULL)
 	{
 		log_message(DEBUG, _("   No key set for action \"%s\""), normal_action_names[action]);
@@ -81,7 +81,7 @@ static void bind_action(enum _hotkey_action action)
 		btable[action].modifier_mask = btable[action].modifier_mask + 8;	// Alt
 	if (xconfig->hotkeys[action].modifiers & 0x8)
 		btable[action].modifier_mask = btable[action].modifier_mask + 64;	// Win
-	
+
 	KeySym key_sym, key_sym_shift;
 	get_keysyms_by_string(xconfig->hotkeys[action].key, &key_sym, &key_sym_shift);
 	if (key_sym == NoSymbol)
@@ -91,7 +91,7 @@ static void bind_action(enum _hotkey_action action)
 
 	btable[action].key_sym = key_sym;
 	btable[action].key_sym_shift = key_sym_shift;
-	
+
 	if (btable[action].key_sym == 0)
 		return;
 
@@ -104,7 +104,7 @@ enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
 	mask &= ~LockMask;
 	mask &= ~Mod2Mask;
 	mask &= ~Mod3Mask;
-	
+
 	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
 	{
 		if (btable[action].key_sym != key_sym && btable[action].key_sym_shift != key_sym)
@@ -128,7 +128,7 @@ static void bind_user_action(int action)
 	ubtable[action].modifier_mask	= 0;
 	ubtable[action].key_sym		= 0;
 	ubtable[action].key_sym_shift	= 0;
-	
+
 	if (xconfig->actions->action_hotkey[action].key == NULL)
 	{
 		log_message(DEBUG, _("   No key set for action \"%s\""), normal_action_names[action]);
@@ -143,7 +143,7 @@ static void bind_user_action(int action)
 		ubtable[action].modifier_mask = ubtable[action].modifier_mask + 8;	// Alt
 	if (xconfig->actions->action_hotkey[action].modifiers & 0x8)
 		ubtable[action].modifier_mask = ubtable[action].modifier_mask + 64;	// Win
-	
+
 	KeySym key_sym, key_sym_shift;
 	get_keysyms_by_string(xconfig->actions->action_hotkey[action].key, &key_sym, &key_sym_shift);
 	if (key_sym == NoSymbol)
@@ -153,7 +153,7 @@ static void bind_user_action(int action)
 
 	ubtable[action].key_sym = key_sym;
 	ubtable[action].key_sym_shift = key_sym_shift;
-	
+
 	if (ubtable[action].key_sym == 0)
 		return;
 
@@ -180,7 +180,7 @@ int get_user_action(KeySym key_sym, int mask)
 void bind_user_actions(void)
 {
 	int total_actions = xconfig->actions->action_command->data_count;
-	
+
 	log_message(DEBUG, _("Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"));
 	ubtable = (struct _xbtable *) malloc(total_actions * sizeof(struct _xbtable));
 	for (int action = 0; action < total_actions; action++)

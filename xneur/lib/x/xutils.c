@@ -34,9 +34,9 @@
 
 static const char *grab_ungrab[2] = {"ungrab", "grab"};
 
-const KeySym mod_keys[] =	{   
+const KeySym mod_keys[] =	{
 					XK_Shift_L, XK_Shift_R, XK_Caps_Lock,
-					XK_Control_L, XK_Control_R, 
+					XK_Control_L, XK_Control_R,
 					XK_Alt_L, XK_Alt_R, XK_Meta_L,
 					XK_Num_Lock, XK_Super_L, XK_Hyper_L,
 					XK_Mode_switch, XK_ISO_Level3_Shift
@@ -91,7 +91,7 @@ static Window find_window_with_atom(Window window, Atom atom)
 		if (data != NULL)
 			return root_window;
 	}
-	
+
 	return None;
 }
 
@@ -99,7 +99,7 @@ void set_event_mask(Window window, int event_mask)
 {
 	if (window == main_window->flag_window)
 		return;
-	
+
 	XSelectInput(main_window->display, window, event_mask);
 }
 
@@ -107,7 +107,7 @@ void grab_button(Window window, int is_grab)
 {
 	if (!xconfig->grab_mouse)
 		return;
-	
+
 	int status;
 	if (is_grab)
 		status = XGrabButton(main_window->display, Button1, AnyModifier, window, TRUE, BUTTON_HANDLE_MASK, GrabModeSync, GrabModeAsync, None, None);
@@ -129,7 +129,7 @@ void grab_key(Window window, KeyCode kc, int is_grab)
 		status = XGrabKey(main_window->display, kc, AnyModifier, window, TRUE, GrabModeAsync, GrabModeAsync);
 	else
 		status = XUngrabKey(main_window->display, kc, AnyModifier, window);
-	
+
 	if (status == BadValue)
 		log_message(ERROR, _("Failed to %s keyboard with error BadValue"), grab_ungrab[is_grab]);
 	else if (status == BadWindow)
@@ -149,12 +149,12 @@ void grab_spec_keys(Window window, int is_grab)
 			KeyCode kc = XKeysymToKeycode(main_window->display, mod_keys[i]);
 			if (kc == 0)
 				continue;
-			grab_key(window, kc, FALSE);		
+			grab_key(window, kc, FALSE);
 		}
-	}	
+	}
 	else
 		status = XUngrabKeyboard(main_window->display, CurrentTime);
-	
+
 	if (status == BadValue)
 		log_message(ERROR, _("Failed to %s keyboard with error BadValue"), grab_ungrab[is_grab]);
 	else if (status == BadWindow)
@@ -168,7 +168,7 @@ void grab_keyboard(Window window, int is_grab)
 		status = XGrabKeyboard(main_window->display, window, TRUE, GrabModeAsync, GrabModeAsync, CurrentTime);
 	else
 		status = XUngrabKeyboard(main_window->display, CurrentTime);
-	
+
 	if (status == BadValue)
 		log_message(ERROR, _("Failed to %s keyboard with error BadValue"), grab_ungrab[is_grab]);
 	else if (status == BadWindow)

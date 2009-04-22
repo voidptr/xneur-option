@@ -71,7 +71,7 @@ void do_clipboard_notify(void)
 {
 	Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
 	Atom selection = XInternAtom(main_window->display, "CLIPBOARD", FALSE);
-	
+
 	int status = XConvertSelection(main_window->display, selection, target, None, main_window->window, CurrentTime);
 	if (status == BadAtom)
 		log_message(ERROR, _("Failed to convert selection with error BadAtom"));
