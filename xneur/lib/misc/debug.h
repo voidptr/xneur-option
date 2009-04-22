@@ -31,10 +31,10 @@
 #undef strdup
 #undef realloc
 
-#define malloc(len)		xndebug_malloc(len, __FILE__, __LINE__)
-#define free(mem)		xndebug_free(mem, __FILE__, __LINE__)
-#define strdup(str)		xndebug_strdup(str, __FILE__, __LINE__)
-#define realloc(mem, len)	xndebug_realloc(mem, len, __FILE__, __LINE__)
+#define malloc(len)		xndebug_malloc((len), __FILE__, __LINE__)
+#define free(mem)		xndebug_free((mem), __FILE__, __LINE__)
+#define strdup(str)		xndebug_strdup((str), __FILE__, __LINE__)
+#define realloc(mem, len)	xndebug_realloc((mem), (len), __FILE__, __LINE__)
 
 void  xndebug_init(void);
 void* xndebug_malloc(int len, char *file, int line);

@@ -1077,9 +1077,10 @@ struct _xneur_config* xneur_config_init(void)
 	p->window_layouts		= list_char_init();
 	p->abbreviations		= list_char_init();
 
-	p->actions = (struct _xneur_action *) malloc(sizeof(struct _xneur_action));
-	p->actions->action_hotkey = (struct _xneur_hotkey *) malloc(sizeof(struct _xneur_hotkey));
+	p->actions			= (struct _xneur_action *) malloc(sizeof(struct _xneur_action));
+	p->actions->action_hotkey	= (struct _xneur_hotkey *) malloc(sizeof(struct _xneur_hotkey));
 	bzero(p->actions->action_hotkey, sizeof(struct _xneur_hotkey));
+
 	p->actions->action_command	= list_char_init();
 
 	// Function mapping

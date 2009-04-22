@@ -32,7 +32,7 @@
 
 static struct _list_char *allocates = NULL;
 
-static const int pointer_len = sizeof(int) * 2 + 3; // + 0x + NULLSYM
+static const int pointer_len = sizeof(void *) * 2 + 3; // + 0x + NULLSYM
 
 void xndebug_init(void)
 {

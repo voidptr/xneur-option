@@ -51,7 +51,7 @@ static char* get_file_content(const char *file_name)
 	unsigned int file_len = sb.st_size;
 
 	char *content = (char *) malloc((file_len + 2) * sizeof(char)); // + 1 '\0'
-	if (fread(content, file_len, 1, stream) != file_len)
+	if (fread(content, 1, file_len, stream) != file_len)
 	{
 		free(content);
 		fclose(stream);
