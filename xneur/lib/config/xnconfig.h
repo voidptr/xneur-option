@@ -35,7 +35,7 @@
 #define MAX_FLAGS			4
 #define MAX_SOUNDS			21
 #define MAX_OSDS			21
-#define MAX_HOTKEYS			11
+#define MAX_HOTKEYS			14
 
 enum _flag_action
 {
@@ -110,6 +110,9 @@ enum _hotkey_action
 	ACTION_ENABLE_LAYOUT_2,
 	ACTION_ENABLE_LAYOUT_3,
 	ACTION_REPLACE_ABBREVIATION,
+	/*ACTION_CHANGE_CLIPBOARD,
+	ACTION_TRANSLIT_CLIPBOARD,
+	ACTION_CHANGECASE_CLIPBOARD,*/
 	ACTION_NONE,
 };
 
@@ -206,6 +209,7 @@ struct _xneur_config
 	int   flush_buffer_when_press_enter;  // Flush internal buffer when pressed Enter
 	int   dont_process_when_press_enter;   // Don't correct word when pressed Enter
 	int   check_lang_on_process;		// Check lang on input process
+	int   disable_capslock;			// Disable CapsLock use
 
 	int   show_osd;					// Show OSD 
 	char  *osd_font;

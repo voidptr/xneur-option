@@ -45,7 +45,7 @@
 
 #define MAX_LANGUAGES			4
 #define XNEUR_NEEDED_MAJOR_VERSION	9
-#define XNEUR_BUILD_MINOR_VERSION	4
+#define XNEUR_BUILD_MINOR_VERSION	5
 	
 struct _xneur_config *xconfig				= NULL;
 	
@@ -672,6 +672,10 @@ void xneur_preference(void)
 	// Check language on input process 
 	widget = glade_xml_get_widget (gxml, "checkbutton18");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->check_lang_on_process);
+
+	// Disable CapsLock use 
+	widget = glade_xml_get_widget (gxml, "checkbutton19");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->disable_capslock);
 	
 	// Abbreviations List set
 	treeview = glade_xml_get_widget (gxml, "treeview6");
@@ -1484,6 +1488,9 @@ void xneur_save_preference(GladeXML *gxml)
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton18");
 	xconfig->check_lang_on_process = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton19");
+	xconfig->disable_capslock = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry2");
 	if (xconfig->osd_font != NULL)

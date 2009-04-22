@@ -454,15 +454,12 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	free(selected_text);
 
 	if (p->selected_mode == ACTION_CHANGECASE_SELECTED)
-	{
 		p->string->change_case(p->string);
-		p->change_lang(p, get_cur_lang());
-	}
 	else if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
 		p->change_lang(p, main_window->xkeymap->latin_group);
-	else
-		p->change_lang(p, get_next_lang(get_cur_lang()));
-
+	else	
+		p->string->rotate_layout(p->string);
+	
 	if (p->selected_mode == ACTION_CHANGE_SELECTED)
 	{
 		play_file(SOUND_CHANGE_SELECTED);
@@ -545,6 +542,21 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 	switch (action)
 	{
+		case KLB_NO_ACTION:
+		{
+			if (get_key_state(XK_Caps_Lock) && xconfig->disable_capslock)
+			{
+				int xkb_opcode, xkb_event, xkb_error;
+				int xkb_lmaj = XkbMajorVersion;
+				int xkb_lmin = XkbMinorVersion;
+				if (XkbLibraryVersion(&xkb_lmaj, &xkb_lmin) && XkbQueryExtension(main_window->display, &xkb_opcode, &xkb_event, &xkb_error,
+					       &xkb_lmaj, &xkb_lmin))
+				{
+					XkbLockModifiers (main_window->display, XkbUseCoreKbd, LockMask, 0);
+				}
+			}
+			return;
+		}
 		case KLB_CLEAR:
 		{
 			p->string->save_and_clear(p->string, p->focus->owner_window);

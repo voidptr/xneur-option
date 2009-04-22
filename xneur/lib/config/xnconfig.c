@@ -35,7 +35,7 @@
 #include "xnconfig.h"
 
 #define LIBRARY_VERSION_MAJOR		9
-#define LIBRARY_VERSION_MINOR		4
+#define LIBRARY_VERSION_MINOR		5
 #define OPTIONS_DELIMETER		" "
 
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
@@ -45,7 +45,7 @@ static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
 						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "Reserved1",
-						"Reserved2", "CheckOnProcess", "SetAutoApp", "SetManualApp", "GrabMouse",
+						"DisableCapsLock", "CheckOnProcess", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"SaveLog", "ReplaceAbbreviation",
@@ -213,8 +213,16 @@ static void parse_line(struct _xneur_config *p, char *line)
 		{
 			break;
 		}
-		case 6: // Reserved2
+		case 6: // Disable CapsLock use
 		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for disable CapsLock using mode specified"));
+				break;
+			}
+
+			p->disable_capslock = index;
 			break;
 		}
 		case 7: // Check lang on input process
@@ -924,6 +932,10 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#CheckOnProcess Yes\n");
 	fprintf(stream, "CheckOnProcess %s\n", p->get_bool_name(p->check_lang_on_process));
 
+	fprintf(stream, "\n# This option disable or enable CapsLock use\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#DisableCapsLock Yes\n");
+	fprintf(stream, "DisableCapsLock %s\n", p->get_bool_name(p->disable_capslock));
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# That's all\n");

@@ -3,6 +3,8 @@ noinst_LTLIBRARIES = libxnx.la
 libxnx_la_SOURCES =		\
 	xbtable.c		\
 	xbtable.h		\
+	xclipboard.c		\
+	xclipboard.h		\
 	xdefines.h		\
 	xevent.c		\
 	xevent.h		\

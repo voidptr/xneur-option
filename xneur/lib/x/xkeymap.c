@@ -242,7 +242,7 @@ static char xkeymap_get_ascii(struct _xkeymap *p, const char *sym, KeyCode *kc, 
 						free(prev_symbols);
 						free(symbol);
 						*kc		= event.xkey.keycode;
-						*modifier	= get_keycode_mod(lang) | event.xkey.state;
+						*modifier	= get_keycode_mod(xconfig->get_lang_group(xconfig, lang)) | event.xkey.state;
 						return sym;
 					}
 				}

@@ -47,6 +47,7 @@ struct _xstring
 	void (*set_uncaps_mask) (struct _xstring *p);
 	void (*set_content) (struct _xstring *p, const char *new_content);
 	void (*change_case) (struct _xstring *p);
+	void (*rotate_layout) (struct _xstring *p);
 	void (*add_symbol) (struct _xstring *p, char sym, KeyCode keycode, int modifier);
 	void (*del_symbol) (struct _xstring *p);
 	char*(*get_utf_string) (struct _xstring *p);

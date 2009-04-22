@@ -191,27 +191,21 @@ void list_char_sort(struct _list_char *list)
 	if (list->data_count <= 1)
 		return;
 
-	// Bubble sort??? Change to quicksort!
-	for (int i = 1; i < list->data_count; i++)
+	char *temp;
+	int i, j;
+
+	for (i = 1; i < list->data_count; i++) 
 	{
-		struct _list_char_data *temp = &list->data[i];
-
-		struct _list_char_data *data1, data2;
-		for (int j = i - 1; j >= 0; j--)
+		temp = list->data[i].string;
+		for (j = i - 1; j >= 0; j--) 
 		{
-			data1 = &list->data[j];
-			data2 = &list->data[j + 1];
-
-			if (strcmp(data1->string, temp->string) < 0)
+			if (strcmp(list->data[j].string, temp) < 0) 
+			{
 				break;
-
-			*data2 = *data1;
+			}
+			list->data[j+1].string = list->data[j].string; 
 		}
-
-		if (data2 == temp)
-			continue;
-
-		*data2 = *temp;
+		list->data[j+1].string = temp;
 	}
 }
 

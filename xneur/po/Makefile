@@ -11,7 +11,7 @@
 # Origin: gettext-0.16
 
 PACKAGE = xneur
-VERSION = 0.9.4
+VERSION = 0.9.5
 PACKAGE_BUGREPORT = 
 
 SHELL = /bin/sh
