@@ -33,6 +33,7 @@
 static void swap_data(struct _list_char *list, int first, int second)
 {
 	struct _list_char_data *temp = &list->data[first];
+
 	memcpy(&list->data[first], &list->data[second], sizeof(struct _list_char_data));
 	memcpy(&list->data[second], temp, sizeof(struct _list_char_data));
 }
@@ -45,14 +46,7 @@ static void rem_by_id(struct _list_char *list, int id)
 		memmove(list->data + id, list->data + id + 1, (list->data_count - id - 1) * sizeof(struct _list_char_data));
 
 	list->data_count--;
-	if (list->data_count != 0)
-	{
-		list->data = (struct _list_char_data *) realloc(list->data, list->data_count * sizeof(struct _list_char_data));
-		return;
-	}
-
-	free(list->data);
-	list->data = NULL;
+	list->data = (struct _list_char_data *) realloc(list->data, list->data_count * sizeof(struct _list_char_data));
 }
 
 static int get_add_id(struct _list_char *list, const char *string)
@@ -87,7 +81,6 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 	{
 		int first = 0;
 		int last = list->data_count - 1;
-		list->sort(list);
 
 		while (first <= last)
 		{
@@ -120,16 +113,10 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 	return -1;
 }
 
-struct _list_char_data* list_char_add_last(struct _list_char *list, const char *string)
+static struct _list_char_data* add_last(struct _list_char *list, const char *string)
 {
 	list->data_count++;
 	list->data = (struct _list_char_data *) realloc(list->data, list->data_count * sizeof(struct _list_char_data));
-
-	if (list->data == NULL)
-	{
-		list->data_count = 0;
-		return NULL;
-	}
 
 	struct _list_char_data *data = &list->data[list->data_count - 1];
 
@@ -143,8 +130,6 @@ struct _list_char_data* list_char_add(struct _list_char *list, const char *strin
 	int id = get_add_id(list, string);
 
 	list->data = (struct _list_char_data *) realloc(list->data, (list->data_count + 1) * sizeof(struct _list_char_data));
-	if (list->data == NULL)
-		return NULL;
 
 	if (id != list->data_count)
 		memmove(list->data + id + 1, list->data + id, (list->data_count - id) * sizeof(struct _list_char_data));
@@ -187,7 +172,9 @@ struct _list_char* list_char_clone(struct _list_char *list)
 	struct _list_char *list_copy = list_char_init();
 
 	for (int i = 0; i < list->data_count; i++)
-		list_copy->add(list_copy, list->data[i].string);
+		add_last(list_copy, list->data[i].string);
+
+	list_copy->sort(list_copy);
 
 	return list_copy;
 }
@@ -197,8 +184,7 @@ void list_char_sort(struct _list_char *list)
 	if (list->data_count <= 1)
 		return;
 
-	struct _list_char_data *data1, *data2;
-
+	char *data1, *data2;
 	int i = 2;
 
 	do
@@ -207,10 +193,11 @@ void list_char_sort(struct _list_char *list)
 		while (t != 1)
 		{
 			int k = t / 2;
-			data1 = &list->data[k - 1];
-			data2 = &list->data[t - 1];
 
-			if (strcmp(data1->string, data2->string) >= 0)
+			data1 = list->data[k - 1].string;
+			data2 = list->data[t - 1].string;
+
+			if (strcmp(data1, data2) >= 0)
 				break;
 
 			swap_data(list, k - 1, t - 1);
@@ -235,14 +222,15 @@ void list_char_sort(struct _list_char *list)
 
 			if (k < i)
 			{
-				data1 = &list->data[k];
-				data2 = &list->data[k - 1];
-				if (strcmp(data1->string, data2->string) > 0)
+				data1 = list->data[k].string;
+				data2 = list->data[k - 1].string;
+
+				if (strcmp(data1, data2) > 0)
 					k++;
 			}
 
-			data1 = &list->data[t - 1];
-			if (strcmp(data1->string, data2->string) >= 0)
+			data1 = list->data[t - 1].string;
+			if (strcmp(data1, data2) >= 0)
 				break;
 
 			swap_data(list, k - 1, t - 1);
@@ -264,7 +252,7 @@ void list_char_load(struct _list_char *list, char *content)
 		if (line[0] == '\0')
 			continue;
 
-		list->add_last(list, line);
+		add_last(list, line);
 	}
 }
 
@@ -293,7 +281,6 @@ struct _list_char* list_char_init(void)
 
 	list->uninit		= list_char_uninit;
 	list->add		= list_char_add;
-	list->add_last		= list_char_add_last;
 	list->rem		= list_char_rem;
 	list->find		= list_char_find;
 	list->load		= list_char_load;

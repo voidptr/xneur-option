@@ -26,6 +26,11 @@
 #ifndef _DEBUG_H_
 #define _DEBUG_H_
 
+#undef malloc
+#undef free
+#undef strdup
+#undef realloc
+
 #define malloc(len)		xndebug_malloc(len, __FILE__, __LINE__)
 #define free(mem)		xndebug_free(mem, __FILE__, __LINE__)
 #define strdup(str)		xndebug_strdup(str, __FILE__, __LINE__)

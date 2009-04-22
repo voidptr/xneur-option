@@ -191,12 +191,14 @@ struct _xneur_config
 	struct _list_char *manual_apps;
 	struct _list_char *layout_remember_apps;
 	struct _list_char *window_layouts;
+	struct _list_char *abbreviations;
 
 	struct _xneur_data *xneur_data;
 	struct _xneur_language *languages;		// Array of languages used in program
 	struct _xneur_hotkey *hotkeys;			// Array of hotkeys used in program
 	struct _xneur_file *sounds;			// Array of sounds for actions
 	struct _xneur_file *osds;			// Array of OSDs for actions
+	struct _xneur_action *actions;			// Array of actions
 
 	int   manual_mode;				// Enable manual processing mode
 	int   log_level;				// Maximum level of log messages to print
@@ -222,10 +224,6 @@ struct _xneur_config
 	char  *osd_font;
 
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
-
-	struct _list_char *abbreviations;		// Array of words to replace
-
-	struct _xneur_action *actions;
 
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);

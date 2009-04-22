@@ -90,7 +90,7 @@ char* xndebug_strdup(const char *str, char *file, int line)
 	char *pointer = (char *) malloc(pointer_len * sizeof(char));
 	sprintf(pointer, "%p", mem);
 
-	log_message(TRACE, _("Duping memory pointer %p (at %s:%d)"), str, file, line);
+	log_message(TRACE, _("Duping memory pointer %p (at %s:%d)"), mem, file, line);
 
 	struct _list_char_data *data = allocates->add(allocates, pointer);
 	data->debug_value = line;

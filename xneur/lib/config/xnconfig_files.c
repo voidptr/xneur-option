@@ -54,7 +54,7 @@ static char* get_file_content(const char *file_name)
 	unsigned int file_len = sb.st_size;
 
 	char *content = (char *) malloc((file_len + 2) * sizeof(char)); // + 1 '\0'
-	if (fread(content, 1, file_len, stream) != file_len)
+	if (fread(content, file_len, 1, stream) != file_len)
 	{
 		free(content);
 		fclose(stream);
@@ -69,9 +69,6 @@ static char* get_file_content(const char *file_name)
 
 char* get_file_path_name(const char *dir_name, const char *file_name)
 {
-	if (file_name == NULL)
-		return NULL;
-
 #define SEARCH_IN(DIRECTORY) \
 	if (dir_name == NULL)\
 		snprintf(path_file, max_path_len, "%s/%s", DIRECTORY, file_name);\
@@ -87,8 +84,10 @@ char* get_file_path_name(const char *dir_name, const char *file_name)
 	int max_path_len = get_max_path_len();
 
 	char *path_file = (char *) malloc((max_path_len + 1) * sizeof(char));
+
 	// Search by only full path
 	strcpy(path_file, file_name);
+
 	FILE *stream = fopen(path_file, "r");
 	if (stream != NULL)
 	{

@@ -714,13 +714,13 @@ static void xneur_config_clear(struct _xneur_config *p)
 {
 	free_structures(p);
 
-	p->window_layouts	= list_char_init();
-	p->manual_apps		= list_char_init();
-	p->auto_apps		= list_char_init();
-	p->layout_remember_apps	= list_char_init();
-	p->excluded_apps	= list_char_init();
-	p->abbreviations	= list_char_init();
-	p->actions->action_command = list_char_init();
+	p->window_layouts		= list_char_init();
+	p->manual_apps			= list_char_init();
+	p->auto_apps			= list_char_init();
+	p->layout_remember_apps		= list_char_init();
+	p->excluded_apps		= list_char_init();
+	p->abbreviations		= list_char_init();
+	p->actions->action_command	= list_char_init();
 }
 
 static int xneur_config_save(struct _xneur_config *p)
