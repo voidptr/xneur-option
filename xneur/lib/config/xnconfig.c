@@ -447,7 +447,6 @@ static void parse_line(struct _xneur_config *p, char *line)
 					continue;
 
 				int index = get_option_index(modifier_names, param);
-
 				if (index == -1)
 				{
 					if (param != NULL)
