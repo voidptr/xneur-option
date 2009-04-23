@@ -35,12 +35,14 @@
 #include "xnconfig.h"
 #include "xnconfig_files.h"
 
+#include "bind_table.h"
+#include "osd.h"
+
 #include "xdefines.h"
 #include "xstring.h"
 #include "xfocus.h"
 #include "xswitchlang.h"
 #include "xselection.h"
-#include "xbtable.h"
 #include "xevent.h"
 #include "xwindow.h"
 #include "xkeymap.h"
@@ -50,11 +52,10 @@
 #include "list_char.h"
 #include "log.h"
 #include "text.h"
-#include "xdetection.h"
+#include "detection.h"
 #include "conversion.h"
 #include "sound.h"
 
-#include "xOSD.h"
 #include "xprogram.h"
 
 #define KLB_NO_ACTION           0	// Modifier, function etc
