@@ -113,7 +113,7 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 	return -1;
 }
 
-static struct _list_char_data* add_last(struct _list_char *list, const char *string)
+struct _list_char_data* list_char_add_last(struct _list_char *list, const char *string)
 {
 	list->data_count++;
 	list->data = (struct _list_char_data *) realloc(list->data, list->data_count * sizeof(struct _list_char_data));
@@ -172,7 +172,7 @@ struct _list_char* list_char_clone(struct _list_char *list)
 	struct _list_char *list_copy = list_char_init();
 
 	for (int i = 0; i < list->data_count; i++)
-		add_last(list_copy, list->data[i].string);
+		list_copy->add_last(list_copy, list->data[i].string);
 
 	list_copy->sort(list_copy);
 
@@ -252,7 +252,7 @@ void list_char_load(struct _list_char *list, char *content)
 		if (line[0] == '\0')
 			continue;
 
-		add_last(list, line);
+		list->add_last(list, line);
 	}
 }
 
@@ -279,8 +279,9 @@ struct _list_char* list_char_init(void)
 	struct _list_char *list = (struct _list_char *) malloc(sizeof(struct _list_char));
 	bzero(list, sizeof(struct _list_char));
 
-	list->uninit		= list_char_uninit;
+	list->uninit	= list_char_uninit;
 	list->add		= list_char_add;
+	list->add_last	= list_char_add_last;
 	list->rem		= list_char_rem;
 	list->find		= list_char_find;
 	list->load		= list_char_load;

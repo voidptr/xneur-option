@@ -456,7 +456,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 					if (param != NULL)
 						p->actions->action_hotkey[action].key = strdup(param);
 					if (line != NULL)
-						p->actions->action_command->add(p->actions->action_command, line);
+						p->actions->action_command->add_last(p->actions->action_command, line);
 					break;
 				}
 

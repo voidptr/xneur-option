@@ -42,6 +42,7 @@ struct _list_char
 
 	void (*uninit) (struct _list_char *list);
 	struct _list_char_data* (*add) (struct _list_char *list, const char *string);
+	struct _list_char_data* (*add_last) (struct _list_char *list, const char *string);
 	struct _list_char_data* (*find) (struct _list_char *list, const char *string, int mode);
 	struct _list_char* (*clone) (struct _list_char *list);
 	void (*load)  (struct _list_char *list, char *content);
