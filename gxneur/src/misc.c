@@ -57,8 +57,8 @@ static GtkListStore *store_draw_flag_app			= NULL;
 static GtkListStore *store_abbreviation			= NULL;
 static GtkListStore *store_sound			= NULL;
 static GtkListStore *store_osd			= NULL;
-static GtkListStore *store_pixmap			= NULL;
 static GtkListStore *store_action			= NULL;
+static GtkListStore *store_hotkey			= NULL;
 
 static GtkTreeView *tmp_treeview	= NULL;
 
@@ -113,6 +113,15 @@ static const char *sound_names[]			=   {
 	                                    "Expand abbreviations",
 										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Execute user action"
 										};
+
+static const char *hotkey_names[]			=   {
+										"Correct/Undo correction", "Correct last line", "Switch between processing modes", 
+										"Correct selected text", "Transliterate selected text", "Change case of selected text", 
+	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text",
+										"Switch to Layout 1", "Switch to Layout 2", "Switch to Layout 3", "Switch to Layout 4",
+		                                "Show OSD"
+                                        };
+
 static const int total_sound_names = sizeof(sound_names) / sizeof(sound_names[0]);
 
 static const char *pixmap_names[]	=   {
@@ -128,6 +137,8 @@ static const char *language_fix_boxes[MAX_LANGUAGES]	= {"checkbutton14", "checkb
 static const int total_modifiers			= sizeof(modifier_names) / sizeof(modifier_names[0]); 
 static const int total_all_modifiers			= sizeof(all_modifiers) / sizeof(all_modifiers[0]);
 static const int total_languages			= sizeof(language_names) / sizeof(language_names[0]);
+
+static int hotkey_action = 0;
 
 static void error_msg(const char *msg, ...)
 {
@@ -202,23 +213,6 @@ static void split_bind(char *text, int action)
 	}
 
 	g_strfreev(key_stat);
-}
-
-static void fill_binds(int action, GladeXML *gxml, const char *label, gboolean fill_combobox)
-{
-	GtkWidget *widget_bind = glade_xml_get_widget (gxml, label);
-	if (!fill_combobox)
-	{
-		split_bind((char *) gtk_entry_get_text(GTK_ENTRY(widget_bind)), action);
-		return;
-	}
-
-	if (xconfig->hotkeys[action].key == NULL)
-		return;
-
-	char *binds = concat_bind(action);
-	gtk_entry_set_text(GTK_ENTRY(widget_bind), binds);
-	free(binds);
 }
 
 static void add_item(GtkListStore *store)
@@ -533,89 +527,6 @@ void xneur_preference(void)
 
 	widget = glade_xml_get_widget (gxml, "button28");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_layout_app), G_OBJECT(treeview));
-
-	// Keyboard Bind set
-	fill_binds(0, gxml, "entry11", TRUE);
-	fill_binds(1, gxml, "entry12", TRUE);
-	fill_binds(2, gxml, "entry13", TRUE);
-	fill_binds(3, gxml, "entry14", TRUE);
-	fill_binds(4, gxml, "entry15", TRUE);
-	fill_binds(5, gxml, "entry16", TRUE);
-	fill_binds(6, gxml, "entry17", TRUE);
-	fill_binds(7, gxml, "entry18", TRUE);
-	fill_binds(8, gxml, "entry19", TRUE);
-	fill_binds(9, gxml, "entry20", TRUE);
-	fill_binds(10, gxml, "entry1", TRUE);
-	
-	// Set Callbacks for hotkeys entry
-	widget= glade_xml_get_widget (gxml, "entry11");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry11");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	widget= glade_xml_get_widget (gxml, "entry12");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry12");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	widget= glade_xml_get_widget (gxml, "entry13");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry13");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	widget= glade_xml_get_widget (gxml, "entry14");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry14");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	widget= glade_xml_get_widget (gxml, "entry15");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry15");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	widget= glade_xml_get_widget (gxml, "entry16");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry16");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	widget= glade_xml_get_widget (gxml, "entry17");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry17");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	widget= glade_xml_get_widget (gxml, "entry18");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry18");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	widget= glade_xml_get_widget (gxml, "entry19");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry19");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	widget= glade_xml_get_widget (gxml, "entry20");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry20");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	widget= glade_xml_get_widget (gxml, "entry1");
-	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-	widget = glade_xml_get_widget (gxml, "entry1");
-	g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
-	
-	// Set callbacks for clear buttons
-	widget = glade_xml_get_widget (gxml, "button11");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button11_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button12");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button12_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button13");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button13_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button14");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button14_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button15");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button15_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button16");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button16_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button17");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button17_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button18");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button18_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button29");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button29_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button30");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button30_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button31");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button31_clicked), gxml);		
 	
 	// Languages
 	for (int lang = 0; lang < xconfig->total_languages && lang < MAX_LANGUAGES; lang++)
@@ -678,6 +589,46 @@ void xneur_preference(void)
 	// Disable CapsLock use 
 	widget = glade_xml_get_widget (gxml, "checkbutton19");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->disable_capslock);
+
+	// Hotkeys List set
+	treeview = glade_xml_get_widget (gxml, "treeview5");
+
+	store_hotkey = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_hotkey));
+	gtk_widget_show(treeview);
+
+	hotkey_names[0] = hotkey_names[0];
+	for (int i = 0; i < MAX_HOTKEYS; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_hotkey), &iter);
+
+		char *binds = "";
+		if (xconfig->hotkeys[i].key != NULL)
+			binds = concat_bind(i);
+
+		gtk_list_store_set(GTK_LIST_STORE(store_hotkey), &iter, 
+												0, _(hotkey_names[i]),
+												1, binds, 
+												-1);
+	}
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Action"), cell, "text", 0, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Key bind"), cell, "text", 1, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	// Button Edit Action
+	widget = glade_xml_get_widget (gxml, "button10");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_action), G_OBJECT(treeview));
+
+	// Button Clear Action
+	widget = glade_xml_get_widget (gxml, "button1");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_clear_action), G_OBJECT(treeview));
 	
 	// Abbreviations List set
 	treeview = glade_xml_get_widget (gxml, "treeview6");
@@ -831,19 +782,19 @@ void xneur_preference(void)
 		strcat(text, xconfig->actions[action].hotkey.key);
 		
 		gtk_list_store_set(GTK_LIST_STORE(store_action), &iter, 
-												0, text,
-												1, xconfig->actions[action].command, 
+												0, xconfig->actions[action].command,
+												1, text, 
 												-1);
 		free(text);
 	}
 
 	cell = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("Key bind"), cell, "text", 0, NULL);
+	column = gtk_tree_view_column_new_with_attributes(_("User action"), cell, "text", 0, NULL);
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	cell = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("User action"), cell, "text", 1, NULL);
+	column = gtk_tree_view_column_new_with_attributes(_("Key bind"), cell, "text", 1, NULL);
 	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
 	g_signal_connect (G_OBJECT (cell), "edited",
 						G_CALLBACK (column_1_edited),
@@ -852,15 +803,15 @@ void xneur_preference(void)
 
 	// Button Add User Action
 	widget = glade_xml_get_widget (gxml, "button36");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_action), G_OBJECT(treeview));
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_user_action), G_OBJECT(treeview));
 	
 	// Button Remove User Action
 	widget = glade_xml_get_widget (gxml, "button37");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_action), G_OBJECT(treeview));
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_user_action), G_OBJECT(treeview));
 
 	// Button Edit User Action
 	widget = glade_xml_get_widget (gxml, "button38");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_action), G_OBJECT(treeview));
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_user_action), G_OBJECT(treeview));
 			
 	// Show OSD
 	widget = glade_xml_get_widget (gxml, "checkbutton13");
@@ -986,12 +937,12 @@ void xneur_add_abbreviation(void)
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_insert_abbreviation), gxml);
 }
 
-static void xneur_insert_action(GladeXML *gxml)
+static void xneur_insert_user_action(GladeXML *gxml)
 {
 	GtkWidget *entry1 = glade_xml_get_widget (gxml, "entry1");
 	GtkWidget *entry2 = glade_xml_get_widget (gxml, "entry2");
-	const gchar *key_bind = gtk_entry_get_text(GTK_ENTRY(entry1));
-	const gchar *action = gtk_entry_get_text(GTK_ENTRY(entry2));
+	const gchar *action = gtk_entry_get_text(GTK_ENTRY(entry1));
+	const gchar *key_bind = gtk_entry_get_text(GTK_ENTRY(entry2));
 	if (strlen(key_bind) == 0) 
 	{
 		error_msg(_("Key bind field is empty!"));
@@ -1014,7 +965,7 @@ static void xneur_insert_action(GladeXML *gxml)
 	gtk_widget_destroy(window);
 }
 
-void xneur_add_action(void)
+void xneur_add_user_action(void)
 {
 	GladeXML *gxml = glade_xml_new (GLADE_FILE_ACTION_ADD, NULL, NULL);
 	
@@ -1028,17 +979,17 @@ void xneur_add_action(void)
 		gdk_pixbuf_unref (window_icon_pixbuf);
 	}
 	
-	GtkWidget *widget= glade_xml_get_widget (gxml, "entry1");
+	GtkWidget *widget= glade_xml_get_widget (gxml, "entry2");
 	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
 	
 	gtk_widget_show(window);
 	
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button1");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_insert_action), gxml);
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_insert_user_action), gxml);
 }
 
-static void xneur_replace_action(GladeXML *gxml)
+static void xneur_replace_user_action(GladeXML *gxml)
 {
 	GtkTreeModel *model = GTK_TREE_MODEL(store_action);
 	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
@@ -1060,7 +1011,7 @@ static void xneur_replace_action(GladeXML *gxml)
 	gtk_widget_destroy(window);
 }
 
-void xneur_edit_action(GtkWidget *treeview)
+void xneur_edit_user_action(GtkWidget *treeview)
 {
 	tmp_treeview = GTK_TREE_VIEW(treeview);
 	GtkTreeModel *model = GTK_TREE_MODEL(store_action);
@@ -1085,14 +1036,98 @@ void xneur_edit_action(GtkWidget *treeview)
 	
 		char *key_bind;
 		char *user_action;
-		gtk_tree_model_get(GTK_TREE_MODEL(store_action), &iter, 0, &key_bind, 1, &user_action, -1);
-		
+		gtk_tree_model_get(GTK_TREE_MODEL(store_action), &iter, 0, &user_action, 1, &key_bind, -1);
+
 		GtkWidget *widget= glade_xml_get_widget (gxml, "entry1");
-		g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
-		gtk_entry_set_text(GTK_ENTRY(widget), key_bind);
+		gtk_entry_set_text(GTK_ENTRY(widget), user_action);
 		
 		widget= glade_xml_get_widget (gxml, "entry2");
-		gtk_entry_set_text(GTK_ENTRY(widget), user_action);
+		g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+		g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+		gtk_entry_set_text(GTK_ENTRY(widget), key_bind);
+		
+		gtk_widget_show(window);
+		
+		// Button OK
+		widget = glade_xml_get_widget (gxml, "button1");
+		g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_replace_user_action), gxml);
+	}
+}
+
+static void xneur_replace_action(GladeXML *gxml)
+{
+	GtkTreeModel *model = GTK_TREE_MODEL(store_hotkey);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		GtkWidget *widget1= glade_xml_get_widget (gxml, "entry1");
+		GtkWidget *widget2= glade_xml_get_widget (gxml, "entry2");
+		gtk_list_store_set(GTK_LIST_STORE(store_hotkey), &iter, 
+											0, gtk_entry_get_text(GTK_ENTRY(widget1)),
+											1, gtk_entry_get_text(GTK_ENTRY(widget2)), 
+										   -1);
+	}
+	
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+	gtk_widget_destroy(window);
+}
+
+void xneur_clear_action(GtkWidget *treeview)
+{
+	tmp_treeview = GTK_TREE_VIEW(treeview);
+	GtkTreeModel *model = GTK_TREE_MODEL(store_hotkey);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		gtk_list_store_set(GTK_LIST_STORE(store_hotkey), &iter, 
+											1, "",
+											-1);
+	}
+}
+
+void xneur_edit_action(GtkWidget *treeview)
+{
+	tmp_treeview = GTK_TREE_VIEW(treeview);
+	GtkTreeModel *model = GTK_TREE_MODEL(store_hotkey);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		GladeXML *gxml = glade_xml_new (GLADE_FILE_ACTION_ADD, NULL, NULL);
+	
+		glade_xml_signal_autoconnect (gxml);
+		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+		
+		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+		if (window_icon_pixbuf)
+		{
+			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+			gdk_pixbuf_unref (window_icon_pixbuf);
+		}
+	
+		char *key_bind;
+		char *action;
+		gtk_tree_model_get(GTK_TREE_MODEL(store_hotkey), &iter, 0, &action, 1, &key_bind, -1);
+
+		GtkWidget *widget= glade_xml_get_widget (gxml, "entry1");
+		gtk_editable_set_editable(GTK_EDITABLE(widget), FALSE);
+		gtk_entry_set_text(GTK_ENTRY(widget), action);
+		
+		widget= glade_xml_get_widget (gxml, "entry2");
+		g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
+		g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
+		gtk_entry_set_text(GTK_ENTRY(widget), key_bind);
 		
 		gtk_widget_show(window);
 		
@@ -1158,61 +1193,6 @@ void xneur_edit_sound(GtkWidget *treeview)
 	}
 }
 
-static void xneur_replace_pixmap(GladeXML *gxml)
-{
-	GtkTreeModel *model = GTK_TREE_MODEL(store_pixmap);
-	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
-
-	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
-
-	GtkTreeIter iter;
-	if (gtk_tree_selection_get_selected(select, &model, &iter))
-	{
-		GtkWidget *filechooser = glade_xml_get_widget (gxml, "filechooserdialog1");
-	
-		gtk_list_store_set(GTK_LIST_STORE(store_pixmap), &iter, 
-											1, gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser)), 
-										   -1);
-	}
-	
-	GtkWidget *window = glade_xml_get_widget (gxml, "filechooserdialog1");
-	gtk_widget_destroy(window);
-}
-
-void xneur_edit_pixmap(GtkWidget *treeview)
-{
-	tmp_treeview = GTK_TREE_VIEW(treeview);
-	GtkTreeModel *model = GTK_TREE_MODEL(store_pixmap);
-	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-
-	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
-
-	GtkTreeIter iter;
-	if (gtk_tree_selection_get_selected(select, &model, &iter))
-	{
-		GladeXML *gxml = glade_xml_new (GLADE_FILE_CHOOSE, NULL, NULL);
-	
-		glade_xml_signal_autoconnect (gxml);
-		GtkWidget *window = glade_xml_get_widget (gxml, "filechooserdialog1");
-		
-		char *file;
-		gtk_tree_model_get(GTK_TREE_MODEL(store_pixmap), &iter, 1, &file, -1);
-		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(window), file);
-		
-		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-		if (window_icon_pixbuf)
-		{
-			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-			gdk_pixbuf_unref (window_icon_pixbuf);
-		}
-	
-		gtk_widget_show(window);
-		
-		// Button OK
-		GtkWidget *widget = glade_xml_get_widget (gxml, "button5");
-		g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_replace_pixmap), gxml);
-	}
-}
 
 void xneur_rem_exclude_app(GtkWidget *widget)
 {
@@ -1244,7 +1224,7 @@ void xneur_rem_abbreviation(GtkWidget *widget)
 	remove_item(widget, store_abbreviation);
 }
 
-void xneur_rem_action(GtkWidget *widget)
+void xneur_rem_user_action(GtkWidget *widget)
 {
 	remove_item(widget, store_action);
 }
@@ -1305,13 +1285,13 @@ gboolean save_abbreviation(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *
 	return FALSE;
 }
 
-gboolean save_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+gboolean save_user_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
 {
 	if (model || path || user_data){};
 
 	gchar *key_bind;
 	gchar *action_text;
-	gtk_tree_model_get(GTK_TREE_MODEL(store_action), iter, 0, &key_bind, 1, &action_text, -1);
+	gtk_tree_model_get(GTK_TREE_MODEL(store_action), iter, 0, &action_text, 1, &key_bind, -1);
 
 	char **key_stat = g_strsplit(key_bind, "+", 4);
 
@@ -1344,7 +1324,6 @@ gboolean save_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, 
 		{
 			xconfig->actions[xconfig->actions_count].hotkey.key = strdup(key_stat[i]); 
 			xconfig->actions[xconfig->actions_count].command = strdup(action_text);
-			
 		}
 	}
 
@@ -1355,6 +1334,19 @@ gboolean save_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, 
 	g_free(key_bind);
 	g_free(action_text);
 
+	return FALSE;
+}
+
+gboolean save_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	gchar *key_bind;
+	gchar *action_text;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_hotkey), iter, 0, &action_text, 1, &key_bind, -1);
+
+	split_bind((char *) key_bind, hotkey_action);
+	hotkey_action++;
 	return FALSE;
 }
 
@@ -1430,10 +1422,12 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_abbreviation), save_abbreviation, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_sound), save_sound, NULL);
 	xconfig->actions_count = 0;
-	gtk_tree_model_foreach(GTK_TREE_MODEL(store_action), save_action, NULL);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_action), save_user_action, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_osd), save_osd, NULL);
+	hotkey_action = 0;
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_hotkey), save_action, NULL);
 	
-	fill_binds(0, gxml, "entry11", FALSE);
+	/*fill_binds(0, gxml, "entry11", FALSE);
 	fill_binds(1, gxml, "entry12", FALSE);
 	fill_binds(2, gxml, "entry13", FALSE);
 	fill_binds(3, gxml, "entry14", FALSE);
@@ -1443,7 +1437,7 @@ void xneur_save_preference(GladeXML *gxml)
 	fill_binds(7, gxml, "entry18", FALSE);
 	fill_binds(8, gxml, "entry19", FALSE);
 	fill_binds(9, gxml, "entry20", FALSE);
-	fill_binds(10, gxml, "entry1", FALSE);
+	fill_binds(10, gxml, "entry1", FALSE);*/
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton7");
 	xconfig->manual_mode = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

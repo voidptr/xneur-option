@@ -36,18 +36,6 @@ void on_cancelbutton1_clicked(GtkButton *button, gpointer user_data);
 gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 gboolean on_key_release_event (GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 
-void on_button11_clicked(GtkButton *button, gpointer user_data);
-void on_button12_clicked(GtkButton *button, gpointer user_data);
-void on_button13_clicked(GtkButton *button, gpointer user_data);
-void on_button14_clicked(GtkButton *button, gpointer user_data);
-void on_button15_clicked(GtkButton *button, gpointer user_data);
-void on_button16_clicked(GtkButton *button, gpointer user_data);
-void on_button17_clicked(GtkButton *button, gpointer user_data);
-void on_button18_clicked(GtkButton *button, gpointer user_data);
-void on_button29_clicked(GtkButton *button, gpointer user_data);
-void on_button30_clicked(GtkButton *button, gpointer user_data);
-void on_button31_clicked(GtkButton *button, gpointer user_data);
-
 void on_window2_delete_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 
 #endif /* _CALLBACKS_H_ */
