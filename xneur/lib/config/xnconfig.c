@@ -453,7 +453,6 @@ static void parse_line(struct _xneur_config *p, char *line)
 						p->actions[p->actions_count].hotkey.key = strdup(param);
 					if (line != NULL)
 						p->actions[p->actions_count].command = strdup(line);
-					p->actions_count++;
 					break;
 				}
 
@@ -461,6 +460,8 @@ static void parse_line(struct _xneur_config *p, char *line)
 
 				param = get_word(&line);
 			}
+
+			p->actions_count++;
 			break;
 		}
 		case 28: // Show OSD
