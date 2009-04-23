@@ -3,7 +3,7 @@
 
 Summary: 	X Neural Switcher
 Name:		xneur
-Version: 	0.9.1
+Version: 	0.9.5
 Release: 	0%{?dist}
 
 License: 	GPL
