@@ -42,7 +42,7 @@
 #include "log.h"
 #include "text.h"
 
-#include "xdetection.h"
+#include "detection.h"
 
 #define PROTO_LEN	2
 #define BIG_PROTO_LEN	3

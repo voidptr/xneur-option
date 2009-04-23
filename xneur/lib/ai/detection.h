@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _XDETECTION_H_
-#define _XDETECTION_H_
+#ifndef _DETECTION_H_
+#define _DETECTION_H_
 
 #define NO_LANGUAGE	-1
 
@@ -27,4 +27,4 @@
 int check_lang(struct _xstring *p, int cur_lang);
 int get_next_lang(int cur_lang);
 
-#endif /* _XDETECTION_H_ */
+#endif /* _DETECTION_H_ */
