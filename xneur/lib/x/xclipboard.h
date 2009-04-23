@@ -21,6 +21,6 @@
 #define _XCLIPBOARD_H_
 
 char* get_clipboard_text(XSelectionEvent *event);
-void  on_clipboard_converted(void);
+void  on_clipboard_converted(XSelectionEvent *event, char *text);
 void  do_clipboard_notify(void);
 #endif /* _XCLIPBOARD_H_ */

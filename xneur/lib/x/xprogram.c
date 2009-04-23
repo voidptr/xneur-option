@@ -547,8 +547,9 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	// Clipboard
 	if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
 	{
-		p->change_word(p, CHANGE_SELECTION);
-		on_clipboard_converted();
+		p->change_word(p, CHANGE_CLIPBOARD);
+		// Convert keycodes and modifiers to utf-8 string
+		on_clipboard_converted(&p->event->event.xselection, p->string->get_utf_string(p->string));
 		p->string->save_and_clear(p->string, p->focus->owner_window);
 	}
 
