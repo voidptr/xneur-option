@@ -40,7 +40,6 @@
 #include "xfocus.h"
 #include "xswitchlang.h"
 #include "xselection.h"
-#include "xclipboard.h"
 #include "xbtable.h"
 #include "xevent.h"
 #include "xwindow.h"
@@ -370,14 +369,14 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			case SelectionRequest:
 			{
-				log_message(TRACE, _("Received SelectionRequest (event type %d)"), type);
+				log_message(TRACE, _("Received SelectionRequest on window %d (event type %d)"), p->event->event.xselectionrequest.requestor, type);
 				p->process_selection_notify(p);
 				break;
 			}
 			case ButtonPress:
 			{
 				p->string->save_and_clear(p->string, p->focus->owner_window);
-				log_message(TRACE, _("Received ButtonPress on window %d  (event type %d)"), p->event->event.xbutton.window, type);
+				log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.window, type);
 
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
@@ -439,23 +438,7 @@ static void xprogram_change_two_capital_letter(struct _xprogram *p)
 static void xprogram_process_selection_notify(struct _xprogram *p)
 {
 	char *event_text = NULL;
-	switch (p->selected_mode)
-	{
-		case ACTION_CHANGE_SELECTED:
-		case ACTION_TRANSLIT_SELECTED:
-		case ACTION_CHANGECASE_SELECTED:
-		{
-			event_text = get_selected_text(&p->event->event.xselection);
-			break;
-		}
-		case ACTION_CHANGE_CLIPBOARD:
-		case ACTION_TRANSLIT_CLIPBOARD:
-		case ACTION_CHANGECASE_CLIPBOARD:
-		{
-			event_text = get_clipboard_text(&p->event->event.xselection);
-			break;
-		}
-	}
+	event_text = get_selected_text(&p->event->event.xselection);
 
 	if (event_text == NULL)
 	{
@@ -535,23 +518,18 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	grab_spec_keys(p->focus->owner_window, FALSE);
 
 	// Selection
+	p->change_word(p, CHANGE_SELECTION);
+	
 	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
 	{
-		p->change_word(p, CHANGE_SELECTION);
-		on_selection_converted();
+		on_selection_converted(SELECTION_PRIMARY);
 		if (xconfig->save_selection)
 			p->event->send_selection(p->event, p->string->cur_pos);
-		p->string->save_and_clear(p->string, p->focus->owner_window);
 	}
-
-	// Clipboard
 	if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
-	{
-		p->change_word(p, CHANGE_CLIPBOARD);
-		// Convert keycodes and modifiers to utf-8 string
-		//on_clipboard_converted(&p->event->event.xselection, p->string->get_utf_string(p->string), p->focus->owner_window);
-		p->string->save_and_clear(p->string, p->focus->owner_window);
-	}
+		on_selection_converted(SELECTION_PRIMARY);
+	
+	p->string->save_and_clear(p->string, p->focus->owner_window);
 
 	p->update(p);
 	p->selected_mode = ACTION_NONE;
@@ -726,7 +704,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		case ACTION_CHANGECASE_SELECTED:
 		{
 			p->selected_mode = action;
-			do_selection_notify();
+			do_selection_notify(SELECTION_PRIMARY);
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
 		}
@@ -735,7 +713,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		case ACTION_CHANGECASE_CLIPBOARD:
 		{
 			p->selected_mode = action;
-			do_clipboard_notify();
+			do_selection_notify(SELECTION_CLIPBOARD);
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
 		}
@@ -1193,10 +1171,6 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 		case CHANGE_SELECTION:
 		{
 			p->send_string_silent(p, 0);
-			break;
-		}
-		case CHANGE_CLIPBOARD:
-		{
 			break;
 		}
 		case CHANGE_STRING_TO_LAYOUT_0:

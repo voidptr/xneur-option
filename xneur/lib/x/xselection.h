@@ -20,7 +20,14 @@
 #ifndef _XSELECTION_H_
 #define _XSELECTION_H_
 
+enum _selection_type
+{
+	SELECTION_PRIMARY,
+	SELECTION_SECONDARY,
+	SELECTION_CLIPBOARD,
+};
+
 char* get_selected_text(XSelectionEvent *event);
-void  on_selection_converted(void);
-void  do_selection_notify(void);
+void  on_selection_converted(enum _selection_type sel_type);
+void  do_selection_notify(enum _selection_type sel_type);
 #endif /* _XSELECTION_H_ */

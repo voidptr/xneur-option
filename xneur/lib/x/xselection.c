@@ -61,16 +61,54 @@ char* get_selected_text(XSelectionEvent *event)
 	return (char *) data;
 }
 
-void on_selection_converted(void)
+void on_selection_converted(enum _selection_type sel_type)
 {
-	Atom selection = XInternAtom(main_window->display, "PRIMARY", FALSE);
+	char *sel_name = "NONE";
+	switch (sel_type)
+	{
+		case SELECTION_PRIMARY:
+		{
+			sel_name = "PRIMARY";
+			break;
+		}
+		case SELECTION_SECONDARY:
+		{
+			sel_name = "SECONDARY";
+			break;
+		}
+		case SELECTION_CLIPBOARD:
+		{
+			sel_name = "CLIPBOARD";
+			break;
+		}
+	}
+	Atom selection = XInternAtom(main_window->display, sel_name, FALSE);
 	XSetSelectionOwner(main_window->display, selection, None, CurrentTime);
 }
 
-void do_selection_notify(void)
+void do_selection_notify(enum _selection_type sel_type)
 {
+	char *sel_name = "NONE";
+	switch (sel_type)
+	{
+		case SELECTION_PRIMARY:
+		{
+			sel_name = "PRIMARY";
+			break;
+		}
+		case SELECTION_SECONDARY:
+		{
+			sel_name = "SECONDARY";
+			break;
+		}
+		case SELECTION_CLIPBOARD:
+		{
+			sel_name = "CLIPBOARD";
+			break;
+		}
+	}
 	Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
-	Atom selection = XInternAtom(main_window->display, "PRIMARY", FALSE);
+	Atom selection = XInternAtom(main_window->display, sel_name, FALSE);
 
 	int status = XConvertSelection(main_window->display, selection, target, None, main_window->window, CurrentTime);
 	if (status == BadAtom)
