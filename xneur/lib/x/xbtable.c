@@ -129,23 +129,25 @@ static void bind_user_action(int action)
 	ubtable[action].key_sym		= 0;
 	ubtable[action].key_sym_shift	= 0;
 
-	if (xconfig->actions->action_hotkey[action].key == NULL)
+	if (xconfig->actions[action].hotkey.key == NULL)
 	{
 		log_message(DEBUG, _("   No key set for action \"%s\""), normal_action_names[action]);
 		return;
 	}
 
-	if (xconfig->actions->action_hotkey[action].modifiers & 0x1)
+	int action_modifiers = xconfig->actions[action].hotkey.modifiers;
+
+	if (action_modifiers & 0x01)
 		ubtable[action].modifier_mask = ubtable[action].modifier_mask + 1;	// Shift
-	if (xconfig->actions->action_hotkey[action].modifiers & 0x2)
+	if (action_modifiers & 0x02)
 		ubtable[action].modifier_mask = ubtable[action].modifier_mask + 4;	// Control
-	if (xconfig->actions->action_hotkey[action].modifiers & 0x4)
+	if (action_modifiers & 0x04)
 		ubtable[action].modifier_mask = ubtable[action].modifier_mask + 8;	// Alt
-	if (xconfig->actions->action_hotkey[action].modifiers & 0x8)
+	if (action_modifiers & 0x08)
 		ubtable[action].modifier_mask = ubtable[action].modifier_mask + 64;	// Win
 
 	KeySym key_sym, key_sym_shift;
-	get_keysyms_by_string(xconfig->actions->action_hotkey[action].key, &key_sym, &key_sym_shift);
+	get_keysyms_by_string(xconfig->actions[action].hotkey.key, &key_sym, &key_sym_shift);
 	if (key_sym == NoSymbol)
 		key_sym = None;
 	if (key_sym_shift == NoSymbol)
@@ -157,7 +159,7 @@ static void bind_user_action(int action)
 	if (ubtable[action].key_sym == 0)
 		return;
 
-	log_message(DEBUG, _("   Action \"%s\" with mod_mask %d and key \"%s (%s)\""), xconfig->actions->action_command->data[action].string, ubtable[action].modifier_mask, XKeysymToString(ubtable[action].key_sym), XKeysymToString(ubtable[action].key_sym_shift));
+	log_message(DEBUG, _("   Action \"%s\" with mod_mask %d and key \"%s (%s)\""), xconfig->actions[action].command, ubtable[action].modifier_mask, XKeysymToString(ubtable[action].key_sym), XKeysymToString(ubtable[action].key_sym_shift));
 }
 
 int get_user_action(KeySym key_sym, int mask)
@@ -166,7 +168,7 @@ int get_user_action(KeySym key_sym, int mask)
 	mask &= ~LockMask;
 	mask &= ~Mod2Mask;
 	mask &= ~Mod3Mask;
-	for (int action = 0; action < xconfig->actions->action_command->data_count; action++)
+	for (int action = 0; action < xconfig->actions_count; action++)
 	{
 		if (ubtable[action].key_sym != key_sym && ubtable[action].key_sym_shift != key_sym)
 			continue;
@@ -179,12 +181,10 @@ int get_user_action(KeySym key_sym, int mask)
 
 void bind_user_actions(void)
 {
-	int total_actions = xconfig->actions->action_command->data_count;
-
 	log_message(DEBUG, _("Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"));
 
 	// Fixme MEMLEAK!!!!!
-	ubtable = (struct _xbtable *) malloc(total_actions * sizeof(struct _xbtable));
-	for (int action = 0; action < total_actions; action++)
+	ubtable = (struct _xbtable *) malloc(xconfig->actions_count * sizeof(struct _xbtable));
+	for (int action = 0; action < xconfig->actions_count; action++)
 		bind_user_action(action);
 }

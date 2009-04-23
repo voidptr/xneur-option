@@ -176,8 +176,8 @@ struct _xneur_data
 
 struct _xneur_action
 {
-	struct _xneur_hotkey *action_hotkey;
-	struct _list_char *action_command;
+	struct _xneur_hotkey hotkey;
+	char *command;
 };
 
 struct _xneur_config
@@ -199,6 +199,8 @@ struct _xneur_config
 	struct _xneur_file *sounds;			// Array of sounds for actions
 	struct _xneur_file *osds;			// Array of OSDs for actions
 	struct _xneur_action *actions;			// Array of actions
+
+	int   actions_count;				// Count of actions
 
 	int   manual_mode;				// Enable manual processing mode
 	int   log_level;				// Maximum level of log messages to print
