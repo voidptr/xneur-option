@@ -811,28 +811,28 @@ void xneur_preference(void)
 	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_action));
 	gtk_widget_show(treeview);
 
-	for (int action = 0; action < xconfig->actions->action_command->data_count; action++)
+	for (int action = 0; action < xconfig->actions_count; action++)
 	{
 		GtkTreeIter iter;
 		gtk_list_store_append(GTK_LIST_STORE(store_action), &iter);
 		
-		char *text = (char *) malloc((24 + 1 + strlen(xconfig->actions->action_hotkey[action].key)) * sizeof(char));
+		char *text = (char *) malloc((24 + 1 + strlen(xconfig->actions[action].hotkey.key)) * sizeof(char));
 		text[0] = '\0';
 
 		for (int i = 0; i < total_modifiers; i++)
 		{
-			if ((xconfig->actions->action_hotkey[action].modifiers & (0x1 << i)) == 0)
+			if ((xconfig->actions[action].hotkey.modifiers & (0x1 << i)) == 0)
 				continue;
 
 			strcat(text, modifier_names[i]);
 			strcat(text, "+");
 		}
 
-		strcat(text, xconfig->actions->action_hotkey[action].key);
+		strcat(text, xconfig->actions[action].hotkey.key);
 		
 		gtk_list_store_set(GTK_LIST_STORE(store_action), &iter, 
 												0, text,
-												1, xconfig->actions->action_command->data[action].string, 
+												1, xconfig->actions[action].command, 
 												-1);
 		free(text);
 	}
@@ -1322,10 +1322,10 @@ gboolean save_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, 
 		return FALSE;
 	}
 	
-	int action = xconfig->actions->action_command->data_count;
-	xconfig->actions->action_hotkey =  (struct _xneur_hotkey *) realloc(xconfig->actions->action_hotkey, (action + 1) * sizeof(struct _xneur_hotkey));
-			
-	xconfig->actions->action_hotkey[action].modifiers = 0;
+	//int action = xconfig->actions_count;
+	xconfig->actions = (struct _xneur_action *) realloc(xconfig->actions, (xconfig->actions_count + 1) * sizeof(struct _xneur_action));
+	bzero(&xconfig->actions[xconfig->actions_count], sizeof(struct _xneur_action));		
+	xconfig->actions[xconfig->actions_count].hotkey.modifiers = 0;
 	
 	for (int i = 0; i <= last; i++)
 	{
@@ -1336,17 +1336,20 @@ gboolean save_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, 
 				continue; 
 
 			assigned = TRUE;
-			xconfig->actions->action_hotkey[action].modifiers |= (0x1 << j); 
+			xconfig->actions[xconfig->actions_count].hotkey.modifiers |= (0x1 << j); 
 			break; 
 		} 
 
 		if (assigned == FALSE)
 		{
-			xconfig->actions->action_hotkey[action].key = strdup(key_stat[i]); 
-			xconfig->actions->action_command->add_last(xconfig->actions->action_command, action_text);
+			xconfig->actions[xconfig->actions_count].hotkey.key = strdup(key_stat[i]); 
+			xconfig->actions[xconfig->actions_count].command = strdup(action_text);
+			
 		}
 	}
 
+	xconfig->actions_count++;
+	
 	g_strfreev(key_stat);
 	
 	g_free(key_bind);
@@ -1426,6 +1429,7 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_layout_app), save_layout_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_abbreviation), save_abbreviation, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_sound), save_sound, NULL);
+	xconfig->actions_count = 0;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_action), save_action, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_osd), save_osd, NULL);
 	
