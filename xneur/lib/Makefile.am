@@ -1,6 +1,6 @@
 SUBDIRS =			\
 	misc			\
-	ai			\
 	config			\
 	sound			\
-	main
+	main			\
+	ai
