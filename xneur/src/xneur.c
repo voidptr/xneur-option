@@ -21,6 +21,9 @@
 #  include "config.h"
 #endif
 
+#include <sys/time.h>
+#include <sys/resource.h>
+
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -29,15 +32,13 @@
 #include <string.h>
 #include <locale.h>
 
-#include <sys/time.h>
-#include <sys/resource.h>
-
 #include "xnconfig.h"
 
+#include "bind_table.h"
+#include "osd.h"
+
 #include "xprogram.h"
-#include "xbtable.h"
 #include "xswitchlang.h"
-#include "xOSD.h"
 #include "xkeymap.h"
 
 #include "types.h"
@@ -48,6 +49,7 @@
 #include "sound.h"
 
 #include "newlang_creation.h"
+
 struct _xneur_config *xconfig = NULL;
 static struct _xprogram *xprogram = NULL;
 

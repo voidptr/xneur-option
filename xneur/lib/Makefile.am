@@ -3,4 +3,4 @@ SUBDIRS =			\
 	ai			\
 	config			\
 	sound			\
-	x
+	main

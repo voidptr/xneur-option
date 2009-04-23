@@ -32,11 +32,11 @@
 
 #include "xkeymap.h"
 
-#include "xbtable.h"
+#include "bind_table.h"
 
-static struct _xbtable *ubtable;
+static struct _bind_table *ubtable;
 
-static struct _xbtable btable[MAX_HOTKEYS] =	{
+static struct _bind_table btable[MAX_HOTKEYS] =	{
 							{0, 0, 0},
 							{0, 0, 0},
 							{0, 0, 0},
@@ -73,13 +73,15 @@ static void bind_action(enum _hotkey_action action)
 		return;
 	}
 
-	if (xconfig->hotkeys[action].modifiers & 0x1)
+	int modifiers = xconfig->hotkeys[action].modifiers;
+
+	if (modifiers & 0x01)
 		btable[action].modifier_mask = btable[action].modifier_mask + 1;	// Shift
-	if (xconfig->hotkeys[action].modifiers & 0x2)
+	if (modifiers & 0x02)
 		btable[action].modifier_mask = btable[action].modifier_mask + 4;	// Control
-	if (xconfig->hotkeys[action].modifiers & 0x4)
+	if (modifiers & 0x04)
 		btable[action].modifier_mask = btable[action].modifier_mask + 8;	// Alt
-	if (xconfig->hotkeys[action].modifiers & 0x8)
+	if (modifiers & 0x08)
 		btable[action].modifier_mask = btable[action].modifier_mask + 64;	// Win
 
 	KeySym key_sym, key_sym_shift;
@@ -96,31 +98,6 @@ static void bind_action(enum _hotkey_action action)
 		return;
 
 	log_message(DEBUG, _("   Action \"%s\" with mod_mask %d and key \"%s (%s)\""), normal_action_names[action], btable[action].modifier_mask, XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift));
-}
-
-enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
-{
-	// Reset Caps and Num mask
-	mask &= ~LockMask;
-	mask &= ~Mod2Mask;
-	mask &= ~Mod3Mask;
-
-	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
-	{
-		if (btable[action].key_sym != key_sym && btable[action].key_sym_shift != key_sym)
-			continue;
-
-		if (btable[action].modifier_mask == mask)
-			return action;
-	}
-	return ACTION_NONE;
-}
-
-void bind_manual_actions(void)
-{
-	log_message(DEBUG, _("Binded hotkeys actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"));
-	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
-		bind_action(action);
 }
 
 static void bind_user_action(int action)
@@ -162,6 +139,31 @@ static void bind_user_action(int action)
 	log_message(DEBUG, _("   Action \"%s\" with mod_mask %d and key \"%s (%s)\""), xconfig->actions[action].command, ubtable[action].modifier_mask, XKeysymToString(ubtable[action].key_sym), XKeysymToString(ubtable[action].key_sym_shift));
 }
 
+enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
+{
+	// Reset Caps and Num mask
+	mask &= ~LockMask;
+	mask &= ~Mod2Mask;
+	mask &= ~Mod3Mask;
+
+	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
+	{
+		if (btable[action].key_sym != key_sym && btable[action].key_sym_shift != key_sym)
+			continue;
+
+		if (btable[action].modifier_mask == mask)
+			return action;
+	}
+	return ACTION_NONE;
+}
+
+void bind_manual_actions(void)
+{
+	log_message(DEBUG, _("Binded hotkeys actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"));
+	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
+		bind_action(action);
+}
+
 int get_user_action(KeySym key_sym, int mask)
 {
 	// Reset Caps and Num mask
@@ -184,7 +186,7 @@ void bind_user_actions(void)
 	log_message(DEBUG, _("Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"));
 
 	// Fixme MEMLEAK!!!!!
-	ubtable = (struct _xbtable *) malloc(xconfig->actions_count * sizeof(struct _xbtable));
+	ubtable = (struct _bind_table *) malloc(xconfig->actions_count * sizeof(struct _bind_table));
 	for (int action = 0; action < xconfig->actions_count; action++)
 		bind_user_action(action);
 }

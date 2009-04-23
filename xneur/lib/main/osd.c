@@ -35,6 +35,8 @@
 #include "debug.h"
 #include "log.h"
 
+#include "osd.h"
+
 extern struct _xneur_config *xconfig;
 
 static void osd_show_thread(void *osd_text)

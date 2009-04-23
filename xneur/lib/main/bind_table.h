@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _XBTABLE_H_
-#define _XBTABLE_H_
+#ifndef _BIND_TABLE_H_
+#define _BIND_TABLE_H_
 
 #include <X11/Xutil.h>
 
@@ -35,4 +35,4 @@ struct _xbtable
 	int modifier_mask;
 };
 
-#endif /* _XBTABLE_H_ */
+#endif /* _BIND_TABLE_H_ */
