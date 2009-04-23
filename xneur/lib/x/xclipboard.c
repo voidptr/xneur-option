@@ -63,9 +63,12 @@ char* get_clipboard_text(XSelectionEvent *event)
 
 void on_clipboard_converted(XSelectionEvent *event, char *text)
 {
-	//Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
+	event = event;
+	Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
+	Atom selection = XInternAtom(main_window->display, "CLIPBOARD", FALSE);
 	log_message (DEBUG, "In clipboard %s", text);
-	XChangeProperty (main_window->display, event->requestor, event->property, XA_STRING, 8, PropModeReplace, (unsigned char*) text, strlen(text));
+	XChangeProperty (main_window->display, main_window->window, selection, target, 8, PropModeReplace, (unsigned char*) text, strlen(text)*sizeof(char));
+	log_message (DEBUG, "In clipboard %s", get_clipboard_text(event));
 }
 
 void do_clipboard_notify(void)

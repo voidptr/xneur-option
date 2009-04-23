@@ -549,7 +549,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	{
 		p->change_word(p, CHANGE_CLIPBOARD);
 		// Convert keycodes and modifiers to utf-8 string
-		on_clipboard_converted(&p->event->event.xselection, p->string->get_utf_string(p->string));
+		//on_clipboard_converted(&p->event->event.xselection, p->string->get_utf_string(p->string), p->focus->owner_window);
 		p->string->save_and_clear(p->string, p->focus->owner_window);
 	}
 
