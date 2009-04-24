@@ -493,7 +493,8 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		}
 		case ACTION_TRANSLIT_SELECTED:
 		{
-			p->change_lang(p, main_window->xkeymap->latin_group);
+			int lang = xconfig->find_group_lang(xconfig, main_window->xkeymap->latin_group);
+			p->change_lang(p, lang);
 
 			play_file(SOUND_TRANSLIT_SELECTED);
 			osd_show(xconfig->osds[OSD_TRANSLIT_SELECTED].file);
@@ -502,8 +503,9 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		}
 		case ACTION_TRANSLIT_CLIPBOARD:
 		{
-			p->change_lang(p, main_window->xkeymap->latin_group);
-
+			int lang = xconfig->find_group_lang(xconfig, main_window->xkeymap->latin_group);
+			p->change_lang(p, lang);
+			
 			play_file(SOUND_TRANSLIT_CLIPBOARD);
 			osd_show(xconfig->osds[OSD_TRANSLIT_CLIPBOARD].file);
 
@@ -1056,7 +1058,8 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 			// Shift fields to point to begin of word
 			p->string->set_offset(p->string, offset);
 
-			p->change_lang(p, 0);
+			int lang = xconfig->find_group_lang(xconfig, 0);
+			p->change_lang(p, lang);
 
 			p->send_string_silent(p, p->string->cur_pos);
 
@@ -1071,7 +1074,8 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 			// Shift fields to point to begin of word
 			p->string->set_offset(p->string, offset);
 
-			p->change_lang(p, 1);
+			int lang = xconfig->find_group_lang(xconfig, 1);
+			p->change_lang(p, lang);;
 
 			p->send_string_silent(p, p->string->cur_pos);
 
@@ -1086,7 +1090,8 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 			// Shift fields to point to begin of word
 			p->string->set_offset(p->string, offset);
 
-			p->change_lang(p, 2);
+			int lang = xconfig->find_group_lang(xconfig, 2);
+			p->change_lang(p, lang);
 
 			p->send_string_silent(p, p->string->cur_pos);
 
@@ -1101,7 +1106,8 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 			// Shift fields to point to begin of word
 			p->string->set_offset(p->string, offset);
 
-			p->change_lang(p, 3);
+			int lang = xconfig->find_group_lang(xconfig, 3);
+			p->change_lang(p, lang);
 
 			p->send_string_silent(p, p->string->cur_pos);
 

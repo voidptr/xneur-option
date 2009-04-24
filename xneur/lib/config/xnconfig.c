@@ -670,7 +670,7 @@ static int xneur_config_load(struct _xneur_config *p)
 	{
 		char *lang_dir	= p->get_lang_dir(p, lang);
 		char *lang_name	= p->get_lang_name(p, lang);
-		printf("%s\n", lang_dir);
+
 		p->languages[lang].dicts = load_list(lang_dir, DICT_NAME, TRUE);
 		if (p->languages[lang].dicts == NULL)
 		{
@@ -1032,7 +1032,6 @@ static void xneur_config_add_language(struct _xneur_config *p, const char *name,
 	p->languages[p->total_languages].dir	= strdup(dir);
 	p->languages[p->total_languages].group	= group;
 	p->languages[p->total_languages].fixed	= fixed;
-
 	p->total_languages++;
 }
 

@@ -46,8 +46,6 @@
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
 
-static const int keyboard_groups[]	= {0x00000000, 0x00002000, 0x00004000, 0x00006000};
-
 Window last_log_window = 0;
 
 // Private
@@ -217,17 +215,19 @@ static void xstring_rotate_layout(struct _xstring *p)
 		{
 			int km = p->keycode_modifiers[i] & (~languages_mask);
 
-			if (p->keycode_modifiers[i] != (keyboard_groups[lang] | km))
+			int group = xconfig->get_lang_group(xconfig, lang);
+			if (p->keycode_modifiers[i] != (get_keycode_mod(group) | km))
 				continue;
 
 			int new_lang = lang + 1;
 			if (lang == xconfig->total_languages - 1)
 				new_lang = 0;
 
-			int keycode_mod	= get_keycode_mod(xconfig->get_lang_group(xconfig, new_lang));
-
+			group = xconfig->get_lang_group(xconfig, new_lang);
+			int keycode_mod	= get_keycode_mod(group);
 			p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~languages_mask);
 			p->keycode_modifiers[i] = p->keycode_modifiers[i] | keycode_mod;
+			
 			break;
 		}
 	}

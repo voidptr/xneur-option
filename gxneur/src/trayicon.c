@@ -168,10 +168,10 @@ void clock_check(Clock *clock)
 
 void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 {
-	//char *layout_name = xconfig->get_lang_name(xconfig, xconfig->find_group_lang(xconfig, get_active_keyboard_group()));
-	char *layout_name = xconfig->languages[get_active_keyboard_group()].dir;
-	if (layout_name == NULL) 
-		layout_name = "gxneur";
+	char *layout_name = "gxneur";
+	int lang = xconfig->find_group_lang(xconfig, get_active_keyboard_group());
+	if (lang != -1)
+		layout_name = xconfig->languages[xconfig->find_group_lang(xconfig, get_active_keyboard_group())].dir;
 
 	char *image_file = g_strdup_printf("%s%s", layout_name, ".png");
 	

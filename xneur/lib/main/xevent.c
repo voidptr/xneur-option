@@ -173,8 +173,7 @@ static int xevent_get_next_event(struct _xevent *p)
 
 static void xevent_send_next_event(struct _xevent *p)
 {
-	p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_cur_lang()];
-
+	p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_active_keyboard_group()];
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);
 }
 
