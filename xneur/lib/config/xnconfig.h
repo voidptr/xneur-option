@@ -30,7 +30,7 @@
 #define REGEXP_NAME			"regexp"
 
 #define SOUNDDIR			"sounds"
-#define PIXMAPDIR			"pixmaps"
+#define LANGUAGEDIR			"languages"
 
 #define MAX_FLAGS			4
 #define MAX_SOUNDS			24

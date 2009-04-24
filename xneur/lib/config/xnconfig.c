@@ -670,7 +670,7 @@ static int xneur_config_load(struct _xneur_config *p)
 	{
 		char *lang_dir	= p->get_lang_dir(p, lang);
 		char *lang_name	= p->get_lang_name(p, lang);
-
+		printf("%s\n", lang_dir);
 		p->languages[lang].dicts = load_list(lang_dir, DICT_NAME, TRUE);
 		if (p->languages[lang].dicts == NULL)
 		{
@@ -985,7 +985,12 @@ static char* xneur_config_get_lang_dir(struct _xneur_config *p, int lang)
 {
 	if (lang < 0 || lang >= p->total_languages)
 		return NULL;
-	return p->languages[lang].dir;
+
+	int path_len = strlen(LANGUAGEDIR) + strlen(p->languages[lang].dir) + 2;
+	char *path_file = (char *) malloc(path_len * sizeof(char));
+	snprintf(path_file, path_len, "%s/%s", LANGUAGEDIR, p->languages[lang].dir);
+	
+	return path_file;
 }
 
 static char* xneur_config_get_lang_name(struct _xneur_config *p, int lang)
