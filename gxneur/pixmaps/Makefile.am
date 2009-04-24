@@ -1,23 +1,23 @@
 pixmapsdir = @datarootdir@/gxneur/pixmaps
 pixmaps_DATA =			\
+	be.png			\
+	bg.png			\
+	cs.png			\
+	de.png			\
+	el.png			\
+	en.png			\
+	es.png			\
+	et.png			\
+	fr.png			\
 	gxneur.png		\
-	Armenian.png		\
-	Belarusian.png		\
-	Bulgarian.png		\
-	Czech.png		\
-	German.png		\
-	Greek.png		\
-	English.png		\
-	Estonian.png		\
-	French.png		\
-	Kazakh.png		\
-	Lithuanian.png		\
-	Latvian.png		\
-	Poland.png		\
-	Romanian.png		\
-	Russian.png		\
-	Spanish.png		\
-	Ukrainian.png		\
-	Uzbek.png
+	hy.png			\
+	kk.png			\
+	lt.png			\
+	lv.png			\
+	pl.png			\
+	ro.png			\
+	ru.png			\
+	uk.png			\
+	uz.png
 
 EXTRA_DIST = $(pixmaps_DATA)

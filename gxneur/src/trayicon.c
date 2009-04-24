@@ -168,7 +168,8 @@ void clock_check(Clock *clock)
 
 void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 {
-	char *layout_name = xconfig->get_lang_name(xconfig, xconfig->find_group_lang(xconfig, get_active_keyboard_group()));
+	//char *layout_name = xconfig->get_lang_name(xconfig, xconfig->find_group_lang(xconfig, get_active_keyboard_group()));
+	char *layout_name = xconfig->languages[get_active_keyboard_group()].dir;
 	if (layout_name == NULL) 
 		layout_name = "gxneur";
 
