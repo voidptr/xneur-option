@@ -33,8 +33,8 @@
 #define PIXMAPDIR			"pixmaps"
 
 #define MAX_FLAGS			4
-#define MAX_SOUNDS			25
-#define MAX_OSDS			25
+#define MAX_SOUNDS			24
+#define MAX_OSDS			24
 #define MAX_HOTKEYS			14
 
 enum _flag_action

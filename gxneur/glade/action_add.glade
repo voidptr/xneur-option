@@ -9,6 +9,7 @@
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
+    <property name="skip_pager_hint">True</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
@@ -29,10 +30,9 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="entry1">
+              <widget class="GtkEntry" id="entry2">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="has_focus">True</property>
                 <property name="editable">False</property>
                 <signal name="activate" handler="on_entry1_activate"/>
               </widget>
@@ -53,7 +53,7 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="entry2">
+              <widget class="GtkEntry" id="entry1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
               </widget>
