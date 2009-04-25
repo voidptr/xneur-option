@@ -370,7 +370,7 @@ static void xprogram_process_input(struct _xprogram *p)
 			}
 			case SelectionRequest:
 			{
-				log_message(TRACE, _("Received SelectionRequest on window %d (event type %d)"), p->event->event.xselectionrequest.requestor, type);
+				log_message(TRACE, _("Received SelectionRequest (event type %d)"), p->event->event.xselectionrequest.requestor, type);
 				p->process_selection_notify(p);
 				break;
 			}

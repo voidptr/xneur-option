@@ -59,6 +59,48 @@ msgstr "Автоматическое изменение слова"
 msgid "Correct word manually"
 msgstr "Ручное изменение слова"
 
+msgid "Switch between processing modes"
+msgstr "Смена режима работы"
+
+msgid "Correct last line"
+msgstr "Коррекция последней строки"
+
+msgid "Correct/Undo correction"
+msgstr "Коррекция/Отмена коррекции"
+
+msgid "Correct selected text"
+msgstr "Коррекция выделеного текста"
+
+msgid "Transliterate selected text"
+msgstr "Транслитерация выделеного текста"
+
+msgid "Change case of selected text"
+msgstr "Смена регистра выделеного текста"
+
+msgid "Correct clipboard text"
+msgstr "Коррекция буфера обмена"
+
+msgid "Transliterate clipboard text"
+msgstr "Транслитерация буфера обмена"
+
+msgid "Change case of clipboard text"
+msgstr "Смена регистра буфера обмена"
+
+msgid "Switch to Layout 1"
+msgstr "Включить первую раскладку"
+
+msgid "Switch to Layout 2"
+msgstr "Включить вторую раскладку"
+
+msgid "Switch to Layout 3"
+msgstr "Включить третью раскладку"
+
+msgid "Switch to Layout 4"
+msgstr "Включить четвертую раскладку"
+
+msgid "Expand abbreviations"
+msgstr "Замена сокращений"
+
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
 msgstr "Добавить Сокращение..."
@@ -97,11 +139,11 @@ msgstr ""
 msgid "Add user action..."
 msgstr "Добавить пользовательское действие..."
 
-#: glade/action_add.glade:24
+#: glade/action_add.glade:25
 msgid "Key bind:"
 msgstr "Комбинация клавиш:"
 
-#: glade/action_add.glade:46
+#: glade/action_add.glade:48
 msgid "User action:"
 msgstr "Пользовательское действие:"
 
@@ -113,60 +155,64 @@ msgstr "Выбор Файла..."
 msgid "XNeur Settings"
 msgstr "Настройки XNeur"
 
-#: glade/config.glade:32
+#: glade/config.glade:31
 msgid "Use manual switching mode"
 msgstr "Включить ручной режим переключения"
 
-#: glade/config.glade:46
+#: glade/config.glade:45
 msgid "Correct aCCIDENTAL caps"
 msgstr "Исправлять сЛУЧАЙНЫЙ CapsLock"
 
-#: glade/config.glade:60
+#: glade/config.glade:59
+msgid "Disable CapsLock use"
+msgstr "Отключить кнопку CapsLock"
+
+#: glade/config.glade:73
 msgid "Correct TWo INitial caps"
 msgstr "Исправлять две ПРописные буквы"
 
-#: glade/config.glade:74
+#: glade/config.glade:87
 msgid "Enable auto-learning mode"
 msgstr "Включить режим самообучения"
 
-#: glade/config.glade:88
+#: glade/config.glade:101
 msgid "Keep selection after changing selected text"
 msgstr "Сохранять выделение после изменения выделеного текста"
 
-#: glade/config.glade:102
+#: glade/config.glade:115
 msgid "Enable keyboard logging"
 msgstr "Включить сохранение набираемого текста в файл журнала"
 
-#: glade/config.glade:116
+#: glade/config.glade:129
 msgid "Flush internal buffer on Enter or Tab"
 msgstr "Сбрасывать внутренний буфер при нажатии Enter или Tab"
 
-#: glade/config.glade:130
+#: glade/config.glade:143
 msgid "Don't process words on Enter or Tab"
 msgstr "Не проверять слово при нажатии Enter или Tab"
 
-#: glade/config.glade:144
+#: glade/config.glade:157
 msgid "Check language on input process"
 msgstr "Проверять язык при вводе"
 
-#: glade/config.glade:171
+#: glade/config.glade:184
 msgid "<b>General</b>"
 msgstr "<b>Общее</b>"
 
-#: glade/config.glade:257
+#: glade/config.glade:270
 msgid "Fixed"
 msgstr "Фиксированная"
 
-#: glade/config.glade:270
+#: glade/config.glade:283
 msgid "Layout"
 msgstr "Раскладка"
 
-#: glade/config.glade:281
+#: glade/config.glade:294
 msgid "Number\t"
 msgstr "Номер\t"
 
-#: glade/config.glade:293 glade/config.glade:310 glade/config.glade:327
-#: glade/config.glade:344 glade/config.glade:612
+#: glade/config.glade:306 glade/config.glade:323 glade/config.glade:340
+#: glade/config.glade:357 glade/config.glade:625
 msgid ""
 "0\n"
 "1\n"
@@ -178,13 +224,13 @@ msgstr ""
 "2\n"
 "3"
 
-#: glade/config.glade:360 glade/config.glade:377 glade/config.glade:394
-#: glade/config.glade:410
+#: glade/config.glade:373 glade/config.glade:390 glade/config.glade:407
+#: glade/config.glade:423
 msgid "Dictionary..."
 msgstr "Словарь..."
 
-#: glade/config.glade:428 glade/config.glade:457 glade/config.glade:486
-#: glade/config.glade:515
+#: glade/config.glade:441 glade/config.glade:470 glade/config.glade:499
+#: glade/config.glade:528
 msgid ""
 "\n"
 "Belarusian\n"
@@ -219,140 +265,96 @@ msgstr ""
 "Армянский\n"
 "Казахский\n"
 "Литовский\n"
-"Латвийский\n"
+"Латышский\n"
 "Польский\n"
 "Румынский\n"
 "Русский\n"
 "Украинский\n"
 "Узбекский"
 
-#: glade/config.glade:543 glade/config.glade:560 glade/config.glade:577
-#: glade/config.glade:594
+#: glade/config.glade:556 glade/config.glade:573 glade/config.glade:590
+#: glade/config.glade:607
 msgid "Regular Expressions..."
 msgstr "Регулярные Выражения..."
 
-#: glade/config.glade:630
+#: glade/config.glade:643
 msgid "Initial layout number:"
 msgstr "Номер раскладки по умолчанию "
 
-#: glade/config.glade:673
+#: glade/config.glade:686
 msgid "Remember keyboard layout for each application instance"
 msgstr "Запоминать раскладку отдельно для каждой копии приложения"
 
-#: glade/config.glade:766
+#: glade/config.glade:779
 msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr "Исключения (одна раскладка для всех копий приложения)"
 
-#: glade/config.glade:796
+#: glade/config.glade:809
 msgid "<b>Layouts</b>"
 msgstr "<b>Раскладки</b>"
 
-#: glade/config.glade:1008
-msgid "Correct selected text"
-msgstr "Замена выделеного текста"
-
-#: glade/config.glade:1021
-msgid "Switch between processing modes"
-msgstr "Смена режима работы"
-
-#: glade/config.glade:1034
-msgid "Correct last line"
-msgstr "Замена последней строки"
-
-#: glade/config.glade:1047
-msgid "Correct/Undo correction"
-msgstr "Замена/Отмена замены"
-
-#: glade/config.glade:1058
-msgid "Transliterate selected text"
-msgstr "Транслитерация выделеного текста"
-
-#: glade/config.glade:1071
-msgid "Change case of selected text"
-msgstr "Смена регистра выделеного текста"
-
-#: glade/config.glade:1154
-msgid "Switch to Layout 1"
-msgstr "Включить первую раскладку"
-
-#: glade/config.glade:1167
-msgid "Switch to Layout 2"
-msgstr "Включить вторую раскладку"
-
-#: glade/config.glade:1180
-msgid "Switch to Layout 3"
-msgstr "Включить третью раскладку"
-
-#: glade/config.glade:1249
-msgid "Switch to Layout 4"
-msgstr "Включить четвертую раскладку"
-
-#: glade/config.glade:1378
+#: glade/config.glade:1010
 msgid "<b>Hotkeys</b>"
 msgstr "<b>Комбинации клавиш</b>"
 
-#: glade/config.glade:1401
+#: glade/config.glade:1033
 msgid "Flush internal buffer on mouse click"
 msgstr "Сбрасывать внутренний буфер при щелчке мышью"
 
-#: glade/config.glade:1453
+#: glade/config.glade:1085
 msgid "<b>Mouse</b>"
 msgstr "<b>Мышь</b>"
 
-#: glade/config.glade:1553
+#: glade/config.glade:1185
 msgid "Ignore these applications"
 msgstr "Не обрабатывать эти приложения"
 
-#: glade/config.glade:1644
+#: glade/config.glade:1276
 msgid "Force automatic mode for these applications"
 msgstr "Принудительный автоматический режим для этих приложений"
 
-#: glade/config.glade:1735
+#: glade/config.glade:1367
 msgid "Force manual mode for these applications"
 msgstr "Принудительный ручной режим для этих приложений"
 
-#: glade/config.glade:1765
+#: glade/config.glade:1397
 msgid "<b>Applications</b>"
 msgstr "<b>Приложения</b>"
 
-#: glade/config.glade:1788
+#: glade/config.glade:1420
 msgid "Enable sounds"
 msgstr "Проигрывать звуки"
 
-#: glade/config.glade:1876
+#: glade/config.glade:1508
 msgid "<b>Sounds</b>"
 msgstr "<b>Звуки</b>"
 
-#: glade/config.glade:1904
-msgid "Expand abbreviations"
-msgstr "Замена сокращений"
-
-#: glade/config.glade:1941
+#: glade/config.glade:1531
 msgid "Ignore keyboard layout for abbreviations"
 msgstr "Игнорировать раскладку для сокращений"
 
-#: glade/config.glade:2034
+#: glade/config.glade:1624
 msgid "<b>Abbreviations</b>"
 msgstr "<b>Сокращения</b>"
 
-#: glade/config.glade:2057
+#: glade/config.glade:1647
 msgid "Show OSD"
 msgstr "Показывать OSD"
 
-#: glade/config.glade:2077
+#: glade/config.glade:1667
 msgid "OSD Font"
 msgstr "Шрифт OSD"
 
-#: glade/config.glade:2107
+#: glade/config.glade:1697
 msgid "Use command <b>xfontsel -print</b> to get new font."
 msgstr ""
 "Используйте команду <b>xfontsel -print</b> для получения нового шрифта."
 
-#: glade/config.glade:2164
+#: glade/config.glade:1754
 msgid "<b>OSD</b>"
 msgstr "<b>OSD</b>"
 
-#: glade/config.glade:2190
+#: glade/config.glade:1780
 msgid ""
 "Error\n"
 "Warning\n"
@@ -366,15 +368,15 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2224
+#: glade/config.glade:1814
 msgid "Log verbosity level"
 msgstr "Уровень подробности выводимых сообщений"
 
-#: glade/config.glade:2237
+#: glade/config.glade:1827
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Задержка перед отправкой событий (в миллисекундах)"
 
-#: glade/config.glade:2256
+#: glade/config.glade:1846
 msgid "<b>Advanced</b>"
 msgstr "<b>Специальное</b>"
 
@@ -382,11 +384,11 @@ msgstr "<b>Специальное</b>"
 msgid "File Editing"
 msgstr "Редактирование файла"
 
-#: src/callbacks.c:188 src/misc.c:1594
+#: src/callbacks.c:188 src/misc.c:1601
 msgid "Press any key"
 msgstr "Нажмите любую клавишу"
 
-#: src/misc.c:307 src/misc.c:308
+#: src/misc.c:303 src/misc.c:304
 #, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
@@ -395,12 +397,12 @@ msgstr ""
 "Несовпадение версии библиотеки конфигурации XNeur.\n"
 "Пожалуйста, установите libxnconfig версии %d.0.%d\n"
 
-#: src/misc.c:314
+#: src/misc.c:310
 #, c-format
 msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
 msgstr "Используется libxnconfig API версии %d.0.%d (собрано с %d.0.%d)\n"
 
-#: src/misc.c:318 src/misc.c:319
+#: src/misc.c:314 src/misc.c:315
 #, c-format
 msgid ""
 "XNeur config broken!\n"
@@ -409,7 +411,7 @@ msgstr ""
 "Конфигурационный файл XNeur испорчен!\n"
 "Пожалуйста, удалите файл ~/.xneur/xneurrc и переустановите пакет XNeur!\n"
 
-#: src/misc.c:331 src/misc.c:332
+#: src/misc.c:327 src/misc.c:328
 #, c-format
 msgid ""
 "Couldn't start xneur\n"
@@ -418,55 +420,55 @@ msgstr ""
 "Невозможно запустить xneur\n"
 "Проверьте, что он установлен\n"
 
-#: src/misc.c:382
+#: src/misc.c:378
 msgid "Current Version"
 msgstr "Текущая версия"
 
-#: src/misc.c:446 src/misc.c:472 src/misc.c:499 src/misc.c:525
+#: src/misc.c:442 src/misc.c:468 src/misc.c:495 src/misc.c:521
 msgid "Application"
 msgstr "Приложение"
 
-#: src/misc.c:697
-msgid "Abbreviation"
-msgstr "Сокращение"
-
-#: src/misc.c:706
-msgid "Expansion text"
-msgstr "Полный Текст"
-
-#: src/misc.c:740 src/misc.c:882
+#: src/misc.c:617 src/misc.c:697 src/misc.c:839
 msgid "Action"
 msgstr "Действие"
 
-#: src/misc.c:745
-msgid "Sound"
-msgstr "Звук"
-
-#: src/misc.c:835
+#: src/misc.c:622 src/misc.c:797
 msgid "Key bind"
 msgstr "Комбинация клавиш"
 
-#: src/misc.c:840
+#: src/misc.c:654
+msgid "Abbreviation"
+msgstr "Сокращение"
+
+#: src/misc.c:663
+msgid "Expansion text"
+msgstr "Полный Текст"
+
+#: src/misc.c:702
+msgid "Sound"
+msgstr "Звук"
+
+#: src/misc.c:792
 msgid "User action"
 msgstr "Пользовательское действие"
 
-#: src/misc.c:887
+#: src/misc.c:844
 msgid "OSD Text"
 msgstr "Текст OSD"
 
-#: src/misc.c:942
+#: src/misc.c:899
 msgid "Abbreviation field is empty!"
 msgstr "Сокращение пусто!"
 
-#: src/misc.c:947
+#: src/misc.c:904
 msgid "Expansion text field is empty!"
 msgstr "Полный текст пуст!"
 
-#: src/misc.c:991
+#: src/misc.c:948
 msgid "Key bind field is empty!"
 msgstr "Комбинация клавиш пуста!"
 
-#: src/misc.c:996
+#: src/misc.c:953
 msgid "User action field is empty!"
 msgstr "Пользовательское действие пусто!"
 
@@ -483,22 +485,21 @@ msgstr "Остановить демон"
 msgid "Start daemon"
 msgstr "Запустить демон"
 
-#: src/trayicon.c:100
-msgid "Disable input auto-correction"
-msgstr "Отключить автокоррекцию ввода"
+#: src/trayicon.c:121
+msgid "Auto-correction"
+msgstr "Автопереключение"
 
-#: src/trayicon.c:105
-msgid "Enable input auto-correction"
-msgstr "Включить автокоррекцию ввода"
-
-#: src/trayicon.c:182
+#: src/trayicon.c:192
 msgid "X Neural Switcher running ("
 msgstr "X Neural Switcher работает ("
 
-#: src/trayicon.c:187
+#: src/trayicon.c:197
 msgid "X Neural Switcher stopped ("
 msgstr "X Neural Switcher остановлен ("
 
-#: src/trayicon.c:209
+#: src/trayicon.c:219
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
+
+#~ msgid "Disable input auto-correction"
+#~ msgstr "Отключить автокоррекцию ввода"
