@@ -148,7 +148,7 @@ ShowOSD No
 #FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
 FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
 
-# Binds OSDs for some actions
+# Binds notifies for some actions
 AddOSD XneurStart X Neural Switcher запущен
 AddOSD XneurReload X Neural Switcher перезагружен
 AddOSD XneurStop X Neural Switcher остановлен

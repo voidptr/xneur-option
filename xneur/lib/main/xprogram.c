@@ -151,7 +151,7 @@ static int get_auto_action(KeySym key, int modifier_mask)
 		return KLB_NO_ACTION;
 
 	int sound = SOUND_NONE;
-	int osd = OSD_NONE;
+	int osd = NOTIFY_NONE;
 	int lang = get_cur_lang();
 	switch (lang)
 	{
@@ -159,31 +159,31 @@ static int get_auto_action(KeySym key, int modifier_mask)
 		case 0:
 		{
 			sound = SOUND_PRESS_KEY_LAYOUT_0;
-			osd = OSD_PRESS_KEY_LAYOUT_0;
+			osd = NOTIFY_PRESS_KEY_LAYOUT_0;
 			break;
 		}
 		case 1:
 		{
 			sound = SOUND_PRESS_KEY_LAYOUT_1;
-			osd = OSD_PRESS_KEY_LAYOUT_1;
+			osd = NOTIFY_PRESS_KEY_LAYOUT_1;
 			break;
 		}
 		case 2:
 		{
 			sound = SOUND_PRESS_KEY_LAYOUT_2;
-			osd = OSD_PRESS_KEY_LAYOUT_2;
+			osd = NOTIFY_PRESS_KEY_LAYOUT_2;
 			break;
 		}
 		case 3:
 		{
 			sound = SOUND_PRESS_KEY_LAYOUT_3;
-			osd = OSD_PRESS_KEY_LAYOUT_3;
+			osd = NOTIFY_PRESS_KEY_LAYOUT_3;
 			break;
 		}
 	}
 
 	play_file(sound);
-	osd_show(xconfig->osds[osd].file);
+	osd_show(xconfig->notifies[osd].file);
 
 	return KLB_ADD_SYM;
 }
@@ -460,7 +460,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			p->string->rotate_layout(p->string);
 
 			play_file(SOUND_CHANGE_SELECTED);
-			osd_show(xconfig->osds[OSD_CHANGE_SELECTED].file);
+			osd_show(xconfig->notifies[NOTIFY_CHANGE_SELECTED].file);
 
 			break;
 		}
@@ -469,7 +469,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			p->string->rotate_layout(p->string);
 
 			play_file(SOUND_CHANGE_CLIPBOARD);
-			osd_show(xconfig->osds[OSD_CHANGE_CLIPBOARD].file);
+			osd_show(xconfig->notifies[NOTIFY_CHANGE_CLIPBOARD].file);
 
 			break;
 		}
@@ -478,7 +478,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			p->string->change_case(p->string);
 
 			play_file(SOUND_CHANGECASE_SELECTED);
-			osd_show(xconfig->osds[OSD_CHANGECASE_SELECTED].file);
+			osd_show(xconfig->notifies[NOTIFY_CHANGECASE_SELECTED].file);
 
 			break;
 		}
@@ -487,7 +487,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			p->string->change_case(p->string);
 
 			play_file(SOUND_CHANGECASE_CLIPBOARD);
-			osd_show(xconfig->osds[OSD_CHANGECASE_CLIPBOARD].file);
+			osd_show(xconfig->notifies[NOTIFY_CHANGECASE_CLIPBOARD].file);
 
 			break;
 		}
@@ -497,7 +497,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			p->change_lang(p, lang);
 
 			play_file(SOUND_TRANSLIT_SELECTED);
-			osd_show(xconfig->osds[OSD_TRANSLIT_SELECTED].file);
+			osd_show(xconfig->notifies[NOTIFY_TRANSLIT_SELECTED].file);
 
 			break;
 		}
@@ -507,7 +507,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			p->change_lang(p, lang);
 			
 			play_file(SOUND_TRANSLIT_CLIPBOARD);
-			osd_show(xconfig->osds[OSD_TRANSLIT_CLIPBOARD].file);
+			osd_show(xconfig->notifies[NOTIFY_TRANSLIT_CLIPBOARD].file);
 
 			break;
 		}
@@ -577,7 +577,7 @@ static void xprogram_perform_user_action(struct _xprogram *p, int action)
 	pthread_attr_destroy(&action_thread_attr);
 
 	play_file(SOUND_EXEC_USER_ACTION);
-	osd_show(xconfig->osds[OSD_EXEC_USER_ACTION].file, xconfig->actions[action].command);
+	osd_show(xconfig->notifies[NOTIFY_EXEC_USER_ACTION].file, xconfig->actions[action].command);
 }
 
 static void xprogram_perform_auto_action(struct _xprogram *p, int action)
@@ -737,7 +737,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			p->update(p);
 
 			play_file(SOUND_CHANGE_STRING);
-			osd_show(xconfig->osds[OSD_CHANGE_STRING].file);
+			osd_show(xconfig->notifies[NOTIFY_CHANGE_STRING].file);
 			break;
 		}
 		case ACTION_CHANGE_WORD:	// User needs to cancel last change
@@ -766,7 +766,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			grab_spec_keys(p->focus->owner_window, TRUE);
 
 			play_file(SOUND_MANUAL_CHANGE_WORD);
-			osd_show(xconfig->osds[OSD_MANUAL_CHANGE_WORD].file);
+			osd_show(xconfig->notifies[NOTIFY_MANUAL_CHANGE_WORD].file);
 			p->event->default_event.xkey.keycode = 0;
 			break;
 		}
@@ -775,7 +775,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			switch_group(0);
 			p->event->default_event.xkey.keycode = 0;
 			play_file(SOUND_ENABLE_LAYOUT_0);
-			osd_show(xconfig->osds[OSD_ENABLE_LAYOUT_0].file);
+			osd_show(xconfig->notifies[NOTIFY_ENABLE_LAYOUT_0].file);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_1:
@@ -783,7 +783,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			switch_group(1);
 			p->event->default_event.xkey.keycode = 0;
 			play_file(SOUND_ENABLE_LAYOUT_1);
-			osd_show(xconfig->osds[OSD_ENABLE_LAYOUT_1].file);
+			osd_show(xconfig->notifies[NOTIFY_ENABLE_LAYOUT_1].file);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_2:
@@ -791,7 +791,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			switch_group(2);
 			p->event->default_event.xkey.keycode = 0;
 			play_file(SOUND_ENABLE_LAYOUT_2);
-			osd_show(xconfig->osds[OSD_ENABLE_LAYOUT_2].file);
+			osd_show(xconfig->notifies[NOTIFY_ENABLE_LAYOUT_2].file);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_3:
@@ -799,7 +799,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			switch_group(3);
 			p->event->default_event.xkey.keycode = 0;
 			play_file(SOUND_ENABLE_LAYOUT_3);
-			osd_show(xconfig->osds[OSD_ENABLE_LAYOUT_3].file);
+			osd_show(xconfig->notifies[NOTIFY_ENABLE_LAYOUT_3].file);
 			break;
 		}
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
@@ -855,7 +855,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 				grab_spec_keys(p->focus->owner_window, TRUE);
 
 				play_file(SOUND_REPLACE_ABBREVIATION);
-				osd_show(xconfig->osds[OSD_REPLACE_ABBREVIATION].file);
+				osd_show(xconfig->notifies[NOTIFY_REPLACE_ABBREVIATION].file);
 				p->string->save_and_clear(p->string, p->focus->owner_window);
 
 				p->event->default_event.xkey.keycode = 0;
@@ -909,7 +909,7 @@ static int xprogram_check_lang_last_word(struct _xprogram *p)
 
 	p->change_word(p, change_action);
 	play_file(SOUND_AUTOMATIC_CHANGE_WORD);
-	osd_show(xconfig->osds[OSD_AUTOMATIC_CHANGE_WORD].file);
+	osd_show(xconfig->notifies[NOTIFY_AUTOMATIC_CHANGE_WORD].file);
 	return TRUE;
 }
 
@@ -952,7 +952,7 @@ static int xprogram_check_lang_last_syllable(struct _xprogram *p)
 
 	p->change_word(p, change_action);
 	play_file(SOUND_AUTOMATIC_CHANGE_WORD);
-	osd_show(xconfig->osds[OSD_AUTOMATIC_CHANGE_WORD].file);
+	osd_show(xconfig->notifies[NOTIFY_AUTOMATIC_CHANGE_WORD].file);
 	return TRUE;
 }
 
@@ -973,7 +973,7 @@ static void xprogram_check_caps_last_word(struct _xprogram *p)
 
 	p->change_word(p, CHANGE_INCIDENTAL_CAPS);
 	play_file(SOUND_CORR_INCIDENTAL_CAPS);
-	osd_show(xconfig->osds[OSD_CORR_INCIDENTAL_CAPS].file);
+	osd_show(xconfig->notifies[NOTIFY_CORR_INCIDENTAL_CAPS].file);
 }
 
 static void xprogram_check_tcl_last_word(struct _xprogram *p)
@@ -1000,7 +1000,7 @@ static void xprogram_check_tcl_last_word(struct _xprogram *p)
 
 	p->change_word(p, CHANGE_TWO_CAPITAL_LETTER);
 	play_file(SOUND_CORR_TWO_CAPITAL_LETTER);
-	osd_show(xconfig->osds[OSD_CORR_TWO_CAPITAL_LETTER].file);
+	osd_show(xconfig->notifies[NOTIFY_CORR_TWO_CAPITAL_LETTER].file);
 }
 
 static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)

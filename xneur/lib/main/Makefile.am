@@ -3,8 +3,6 @@ noinst_LTLIBRARIES = libxnx.la
 libxnx_la_SOURCES =		\
 	bind_table.c		\
 	bind_table.h		\
-	osd.c			\
-	osd.h			\
 	xdefines.h		\
 	xevent.c		\
 	xevent.h		\
@@ -25,5 +23,5 @@ libxnx_la_SOURCES =		\
 	xkeymap.c		\
 	xkeymap.h
 
-libxnx_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc  -I@top_srcdir@/lib/sound -I@top_srcdir@/lib/ai @X11_CFLAGS@ @DEFAULT_CFLAGS@
-libxnx_la_LDFLAGS = -static @X11_LIBS@ @XOSD_LIBS@
+libxnx_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc  -I@top_srcdir@/lib/notify -I@top_srcdir@/lib/ai @X11_CFLAGS@ @DEFAULT_CFLAGS@
+libxnx_la_LDFLAGS = -static @X11_LIBS@

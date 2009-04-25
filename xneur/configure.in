@@ -159,7 +159,7 @@ fi
 DEFAULT_CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
 AC_SUBST(DEFAULT_CFLAGS)
 
-AC_OUTPUT([share/Makefile share/sounds/Makefile share/languages/Makefile share/languages/be/Makefile share/languages/bg/Makefile share/languages/cs/Makefile share/languages/de/Makefile share/languages/el/Makefile share/languages/en/Makefile share/languages/es/Makefile share/languages/et/Makefile share/languages/fr/Makefile share/languages/hy/Makefile share/languages/kk/Makefile share/languages/lt/Makefile share/languages/lv/Makefile share/languages/pl/Makefile share/languages/ro/Makefile share/languages/ru/Makefile share/languages/uk/Makefile share/languages/uz/Makefile etc/Makefile lib/Makefile lib/ai/Makefile lib/config/Makefile lib/misc/Makefile lib/sound/Makefile lib/main/Makefile src/Makefile po/Makefile.in Makefile xnconfig.pc])
+AC_OUTPUT([share/Makefile share/sounds/Makefile share/languages/Makefile share/languages/be/Makefile share/languages/bg/Makefile share/languages/cs/Makefile share/languages/de/Makefile share/languages/el/Makefile share/languages/en/Makefile share/languages/es/Makefile share/languages/et/Makefile share/languages/fr/Makefile share/languages/hy/Makefile share/languages/kk/Makefile share/languages/lt/Makefile share/languages/lv/Makefile share/languages/pl/Makefile share/languages/ro/Makefile share/languages/ru/Makefile share/languages/uk/Makefile share/languages/uz/Makefile etc/Makefile lib/Makefile lib/ai/Makefile lib/config/Makefile lib/misc/Makefile lib/notify/Makefile lib/main/Makefile src/Makefile po/Makefile.in Makefile xnconfig.pc])
 
 cat << EOF
 

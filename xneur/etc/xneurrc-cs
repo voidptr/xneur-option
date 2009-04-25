@@ -148,7 +148,7 @@ ShowOSD No
 #FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
 FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
 
-# Binds OSDs for some actions
+# Binds notifies for some actions
 AddOSD XneurStart
 AddOSD XneurReload
 AddOSD XneurStop

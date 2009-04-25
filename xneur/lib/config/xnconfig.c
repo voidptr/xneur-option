@@ -51,7 +51,7 @@ static const char *option_names[] = 	{
 						"SaveLog", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
-						"ShowOSD", "AddOSD", "FontOSD",
+						"ShowOSD", "AddNotify", "FontOSD",
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -476,12 +476,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->show_osd = index;
 			break;
 		}
-		case 29: // OSDs
+		case 29: // Notifies
 		{
-			int osd = get_option_index(sound_names, param);
-			if (osd == -1)
+			int notify = get_option_index(sound_names, param);
+			if (notify == -1)
 			{
-				log_message(WARNING, _("Invalid value for OSD action name specified"));
+				log_message(WARNING, _("Invalid value for notify action name specified"));
 				break;
 			}
 
@@ -489,7 +489,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 
 			if (strlen(line) != 0)
-				p->osds[osd].file = strdup(line);
+				p->notifies[notify].file = strdup(line);
 
 			break;
 		}
@@ -550,10 +550,10 @@ static void free_structures(struct _xneur_config *p)
 			free(p->sounds[sound].file);
 	}
 
-	for (int osd = 0; osd < MAX_OSDS; osd++)
+	for (int notify = 0; notify < MAX_NOTIFIES; notify++)
 	{
-		if (p->osds[osd].file != NULL)
-			free(p->osds[osd].file);
+		if (p->notifies[notify].file != NULL)
+			free(p->notifies[notify].file);
 	}
 
 	for (int lang = 0; lang < p->total_languages; lang++)
@@ -587,7 +587,7 @@ static void free_structures(struct _xneur_config *p)
 
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
-	bzero(p->osds, MAX_OSDS * sizeof(struct _xneur_file));
+	bzero(p->notifies, MAX_NOTIFIES * sizeof(struct _xneur_file));
 
 	p->total_languages = 0;
 	p->actions_count = 0;
@@ -920,13 +920,13 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u\n");
 	fprintf(stream, "FontOSD %s\n\n", p->osd_font);
 
-	fprintf(stream, "# Binds OSDs for some actions\n");
-	for (int osd= 0; osd < MAX_OSDS; osd++)
+	fprintf(stream, "# Binds notifies for some actions\n");
+	for (int notify = 0; notify < MAX_NOTIFIES; notify++)
 	{
-		if (p->osds[osd].file == NULL)
-			fprintf(stream, "AddOSD %s\n", sound_names[osd]);
+		if (p->notifies[notify].file == NULL)
+			fprintf(stream, "AddNotify %s\n", sound_names[notify]);
 		else
-			fprintf(stream, "AddOSD %s %s\n", sound_names[osd], p->osds[osd].file);
+			fprintf(stream, "AddNotify %s %s\n", sound_names[notify], p->notifies[notify].file);
 	}
 
 	fprintf(stream, "\n# This option disable or enable checking language on input process\n");
@@ -1046,7 +1046,7 @@ static void xneur_config_uninit(struct _xneur_config *p)
 
 	free(p->hotkeys);
 	free(p->sounds);
-	free(p->osds);
+	free(p->notifies);
 
 	free(p);
 }
@@ -1068,8 +1068,8 @@ struct _xneur_config* xneur_config_init(void)
 	p->sounds = (struct _xneur_file *) malloc(MAX_SOUNDS * sizeof(struct _xneur_file));
 	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
 
-	p->osds = (struct _xneur_file *) malloc(MAX_OSDS * sizeof(struct _xneur_file));
-	bzero(p->osds, MAX_OSDS * sizeof(struct _xneur_file));
+	p->notifies = (struct _xneur_file *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_file));
+	bzero(p->notifies, MAX_NOTIFIES * sizeof(struct _xneur_file));
 
 	p->log_level			= LOG;
 	p->excluded_apps		= list_char_init();
