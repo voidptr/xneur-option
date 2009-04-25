@@ -1058,8 +1058,7 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 			// Shift fields to point to begin of word
 			p->string->set_offset(p->string, offset);
 
-			int lang = xconfig->find_group_lang(xconfig, 0);
-			p->change_lang(p, lang);
+			p->change_lang(p, 0);
 
 			p->send_string_silent(p, p->string->cur_pos);
 
@@ -1074,8 +1073,7 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 			// Shift fields to point to begin of word
 			p->string->set_offset(p->string, offset);
 
-			int lang = xconfig->find_group_lang(xconfig, 1);
-			p->change_lang(p, lang);;
+			p->change_lang(p, 1);
 
 			p->send_string_silent(p, p->string->cur_pos);
 
@@ -1090,8 +1088,7 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 			// Shift fields to point to begin of word
 			p->string->set_offset(p->string, offset);
 
-			int lang = xconfig->find_group_lang(xconfig, 2);
-			p->change_lang(p, lang);
+			p->change_lang(p, 2);
 
 			p->send_string_silent(p, p->string->cur_pos);
 
@@ -1106,8 +1103,7 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 			// Shift fields to point to begin of word
 			p->string->set_offset(p->string, offset);
 
-			int lang = xconfig->find_group_lang(xconfig, 3);
-			p->change_lang(p, lang);
+			p->change_lang(p, 3);
 
 			p->send_string_silent(p, p->string->cur_pos);
 
