@@ -9,6 +9,7 @@ xneurrc_DATA =			\
 	xneurrc-es		\
 	xneurrc-et		\
 	xneurrc-fr		\
+	xneurrc-hy		\
 	xneurrc-kk		\
 	xneurrc-lt		\
 	xneurrc-lv		\
