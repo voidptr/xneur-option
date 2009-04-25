@@ -156,6 +156,12 @@ if test "x$with_xosd" != "xno"; then
 	AC_SUBST(XOSD_LIBS)
 fi
 
+AC_ARG_WITH(libnotify, [  --without-libnotify	  Compile without libnotify message support])
+if test "x$with_libnotify" != "xno"; then
+	PKG_CHECK_MODULES(LIBNOTIFY, [libnotify >= 0.4.0])
+	AC_DEFINE(WITH_LIBNOTIFY, 1, [Define if you want libnotify message support])
+fi
+
 DEFAULT_CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
 AC_SUBST(DEFAULT_CFLAGS)
 
@@ -213,6 +219,14 @@ if test "x$with_xosd" != "xno"; then
 cat <<EOF
 	Xosd compiler flags:		$XOSD_CFLAGS
 	Xosd linker flags:		$XOSD_LIBS
+
+EOF
+fi
+
+if test "x$with_popup" != "xno"; then
+cat <<EOF
+	Libnotify compiler flags:	$Libnotify_CFLAGS
+	Libnotify linker flags:		$Libnotify_LIBS
 
 EOF
 fi

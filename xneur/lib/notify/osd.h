@@ -20,6 +20,6 @@
 #ifndef _OSD_H_
 #define _OSD_H_
 
-void osd_show(char *osd_text, ...);
+void osd_show(char *osd_text);
 
 #endif /* _OSD_H_ */

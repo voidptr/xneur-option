@@ -54,7 +54,7 @@ static void osd_show_thread(void *osd_text)
 	xosd_destroy (osd);
 }
 
-void osd_show(char *osd_text, ...)
+void osd_show(char *osd_text)
 {
 	if (!xconfig->show_osd)
 		return;
@@ -63,23 +63,15 @@ void osd_show(char *osd_text, ...)
 	if (strlen(osd_text) == 0)
 		return;
 
-	va_list ap;
-	va_start(ap, osd_text);
-
-	char *buffer = (char *) malloc(1024);
-	vsprintf(buffer, osd_text, ap);
-
 	pthread_attr_t osd_thread_attr;
 	pthread_attr_init(&osd_thread_attr);
 	pthread_attr_setdetachstate(&osd_thread_attr, PTHREAD_CREATE_DETACHED);
 
 	pthread_t osd_thread;
-	log_message(DEBUG, _("Show OSD \"%s\""), buffer);
-	pthread_create(&osd_thread, &osd_thread_attr, (void*) &osd_show_thread, (void *) buffer);
+	log_message(DEBUG, _("Show OSD \"%s\""), osd_text);
+	pthread_create(&osd_thread, &osd_thread_attr, (void*) &osd_show_thread, osd_text);
 
 	pthread_attr_destroy(&osd_thread_attr);
-
-	va_end(ap);
 }
 
 #else /* WITH_XOSD */

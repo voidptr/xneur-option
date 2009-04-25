@@ -102,7 +102,7 @@ static char *dirs[]					= {"be",
 	                                   "uk", 
 	                                   "uz"};
 
-static const char *sound_names[]			=   {
+static const char *notify_names[]			=   {
 										"Xneur started", "Xneur reloaded", "Xneur stopped",
 										"Keypress on Layout 1", "Keypress on Layout 2", "Keypress on Layout 3",
 										"Keypress on Layout 4", "Switch to Layout 1", "Switch to Layout 2",
@@ -122,7 +122,7 @@ static const char *hotkey_names[]			=   {
 		                                "Show OSD"
                                         };
 
-static const int total_sound_names = sizeof(sound_names) / sizeof(sound_names[0]);
+static const int total_notify_names = sizeof(notify_names) / sizeof(notify_names[0]);
 
 static const char *pixmap_names[]	=   {
 										"Flag pixmap for Layout 1", "Flag pixmap for Layout 2", "Flag pixmap for Layout 3",
@@ -683,12 +683,12 @@ void xneur_preference(void)
 	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_sound));
 	gtk_widget_show(treeview);
 
-	for (int i = 0; i < total_sound_names; i++)
+	for (int i = 0; i < total_notify_names; i++)
 	{
 		GtkTreeIter iter;
 		gtk_list_store_append(GTK_LIST_STORE(store_sound), &iter);
 		gtk_list_store_set(GTK_LIST_STORE(store_sound), &iter, 
-												0, _(sound_names[i]),
+												0, _(notify_names[i]),
 												1, xconfig->sounds[i].file, 
 												-1);
 	}
@@ -825,12 +825,12 @@ void xneur_preference(void)
 	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_osd));
 	gtk_widget_show(treeview);
 
-	for (int i = 0; i < total_sound_names; i++)
+	for (int i = 0; i < total_notify_names; i++)
 	{
 		GtkTreeIter iter;
 		gtk_list_store_append(GTK_LIST_STORE(store_osd), &iter);
 		gtk_list_store_set(GTK_LIST_STORE(store_osd), &iter, 
-												0, _(sound_names[i]),
+												0, _(notify_names[i]),
 												1, xconfig->osds[i].file, 
 												-1);
 	}

@@ -44,6 +44,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "xnconfig.h"
 #include "xnconfig_files.h"
@@ -250,6 +251,10 @@ void *play_file_thread(void *param)
 void play_file(int file_type)
 {
 	if (!xconfig->play_sounds)
+		return;
+	if (xconfig->sounds[file_type].file == NULL)
+		return;
+	if (strlen(xconfig->sounds[file_type].file) == 0)
 		return;
 	
 	char *path = get_file_path_name(SOUNDDIR, xconfig->sounds[file_type].file);

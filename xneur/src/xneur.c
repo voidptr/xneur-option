@@ -35,7 +35,6 @@
 #include "xnconfig.h"
 
 #include "bind_table.h"
-#include "osd.h"
 
 #include "xprogram.h"
 #include "xswitchlang.h"
@@ -49,6 +48,8 @@
 #include "sound.h"
 
 #include "newlang_creation.h"
+
+#include "notify.h"
 
 struct _xneur_config *xconfig = NULL;
 static struct _xprogram *xprogram = NULL;
@@ -195,7 +196,7 @@ static void xneur_terminate(int status)
 	if (status){}
 
 	log_message(DEBUG, _("Caught SIGTERM/SIGINT, terminating"));
-	osd_show(xconfig->notifies[NOTIFY_XNEUR_STOP].file);
+	show_notify(NOTIFY_XNEUR_STOP);
 	sleep(1);
 
 	xneur_cleanup();
@@ -207,7 +208,7 @@ static void xneur_reload(int status)
 {
 	status = status; // To prevent warnings
 	log_message(LOG, _("Caught SIGHUP, reloading configuration file"));
-	osd_show(xconfig->notifies[NOTIFY_XNEUR_RELOAD].file);
+	show_notify(NOTIFY_XNEUR_RELOAD);
 
 	sound_uninit();
 
@@ -356,7 +357,7 @@ int main(int argc, char *argv[])
 	xneur_init();
 
 	log_message(DEBUG, _("Init program structure complete"));
-	osd_show(xconfig->notifies[NOTIFY_XNEUR_START].file);
+	show_notify(NOTIFY_XNEUR_START);
 
 	xntrap(SIGTERM, xneur_terminate);
 	xntrap(SIGINT, xneur_terminate);

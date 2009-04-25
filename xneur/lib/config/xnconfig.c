@@ -60,7 +60,7 @@ static const char *action_names[] =	{
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"ReplaceAbbreviation"
 					};
-static const char *sound_names[] =	{
+static const char *notify_names[] =	{
 						"XneurStart", "XneurReload", "XneurStop",
 						"PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
@@ -309,7 +309,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 16: // Sounds
 		{
-			int sound = get_option_index(sound_names, param);
+			int sound = get_option_index(notify_names, param);
 			if (sound == -1)
 			{
 				log_message(WARNING, _("Invalid value for sound action name specified"));
@@ -476,9 +476,9 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->show_osd = index;
 			break;
 		}
-		case 29: // Notifies
+		case 29: // OSDs
 		{
-			int notify = get_option_index(sound_names, param);
+			int notify = get_option_index(notify_names, param);
 			if (notify == -1)
 			{
 				log_message(WARNING, _("Invalid value for notify action name specified"));
@@ -489,7 +489,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 
 			if (strlen(line) != 0)
-				p->notifies[notify].file = strdup(line);
+				p->osds[notify].file = strdup(line);
 
 			break;
 		}
@@ -544,7 +544,7 @@ static void free_structures(struct _xneur_config *p)
 			free(p->hotkeys[hotkey].key);
 	}
 
-	for (int sound = 0; sound < MAX_SOUNDS; sound++)
+	for (int sound = 0; sound < MAX_NOTIFIES; sound++)
 	{
 		if (p->sounds[sound].file != NULL)
 			free(p->sounds[sound].file);
@@ -552,8 +552,8 @@ static void free_structures(struct _xneur_config *p)
 
 	for (int notify = 0; notify < MAX_NOTIFIES; notify++)
 	{
-		if (p->notifies[notify].file != NULL)
-			free(p->notifies[notify].file);
+		if (p->osds[notify].file != NULL)
+			free(p->osds[notify].file);
 	}
 
 	for (int lang = 0; lang < p->total_languages; lang++)
@@ -586,8 +586,8 @@ static void free_structures(struct _xneur_config *p)
 	}
 
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
-	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
-	bzero(p->notifies, MAX_NOTIFIES * sizeof(struct _xneur_file));
+	bzero(p->sounds, MAX_NOTIFIES * sizeof(struct _xneur_file));
+	bzero(p->osds, MAX_NOTIFIES * sizeof(struct _xneur_file));
 
 	p->total_languages = 0;
 	p->actions_count = 0;
@@ -845,12 +845,12 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "PlaySounds %s\n\n", p->get_bool_name(p->play_sounds));
 
 	fprintf(stream, "# Binds sounds for some actions\n");
-	for (int sound = 0; sound < MAX_SOUNDS; sound++)
+	for (int sound = 0; sound < MAX_NOTIFIES; sound++)
 	{
 		if (p->sounds[sound].file == NULL)
-			fprintf(stream, "AddSound %s \n", sound_names[sound]);
+			fprintf(stream, "AddSound %s \n", notify_names[sound]);
 		else
-			fprintf(stream, "AddSound %s %s\n", sound_names[sound], p->sounds[sound].file);
+			fprintf(stream, "AddSound %s %s\n", notify_names[sound], p->sounds[sound].file);
 	}
 	fprintf(stream, "\n");
 
@@ -920,13 +920,13 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u\n");
 	fprintf(stream, "FontOSD %s\n\n", p->osd_font);
 
-	fprintf(stream, "# Binds notifies for some actions\n");
+	fprintf(stream, "# Binds OSDs for some actions\n");
 	for (int notify = 0; notify < MAX_NOTIFIES; notify++)
 	{
-		if (p->notifies[notify].file == NULL)
-			fprintf(stream, "AddNotify %s\n", sound_names[notify]);
+		if (p->osds[notify].file == NULL)
+			fprintf(stream, "AddNotify %s\n", notify_names[notify]);
 		else
-			fprintf(stream, "AddNotify %s %s\n", sound_names[notify], p->notifies[notify].file);
+			fprintf(stream, "AddNotify %s %s\n", notify_names[notify], p->osds[notify].file);
 	}
 
 	fprintf(stream, "\n# This option disable or enable checking language on input process\n");
@@ -1046,7 +1046,7 @@ static void xneur_config_uninit(struct _xneur_config *p)
 
 	free(p->hotkeys);
 	free(p->sounds);
-	free(p->notifies);
+	free(p->osds);
 
 	free(p);
 }
@@ -1065,11 +1065,11 @@ struct _xneur_config* xneur_config_init(void)
 	p->hotkeys = (struct _xneur_hotkey *) malloc(MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 
-	p->sounds = (struct _xneur_file *) malloc(MAX_SOUNDS * sizeof(struct _xneur_file));
-	bzero(p->sounds, MAX_SOUNDS * sizeof(struct _xneur_file));
+	p->sounds = (struct _xneur_file *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_file));
+	bzero(p->sounds, MAX_NOTIFIES * sizeof(struct _xneur_file));
 
-	p->notifies = (struct _xneur_file *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_file));
-	bzero(p->notifies, MAX_NOTIFIES * sizeof(struct _xneur_file));
+	p->osds = (struct _xneur_file *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_file));
+	bzero(p->osds, MAX_NOTIFIES * sizeof(struct _xneur_file));
 
 	p->log_level			= LOG;
 	p->excluded_apps		= list_char_init();

@@ -33,7 +33,6 @@
 #define LANGUAGEDIR			"languages"
 
 #define MAX_FLAGS			4
-#define MAX_SOUNDS			24
 #define MAX_NOTIFIES		24
 #define MAX_HOTKEYS			14
 
@@ -43,35 +42,6 @@ enum _flag_action
 	FLAG_LAYOUT_1,
 	FLAG_LAYOUT_2,
 	FLAG_LAYOUT_3,
-};
-
-enum _sound_action
-{
-	SOUND_XNEUR_START = 0,
-	SOUND_XNEUR_RELOAD,
-	SOUND_XNEUR_STOP,
-	SOUND_PRESS_KEY_LAYOUT_0,
-	SOUND_PRESS_KEY_LAYOUT_1,
-	SOUND_PRESS_KEY_LAYOUT_2,
-	SOUND_PRESS_KEY_LAYOUT_3,
-	SOUND_ENABLE_LAYOUT_0,
-	SOUND_ENABLE_LAYOUT_1,
-	SOUND_ENABLE_LAYOUT_2,
-	SOUND_ENABLE_LAYOUT_3,
-	SOUND_AUTOMATIC_CHANGE_WORD,
-	SOUND_MANUAL_CHANGE_WORD,
-	SOUND_CHANGE_STRING,
-	SOUND_CHANGE_SELECTED,
-	SOUND_TRANSLIT_SELECTED,
-	SOUND_CHANGECASE_SELECTED,
-	SOUND_CHANGE_CLIPBOARD,
-	SOUND_TRANSLIT_CLIPBOARD,
-	SOUND_CHANGECASE_CLIPBOARD,
-	SOUND_REPLACE_ABBREVIATION,
-	SOUND_CORR_INCIDENTAL_CAPS,
-	SOUND_CORR_TWO_CAPITAL_LETTER,
-	SOUND_EXEC_USER_ACTION,
-	SOUND_NONE,
 };
 
 enum _notify_action
@@ -196,7 +166,7 @@ struct _xneur_config
 	struct _xneur_language *languages;		// Array of languages used in program
 	struct _xneur_hotkey *hotkeys;			// Array of hotkeys used in program
 	struct _xneur_file *sounds;			// Array of sounds for actions
-	struct _xneur_file *notifies;			// Array of OSDs for actions
+	struct _xneur_file *osds;			// Array of OSDs for actions
 	struct _xneur_action *actions;			// Array of actions
 
 	int   actions_count;				// Count of actions

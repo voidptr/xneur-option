@@ -1,6 +1,8 @@
 noinst_LTLIBRARIES = libxnnotify.la
 
 libxnnotify_la_SOURCES =	\
+	notify.c		\
+	notify.h		\
 	sound.c			\
 	sound.h			\
 	osd.c			\
