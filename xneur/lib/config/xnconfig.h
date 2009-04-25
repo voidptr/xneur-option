@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2008 XNeur Team
+ *  Copyright (C) 2006-2009 XNeur Team
  *
  */
 
@@ -167,6 +167,7 @@ struct _xneur_config
 	struct _xneur_hotkey *hotkeys;			// Array of hotkeys used in program
 	struct _xneur_file *sounds;			// Array of sounds for actions
 	struct _xneur_file *osds;			// Array of OSDs for actions
+	struct _xneur_file *popups;			// Array of popups for actions
 	struct _xneur_action *actions;			// Array of actions
 
 	int   actions_count;				// Count of actions
@@ -194,6 +195,8 @@ struct _xneur_config
 	int   show_osd;					// Show OSD
 	char  *osd_font;
 
+	int   show_popup;				// Show popups
+	
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
 
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);

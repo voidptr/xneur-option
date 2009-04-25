@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2008 XNeur Team
+ *  Copyright (C) 2006-2009 XNeur Team
  *
  */
 
@@ -144,6 +144,7 @@ static void xneur_load_config(int final)
 	log_message(LOG, _("Flush internal buffer when pressed Enter or Tab mode set to %s"), xconfig->get_bool_name(xconfig->flush_buffer_when_press_enter));
 	log_message(LOG, _("Don't process word when pressed Enter or Tab mode set to %s"), xconfig->get_bool_name(xconfig->dont_process_when_press_enter));
 	log_message(LOG, _("Show OSD mode set to %s"), xconfig->get_bool_name(xconfig->show_osd));
+	log_message(LOG, _("Show popup messages mode set to %s"), xconfig->get_bool_name(xconfig->show_popup));
 	log_message(LOG, _("Check language on input process mode set to %s"), xconfig->get_bool_name(xconfig->check_lang_on_process));
 }
 

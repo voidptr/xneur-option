@@ -13,9 +13,13 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2008 XNeur Team
+ *  Copyright (C) 2006-2009 XNeur Team
  *
  */
+
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -51,7 +55,8 @@ static const char *option_names[] = 	{
 						"SaveLog", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
-						"ShowOSD", "AddNotify", "FontOSD",
+						"ShowOSD", "AddOSD", "FontOSD",
+	                    "ShowPopup", "AddPopup"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -478,10 +483,10 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 29: // OSDs
 		{
-			int notify = get_option_index(notify_names, param);
-			if (notify == -1)
+			int osd = get_option_index(notify_names, param);
+			if (osd == -1)
 			{
-				log_message(WARNING, _("Invalid value for notify action name specified"));
+				log_message(WARNING, _("Invalid value for OSD action name specified"));
 				break;
 			}
 
@@ -489,13 +494,42 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 
 			if (strlen(line) != 0)
-				p->osds[notify].file = strdup(line);
+				p->osds[osd].file = strdup(line);
 
 			break;
 		}
 		case 30: // Get Initial Xkb Group for all new windows
 		{
 			p->osd_font = strdup(param);
+			break;
+		}
+		case 31: // Show popup
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for show OSD mode specified"));
+				break;
+			}
+
+			p->show_popup = index;
+			break;
+		}
+		case 32: // Popups
+		{
+			int notify = get_option_index(notify_names, param);
+			if (notify == -1)
+			{
+				log_message(WARNING, _("Invalid value for popup action name specified"));
+				break;
+			}
+
+			if (line == NULL)
+				break;
+
+			if (strlen(line) != 0)
+				p->popups[notify].file = strdup(line);
+
 			break;
 		}
 	}
@@ -544,18 +578,18 @@ static void free_structures(struct _xneur_config *p)
 			free(p->hotkeys[hotkey].key);
 	}
 
-	for (int sound = 0; sound < MAX_NOTIFIES; sound++)
-	{
-		if (p->sounds[sound].file != NULL)
-			free(p->sounds[sound].file);
-	}
-
 	for (int notify = 0; notify < MAX_NOTIFIES; notify++)
 	{
+		if (p->sounds[notify].file != NULL)
+			free(p->sounds[notify].file);
+
 		if (p->osds[notify].file != NULL)
 			free(p->osds[notify].file);
-	}
 
+		if (p->popups[notify].file != NULL)
+			free(p->popups[notify].file);
+	}
+	
 	for (int lang = 0; lang < p->total_languages; lang++)
 	{
 		if (p->languages[lang].temp_dicts != NULL)
@@ -588,7 +622,8 @@ static void free_structures(struct _xneur_config *p)
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->sounds, MAX_NOTIFIES * sizeof(struct _xneur_file));
 	bzero(p->osds, MAX_NOTIFIES * sizeof(struct _xneur_file));
-
+	bzero(p->popups, MAX_NOTIFIES * sizeof(struct _xneur_file));
+	
 	p->total_languages = 0;
 	p->actions_count = 0;
 
@@ -924,9 +959,9 @@ static int xneur_config_save(struct _xneur_config *p)
 	for (int notify = 0; notify < MAX_NOTIFIES; notify++)
 	{
 		if (p->osds[notify].file == NULL)
-			fprintf(stream, "AddNotify %s\n", notify_names[notify]);
+			fprintf(stream, "AddOSD %s\n", notify_names[notify]);
 		else
-			fprintf(stream, "AddNotify %s %s\n", notify_names[notify], p->osds[notify].file);
+			fprintf(stream, "AddOSD %s %s\n", notify_names[notify], p->osds[notify].file);
 	}
 
 	fprintf(stream, "\n# This option disable or enable checking language on input process\n");
@@ -1047,7 +1082,8 @@ static void xneur_config_uninit(struct _xneur_config *p)
 	free(p->hotkeys);
 	free(p->sounds);
 	free(p->osds);
-
+	free(p->popups);
+	
 	free(p);
 }
 
@@ -1070,6 +1106,9 @@ struct _xneur_config* xneur_config_init(void)
 
 	p->osds = (struct _xneur_file *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_file));
 	bzero(p->osds, MAX_NOTIFIES * sizeof(struct _xneur_file));
+
+	p->popups = (struct _xneur_file *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_file));
+	bzero(p->popups, MAX_NOTIFIES * sizeof(struct _xneur_file));
 
 	p->log_level			= LOG;
 	p->excluded_apps		= list_char_init();

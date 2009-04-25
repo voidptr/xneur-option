@@ -17,11 +17,9 @@
  *
  */
 
-#ifndef _SOUND_H_
-#define _SOUND_H_
+#ifndef _NOTIFY_H_
+#define _NOTIFY_H_
 
-void sound_init(void);
-void play_file(int file_type); 
-void sound_uninit(void);
+void show_notify(int notify, ...);
 
-#endif /* _SOUND_H_ */
+#endif /* _NOTIFY_H_ */

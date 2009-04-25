@@ -17,11 +17,43 @@
  *
  */
 
-#ifndef _SOUND_H_
-#define _SOUND_H_
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
 
-void sound_init(void);
-void play_file(int file_type); 
-void sound_uninit(void);
+#include "xnconfig.h"
 
-#endif /* _SOUND_H_ */
+#include "osd.h"
+#include "sound.h"
+#include "popup.h"
+
+#include "debug.h"
+
+extern struct _xneur_config *xconfig;
+
+void show_notify(int notify, ...)
+{
+	play_file(notify);
+	
+	va_list ap;
+	va_start(ap, notify);
+
+	if ((xconfig->osds[notify].file != NULL) && (strlen(xconfig->osds[notify].file) != 0))
+	{
+		char *buffer = (char *) malloc(1024);
+		vsprintf(buffer, xconfig->osds[notify].file, ap);
+
+		osd_show(buffer);
+	}
+	
+	if ((xconfig->popups[notify].file != NULL) && (strlen(xconfig->popups[notify].file) != 0))
+	{
+		char *buffer = (char *) malloc(1024);
+		vsprintf(buffer, xconfig->popups[notify].file, ap);
+
+		popup_show(buffer);
+	}
+	
+	va_end(ap);
+}

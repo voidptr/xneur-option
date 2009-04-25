@@ -56,13 +56,6 @@ static void osd_show_thread(void *osd_text)
 
 void osd_show(char *osd_text)
 {
-	if (!xconfig->show_osd)
-		return;
-	if (osd_text == NULL)
-		return;
-	if (strlen(osd_text) == 0)
-		return;
-
 	pthread_attr_t osd_thread_attr;
 	pthread_attr_init(&osd_thread_attr);
 	pthread_attr_setdetachstate(&osd_thread_attr, PTHREAD_CREATE_DETACHED);
