@@ -46,10 +46,9 @@
 #include "log.h"
 #include "colors.h"
 #include "sound.h"
+#include "notify.h"
 
 #include "newlang_creation.h"
-
-#include "notify.h"
 
 struct _xneur_config *xconfig = NULL;
 static struct _xprogram *xprogram = NULL;
@@ -207,7 +206,8 @@ static void xneur_terminate(int status)
 
 static void xneur_reload(int status)
 {
-	status = status; // To prevent warnings
+	if (status){}
+
 	log_message(LOG, _("Caught SIGHUP, reloading configuration file"));
 	show_notify(NOTIFY_XNEUR_RELOAD);
 
