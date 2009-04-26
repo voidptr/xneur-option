@@ -964,6 +964,20 @@ static int xneur_config_save(struct _xneur_config *p)
 			fprintf(stream, "AddOSD %s %s\n", notify_names[notify], p->osds[notify].file);
 	}
 
+	fprintf(stream, "\n# This option disable or enable show popup messages\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#ShowPopup Yes\n");
+	fprintf(stream, "ShowPopup %s\n\n", p->get_bool_name(p->show_popup));
+
+	fprintf(stream, "# Binds popup messages for some actions\n");
+	for (int notify = 0; notify < MAX_NOTIFIES; notify++)
+	{
+		if (p->popups[notify].file == NULL)
+			fprintf(stream, "AddPopup %s\n", notify_names[notify]);
+		else
+			fprintf(stream, "AddPopup %s %s\n", notify_names[notify], p->popups[notify].file);
+	}
+	        
 	fprintf(stream, "\n# This option disable or enable checking language on input process\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CheckOnProcess Yes\n");

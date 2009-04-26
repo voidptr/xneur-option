@@ -239,7 +239,7 @@ static void xprogram_layout_update(struct _xprogram *p)
 	// Restore layout for new window
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
-		sprintf(window_layouts, "%s %d", text_to_find, lang);
+		sprintf(window_layouts, "%s %d", text_to_find, xconfig->get_lang_group(xconfig, lang));
 
 		if (!xconfig->window_layouts->exist(xconfig->window_layouts, window_layouts, BY_PLAIN))
 			continue;

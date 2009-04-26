@@ -49,14 +49,15 @@
 	
 struct _xneur_config *xconfig				= NULL;
 	
-static GtkListStore *store_exclude_app			= NULL;
+static GtkListStore *store_exclude_app		= NULL;
 static GtkListStore *store_auto_app			= NULL;
-static GtkListStore *store_manual_app			= NULL;
-static GtkListStore *store_layout_app			= NULL;
-static GtkListStore *store_draw_flag_app			= NULL;
-static GtkListStore *store_abbreviation			= NULL;
+static GtkListStore *store_manual_app		= NULL;
+static GtkListStore *store_layout_app		= NULL;
+static GtkListStore *store_draw_flag_app	= NULL;
+static GtkListStore *store_abbreviation		= NULL;
 static GtkListStore *store_sound			= NULL;
-static GtkListStore *store_osd			= NULL;
+static GtkListStore *store_osd				= NULL;
+static GtkListStore *store_popup			= NULL;
 static GtkListStore *store_action			= NULL;
 static GtkListStore *store_hotkey			= NULL;
 
@@ -137,8 +138,6 @@ static const char *language_fix_boxes[MAX_LANGUAGES]	= {"checkbutton14", "checkb
 static const int total_modifiers			= sizeof(modifier_names) / sizeof(modifier_names[0]); 
 static const int total_all_modifiers			= sizeof(all_modifiers) / sizeof(all_modifiers[0]);
 static const int total_languages			= sizeof(language_names) / sizeof(language_names[0]);
-
-static int hotkey_action = 0;
 
 static void error_msg(const char *msg, ...)
 {
@@ -732,7 +731,6 @@ void xneur_preference(void)
 	
 	// Delay Before Send
 	widget = glade_xml_get_widget (gxml, "spinbutton1");
-	printf("%d\n", xconfig->send_delay);
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->send_delay);
 		
 	// Log Level
@@ -841,7 +839,7 @@ void xneur_preference(void)
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	cell = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("OSD Text"), cell, "text", 1, NULL);
+	column = gtk_tree_view_column_new_with_attributes(_("OSD text"), cell, "text", 1, NULL);
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
 	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
 	g_signal_connect (G_OBJECT (cell), "edited",
@@ -852,7 +850,43 @@ void xneur_preference(void)
 	// OSD Font
 	widget = glade_xml_get_widget (gxml, "entry2");
 	gtk_entry_set_text(GTK_ENTRY(widget), xconfig->osd_font);
+
+	// Show popup
+	widget = glade_xml_get_widget (gxml, "checkbutton22");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->show_popup);
 	
+	// Popup Text Preference
+	// Popup List set
+	treeview = glade_xml_get_widget (gxml, "treeview12");
+
+	store_popup = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_popup));
+	gtk_widget_show(treeview);
+
+	for (int i = 0; i < total_notify_names; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_popup), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_popup), &iter, 
+												0, _(notify_names[i]),
+												1, xconfig->popups[i].file, 
+												-1);
+	}
+	
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Action"), cell, "text", 0, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Popup message text"), cell, "text", 1, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "edited",
+						G_CALLBACK (column_1_edited),
+						(gpointer) treeview);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
@@ -1302,10 +1336,10 @@ gboolean save_user_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *i
 		return FALSE;
 	}
 	
-	//int action = xconfig->actions_count;
-	xconfig->actions = (struct _xneur_action *) realloc(xconfig->actions, (xconfig->actions_count + 1) * sizeof(struct _xneur_action));
-	bzero(&xconfig->actions[xconfig->actions_count], sizeof(struct _xneur_action));		
-	xconfig->actions[xconfig->actions_count].hotkey.modifiers = 0;
+	int action = atoi(gtk_tree_path_to_string(path));
+	xconfig->actions = (struct _xneur_action *) realloc(xconfig->actions, (action + 1) * sizeof(struct _xneur_action));
+	bzero(&xconfig->actions[action], sizeof(struct _xneur_action));		
+	xconfig->actions[action].hotkey.modifiers = 0;
 	
 	for (int i = 0; i <= last; i++)
 	{
@@ -1316,18 +1350,18 @@ gboolean save_user_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *i
 				continue; 
 
 			assigned = TRUE;
-			xconfig->actions[xconfig->actions_count].hotkey.modifiers |= (0x1 << j); 
+			xconfig->actions[action].hotkey.modifiers |= (0x1 << j); 
 			break; 
 		} 
 
 		if (assigned == FALSE)
 		{
-			xconfig->actions[xconfig->actions_count].hotkey.key = strdup(key_stat[i]); 
-			xconfig->actions[xconfig->actions_count].command = strdup(action_text);
+			xconfig->actions[action].hotkey.key = strdup(key_stat[i]); 
+			xconfig->actions[action].command = strdup(action_text);
 		}
 	}
 
-	xconfig->actions_count++;
+	xconfig->actions_count = action + 1;
 	
 	g_strfreev(key_stat);
 	
@@ -1345,8 +1379,9 @@ gboolean save_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, 
 	gchar *action_text;
 	gtk_tree_model_get(GTK_TREE_MODEL(store_hotkey), iter, 0, &action_text, 1, &key_bind, -1);
 
-	split_bind((char *) key_bind, hotkey_action);
-	hotkey_action++;
+	int i = atoi(gtk_tree_path_to_string(path));
+	split_bind((char *) key_bind, i);
+	
 	return FALSE;
 }
 
@@ -1390,6 +1425,26 @@ gboolean save_osd(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpo
 	return FALSE;
 }
 
+gboolean save_popup(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	gchar *string;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_popup), iter, 1, &string, -1);
+	
+	int i = atoi(gtk_tree_path_to_string(path));
+	if (xconfig->popups[i].file != NULL)
+		free(xconfig->popups[i].file);
+	
+	if (string != NULL)
+	{
+		xconfig->popups[i].file = strdup(string);
+		g_free(string);
+	}
+	
+	return FALSE;
+}
+
 void xneur_save_preference(GladeXML *gxml)
 {
 	xconfig->clear(xconfig);
@@ -1421,23 +1476,11 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_layout_app), save_layout_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_abbreviation), save_abbreviation, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_sound), save_sound, NULL);
-	xconfig->actions_count = 0;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_action), save_user_action, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_osd), save_osd, NULL);
-	hotkey_action = 0;
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_popup), save_popup, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_hotkey), save_action, NULL);
 	
-	/*fill_binds(0, gxml, "entry11", FALSE);
-	fill_binds(1, gxml, "entry12", FALSE);
-	fill_binds(2, gxml, "entry13", FALSE);
-	fill_binds(3, gxml, "entry14", FALSE);
-	fill_binds(4, gxml, "entry15", FALSE);
-	fill_binds(5, gxml, "entry16", FALSE);
-	fill_binds(6, gxml, "entry17", FALSE);
-	fill_binds(7, gxml, "entry18", FALSE);
-	fill_binds(8, gxml, "entry19", FALSE);
-	fill_binds(9, gxml, "entry20", FALSE);
-	fill_binds(10, gxml, "entry1", FALSE);*/
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton7");
 	xconfig->manual_mode = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
