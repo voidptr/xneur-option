@@ -178,7 +178,7 @@ ShowPopup Yes
 
 # Binds popup messages for some actions
 AddPopup XneurStart X Neural Switcher runned
-AddPopup XneurReload X Neural Swirtcher reloaded
+AddPopup XneurReload X Neural Switcher reloaded
 AddPopup XneurStop X Neural Switcher stopped
 AddPopup PressKeyLayout1
 AddPopup PressKeyLayout2

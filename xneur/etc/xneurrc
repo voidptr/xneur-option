@@ -178,7 +178,7 @@ ShowPopup Yes
 
 # Binds popup messages for some actions
 AddPopup XneurStart X Neural Switcher запущен
-AddPopup XneurReload X Neural Swirtcher перезагружен
+AddPopup XneurReload X Neural Switcher перезагружен
 AddPopup XneurStop X Neural Switcher остановлен
 AddPopup PressKeyLayout1
 AddPopup PressKeyLayout2
