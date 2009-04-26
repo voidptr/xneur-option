@@ -14,194 +14,201 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/xneur.c:63
+#: src/xneur.c:64
 msgid "Checking configuration file version..."
 msgstr "Проверка версии конфигурационного файла..."
 
-#: src/xneur.c:67
+#: src/xneur.c:68
 msgid "User configuration file version is OK!"
 msgstr "Пользовательский конфигурационный файл в порядке!"
 
-#: src/xneur.c:71
+#: src/xneur.c:72
 msgid "Configuration file version is out of date!"
 msgstr "Конфигурационный файл устарел!"
 
-#: src/xneur.c:81
+#: src/xneur.c:82
 msgid ""
 "Default configuration file not founded in system! Please, reinstall XNeur!"
 msgstr ""
 "Конфигурационный файл не найден в системе! Пожалуйста, переустановите XNeur!"
 
-#: src/xneur.c:86
+#: src/xneur.c:87
 msgid "Configuration file replaced to default one"
 msgstr "Конфигурационный файл заменен на файл по умолчанию"
 
-#: src/xneur.c:105
+#: src/xneur.c:106
 msgid "Loading configuration"
 msgstr "Загрузка конфигурации"
 
-#: src/xneur.c:109
+#: src/xneur.c:110
 msgid ""
 "Configuration file damaged! Please, remove old file before starting xneur!"
 msgstr ""
 "Конфигурационный файл поврежден! Пожалуйста, удалите старый файл перед "
 "запуском xneur!"
 
-#: src/xneur.c:116
+#: src/xneur.c:117
 #, c-format
 msgid "Log level is set to %s"
 msgstr "Уровень подробности выводимых сообщений установлен в значение %s"
 
-#: src/xneur.c:117
+#: src/xneur.c:118
 #, c-format
 msgid "Total detected %d languages"
 msgstr "Всего обнаружено %d языка"
 
-#: src/xneur.c:123
+#: src/xneur.c:124
 #, c-format
 msgid "%s dictionary has %d records"
 msgstr "Словарь %s содержит %d записи"
 
-#: src/xneur.c:124
+#: src/xneur.c:125
 #, c-format
 msgid "%s proto has %d records"
 msgstr "Прото-язык %s содержит %d записи"
 
-#: src/xneur.c:125
+#: src/xneur.c:126
 #, c-format
 msgid "%s big proto has %d records"
 msgstr "Большой прото-язык %s содержит %d записи"
 
-#: src/xneur.c:126
+#: src/xneur.c:127
 #, c-format
 msgid "%s regexp has %d records"
 msgstr "Набор регулярных выражений %s содержит %d записи"
 
-#: src/xneur.c:129
+#: src/xneur.c:130
 msgid "Configuration load complete"
 msgstr "Конфигурационный файл успешно загружен"
 
-#: src/xneur.c:131
+#: src/xneur.c:132
 #, c-format
 msgid "Default group for all new windows set to %d"
 msgstr "Группа по умолчанию для всех новых окон установлена в значение %d"
 
-#: src/xneur.c:132
+#: src/xneur.c:133
 #, c-format
 msgid "Manual mode set to %s"
 msgstr "Ручной режим установлен в значение %s"
 
-#: src/xneur.c:133
+#: src/xneur.c:134
 #, c-format
 msgid "Mouse processing mode set to %s"
 msgstr "Режим обработки событий мыши установлен в значение %s"
 
-#: src/xneur.c:134
+#: src/xneur.c:135
 #, c-format
 msgid "Education mode set to %s"
 msgstr "Режим самообучения установлен в значение %s"
 
-#: src/xneur.c:135
+#: src/xneur.c:136
 #, c-format
 msgid "Layout remember mode set to %s"
 msgstr "Режим запоминания раскладки установлен в значение %s"
 
-#: src/xneur.c:136
+#: src/xneur.c:137
 #, c-format
 msgid "Save selection mode set to %s"
 msgstr "Режим сохранения выделения установлен в значение %s"
 
-#: src/xneur.c:137
+#: src/xneur.c:138
 #, c-format
 msgid "Sound playing mode set to %s"
 msgstr "Режим проигрывания звука установлен в значение %s"
 
-#: src/xneur.c:138
+#: src/xneur.c:139
 #, c-format
 msgid "Logging keyboard mode set to %s"
 msgstr ""
 "Режим сохранения набираемого пользователем текста установлен в значение %s"
 
-#: src/xneur.c:139
+#: src/xneur.c:140
 #, c-format
 msgid "Ignore keyboard layout for abbreviations mode set to %s"
 msgstr "Режим игнорирования раскладки для сокращений установлен в значение %s"
 
-#: src/xneur.c:140
+#: src/xneur.c:141
 #, c-format
 msgid "Correct of iNCIDENTAL CapsLock mode set to %s"
 msgstr "Режим исправления сЛУЧАЙНОГО CapsLock установлен в значение %s"
 
-#: src/xneur.c:141
+#: src/xneur.c:142
 #, c-format
 msgid "Correct of two CApital letter mode set to %s"
 msgstr "Режим исправления двух ПРописных букв установлен в значение %s"
 
-#: src/xneur.c:142
+#: src/xneur.c:143
+#, c-format
 msgid "Disable CapsLock use mode set to %s"
 msgstr "Режим отключения CapsLock установлен в значение %s"
 
-#: src/xneur.c:143
+#: src/xneur.c:144
 #, c-format
 msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
 msgstr ""
 "Режим сброса внутреннего буфера при нажатии Ввод или Таб установлен в "
 "значение %s"
 
-#: src/xneur.c:144
+#: src/xneur.c:145
 #, c-format
 msgid "Don't process word when pressed Enter or Tab mode set to %s"
 msgstr ""
 "Режим необрабатывания слов при нажатии Ввод или Таб установлен в значение %s"
 
-#: src/xneur.c:145
+#: src/xneur.c:146
 #, c-format
 msgid "Show OSD mode set to %s"
 msgstr "Режим показа OSD установлен в значение %s"
 
-#: src/xneur.c:146
+#: src/xneur.c:147
+#, c-format
+msgid "Show popup messages mode set to %s"
+msgstr "Режим показа всплывающих сообщений установлен в значение %s"
+
+#: src/xneur.c:148
 #, c-format
 msgid "Check language on input process mode set to %s"
 msgstr "Режим проверки языка при вводе установлен в значение %s"
 
-#: src/xneur.c:156
+#: src/xneur.c:158
 #, c-format
 msgid " already running with pid %d"
 msgstr " уже запущен с pid %d"
 
-#: src/xneur.c:168
+#: src/xneur.c:170
+#, c-format
 msgid " pid is %d with nice %d"
 msgstr " pid равен %d с приоритетом %d"
 
-#: src/xneur.c:174
+#: src/xneur.c:176
 msgid "Current sound data is freed"
 msgstr "Текущие данные звука очищены"
 
-#: src/xneur.c:179
+#: src/xneur.c:181
 msgid "Current program info is freed"
 msgstr "Текущие данные программной информации очищены"
 
-#: src/xneur.c:186
+#: src/xneur.c:188
 msgid "Current configuration data is freed"
 msgstr "Текущие данные конфигурации очищены"
 
-#: src/xneur.c:197
+#: src/xneur.c:199
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr "Получен сигнал SIGTERM/SIGINT, останов"
 
-#: src/xneur.c:209
+#: src/xneur.c:211
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr "Получен сигнал SIGHUP, перезагрузка конфигурационного файла"
 
-#: src/xneur.c:220 src/xneur.c:339
+#: src/xneur.c:222 src/xneur.c:341
 msgid "Can't init libxnconfig"
 msgstr "Невозможно инициировать библиотеку libxnconfig"
 
-#: src/xneur.c:349
+#: src/xneur.c:351
 msgid "Failed to init program structure"
 msgstr "Ошибка инициализации програмной структуры"
 
-#: src/xneur.c:358
+#: src/xneur.c:360
 msgid "Init program structure complete"
 msgstr "Инициализация програмной структуры выполнена"
 
@@ -235,14 +242,12 @@ msgstr "   [!] Ошибка проверки по словарю aspell язык
 
 #: lib/ai/detection.c:131
 msgid "   [-] This word has no hits for all aspell dictionaries"
-msgstr ""
-"   [-] Это слово не имеет совпадений при проверке по всем словарям aspell"
+msgstr "   [-] Это слово не имеет совпадений при проверке по всем словарям aspell"
 
 #: lib/ai/detection.c:201
 #, c-format
 msgid "   [-] Skip checking by language proto of size %d (word is very short)"
-msgstr ""
-"   [-] Пропуск проверки по прото-языку с размером %d (слово слишком короткое)"
+msgstr "   [-] Пропуск проверки по прото-языку с размером %d (слово слишком короткое)"
 
 #: lib/ai/detection.c:208
 #, c-format
@@ -278,161 +283,165 @@ msgstr "Обработка слова '%s'"
 msgid "End word processing"
 msgstr "Конец обработки слова"
 
-#: lib/config/xnconfig.c:117
+#: lib/config/xnconfig.c:122
 #, c-format
 msgid "Unrecognized option \"%s\" detected"
 msgstr "Обнаружена неизвестная опция \"%s\""
 
-#: lib/config/xnconfig.c:127
+#: lib/config/xnconfig.c:132
 #, c-format
 msgid "Param mismatch for option %s"
 msgstr "Несовпадение параметров для опции %s"
 
-#: lib/config/xnconfig.c:138
+#: lib/config/xnconfig.c:143
 msgid "Invalid value for manual mode specified"
 msgstr "Неправильное значение опции для ручного режима"
 
-#: lib/config/xnconfig.c:156
+#: lib/config/xnconfig.c:161
 msgid "Invalid value for action name specified"
 msgstr "Неправильное значение опции для названия действия"
 
-#: lib/config/xnconfig.c:183
+#: lib/config/xnconfig.c:188
 msgid "Invalid value for log level specified"
 msgstr "Неправильное значение опции для уровня отладочных сообщений"
 
-#: lib/config/xnconfig.c:199
+#: lib/config/xnconfig.c:204
 msgid "Argument number mismatch for AddLanguage option"
 msgstr "Несовпаденние числа аргументов для опции AddLanguage"
 
-#: lib/config/xnconfig.c:223
+#: lib/config/xnconfig.c:228
 msgid "Invalid value for disable CapsLock using mode specified"
 msgstr "Неправильное значение опции для режима отключения CapsLock"
 
-#: lib/config/xnconfig.c:235
+#: lib/config/xnconfig.c:240
 msgid "Invalid value for check language on input process mode specified"
 msgstr "Неправильное значение опции для режима проверки языка при вводе"
 
-#: lib/config/xnconfig.c:257
+#: lib/config/xnconfig.c:262
 msgid "Invalid value for mouse grab mode specified"
 msgstr "Неправильное значение опции для режима перехвата событий мыши"
 
-#: lib/config/xnconfig.c:269
+#: lib/config/xnconfig.c:274
 msgid "Invalid value for education mode specified"
 msgstr "Неправильное значение опции для режима обучения"
 
-#: lib/config/xnconfig.c:286
+#: lib/config/xnconfig.c:291
 msgid "Invalid value for remember layout mode specified"
 msgstr "Неправильное значение опции для режима запоминия раскладки"
 
-#: lib/config/xnconfig.c:298
+#: lib/config/xnconfig.c:303
 msgid "Invalid value for save selection mode specified"
 msgstr "Неправильное значение опции для режима сохранения выделения"
 
-#: lib/config/xnconfig.c:315
+#: lib/config/xnconfig.c:320
 msgid "Invalid value for sound action name specified"
 msgstr "Неправильное значение имени для проигрывания звука"
 
-#: lib/config/xnconfig.c:337
+#: lib/config/xnconfig.c:342
 msgid "Invalid value for play sounds mode specified"
 msgstr "Неправильное значение опции для режима проигрывания звука"
 
-#: lib/config/xnconfig.c:349
+#: lib/config/xnconfig.c:354
 msgid "Send delay must be between 0 and 50"
 msgstr "Задержка отправки должна быть от 0 до 50"
 
-#: lib/config/xnconfig.c:364
+#: lib/config/xnconfig.c:369
 msgid "Invalid value for save keyboard log mode specified"
 msgstr "Неправильное значение опции для режима сохранения лога клавиатуры"
 
-#: lib/config/xnconfig.c:381
+#: lib/config/xnconfig.c:386
 msgid ""
 "Invalid value for ignore keyboard layout for abbreviations mode specified"
 msgstr ""
 "Неправильное значение опции для режима игнорирования раскладки для сокращений"
 
-#: lib/config/xnconfig.c:393
+#: lib/config/xnconfig.c:398
 msgid "Invalid value for change iNCIDENTAL CapsLock mode specified"
 msgstr "Неправильное значение опции для режима исправления сЛУЧАЙНОГО КапсЛока"
 
-#: lib/config/xnconfig.c:405
+#: lib/config/xnconfig.c:410
 msgid "Invalid value for change two CApital letter mode specified"
 msgstr "Неправильное значение опции для режима исправления двух ПРописных букв"
 
-#: lib/config/xnconfig.c:417
+#: lib/config/xnconfig.c:422
 msgid ""
 "Invalid value for flush internal buffer when pressed Enter mode specified"
 msgstr ""
 "Неправильное значение опции для режима сброса буфера при нажатии Ввод или Таб"
 
-#: lib/config/xnconfig.c:429
+#: lib/config/xnconfig.c:434
 msgid ""
 "Invalid value for don't processing word when pressed Enter mode specified"
 msgstr ""
 "Неправильное значение опции для режима отмены проверки слова при нажатии "
 "Ввод или Таб"
 
-#: lib/config/xnconfig.c:472
+#: lib/config/xnconfig.c:477 lib/config/xnconfig.c:511
 msgid "Invalid value for show OSD mode specified"
 msgstr "Неправильное значение опции для режима показа OSD"
 
-#: lib/config/xnconfig.c:484
+#: lib/config/xnconfig.c:489
 msgid "Invalid value for OSD action name specified"
 msgstr "Неправильное значение опции для названия действия показа OSD"
 
-#: lib/config/xnconfig.c:510
+#: lib/config/xnconfig.c:523
+msgid "Invalid value for popup action name specified"
+msgstr "Неправильное значение опции для названия действия показа всплывающих сообщений"
+
+#: lib/config/xnconfig.c:544
 #, c-format
 msgid "Can't find config file %s"
 msgstr "Не найден конфигурационный файл %s"
 
-#: lib/config/xnconfig.c:665
+#: lib/config/xnconfig.c:700
 msgid "No languages specified in config file"
 msgstr "В конфигурационном файле не определены языки"
 
-#: lib/config/xnconfig.c:677
+#: lib/config/xnconfig.c:712
 #, c-format
 msgid "Can't find dictionary file for %s language"
 msgstr "Не найден файл словаря для языка %s"
 
-#: lib/config/xnconfig.c:684
+#: lib/config/xnconfig.c:719
 #, c-format
 msgid "Can't find protos file for %s language"
 msgstr "Не найден файл прото-языка для языка %s"
 
-#: lib/config/xnconfig.c:691
+#: lib/config/xnconfig.c:726
 #, c-format
 msgid "Can't find big protos file for %s language"
 msgstr "Не найден файл большого прото-языка для языка %s"
 
-#: lib/config/xnconfig.c:698
+#: lib/config/xnconfig.c:733
 #, c-format
 msgid "Can't find regexp file for %s language"
 msgstr "Не найден файл регулярных выражений для языка %s"
 
-#: lib/config/xnconfig.c:731
+#: lib/config/xnconfig.c:766
 #, c-format
 msgid "Saving main config to %s"
 msgstr "Сохранение основной конфигурации в %s"
 
-#: lib/config/xnconfig.c:736
+#: lib/config/xnconfig.c:771
 #, c-format
 msgid "Can't create file %s"
 msgstr "Невозможно создать файл %s"
 
-#: lib/config/xnconfig.c:955
+#: lib/config/xnconfig.c:1004
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr "Перемещение конфигурационного файла из %s в %s"
 
-#: lib/config/xnconfig.c:961
+#: lib/config/xnconfig.c:1010
 msgid "Can't move file!"
 msgstr "Невозможно переместить файл!"
 
-#: lib/config/xnconfig.c:979
+#: lib/config/xnconfig.c:1028
 #, c-format
 msgid "Saving %s dictionary"
 msgstr "Сохранение словаря языка %s"
 
-#: lib/config/xnconfig.c:1024
+#: lib/config/xnconfig.c:1073
 msgid "Can't add language with empty name or dir"
 msgstr "Невозможно добавить язык с неопределенной папкой или именем"
 
@@ -491,30 +500,40 @@ msgstr "Неосвобожден указатель на область памя
 msgid "Can't trap signal"
 msgstr "Невозможно поймать сигнал"
 
-#: lib/sound/sound.c:124
+#: lib/notify/osd.c:64
+#, c-format
+msgid "Show OSD \"%s\""
+msgstr "Показывается OSD \"%s\""
+
+#: lib/notify/popup.c:78
+#, c-format
+msgid "Show popup message \"%s\""
+msgstr "Показывается всплывающее сообщение \"%s\""
+
+#: lib/notify/sound.c:125
 #, c-format
 msgid "Play sound sample %s (use Gstreamer engine)"
 msgstr "Проигрывается звуковой клип %s (используется движок Gstreamer)"
 
-#: lib/sound/sound.c:138
+#: lib/notify/sound.c:139
 msgid "Failed to create gstreamer context"
 msgstr "Ошибка создания контекста gstreamer"
 
-#: lib/sound/sound.c:176
+#: lib/notify/sound.c:177
 #, c-format
 msgid "Initializing ALCdevice: %s "
 msgstr "Инициализация ALCdevice: %s "
 
-#: lib/sound/sound.c:190
+#: lib/notify/sound.c:191
 #, c-format
 msgid "Play sound sample %s (use OpenAL library)"
 msgstr "Проигрывается звуковой клип %s (используется библиотека OpenAL)"
 
-#: lib/sound/sound.c:196
+#: lib/notify/sound.c:197
 msgid "Failed to create OpenAL buffer"
 msgstr "Ошибка создания буфера OpenAL"
 
-#: lib/sound/sound.c:236
+#: lib/notify/sound.c:237
 #, c-format
 msgid "Play sound sample %s (use ALSA library)"
 msgstr "Проигрывается звуковой клип %s (используется библиотека ALSA)"
@@ -543,11 +562,6 @@ msgid ""
 msgstr ""
 "Установлены горячие клавиши пользовательских действий (маска-модификатор = "
 "Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
-
-#: lib/main/osd.c:77
-#, c-format
-msgid "Show OSD \"%s\""
-msgstr "Показывается OSD \"%s\""
 
 #: lib/main/xevent.c:184
 msgid "Event is freed"
@@ -597,116 +611,117 @@ msgstr "Невозвожно получить таблицу раскладки 
 msgid "Keymap is freed"
 msgstr "Текущие данные раскладки очищены"
 
-#: lib/main/xprogram.c:257
+#: lib/main/xprogram.c:251
 #, c-format
 msgid "Restore layout group to %d"
 msgstr "Восстановлена группа раскладки %d"
 
-#: lib/main/xprogram.c:264
+#: lib/main/xprogram.c:258
 #, c-format
 msgid "Store default layout group to %d"
 msgstr "Установлена группа раскладки по умолчанию %d"
 
-#: lib/main/xprogram.c:310
+#: lib/main/xprogram.c:304
 msgid "Exitting from main cycle"
 msgstr "Выход из основного цикла"
 
-#: lib/main/xprogram.c:317
+#: lib/main/xprogram.c:311
 #, c-format
 msgid "Received KeyPress (event type %d)"
 msgstr "Получено KeyPress (тип события %d)"
 
-#: lib/main/xprogram.c:332
+#: lib/main/xprogram.c:326
 #, c-format
 msgid "Received KeyRelease (event type %d)"
 msgstr "Получено KeyRelease (тип события %d)"
 
-#: lib/main/xprogram.c:344
+#: lib/main/xprogram.c:338
 #, c-format
 msgid "Received FocusIn (event type %d)"
 msgstr "Получено FocusIn (тип события %d)"
 
-#: lib/main/xprogram.c:359
+#: lib/main/xprogram.c:353
 #, c-format
 msgid "Received FocusOut (event type %d)"
 msgstr "Получено FocusOut (тип события %d)"
 
-#: lib/main/xprogram.c:367
+#: lib/main/xprogram.c:361
 #, c-format
 msgid "Received SelectionNotify (event type %d)"
 msgstr "Получено SelectionNotify (тип события %d)"
 
-#: lib/main/xprogram.c:373
+#: lib/main/xprogram.c:367
+#, c-format
 msgid "Received SelectionRequest (event type %d)"
 msgstr "Получено SelectionRequest (тип события %d)"
 
-#: lib/main/xprogram.c:380
+#: lib/main/xprogram.c:374
+#, c-format
 msgid "Received ButtonPress on window %d (event type %d)"
 msgstr "Получено ButtonPress в окне %d  (тип события %d)"
 
-#: lib/main/xprogram.c:390
+#: lib/main/xprogram.c:384
 #, c-format
 msgid "Received Property Notify (layout switch event) (event type %d)"
-msgstr ""
-"Получено Property Notify (событие переключения раскладки) (тип события %d)"
+msgstr "Получено Property Notify (событие переключения раскладки) (тип события %d)"
 
-#: lib/main/xprogram.c:399
+#: lib/main/xprogram.c:393
 #, c-format
 msgid "Uncatched event with type %d)"
 msgstr "Непойманое событие с типом %d"
 
-#: lib/main/xprogram.c:408
+#: lib/main/xprogram.c:402
 #, c-format
 msgid "Changing language from %s to %s"
 msgstr "Смена языка с %s на %s"
 
-#: lib/main/xprogram.c:415
+#: lib/main/xprogram.c:409
 msgid "Correcting iNCIDENTAL CapsLock"
 msgstr "Исправление сЛУЧАЙНОГО КапсЛока"
 
-#: lib/main/xprogram.c:433
+#: lib/main/xprogram.c:427
 msgid "Correcting two CApital letter"
 msgstr "Исправление двух ПРописных букв"
 
-#: lib/main/xprogram.c:568
+#: lib/main/xprogram.c:550
 #, c-format
 msgid "Execute user action \"%s\""
 msgstr "Выполнение поользовательского действия \"%s\""
 
-#: lib/main/xprogram.c:701
+#: lib/main/xprogram.c:682
 #, c-format
 msgid "Manual mode changed to %s"
 msgstr "Ручной режим изменен на %s"
 
-#: lib/main/xprogram.c:847
+#: lib/main/xprogram.c:822
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr "Найдено сокращение '%s' '%s'. Замена на '%s'."
 
-#: lib/main/xprogram.c:893 lib/main/xprogram.c:936
+#: lib/main/xprogram.c:867 lib/main/xprogram.c:909
 msgid "No language found to change to"
 msgstr "Не найдено языка для смены"
 
-#: lib/main/xprogram.c:1010
+#: lib/main/xprogram.c:980
 msgid "No string to change"
 msgstr "Нет строки для замены"
 
-#: lib/main/xprogram.c:1014
+#: lib/main/xprogram.c:984
 #, c-format
 msgid "Processing string '%s'"
 msgstr "Обработка строки '%s'"
 
-#: lib/main/xprogram.c:1267
+#: lib/main/xprogram.c:1237
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr "Удалено слово '%s' из словаря %s"
 
-#: lib/main/xprogram.c:1275
+#: lib/main/xprogram.c:1245
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr "Добавлено слово '%s' в словарь %s"
 
-#: lib/main/xprogram.c:1293
+#: lib/main/xprogram.c:1263
 msgid "Program is freed"
 msgstr "Текущие данные программы очищены"
 
@@ -814,4 +829,3 @@ msgstr "Создано основное окно с id %d"
 #: lib/main/xwindow.c:137
 msgid "Window is freed"
 msgstr "Текущие данные окна очищены"
-
