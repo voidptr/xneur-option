@@ -171,9 +171,45 @@ AddOSD CorrectIncidentalCaps
 AddOSD CorrectTwoCapitalLetter 
 AddOSD ExecuteUserAction %s
 
+# This option disable or enable show popup messages
+# Example:
+#ShowPopup Yes
+ShowPopup Yes
+
+# Binds popup messages for some actions
+AddPopup XneurStart X Neural Switcher runned
+AddPopup XneurReload X Neural Swirtcher reloaded
+AddPopup XneurStop X Neural Switcher stopped
+AddPopup PressKeyLayout1
+AddPopup PressKeyLayout2
+AddPopup PressKeyLayout3
+AddPopup PressKeyLayout4
+AddPopup EnableLayout1
+AddPopup EnableLayout2
+AddPopup EnableLayout3
+AddPopup EnableLayout4
+AddPopup AutomaticChangeWord
+AddPopup ManualChangeWord
+AddPopup ChangeString
+AddPopup ChangeSelected
+AddPopup TranslitSelected
+AddPopup ChangecaseSelected
+AddPopup ChangeClipboard
+AddPopup TranslitClipboard
+AddPopup ChangecaseClipboard
+AddPopup ReplaceAbbreviation
+AddPopup CorrectIncidentalCaps
+AddPopup CorrectTwoCapitalLetter
+AddPopup ExecuteUserAction Runned %s
+
 # This option disable or enable checking language on input process
 # Example:
 #CheckOnProcess Yes
-CheckOnProcess No
+CheckOnProcess Yes
+
+# This option disable or enable CapsLock use
+# Example:
+#DisableCapsLock Yes
+DisableCapsLock Yes
 
 # That's all
