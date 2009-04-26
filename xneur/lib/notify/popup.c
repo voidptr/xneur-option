@@ -23,13 +23,13 @@
 
 #ifdef WITH_LIBNOTIFY
 
+#include <libnotify/notify.h>
+
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
 #include <stdlib.h>
-
-#include <libnotify/notify.h>
 
 #include "xnconfig.h"
 
@@ -40,29 +40,27 @@
 
 extern struct _xneur_config *xconfig;
 
-static NotifyUrgency urgency = NOTIFY_URGENCY_NORMAL;
-static long expire_timeout = NOTIFY_EXPIRES_DEFAULT;
-static char *icon = "distributor-logo";
+static const char *icon = "distributor-logo";
+static const char *type = NULL;
+static const NotifyUrgency urgency = NOTIFY_URGENCY_NORMAL;
+static const long expire_timeout = NOTIFY_EXPIRES_DEFAULT;
 
 static void popup_show_thread(void *popup_text)
 {
-	NotifyNotification *notify;
-	
-	char *type = NULL;
-	//char *icon_str = NULL;
-	
 	if (!notify_init("xneur"))
 		return;
 
-	notify = notify_notification_new(popup_text, NULL, icon, NULL);
-	
+	NotifyNotification *notify = notify_notification_new(popup_text, NULL, icon, NULL);
+
 	notify_notification_set_category(notify, type);
 	notify_notification_set_urgency(notify, urgency);
 	notify_notification_set_timeout(notify, expire_timeout);
 
 	notify_notification_show(notify, NULL);
-	
+
 	notify_uninit();
+
+	free(osd_text);
 }
 
 void popup_show(char *popup_text)
@@ -74,8 +72,9 @@ void popup_show(char *popup_text)
 	pthread_attr_init(&popup_thread_attr);
 	pthread_attr_setdetachstate(&popup_thread_attr, PTHREAD_CREATE_DETACHED);
 
-	pthread_t popup_thread;
 	log_message(DEBUG, _("Show popup message \"%s\""), popup_text);
+
+	pthread_t popup_thread;
 	pthread_create(&popup_thread, &popup_thread_attr, (void*) &popup_show_thread, popup_text);
 
 	pthread_attr_destroy(&popup_thread_attr);
@@ -85,7 +84,7 @@ void popup_show(char *popup_text)
 
 void popup_show(char *popup_text)
 {
-	if (popup_text) {};
+	free(popup_text);
 }
 
 #endif /* WITH_LIBNOTIFY */

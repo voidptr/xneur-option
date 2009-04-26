@@ -150,34 +150,31 @@ static int get_auto_action(KeySym key, int modifier_mask)
 	if (modifier_mask & ControlMask || modifier_mask & Mod1Mask || modifier_mask & Mod4Mask)
 		return KLB_NO_ACTION;
 
-	int notify = NOTIFY_NONE;
 	int lang = get_cur_lang();
 	switch (lang)
 	{
 		default:
 		case 0:
 		{
-			notify = NOTIFY_PRESS_KEY_LAYOUT_0;
+			show_notify(NOTIFY_PRESS_KEY_LAYOUT_0);
 			break;
 		}
 		case 1:
 		{
-			notify = NOTIFY_PRESS_KEY_LAYOUT_1;
+			show_notify(NOTIFY_PRESS_KEY_LAYOUT_1);
 			break;
 		}
 		case 2:
 		{
-			notify = NOTIFY_PRESS_KEY_LAYOUT_2;
+			show_notify(NOTIFY_PRESS_KEY_LAYOUT_2);
 			break;
 		}
 		case 3:
 		{
-			notify = NOTIFY_PRESS_KEY_LAYOUT_3;
+			show_notify(NOTIFY_PRESS_KEY_LAYOUT_3);
 			break;
 		}
 	}
-
-	show_notify(notify);
 
 	return KLB_ADD_SYM;
 }
@@ -504,7 +501,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 
 	// Selection
 	p->change_word(p, CHANGE_SELECTION);
-	
+
 	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
 	{
 		on_selection_converted(SELECTION_PRIMARY);
@@ -513,7 +510,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	}
 	if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
 		on_selection_converted(SELECTION_PRIMARY);
-	
+
 	p->string->save_and_clear(p->string, p->focus->owner_window);
 
 	p->update(p);

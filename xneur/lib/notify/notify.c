@@ -32,28 +32,29 @@
 
 extern struct _xneur_config *xconfig;
 
-void show_notify(int notify, ...)
+// Эту функцию надо переписать, т.к. предыдущая её реализация была небезопасна
+// И, мало того, работает она с ошибками (при размере текста больше 1024 байт)
+void show_notify(int notify, const char *command)
 {
-	play_file(notify);
-	
-	va_list ap;
-	va_start(ap, notify);
+	if (command) {}
 
-	if ((xconfig->osds[notify].file != NULL) && (strlen(xconfig->osds[notify].file) != 0))
+	play_file(notify);
+
+	if (xconfig->osds[notify].file != NULL)
 	{
 		char *buffer = (char *) malloc(1024);
-		vsprintf(buffer, xconfig->osds[notify].file, ap);
+		sprintf(buffer, "%s", xconfig->osds[notify].file);
 
 		osd_show(buffer);
 	}
-	
-	if ((xconfig->popups[notify].file != NULL) && (strlen(xconfig->popups[notify].file) != 0))
+
+	if (xconfig->popups[notify].file != NULL)
 	{
 		char *buffer = (char *) malloc(1024);
-		vsprintf(buffer, xconfig->popups[notify].file, ap);
+		sprintf(buffer, "%s", xconfig->popups[notify].file);
 
 		popup_show(buffer);
 	}
-	
+
 	va_end(ap);
 }

@@ -16,7 +16,7 @@
  *  Copyright (C) 2006-2009 XNeur Team
  *
  */
- 
+
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -70,7 +70,7 @@ void sound_uninit(void)
 		return;
 
 	/*
-	It is normally not needed to call this function in a normal application as 
+	It is normally not needed to call this function in a normal application as
 	the resources will automatically be freed when the program terminates.
 	*/
 	//gst_deinit();
@@ -113,7 +113,7 @@ static void new_pad(GstElement *element, GstPad *pad, gpointer data)
 	if (element){}
 
 	GstElement *sink = data;
-	
+
 	GstPad *alsapad = gst_element_get_pad(sink, "sink");
 	gst_pad_link(pad, alsapad);
 	gst_object_unref(alsapad);
@@ -126,14 +126,14 @@ void *play_file_thread(void *param)
 
 	// Initialize GStreamer
 	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
-	
+
 	// Initialize gst-elements
 	GstElement *pipeline = gst_pipeline_new        ("audio-player");
 	GstElement *source   = gst_element_factory_make("filesrc",  NULL);
 	GstElement *parser   = gst_element_factory_make("wavparse", NULL);
 	GstElement *sink     = gst_element_factory_make("alsasink", NULL);
 
-	if (!pipeline || !source || !parser || !sink) 
+	if (!pipeline || !source || !parser || !sink)
 	{
 		free(path);
 		log_message(ERROR, _("Failed to create gstreamer context"));
@@ -147,7 +147,7 @@ void *play_file_thread(void *param)
 
 	// Set filename property on the file source. Also add a message handler.
 	g_object_set(G_OBJECT(source), "location", path, NULL);
-	
+
 	GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipeline));
 	gst_bus_add_watch(bus, bus_call, loop);
 	gst_object_unref(bus);
@@ -191,9 +191,9 @@ void *play_file_thread(void *param)
 	log_message(TRACE, _("Play sound sample %s (use OpenAL library)"), path);
 
 	ALuint AlutBuffer = alutCreateBufferFromFile(path);
-	free(path);
 	if (!AlutBuffer)
 	{
+		free(path);
 		log_message(ERROR, _("Failed to create OpenAL buffer"));
 		return NULL;
 	}
@@ -205,18 +205,25 @@ void *play_file_thread(void *param)
 
 	ALint result;
 	alGetSourcei(AlutSource, AL_SOURCE_STATE, &result);
-	if ( result == AL_PLAYING) {
+	if (result == AL_PLAYING)
+	{
 		sleep(1);
 		alGetSourcei(AlutSource, AL_SOURCE_STATE, &result);
 	}
 
 	do
+	{
 		alDeleteSources(1, &AlutSource);
-	while (alGetError() != AL_NO_ERROR);
-	do
-		alDeleteBuffers(1, &AlutBuffer);
+	}
 	while (alGetError() != AL_NO_ERROR);
 
+	do
+	{
+		alDeleteBuffers(1, &AlutBuffer);
+	}
+	while (alGetError() != AL_NO_ERROR);
+
+	free(path);
 	return NULL;
 }
 
@@ -235,11 +242,13 @@ void *play_file_thread(void *param)
 {
 	char *path = (char *) param;
 	log_message(TRACE, _("Play sound sample %s (use ALSA library)"), path);
-	
-	char *command = malloc((strlen(path) + 6) * sizeof(char));
-	sprintf(command, "%s %s", "aplay", path);
+
+	static const char *program_name = "aplay";
+
+	char *command = malloc((strlen(path) + strlen(program_name) + 1) * sizeof(char));
+	sprintf(command, "%s %s", program_name, path);
 	system(command);
-	
+
 	free(command);
 
 	free(path);
@@ -254,20 +263,18 @@ void play_file(int file_type)
 		return;
 	if (xconfig->sounds[file_type].file == NULL)
 		return;
-	if (strlen(xconfig->sounds[file_type].file) == 0)
-		return;
-	
+
 	char *path = get_file_path_name(SOUNDDIR, xconfig->sounds[file_type].file);
 	if (path == NULL)
 		return;
-	
+
 	pthread_attr_t sound_thread_attr;
 	pthread_attr_init(&sound_thread_attr);
 	pthread_attr_setdetachstate(&sound_thread_attr, PTHREAD_CREATE_DETACHED);
 
 	pthread_t sound_thread;
 	pthread_create(&sound_thread, &sound_thread_attr, &play_file_thread, (void *) path);
-	
+
 	pthread_attr_destroy(&sound_thread_attr);
 }
 

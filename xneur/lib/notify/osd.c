@@ -41,31 +41,35 @@ extern struct _xneur_config *xconfig;
 
 static void osd_show_thread(void *osd_text)
 {
-	xosd *osd;
-	osd = xosd_create (1);
+	xosd *osd = xosd_create(1);
+
 	xosd_set_font(osd, xconfig->osd_font);
 	xosd_set_colour(osd, "Red");
 	xosd_set_timeout(osd, 2);
 	xosd_set_shadow_offset(osd, 1);
 	xosd_set_align(osd, XOSD_right);
-	xosd_display (osd, 0, XOSD_string, (char *)osd_text);
-	free(osd_text);
+
+	xosd_display(osd, 0, XOSD_string, (char *) osd_text);
+
 	xosd_wait_until_no_display(osd);
-	xosd_destroy (osd);
+	xosd_destroy(osd);
+
+	free(osd_text);
 }
 
 void osd_show(char *osd_text)
 {
 	if (!xconfig->show_osd)
 		return;
-	
+
 	pthread_attr_t osd_thread_attr;
 	pthread_attr_init(&osd_thread_attr);
 	pthread_attr_setdetachstate(&osd_thread_attr, PTHREAD_CREATE_DETACHED);
 
-	pthread_t osd_thread;
 	log_message(DEBUG, _("Show OSD \"%s\""), osd_text);
-	pthread_create(&osd_thread, &osd_thread_attr, (void*) &osd_show_thread, osd_text);
+
+	pthread_t osd_thread;
+	pthread_create(&osd_thread, &osd_thread_attr, (void *) &osd_show_thread, osd_text);
 
 	pthread_attr_destroy(&osd_thread_attr);
 }
@@ -74,7 +78,7 @@ void osd_show(char *osd_text)
 
 void osd_show(char *osd_text)
 {
-	if (osd_text) {};
+	free(osd_text);
 }
 
 #endif /* WITH_XOSD */
