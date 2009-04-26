@@ -93,30 +93,6 @@ GtkWidget* create_menu_icon(struct _tray_icon *tray, gboolean runned, int state)
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_start_stop), tray);
-	
-	/*// State
-	if (state == 0) // Auto
-	{
-		menu_text = _("Disable input auto-correction");
-		menu_icon = "gtk-disconnect";
-	}
-	else // Manual
-	{
-		menu_text = _("Enable input auto-correction");
-		menu_icon = "gtk-connect";
-	}
-
-	menuitem = gtk_image_menu_item_new_with_mnemonic(menu_text);
-	image = gtk_image_new_from_stock(menu_icon, GTK_ICON_SIZE_MENU);
-	gtk_widget_set_name(image, "image");
-	gtk_widget_show(image);
-	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
-	gtk_widget_show(menuitem);
-	gtk_container_add(GTK_CONTAINER(menu), menuitem);
-	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_auto_manual), tray);
-
-	if (runned == FALSE)
-		gtk_widget_set_sensitive(menuitem, FALSE);*/
 
 	menu_text = _("Auto-correction");
 	menuitem = gtk_check_menu_item_new_with_mnemonic(menu_text);
