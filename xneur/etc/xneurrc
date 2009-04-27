@@ -169,7 +169,7 @@ AddOSD ChangecaseSelected
 AddOSD ReplaceAbbreviation 
 AddOSD CorrectIncidentalCaps 
 AddOSD CorrectTwoCapitalLetter 
-AddOSD ExecuteUserAction Запущен %s
+AddOSD ExecuteUserAction Запущен
 
 # This option disable or enable show popup messages
 # Example:
@@ -200,7 +200,7 @@ AddPopup ChangecaseClipboard
 AddPopup ReplaceAbbreviation
 AddPopup CorrectIncidentalCaps
 AddPopup CorrectTwoCapitalLetter
-AddPopup ExecuteUserAction Запущен %s
+AddPopup ExecuteUserAction Запущен
 
 # This option disable or enable checking language on input process
 # Example:
