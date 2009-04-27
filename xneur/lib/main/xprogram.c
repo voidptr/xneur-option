@@ -156,22 +156,22 @@ static int get_auto_action(KeySym key, int modifier_mask)
 		default:
 		case 0:
 		{
-			show_notify(NOTIFY_PRESS_KEY_LAYOUT_0);
+			show_notify(NOTIFY_PRESS_KEY_LAYOUT_0, NULL);
 			break;
 		}
 		case 1:
 		{
-			show_notify(NOTIFY_PRESS_KEY_LAYOUT_1);
+			show_notify(NOTIFY_PRESS_KEY_LAYOUT_1, NULL);
 			break;
 		}
 		case 2:
 		{
-			show_notify(NOTIFY_PRESS_KEY_LAYOUT_2);
+			show_notify(NOTIFY_PRESS_KEY_LAYOUT_2, NULL);
 			break;
 		}
 		case 3:
 		{
-			show_notify(NOTIFY_PRESS_KEY_LAYOUT_3);
+			show_notify(NOTIFY_PRESS_KEY_LAYOUT_3, NULL);
 			break;
 		}
 	}
@@ -450,28 +450,28 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		{
 			p->string->rotate_layout(p->string);
 
-			show_notify(NOTIFY_CHANGE_SELECTED);
+			show_notify(NOTIFY_CHANGE_SELECTED, NULL);
 			break;
 		}
 		case ACTION_CHANGE_CLIPBOARD:
 		{
 			p->string->rotate_layout(p->string);
 
-			show_notify(NOTIFY_CHANGE_CLIPBOARD);
+			show_notify(NOTIFY_CHANGE_CLIPBOARD, NULL);
 			break;
 		}
 		case ACTION_CHANGECASE_SELECTED:
 		{
 			p->string->change_case(p->string);
 
-			show_notify(NOTIFY_CHANGECASE_SELECTED);
+			show_notify(NOTIFY_CHANGECASE_SELECTED, NULL);
 			break;
 		}
 		case ACTION_CHANGECASE_CLIPBOARD:
 		{
 			p->string->change_case(p->string);
 
-			show_notify(NOTIFY_CHANGECASE_CLIPBOARD);
+			show_notify(NOTIFY_CHANGECASE_CLIPBOARD, NULL);
 			break;
 		}
 		case ACTION_TRANSLIT_SELECTED:
@@ -479,7 +479,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			int lang = xconfig->find_group_lang(xconfig, main_window->xkeymap->latin_group);
 			p->change_lang(p, lang);
 
-			show_notify(NOTIFY_TRANSLIT_SELECTED);
+			show_notify(NOTIFY_TRANSLIT_SELECTED, NULL);
 			break;
 		}
 		case ACTION_TRANSLIT_CLIPBOARD:
@@ -487,7 +487,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 			int lang = xconfig->find_group_lang(xconfig, main_window->xkeymap->latin_group);
 			p->change_lang(p, lang);
 
-			show_notify(NOTIFY_TRANSLIT_CLIPBOARD);
+			show_notify(NOTIFY_TRANSLIT_CLIPBOARD, NULL);
 			break;
 		}
 	}
@@ -714,7 +714,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			p->change_word(p, action);
 			p->update(p);
 
-			show_notify(NOTIFY_CHANGE_STRING);
+			show_notify(NOTIFY_CHANGE_STRING, NULL);
 			break;
 		}
 		case ACTION_CHANGE_WORD:	// User needs to cancel last change
@@ -742,7 +742,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 			grab_spec_keys(p->focus->owner_window, TRUE);
 
-			show_notify(NOTIFY_MANUAL_CHANGE_WORD);
+			show_notify(NOTIFY_MANUAL_CHANGE_WORD, NULL);
 			p->event->default_event.xkey.keycode = 0;
 			break;
 		}
@@ -750,28 +750,28 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 		{
 			switch_group(0);
 			p->event->default_event.xkey.keycode = 0;
-			show_notify(NOTIFY_ENABLE_LAYOUT_0);
+			show_notify(NOTIFY_ENABLE_LAYOUT_0, NULL);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_1:
 		{
 			switch_group(1);
 			p->event->default_event.xkey.keycode = 0;
-			show_notify(NOTIFY_ENABLE_LAYOUT_1);
+			show_notify(NOTIFY_ENABLE_LAYOUT_1, NULL);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_2:
 		{
 			switch_group(2);
 			p->event->default_event.xkey.keycode = 0;
-			show_notify(NOTIFY_ENABLE_LAYOUT_2);
+			show_notify(NOTIFY_ENABLE_LAYOUT_2, NULL);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_3:
 		{
 			switch_group(3);
 			p->event->default_event.xkey.keycode = 0;
-			show_notify(NOTIFY_ENABLE_LAYOUT_3);
+			show_notify(NOTIFY_ENABLE_LAYOUT_3, NULL);
 			break;
 		}
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
@@ -826,7 +826,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
 				grab_spec_keys(p->focus->owner_window, TRUE);
 
-				show_notify(NOTIFY_REPLACE_ABBREVIATION);
+				show_notify(NOTIFY_REPLACE_ABBREVIATION, NULL);
 				p->string->save_and_clear(p->string, p->focus->owner_window);
 
 				p->event->default_event.xkey.keycode = 0;
@@ -879,7 +879,7 @@ static int xprogram_check_lang_last_word(struct _xprogram *p)
 		change_action = CHANGE_WORD_TO_LAYOUT_3;
 
 	p->change_word(p, change_action);
-	show_notify(NOTIFY_AUTOMATIC_CHANGE_WORD);
+	show_notify(NOTIFY_AUTOMATIC_CHANGE_WORD, NULL);
 	return TRUE;
 }
 
@@ -921,7 +921,7 @@ static int xprogram_check_lang_last_syllable(struct _xprogram *p)
 		change_action = CHANGE_SYLL_TO_LAYOUT_3;
 
 	p->change_word(p, change_action);
-	show_notify(NOTIFY_AUTOMATIC_CHANGE_WORD);
+	show_notify(NOTIFY_AUTOMATIC_CHANGE_WORD, NULL);
 	return TRUE;
 }
 
@@ -941,7 +941,7 @@ static void xprogram_check_caps_last_word(struct _xprogram *p)
 	}
 
 	p->change_word(p, CHANGE_INCIDENTAL_CAPS);
-	show_notify(NOTIFY_CORR_INCIDENTAL_CAPS);
+	show_notify(NOTIFY_CORR_INCIDENTAL_CAPS, NULL);
 }
 
 static void xprogram_check_tcl_last_word(struct _xprogram *p)
@@ -967,7 +967,7 @@ static void xprogram_check_tcl_last_word(struct _xprogram *p)
 	}
 
 	p->change_word(p, CHANGE_TWO_CAPITAL_LETTER);
-	show_notify(NOTIFY_CORR_TWO_CAPITAL_LETTER);
+	show_notify(NOTIFY_CORR_TWO_CAPITAL_LETTER, NULL);
 }
 
 static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)

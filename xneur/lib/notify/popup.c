@@ -60,7 +60,7 @@ static void popup_show_thread(void *popup_text)
 
 	notify_uninit();
 
-	free(osd_text);
+	free(popup_text);
 }
 
 void popup_show(char *popup_text)

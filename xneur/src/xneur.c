@@ -196,7 +196,7 @@ static void xneur_terminate(int status)
 	if (status){}
 
 	log_message(DEBUG, _("Caught SIGTERM/SIGINT, terminating"));
-	show_notify(NOTIFY_XNEUR_STOP);
+	show_notify(NOTIFY_XNEUR_STOP, NULL);
 	sleep(1);
 
 	xneur_cleanup();
@@ -209,7 +209,7 @@ static void xneur_reload(int status)
 	if (status){}
 
 	log_message(LOG, _("Caught SIGHUP, reloading configuration file"));
-	show_notify(NOTIFY_XNEUR_RELOAD);
+	show_notify(NOTIFY_XNEUR_RELOAD, NULL);
 
 	sound_uninit();
 
@@ -358,7 +358,7 @@ int main(int argc, char *argv[])
 	xneur_init();
 
 	log_message(DEBUG, _("Init program structure complete"));
-	show_notify(NOTIFY_XNEUR_START);
+	show_notify(NOTIFY_XNEUR_START, NULL);
 
 	xntrap(SIGTERM, xneur_terminate);
 	xntrap(SIGINT, xneur_terminate);

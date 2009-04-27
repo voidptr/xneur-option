@@ -20,6 +20,6 @@
 #ifndef _NOTIFY_H_
 #define _NOTIFY_H_
 
-void show_notify(int notify, const char *command = NULL);
+void show_notify(int notify, char *command);
 
 #endif /* _NOTIFY_H_ */
