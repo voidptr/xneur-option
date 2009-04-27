@@ -753,6 +753,10 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton12");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->dont_process_when_press_enter);
 
+	// Check manual action only on key release mode
+	widget = glade_xml_get_widget (gxml, "checkbutton20");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->check_action_on_key_release);
+
 	// User Actions List set
 	treeview = glade_xml_get_widget (gxml, "treeview9");
 
@@ -1534,6 +1538,9 @@ void xneur_save_preference(GladeXML *gxml)
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton19");
 	xconfig->disable_capslock = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton20");
+	xconfig->check_action_on_key_release = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry2");
 	if (xconfig->osd_font != NULL)

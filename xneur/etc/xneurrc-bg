@@ -35,6 +35,11 @@ DefaultXkbGroup 0
 # Example:
 #SetManualApp Anjuta
 
+# This option enable or disable checking all actions only on key release
+# Example:
+#CheckActionOnKeyRelease No
+CheckActionOnKeyRelease Yes
+
 # Binds hotkeys for some actions
 AddBind ChangeWord Break
 AddBind ChangeString Control Pause
