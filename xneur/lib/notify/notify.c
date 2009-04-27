@@ -32,8 +32,6 @@
 
 extern struct _xneur_config *xconfig;
 
-// Эту функцию надо переписать, т.к. предыдущая её реализация была небезопасна
-// И, мало того, работает она с ошибками (при размере текста больше 1024 байт)
 void show_notify(int notify, char *command)
 {
 	if (command == NULL) 

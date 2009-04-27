@@ -75,6 +75,8 @@ extern struct _xneur_config *xconfig;
 
 struct _xwindow *main_window;
 
+int check_on_release = TRUE;
+
 // Private
 static int get_auto_action(KeySym key, int modifier_mask)
 {
@@ -309,7 +311,7 @@ static void xprogram_process_input(struct _xprogram *p)
 				// Save received event
 				p->event->default_event = p->event->event;
 				// Processing received event
-				p->on_key_action(p);
+				p->on_key_action(p, type);
 				// Restore event
 				if (p->event->default_event.xkey.keycode != 0)
 				{
@@ -321,9 +323,16 @@ static void xprogram_process_input(struct _xprogram *p)
 			case KeyRelease:
 			{
 				log_message(TRACE, _("Received KeyRelease (event type %d)"), type);
+				// Save received event
+				p->event->default_event = p->event->event;
+				// Processing received event
+				p->on_key_action(p, type);
 				// Resend special key back to window
 				if (p->event->default_event.xkey.keycode != 0)
+				{
+					p->event->event = p->event->default_event;
 					p->event->send_next_event(p->event);
+				}
 				break;
 			}
 			case FocusIn:
@@ -517,27 +526,48 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	p->selected_mode = ACTION_NONE;
 }
 
-static void xprogram_on_key_action(struct _xprogram *p)
+static void xprogram_on_key_action(struct _xprogram *p, int type)
 {
 	KeySym key = p->event->get_cur_keysym(p->event);
 
 	// Delete language modifier mask
 	int modifier_mask = p->event->get_cur_modifiers(p->event);
 
-	int user_action = get_user_action(key, modifier_mask);
-	if (user_action >= 0)
+	if (type == KeyPress)
 	{
-		p->perform_user_action(p, user_action);
-		p->event->default_event.xkey.keycode = 0;
-		return;
+		if (!xconfig->check_action_on_key_release)
+		{
+			int user_action = get_user_action(key, modifier_mask);
+			if (user_action >= 0)
+			{
+				p->perform_user_action(p, user_action);
+				p->event->default_event.xkey.keycode = 0;
+				return;
+			}
+
+			enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
+			if (p->perform_manual_action(p, manual_action))
+				return;
+		}
+		
+		int auto_action = get_auto_action(key, modifier_mask);
+		p->perform_auto_action(p, auto_action);
 	}
 
-	enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
-	if (p->perform_manual_action(p, manual_action))
-		return;
+	if (type == KeyRelease && xconfig->check_action_on_key_release)
+	{
+		
+		int user_action = get_user_action(key, modifier_mask);
+		if (user_action >= 0)
+		{
+			p->perform_user_action(p, user_action);
+			p->event->default_event.xkey.keycode = 0;
+			return;
+		}
 
-	int auto_action = get_auto_action(key, modifier_mask);
-	p->perform_auto_action(p, auto_action);
+		enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
+		p->perform_manual_action(p, manual_action);
+	}
 }
 
 static void xprogram_perform_user_action(struct _xprogram *p, int action)

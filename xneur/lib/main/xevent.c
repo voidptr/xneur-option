@@ -146,6 +146,9 @@ static KeySym xevent_get_cur_keysym(struct _xevent *p)
 static int xevent_get_cur_modifiers(struct _xevent *p)
 {
 	int mask = 0;
+	if (IsModifierKey(p->get_cur_keysym(p)))
+		return mask;
+	
 	if (p->event.xkey.state & ShiftMask)
 		mask += (1 << 0);
 	if (p->event.xkey.state & LockMask)
