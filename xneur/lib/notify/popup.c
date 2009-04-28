@@ -30,6 +30,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "xnconfig.h"
 
@@ -44,6 +45,8 @@ static const char *icon = "distributor-logo";
 static const char *type = NULL;
 static const NotifyUrgency urgency = NOTIFY_URGENCY_NORMAL;
 static const long expire_timeout = NOTIFY_EXPIRES_DEFAULT;
+
+time_t timestamp = 0;
 
 static void popup_show_thread(void *popup_text)
 {
@@ -68,6 +71,11 @@ void popup_show(char *popup_text)
 	if (!xconfig->show_popup)
 		return;
 
+	time_t curtime = time(NULL);
+	if ((curtime - timestamp) < 1)
+		return;
+	timestamp = curtime;
+	
 	pthread_attr_t popup_thread_attr;
 	pthread_attr_init(&popup_thread_attr);
 	pthread_attr_setdetachstate(&popup_thread_attr, PTHREAD_CREATE_DETACHED);
