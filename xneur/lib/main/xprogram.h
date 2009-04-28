@@ -27,19 +27,21 @@ struct _xprogram
 	struct _xevent *event;
 	struct _xfocus *focus;
 	struct _xstring *string;
-	
+
 	int  last_action;
 	int  changed_manual;
 	int  app_forced_mode;
 	int  app_focus_mode;
 
 	int  selected_mode;
-	
+
 	int  modifier_mask;
-	
+
 	int  last_layout;
 	int  last_window;
-	
+
+	int prev_mod_key;
+
 	void (*layout_update) (struct _xprogram *p);
 	void (*update) (struct _xprogram *p);
 	void (*on_key_action) (struct _xprogram *p, int type);
