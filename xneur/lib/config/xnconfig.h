@@ -191,13 +191,13 @@ struct _xneur_config
 	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter
 	int   check_lang_on_process;			// Check lang on input process
 	int   disable_capslock;				// Disable CapsLock use
-	int	  check_action_on_key_release;	// Check manual action only on key release
-	
+	int   check_action_on_key_release;		// Check manual action only on key release
+
 	int   show_osd;					// Show OSD
 	char  *osd_font;
 
 	int   show_popup;				// Show popups
-	
+
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
 
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
