@@ -242,12 +242,14 @@ msgstr "   [!] Ошибка проверки по словарю aspell язык
 
 #: lib/ai/detection.c:131
 msgid "   [-] This word has no hits for all aspell dictionaries"
-msgstr "   [-] Это слово не имеет совпадений при проверке по всем словарям aspell"
+msgstr ""
+"   [-] Это слово не имеет совпадений при проверке по всем словарям aspell"
 
 #: lib/ai/detection.c:201
 #, c-format
 msgid "   [-] Skip checking by language proto of size %d (word is very short)"
-msgstr "   [-] Пропуск проверки по прото-языку с размером %d (слово слишком короткое)"
+msgstr ""
+"   [-] Пропуск проверки по прото-языку с размером %d (слово слишком короткое)"
 
 #: lib/ai/detection.c:208
 #, c-format
@@ -386,7 +388,9 @@ msgstr "Неправильное значение опции для назван
 
 #: lib/config/xnconfig.c:523
 msgid "Invalid value for popup action name specified"
-msgstr "Неправильное значение опции для названия действия показа всплывающих сообщений"
+msgstr ""
+"Неправильное значение опции для названия действия показа всплывающих "
+"сообщений"
 
 #: lib/config/xnconfig.c:544
 #, c-format
@@ -663,7 +667,8 @@ msgstr "Получено ButtonPress в окне %d  (тип события %d)"
 #: lib/main/xprogram.c:384
 #, c-format
 msgid "Received Property Notify (layout switch event) (event type %d)"
-msgstr "Получено Property Notify (событие переключения раскладки) (тип события %d)"
+msgstr ""
+"Получено Property Notify (событие переключения раскладки) (тип события %d)"
 
 #: lib/main/xprogram.c:393
 #, c-format
