@@ -94,6 +94,14 @@ int get_keyboard_groups_count(void)
 	return groups_count;
 }
 
+void set_next_keyboard_group(void)
+{
+	int new_layout_group = get_active_keyboard_group() + 1;
+	if (new_layout_group == get_keyboard_groups_count())
+		new_layout_group = 0;
+	switch_group (new_layout_group);
+}
+
 int print_keyboard_groups(void)
 {
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();

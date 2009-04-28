@@ -63,7 +63,7 @@ static const char *action_names[] =	{
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-						"ReplaceAbbreviation"
+						"RotateLayout","ReplaceAbbreviation"
 					};
 static const char *notify_names[] =	{
 						"XneurStart", "XneurReload", "XneurStop",
@@ -162,6 +162,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
+			p->hotkeys[action].key = NULL;			
 			while (TRUE)
 			{
 				char *modifier = get_word(&line);

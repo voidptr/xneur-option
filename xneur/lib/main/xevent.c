@@ -146,10 +146,26 @@ static KeySym xevent_get_cur_keysym(struct _xevent *p)
 static int xevent_get_cur_modifiers(struct _xevent *p)
 {
 	int mask = 0;
-	if (IsModifierKey(p->get_cur_keysym(p)))
-		return mask;
+	int key_sym = p->get_cur_keysym(p);
 	
-	if (p->event.xkey.state & ShiftMask)
+	if ((p->event.xkey.state & ShiftMask) && (key_sym != XK_Shift_L) && (key_sym != XK_Shift_R))
+		mask += (1 << 0);
+	if ((p->event.xkey.state & LockMask) && (key_sym != XK_Caps_Lock))
+		mask += (1 << 1);
+	if ((p->event.xkey.state & ControlMask) && (key_sym != XK_Control_L) && (key_sym != XK_Control_R))
+		mask += (1 << 2);
+	if ((p->event.xkey.state & Mod1Mask) && (key_sym != XK_Alt_L) && (key_sym != XK_Alt_R))
+		mask += (1 << 3);
+	if ((p->event.xkey.state & Mod2Mask) && (key_sym != XK_Meta_L) && (key_sym != XK_Meta_R))
+		mask += (1 << 4);
+	if ((p->event.xkey.state & Mod3Mask) && (key_sym != XK_Num_Lock))
+		mask += (1 << 5);
+	if ((p->event.xkey.state & Mod4Mask) && (key_sym != XK_Hyper_L) && (key_sym != XK_Hyper_R))
+		mask += (1 << 6);
+	if ((p->event.xkey.state & Mod5Mask) && (key_sym != XK_Super_L) && (key_sym != XK_Super_R))
+		mask += (1 << 7);
+
+	/*if (p->event.xkey.state & ShiftMask)
 		mask += (1 << 0);
 	if (p->event.xkey.state & LockMask)
 		mask += (1 << 1);
@@ -164,7 +180,7 @@ static int xevent_get_cur_modifiers(struct _xevent *p)
 	if (p->event.xkey.state & Mod4Mask)
 		mask += (1 << 6);
 	if (p->event.xkey.state & Mod5Mask)
-		mask += (1 << 7);
+		mask += (1 << 7);*/
 	return mask;
 }
 

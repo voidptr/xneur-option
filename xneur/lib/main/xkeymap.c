@@ -97,6 +97,13 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 {
 	Display *display = XOpenDisplay(NULL);
 
+	if (keyname == NULL)
+	{
+		*lower = NoSymbol;
+		*upper = NoSymbol;
+		return;
+	}
+
 	KeySym inbound_key = XStringToKeysym(keyname);
 	
 	int min_keycode, max_keycode;

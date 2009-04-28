@@ -26,5 +26,6 @@ void switch_lang(int new_lang);
 void switch_group(int new_group);
 int  get_keyboard_groups_count(void);
 int  print_keyboard_groups(void);
+void set_next_keyboard_group(void);
 
 #endif /* _XSWITCHLANG_H_ */

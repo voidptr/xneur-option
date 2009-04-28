@@ -50,6 +50,7 @@ static struct _bind_table btable[MAX_HOTKEYS] =	{
 							{0, 0, 0},
 							{0, 0, 0},
 							{0, 0, 0},
+							{0, 0, 0},
 							{0, 0, 0}
 						};
 static const char *normal_action_names[] =	{
@@ -57,7 +58,7 @@ static const char *normal_action_names[] =	{
 							"Change Selected", "Translit Selected", "Changecase Selected",
 							"Change Clipboard", "Translit Clipboard", "Changecase Clipboard",
 							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4",
-							"Replace Abbreviation"
+							"Rotate Layouts", "Replace Abbreviation"
 						};
 extern struct _xneur_config *xconfig;
 
@@ -89,13 +90,10 @@ static void bind_action(enum _hotkey_action action)
 	if (key_sym == NoSymbol)
 		key_sym = None;
 	if (key_sym_shift == NoSymbol)
-		key_sym_shift = None;
+		key_sym_shift = key_sym;
 
 	btable[action].key_sym = key_sym;
 	btable[action].key_sym_shift = key_sym_shift;
-
-	if (btable[action].key_sym == 0)
-		return;
 
 	log_message(DEBUG, _("   Action \"%s\" with mod_mask %d and key \"%s (%s)\""), normal_action_names[action], btable[action].modifier_mask, XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift));
 }
@@ -128,13 +126,10 @@ static void bind_user_action(int action)
 	if (key_sym == NoSymbol)
 		key_sym = None;
 	if (key_sym_shift == NoSymbol)
-		key_sym_shift = None;
+		key_sym_shift = key_sym;
 
 	ubtable[action].key_sym = key_sym;
 	ubtable[action].key_sym_shift = key_sym_shift;
-
-	if (ubtable[action].key_sym == 0)
-		return;
 
 	log_message(DEBUG, _("   Action \"%s\" with mod_mask %d and key \"%s (%s)\""), xconfig->actions[action].command, ubtable[action].modifier_mask, XKeysymToString(ubtable[action].key_sym), XKeysymToString(ubtable[action].key_sym_shift));
 }

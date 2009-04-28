@@ -75,6 +75,8 @@ extern struct _xneur_config *xconfig;
 
 struct _xwindow *main_window;
 
+static int prev_mod_key = FALSE;
+
 // Private
 static int get_auto_action(KeySym key, int modifier_mask)
 {
@@ -537,27 +539,38 @@ static void xprogram_on_key_action(struct _xprogram *p, int type)
 
 	// Delete language modifier mask
 	int modifier_mask = p->event->get_cur_modifiers(p->event);
-
-	if ((type == KeyPress) == (!xconfig->check_action_on_key_release))
+	
+	if (type == KeyPress)
 	{
+		prev_mod_key = IsModifierKey(key);
+		
+		int auto_action = get_auto_action(key, modifier_mask);
+		p->perform_auto_action(p, auto_action);
+	}
+
+	if (type == KeyRelease)
+	{
+		if (IsModifierKey(key) && !prev_mod_key)
+			return;
+		
 		int user_action = get_user_action(key, modifier_mask);
 		if (user_action >= 0)
 		{
 			p->perform_user_action(p, user_action);
 			p->event->default_event.xkey.keycode = 0;
+			prev_mod_key = FALSE;
 			return;
 		}
 
 		enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
-		if (p->perform_manual_action(p, manual_action))
+		if (manual_action != ACTION_NONE)
+		{
+			p->perform_manual_action(p, manual_action);
+			p->event->default_event.xkey.keycode = 0;
+			prev_mod_key = FALSE;
 			return;
+		}
 	}
-
-	if (type != KeyPress)
-		return;
-
-	int auto_action = get_auto_action(key, modifier_mask);
-	p->perform_auto_action(p, auto_action);
 }
 
 static void xprogram_perform_user_action(struct _xprogram *p, int action)
@@ -794,6 +807,12 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 			show_notify(NOTIFY_ENABLE_LAYOUT_3, NULL);
 			break;
 		}
+		case ACTION_ROTATE_LAYOUT:
+		{
+			set_next_keyboard_group();
+			p->event->default_event.xkey.keycode = 0;
+			break;
+		}	
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
 		{
 			// Check last word to acronym list
