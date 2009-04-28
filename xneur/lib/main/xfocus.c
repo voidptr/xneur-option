@@ -166,7 +166,7 @@ static void xfocus_update_events(struct _xfocus *p, int mode)
 	{
 		// Event masking
 		grab_mouse_button(p->parent_window, TRUE);
-		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_PRESS_MASK);
+		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 
 		// Grabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, TRUE);
