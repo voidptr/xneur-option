@@ -119,17 +119,12 @@ static const char *hotkey_names[]			=   {
 										"Correct/Undo correction", "Correct last line", "Switch between processing modes", 
 										"Correct selected text", "Transliterate selected text", "Change case of selected text", 
 	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text",
-										"Switch to Layout 1", "Switch to Layout 2", "Switch to Layout 3", "Switch to Layout 4",
-		                                "Show OSD"
+										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
+		                                "Rotate layouts", "Show OSD"
                                         };
 
 static const int total_notify_names = sizeof(notify_names) / sizeof(notify_names[0]);
 
-static const char *pixmap_names[]	=   {
-										"Flag pixmap for Layout 1", "Flag pixmap for Layout 2", "Flag pixmap for Layout 3",
-										"Flag pixmap for Layout 4"
-										};
-static const int total_pixmap_names = sizeof(pixmap_names) / sizeof(pixmap_names[0]);
 
 static const char *language_name_boxes[MAX_LANGUAGES]	= {"combobox21", "combobox22", "combobox23", "combobox24"};
 static const char *language_combo_boxes[MAX_LANGUAGES]	= {"combobox13", "combobox14", "combobox15", "combobox16"};
@@ -752,10 +747,6 @@ void xneur_preference(void)
 	// Don't process word when pressed Enter mode
 	widget = glade_xml_get_widget (gxml, "checkbutton12");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->dont_process_when_press_enter);
-
-	// Check manual action only on key release mode
-	widget = glade_xml_get_widget (gxml, "checkbutton20");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->check_action_on_key_release);
 
 	// User Actions List set
 	treeview = glade_xml_get_widget (gxml, "treeview9");
@@ -1539,9 +1530,6 @@ void xneur_save_preference(GladeXML *gxml)
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton19");
 	xconfig->disable_capslock = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton20");
-	xconfig->check_action_on_key_release = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
-	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry2");
 	if (xconfig->osd_font != NULL)
 		free(xconfig->osd_font);

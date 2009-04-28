@@ -145,7 +145,6 @@ static void xneur_load_config(int final)
 	log_message(LOG, _("Show OSD mode set to %s"), xconfig->get_bool_name(xconfig->show_osd));
 	log_message(LOG, _("Show popup messages mode set to %s"), xconfig->get_bool_name(xconfig->show_popup));
 	log_message(LOG, _("Check language on input process mode set to %s"), xconfig->get_bool_name(xconfig->check_lang_on_process));
-	log_message(LOG, _("Check actions only on key release mode set to %s"), xconfig->get_bool_name(xconfig->check_action_on_key_release));
 }
 
 static void xneur_set_lock(void)

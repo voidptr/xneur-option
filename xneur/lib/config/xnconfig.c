@@ -48,7 +48,7 @@ static const char *fix_names[]  =	{"Fixed"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
-						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "CheckActionOnKeyRelease",
+						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "Reserved1",
 						"DisableCapsLock", "CheckOnProcess", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
@@ -217,16 +217,8 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->add_language(p, param, dir, atoi(group), fix_index);
 			break;
 		}
-		case 5: // Check manual action only on key release
+		case 5: // Reserved 1
 		{
-			int index = get_option_index(bool_names, param);
-			if (index == -1)
-			{
-				log_message(WARNING, _("Invalid value for check action on key release mode specified"));
-				break;
-			}
-			
-			p->check_action_on_key_release = index;
 			break;
 		}
 		case 6: // Disable CapsLock use
@@ -835,11 +827,6 @@ static int xneur_config_save(struct _xneur_config *p)
 		fprintf(stream, "SetManualApp %s\n", p->manual_apps->data[i].string);
 	fprintf(stream, "\n");
 
-	fprintf(stream, "# This option enable or disable checking all actions only on key release\n");
-	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#CheckActionOnKeyRelease No\n");
-	fprintf(stream, "CheckActionOnKeyRelease %s\n\n", p->get_bool_name(p->check_action_on_key_release));
-	
 	fprintf(stream, "# Binds hotkeys for some actions\n");
 	for (int action = 0; action < MAX_HOTKEYS; action++)
 	{
