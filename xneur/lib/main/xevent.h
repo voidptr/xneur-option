@@ -29,7 +29,7 @@ XEvent create_basic_event(void);
 
 struct _xevent
 {
-	Window owner_window;		// Window that recieves/sends event
+	Window owner_window;	// Window that recieves/sends event
 	XEvent event;			// Event to process
 	XEvent default_event;
 	KeyCode backspace;		// Backspace key code
@@ -42,6 +42,7 @@ struct _xevent
 	int  (*get_next_event) (struct _xevent *p);
 	void (*send_next_event) (struct _xevent *p);
 	void (*set_owner_window) (struct _xevent *p, Window window);
+	void (*send_xkey) (struct _xevent *p, KeyCode kc, int modifiers);
 	void (*send_string) (struct _xevent *p, struct _xstring *str);
 	void (*send_backspaces) (struct _xevent *p, int n);
 	void (*send_selection) (struct _xevent *p, int n);

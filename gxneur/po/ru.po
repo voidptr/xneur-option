@@ -113,6 +113,14 @@ msgstr "Сокращение:"
 msgid "Expansion text:"
 msgstr "Полный Текст:"
 
+#: glade/abbr_add.glade:77 glade/action_add.glade:77
+msgid "gtk-cancel"
+msgstr ""
+
+#: glade/abbr_add.glade:88 glade/action_add.glade:92
+msgid "gtk-ok"
+msgstr ""
+
 #: glade/about.glade:7
 msgid "gXNeur About..."
 msgstr "О gXNeur..."
@@ -285,6 +293,16 @@ msgstr "Номер раскладки по умолчанию "
 msgid "Remember keyboard layout for each application instance"
 msgstr "Запоминать раскладку отдельно для каждой копии приложения"
 
+#: glade/config.glade:739 glade/config.glade:938 glade/config.glade:1145
+#: glade/config.glade:1236 glade/config.glade:1327 glade/config.glade:1785
+msgid "gtk-add"
+msgstr ""
+
+#: glade/config.glade:753 glade/config.glade:968 glade/config.glade:1159
+#: glade/config.glade:1250 glade/config.glade:1341 glade/config.glade:1800
+msgid "gtk-remove"
+msgstr ""
+
 #: glade/config.glade:780
 msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr "Исключения (одна раскладка для всех копий приложения)"
@@ -292,6 +310,14 @@ msgstr "Исключения (одна раскладка для всех коп
 #: glade/config.glade:810
 msgid "<b>Layouts</b>"
 msgstr "<b>Раскладки</b>"
+
+#: glade/config.glade:860 glade/config.glade:953 glade/config.glade:1480
+msgid "gtk-edit"
+msgstr ""
+
+#: glade/config.glade:875
+msgid "gtk-clear"
+msgstr ""
 
 #: glade/config.glade:1011
 msgid "<b>Hotkeys</b>"
@@ -339,7 +365,8 @@ msgstr "Шрифт OSD"
 
 #: glade/config.glade:1575
 msgid "Use command <b>xfontsel -print</b> to get new font."
-msgstr "Используйте команду <b>xfontsel -print</b> для получения нового шрифта."
+msgstr ""
+"Используйте команду <b>xfontsel -print</b> для получения нового шрифта."
 
 #: glade/config.glade:1624
 msgid "OSD"

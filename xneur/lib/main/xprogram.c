@@ -572,10 +572,12 @@ static void xprogram_on_key_action(struct _xprogram *p, int type)
 		enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
 		if (manual_action != ACTION_NONE)
 		{
-			p->perform_manual_action(p, manual_action);
-			p->event->default_event.xkey.keycode = 0;
-			p->prev_mod_key = FALSE;
-			return;
+			if (p->perform_manual_action(p, manual_action))
+			{
+				p->prev_mod_key = FALSE;
+				return;
+			}
+			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
 		}
 	}
 }

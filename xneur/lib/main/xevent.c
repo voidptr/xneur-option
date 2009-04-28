@@ -85,8 +85,7 @@ XEvent create_basic_event(void)
 	return event;
 }
 
-// Private
-static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
+void xevent_send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 {
 	p->event.type			= KeyPress;
 	p->event.xkey.type		= KeyPress;
@@ -116,21 +115,21 @@ static void send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 static void xevent_send_backspaces(struct _xevent *p, int count)
 {
 	for (int i = 0; i < count; i++)
-		send_xkey(p, p->backspace, None);
+		p->send_xkey(p, p->backspace, None);
 }
 
 static void xevent_send_selection(struct _xevent *p, int count)
 {
 	for (int i = 0; i < count; i++)
-		send_xkey(p, p->left, None);
+		p->send_xkey(p, p->left, None);
 	for (int i = 0; i < count; i++)
-		send_xkey(p, p->right, ShiftMask);
+		p->send_xkey(p, p->right, ShiftMask);
 }
 
 static void xevent_send_string(struct _xevent *p, struct _xstring *str)
 {
 	for (int i = 0; i < str->cur_pos; i++)
-		send_xkey(p, str->keycode[i], str->keycode_modifiers[i]);
+		p->send_xkey(p, str->keycode[i], str->keycode_modifiers[i]);
 }
 
 static void xevent_set_owner_window(struct _xevent *p, Window window)
@@ -216,6 +215,7 @@ struct _xevent* xevent_init(void)
 	p->get_next_event	= xevent_get_next_event;
 	p->send_next_event	= xevent_send_next_event;
 	p->set_owner_window	= xevent_set_owner_window;
+	p->send_xkey		= xevent_send_xkey;
 	p->send_string		= xevent_send_string;
 	p->get_cur_keysym	= xevent_get_cur_keysym;
 	p->get_cur_modifiers	= xevent_get_cur_modifiers;

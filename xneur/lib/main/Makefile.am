@@ -16,6 +16,8 @@ libxnx_la_SOURCES =		\
 	xstring.h		\
 	xswitchlang.c		\
 	xswitchlang.h		\
+	xtypographics.c		\
+	xtypographics.h		\
 	xutils.c		\
 	xutils.h		\
 	xwindow.c		\

@@ -38,7 +38,10 @@ int check_regexp_match(const char *str, const char *pattern)
 	const char *error;
 	int erroffset;
 
-	pcre *re = pcre_compile((char *) pattern, options, &error, &erroffset, NULL);
+	const unsigned char *tables;
+	tables=pcre_maketables();
+
+	pcre *re = pcre_compile((char *) pattern, options, &error, &erroffset, tables);
 	if (!re)
 		return FALSE;
 
