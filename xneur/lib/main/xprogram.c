@@ -75,8 +75,6 @@ extern struct _xneur_config *xconfig;
 
 struct _xwindow *main_window;
 
-int check_on_release = TRUE;
-
 // Private
 static int get_auto_action(KeySym key, int modifier_mask)
 {
@@ -117,11 +115,12 @@ static int get_auto_action(KeySym key, int modifier_mask)
 	// MiscFunc keys
 	if (IsMiscFunctionKey(key))
 	{
-		if (key == XK_Insert)
-		{
-			if (modifier_mask & ControlMask || modifier_mask & Mod1Mask || modifier_mask & ShiftMask || modifier_mask & Mod4Mask)
-				return KLB_CLEAR;
-		}
+		if (key != XK_Insert)
+			return KLB_NO_ACTION;
+
+		if (modifier_mask & ControlMask || modifier_mask & Mod1Mask || modifier_mask & ShiftMask || modifier_mask & Mod4Mask)
+			return KLB_CLEAR;
+
 		return KLB_NO_ACTION;
 	}
 
@@ -308,10 +307,13 @@ static void xprogram_process_input(struct _xprogram *p)
 			case KeyPress:
 			{
 				log_message(TRACE, _("Received KeyPress (event type %d)"), type);
+
 				// Save received event
 				p->event->default_event = p->event->event;
+
 				// Processing received event
 				p->on_key_action(p, type);
+
 				// Restore event
 				if (p->event->default_event.xkey.keycode != 0)
 				{
@@ -323,10 +325,13 @@ static void xprogram_process_input(struct _xprogram *p)
 			case KeyRelease:
 			{
 				log_message(TRACE, _("Received KeyRelease (event type %d)"), type);
+
 				// Save received event
 				p->event->default_event = p->event->event;
+
 				// Processing received event
 				p->on_key_action(p, type);
+
 				// Resend special key back to window
 				if (p->event->default_event.xkey.keycode != 0)
 				{
@@ -418,14 +423,14 @@ static void xprogram_change_incidental_caps(struct _xprogram *p)
 	p->string->set_uncaps_mask(p->string);
 
 	// Change CAPS if need
-	if (get_key_state(XK_Caps_Lock))
-	{
-		int xkb_opcode, xkb_event, xkb_error;
-		int xkb_lmaj = XkbMajorVersion;
-		int xkb_lmin = XkbMinorVersion;
-		if (XkbLibraryVersion(&xkb_lmaj, &xkb_lmin) && XkbQueryExtension(main_window->display, &xkb_opcode, &xkb_event, &xkb_error, &xkb_lmaj, &xkb_lmin))
-			XkbLockModifiers(main_window->display, XkbUseCoreKbd, LockMask, 0);
-	}
+	if (!get_key_state(XK_Caps_Lock))
+		return;
+
+	int xkb_opcode, xkb_event, xkb_error;
+	int xkb_lmaj = XkbMajorVersion;
+	int xkb_lmin = XkbMinorVersion;
+	if (XkbLibraryVersion(&xkb_lmaj, &xkb_lmin) && XkbQueryExtension(main_window->display, &xkb_opcode, &xkb_event, &xkb_error, &xkb_lmaj, &xkb_lmin))
+		XkbLockModifiers(main_window->display, XkbUseCoreKbd, LockMask, 0);
 }
 
 static void xprogram_change_two_capital_letter(struct _xprogram *p)
@@ -533,30 +538,8 @@ static void xprogram_on_key_action(struct _xprogram *p, int type)
 	// Delete language modifier mask
 	int modifier_mask = p->event->get_cur_modifiers(p->event);
 
-	if (type == KeyPress)
+	if ((type == KeyPress) == (!xconfig->check_action_on_key_release))
 	{
-		if (!xconfig->check_action_on_key_release)
-		{
-			int user_action = get_user_action(key, modifier_mask);
-			if (user_action >= 0)
-			{
-				p->perform_user_action(p, user_action);
-				p->event->default_event.xkey.keycode = 0;
-				return;
-			}
-
-			enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
-			if (p->perform_manual_action(p, manual_action))
-				return;
-		}
-		
-		int auto_action = get_auto_action(key, modifier_mask);
-		p->perform_auto_action(p, auto_action);
-	}
-
-	if (type == KeyRelease && xconfig->check_action_on_key_release)
-	{
-		
 		int user_action = get_user_action(key, modifier_mask);
 		if (user_action >= 0)
 		{
@@ -566,8 +549,15 @@ static void xprogram_on_key_action(struct _xprogram *p, int type)
 		}
 
 		enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
-		p->perform_manual_action(p, manual_action);
+		if (p->perform_manual_action(p, manual_action))
+			return;
 	}
+
+	if (type != KeyPress)
+		return;
+
+	int auto_action = get_auto_action(key, modifier_mask);
+	p->perform_auto_action(p, auto_action);
 }
 
 static void xprogram_perform_user_action(struct _xprogram *p, int action)
