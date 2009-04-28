@@ -20,4 +20,6 @@
 #ifndef _XTYPOGRAPHICS_H_
 #define _XTYPOGRAPHICS_H_
 
+char *check_typographics(char *text);
+
 #endif /* _XTYPOGRAPHICS_H_ */

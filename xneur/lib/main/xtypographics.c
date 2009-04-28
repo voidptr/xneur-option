@@ -17,5 +17,13 @@
  *
  */
 
+#include <stdlib.h>
+
 #include "xtypographics.h"
 
+char *check_typographics(char *text)
+{
+	if (text) {};
+
+	return NULL;
+}
