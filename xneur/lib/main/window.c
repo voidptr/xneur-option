@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <strings.h>
 
-#include "xutils.h"
+#include "utils.h"
 #include "xdefines.h"
 #include "keymap.h"
 

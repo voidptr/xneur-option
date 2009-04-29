@@ -29,7 +29,7 @@
 
 #include "xstring.h"
 #include "window.h"
-#include "xutils.h"
+#include "utils.h"
 #include "xdefines.h"
 
 #include "types.h"

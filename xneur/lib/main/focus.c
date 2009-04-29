@@ -25,7 +25,7 @@
 
 #include "xnconfig.h"
 
-#include "xutils.h"
+#include "utils.h"
 #include "window.h"
 #include "xdefines.h"
 

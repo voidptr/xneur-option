@@ -33,7 +33,7 @@
 
 #include "window.h"
 #include "keymap.h"
-#include "xutils.h"
+#include "utils.h"
 
 #include "types.h"
 #include "text.h"

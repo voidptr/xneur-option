@@ -45,7 +45,7 @@
 #include "xstring.h"
 #include "window.h"
 #include "keymap.h"
-#include "xutils.h"
+#include "utils.h"
 
 #include "types.h"
 #include "list_char.h"

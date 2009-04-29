@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _XUTILS_H_
-#define _XUTILS_H_
+#ifndef _UTILS_H_
+#define _UTILS_H_
 
 #include <X11/Xutil.h>
 
@@ -29,4 +29,4 @@ void   grab_keyboard(Window window, int is_grab);
 void   grab_key(Window window, KeyCode kc, int is_grab);
 void   grab_spec_keys(Window window, int is_grab);
 
-#endif /* _XUTILS_H_ */
+#endif /* _UTILS_H_ */
