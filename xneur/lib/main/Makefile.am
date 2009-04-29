@@ -11,13 +11,13 @@ libxnx_la_SOURCES =		\
 	selection.h		\
 	switchlang.c		\
 	switchlang.h		\
+	typographics.c		\
+	typographics.h		\
 	xdefines.h		\
 	xprogram.c		\
 	xprogram.h		\
 	xstring.c		\
 	xstring.h		\
-	xtypographics.c		\
-	xtypographics.h		\
 	xutils.c		\
 	xutils.h		\
 	xwindow.c		\
