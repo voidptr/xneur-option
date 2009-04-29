@@ -32,7 +32,7 @@
 #include "xnconfig_memory.h"
 
 #include "types.h"
-#include "utils.h"
+#include "utilities.h"
 #include "list_char.h"
 #include "log.h"
 

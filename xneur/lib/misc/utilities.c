@@ -26,7 +26,7 @@
 #include "types.h"
 #include "log.h"
 
-#include "utils.h"
+#include "utilities.h"
 
 void xntrap(int sig, sg_handler handler)
 {
