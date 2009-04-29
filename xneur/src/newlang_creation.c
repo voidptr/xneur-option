@@ -25,8 +25,8 @@
 
 #include "xnconfig_files.h"
 
-#include "xwindow.h"
-#include "xkeymap.h"
+#include "window.h"
+#include "keymap.h"
 
 #include "types.h"
 #include "list_char.h"
@@ -35,7 +35,7 @@
 #define NEW_LANG_DIR	"new"
 #define NEW_LANG_TEXT	"new.text"
 
-extern struct _xwindow *main_window;
+extern struct _window *main_window;
 
 static char* get_file_content(const char *file_name)
 {
@@ -265,7 +265,7 @@ void generate_protos(void)
 		exit(EXIT_FAILURE);
 	}
 
-	char *low_text = main_window->xkeymap->lower_by_keymaps(main_window->xkeymap, new_lang_group, text);
+	char *low_text = main_window->keymap->lower_by_keymaps(main_window->keymap, new_lang_group, text);
 	free(text);
 
 	printf("Text in low symbols :\n %s\n", low_text);
@@ -278,22 +278,22 @@ void generate_protos(void)
 	printf("Check character combination...\n");
 
 	// Check character combination
-	for (int i = main_window->xkeymap->min_keycode + 1; i <= main_window->xkeymap->max_keycode; i++)
+	for (int i = main_window->keymap->min_keycode + 1; i <= main_window->keymap->max_keycode; i++)
 	{
-		char *sym_i = keycode_to_symbol(i, main_window->xkeymap->latin_group, 0);
+		char *sym_i = keycode_to_symbol(i, main_window->keymap->latin_group, 0);
 		if (sym_i == NULLSYM || iscntrl(sym_i[0]) || isspace(sym_i[0]))
 			continue;
 
-		for (int j = main_window->xkeymap->min_keycode + 1; j <= main_window->xkeymap->max_keycode; j++)
+		for (int j = main_window->keymap->min_keycode + 1; j <= main_window->keymap->max_keycode; j++)
 		{
-			char *sym_j = keycode_to_symbol(j, main_window->xkeymap->latin_group, 0);
+			char *sym_j = keycode_to_symbol(j, main_window->keymap->latin_group, 0);
 			if (sym_j == NULLSYM || iscntrl(sym_j[0]) || isspace(sym_j[0]))
 				continue;
 
 			strcpy(syll, sym_i);
 			strcat(syll, sym_j);
 
-			main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, syll);
+			main_window->keymap->convert_text_to_ascii(main_window->keymap, syll);
 
 			if (proto->find(proto, syll, BY_PLAIN))
 				continue;
@@ -304,9 +304,9 @@ void generate_protos(void)
 				continue;
 			}
 
-			for (int k = main_window->xkeymap->min_keycode + 1; k <= main_window->xkeymap->max_keycode; k++)
+			for (int k = main_window->keymap->min_keycode + 1; k <= main_window->keymap->max_keycode; k++)
 			{
-				char *sym_k = keycode_to_symbol(k, main_window->xkeymap->latin_group, 0);
+				char *sym_k = keycode_to_symbol(k, main_window->keymap->latin_group, 0);
 				if (sym_k == NULL || iscntrl(sym_k[0]) || isspace(sym_k[0]))
 					continue;
 
@@ -314,7 +314,7 @@ void generate_protos(void)
 				strcat(syll, sym_j);
 				strcat(syll, sym_k);
 
-				main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, syll);
+				main_window->keymap->convert_text_to_ascii(main_window->keymap, syll);
 
 				if (proto3->find(proto3, syll, BY_PLAIN))
 					continue;

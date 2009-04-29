@@ -37,11 +37,11 @@
 #include "bind_table.h"
 #include "switchlang.h"
 
-#include "xprogram.h"
-#include "xkeymap.h"
+#include "program.h"
+#include "keymap.h"
 
 #include "types.h"
-#include "utils.h"
+#include "utilities.h"
 #include "list_char.h"
 #include "log.h"
 #include "colors.h"
@@ -51,7 +51,7 @@
 #include "newlang_creation.h"
 
 struct _xneur_config *xconfig = NULL;
-static struct _xprogram *xprogram = NULL;
+static struct _program *program = NULL;
 
 static int xneur_check_lock = TRUE;
 static int xneur_generate_proto = FALSE;
@@ -174,8 +174,8 @@ static void xneur_cleanup(void)
 	sound_uninit();
 	log_message(DEBUG, _("Current sound data is freed"));
 
-	if (xprogram != NULL)
-		xprogram->uninit(xprogram);
+	if (program != NULL)
+		program->uninit(program);
 
 	log_message(DEBUG, _("Current program info is freed"));
 
@@ -345,8 +345,8 @@ int main(int argc, char *argv[])
 	xneur_set_lock();
 	xneur_load_config(FALSE);
 
-	xprogram = xprogram_init();
-	if (xprogram == NULL)
+	program = program_init();
+	if (program == NULL)
 	{
 		log_message(ERROR, _("Failed to init program structure"));
 		xconfig->set_pid(xconfig, 0);
@@ -367,7 +367,7 @@ int main(int argc, char *argv[])
 	if (xneur_generate_proto)
 		generate_protos();
 	else
-		xprogram->process_input(xprogram);
+		program->process_input(program);
 
 	xneur_cleanup();
 
