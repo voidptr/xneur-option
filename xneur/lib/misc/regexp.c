@@ -37,9 +37,7 @@ int check_regexp_match(const char *str, const char *pattern)
 	int options = 0;
 	const char *error;
 	int erroffset;
-
-	const unsigned char *tables;
-	tables=pcre_maketables();
+	const unsigned char *tables = pcre_maketables();
 
 	pcre *re = pcre_compile((char *) pattern, options, &error, &erroffset, tables);
 	if (!re)
@@ -64,8 +62,7 @@ int check_regexp_match(const char *str, const char *pattern)
 
 int check_regexp_match(const char *str, const char *pattern)
 {
-	str = str;
-	pattern = pattern;
+	if (str || pattern){}
 	return FALSE;
 }
 
