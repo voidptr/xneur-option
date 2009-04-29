@@ -286,12 +286,9 @@ static void buffer_del_symbol(struct _buffer *p)
 static char *buffer_get_utf_string(struct _buffer *p)
 {
 	char *symbol		= (char *) malloc((256 + 1) * sizeof(char));
-	char *utf_string	= (char *) malloc((p->cur_pos + 1) * sizeof(char));
+	char *utf_string	= (char *) malloc(sizeof(char));
 
 	utf_string[0] = NULLSYM;
-
-	int free_left		= p->cur_pos;
-	int utf_string_size	= free_left;
 
 	XEvent event = create_basic_event();
 	for (int i = 0; i < p->cur_pos; i++)
@@ -304,15 +301,8 @@ static char *buffer_get_utf_string(struct _buffer *p)
 			continue;
 
 		symbol[nbytes] = NULLSYM;
-
-		free_left -= nbytes;
-		if (free_left == 0)
-		{
-			free_left	+= p->cur_pos;
-			utf_string_size	+= free_left;
-			utf_string	= (char *) realloc(utf_string, utf_string_size * sizeof(char));
-		}
-
+		
+		utf_string	= (char *) realloc(utf_string, strlen(utf_string) * sizeof(char) + nbytes + 1);
 		strcat(utf_string, symbol);
 	}
 

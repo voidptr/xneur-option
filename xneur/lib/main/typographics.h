@@ -20,6 +20,9 @@
 #ifndef _TYPOGRAPHICS_H_
 #define _TYPOGRAPHICS_H_
 
+#define SPACE_BEFORE_PUNCTUATION ".*[ ]{1,}[\\.\\,\\!\\?\\;\\:]"
+#define NO_SPACE_AFTER_PUNCTUATION ".*[\\.\\,\\!\\?\\;\\:]\\w+"
+
 char *check_typographics(char *text);
 
 #endif /* _TYPOGRAPHICS_H_ */

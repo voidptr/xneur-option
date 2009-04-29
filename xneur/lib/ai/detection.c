@@ -251,7 +251,9 @@ int check_lang(struct _buffer *p, int cur_lang)
 	for (int i=0; i<xconfig->total_languages; i++)
 	{
 		word[i] = get_last_word(p->i18n_content[i].content);
+		//char *utf_word = p->get_utf_string(p);		
 		log_message(DEBUG, _("Processing word '%s'"), word[i]);
+		//free(utf_word);
 		sym_len[i] = p->i18n_content[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
 	}
 

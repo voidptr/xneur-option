@@ -46,6 +46,7 @@
 #include "window.h"
 #include "keymap.h"
 #include "utils.h"
+#include "typographics.h"
 
 #include "types.h"
 #include "list_char.h"
@@ -651,9 +652,10 @@ static void program_perform_auto_action(struct _program *p, int action)
 					p->changed_manual = MANUAL_FLAG_UNSET;
 
 				// Add symbol to internal bufer
-				int modifier_mask = groups[get_cur_lang()] | p->event->get_cur_modifiers(p->event);
+				int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 				p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
+				check_typographics(p->buffer->get_utf_string(p->buffer));
 				if (!xconfig->check_lang_on_process)
 					return;
 
@@ -688,9 +690,10 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 			// Add symbol to internal bufer
 			p->event->event = p->event->default_event;
-			int modifier_mask = groups[get_cur_lang()] | p->event->get_cur_modifiers(p->event);
+			int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 			p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
+			check_typographics(p->buffer->get_utf_string(p->buffer));
 			// Send Event
 			p->event->send_next_event(p->event);
 			p->event->default_event.xkey.keycode = 0;
