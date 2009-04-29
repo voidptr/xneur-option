@@ -48,6 +48,8 @@
 
 #include "newlang_creation.h"
 
+typedef void (*sg_handler)(int);
+
 struct _xneur_config *xconfig = NULL;
 static struct _program *program = NULL;
 
@@ -371,9 +373,9 @@ int main(int argc, char *argv[])
 	log_message(DEBUG, _("Init program structure complete"));
 	show_notify(NOTIFY_XNEUR_START, NULL);
 
-	xntrap(SIGTERM, xneur_terminate);
-	xntrap(SIGINT, xneur_terminate);
-	xntrap(SIGHUP, xneur_reload);
+	xneur_trap(SIGTERM, xneur_terminate);
+	xneur_trap(SIGINT, xneur_terminate);
+	xneur_trap(SIGHUP, xneur_reload);
 
 	if (xneur_generate_proto)
 		generate_protos();
