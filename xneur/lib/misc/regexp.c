@@ -37,22 +37,24 @@ int check_regexp_match(const char *str, const char *pattern)
 	int options = 0;
 	const char *error;
 	int erroffset;
+
 	const unsigned char *tables = pcre_maketables();
 
-	pcre *re = pcre_compile((char *) pattern, options, &error, &erroffset, tables);
+	pcre *re = pcre_compile(pattern, options, &error, &erroffset, tables);
 	if (!re)
+	{
+		log_message(WARNING, "Can't compile pcre pattern '%s'", pattern);
 		return FALSE;
+	}
 
 	int str_len = strlen(str);
 
 	int ovector[2];
-	int count = pcre_exec(re, NULL, (char *) str, str_len, 0, 0, ovector, 2);
+	int count = pcre_exec(re, NULL, str, str_len, 0, 0, ovector, 2);
+
 	pcre_free(re);
 
 	if (count <= 0)
-		return FALSE;
-
-	if (ovector[0] != 0 || ovector[1] != str_len)
 		return FALSE;
 
 	return TRUE;
