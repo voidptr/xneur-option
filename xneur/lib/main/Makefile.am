@@ -12,18 +12,18 @@ libxnx_la_SOURCES =		\
 	focus.h			\
 	keymap.c		\
 	keymap.h		\
+	program.c		\
+	program.h		\
 	selection.c		\
 	selection.h		\
 	switchlang.c		\
 	switchlang.h		\
 	typographics.c		\
 	typographics.h		\
-	utils.c		\
-	utils.h		\		
+	utils.c			\
+	utils.h			\		
 	window.c		\
-	window.h		\
-	xprogram.c		\
-	xprogram.h		
+	window.h		
 
 
 libxnx_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc  -I@top_srcdir@/lib/notify -I@top_srcdir@/lib/ai @X11_CFLAGS@ @DEFAULT_CFLAGS@

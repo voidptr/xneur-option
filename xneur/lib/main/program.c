@@ -56,7 +56,7 @@
 
 #include "notify.h"
 
-#include "xprogram.h"
+#include "program.h"
 
 #define KLB_NO_ACTION           0	// Modifier, function etc
 #define KLB_ADD_SYM             1	// Alpha
@@ -180,7 +180,7 @@ static int get_auto_action(KeySym key, int modifier_mask)
 	return KLB_ADD_SYM;
 }
 
-static void xprogram_layout_update(struct _xprogram *p)
+static void program_layout_update(struct _program *p)
 {
 	if (!xconfig->remember_layout)
 		return;
@@ -257,7 +257,7 @@ static void xprogram_layout_update(struct _xprogram *p)
 	switch_group(xconfig->default_group);
 }
 
-static void xprogram_update(struct _xprogram *p)
+static void program_update(struct _program *p)
 {
 	p->last_window = p->focus->owner_window;
 
@@ -280,7 +280,7 @@ static void xprogram_update(struct _xprogram *p)
 	p->focus->update_events(p->focus, listen_mode);
 }
 
-static void xprogram_process_input(struct _xprogram *p)
+static void program_process_input(struct _program *p)
 {
 	p->update(p);
 
@@ -408,14 +408,14 @@ static void xprogram_process_input(struct _xprogram *p)
 	}
 }
 
-static void xprogram_change_lang(struct _xprogram *p, int new_lang)
+static void program_change_lang(struct _program *p, int new_lang)
 {
 	log_message(DEBUG, _("Changing language from %s to %s"), xconfig->get_lang_name(xconfig, get_cur_lang()), xconfig->get_lang_name(xconfig, new_lang));
 	p->buffer->set_lang_mask(p->buffer, new_lang);
 	switch_lang(new_lang);
 }
 
-static void xprogram_change_incidental_caps(struct _xprogram *p)
+static void program_change_incidental_caps(struct _program *p)
 {
 	log_message(DEBUG, _("Correcting iNCIDENTAL CapsLock"));
 
@@ -433,7 +433,7 @@ static void xprogram_change_incidental_caps(struct _xprogram *p)
 		XkbLockModifiers(main_window->display, XkbUseCoreKbd, LockMask, 0);
 }
 
-static void xprogram_change_two_capital_letter(struct _xprogram *p)
+static void program_change_two_capital_letter(struct _program *p)
 {
 	log_message(DEBUG, _("Correcting two CApital letter"));
 
@@ -441,7 +441,7 @@ static void xprogram_change_two_capital_letter(struct _xprogram *p)
 	p->buffer->keycode_modifiers[1] = p->buffer->keycode_modifiers[1] & (~ShiftMask);
 }
 
-static void xprogram_process_selection_notify(struct _xprogram *p)
+static void program_process_selection_notify(struct _program *p)
 {
 	char *event_text = NULL;
 	event_text = get_selected_text(&p->event->event.xselection);
@@ -531,7 +531,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 	p->selected_mode = ACTION_NONE;
 }
 
-static void xprogram_on_key_action(struct _xprogram *p, int type)
+static void program_on_key_action(struct _program *p, int type)
 {
 	KeySym key = p->event->get_cur_keysym(p->event);
 
@@ -582,7 +582,7 @@ static void xprogram_on_key_action(struct _xprogram *p, int type)
 	}
 }
 
-static void xprogram_perform_user_action(struct _xprogram *p, int action)
+static void program_perform_user_action(struct _program *p, int action)
 {
 	if (p) {};
 
@@ -600,7 +600,7 @@ static void xprogram_perform_user_action(struct _xprogram *p, int action)
 	show_notify(NOTIFY_EXEC_USER_ACTION, xconfig->actions[action].command);
 }
 
-static void xprogram_perform_auto_action(struct _xprogram *p, int action)
+static void program_perform_auto_action(struct _program *p, int action)
 {
 	struct _buffer *string = p->buffer;
 
@@ -708,7 +708,7 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 	}
 }
 
-static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_action action)
+static int program_perform_manual_action(struct _program *p, enum _hotkey_action action)
 {
 	switch (action)
 	{
@@ -892,7 +892,7 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 	return TRUE;
 }
 
-static int xprogram_check_lang_last_word(struct _xprogram *p)
+static int program_check_lang_last_word(struct _program *p)
 {
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
 		return FALSE;
@@ -931,7 +931,7 @@ static int xprogram_check_lang_last_word(struct _xprogram *p)
 	return TRUE;
 }
 
-static int xprogram_check_lang_last_syllable(struct _xprogram *p)
+static int program_check_lang_last_syllable(struct _program *p)
 {
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
 		return FALSE;
@@ -973,7 +973,7 @@ static int xprogram_check_lang_last_syllable(struct _xprogram *p)
 	return TRUE;
 }
 
-static void xprogram_check_caps_last_word(struct _xprogram *p)
+static void program_check_caps_last_word(struct _program *p)
 {
 	int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 
@@ -992,7 +992,7 @@ static void xprogram_check_caps_last_word(struct _xprogram *p)
 	show_notify(NOTIFY_CORR_INCIDENTAL_CAPS, NULL);
 }
 
-static void xprogram_check_tcl_last_word(struct _xprogram *p)
+static void program_check_tcl_last_word(struct _program *p)
 {
 	int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 
@@ -1018,7 +1018,7 @@ static void xprogram_check_tcl_last_word(struct _xprogram *p)
 	show_notify(NOTIFY_CORR_TWO_CAPITAL_LETTER, NULL);
 }
 
-static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces)
+static void program_send_string_silent(struct _program *p, int send_backspaces)
 {
 	if (p->buffer->cur_pos == 0)
 	{
@@ -1032,7 +1032,7 @@ static void xprogram_send_string_silent(struct _xprogram *p, int send_backspaces
 	p->event->send_string(p->event, p->buffer);		// Send new string
 }
 
-static void xprogram_change_word(struct _xprogram *p, enum _change_action action)
+static void program_change_word(struct _program *p, enum _change_action action)
 {
 	switch (action)
 	{
@@ -1231,7 +1231,7 @@ static void xprogram_change_word(struct _xprogram *p, enum _change_action action
 	}
 }
 
-static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
+static void program_add_word_to_dict(struct _program *p, int new_lang)
 {
 	char *tmp = get_last_word(p->buffer->content);
 	if (tmp == NULL)
@@ -1296,7 +1296,7 @@ static void xprogram_add_word_to_dict(struct _xprogram *p, int new_lang)
 	free(new_word);
 }
 
-static void xprogram_uninit(struct _xprogram *p)
+static void program_uninit(struct _program *p)
 {
 	p->focus->uninit(p->focus);
 	p->event->uninit(p->event);
@@ -1308,10 +1308,10 @@ static void xprogram_uninit(struct _xprogram *p)
 	log_message(DEBUG, _("Program is freed"));
 }
 
-struct _xprogram* xprogram_init(void)
+struct _program* program_init(void)
 {
-	struct _xprogram *p = (struct _xprogram*) malloc(sizeof(struct _xprogram));
-	bzero(p, sizeof(struct _xprogram));
+	struct _program *p = (struct _program*) malloc(sizeof(struct _program));
+	bzero(p, sizeof(struct _program));
 
 	main_window = window_init();
 
@@ -1328,25 +1328,25 @@ struct _xprogram* xprogram_init(void)
 	p->buffer			= buffer_init();		// Input string buffer
 
 	// Function mapping
-	p->uninit			= xprogram_uninit;
-	p->layout_update		= xprogram_layout_update;
-	p->update			= xprogram_update;
-	p->on_key_action		= xprogram_on_key_action;
-	p->process_input		= xprogram_process_input;
-	p->perform_auto_action		= xprogram_perform_auto_action;
-	p->perform_manual_action	= xprogram_perform_manual_action;
-	p->perform_user_action		= xprogram_perform_user_action;
-	p->check_lang_last_word		= xprogram_check_lang_last_word;
-	p->check_lang_last_syllable	= xprogram_check_lang_last_syllable;
-	p->check_caps_last_word		= xprogram_check_caps_last_word;
-	p->check_tcl_last_word		= xprogram_check_tcl_last_word;
-	p->change_word			= xprogram_change_word;
-	p->add_word_to_dict		= xprogram_add_word_to_dict;
-	p->process_selection_notify	= xprogram_process_selection_notify;
-	p->change_lang			= xprogram_change_lang;
-	p->change_incidental_caps	= xprogram_change_incidental_caps;
-	p->change_two_capital_letter	= xprogram_change_two_capital_letter;
-	p->send_string_silent		= xprogram_send_string_silent;
+	p->uninit			= program_uninit;
+	p->layout_update		= program_layout_update;
+	p->update			= program_update;
+	p->on_key_action		= program_on_key_action;
+	p->process_input		= program_process_input;
+	p->perform_auto_action		= program_perform_auto_action;
+	p->perform_manual_action	= program_perform_manual_action;
+	p->perform_user_action		= program_perform_user_action;
+	p->check_lang_last_word		= program_check_lang_last_word;
+	p->check_lang_last_syllable	= program_check_lang_last_syllable;
+	p->check_caps_last_word		= program_check_caps_last_word;
+	p->check_tcl_last_word		= program_check_tcl_last_word;
+	p->change_word			= program_change_word;
+	p->add_word_to_dict		= program_add_word_to_dict;
+	p->process_selection_notify	= program_process_selection_notify;
+	p->change_lang			= program_change_lang;
+	p->change_incidental_caps	= program_change_incidental_caps;
+	p->change_two_capital_letter	= program_change_two_capital_letter;
+	p->send_string_silent		= program_send_string_silent;
 
 	return p;
 }
