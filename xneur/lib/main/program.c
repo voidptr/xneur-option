@@ -693,6 +693,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 			p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
 			check_typographics(p->buffer->get_utf_string(p->buffer));
+
 			// Send Event
 			p->event->send_next_event(p->event);
 			p->event->default_event.xkey.keycode = 0;
@@ -826,8 +827,10 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
 		{
+			char *utg_string = p->buffer->get_utf_string(p->buffer);
+
 			// Check last word to acronym list
-			char *word = get_last_word(p->buffer->get_utf_string(p->buffer));
+			char *word = get_last_word(utg_string);
 			if (!word)
 				return FALSE;
 
@@ -882,8 +885,11 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				p->event->default_event.xkey.keycode = 0;
 
 				free(replacement);
+				free(utg_string);
 				return TRUE;
 			}
+
+			free(utg_string);
 			return FALSE;
 		}
 	}

@@ -93,7 +93,7 @@ static int get_regexp_lang(char **word)
 }
 
 #ifdef WITH_ASPELL
-static int get_aspell_hits(char **word, int len)
+static int get_aspell_hits(char **word)
 {
 	AspellConfig *spell_config = new_aspell_config();
 
@@ -102,27 +102,26 @@ static int get_aspell_hits(char **word, int len)
 		if (is_fixed_layout(lang))
 			continue;
 
+		int len = strlen(word[lang]);
 		if (len < 2)
 			continue;
 
 		aspell_config_replace(spell_config, "lang", xconfig->languages[lang].dir);
 		AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
-		AspellSpeller *spell_checker = 0;
 
-		if (aspell_error_number(possible_err) == 0)
-		{
-			spell_checker = to_aspell_speller(possible_err);
-			int correct = aspell_speller_check(spell_checker, word[lang], len);
-			if (correct)
-			{
-				log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), xconfig->get_lang_name(xconfig, lang));
-				delete_aspell_speller(spell_checker);
-				return lang;
-			}
-		}
-		else
+		if (aspell_error_number(possible_err) != 0)
 		{
 			log_message(DEBUG, _("   [!] Error aspell checking for %s aspell dictionary"), xconfig->get_lang_name(xconfig, lang));
+			continue;
+		}
+
+		AspellSpeller *spell_checker = to_aspell_speller(possible_err);
+		int correct = aspell_speller_check(spell_checker, word[lang], len);
+		if (correct)
+		{
+			log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), xconfig->get_lang_name(xconfig, lang));
+			delete_aspell_speller(spell_checker);
+			return lang;
 		}
 
 		delete_aspell_speller(spell_checker);
@@ -135,17 +134,17 @@ static int get_aspell_hits(char **word, int len)
 
 static int get_proto_hits(char *word, int *sym_len, int len, int offset, int lang)
 {
-	int local_offset = 0;
-	char *proto = (char *) malloc((256) * sizeof(char));
-
-	int n_byte = 0;
+	int n_bytes = 0;
 	for (int i = 0; i < PROTO_LEN; i++)
-		n_byte += sym_len[i];
+		n_bytes += sym_len[i];
 
+	char *proto = (char *) malloc((n_byte + 1) * sizeof(char));
+
+	int local_offset = 0;
 	for (int i = 0; i <= len - offset - PROTO_LEN; i++)
 	{
-		proto = strncpy(proto, word+local_offset, n_byte);
-		proto[n_byte] = NULLSYM;
+		strncpy(proto, word + local_offset, n_bytes);
+		proto[n_bytes] = NULLSYM;
 
 		if (xconfig->languages[lang].protos->exist(xconfig->languages[lang].protos, proto, BY_PLAIN))
 		{
@@ -162,17 +161,17 @@ static int get_proto_hits(char *word, int *sym_len, int len, int offset, int lan
 
 static int get_big_proto_hits(char *word, int *sym_len, int len, int offset, int lang)
 {
-	int local_offset = 0;
-	char *proto = (char *) malloc((256) * sizeof(char));
-
-	int n_byte = 0;
+	int n_bytes = 0;
 	for (int i = 0; i < BIG_PROTO_LEN; i++)
-		n_byte += sym_len[i];
+		n_bytes += sym_len[i];
 
+	char *proto = (char *) malloc((n_byte + 1) * sizeof(char));
+
+	int local_offset = 0;
 	for (int i = 0; i <= len - offset - BIG_PROTO_LEN; i++)
 	{
-		strncpy(proto, word+local_offset, n_byte);
-		proto[n_byte] = NULLSYM;
+		strncpy(proto, word+local_offset, n_bytes);
+		proto[n_bytes] = NULLSYM;
 
 		if (xconfig->languages[lang].protos->exist(xconfig->languages[lang].big_protos, proto, BY_PLAIN))
 		{
@@ -240,32 +239,27 @@ int check_lang(struct _buffer *p, int cur_lang)
 	if (xconfig->find_group_lang(xconfig, group) == -1)
 		return NO_LANGUAGE;
 
-	int lang = NO_LANGUAGE;
+	char **word = (char **) malloc((xconfig->total_languages + 1) * sizeof(char *));
+	int **sym_len = (int **) malloc((xconfig->total_languages + 1) * sizeof(int *));
 
-	char **word;
-	word = (char **)malloc((xconfig->total_languages+1) * sizeof(char*));
-
-	int **sym_len;
-	sym_len = (int **)malloc((xconfig->total_languages+1) * sizeof(int*));
-
-	for (int i=0; i<xconfig->total_languages; i++)
+	for (int i = 0; i < xconfig->total_languages; i++)
 	{
 		word[i] = get_last_word(p->i18n_content[i].content);
-		//char *utf_word = p->get_utf_string(p);		
+
 		log_message(DEBUG, _("Processing word '%s'"), word[i]);
-		//free(utf_word);
+
 		sym_len[i] = p->i18n_content[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
 	}
 
 	// Check by regexp
-	lang = get_regexp_lang(word);
+	int lang = get_regexp_lang(word);
 
 	// Check by dictionary
 	if (lang == NO_LANGUAGE)
 		lang = get_dict_lang(word);
 
 	int len = strlen(p->content);
-	
+
 #ifdef WITH_ASPELL
 	// Check by aspell
 	if (lang == NO_LANGUAGE)

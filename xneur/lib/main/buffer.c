@@ -224,10 +224,10 @@ static void buffer_rotate_layout(struct _buffer *p)
 				new_lang = 0;
 
 			group = xconfig->get_lang_group(xconfig, new_lang);
+
 			int keycode_mod	= get_keycode_mod(group);
 			p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~languages_mask);
 			p->keycode_modifiers[i] = p->keycode_modifiers[i] | keycode_mod;
-
 			break;
 		}
 	}
@@ -284,9 +284,9 @@ static void buffer_del_symbol(struct _buffer *p)
 
 static char *buffer_get_utf_string(struct _buffer *p)
 {
-	char *symbol		= (char *) malloc((256 + 1) * sizeof(char));
-	char *utf_string	= (char *) malloc(sizeof(char));
+	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
 
+	char *utf_string = (char *) malloc(1 * sizeof(char));
 	utf_string[0] = NULLSYM;
 
 	XEvent event = create_basic_event();
@@ -301,7 +301,7 @@ static char *buffer_get_utf_string(struct _buffer *p)
 
 		symbol[nbytes] = NULLSYM;
 
-		utf_string	= (char *) realloc(utf_string, strlen(utf_string) * sizeof(char) + nbytes + 1);
+		utf_string = (char *) realloc(utf_string, strlen(utf_string) * sizeof(char) + nbytes + 1);
 		strcat(utf_string, symbol);
 	}
 
