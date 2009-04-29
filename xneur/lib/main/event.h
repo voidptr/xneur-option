@@ -49,6 +49,6 @@ struct _event
 	void (*uninit) (struct _event *p);
 };
 
-struct _event* xevent_init(void);
+struct _event* event_init(void);
 
 #endif /* _EVENT_H_ */
