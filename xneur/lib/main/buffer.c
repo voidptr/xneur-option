@@ -30,7 +30,6 @@
 #include "xnconfig_files.h"
 
 #include "event.h"
-
 #include "window.h"
 #include "keymap.h"
 #include "utils.h"
@@ -301,7 +300,7 @@ static char *buffer_get_utf_string(struct _buffer *p)
 			continue;
 
 		symbol[nbytes] = NULLSYM;
-		
+
 		utf_string	= (char *) realloc(utf_string, strlen(utf_string) * sizeof(char) + nbytes + 1);
 		strcat(utf_string, symbol);
 	}

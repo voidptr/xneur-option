@@ -7,7 +7,6 @@ libxnx_la_SOURCES =		\
 	buffer.h		\
 	event.c			\
 	event.h			\
-	defines.h		\
 	focus.c			\
 	focus.h			\
 	keymap.c		\
@@ -21,9 +20,10 @@ libxnx_la_SOURCES =		\
 	typographics.c		\
 	typographics.h		\
 	utils.c			\
-	utils.h			\		
+	utils.h			\
 	window.c		\
-	window.h		
+	window.h		\
+	defines.h
 
 
 libxnx_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc  -I@top_srcdir@/lib/notify -I@top_srcdir@/lib/ai @X11_CFLAGS@ @DEFAULT_CFLAGS@

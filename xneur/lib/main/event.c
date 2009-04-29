@@ -26,7 +26,6 @@
 #include "xnconfig.h"
 
 #include "switchlang.h"
-
 #include "buffer.h"
 #include "window.h"
 #include "utils.h"

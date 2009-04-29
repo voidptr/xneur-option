@@ -27,13 +27,13 @@
 
 #include "xnconfig.h"
 
-#include "types.h"
-#include "utilities.h"
-#include "log.h"
-
 #include "event.h"
 #include "switchlang.h"
 #include "window.h"
+
+#include "types.h"
+#include "utilities.h"
+#include "log.h"
 
 #include "keymap.h"
 

@@ -40,7 +40,6 @@
 #include "focus.h"
 #include "selection.h"
 #include "switchlang.h"
-
 #include "defines.h"
 #include "buffer.h"
 #include "window.h"
@@ -1326,8 +1325,8 @@ struct _program* program_init(void)
 
 	p->modifier_mask		= NO_MODIFIER_MASK;
 
-	p->event			= event_init();		// X Event processor
-	p->focus			= focus_init();		// X Input Focus and Pointer processor
+	p->event			= event_init();			// X Event processor
+	p->focus			= focus_init();			// X Input Focus and Pointer processor
 	p->buffer			= buffer_init();		// Input string buffer
 
 	// Function mapping
