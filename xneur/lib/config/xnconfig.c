@@ -54,8 +54,7 @@ static const char *option_names[] = 	{
 						"SaveLog", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
-						"ShowOSD", "AddOSD", "FontOSD",
-	                    "ShowPopup", "AddPopup"
+						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
