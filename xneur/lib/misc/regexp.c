@@ -49,7 +49,8 @@ int check_regexp_match(const char *str, const char *pattern)
 
 	int str_len = strlen(str);
 
-	int count = pcre_exec(re, NULL, str, str_len, 0, 0, NULL, 0);
+	int ovector[2];
+	int count = pcre_exec(re, NULL, str, str_len, 0, 0, ovector, 2);
 
 	pcre_free(re);
 
