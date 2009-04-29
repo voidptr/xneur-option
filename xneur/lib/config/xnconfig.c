@@ -78,6 +78,7 @@ static const char *notify_names[] =	{
 static int load_lang = -1;
 
 pid_t getsid(pid_t pid);
+char* strsep(char **stringp, const char *delim);
 
 static char* get_word(char **string)
 {
