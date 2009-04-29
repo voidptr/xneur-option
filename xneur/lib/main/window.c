@@ -27,7 +27,7 @@
 #include "types.h"
 #include "log.h"
 
-#include "xwindow.h"
+#include "window.h"
 
 #define MWM_HINTS_DECORATIONS   (1L << 1)
 #define PROP_MWM_HINTS_ELEMENTS 5
@@ -46,7 +46,7 @@ static int error_handler(Display *d, XErrorEvent *e)
         return FALSE;
 }
 
-static int xwindow_create(struct _xwindow *p)
+static int window_create(struct _window *p)
 {
 	XSetErrorHandler(error_handler);
 
@@ -109,7 +109,7 @@ static int xwindow_create(struct _xwindow *p)
 	return TRUE;
 }
 
-static void xwindow_destroy(struct _xwindow *p)
+static void window_destroy(struct _window *p)
 {
 	if (p->window == None)
 		return;
@@ -118,7 +118,7 @@ static void xwindow_destroy(struct _xwindow *p)
 	p->flag_window	= None;
 }
 
-static int xwindow_init_keymap(struct _xwindow *p)
+static int window_init_keymap(struct _window *p)
 {
 	p->keymap = keymap_init();
 	if (!p->keymap)
@@ -126,7 +126,7 @@ static int xwindow_init_keymap(struct _xwindow *p)
 	return TRUE;
 }
 
-static void xwindow_uninit(struct _xwindow *p)
+static void window_uninit(struct _window *p)
 {
 	if (p->keymap != NULL)
 		p->keymap->uninit(p->keymap);
@@ -137,16 +137,16 @@ static void xwindow_uninit(struct _xwindow *p)
 	log_message(DEBUG, _("Window is freed"));
 }
 
-struct _xwindow* xwindow_init(void)
+struct _window* window_init(void)
 {
-	struct _xwindow *p = (struct _xwindow *) malloc(sizeof(struct _xwindow));
-	bzero(p, sizeof(struct _xwindow));
+	struct _window *p = (struct _window *) malloc(sizeof(struct _window));
+	bzero(p, sizeof(struct _window));
 
 	// Function mapping
-	p->create		= xwindow_create;
-	p->destroy		= xwindow_destroy;
-	p->init_keymap		= xwindow_init_keymap;
-	p->uninit		= xwindow_uninit;
+	p->create		= window_create;
+	p->destroy		= window_destroy;
+	p->init_keymap		= window_init_keymap;
+	p->uninit		= window_uninit;
 
 	return p;
 }

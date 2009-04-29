@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "xwindow.h"
+#include "window.h"
 
 #include "types.h"
 #include "utils.h"
@@ -30,7 +30,7 @@
 
 #include "selection.h"
 
-extern struct _xwindow *main_window;
+extern struct _window *main_window;
 
 char* get_selected_text(XSelectionEvent *event)
 {

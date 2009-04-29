@@ -28,7 +28,7 @@
 #include "switchlang.h"
 
 #include "xstring.h"
-#include "xwindow.h"
+#include "window.h"
 #include "xutils.h"
 #include "xdefines.h"
 
@@ -38,7 +38,7 @@
 
 #include "event.h"
 
-extern struct _xwindow *main_window;
+extern struct _window *main_window;
 extern struct _xneur_config *xconfig;
 
 int get_key_state(int key)

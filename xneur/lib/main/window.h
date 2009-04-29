@@ -17,12 +17,12 @@
  *
  */
 
-#ifndef _XWINDOW_H_
-#define _XWINDOW_H_
+#ifndef _WINDOW_H_
+#define _WINDOW_H_
 
 #include <X11/Xutil.h>
 
-struct _xwindow
+struct _window
 {
 	struct _keymap *keymap;
 
@@ -34,13 +34,13 @@ struct _xwindow
 	Atom close_atom;
 	Atom protocols_atom;
 
-	int  (*create) (struct _xwindow *p);
-	void (*destroy) (struct _xwindow *p);
-	void (*move_window) (struct _xwindow *p, int x, int y);
-	int  (*init_keymap) (struct _xwindow *p);
-	void (*uninit) (struct _xwindow *p);
+	int  (*create) (struct _window *p);
+	void (*destroy) (struct _window *p);
+	void (*move_window) (struct _window *p, int x, int y);
+	int  (*init_keymap) (struct _window *p);
+	void (*uninit) (struct _window *p);
 };
 
-struct _xwindow* xwindow_init(void);
+struct _window* window_init(void);
 
-#endif /* _XWINDOW_H_ */
+#endif /* _WINDOW_H_ */

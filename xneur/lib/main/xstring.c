@@ -31,7 +31,7 @@
 
 #include "event.h"
 
-#include "xwindow.h"
+#include "window.h"
 #include "keymap.h"
 #include "xutils.h"
 
@@ -45,7 +45,7 @@
 #define INIT_STRING_LENGTH 64
 
 extern struct _xneur_config *xconfig;
-extern struct _xwindow *main_window;
+extern struct _window *main_window;
 
 Window last_log_window = 0;
 

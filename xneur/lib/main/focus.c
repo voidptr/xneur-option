@@ -26,7 +26,7 @@
 #include "xnconfig.h"
 
 #include "xutils.h"
-#include "xwindow.h"
+#include "window.h"
 #include "xdefines.h"
 
 #include "types.h"
@@ -36,7 +36,7 @@
 #include "focus.h"
 
 extern struct _xneur_config *xconfig;
-extern struct _xwindow *main_window;
+extern struct _window *main_window;
 
 const char *verbose_forced_mode[]	= {"Default", "Manual", "Automatic"};
 const char *verbose_focus_status[]	= {"Processed", "Changed Focus", "Unchanged Focus", "Excluded"};

@@ -43,7 +43,7 @@
 
 #include "xdefines.h"
 #include "xstring.h"
-#include "xwindow.h"
+#include "window.h"
 #include "keymap.h"
 #include "xutils.h"
 
@@ -73,7 +73,7 @@
 
 extern struct _xneur_config *xconfig;
 
-struct _xwindow *main_window;
+struct _window *main_window;
 
 // Private
 static int get_auto_action(KeySym key, int modifier_mask)
@@ -1313,7 +1313,7 @@ struct _xprogram* xprogram_init(void)
 	struct _xprogram *p = (struct _xprogram*) malloc(sizeof(struct _xprogram));
 	bzero(p, sizeof(struct _xprogram));
 
-	main_window = xwindow_init();
+	main_window = window_init();
 
 	if (!main_window->create(main_window) || !main_window->init_keymap(main_window))
 	{

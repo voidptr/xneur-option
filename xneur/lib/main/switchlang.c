@@ -24,7 +24,7 @@
 
 #include "xnconfig.h"
 
-#include "xwindow.h"
+#include "window.h"
 #include "keymap.h"
 
 #include "types.h"
@@ -34,7 +34,7 @@
 #include "switchlang.h"
 
 extern struct _xneur_config *xconfig;
-extern struct _xwindow *main_window;
+extern struct _window *main_window;
 
 int get_active_keyboard_group(void)
 {

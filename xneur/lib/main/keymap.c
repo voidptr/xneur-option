@@ -33,12 +33,12 @@
 
 #include "event.h"
 #include "switchlang.h"
-#include "xwindow.h"
+#include "window.h"
 
 #include "keymap.h"
 
 extern struct _xneur_config *xconfig;
-extern struct _xwindow *main_window;
+extern struct _window *main_window;
 
 static const int keyboard_groups[]	= {0x00000000, 0x00002000, 0x00004000, 0x00006000};
 static const int state_masks[]		= {0x00, 0x01, 0x80, 0x10}; // None, NumLock, Alt, Shift

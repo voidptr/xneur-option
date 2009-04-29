@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "xwindow.h"
+#include "window.h"
 #include "xdefines.h"
 #include "xnconfig.h"
 
@@ -45,7 +45,7 @@ const KeySym mod_keys[] =	{
 static const int total_mod_keys = sizeof(mod_keys) / sizeof(mod_keys[0]);
 
 extern struct _xneur_config *xconfig;
-extern struct _xwindow *main_window;
+extern struct _window *main_window;
 
 static Window get_root_window(Window window)
 {
