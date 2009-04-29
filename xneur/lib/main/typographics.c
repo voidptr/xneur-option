@@ -24,8 +24,8 @@
 
 #include "typographics.h"
 
-#define SPACE_BEFORE_PUNCTUATION " +[.,!?;:]"
-#define NO_SPACE_AFTER_PUNCTUATION "[.,!?;:][^ ]+"
+#define SPACE_BEFORE_PUNCTUATION		" [.,!?;:]"
+#define NO_SPACE_AFTER_PUNCTUATION		"[.,!?;:][^ ]"
 
 void check_typographics(char *text)
 {
@@ -33,7 +33,7 @@ void check_typographics(char *text)
 		log_message(ERROR, "Find pattern SPACE_BEFORE_PUNCTUATION in '%s'", text);
 
 	if (check_regexp_match(text, NO_SPACE_AFTER_PUNCTUATION))
-		log_message(ERROR, "Find pattern SPACE_BEFORE_PUNCTUATION in '%s'", text);
+		log_message(ERROR, "Find pattern NO_SPACE_AFTER_PUNCTUATION in '%s'", text);
 
 	free(text);
 }
