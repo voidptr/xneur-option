@@ -44,7 +44,7 @@
 #include "xdefines.h"
 #include "xstring.h"
 #include "xwindow.h"
-#include "xkeymap.h"
+#include "keymap.h"
 #include "xutils.h"
 
 #include "types.h"
@@ -490,7 +490,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		}
 		case ACTION_TRANSLIT_SELECTED:
 		{
-			int lang = xconfig->find_group_lang(xconfig, main_window->xkeymap->latin_group);
+			int lang = xconfig->find_group_lang(xconfig, main_window->keymap->latin_group);
 			p->change_lang(p, lang);
 
 			show_notify(NOTIFY_TRANSLIT_SELECTED, NULL);
@@ -498,7 +498,7 @@ static void xprogram_process_selection_notify(struct _xprogram *p)
 		}
 		case ACTION_TRANSLIT_CLIPBOARD:
 		{
-			int lang = xconfig->find_group_lang(xconfig, main_window->xkeymap->latin_group);
+			int lang = xconfig->find_group_lang(xconfig, main_window->keymap->latin_group);
 			p->change_lang(p, lang);
 
 			show_notify(NOTIFY_TRANSLIT_CLIPBOARD, NULL);
@@ -643,7 +643,7 @@ static void xprogram_perform_auto_action(struct _xprogram *p, int action)
 
 			p->last_action = action;
 
-			char sym = main_window->xkeymap->get_cur_ascii_char(main_window->xkeymap, p->event->event);
+			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
 
 			if (action == KLB_ADD_SYM)
 			{
@@ -844,11 +844,11 @@ static int xprogram_perform_manual_action(struct _xprogram *p, enum _hotkey_acti
 				{
 					KeyCode *dummy_kc = malloc(strlen(replacement) * sizeof(KeyCode));
 					int *dummy_kc_mod = malloc(strlen(replacement) * sizeof(int));
-					main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, replacement, dummy_kc, dummy_kc_mod);
+					main_window->keymap->convert_text_to_ascii(main_window->keymap, replacement, dummy_kc, dummy_kc_mod);
 
 					dummy_kc = realloc(dummy_kc, strlen(word) * sizeof(KeyCode));
 					dummy_kc_mod = realloc(dummy_kc_mod, strlen(word) * sizeof(int));
-					main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, word, dummy_kc, dummy_kc_mod);
+					main_window->keymap->convert_text_to_ascii(main_window->keymap, word, dummy_kc, dummy_kc_mod);
 
 					free(dummy_kc);
 					free(dummy_kc_mod);

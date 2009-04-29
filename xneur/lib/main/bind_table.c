@@ -30,7 +30,7 @@
 #include "log.h"
 #include "list_char.h"
 
-#include "xkeymap.h"
+#include "keymap.h"
 
 #include "bind_table.h"
 

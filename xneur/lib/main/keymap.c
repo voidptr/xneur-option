@@ -35,7 +35,7 @@
 #include "switchlang.h"
 #include "xwindow.h"
 
-#include "xkeymap.h"
+#include "keymap.h"
 
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
@@ -134,7 +134,7 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 }
 
 // Private
-static int init_keymaps(struct _xkeymap *p)
+static int init_keymaps(struct _keymap *p)
 {
 	p->keyboard_groups_count = get_keyboard_groups_count();
 	if (p->keyboard_groups_count > max_groups_count)
@@ -155,7 +155,7 @@ static int init_keymaps(struct _xkeymap *p)
 	return TRUE;
 }
 
-static void xkeymap_char_to_keycode(struct _xkeymap *p, char ch, KeyCode *kc, int *modifier)
+static void keymap_char_to_keycode(struct _keymap *p, char ch, KeyCode *kc, int *modifier)
 {
 	if (ch == 10 || ch == 13)
 	{
@@ -188,7 +188,7 @@ static void xkeymap_char_to_keycode(struct _xkeymap *p, char ch, KeyCode *kc, in
 	free(symbol);
 }
 
-static char xkeymap_get_ascii(struct _xkeymap *p, const char *sym, KeyCode *kc, int *modifier)
+static char keymap_get_ascii(struct _keymap *p, const char *sym, KeyCode *kc, int *modifier)
 {
 	XEvent event		= create_basic_event();
 
@@ -264,7 +264,7 @@ static char xkeymap_get_ascii(struct _xkeymap *p, const char *sym, KeyCode *kc, 
 	return NULLSYM;
 }
 
-static char xkeymap_get_cur_ascii_char(struct _xkeymap *p, XEvent e)
+static char keymap_get_cur_ascii_char(struct _keymap *p, XEvent e)
 {
 	XKeyEvent *ke = (XKeyEvent *) &e;
 
@@ -289,7 +289,7 @@ static char xkeymap_get_cur_ascii_char(struct _xkeymap *p, XEvent e)
 	return ' ';
 }
 
-static void xkeymap_convert_text_to_ascii(struct _xkeymap *p, char *text, KeyCode *kc, int *kc_mod)
+static void keymap_convert_text_to_ascii(struct _keymap *p, char *text, KeyCode *kc, int *kc_mod)
 {
 	int text_len = strlen(text);
 
@@ -320,7 +320,7 @@ static void xkeymap_convert_text_to_ascii(struct _xkeymap *p, char *text, KeyCod
 	text[j] = NULLSYM;
 }
 
-static char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
+static char* keymap_lower_by_keymaps(struct _keymap *p, int gr, char *text)
 {
 	if (text == NULL)
 		return NULL;
@@ -394,7 +394,7 @@ static char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
 	return newtext;
 }
 
-static void xkeymap_uninit(struct _xkeymap *p)
+static void keymap_uninit(struct _keymap *p)
 {
 	if (p->keymap != NULL)
 		XFree(p->keymap);
@@ -403,10 +403,10 @@ static void xkeymap_uninit(struct _xkeymap *p)
 	log_message(DEBUG, _("Keymap is freed"));
 }
 
-struct _xkeymap* xkeymap_init(void)
+struct _keymap* keymap_init(void)
 {
-	struct _xkeymap *p = (struct _xkeymap *) malloc(sizeof(struct _xkeymap));
-	bzero(p, sizeof(struct _xkeymap));
+	struct _keymap *p = (struct _keymap *) malloc(sizeof(struct _keymap));
+	bzero(p, sizeof(struct _keymap));
 
 	if (!locale_create() || !init_keymaps(p))
 	{
@@ -414,12 +414,12 @@ struct _xkeymap* xkeymap_init(void)
 		return NULL;
 	}
 
-	p->get_ascii			= xkeymap_get_ascii;
-	p->get_cur_ascii_char		= xkeymap_get_cur_ascii_char;
-	p->convert_text_to_ascii	= xkeymap_convert_text_to_ascii;
-	p->char_to_keycode		= xkeymap_char_to_keycode;
-	p->lower_by_keymaps		= xkeymap_lower_by_keymaps;
-	p->uninit			= xkeymap_uninit;
+	p->get_ascii			= keymap_get_ascii;
+	p->get_cur_ascii_char		= keymap_get_cur_ascii_char;
+	p->convert_text_to_ascii	= keymap_convert_text_to_ascii;
+	p->char_to_keycode		= keymap_char_to_keycode;
+	p->lower_by_keymaps		= keymap_lower_by_keymaps;
+	p->uninit			= keymap_uninit;
 
 	return p;
 }

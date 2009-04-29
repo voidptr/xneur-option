@@ -22,7 +22,7 @@
 
 #include "xutils.h"
 #include "xdefines.h"
-#include "xkeymap.h"
+#include "keymap.h"
 
 #include "types.h"
 #include "log.h"
@@ -120,16 +120,16 @@ static void xwindow_destroy(struct _xwindow *p)
 
 static int xwindow_init_keymap(struct _xwindow *p)
 {
-	p->xkeymap = xkeymap_init();
-	if (!p->xkeymap)
+	p->keymap = keymap_init();
+	if (!p->keymap)
 		return FALSE;
 	return TRUE;
 }
 
 static void xwindow_uninit(struct _xwindow *p)
 {
-	if (p->xkeymap != NULL)
-		p->xkeymap->uninit(p->xkeymap);
+	if (p->keymap != NULL)
+		p->keymap->uninit(p->keymap);
 
 	p->destroy(p);
 	free(p);

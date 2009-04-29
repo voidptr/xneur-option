@@ -24,7 +24,7 @@
 
 struct _xwindow
 {
-	struct _xkeymap *xkeymap;
+	struct _keymap *keymap;
 
 	Display *display;
 	Window window;

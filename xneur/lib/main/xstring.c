@@ -32,7 +32,7 @@
 #include "event.h"
 
 #include "xwindow.h"
-#include "xkeymap.h"
+#include "keymap.h"
 #include "xutils.h"
 
 #include "types.h"
@@ -180,7 +180,7 @@ static void xstring_set_content(struct _xstring *p, const char *new_content)
 		return;
 
 	memcpy(p->content, content, p->cur_pos);
-	main_window->xkeymap->convert_text_to_ascii(main_window->xkeymap, p->content, p->keycode, p->keycode_modifiers);
+	main_window->keymap->convert_text_to_ascii(main_window->keymap, p->content, p->keycode, p->keycode_modifiers);
 
 	p->cur_pos = strlen(p->content);
 	set_new_size(p, p->cur_pos + 1);

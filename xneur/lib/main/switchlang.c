@@ -25,7 +25,7 @@
 #include "xnconfig.h"
 
 #include "xwindow.h"
-#include "xkeymap.h"
+#include "keymap.h"
 
 #include "types.h"
 #include "utils.h"
