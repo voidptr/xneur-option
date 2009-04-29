@@ -827,6 +827,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
 		{
+			//MOVE this code to new function in new module
+
 			char *utf_string = p->buffer->get_utf_string(p->buffer);
 
 			// Check last word to acronym list
@@ -869,7 +871,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				grab_spec_keys(p->focus->owner_window, FALSE);
 
 				// Replace Abbreviation
-				log_message (DEBUG, _("Found Abbreviation '%s' '%s'. Replacing to '%s'."), replacement, word, string);
+				log_message(DEBUG, _("Found Abbreviation '%s' '%s'. Replacing to '%s'."), replacement, word, string);
 
 				p->event->send_backspaces(p->event, strlen(get_last_word(p->buffer->content)));
 				p->buffer->set_content(p->buffer, string);
@@ -882,6 +884,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				show_notify(NOTIFY_REPLACE_ABBREVIATION, NULL);
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
+				//Incapsulate to p->event->clear_code() or smth else
 				p->event->default_event.xkey.keycode = 0;
 
 				free(replacement);
