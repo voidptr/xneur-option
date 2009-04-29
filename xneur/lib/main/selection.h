@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _XSELECTION_H_
-#define _XSELECTION_H_
+#ifndef _SELECTION_H_
+#define _SELECTION_H_
 
 enum _selection_type
 {
@@ -30,4 +30,5 @@ enum _selection_type
 char* get_selected_text(XSelectionEvent *event);
 void  on_selection_converted(enum _selection_type sel_type);
 void  do_selection_notify(enum _selection_type sel_type);
-#endif /* _XSELECTION_H_ */
+
+#endif /* _SELECTION_H_ */

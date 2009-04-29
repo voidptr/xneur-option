@@ -23,7 +23,7 @@
 struct _xprogram
 {
 	struct _switchlang *switchlang;
-	struct _xselection *selection;
+	struct _selection *selection;
 	struct _event *event;
 	struct _focus *focus;
 	struct _xstring *string;

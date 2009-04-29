@@ -28,7 +28,7 @@
 #include "utils.h"
 #include "log.h"
 
-#include "xselection.h"
+#include "selection.h"
 
 extern struct _xwindow *main_window;
 

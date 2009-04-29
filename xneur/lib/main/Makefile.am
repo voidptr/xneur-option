@@ -7,13 +7,13 @@ libxnx_la_SOURCES =		\
 	event.h			\
 	focus.c			\
 	focus.h			\
+	selection.c		\
+	selection.h		\
 	switchlang.c		\
 	switchlang.h		\
 	xdefines.h		\
 	xprogram.c		\
 	xprogram.h		\
-	xselection.c		\
-	xselection.h		\
 	xstring.c		\
 	xstring.h		\
 	xtypographics.c		\
