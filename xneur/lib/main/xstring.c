@@ -29,8 +29,9 @@
 #include "xnconfig.h"
 #include "xnconfig_files.h"
 
+#include "event.h"
+
 #include "xwindow.h"
-#include "xevent.h"
 #include "xkeymap.h"
 #include "xutils.h"
 
@@ -227,7 +228,7 @@ static void xstring_rotate_layout(struct _xstring *p)
 			int keycode_mod	= get_keycode_mod(group);
 			p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~languages_mask);
 			p->keycode_modifiers[i] = p->keycode_modifiers[i] | keycode_mod;
-			
+
 			break;
 		}
 	}

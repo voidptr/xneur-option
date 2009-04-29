@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _XEVENT_H_
-#define _XEVENT_H_
+#ifndef _EVENT_H_
+#define _EVENT_H_
 
 #include <X11/Xutil.h>
 
@@ -27,7 +27,7 @@
 int get_key_state(int key);
 XEvent create_basic_event(void);
 
-struct _xevent
+struct _event
 {
 	Window owner_window;		// Window that recieves/sends event
 	XEvent event;			// Event to process
@@ -36,19 +36,19 @@ struct _xevent
 	KeyCode left;			// Left Arrow key code
 	KeyCode right;			// Right Arrow key code
 
-	KeySym (*get_cur_keysym) (struct _xevent *p);
-	int (*get_cur_modifiers) (struct _xevent *p);
+	KeySym (*get_cur_keysym) (struct _event *p);
+	int (*get_cur_modifiers) (struct _event *p);
 
-	int  (*get_next_event) (struct _xevent *p);
-	void (*send_next_event) (struct _xevent *p);
-	void (*set_owner_window) (struct _xevent *p, Window window);
-	void (*send_xkey) (struct _xevent *p, KeyCode kc, int modifiers);
-	void (*send_string) (struct _xevent *p, struct _xstring *str);
-	void (*send_backspaces) (struct _xevent *p, int n);
-	void (*send_selection) (struct _xevent *p, int n);
-	void (*uninit) (struct _xevent *p);
+	int  (*get_next_event) (struct _event *p);
+	void (*send_next_event) (struct _event *p);
+	void (*set_owner_window) (struct _event *p, Window window);
+	void (*send_xkey) (struct _event *p, KeyCode kc, int modifiers);
+	void (*send_string) (struct _event *p, struct _xstring *str);
+	void (*send_backspaces) (struct _event *p, int n);
+	void (*send_selection) (struct _event *p, int n);
+	void (*uninit) (struct _event *p);
 };
 
-struct _xevent* xevent_init(void);
+struct _event* xevent_init(void);
 
-#endif /* _XEVENT_H_ */
+#endif /* _EVENT_H_ */

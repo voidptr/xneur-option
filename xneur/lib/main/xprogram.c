@@ -36,13 +36,13 @@
 #include "xnconfig_files.h"
 
 #include "bind_table.h"
+#include "event.h"
 
 #include "xdefines.h"
 #include "xstring.h"
 #include "xfocus.h"
 #include "xswitchlang.h"
 #include "xselection.h"
-#include "xevent.h"
 #include "xwindow.h"
 #include "xkeymap.h"
 #include "xutils.h"
@@ -548,7 +548,7 @@ static void xprogram_on_key_action(struct _xprogram *p, int type)
 			p->event->default_event.xkey.keycode = 0;
 			return;
 		}
-		
+
 		int auto_action = get_auto_action(key, modifier_mask);
 		p->perform_auto_action(p, auto_action);
 	}
@@ -559,7 +559,7 @@ static void xprogram_on_key_action(struct _xprogram *p, int type)
 			return;
 
 		//log_message (ERROR,"%s %s %d", XKeysymToString(key), XKeysymToString(key), modifier_mask);
-		
+
 		int user_action = get_user_action(key, modifier_mask);
 		if (user_action >= 0)
 		{

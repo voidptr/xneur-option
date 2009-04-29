@@ -35,7 +35,7 @@
 #include "log.h"
 #include "conversion.h"
 
-#include "xevent.h"
+#include "event.h"
 
 extern struct _xwindow *main_window;
 extern struct _xneur_config *xconfig;
@@ -85,7 +85,7 @@ XEvent create_basic_event(void)
 	return event;
 }
 
-void xevent_send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
+void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 {
 	p->event.type			= KeyPress;
 	p->event.xkey.type		= KeyPress;
@@ -112,13 +112,13 @@ void xevent_send_xkey(struct _xevent *p, KeyCode kc, int modifiers)
 	*/
 }
 
-static void xevent_send_backspaces(struct _xevent *p, int count)
+static void event_send_backspaces(struct _event *p, int count)
 {
 	for (int i = 0; i < count; i++)
 		p->send_xkey(p, p->backspace, None);
 }
 
-static void xevent_send_selection(struct _xevent *p, int count)
+static void event_send_selection(struct _event *p, int count)
 {
 	for (int i = 0; i < count; i++)
 		p->send_xkey(p, p->left, None);
@@ -126,27 +126,27 @@ static void xevent_send_selection(struct _xevent *p, int count)
 		p->send_xkey(p, p->right, ShiftMask);
 }
 
-static void xevent_send_string(struct _xevent *p, struct _xstring *str)
+static void event_send_string(struct _event *p, struct _xstring *str)
 {
 	for (int i = 0; i < str->cur_pos; i++)
 		p->send_xkey(p, str->keycode[i], str->keycode_modifiers[i]);
 }
 
-static void xevent_set_owner_window(struct _xevent *p, Window window)
+static void event_set_owner_window(struct _event *p, Window window)
 {
 	p->owner_window = window;
 }
 
-static KeySym xevent_get_cur_keysym(struct _xevent *p)
+static KeySym event_get_cur_keysym(struct _event *p)
 {
 	return XLookupKeysym(&p->event.xkey, 0);
 }
 
-static int xevent_get_cur_modifiers(struct _xevent *p)
+static int event_get_cur_modifiers(struct _event *p)
 {
 	int mask = 0;
 	int key_sym = p->get_cur_keysym(p);
-	
+
 	if ((p->event.xkey.state & ShiftMask) && (key_sym != XK_Shift_L) && (key_sym != XK_Shift_R))
 		mask += (1 << 0);
 	if ((p->event.xkey.state & LockMask) && (key_sym != XK_Caps_Lock))
@@ -183,45 +183,45 @@ static int xevent_get_cur_modifiers(struct _xevent *p)
 	return mask;
 }
 
-static int xevent_get_next_event(struct _xevent *p)
+static int event_get_next_event(struct _event *p)
 {
 	XNextEvent(main_window->display, &(p->event));
 	return p->event.type;
 }
 
-static void xevent_send_next_event(struct _xevent *p)
+static void event_send_next_event(struct _event *p)
 {
 	p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_active_keyboard_group()];
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);
 }
 
-static void xevent_uninit(struct _xevent *p)
+static void event_uninit(struct _event *p)
 {
 	free(p);
 
 	log_message(DEBUG, _("Event is freed"));
 }
 
-struct _xevent* xevent_init(void)
+struct _event* event_init(void)
 {
-	struct _xevent *p = (struct _xevent *) malloc(sizeof(struct _xevent));
-	bzero(p, sizeof(struct _xevent));
+	struct _event *p = (struct _event *) malloc(sizeof(struct _event));
+	bzero(p, sizeof(struct _event));
 
 	p->backspace		= XKeysymToKeycode(main_window->display, XK_BackSpace);
 	p->left			= XKeysymToKeycode(main_window->display, XK_Left);
 	p->right		= XKeysymToKeycode(main_window->display, XK_Right);
-	
+
 	// Functions mapping
-	p->get_next_event	= xevent_get_next_event;
-	p->send_next_event	= xevent_send_next_event;
-	p->set_owner_window	= xevent_set_owner_window;
-	p->send_xkey		= xevent_send_xkey;
-	p->send_string		= xevent_send_string;
-	p->get_cur_keysym	= xevent_get_cur_keysym;
-	p->get_cur_modifiers	= xevent_get_cur_modifiers;
-	p->send_backspaces	= xevent_send_backspaces;
-	p->send_selection	= xevent_send_selection;
-	p->uninit		= xevent_uninit;
+	p->get_next_event	= event_get_next_event;
+	p->send_next_event	= event_send_next_event;
+	p->set_owner_window	= event_set_owner_window;
+	p->send_xkey		= event_send_xkey;
+	p->send_string		= event_send_string;
+	p->get_cur_keysym	= event_get_cur_keysym;
+	p->get_cur_modifiers	= event_get_cur_modifiers;
+	p->send_backspaces	= event_send_backspaces;
+	p->send_selection	= event_send_selection;
+	p->uninit		= event_uninit;
 
 	return p;
 }

@@ -31,9 +31,9 @@
 #include "utils.h"
 #include "log.h"
 
+#include "event.h"
 #include "xswitchlang.h"
 #include "xwindow.h"
-#include "xevent.h"
 
 #include "xkeymap.h"
 
@@ -105,15 +105,15 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 	}
 
 	KeySym inbound_key = XStringToKeysym(keyname);
-	
+
 	int min_keycode, max_keycode;
 	XDisplayKeycodes(display, &min_keycode, &max_keycode);
-	
+
 	int keysyms_per_keycode;
 	KeySym *keymap = XGetKeyboardMapping(display, min_keycode, max_keycode - min_keycode + 1, &keysyms_per_keycode);
 
 	XCloseDisplay(display);
-	
+
 	for (int i = min_keycode; i <= max_keycode; i++)
 	{
 		for (int j = 0; j < 2; j++)
@@ -175,7 +175,7 @@ static void xkeymap_char_to_keycode(struct _xkeymap *p, char ch, KeyCode *kc, in
 		int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
 		if ((nbytes > 0) && (symbol[0] == ch))
 			break;
-		
+
 		event.xkey.state	= ShiftMask;
 
 		nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
@@ -194,21 +194,21 @@ static char xkeymap_get_ascii(struct _xkeymap *p, const char *sym, KeyCode *kc, 
 
 	char *symbol		= (char *) malloc((256 + 1) * sizeof(char));
 	char *prev_symbols	= (char *) malloc((256 + 1) * sizeof(char));
-	
+
 	for (int lang = 0; lang < p->keyboard_groups_count; lang++)
 	{
 		if (lang == p->latin_group)
 			continue;
-		
+
 		KeySym *keymap = p->keymap;
 		for (int i = p->min_keycode; i <= p->max_keycode; i++)
 		{
 			int max = p->keysyms_per_keycode - 1;
 			while (max >= 0 && keymap[max] == NoSymbol)
 				max--;
-	
+
 			prev_symbols[0] = NULLSYM;
-	
+
 			for (int j = 0; j <= max; j++)
 			{
 				if (keymap[j] == NoSymbol)
@@ -223,13 +223,13 @@ static char xkeymap_get_ascii(struct _xkeymap *p, const char *sym, KeyCode *kc, 
 						event.xkey.state	= get_keycode_mod(lang);
 						event.xkey.state	|= state_masks[m];
 						event.xkey.state	|= state_masks[n];
-						
+
 						int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
 						if (nbytes <= 0)
 							continue;
 
 						symbol[nbytes] = NULLSYM;
-				
+
 						if (strstr(prev_symbols, symbol) != NULL)
 							continue;
 						strcat(prev_symbols, symbol);
@@ -309,7 +309,7 @@ static void xkeymap_convert_text_to_ascii(struct _xkeymap *p, char *text, KeyCod
 		{
 			if (isascii(text[i + 1]) || isspace(text[i + 1]))
 				break;
-			
+
 			if (p->get_ascii(p, &text[i + 1], &kc[i + 1], &kc_mod[i + 1]) != NULLSYM)
 				break;
 		}
@@ -328,9 +328,9 @@ static char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
 	char *symbol_old	= (char *) malloc((256 + 1) * sizeof(char));
 	char *symbol_new	= (char *) malloc((256 + 1) * sizeof(char));
 	char *prev_symbols	= (char *) malloc((256 + 1) * sizeof(char));
-	
+
 	char *newtext = strdup(text);
-	
+
 	KeySym *keymap = p->keymap;
 	for (int i = p->min_keycode; i <= p->max_keycode; i++)
 	{
@@ -339,11 +339,11 @@ static char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
 			max--;
 
 		prev_symbols[0] = NULLSYM;
-	
-		for (int j = 1; j <= max; j += 2) 
+
+		for (int j = 1; j <= max; j += 2)
 		{
 			if (keymap[j] == NoSymbol)
-				continue;	
+				continue;
 
 			for (int m = 0; m < 4; m++) // Modifiers
 			{
@@ -351,7 +351,7 @@ static char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
 				{
 					if (n == m)
 						continue;
-				
+
 					// Get BIG symbol from keymap
 					XEvent event		= create_basic_event();
 					event.xkey.keycode	= i;
@@ -362,9 +362,9 @@ static char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
 					int nbytes = XLookupString((XKeyEvent *) &event, symbol_old, 256, NULL, NULL);
 					if (nbytes <= 0)
 						continue;
-	
+
 					symbol_old[nbytes] = NULLSYM;
-				
+
 					if (strstr(prev_symbols, symbol_old) != NULL)
 						continue;
 
@@ -386,14 +386,14 @@ static char* xkeymap_lower_by_keymaps(struct _xkeymap *p, int gr, char *text)
 		}
 		keymap += p->keysyms_per_keycode;
 	}
-	
+
 	free(prev_symbols);
 	free(symbol_new);
 	free(symbol_old);
 
 	return newtext;
 }
-	
+
 static void xkeymap_uninit(struct _xkeymap *p)
 {
 	if (p->keymap != NULL)
