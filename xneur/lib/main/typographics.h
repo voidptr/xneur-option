@@ -17,13 +17,9 @@
  *
  */
 
-#include <stdlib.h>
+#ifndef _TYPOGRAPHICS_H_
+#define _TYPOGRAPHICS_H_
 
-#include "xtypographics.h"
+char *check_typographics(char *text);
 
-char *check_typographics(char *text)
-{
-	if (text) {};
-
-	return NULL;
-}
+#endif /* _TYPOGRAPHICS_H_ */
