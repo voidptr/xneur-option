@@ -21,7 +21,7 @@
 #include <strings.h>
 
 #include "utils.h"
-#include "xdefines.h"
+#include "defines.h"
 #include "keymap.h"
 
 #include "types.h"

@@ -5,6 +5,7 @@ libxnx_la_SOURCES =		\
 	bind_table.h		\
 	event.c			\
 	event.h			\
+	defines.h		\
 	focus.c			\
 	focus.h			\
 	keymap.c		\
@@ -19,7 +20,6 @@ libxnx_la_SOURCES =		\
 	utils.h			\		
 	window.c		\
 	window.h		\
-	xdefines.h		\
 	xprogram.c		\
 	xprogram.h		\
 	xstring.c		\

@@ -21,7 +21,7 @@
 #include <string.h>
 
 #include "window.h"
-#include "xdefines.h"
+#include "defines.h"
 #include "xnconfig.h"
 
 #include "types.h"

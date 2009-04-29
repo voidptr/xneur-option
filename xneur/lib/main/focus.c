@@ -27,7 +27,7 @@
 
 #include "utils.h"
 #include "window.h"
-#include "xdefines.h"
+#include "defines.h"
 
 #include "types.h"
 #include "list_char.h"

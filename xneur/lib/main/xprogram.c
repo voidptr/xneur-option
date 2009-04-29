@@ -41,7 +41,7 @@
 #include "selection.h"
 #include "switchlang.h"
 
-#include "xdefines.h"
+#include "defines.h"
 #include "xstring.h"
 #include "window.h"
 #include "keymap.h"

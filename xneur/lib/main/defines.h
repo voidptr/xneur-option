@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _XDEFINES_H_
-#define _XDEFINES_H_
+#ifndef _DEFINES_H_
+#define _DEFINES_H_
 
 #define INPUT_HANDLE_MASK	PropertyChangeMask
 #define EVENT_KEY_MASK		KeyPressMask | KeyReleaseMask
@@ -29,4 +29,4 @@
 
 static const int groups[4] = {0x00000000, 0x00002000, 0x00004000, 0x00006000};
 
-#endif /* _XDEFINIES_H_ */
+#endif /* _DEFINIES_H_ */
