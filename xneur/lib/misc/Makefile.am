@@ -9,7 +9,6 @@ noinst_HEADERS =		\
 	log.h			\
 	text.h			\
 	types.h			\
-	utilities.h		\
 	regexp.h
 
 libxnmisc_la_SOURCES =		\
@@ -17,7 +16,6 @@ libxnmisc_la_SOURCES =		\
 	list_char.c		\
 	log.c			\
 	text.c			\
-	utilities.c		\
 	regexp.c
 
 libxnmisc_la_CFLAGS = @PCRE_CFLAGS@ @DEFAULT_CFLAGS@

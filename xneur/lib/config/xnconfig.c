@@ -32,7 +32,6 @@
 #include "xnconfig_memory.h"
 
 #include "types.h"
-#include "utilities.h"
 #include "list_char.h"
 #include "log.h"
 
@@ -162,7 +161,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->hotkeys[action].key = NULL;			
+			p->hotkeys[action].key = NULL;
 			while (TRUE)
 			{
 				char *modifier = get_word(&line);
@@ -590,7 +589,7 @@ static void free_structures(struct _xneur_config *p)
 		if (p->popups[notify].file != NULL)
 			free(p->popups[notify].file);
 	}
-	
+
 	for (int lang = 0; lang < p->total_languages; lang++)
 	{
 		if (p->languages[lang].temp_dicts != NULL)
@@ -624,7 +623,7 @@ static void free_structures(struct _xneur_config *p)
 	bzero(p->sounds, MAX_NOTIFIES * sizeof(struct _xneur_file));
 	bzero(p->osds, MAX_NOTIFIES * sizeof(struct _xneur_file));
 	bzero(p->popups, MAX_NOTIFIES * sizeof(struct _xneur_file));
-	
+
 	p->total_languages = 0;
 	p->actions_count = 0;
 
@@ -978,7 +977,7 @@ static int xneur_config_save(struct _xneur_config *p)
 		else
 			fprintf(stream, "AddPopup %s %s\n", notify_names[notify], p->popups[notify].file);
 	}
-	        
+
 	fprintf(stream, "\n# This option disable or enable checking language on input process\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CheckOnProcess Yes\n");
@@ -1039,7 +1038,7 @@ static char* xneur_config_get_lang_dir(struct _xneur_config *p, int lang)
 	int path_len = strlen(LANGUAGEDIR) + strlen(p->languages[lang].dir) + 2;
 	char *path_file = (char *) malloc(path_len * sizeof(char));
 	snprintf(path_file, path_len, "%s/%s", LANGUAGEDIR, p->languages[lang].dir);
-	
+
 	return path_file;
 }
 
@@ -1098,7 +1097,7 @@ static void xneur_config_uninit(struct _xneur_config *p)
 	free(p->sounds);
 	free(p->osds);
 	free(p->popups);
-	
+
 	free(p);
 }
 

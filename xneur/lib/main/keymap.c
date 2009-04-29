@@ -32,7 +32,7 @@
 #include "window.h"
 
 #include "types.h"
-#include "utilities.h"
+#include "text.h"
 #include "log.h"
 
 #include "keymap.h"
@@ -380,7 +380,10 @@ static char* keymap_lower_by_keymaps(struct _keymap *p, int gr, char *text)
 
 					symbol_new[nbytes] = NULLSYM;
 
-					newtext = xnreplace(newtext, symbol_old, symbol_new);
+					char *replaced = str_replace(newtext, symbol_old, symbol_new);
+
+					free(newtext);
+					newtext = replaced;
 				}
 			}
 		}

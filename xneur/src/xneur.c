@@ -36,12 +36,10 @@
 
 #include "bind_table.h"
 #include "switchlang.h"
-
 #include "program.h"
 #include "keymap.h"
 
 #include "types.h"
-#include "utilities.h"
 #include "list_char.h"
 #include "log.h"
 #include "colors.h"
@@ -319,6 +317,19 @@ static void xneur_reklama(void)
 	printf(LIGHT_PURPLE_COLOR ">>> " LIGHT_PURPLE_COLOR "Please visit " RED_COLOR "http://www.xneur.ru" LIGHT_BLUE_COLOR " for support" LIGHT_PURPLE_COLOR " <<<" NORMAL_COLOR "\n");
 	printf(LIGHT_PURPLE_COLOR "====================================================" NORMAL_COLOR "\n");
 	printf("\n");
+}
+
+static void xneur_trap(int sig, sg_handler handler)
+{
+	struct sigaction sa;
+	bzero(&sa, sizeof(sa));
+	sa.sa_handler = handler;
+
+	if (sigaction(sig, &sa, NULL) == -1)
+	{
+		log_message(ERROR, _("Can't trap signal"));
+		exit(EXIT_FAILURE);
+	}
 }
 
 int main(int argc, char *argv[])

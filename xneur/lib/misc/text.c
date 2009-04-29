@@ -118,3 +118,38 @@ char* lower_word(const char *word, int len)
 
 	return ret;
 }
+
+char* str_replace(const char *source, const char *search, const char *replace)
+{
+	if (source == NULL)
+		return NULL;
+
+	int source_len = strlen(source);
+	int search_len = strlen(search);
+	int replace_len = strlen(replace);
+
+	int max_multiplier = replace_len / search_len + 1;
+
+	char *result = (char *) malloc((source_len * max_multiplier + 1) * sizeof(char));
+	result[0] = NULLSYM;
+
+	char *result_orig = result;
+
+	while (TRUE)
+	{
+		char *found = strstr(source, search);
+		if (found == NULL)
+		{
+			strcat(result, source);
+			break;
+		}
+
+		if (found != source)
+			memcpy(result, source, found - source);
+
+		strcat(result, replace);
+		source = found + search_len;
+	}
+
+	return result_orig;
+}
