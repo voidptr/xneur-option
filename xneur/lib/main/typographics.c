@@ -24,8 +24,8 @@
 
 #include "typographics.h"
 
-#define SPACE_BEFORE_PUNCTUATION ".* +[.,!?;:]"
-#define NO_SPACE_AFTER_PUNCTUATION ".*[.,!?;:][^ ]+"
+#define SPACE_BEFORE_PUNCTUATION " +[.,!?;:]"
+#define NO_SPACE_AFTER_PUNCTUATION "[.,!?;:][^ ]+"
 
 void check_typographics(char *text)
 {
