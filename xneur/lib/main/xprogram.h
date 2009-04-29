@@ -25,7 +25,7 @@ struct _xprogram
 	struct _xswitchlang *switchlang;
 	struct _xselection *selection;
 	struct _event *event;
-	struct _xfocus *focus;
+	struct _focus *focus;
 	struct _xstring *string;
 
 	int  last_action;

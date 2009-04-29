@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _XFOCUS_H_
-#define _XFOCUS_H_
+#ifndef _FOCUS_H_
+#define _FOCUS_H_
 
 #include <X11/Xutil.h>
 
@@ -35,18 +35,18 @@
 #define FORCE_MODE_MANUAL	1
 #define FORCE_MODE_AUTO		2
 
-struct _xfocus
+struct _focus
 {
 	Window owner_window;		// Input focus window
 	Window parent_window;		// Parent widget in window
 	Window last_parent_window;	// Last grab parent window
 	int last_focus;			// Last focus status
 
-	int  (*get_focus_status) (struct _xfocus *p, int *forced_mode, int *focus_status);
-	void (*update_events) (struct _xfocus *p, int mode);
-	void (*uninit) (struct _xfocus *p);
+	int  (*get_focus_status) (struct _focus *p, int *forced_mode, int *focus_status);
+	void (*update_events) (struct _focus *p, int mode);
+	void (*uninit) (struct _focus *p);
 };
 
-struct _xfocus* xfocus_init(void);
+struct _focus* focus_init(void);
 
-#endif /* _XFOCUS_H_ */
+#endif /* _FOCUS_H_ */

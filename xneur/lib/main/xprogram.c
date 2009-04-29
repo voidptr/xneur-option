@@ -37,10 +37,10 @@
 
 #include "bind_table.h"
 #include "event.h"
+#include "focus.h"
 
 #include "xdefines.h"
 #include "xstring.h"
-#include "xfocus.h"
 #include "xswitchlang.h"
 #include "xselection.h"
 #include "xwindow.h"

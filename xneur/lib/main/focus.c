@@ -33,7 +33,7 @@
 #include "list_char.h"
 #include "log.h"
 
-#include "xfocus.h"
+#include "focus.h"
 
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;
@@ -45,25 +45,25 @@ static void grab_mouse_button (Window current_window, int grab)
 {
 	if (current_window == None)
 		return;
-	
+
 	grab_button(current_window, grab);
-	
+
 	unsigned int children_count;
 	Window root_window, parent_window;
 	Window *children_return;
-	
+
 	int is_same_screen = XQueryTree(main_window->display, current_window, &root_window, &parent_window, &children_return, &children_count);
 	if (!is_same_screen)
 		return;
-	
+
 	for (unsigned int i = 0; i < children_count; i++)
 		grab_mouse_button (children_return[i], grab);
-	
+
 	XFree(children_return);
 }
 
 // Private
-static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
+static int get_focus(struct _focus *p, int *forced_mode, int *focus_status)
 {
 	*forced_mode	= FORCE_MODE_NORMAL;
 	*focus_status	= FOCUS_NONE;
@@ -75,10 +75,10 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		int revert_to;
 		XGetInputFocus(main_window->display, &new_window, &revert_to);
 
-		// Catch not empty and not system window 
+		// Catch not empty and not system window
 		if (new_window != None && new_window > 1000)
 			break;
-		
+
 		if (show_message)
 		{
 			log_message(DEBUG, _("New window empty"));
@@ -86,7 +86,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		}
 		usleep(10000);
 	}
-	
+
 	char *new_app_name = get_wm_class_name(new_window);
 	if (new_app_name != NULL)
 	{
@@ -98,7 +98,7 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		else if (xconfig->manual_apps->exist(xconfig->manual_apps, new_app_name, BY_PLAIN))
 			*forced_mode = FORCE_MODE_MANUAL;
 	}
-	
+
 	Window old_window = p->owner_window;
 	if (new_window == old_window)
 	{
@@ -119,24 +119,24 @@ static int get_focus(struct _xfocus *p, int *forced_mode, int *focus_status)
 		int is_same_screen = XQueryTree(main_window->display, p->parent_window, &root_window, &parent_window, &children_return, &children_count);
 		if (!is_same_screen || parent_window == None || parent_window == root_window)
 			break;
-		
+
 		p->parent_window = parent_window;
 		XFree(children_return);
-	}	
-	
+	}
+
 	// Clear masking on unfocused window
 	p->update_events(p, LISTEN_DONTGRAB_INPUT);
 	// Replace unfocused window to focused window
 	p->owner_window = new_window;
 
 	log_message(DEBUG, _("Process new window (ID %d) with name '%s' (status %s, mode %s)"), new_window, new_app_name, verbose_focus_status[*focus_status], verbose_forced_mode[*forced_mode]);
-	
+
 	if (new_app_name != NULL)
 		free(new_app_name);
 	return FOCUS_CHANGED;
 }
 
-static int xfocus_get_focus_status(struct _xfocus *p, int *forced_mode, int *focus_status)
+static int focus_get_focus_status(struct _focus *p, int *forced_mode, int *focus_status)
 {
 	int focus = get_focus(p, forced_mode, focus_status);
 
@@ -151,7 +151,7 @@ static int xfocus_get_focus_status(struct _xfocus *p, int *forced_mode, int *foc
 	return focus;
 }
 
-static void xfocus_update_events(struct _xfocus *p, int mode)
+static void focus_update_events(struct _focus *p, int mode)
 {
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
@@ -175,22 +175,22 @@ static void xfocus_update_events(struct _xfocus *p, int mode)
 	p->last_parent_window = p->parent_window;
 }
 
-static void xfocus_uninit(struct _xfocus *p)
+static void focus_uninit(struct _focus *p)
 {
 	free(p);
 
 	log_message(DEBUG, _("Focus is freed"));
 }
 
-struct _xfocus* xfocus_init(void)
+struct _focus* focus_init(void)
 {
-	struct _xfocus *p = (struct _xfocus *) malloc(sizeof(struct _xfocus));
-	bzero(p, sizeof(struct _xfocus));
+	struct _focus *p = (struct _focus *) malloc(sizeof(struct _focus));
+	bzero(p, sizeof(struct _focus));
 
 	// Functions mapping
-	p->get_focus_status	= xfocus_get_focus_status;
-	p->update_events	= xfocus_update_events;
-	p->uninit		= xfocus_uninit;
+	p->get_focus_status	= focus_get_focus_status;
+	p->update_events	= focus_update_events;
+	p->uninit		= focus_uninit;
 
 	return p;
 }

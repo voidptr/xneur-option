@@ -5,9 +5,9 @@ libxnx_la_SOURCES =		\
 	bind_table.h		\
 	event.c			\
 	event.h			\
+	focus.c			\
+	focus.h			\
 	xdefines.h		\
-	xfocus.c		\
-	xfocus.h		\
 	xprogram.c		\
 	xprogram.h		\
 	xselection.c		\
