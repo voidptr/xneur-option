@@ -27,7 +27,7 @@
 
 #include "switchlang.h"
 
-#include "xstring.h"
+#include "buffer.h"
 #include "window.h"
 #include "utils.h"
 #include "defines.h"
@@ -127,7 +127,7 @@ static void event_send_selection(struct _event *p, int count)
 		p->send_xkey(p, p->right, ShiftMask);
 }
 
-static void event_send_string(struct _event *p, struct _xstring *str)
+static void event_send_string(struct _event *p, struct _buffer *str)
 {
 	for (int i = 0; i < str->cur_pos; i++)
 		p->send_xkey(p, str->keycode[i], str->keycode_modifiers[i]);

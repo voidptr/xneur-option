@@ -17,12 +17,12 @@
  *
  */
 
-#ifndef _UTILS_H_
-#define _UTILS_H_
+#ifndef _UTILITIES_H_
+#define _UTILITIES_H_
 
 typedef void (*sg_handler)(int);
 
 void xntrap(int sig, sg_handler handler);
 char *xnreplace(char *s, char *old, char *new);
 
-#endif /* _UTILS_H_ */
+#endif /* _UTILITIES_H_ */

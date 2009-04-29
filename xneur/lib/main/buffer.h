@@ -17,20 +17,20 @@
  *
  */
 
-#ifndef _XSTRING_H_
-#define _XSTRING_H_
+#ifndef _BUFFER_H_
+#define _BUFFER_H_
 
 #include <X11/Xutil.h>
 
-struct _xstring_content
+struct _buffer_content
 {
 	char *content;
 	int *symbol_len;
 };
 
-struct _xstring
+struct _buffer
 {
-	struct _xstring_content *xcontent;
+	struct _buffer_content *i18n_content;
 
 	char *content;		// String itself
 	KeyCode *keycode;	// Array of string chars keycodes
@@ -39,23 +39,23 @@ struct _xstring
 	int cur_size;		// Current size of content, keycode, keycodeModifiers fields
 	int cur_pos;		// Current filled size
 
-	void (*clear) (struct _xstring *p);
-	void (*save_log) (struct _xstring *p, char *path, Window window);
-	void (*save_and_clear) (struct _xstring *p, Window window);
-	int  (*is_space_last) (struct _xstring *p);
-	void (*set_lang_mask) (struct _xstring *p, int group);
-	void (*set_uncaps_mask) (struct _xstring *p);
-	void (*set_content) (struct _xstring *p, const char *new_content);
-	void (*change_case) (struct _xstring *p);
-	void (*rotate_layout) (struct _xstring *p);
-	void (*add_symbol) (struct _xstring *p, char sym, KeyCode keycode, int modifier);
-	void (*del_symbol) (struct _xstring *p);
-	char*(*get_utf_string) (struct _xstring *p);
-	void (*set_offset) (struct _xstring *p, int offset);
-	void (*unset_offset) (struct _xstring *p, int offset);
-	void (*uninit) (struct _xstring *p);
+	void (*clear) (struct _buffer *p);
+	void (*save_log) (struct _buffer *p, char *path, Window window);
+	void (*save_and_clear) (struct _buffer *p, Window window);
+	int  (*is_space_last) (struct _buffer *p);
+	void (*set_lang_mask) (struct _buffer *p, int group);
+	void (*set_uncaps_mask) (struct _buffer *p);
+	void (*set_content) (struct _buffer *p, const char *new_content);
+	void (*change_case) (struct _buffer *p);
+	void (*rotate_layout) (struct _buffer *p);
+	void (*add_symbol) (struct _buffer *p, char sym, KeyCode keycode, int modifier);
+	void (*del_symbol) (struct _buffer *p);
+	char*(*get_utf_string) (struct _buffer *p);
+	void (*set_offset) (struct _buffer *p, int offset);
+	void (*unset_offset) (struct _buffer *p, int offset);
+	void (*uninit) (struct _buffer *p);
 };
 
-struct _xstring* xstring_init(void);
+struct _buffer* buffer_init(void);
 
-#endif /* _XSTRING_H_ */
+#endif /* _BUFFER_H_ */

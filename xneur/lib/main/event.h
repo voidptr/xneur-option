@@ -22,7 +22,7 @@
 
 #include <X11/Xutil.h>
 
-#include "xstring.h"
+#include "buffer.h"
 
 int get_key_state(int key);
 XEvent create_basic_event(void);
@@ -43,7 +43,7 @@ struct _event
 	void (*send_next_event) (struct _event *p);
 	void (*set_owner_window) (struct _event *p, Window window);
 	void (*send_xkey) (struct _event *p, KeyCode kc, int modifiers);
-	void (*send_string) (struct _event *p, struct _xstring *str);
+	void (*send_string) (struct _event *p, struct _buffer *str);
 	void (*send_backspaces) (struct _event *p, int n);
 	void (*send_selection) (struct _event *p, int n);
 	void (*uninit) (struct _event *p);

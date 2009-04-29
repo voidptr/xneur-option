@@ -28,7 +28,7 @@
 #include "xnconfig.h"
 
 #include "types.h"
-#include "utils.h"
+#include "utilities.h"
 #include "log.h"
 
 #include "event.h"

@@ -40,7 +40,7 @@
 #include "conversion.h"
 #include "log.h"
 
-#include "xstring.h"
+#include "buffer.h"
 
 #define INIT_STRING_LENGTH 64
 
@@ -50,7 +50,7 @@ extern struct _window *main_window;
 Window last_log_window = 0;
 
 // Private
-static void set_new_size(struct _xstring *p, int new_size)
+static void set_new_size(struct _buffer *p, int new_size)
 {
 	p->cur_size		= new_size;
 	p->content		= (char *) realloc(p->content, p->cur_size * sizeof(char));
@@ -58,7 +58,7 @@ static void set_new_size(struct _xstring *p, int new_size)
 	p->keycode_modifiers	= (int *) realloc(p->keycode_modifiers, p->cur_size * sizeof(int));
 }
 
-static void xstring_set_lang_mask(struct _xstring *p, int lang)
+static void buffer_set_lang_mask(struct _buffer *p, int lang)
 {
 	int keycode_mod		= get_keycode_mod(xconfig->get_lang_group(xconfig, lang));
 	int languages_mask	= get_languages_mask();
@@ -71,14 +71,14 @@ static void xstring_set_lang_mask(struct _xstring *p, int lang)
 	}
 }
 
-static void xstring_set_uncaps_mask(struct _xstring *p)
+static void buffer_set_uncaps_mask(struct _buffer *p)
 {
 	// Set uncaps bit
 	for (int i = 0; i < p->cur_pos; i++)
 		p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~LockMask);
 }
 
-static void xstring_save_log(struct _xstring *p, char *file_name, Window window)
+static void buffer_save_log(struct _buffer *p, char *file_name, Window window)
 {
 	if (!xconfig->save_keyboard_log || p->cur_pos == 0 || file_name == NULL)
 		return;
@@ -135,7 +135,7 @@ static void xstring_save_log(struct _xstring *p, char *file_name, Window window)
 	fclose(stream);
 }
 
-static void xstring_clear(struct _xstring *p)
+static void buffer_clear(struct _buffer *p)
 {
 	for (int i = 0; i < p->cur_pos; i++)
 	{
@@ -148,12 +148,12 @@ static void xstring_clear(struct _xstring *p)
 
 	for (int i=0; i<xconfig->total_languages; i++)
 	{
-		p->xcontent[i].content = realloc(p->xcontent[i].content, sizeof(char));
-		p->xcontent[i].content[0] = NULLSYM;
+		p->i18n_content[i].content = realloc(p->i18n_content[i].content, sizeof(char));
+		p->i18n_content[i].content[0] = NULLSYM;
 	}
 }
 
-static int xstring_is_space_last(struct _xstring *p)
+static int buffer_is_space_last(struct _buffer *p)
 {
 	if (p->cur_pos <= 0)
 		return FALSE;
@@ -164,7 +164,7 @@ static int xstring_is_space_last(struct _xstring *p)
 	return FALSE;
 }
 
-static void xstring_set_content(struct _xstring *p, const char *new_content)
+static void buffer_set_content(struct _buffer *p, const char *new_content)
 {
 	char *content = strdup(new_content);
 
@@ -195,7 +195,7 @@ static void xstring_set_content(struct _xstring *p, const char *new_content)
 	free(content);
 }
 
-static void xstring_change_case(struct _xstring *p)
+static void buffer_change_case(struct _buffer *p)
 {
 	for (int i = 0; i < p->cur_pos; i++)
 	{
@@ -206,7 +206,7 @@ static void xstring_change_case(struct _xstring *p)
 	}
 }
 
-static void xstring_rotate_layout(struct _xstring *p)
+static void buffer_rotate_layout(struct _buffer *p)
 {
 	int languages_mask = get_languages_mask();
 
@@ -234,7 +234,7 @@ static void xstring_rotate_layout(struct _xstring *p)
 	}
 }
 
-static void xstring_add_symbol(struct _xstring *p, char sym, KeyCode keycode, int modifier)
+static void buffer_add_symbol(struct _buffer *p, char sym, KeyCode keycode, int modifier)
 {
 	if (p->cur_pos == p->cur_size - 1)
 		set_new_size(p, p->cur_size * 2);
@@ -246,7 +246,7 @@ static void xstring_add_symbol(struct _xstring *p, char sym, KeyCode keycode, in
 	p->keycode[p->cur_pos] = keycode;
 	p->keycode_modifiers[p->cur_pos] = modifier;
 
-	// xcontent
+	// i18n_content
 	int languages_mask = get_languages_mask();
 	modifier = modifier & (~languages_mask);
 
@@ -258,11 +258,11 @@ static void xstring_add_symbol(struct _xstring *p, char sym, KeyCode keycode, in
 		if (symbol == NULL)
 			continue;
 
-		p->xcontent[i].content = (char *) realloc(p->xcontent[i].content, (strlen(p->xcontent[i].content) + strlen(symbol) + 1) * sizeof(char));
-		p->xcontent[i].content = strcat(p->xcontent[i].content, symbol);
+		p->i18n_content[i].content = (char *) realloc(p->i18n_content[i].content, (strlen(p->i18n_content[i].content) + strlen(symbol) + 1) * sizeof(char));
+		p->i18n_content[i].content = strcat(p->i18n_content[i].content, symbol);
 
-		p->xcontent[i].symbol_len = (int *) realloc(p->xcontent[i].symbol_len, (p->cur_pos + 1) * sizeof(int));
-		p->xcontent[i].symbol_len[p->cur_pos] = strlen(symbol);
+		p->i18n_content[i].symbol_len = (int *) realloc(p->i18n_content[i].symbol_len, (p->cur_pos + 1) * sizeof(int));
+		p->i18n_content[i].symbol_len[p->cur_pos] = strlen(symbol);
 
 		free(symbol);
 	}
@@ -271,7 +271,7 @@ static void xstring_add_symbol(struct _xstring *p, char sym, KeyCode keycode, in
 	p->content[p->cur_pos] = NULLSYM;
 }
 
-static void xstring_del_symbol(struct _xstring *p)
+static void buffer_del_symbol(struct _buffer *p)
 {
 	if (p->cur_pos == 0)
 		return;
@@ -280,10 +280,10 @@ static void xstring_del_symbol(struct _xstring *p)
 	p->content[p->cur_pos] = NULLSYM;
 
 	for (int i = 0; i < xconfig->total_languages; i++)
-		p->xcontent[i].content[strlen(p->xcontent[i].content) - p->xcontent[i].symbol_len[p->cur_pos]] = NULLSYM;
+		p->i18n_content[i].content[strlen(p->i18n_content[i].content) - p->i18n_content[i].symbol_len[p->cur_pos]] = NULLSYM;
 }
 
-static char *xstring_get_utf_string(struct _xstring *p)
+static char *buffer_get_utf_string(struct _buffer *p)
 {
 	char *symbol		= (char *) malloc((256 + 1) * sizeof(char));
 	char *utf_string	= (char *) malloc((p->cur_pos + 1) * sizeof(char));
@@ -320,13 +320,13 @@ static char *xstring_get_utf_string(struct _xstring *p)
 	return utf_string;
 }
 
-static void xstring_save_and_clear(struct _xstring *p, Window window)
+static void buffer_save_and_clear(struct _buffer *p, Window window)
 {
 	p->save_log(p, LOG_NAME, window);
 	p->clear(p);
 }
 
-static void xstring_set_offset(struct _xstring *p, int offset)
+static void buffer_set_offset(struct _buffer *p, int offset)
 {
 	// Shift fields to point to begin of word
 	p->content		+= offset;
@@ -335,7 +335,7 @@ static void xstring_set_offset(struct _xstring *p, int offset)
 	p->cur_pos		-= offset;
 }
 
-static void xstring_unset_offset(struct _xstring *p, int offset)
+static void buffer_unset_offset(struct _buffer *p, int offset)
 {
 	// Revert fields back
 	p->content		-= offset;
@@ -344,7 +344,7 @@ static void xstring_unset_offset(struct _xstring *p, int offset)
 	p->cur_pos		+= offset;
 }
 
-static void xstring_uninit(struct _xstring *p)
+static void buffer_uninit(struct _buffer *p)
 {
 	free(p->keycode_modifiers);
 	free(p->keycode);
@@ -352,20 +352,20 @@ static void xstring_uninit(struct _xstring *p)
 
 	for (int i = 0; i < xconfig->total_languages; i++)
 	{
-		free(p->xcontent[i].content);
-		free(p->xcontent[i].symbol_len);
+		free(p->i18n_content[i].content);
+		free(p->i18n_content[i].symbol_len);
 	}
 
-	free(p->xcontent);
+	free(p->i18n_content);
 	free(p);
 
 	log_message(DEBUG, _("String is freed"));
 }
 
-struct _xstring* xstring_init(void)
+struct _buffer* buffer_init(void)
 {
-	struct _xstring *p = (struct _xstring *) malloc(sizeof(struct _xstring));
-	bzero(p, sizeof(struct _xstring));
+	struct _buffer *p = (struct _buffer *) malloc(sizeof(struct _buffer));
+	bzero(p, sizeof(struct _buffer));
 
 	p->cur_size		= INIT_STRING_LENGTH;
 
@@ -377,30 +377,30 @@ struct _xstring* xstring_init(void)
 	bzero(p->keycode, p->cur_size * sizeof(KeyCode));
 	bzero(p->keycode_modifiers, p->cur_size * sizeof(int));
 
-	p->xcontent = (struct _xstring_content *) malloc((xconfig->total_languages) * sizeof(struct _xstring_content));
+	p->i18n_content = (struct _buffer_content *) malloc((xconfig->total_languages) * sizeof(struct _buffer_content));
 	for (int i=0; i<xconfig->total_languages; i++)
 	{
-		p->xcontent[i].content = malloc(sizeof(char));
-		p->xcontent[i].content[0] = NULLSYM;
-		p->xcontent[i].symbol_len = malloc(sizeof(int));
+		p->i18n_content[i].content = malloc(sizeof(char));
+		p->i18n_content[i].content[0] = NULLSYM;
+		p->i18n_content[i].symbol_len = malloc(sizeof(int));
 	}
 
 	// Functions mapping
-	p->clear		= xstring_clear;
-	p->save_log		= xstring_save_log;
-	p->save_and_clear	= xstring_save_and_clear;
-	p->is_space_last	= xstring_is_space_last;
-	p->set_lang_mask	= xstring_set_lang_mask;
-	p->set_uncaps_mask	= xstring_set_uncaps_mask;
-	p->set_content		= xstring_set_content;
-	p->change_case		= xstring_change_case;
-	p->rotate_layout	= xstring_rotate_layout;
-	p->add_symbol		= xstring_add_symbol;
-	p->del_symbol		= xstring_del_symbol;
-	p->get_utf_string	= xstring_get_utf_string;
-	p->set_offset		= xstring_set_offset;
-	p->unset_offset		= xstring_unset_offset;
-	p->uninit		= xstring_uninit;
+	p->clear		= buffer_clear;
+	p->save_log		= buffer_save_log;
+	p->save_and_clear	= buffer_save_and_clear;
+	p->is_space_last	= buffer_is_space_last;
+	p->set_lang_mask	= buffer_set_lang_mask;
+	p->set_uncaps_mask	= buffer_set_uncaps_mask;
+	p->set_content		= buffer_set_content;
+	p->change_case		= buffer_change_case;
+	p->rotate_layout	= buffer_rotate_layout;
+	p->add_symbol		= buffer_add_symbol;
+	p->del_symbol		= buffer_del_symbol;
+	p->get_utf_string	= buffer_get_utf_string;
+	p->set_offset		= buffer_set_offset;
+	p->unset_offset		= buffer_unset_offset;
+	p->uninit		= buffer_uninit;
 
 	return p;
 }

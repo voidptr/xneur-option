@@ -22,9 +22,9 @@
 
 #define NO_LANGUAGE	-1
 
-#include "xstring.h"
+#include "buffer.h"
 
-int check_lang(struct _xstring *p, int cur_lang);
+int check_lang(struct _buffer *p, int cur_lang);
 int get_next_lang(int cur_lang);
 
 #endif /* _DETECTION_H_ */

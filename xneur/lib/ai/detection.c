@@ -34,8 +34,8 @@
 
 #include "switchlang.h"
 
-#include "xkeymap.h"
-#include "xwindow.h"
+#include "keymap.h"
+#include "window.h"
 
 #include "types.h"
 #include "utils.h"
@@ -49,7 +49,7 @@
 #define BIG_PROTO_LEN	3
 
 extern struct _xneur_config *xconfig;
-extern struct _xwindow *main_window;
+extern struct _window *main_window;
 
 static int is_fixed_layout(int cur_lang)
 {
@@ -232,7 +232,7 @@ static int get_proto_lang(char **word, int **sym_len, int len, int offset, int c
 	return NO_LANGUAGE;
 }
 
-int check_lang(struct _xstring *p, int cur_lang)
+int check_lang(struct _buffer *p, int cur_lang)
 {
 	if (is_fixed_layout(cur_lang))
 		return NO_LANGUAGE;
@@ -251,9 +251,9 @@ int check_lang(struct _xstring *p, int cur_lang)
 
 	for (int i=0; i<xconfig->total_languages; i++)
 	{
-		word[i] = get_last_word(p->xcontent[i].content);
+		word[i] = get_last_word(p->i18n_content[i].content);
 		log_message(DEBUG, _("Processing word '%s'"), word[i]);
-		sym_len[i] = p->xcontent[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
+		sym_len[i] = p->i18n_content[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
 	}
 
 	// Check by regexp

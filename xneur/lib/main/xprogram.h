@@ -26,7 +26,7 @@ struct _xprogram
 	struct _selection *selection;
 	struct _event *event;
 	struct _focus *focus;
-	struct _xstring *string;
+	struct _buffer *buffer;
 
 	int  last_action;
 	int  changed_manual;
