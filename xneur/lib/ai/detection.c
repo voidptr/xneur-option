@@ -32,9 +32,10 @@
 
 #include "xnconfig.h"
 
+#include "switchlang.h"
+
 #include "xkeymap.h"
 #include "xwindow.h"
-#include "xswitchlang.h"
 
 #include "types.h"
 #include "utils.h"

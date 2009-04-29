@@ -32,7 +32,7 @@
 #include "log.h"
 
 #include "event.h"
-#include "xswitchlang.h"
+#include "switchlang.h"
 #include "xwindow.h"
 
 #include "xkeymap.h"

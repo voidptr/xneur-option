@@ -25,8 +25,9 @@
 
 #include "xnconfig.h"
 
+#include "switchlang.h"
+
 #include "xstring.h"
-#include "xswitchlang.h"
 #include "xwindow.h"
 #include "xutils.h"
 #include "xdefines.h"

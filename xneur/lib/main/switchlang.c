@@ -31,7 +31,7 @@
 #include "utils.h"
 #include "log.h"
 
-#include "xswitchlang.h"
+#include "switchlang.h"
 
 extern struct _xneur_config *xconfig;
 extern struct _xwindow *main_window;

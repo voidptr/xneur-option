@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _XSWITCHLANG_H_
-#define _XSWITCHLANG_H_
+#ifndef _SWITCHLANG_H_
+#define _SWITCHLANG_H_
 
 int  get_active_keyboard_group(void);
 int  get_cur_lang(void);
@@ -28,4 +28,4 @@ int  get_keyboard_groups_count(void);
 int  print_keyboard_groups(void);
 void set_next_keyboard_group(void);
 
-#endif /* _XSWITCHLANG_H_ */
+#endif /* _SWITCHLANG_H_ */

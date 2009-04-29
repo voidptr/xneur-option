@@ -35,9 +35,9 @@
 #include "xnconfig.h"
 
 #include "bind_table.h"
+#include "switchlang.h"
 
 #include "xprogram.h"
-#include "xswitchlang.h"
 #include "xkeymap.h"
 
 #include "types.h"
