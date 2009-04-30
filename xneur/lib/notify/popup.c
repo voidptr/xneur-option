@@ -21,6 +21,8 @@
 #  include "config.h"
 #endif
 
+#include <stdlib.h>
+
 #ifdef WITH_LIBNOTIFY
 
 #include <libnotify/notify.h>
@@ -29,7 +31,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include <stdlib.h>
 #include <time.h>
 
 #include "xnconfig.h"

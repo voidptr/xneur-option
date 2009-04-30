@@ -138,7 +138,7 @@ static int get_proto_hits(char *word, int *sym_len, int len, int offset, int lan
 	for (int i = 0; i < PROTO_LEN; i++)
 		n_bytes += sym_len[i];
 
-	char *proto = (char *) malloc((n_byte + 1) * sizeof(char));
+	char *proto = (char *) malloc((n_bytes + 1) * sizeof(char));
 
 	int local_offset = 0;
 	for (int i = 0; i <= len - offset - PROTO_LEN; i++)
@@ -165,7 +165,7 @@ static int get_big_proto_hits(char *word, int *sym_len, int len, int offset, int
 	for (int i = 0; i < BIG_PROTO_LEN; i++)
 		n_bytes += sym_len[i];
 
-	char *proto = (char *) malloc((n_byte + 1) * sizeof(char));
+	char *proto = (char *) malloc((n_bytes + 1) * sizeof(char));
 
 	int local_offset = 0;
 	for (int i = 0; i <= len - offset - BIG_PROTO_LEN; i++)
@@ -263,7 +263,7 @@ int check_lang(struct _buffer *p, int cur_lang)
 #ifdef WITH_ASPELL
 	// Check by aspell
 	if (lang == NO_LANGUAGE)
-		lang = get_aspell_hits(word, len);
+		lang = get_aspell_hits(word);
 #endif
 
 	// If not found in dictionary, try to find in proto

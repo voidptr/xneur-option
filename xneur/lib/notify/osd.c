@@ -21,6 +21,8 @@
 #  include "config.h"
 #endif
 
+#include <stdlib.h>
+
 #ifdef WITH_XOSD
 
 #include <xosd.h>
@@ -28,7 +30,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include <stdlib.h>
 
 #include "xnconfig.h"
 
