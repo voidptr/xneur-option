@@ -45,7 +45,6 @@
 #include "window.h"
 #include "keymap.h"
 #include "utils.h"
-#include "typographics.h"
 
 #include "types.h"
 #include "list_char.h"
@@ -53,6 +52,7 @@
 #include "text.h"
 #include "detection.h"
 #include "conversion.h"
+#include "regexp.h"
 
 #include "notify.h"
 
@@ -70,6 +70,9 @@
 #define MANUAL_FLAG_NEED_FLUSH	2
 
 #define NO_MODIFIER_MASK	0
+
+#define SPACE_BEFORE_PUNCTUATION		" {1,}[.,!?;:]"
+#define NO_SPACE_AFTER_PUNCTUATION		"[.,!?;:][^ |^0-9]"
 
 extern struct _xneur_config *xconfig;
 
@@ -649,12 +652,16 @@ static void program_perform_auto_action(struct _program *p, int action)
 			{
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
 					p->changed_manual = MANUAL_FLAG_UNSET;
-
+				
 				// Add symbol to internal bufer
 				int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 				p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
-				check_typographics(p->buffer->get_utf_string(p->buffer));
+				//
+				xconfig->correct_no_space_after_punctuation = TRUE;
+				if (xconfig->correct_no_space_after_punctuation)
+					p->check_no_space_after_punctuation(p);				                      
+
 				if (!xconfig->check_lang_on_process)
 					return;
 
@@ -686,14 +693,17 @@ static void program_perform_auto_action(struct _program *p, int action)
 			// Checking word
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 				p->check_lang_last_word(p);
-
+			
 			// Add symbol to internal bufer
 			p->event->event = p->event->default_event;
 			int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 			p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
-			check_typographics(p->buffer->get_utf_string(p->buffer));
-
+			// Check space before punctuation
+			xconfig->correct_space_before_punctuation = TRUE;
+			if (xconfig->correct_space_before_punctuation)
+				p->check_space_before_punctuation(p);
+			
 			// Send Event
 			p->event->send_next_event(p->event);
 			p->event->default_event.xkey.keycode = 0;
@@ -1029,6 +1039,39 @@ static void program_check_tcl_last_word(struct _program *p)
 	show_notify(NOTIFY_CORR_TWO_CAPITAL_LETTER, NULL);
 }
 
+static void program_check_space_before_punctuation(struct _program *p)
+{
+	char *text = p->buffer->get_utf_string(p->buffer);
+	if (text == NULL)
+		return;
+
+	char *substring = check_regexp_match(text, SPACE_BEFORE_PUNCTUATION); 
+	free(text);
+	if (substring == NULL)
+		return;
+
+	log_message(ERROR, _("Find pattern SPACE_BEFORE_PUNCTUATION in '%s' with result '%s'"), text, substring);		
+
+	p->event->send_backspaces(p->event, strlen(substring) - 1);
+	
+	free(substring);
+}
+
+static void program_check_no_space_after_punctuation(struct _program *p)
+{
+	char *text = p->buffer->get_utf_string(p->buffer);
+	if (text == NULL)
+		return;
+	
+	char *substring =	 check_regexp_match(text, NO_SPACE_AFTER_PUNCTUATION);
+	free(text);
+	if (substring == NULL)
+		return;
+
+	log_message(ERROR, "Find pattern NO_SPACE_AFTER_PUNCTUATION in '%s' with result '%s'", text, substring);
+	free(substring);	
+}
+
 static void program_send_string_silent(struct _program *p, int send_backspaces)
 {
 	if (p->buffer->cur_pos == 0)
@@ -1351,6 +1394,8 @@ struct _program* program_init(void)
 	p->check_lang_last_syllable	= program_check_lang_last_syllable;
 	p->check_caps_last_word		= program_check_caps_last_word;
 	p->check_tcl_last_word		= program_check_tcl_last_word;
+	p->check_space_before_punctuation	= program_check_space_before_punctuation;
+	p->check_no_space_after_punctuation	= program_check_no_space_after_punctuation;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;
 	p->process_selection_notify	= program_process_selection_notify;

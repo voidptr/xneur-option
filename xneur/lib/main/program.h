@@ -53,6 +53,8 @@ struct _program
 	int  (*check_lang_last_syllable) (struct _program *p);
 	void (*check_caps_last_word) (struct _program *p);
 	void (*check_tcl_last_word) (struct _program *p);
+	void (*check_space_before_punctuation) (struct _program *p);
+	void (*check_no_space_after_punctuation) (struct _program *p);
 	void (*change_word) (struct _program *p, enum _change_action action);
 	void (*add_word_to_dict) (struct _program *p, int new_lang);
 	void (*process_selection_notify) (struct _program *p);

@@ -17,8 +17,6 @@ libxnx_la_SOURCES =		\
 	selection.h		\
 	switchlang.c		\
 	switchlang.h		\
-	typographics.c		\
-	typographics.h		\
 	utils.c			\
 	utils.h			\
 	window.c		\
