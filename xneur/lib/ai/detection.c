@@ -93,7 +93,7 @@ static int get_regexp_lang(char **word)
 }
 
 #ifdef WITH_ASPELL
-static int get_aspell_hits(char **word)
+static int get_aspell_hits(char **word, int len)
 {
 	AspellConfig *spell_config = new_aspell_config();
 
@@ -102,7 +102,6 @@ static int get_aspell_hits(char **word)
 		if (is_fixed_layout(lang))
 			continue;
 
-		int len = strlen(word[lang]);
 		if (len < 2)
 			continue;
 
@@ -263,7 +262,7 @@ int check_lang(struct _buffer *p, int cur_lang)
 #ifdef WITH_ASPELL
 	// Check by aspell
 	if (lang == NO_LANGUAGE)
-		lang = get_aspell_hits(word);
+		lang = get_aspell_hits(word, len);
 #endif
 
 	// If not found in dictionary, try to find in proto

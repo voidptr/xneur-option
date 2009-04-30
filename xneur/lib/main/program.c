@@ -1053,7 +1053,16 @@ static void program_check_space_before_punctuation(struct _program *p)
 	log_message(ERROR, _("Find pattern SPACE_BEFORE_PUNCTUATION in '%s' with result '%s'"), text, substring);		
 
 	p->event->send_backspaces(p->event, strlen(substring) - 1);
-	
+	for (unsigned int i=0; i < strlen(substring); i++)
+		p->buffer->del_symbol(p->buffer);
+
+	char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
+	int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
+
+	text = p->buffer->get_utf_string(p->buffer);
+	log_message(ERROR, "%s", text);
+	free(text);
 	free(substring);
 }
 

@@ -105,7 +105,7 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 		{
 			struct _list_char_data *data = &list->data[i];
 
-			if (check_regexp_match(string, data->string))
+			if (check_regexp_match(string, data->string) != NULL)
 				return i;
 		}
 	}

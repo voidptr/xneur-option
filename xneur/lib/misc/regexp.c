@@ -26,15 +26,16 @@
 #endif
 
 #include <string.h>
+#include <stdio.h>
 
 #include "types.h"
 #include "log.h"
 
 #ifdef WITH_PCRE
 
-int check_regexp_match(const char *str, const char *pattern)
+char* check_regexp_match(const char *str, const char *pattern)
 {
-	int options = 0;
+	int options = PCRE_MULTILINE|PCRE_UTF8;
 	const char *error;
 	int erroffset;
 
@@ -44,13 +45,13 @@ int check_regexp_match(const char *str, const char *pattern)
 	if (!re)
 	{
 		log_message(ERROR, "Can't compile regular expression '%s'", pattern);
-		return FALSE;
+		return NULL;
 	}
 
 	int str_len = strlen(str);
 
-	int ovector[2];
-	int count = pcre_exec(re, NULL, str, str_len, 0, 0, ovector, 2);
+	int ovector[50];
+	int count = pcre_exec(re, NULL, str, str_len, 0, 0, ovector, 50);
 	if (count <= 0 && count != PCRE_ERROR_NOMATCH)
 	{
 		log_message(ERROR, "Can't exec regular expression '%s', eror code %d", pattern, count);
@@ -61,8 +62,24 @@ int check_regexp_match(const char *str, const char *pattern)
 	pcre_free(re);
 
 	if (count == PCRE_ERROR_NOMATCH)
-		return FALSE;
-	return TRUE;
+		return NULL;
+	/*for(int i = 0; i < count; i++)
+	{
+		printf("%i substring - '", i);
+
+		for(int j=ovector[i*2]; j < ovector[i*2+1]; j++) 
+		    putchar(str[j]);
+		putchar('\''); putchar('\n');
+	}*/
+	const char *pcre_string = NULL;
+	if(pcre_get_substring(str, ovector, count, 0, &pcre_string) < 0)
+		return NULL;
+
+	char *return_string = strdup(pcre_string);
+	
+	pcre_free_substring(pcre_string);
+
+	return return_string;
 }
 
 #else
@@ -70,7 +87,7 @@ int check_regexp_match(const char *str, const char *pattern)
 int check_regexp_match(const char *str, const char *pattern)
 {
 	if (str || pattern){}
-	return FALSE;
+	return NULL;
 }
 
 #endif

@@ -20,6 +20,6 @@
 #ifndef _REGEXP_H_
 #define _REGEXP_H_
 
-int check_regexp_match(const char *str, const char *pattern);
+char* check_regexp_match(const char *str, const char *pattern);
 
 #endif /* _REGEXP_H_ */
