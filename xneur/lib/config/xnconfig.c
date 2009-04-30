@@ -54,7 +54,8 @@ static const char *option_names[] = 	{
 						"SaveLog", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
-						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup"
+						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup", 
+	                    "CorrectSpaceBeforePunctuation", "CorrectSpaceAfterPunctuation"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -514,22 +515,21 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->show_popup = index;
 			break;
 		}
-		case 32: // Popups
+		case 33:
 		{
-			int notify = get_option_index(notify_names, param);
-			if (notify == -1)
-			{
-				log_message(WARNING, _("Invalid value for popup action name specified"));
-				break;
-			}
-
-			if (line == NULL)
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
 				break;
 
-			if (strlen(line) != 0)
-				p->popups[notify].file = strdup(line);
+			p->correct_space_before_punctuation = index;
+		}
+		case 34: 
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+				break;
 
-			break;
+			p->correct_space_after_punctuation = index;
 		}
 	}
 	free(full_string);
@@ -986,6 +986,17 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#DisableCapsLock Yes\n");
 	fprintf(stream, "DisableCapsLock %s\n", p->get_bool_name(p->disable_capslock));
+
+	fprintf(stream, "\n# This option disable or enable correction spaces befor punctuation\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectSpaceBeforePunctuation No\n");
+	fprintf(stream, "CorrectSpaceBeforePunctuation %s\n", p->get_bool_name(p->correct_space_before_punctuation));
+
+	fprintf(stream, "\n# This option disable or enable correction spaces befor punctuation\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectSpaceAfterPunctuation No\n");
+	fprintf(stream, "CorrectSpaceAfterPunctuation %s\n", p->get_bool_name(p->correct_space_after_punctuation));
+
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# That's all\n");

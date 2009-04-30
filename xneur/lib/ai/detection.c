@@ -257,8 +257,7 @@ int check_lang(struct _buffer *p, int cur_lang)
 	if (lang == NO_LANGUAGE)
 		lang = get_dict_lang(word);
 
-	int len = strlen(p->content);
-
+	int len = strlen(get_last_word(p->content));
 #ifdef WITH_ASPELL
 	// Check by aspell
 	if (lang == NO_LANGUAGE)
@@ -266,6 +265,7 @@ int check_lang(struct _buffer *p, int cur_lang)
 #endif
 
 	// If not found in dictionary, try to find in proto
+	len = strlen(p->content);
 	int offset = get_last_word_offset(p->content, len);
 	if (lang == NO_LANGUAGE)
 		lang = get_proto_lang(word, sym_len, len, offset, cur_lang, PROTO_LEN);
