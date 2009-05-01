@@ -35,7 +35,7 @@
 
 char* check_regexp_match(const char *str, const char *pattern)
 {
-	int options = PCRE_MULTILINE|PCRE_UTF8;
+	int options = PCRE_UTF8;
 	const char *error;
 	int erroffset;
 
@@ -44,7 +44,7 @@ char* check_regexp_match(const char *str, const char *pattern)
 	pcre *re = pcre_compile(pattern, options, &error, &erroffset, tables);
 	if (!re)
 	{
-		log_message(ERROR, "Can't compile regular expression '%s'", pattern);
+		log_message(ERROR, _("Can't compile regular expression '%s'"), pattern);
 		return NULL;
 	}
 
@@ -54,7 +54,7 @@ char* check_regexp_match(const char *str, const char *pattern)
 	int count = pcre_exec(re, NULL, str, str_len, 0, 0, ovector, 50);
 	if (count <= 0 && count != PCRE_ERROR_NOMATCH)
 	{
-		log_message(ERROR, "Can't exec regular expression '%s', eror code %d", pattern, count);
+		log_message(ERROR, _("Can't exec regular expression '%s', eror code %d"), pattern, count);
 		pcre_free(re);
 		return FALSE;
 	}
@@ -63,6 +63,7 @@ char* check_regexp_match(const char *str, const char *pattern)
 
 	if (count == PCRE_ERROR_NOMATCH)
 		return NULL;
+	
 	/*for(int i = 0; i < count; i++)
 	{
 		printf("%i substring - '", i);
@@ -71,6 +72,7 @@ char* check_regexp_match(const char *str, const char *pattern)
 		    putchar(str[j]);
 		putchar('\''); putchar('\n');
 	}*/
+	
 	const char *pcre_string = NULL;
 	if(pcre_get_substring(str, ovector, count, 0, &pcre_string) < 0)
 		return NULL;

@@ -52,7 +52,6 @@
 #include "text.h"
 #include "detection.h"
 #include "conversion.h"
-#include "regexp.h"
 
 #include "notify.h"
 
@@ -70,9 +69,6 @@
 #define MANUAL_FLAG_NEED_FLUSH	2
 
 #define NO_MODIFIER_MASK	0
-
-#define SPACE_BEFORE_PUNCTUATION		" {1,}[.,!?;:]"
-#define SPACE_AFTER_PUNCTUATION		"[.,!?;:][^ |^0-9]"
 
 extern struct _xneur_config *xconfig;
 
@@ -676,6 +672,10 @@ static void program_perform_auto_action(struct _program *p, int action)
 				if (xconfig->correct_space_after_punctuation)
 					p->check_space_after_punctuation(p);				                      
 
+				xconfig->correct_capital_letter_after_punctuation = TRUE;
+				if (xconfig->correct_capital_letter_after_punctuation)
+					p->check_capital_letter_after_punctuation(p);
+				
 				if (!xconfig->check_lang_on_process)
 				{
 					// Unblock keyboard
@@ -1059,13 +1059,13 @@ static void program_check_space_before_punctuation(struct _program *p)
 	char *text = p->buffer->get_utf_string(p->buffer);
 	if (text == NULL)
 		return;
-
-	char *substring = check_regexp_match(text, SPACE_BEFORE_PUNCTUATION); 
+	if 
+	/*char *substring = check_regexp_match(text, SPACE_BEFORE_PUNCTUATION); 
 	free(text);
 	if (substring == NULL)
 		return;
 
-	//log_message(ERROR, "Find pattern SPACE_BEFORE_PUNCTUATION in '%s' with result '%s'", text, substring);		
+	log_message(ERROR, "Find pattern SPACE_BEFORE_PUNCTUATION in '%s' with result '%s'", text, substring);		
 
 	log_message(DEBUG, _("Find spaces before punctuation"));		
 
@@ -1078,7 +1078,7 @@ static void program_check_space_before_punctuation(struct _program *p)
 	int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
-	free(substring);
+	free(substring);*/
 }
 
 static void program_check_space_after_punctuation(struct _program *p)
@@ -1087,12 +1087,17 @@ static void program_check_space_after_punctuation(struct _program *p)
 	if (text == NULL)
 		return;
 	
-	char *substring =	 check_regexp_match(text, SPACE_AFTER_PUNCTUATION);
+	/*char *substring =	 check_regexp_match(text, SPACE_AFTER_PUNCTUATION);
 	free(text);
 	if (substring == NULL)
 		return;
-
-	//log_message(ERROR, "Find pattern SPACE_AFTER_PUNCTUATION in '%s' with result '%s'", text, substring);
+	
+	//char *word = get_last_word(p->buffer->content);
+	//log_message(ERROR, "%s", word);
+	//if (strlen(word) < 4)
+		//return;
+	
+	log_message(ERROR, "Find pattern SPACE_AFTER_PUNCTUATION in '%s' with result '%s'", text, substring);
 
 	log_message(DEBUG, _("Find no spaces after punctuation"));
 	
@@ -1107,7 +1112,36 @@ static void program_check_space_after_punctuation(struct _program *p)
 	modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
-	free(substring);	
+	free(substring);	*/
+}
+
+static void program_check_capital_letter_after_punctuation(struct _program *p)
+{
+	char *text = p->buffer->get_utf_string(p->buffer);
+	if (text == NULL)
+		return;
+	
+	/*char *substring =	 check_regexp_match(text, SPACE_AFTER_PUNCTUATION);
+	free(text);
+	if (substring == NULL)
+		return;
+
+	log_message(ERROR, "Find pattern LETTER_AFTER_PUNCTUATION in '%s' with result '%s'", text, substring);
+
+	//log_message(DEBUG, _("Find no spaces after punctuation"));
+	
+	p->buffer->del_symbol(p->buffer);
+
+	int modifier_mask = groups[get_active_keyboard_group()];
+	p->buffer->add_symbol(p->buffer, ' ', 65, modifier_mask);
+	p->event->send_xkey(p->event, 65, modifier_mask);
+	
+	p->event->event = p->event->default_event;
+	char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
+	modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
+
+	free(substring);*/	
 }
 
 static void program_send_string_silent(struct _program *p, int send_backspaces)
@@ -1434,6 +1468,7 @@ struct _program* program_init(void)
 	p->check_tcl_last_word		= program_check_tcl_last_word;
 	p->check_space_before_punctuation	= program_check_space_before_punctuation;
 	p->check_space_after_punctuation	= program_check_space_after_punctuation;
+	p->check_capital_letter_after_punctuation	= program_check_capital_letter_after_punctuation;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;
 	p->process_selection_notify	= program_process_selection_notify;
