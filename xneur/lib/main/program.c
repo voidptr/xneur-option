@@ -318,7 +318,7 @@ static void program_process_input(struct _program *p)
 			}
 			case KeyPress:
 			{
-				log_message(TRACE, _("Received KeyPress (event type %d)"), type);
+				log_message(TRACE, _("Received KeyPress '%s' (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), type);
 
 				// Save received event
 				p->event->default_event = p->event->event;
@@ -336,7 +336,7 @@ static void program_process_input(struct _program *p)
 			}
 			case KeyRelease:
 			{
-				log_message(TRACE, _("Received KeyRelease (event type %d)"), type);
+				log_message(TRACE, _("Received KeyRelease '%s' (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), type);
 
 				// Save received event
 				p->event->default_event = p->event->event;
@@ -554,6 +554,8 @@ static void program_on_key_action(struct _program *p, int type)
 	{
 		if (IsModifierKey(key))
 			p->prev_mod_mask |= modifier_mask;
+
+		p->prev_key = key;
 		
 		int user_action = get_user_action(key, modifier_mask);
 		enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
@@ -571,11 +573,10 @@ static void program_on_key_action(struct _program *p, int type)
 	{
 		if (IsModifierKey(key) && !p->prev_mod_mask)
 			return;
-
-
-		//log_message (ERROR,"%s %s %d", XKeysymToString(key), XKeysymToString(key), modifier_mask);
-
-		int user_action = get_user_action(key, p->prev_mod_mask);//modifier_mask);
+		if ((unsigned int) p->prev_key != key)
+			return;
+		
+		int user_action = get_user_action(key, p->prev_mod_mask);
 		if (user_action >= 0)
 		{
 			p->perform_user_action(p, user_action);
@@ -584,7 +585,7 @@ static void program_on_key_action(struct _program *p, int type)
 			return;
 		}
 
-		enum _hotkey_action manual_action = get_manual_action(key, p->prev_mod_mask);//modifier_mask);
+		enum _hotkey_action manual_action = get_manual_action(key, p->prev_mod_mask);
 		if (manual_action != ACTION_NONE)
 		{
 			if (p->perform_manual_action(p, manual_action))

@@ -41,7 +41,8 @@ struct _program
 	int  last_window;
 
 	int prev_mod_mask;
-
+	int prev_key;
+	
 	void (*layout_update) (struct _program *p);
 	void (*update) (struct _program *p);
 	void (*on_key_action) (struct _program *p, int type);
