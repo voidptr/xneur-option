@@ -552,10 +552,12 @@ static void program_on_key_action(struct _program *p, int type)
 
 	if (type == KeyPress)
 	{
-		p->prev_mod_key = IsModifierKey(key);
+		if (IsModifierKey(key))
+			p->prev_mod_mask |= modifier_mask;
+		
 		int user_action = get_user_action(key, modifier_mask);
 		enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
-		if (((user_action >= 0) || (manual_action != ACTION_NONE)) && (!p->prev_mod_key))
+		if (((user_action >= 0) || (manual_action != ACTION_NONE)) && (!p->prev_mod_mask))
 		{
 			p->event->default_event.xkey.keycode = 0;
 			return;
@@ -567,30 +569,34 @@ static void program_on_key_action(struct _program *p, int type)
 
 	if (type == KeyRelease)
 	{
-		if (IsModifierKey(key) && !p->prev_mod_key)
+		if (IsModifierKey(key) && !p->prev_mod_mask)
 			return;
+
 
 		//log_message (ERROR,"%s %s %d", XKeysymToString(key), XKeysymToString(key), modifier_mask);
 
-		int user_action = get_user_action(key, modifier_mask);
+		int user_action = get_user_action(key, p->prev_mod_mask);//modifier_mask);
 		if (user_action >= 0)
 		{
 			p->perform_user_action(p, user_action);
 			p->event->default_event.xkey.keycode = 0;
-			p->prev_mod_key = FALSE;
+			p->prev_mod_mask = 0;
 			return;
 		}
 
-		enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
+		enum _hotkey_action manual_action = get_manual_action(key, p->prev_mod_mask);//modifier_mask);
 		if (manual_action != ACTION_NONE)
 		{
 			if (p->perform_manual_action(p, manual_action))
 			{
-				p->prev_mod_key = FALSE;
+				p->prev_mod_mask = 0;
 				return;
 			}
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
 		}
+		
+		if (!IsModifierKey(key))
+			p->prev_mod_mask = 0;
 	}
 }
 

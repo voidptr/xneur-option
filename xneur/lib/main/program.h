@@ -40,7 +40,7 @@ struct _program
 	int  last_layout;
 	int  last_window;
 
-	int prev_mod_key;
+	int prev_mod_mask;
 
 	void (*layout_update) (struct _program *p);
 	void (*update) (struct _program *p);
