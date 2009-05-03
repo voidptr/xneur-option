@@ -1059,7 +1059,7 @@ static void program_check_space_before_punctuation(struct _program *p)
 	char *text = p->buffer->get_utf_string(p->buffer);
 	if (text == NULL)
 		return;
-	if
+
 	/*char *substring = check_regexp_match(text, SPACE_BEFORE_PUNCTUATION);
 	free(text);
 	if (substring == NULL)
