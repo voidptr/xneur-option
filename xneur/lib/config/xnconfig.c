@@ -508,11 +508,28 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
 			{
-				log_message(WARNING, _("Invalid value for show OSD mode specified"));
+				log_message(WARNING, _("Invalid value for show popup message mode specified"));
 				break;
 			}
 
 			p->show_popup = index;
+			break;
+		}
+		case 32: // Popups
+		{
+			int popup = get_option_index(notify_names, param);
+			if (popup == -1)
+			{
+				log_message(WARNING, _("Invalid value for OSD action name specified"));
+				break;
+			}
+
+			if (line == NULL)
+				break;
+
+			if (strlen(line) != 0)
+				p->popups[popup].file = strdup(line);
+
 			break;
 		}
 		case 33:

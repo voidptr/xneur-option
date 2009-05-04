@@ -51,7 +51,7 @@ void show_notify(int notify, char *command)
 
 	if (xconfig->popups[notify].file != NULL)
 	{
-		char *buffer = (char *) malloc(1024);
+		char *buffer = (char *) malloc((strlen(xconfig->osds[notify].file) + strlen(command) + 2) * sizeof(char));
 		sprintf(buffer, "%s %s", xconfig->popups[notify].file, command);
 
 		popup_show(buffer);
