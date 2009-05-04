@@ -145,7 +145,7 @@ static KeySym event_get_cur_keysym(struct _event *p)
 static int event_get_cur_modifiers(struct _event *p)
 {
 	int mask = 0;
-	int key_sym = p->get_cur_keysym(p);
+	/*int key_sym = p->get_cur_keysym(p);
 
 	if ((p->event.xkey.state & ShiftMask) && (key_sym != XK_Shift_L) && (key_sym != XK_Shift_R))
 		mask += (1 << 0);
@@ -162,9 +162,9 @@ static int event_get_cur_modifiers(struct _event *p)
 	if ((p->event.xkey.state & Mod4Mask) && (key_sym != XK_Hyper_L) && (key_sym != XK_Hyper_R))
 		mask += (1 << 6);
 	if ((p->event.xkey.state & Mod5Mask) && (key_sym != XK_Super_L) && (key_sym != XK_Super_R))
-		mask += (1 << 7);
+		mask += (1 << 7);*/
 
-	/*if (p->event.xkey.state & ShiftMask)
+	if (p->event.xkey.state & ShiftMask)
 		mask += (1 << 0);
 	if (p->event.xkey.state & LockMask)
 		mask += (1 << 1);
@@ -179,7 +179,7 @@ static int event_get_cur_modifiers(struct _event *p)
 	if (p->event.xkey.state & Mod4Mask)
 		mask += (1 << 6);
 	if (p->event.xkey.state & Mod5Mask)
-		mask += (1 << 7);*/
+		mask += (1 << 7);
 	return mask;
 }
 

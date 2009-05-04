@@ -75,7 +75,6 @@ static void bind_action(enum _hotkey_action action)
 	}
 
 	int modifiers = xconfig->hotkeys[action].modifiers;
-
 	if (modifiers & 0x01)
 		btable[action].modifier_mask = btable[action].modifier_mask + 1;	// Shift
 	if (modifiers & 0x02)
@@ -85,6 +84,7 @@ static void bind_action(enum _hotkey_action action)
 	if (modifiers & 0x08)
 		btable[action].modifier_mask = btable[action].modifier_mask + 64;	// Win
 
+	
 	KeySym key_sym, key_sym_shift;
 	get_keysyms_by_string(xconfig->hotkeys[action].key, &key_sym, &key_sym_shift);
 	if (key_sym == NoSymbol)
@@ -141,9 +141,10 @@ enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
 	mask &= ~Mod2Mask;
 	mask &= ~Mod3Mask;
 
+	log_message (ERROR, "%s %d", XKeysymToString(key_sym), mask);
 	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
 	{
-		//log_message (ERROR, "---%s %s %d", XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift), btable[action].modifier_mask);
+		log_message (ERROR, "---%s %s %d", XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift), btable[action].modifier_mask);
 		if (btable[action].key_sym != key_sym && btable[action].key_sym_shift != key_sym)
 			continue;
 
@@ -166,8 +167,11 @@ int get_user_action(KeySym key_sym, int mask)
 	mask &= ~LockMask;
 	mask &= ~Mod2Mask;
 	mask &= ~Mod3Mask;
+
+	//log_message (ERROR, "%s %d", XKeysymToString(key_sym), mask);
 	for (int action = 0; action < xconfig->actions_count; action++)
 	{
+		//log_message (ERROR, "---%s %s %d", XKeysymToString(ubtable[action].key_sym), XKeysymToString(ubtable[action].key_sym_shift), ubtable[action].modifier_mask);
 		if (ubtable[action].key_sym != key_sym && ubtable[action].key_sym_shift != key_sym)
 			continue;
 
