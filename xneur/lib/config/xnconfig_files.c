@@ -31,6 +31,7 @@
 
 #define HOME_CONF_DIR		".xneur"
 #define DEFAULT_MAX_PATH	4096
+#define DIR_SEPARATOR		"/"
 
 static int get_max_path_len(void)
 {
@@ -136,9 +137,22 @@ char* get_home_file_path_name(const char *dir_name, const char *file_name)
 	}
 	else
 	{
-		snprintf(path_file, max_path_len, "%s/%s/%s", getenv("HOME"), HOME_CONF_DIR, dir_name);
+		char *dir = strdup(dir_name);
+		char *dir_part = strsep(&dir, DIR_SEPARATOR);
+		snprintf(path_file, max_path_len, "%s/%s/%s", getenv("HOME"), HOME_CONF_DIR, dir_part);
 		mkdir(path_file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
 
+		while (dir != NULL)
+		{
+			path_file = strcat(path_file, DIR_SEPARATOR); 
+			char *dir_part = strsep(&dir, DIR_SEPARATOR);
+			path_file = strcat(path_file, dir_part);
+			mkdir(path_file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+		}
+		free(dir_part);
+		
+		mkdir(path_file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+		
 		snprintf(path_file, max_path_len, "%s/%s/%s/%s", getenv("HOME"), HOME_CONF_DIR, dir_name, file_name);
 	}
 	return path_file;

@@ -549,8 +549,9 @@ static void program_process_selection_notify(struct _program *p)
 
 static void program_update_modifiers_stack(struct _program *p)
 {
-			// Update mask
-		p->prev_key_mod = 0;
+	// Update mask
+	p->prev_key_mod = 0;
+	
 	if (p->modifiers_stack->exist(p->modifiers_stack, "Shift_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Shift_R", BY_PLAIN))
 		p->prev_key_mod += (1 << 0);
 	if (p->modifiers_stack->exist(p->modifiers_stack, "Caps_Lock", BY_PLAIN))
@@ -567,7 +568,6 @@ static void program_update_modifiers_stack(struct _program *p)
 		p->prev_key_mod += (1 << 6);
 	if (p->modifiers_stack->exist(p->modifiers_stack, "Super_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Super_R", BY_PLAIN))
 		p->prev_key_mod += (1 << 7);
-		
 }
 
 static void program_on_key_action(struct _program *p, int type)
