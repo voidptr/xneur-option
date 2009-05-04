@@ -35,16 +35,17 @@ struct _program
 
 	int  selected_mode;
 
-	int  modifier_mask;
-
 	int  last_layout;
 	int  last_window;
 
-	int prev_key;
+	KeySym prev_key;
+	struct _list_char *modifiers_stack;
+	
 	int prev_key_mod;
 	
 	void (*layout_update) (struct _program *p);
 	void (*update) (struct _program *p);
+	void (*update_modifiers_stack) (struct _program *p);
 	void (*on_key_action) (struct _program *p, int type);
 	void (*process_input) (struct _program *p);
 	int  (*perform_manual_action) (struct _program *p, enum _hotkey_action action);

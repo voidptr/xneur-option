@@ -289,6 +289,10 @@ static void program_update(struct _program *p)
 	if (p->app_focus_mode == FOCUS_EXCLUDED)
 		listen_mode = LISTEN_DONTGRAB_INPUT;
 
+	p->modifiers_stack->uninit(p->modifiers_stack);
+	p->modifiers_stack	= list_char_init();
+	p->update_modifiers_stack(p);
+	
 	p->focus->update_events(p->focus, listen_mode);
 }
 
@@ -543,6 +547,29 @@ static void program_process_selection_notify(struct _program *p)
 	p->selected_mode = ACTION_NONE;
 }
 
+static void program_update_modifiers_stack(struct _program *p)
+{
+			// Update mask
+		p->prev_key_mod = 0;
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Shift_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Shift_R", BY_PLAIN))
+		p->prev_key_mod += (1 << 0);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Caps_Lock", BY_PLAIN))
+		p->prev_key_mod += (1 << 1);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Control_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Control_R", BY_PLAIN))
+		p->prev_key_mod += (1 << 2);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Alt_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Alt_R", BY_PLAIN))
+		p->prev_key_mod += (1 << 3);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Meta_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Meta_R", BY_PLAIN))
+		p->prev_key_mod += (1 << 4);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Num_Lock", BY_PLAIN))
+		p->prev_key_mod += (1 << 5);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Hyper_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Hyper_R", BY_PLAIN))
+		p->prev_key_mod += (1 << 6);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Super_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Super_R", BY_PLAIN))
+		p->prev_key_mod += (1 << 7);
+		
+}
+
 static void program_on_key_action(struct _program *p, int type)
 {
 	KeySym key = p->event->get_cur_keysym(p->event);
@@ -553,6 +580,11 @@ static void program_on_key_action(struct _program *p, int type)
 	if (type == KeyPress)
 	{
 		p->prev_key = key;
+		if (IsModifierKey(key))
+		{
+			char *keysym_str = XKeysymToString(p->event->get_cur_keysym(p->event));
+			p->modifiers_stack->add(p->modifiers_stack, keysym_str);
+		}
 		p->prev_key_mod |= p->event->get_cur_modifiers_by_keysym(p->event);
 		
 		int user_action = get_user_action(key, p->prev_key_mod);
@@ -568,25 +600,36 @@ static void program_on_key_action(struct _program *p, int type)
 	}
 
 	if (type == KeyRelease)
-	{
-		modifier_mask = p->prev_key_mod;
+	{	
+		// Del from stack
+		if (IsModifierKey(key))
+		{
+			char *keysym_str = XKeysymToString(p->event->get_cur_keysym(p->event));
+			p->modifiers_stack->rem(p->modifiers_stack, keysym_str);
+		}
+
+		if (p->prev_key == None)
+		{
+			p->update_modifiers_stack(p);
+			return;
+		}
 		
+		if (p->prev_key != key)
+			return;
+
+		p->prev_key = None;
+		
+		modifier_mask = p->prev_key_mod;
 		if (IsModifierKey(key))
 			modifier_mask &= ~p->event->get_cur_modifiers_by_keysym(p->event);
-		//else
-			//p->prev_key_mod = 0;
 		
-		if ((unsigned int) p->prev_key != key)
-			return;
-		
-		p->prev_key_mod = 0;
+		p->update_modifiers_stack(p);
 		
 		int user_action = get_user_action(key, modifier_mask);
 		if (user_action >= 0)
 		{
 			p->perform_user_action(p, user_action);
 			p->event->default_event.xkey.keycode = 0;
-			p->prev_key_mod = modifier_mask;
 			return;
 		}
 
@@ -594,10 +637,7 @@ static void program_on_key_action(struct _program *p, int type)
 		if (manual_action != ACTION_NONE)
 		{
 			if (p->perform_manual_action(p, manual_action))
-			{
-				p->prev_key_mod = modifier_mask;
 				return;
-			}
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
 		}
 	}
@@ -1438,6 +1478,8 @@ static void program_uninit(struct _program *p)
 	p->buffer->uninit(p->buffer);
 	main_window->uninit(main_window);
 
+	p->modifiers_stack->uninit(p->modifiers_stack);
+	
 	free(p);
 
 	log_message(DEBUG, _("Program is freed"));
@@ -1456,16 +1498,17 @@ struct _program* program_init(void)
 		return NULL;
 	}
 
-	p->modifier_mask		= NO_MODIFIER_MASK;
-
 	p->event			= event_init();			// X Event processor
 	p->focus			= focus_init();			// X Input Focus and Pointer processor
 	p->buffer			= buffer_init();		// Input string buffer
 
+	p->modifiers_stack	= list_char_init();
+	
 	// Function mapping
 	p->uninit			= program_uninit;
 	p->layout_update		= program_layout_update;
 	p->update			= program_update;
+	p->update_modifiers_stack	= program_update_modifiers_stack;
 	p->on_key_action		= program_on_key_action;
 	p->process_input		= program_process_input;
 	p->perform_auto_action		= program_perform_auto_action;
