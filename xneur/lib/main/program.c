@@ -553,40 +553,32 @@ static void program_on_key_action(struct _program *p, int type)
 	if (type == KeyPress)
 	{
 		p->prev_key = key;
-		if (IsModifierKey(key))
-		{
-			//log_message (ERROR, "%d %d", p->prev_mod_mask, modifier_mask);
-			p->prev_key_is_modifier = TRUE;
-		}
+		p->prev_key_mod |= p->event->get_cur_modifiers_by_keysym(p->event);
 		
-		int user_action = get_user_action(key, modifier_mask);
-		enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
-		if (((user_action >= 0) || (manual_action != ACTION_NONE)) && (!p->prev_key_is_modifier))
+		int user_action = get_user_action(key, p->prev_key_mod);
+		enum _hotkey_action manual_action = get_manual_action(key, p->prev_key_mod);
+		if ((user_action >= 0) || (manual_action != ACTION_NONE))
 		{
 			p->event->default_event.xkey.keycode = 0;
 			return;
 		}
-
-		int auto_action = get_auto_action(key, modifier_mask);
+		
+		int auto_action = get_auto_action(key, p->prev_key_mod);
 		p->perform_auto_action(p, auto_action);
 	}
 
 	if (type == KeyRelease)
 	{
-		p->prev_key_mod |= modifier_mask;
-		log_message (ERROR, "KeyRelease %d %d", p->prev_key_mod, modifier_mask);
+		modifier_mask = p->prev_key_mod;
 		
-		if (IsModifierKey(key) && !p->prev_key_is_modifier)
-			return;
 		if (IsModifierKey(key))
-		{
-			p->prev_key_mod &= ~modifier_mask;
-			modifier_mask = 0;			
-		}
+			modifier_mask &= ~p->event->get_cur_modifiers_by_keysym(p->event);
+		//else
+			//p->prev_key_mod = 0;
+		
 		if ((unsigned int) p->prev_key != key)
 			return;
 		
-		modifier_mask |= p->prev_key_mod;
 		p->prev_key_mod = 0;
 		
 		int user_action = get_user_action(key, modifier_mask);
@@ -594,8 +586,7 @@ static void program_on_key_action(struct _program *p, int type)
 		{
 			p->perform_user_action(p, user_action);
 			p->event->default_event.xkey.keycode = 0;
-			p->prev_key_is_modifier = FALSE;
-			p->prev_key_mod = 0;
+			p->prev_key_mod = modifier_mask;
 			return;
 		}
 
@@ -604,15 +595,11 @@ static void program_on_key_action(struct _program *p, int type)
 		{
 			if (p->perform_manual_action(p, manual_action))
 			{
-				p->prev_key_is_modifier = FALSE;
-				p->prev_key_mod = 0;
+				p->prev_key_mod = modifier_mask;
 				return;
 			}
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
 		}
-		
-		if (!IsModifierKey(key))
-			p->prev_key_mod = 0;
 	}
 }
 

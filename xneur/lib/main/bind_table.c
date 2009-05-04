@@ -141,10 +141,10 @@ enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
 	mask &= ~Mod2Mask;
 	mask &= ~Mod3Mask;
 
-	log_message (ERROR, "%s %d", XKeysymToString(key_sym), mask);
+	//log_message (ERROR, "%s %d", XKeysymToString(key_sym), mask);
 	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
 	{
-		log_message (ERROR, "---%s %s %d", XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift), btable[action].modifier_mask);
+		//log_message (ERROR, "---%s %s %d", XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift), btable[action].modifier_mask);
 		if (btable[action].key_sym != key_sym && btable[action].key_sym_shift != key_sym)
 			continue;
 

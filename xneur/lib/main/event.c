@@ -145,25 +145,7 @@ static KeySym event_get_cur_keysym(struct _event *p)
 static int event_get_cur_modifiers(struct _event *p)
 {
 	int mask = 0;
-	/*int key_sym = p->get_cur_keysym(p);
-
-	if ((p->event.xkey.state & ShiftMask) && (key_sym != XK_Shift_L) && (key_sym != XK_Shift_R))
-		mask += (1 << 0);
-	if ((p->event.xkey.state & LockMask) && (key_sym != XK_Caps_Lock))
-		mask += (1 << 1);
-	if ((p->event.xkey.state & ControlMask) && (key_sym != XK_Control_L) && (key_sym != XK_Control_R))
-		mask += (1 << 2);
-	if ((p->event.xkey.state & Mod1Mask) && (key_sym != XK_Alt_L) && (key_sym != XK_Alt_R))
-		mask += (1 << 3);
-	if ((p->event.xkey.state & Mod2Mask) && (key_sym != XK_Meta_L) && (key_sym != XK_Meta_R))
-		mask += (1 << 4);
-	if ((p->event.xkey.state & Mod3Mask) && (key_sym != XK_Num_Lock))
-		mask += (1 << 5);
-	if ((p->event.xkey.state & Mod4Mask) && (key_sym != XK_Hyper_L) && (key_sym != XK_Hyper_R))
-		mask += (1 << 6);
-	if ((p->event.xkey.state & Mod5Mask) && (key_sym != XK_Super_L) && (key_sym != XK_Super_R))
-		mask += (1 << 7);*/
-
+	
 	if (p->event.xkey.state & ShiftMask)
 		mask += (1 << 0);
 	if (p->event.xkey.state & LockMask)
@@ -180,6 +162,31 @@ static int event_get_cur_modifiers(struct _event *p)
 		mask += (1 << 6);
 	if (p->event.xkey.state & Mod5Mask)
 		mask += (1 << 7);
+	return mask;
+}
+
+static int event_get_cur_modifiers_by_keysym(struct _event *p)
+{
+	unsigned int mask = 0;
+	int key_sym = p->get_cur_keysym(p);
+	
+	if (key_sym == XK_Shift_L || key_sym == XK_Shift_R)
+		mask += (1 << 0);
+	if (key_sym == XK_Caps_Lock)
+		mask += (1 << 1);
+	if (key_sym == XK_Control_L || key_sym == XK_Control_R)
+		mask += (1 << 2);
+	if (key_sym == XK_Alt_L || key_sym == XK_Alt_R)
+		mask += (1 << 3);
+	if (key_sym == XK_Meta_L || key_sym == XK_Meta_R)
+		mask += (1 << 4);
+	if (key_sym == XK_Num_Lock)
+		mask += (1 << 5);
+	if (key_sym == XK_Hyper_L || key_sym == XK_Hyper_R)
+		mask += (1 << 6);
+	if (key_sym == XK_Super_L || key_sym == XK_Super_R)
+		mask += (1 << 7);
+
 	return mask;
 }
 
@@ -219,6 +226,7 @@ struct _event* event_init(void)
 	p->send_string		= event_send_string;
 	p->get_cur_keysym	= event_get_cur_keysym;
 	p->get_cur_modifiers	= event_get_cur_modifiers;
+	p->get_cur_modifiers_by_keysym	= event_get_cur_modifiers_by_keysym;
 	p->send_backspaces	= event_send_backspaces;
 	p->send_selection	= event_send_selection;
 	p->uninit		= event_uninit;

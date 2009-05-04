@@ -40,7 +40,6 @@ struct _program
 	int  last_layout;
 	int  last_window;
 
-	int prev_key_is_modifier;
 	int prev_key;
 	int prev_key_mod;
 	
