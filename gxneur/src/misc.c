@@ -287,6 +287,14 @@ static const char* get_lang_by_index(int index)
 	return language_names[index - 1];
 }
 
+static const char* get_lang_code_by_index(int index)
+{
+	if (index == 0)
+		return NULL;
+	
+	return dirs[index - 1];
+}
+
 static void init_libxnconfig(void)
 {
 	if (xconfig != NULL)
@@ -593,10 +601,6 @@ void xneur_preference(void)
 	// 
 	widget = glade_xml_get_widget (gxml, "checkbutton20");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_space_before_punctuation);
-
-	// 
-	widget = glade_xml_get_widget (gxml, "checkbutton21");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_space_after_punctuation);
 
 	// Hotkeys List set
 	treeview = glade_xml_get_widget (gxml, "treeview5");
@@ -1467,7 +1471,7 @@ void xneur_save_preference(GladeXML *gxml)
 			continue;
 
 		const char *lang_name = get_lang_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
-		char *lang_dir = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
+		const char *lang_dir = get_lang_code_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 		int lang_group = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound2));
 
 		widgetPtrToBefound = glade_xml_get_widget (gxml, language_fix_boxes[i]);
@@ -1546,9 +1550,6 @@ void xneur_save_preference(GladeXML *gxml)
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton20");
 	xconfig->correct_space_before_punctuation = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
-
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton21");
-	xconfig->correct_space_after_punctuation = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry2");
 	if (xconfig->osd_font != NULL)
