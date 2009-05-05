@@ -37,6 +37,9 @@
 #define GLADE_FILE_CHOOSE PACKAGE_GLADE_FILE_DIR"/choose_file.glade"
 #define GLADE_FILE_ACTION_ADD PACKAGE_GLADE_FILE_DIR"/action_add.glade"
 
+#define LANGUAGES_DIR "languages"
+#define DIR_SEPARATOR		"/"
+
 #include "support.h"
 #include "callbacks.h"
 #include "trayicon.h"
@@ -265,12 +268,15 @@ static void save_list(GtkListStore *store, struct _list_char *list, GtkTreeIter 
 	g_free(ptr);
 }
 
-static const char* get_dir_by_index(int index)
+static char* get_dir_by_index(int index)
 {
 	if (index == 0)
 		return NULL;
-
-	return dirs[index - 1];
+	
+	int dir_len = strlen(LANGUAGES_DIR) + strlen(DIR_SEPARATOR) + strlen(dirs[index - 1]) + 1;
+	char *dir = (char *) malloc(dir_len * sizeof(char));
+	snprintf(dir, dir_len, "%s%s%s", LANGUAGES_DIR, DIR_SEPARATOR, dirs[index - 1]);
+	return dir;
 }
 
 static const char* get_lang_by_index(int index)
@@ -1461,7 +1467,7 @@ void xneur_save_preference(GladeXML *gxml)
 			continue;
 
 		const char *lang_name = get_lang_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
-		const char *lang_dir = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
+		char *lang_dir = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 		int lang_group = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound2));
 
 		widgetPtrToBefound = glade_xml_get_widget (gxml, language_fix_boxes[i]);
@@ -1566,7 +1572,7 @@ char* xneur_get_dict_path(GladeXML *gxml, int layout_no, const char *file_name)
 {
 	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, language_name_boxes[layout_no]);
 
-	const char *dir_name = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
+	char *dir_name = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 
 	return xconfig->get_global_dict_path(dir_name, file_name);
 }
@@ -1575,7 +1581,7 @@ char* xneur_get_home_dict_path(GladeXML *gxml, int layout_no, const char *file_n
 {
 	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, language_name_boxes[layout_no]);
 
-	const char *dir_name = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
+	char *dir_name = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
 
 	return xconfig->get_home_dict_path(dir_name, file_name);
 }
