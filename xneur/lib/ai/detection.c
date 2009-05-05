@@ -115,7 +115,7 @@ static int get_aspell_hits(char **word, int len)
 		}
 
 		AspellSpeller *spell_checker = to_aspell_speller(possible_err);
-		int correct = aspell_speller_check(spell_checker, word[lang], len);
+		int correct = aspell_speller_check(spell_checker, word[lang], strlen(word[lang]));
 		if (correct)
 		{
 			log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), xconfig->get_lang_name(xconfig, lang));
