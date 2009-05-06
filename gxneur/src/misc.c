@@ -1551,6 +1551,10 @@ void xneur_save_preference(GladeXML *gxml)
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton20");
 	xconfig->correct_space_before_punctuation = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
+	// Show popup
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton22");
+	xconfig->show_popup = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry2");
 	if (xconfig->osd_font != NULL)
 		free(xconfig->osd_font);
