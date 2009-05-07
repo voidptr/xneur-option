@@ -718,6 +718,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 				// Block events of keyboard (push to event queue)
 				set_event_mask(p->focus->owner_window, None);
 
+				p->check_brackets_with_symbols(p);
+				
 				if (!xconfig->check_lang_on_process)
 				{
 					// Unblock keyboard
@@ -739,12 +741,10 @@ static void program_perform_auto_action(struct _program *p, int action)
 			set_event_mask(p->focus->owner_window, None);
 
 			// Check two capital letter
-			if (xconfig->correct_two_capital_letter)
-				p->check_tcl_last_word(p);
+			p->check_tcl_last_word(p);
 
 			// Check incidental caps
-			if (xconfig->correct_incidental_caps)
-				p->check_caps_last_word(p);
+			p->check_caps_last_word(p);
 
 			// Checking word
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
@@ -755,11 +755,12 @@ static void program_perform_auto_action(struct _program *p, int action)
 			int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 			p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
-			// Check space before punctuation
+			// Correct space before punctuation
+			p->check_space_before_punctuation(p);
 
-			if (xconfig->correct_space_before_punctuation)
-				p->check_space_before_punctuation(p);
-
+			// Correct spaces with brackets
+			p->check_space_with_bracket(p);
+			
 			// Send Event
 			p->event->event = p->event->default_event;
 			p->event->send_next_event(p->event);
@@ -1053,6 +1054,9 @@ static int program_check_lang_last_syllable(struct _program *p)
 
 static void program_check_caps_last_word(struct _program *p)
 {
+	if (!xconfig->correct_incidental_caps)
+		return;
+	
 	int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 
 	if (!(p->buffer->keycode_modifiers[offset] & LockMask) || !(p->buffer->keycode_modifiers[offset] & ShiftMask))
@@ -1072,6 +1076,9 @@ static void program_check_caps_last_word(struct _program *p)
 
 static void program_check_tcl_last_word(struct _program *p)
 {
+	if (xconfig->correct_two_capital_letter)
+		return;
+	
 	int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 
 	if (!isalpha(p->buffer->content[offset]))
@@ -1098,6 +1105,9 @@ static void program_check_tcl_last_word(struct _program *p)
 
 static void program_check_space_before_punctuation(struct _program *p)
 {
+	if (!xconfig->correct_space_with_punctuation)
+		return;
+	
 	char *text = p->buffer->get_utf_string(p->buffer);
 	if (text == NULL)
 		return;
@@ -1113,7 +1123,7 @@ static void program_check_space_before_punctuation(struct _program *p)
 	if (p->buffer->content[p->buffer->cur_pos-2] != ' ')
 		return;
 	
-	log_message(DEBUG, _("Find spaces before punctuation"));
+	log_message(DEBUG, _("Find spaces before punctuation, correction..."));
 
 	p->event->send_backspaces(p->event, 1);
 	p->buffer->del_symbol(p->buffer);
@@ -1127,6 +1137,115 @@ static void program_check_space_before_punctuation(struct _program *p)
 	char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
 	int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
+}
+
+static void program_check_space_with_bracket(struct _program *p)
+{
+	if (!xconfig->correct_space_with_punctuation)
+		return;
+	
+	char *text = p->buffer->get_utf_string(p->buffer);
+	if (text == NULL)
+		return;
+
+	if (p->buffer->cur_pos < 3)
+		return;
+	
+	int text_len = strlen(text);
+	if (text[text_len - 1] != '(' && text[text_len - 1] != ')')
+		return;
+	
+	if (((text[text_len - 1] == '(') && (text[text_len - 2] == ' ' || text[text_len - 2] == ':' || text[text_len - 2] == ';' || text[text_len - 2] == '-' || isdigit(text[text_len - 2]))) ||
+	    ((text[text_len - 1] == ')' && text[text_len - 2] != ' ' )))
+		return;
+
+	if (text[text_len - 1] == '(')
+	{
+		log_message(DEBUG, _("Find no space before left bracket, correction..."));
+		
+		p->buffer->del_symbol(p->buffer);
+		p->event->event = p->event->default_event;
+		p->event->event.xkey.keycode = 65;
+		p->event->send_next_event(p->event);
+		int modifier_mask = groups[get_active_keyboard_group()];
+		p->buffer->add_symbol(p->buffer, ' ', p->event->event.xkey.keycode, modifier_mask);
+
+		p->event->event = p->event->default_event;
+		char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
+		modifier_mask |=  p->event->get_cur_modifiers(p->event);
+		p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
+	}
+
+	if (text[text_len - 1] == ')')
+	{
+		log_message(DEBUG, _("Find spaces before right bracket, correction..."));
+
+		p->buffer->del_symbol(p->buffer);
+		while (p->buffer->content[p->buffer->cur_pos - 1] == ' ')
+		{
+			p->event->send_backspaces(p->event, 1);
+			p->buffer->del_symbol(p->buffer);
+		}
+		p->event->event = p->event->default_event;
+		char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
+		int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+		p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
+	}
+}
+
+static void program_check_brackets_with_symbols(struct _program *p)
+{
+	if (!xconfig->correct_space_with_punctuation)
+		return;
+	
+	if (p->buffer->content[p->buffer->cur_pos - 2] == ')')
+	{
+		log_message(DEBUG, _("Find no spaces after right bracket, correction..."));
+		
+		p->buffer->del_symbol(p->buffer);
+		p->event->event = p->event->default_event;
+		p->event->event.xkey.keycode = 65;
+		p->event->send_next_event(p->event);
+		int modifier_mask = groups[get_active_keyboard_group()];
+		p->buffer->add_symbol(p->buffer, ' ', p->event->event.xkey.keycode, modifier_mask);
+
+		p->event->event = p->event->default_event;
+		char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
+		modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+		p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
+	}
+
+	if (p->buffer->content[p->buffer->cur_pos - 2] != ' ')
+		return;
+
+	int space_count = 0;
+	int pos = p->buffer->cur_pos - 2;
+	log_message (ERROR, "--- %d, %d, '%c'", space_count, pos, p->buffer->content[pos]);
+	while ((pos >= 0) && (p->buffer->content[pos] == ' '))
+	{
+		space_count++;
+		pos--;
+		log_message (ERROR, "%d, %d, '%c'", space_count, pos, p->buffer->content[pos]);
+	} 
+	
+	if (pos < 0 || p->buffer->content[pos] != '(')
+	{
+		log_message (ERROR, "+++ %d, %d, '%c'", space_count, pos, p->buffer->content[pos]);
+	    return;
+	}
+	    
+	log_message(DEBUG, _("Find spaces after left bracket, correction..."));
+
+	p->buffer->del_symbol(p->buffer);
+	for (int i = 0; i < space_count; i++)
+	{
+		p->event->send_backspaces(p->event, 1);
+		p->buffer->del_symbol(p->buffer);
+	}
+	p->event->event = p->event->default_event;
+	char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
+	int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
 }
 
 static void program_send_string_silent(struct _program *p, int send_backspaces)
@@ -1455,6 +1574,8 @@ struct _program* program_init(void)
 	p->check_caps_last_word		= program_check_caps_last_word;
 	p->check_tcl_last_word		= program_check_tcl_last_word;
 	p->check_space_before_punctuation	= program_check_space_before_punctuation;
+	p->check_space_with_bracket	= program_check_space_with_bracket;
+	p->check_brackets_with_symbols = program_check_brackets_with_symbols;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;
 	p->process_selection_notify	= program_process_selection_notify;

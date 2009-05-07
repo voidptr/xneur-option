@@ -190,7 +190,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton20">
-                                <property name="label" translatable="yes">Correct spaces before punctuation</property>
+                                <property name="label" translatable="yes">Correct spaces with punctuation</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>

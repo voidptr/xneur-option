@@ -55,7 +55,7 @@ static const char *option_names[] = 	{
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
 						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup", 
-	                    "CorrectSpaceBeforePunctuation"
+	                    "CorrectSpaceWithPunctuation"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -538,7 +538,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			if (index == -1)
 				break;
 
-			p->correct_space_before_punctuation = index;
+			p->correct_space_with_punctuation = index;
 		}
 	}
 	free(full_string);
@@ -998,8 +998,8 @@ static int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "\n# This option disable or enable correction spaces befor punctuation\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#CorrectSpaceBeforePunctuation No\n");
-	fprintf(stream, "CorrectSpaceBeforePunctuation %s\n", p->get_bool_name(p->correct_space_before_punctuation));
+	fprintf(stream, "#CorrectSpaceWithPunctuation No\n");
+	fprintf(stream, "CorrectSpaceWithPunctuation %s\n", p->get_bool_name(p->correct_space_with_punctuation));
 
 	fprintf(stream, "\n");
 

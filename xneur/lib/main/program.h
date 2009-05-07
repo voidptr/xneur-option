@@ -56,6 +56,8 @@ struct _program
 	void (*check_caps_last_word) (struct _program *p);
 	void (*check_tcl_last_word) (struct _program *p);
 	void (*check_space_before_punctuation) (struct _program *p);
+	void (*check_space_with_bracket) (struct _program *p);
+	void (*check_brackets_with_symbols) (struct _program *p);
 	void (*change_word) (struct _program *p, enum _change_action action);
 	void (*add_word_to_dict) (struct _program *p, int new_lang);
 	void (*process_selection_notify) (struct _program *p);
