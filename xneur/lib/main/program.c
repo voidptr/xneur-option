@@ -1457,40 +1457,6 @@ static void program_change_word(struct _program *p, enum _change_action action)
 	}
 }
 
-static void program_add_word_to_pattern(struct _program *p, int new_lang)
-{
-	if (!xconfig->pattern_mining)
-		return;
-	
-	char *tmp = get_last_word(p->buffer->content);
-	if (tmp == NULL)
-		return;
-
-	if (strlen(tmp) < 4)
-		return;
-	
-	tmp = get_last_word(p->buffer->i18n_content[new_lang].content);
-
-	char *new_word = strdup(tmp);
-
-	int len = trim_word(new_word, strlen(tmp));
-	if (len == 0)
-	{
-		free(new_word);
-		return;
-	}
-
-	struct _list_char *new_pattern = xconfig->languages[new_lang].pattern;
-	if (!new_pattern->exist(new_pattern, new_word, BY_PLAIN))
-	{
-		log_message(DEBUG, _("Add word '%s' in %s pattern"), new_word, xconfig->get_lang_name(xconfig, new_lang));
-		new_pattern->add(new_pattern, new_word);
-		xconfig->save_pattern(xconfig, new_lang);
-	}
-
-	free(new_word);
-}
-
 static void program_add_word_to_dict(struct _program *p, int new_lang)
 {
 	char *tmp = get_last_word(p->buffer->content);
@@ -1555,6 +1521,64 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 	p->add_word_to_pattern(p, new_lang);
 		
 	free(curr_word);
+	free(new_word);
+}
+
+static void program_add_word_to_pattern(struct _program *p, int new_lang)
+{
+	if (!xconfig->pattern_mining)
+		return;
+	
+	char *tmp = get_last_word(p->buffer->content);
+	if (tmp == NULL)
+		return;
+
+	if (strlen(tmp) < 4)
+		return;
+	
+	tmp = get_last_word(p->buffer->i18n_content[new_lang].content);
+
+	char *new_word = strdup(tmp);
+
+	int len = trim_word(new_word, strlen(tmp));
+	if (len == 0)
+	{
+		free(new_word);
+		return;
+	}
+
+	for (int i = 0; i < xconfig->total_languages; i++)
+	{
+		if (i == new_lang)
+			continue;
+		
+		tmp = get_last_word(p->buffer->i18n_content[i].content);
+		char *old_word = strdup(tmp);
+
+		len = trim_word(old_word, strlen(tmp));
+		if (len == 0)
+		{
+			free (old_word);
+			continue;
+		}
+		struct _list_char *old_pattern = xconfig->languages[i].pattern;
+		if (old_pattern->exist(old_pattern, old_word, BY_PLAIN))
+		{
+			log_message(DEBUG, _("Remove word '%s' from %s pattern"), old_word, xconfig->get_lang_name(xconfig, i));
+			old_pattern->rem(old_pattern, old_word);
+			xconfig->save_pattern(xconfig, i);
+		}
+		free (old_word);
+	}
+	
+	struct _list_char *new_pattern = xconfig->languages[new_lang].pattern;
+	if (!new_pattern->exist(new_pattern, new_word, BY_PLAIN))
+	{
+		log_message(DEBUG, _("Add word '%s' in %s pattern"), new_word, xconfig->get_lang_name(xconfig, new_lang));
+		new_pattern->add(new_pattern, new_word);
+		xconfig->save_pattern(xconfig, new_lang);
+	}
+
 	free(new_word);
 }
 

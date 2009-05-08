@@ -161,6 +161,21 @@ struct _list_char_data* list_char_find(struct _list_char *list, const char *stri
 	return &list->data[id];
 }
 
+struct _list_char_data* list_char_find_alike(struct _list_char *list, const char *string)
+{
+	if (strlen(string) < 4)
+		return NULL;
+	
+	int id = get_add_id(list, string);
+	if ((id == -1) || (id == list->data_count))
+		return NULL;
+
+	if (strncmp(list->data[id].string, string, strlen(string)) != 0)
+		return NULL;
+	
+	return &list->data[id];
+}
+
 int list_char_exist(struct _list_char *list, const char *string, int mode)
 {
 	struct _list_char_data *data = list->find(list, string, mode);
@@ -321,6 +336,7 @@ struct _list_char* list_char_init(void)
 	list->add	= list_char_add;
 	list->rem	= list_char_rem;
 	list->find	= list_char_find;
+	list->find_alike	= list_char_find_alike;
 	list->load	= list_char_load;
 	list->save	= list_char_save;
 	list->clone	= list_char_clone;
