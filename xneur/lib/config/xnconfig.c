@@ -1018,6 +1018,11 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#CorrectSpaceWithPunctuation No\n");
 	fprintf(stream, "CorrectSpaceWithPunctuation %s\n", p->get_bool_name(p->correct_space_with_punctuation));
 
+	fprintf(stream, "\n# This option disable or enable pattern mining and recognition\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#PatternMining No\n");
+	fprintf(stream, "PatternMining %s\n", p->get_bool_name(p->pattern_mining));
+
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# That's all\n");

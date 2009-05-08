@@ -146,6 +146,8 @@ static void xneur_load_config(int final)
 	log_message(LOG, _("Show OSD mode set to %s"), xconfig->get_bool_name(xconfig->show_osd));
 	log_message(LOG, _("Show popup messages mode set to %s"), xconfig->get_bool_name(xconfig->show_popup));
 	log_message(LOG, _("Check language on input process mode set to %s"), xconfig->get_bool_name(xconfig->check_lang_on_process));
+	log_message(LOG, _("Pattern minig and recognition mode set to %s"), xconfig->get_bool_name(xconfig->pattern_mining));
+
 }
 
 static void xneur_set_lock(void)

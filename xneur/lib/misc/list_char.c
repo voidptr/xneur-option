@@ -275,7 +275,7 @@ void list_char_sort(struct _list_char *list)
 	for (int i = 0; i < list->data_count - 1; i++)
 	{
 		if (strcmp(list->data[i].string, list->data[i+1].string) > 0)
-			log_message (ERROR, "Sorting error: %s > %s", list->data[i].string, list->data[i+1].string);
+			log_message (ERROR, _("Sorting error: %s > %s"), list->data[i].string, list->data[i+1].string);
 	}
 }
 
