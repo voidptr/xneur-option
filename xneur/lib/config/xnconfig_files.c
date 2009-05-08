@@ -160,16 +160,16 @@ char* get_home_file_path_name(const char *dir_name, const char *file_name)
 
 struct _list_char* load_list(const char *dir_name, const char *file_name, int sort_flag)
 {
+	struct _list_char *list = list_char_init();
+	
 	char *file_path_name = get_file_path_name(dir_name, file_name);
 
 	char *content = get_file_content(file_path_name);
 	if (content == NULL)
 	{
 		free(file_path_name);
-		return NULL;
+		return list;
 	}
-
-	struct _list_char *list = list_char_init();
 
 	list->load(list, content);
 
@@ -185,7 +185,6 @@ struct _list_char* load_list(const char *dir_name, const char *file_name, int so
 int save_list(struct _list_char *list, const char *dir_name, const char *file_name)
 {
 	char *file_path_name = get_home_file_path_name(dir_name, file_name);
-
 	FILE *stream = fopen(file_path_name, "w");
 	if (stream == NULL)
 	{

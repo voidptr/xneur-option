@@ -120,9 +120,9 @@ static void xneur_load_config(int final)
 	{
 		char *lang_name = xconfig->get_lang_name(xconfig, lang);
 
-		log_message(DEBUG, _("%s dictionary has %d records"), lang_name, xconfig->languages[lang].dicts->data_count);
-		log_message(DEBUG, _("%s proto has %d records"), lang_name, xconfig->languages[lang].protos->data_count);
-		log_message(DEBUG, _("%s big proto has %d records"), lang_name, xconfig->languages[lang].big_protos->data_count);
+		log_message(DEBUG, _("%s dictionary has %d records"), lang_name, xconfig->languages[lang].dict->data_count);
+		log_message(DEBUG, _("%s proto has %d records"), lang_name, xconfig->languages[lang].proto->data_count);
+		log_message(DEBUG, _("%s big proto has %d records"), lang_name, xconfig->languages[lang].big_proto->data_count);
 		log_message(DEBUG, _("%s regexp has %d records"), lang_name, xconfig->languages[lang].regexp->data_count);
 	}
 

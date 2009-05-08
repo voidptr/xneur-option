@@ -63,7 +63,7 @@ static int get_dict_lang(char **word)
 		if (is_fixed_layout(lang))
 			continue;
 
-		if (xconfig->languages[lang].dicts->exist(xconfig->languages[lang].dicts, word[lang], BY_PLAIN))
+		if (xconfig->languages[lang].dict->exist(xconfig->languages[lang].dict, word[lang], BY_PLAIN))
 		{
 			log_message(DEBUG, _("   [+] Found this word in %s language dictionary"), xconfig->get_lang_name(xconfig, lang));
 			return lang;
@@ -145,7 +145,7 @@ static int get_proto_hits(char *word, int *sym_len, int len, int offset, int lan
 		strncpy(proto, word + local_offset, n_bytes);
 		proto[n_bytes] = NULLSYM;
 
-		if (xconfig->languages[lang].protos->exist(xconfig->languages[lang].protos, proto, BY_PLAIN))
+		if (xconfig->languages[lang].proto->exist(xconfig->languages[lang].proto, proto, BY_PLAIN))
 		{
 			free(proto);
 			return TRUE;
@@ -172,7 +172,7 @@ static int get_big_proto_hits(char *word, int *sym_len, int len, int offset, int
 		strncpy(proto, word+local_offset, n_bytes);
 		proto[n_bytes] = NULLSYM;
 
-		if (xconfig->languages[lang].protos->exist(xconfig->languages[lang].big_protos, proto, BY_PLAIN))
+		if (xconfig->languages[lang].proto->exist(xconfig->languages[lang].big_proto, proto, BY_PLAIN))
 		{
 			free(proto);
 			return TRUE;

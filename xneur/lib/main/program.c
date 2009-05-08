@@ -750,6 +750,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 				p->check_lang_last_word(p);
 
+			p->add_word_to_pattern(p, get_cur_lang());
 			// Add symbol to internal bufer
 			p->event->event = p->event->default_event;
 			int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
@@ -1220,19 +1221,14 @@ static void program_check_brackets_with_symbols(struct _program *p)
 
 	int space_count = 0;
 	int pos = p->buffer->cur_pos - 2;
-	log_message (ERROR, "--- %d, %d, '%c'", space_count, pos, p->buffer->content[pos]);
 	while ((pos >= 0) && (p->buffer->content[pos] == ' '))
 	{
 		space_count++;
 		pos--;
-		log_message (ERROR, "%d, %d, '%c'", space_count, pos, p->buffer->content[pos]);
 	} 
 	
 	if (pos < 0 || p->buffer->content[pos] != '(')
-	{
-		log_message (ERROR, "+++ %d, %d, '%c'", space_count, pos, p->buffer->content[pos]);
 	    return;
-	}
 	    
 	log_message(DEBUG, _("Find spaces after left bracket, correction..."));
 
@@ -1461,12 +1457,46 @@ static void program_change_word(struct _program *p, enum _change_action action)
 	}
 }
 
+static void program_add_word_to_pattern(struct _program *p, int new_lang)
+{
+	if (!xconfig->pattern_mining)
+		return;
+	
+	char *tmp = get_last_word(p->buffer->content);
+	if (tmp == NULL)
+		return;
+
+	if (strlen(tmp) < 4)
+		return;
+	
+	tmp = get_last_word(p->buffer->i18n_content[new_lang].content);
+
+	char *new_word = strdup(tmp);
+
+	int len = trim_word(new_word, strlen(tmp));
+	if (len == 0)
+	{
+		free(new_word);
+		return;
+	}
+
+	struct _list_char *new_pattern = xconfig->languages[new_lang].pattern;
+	if (!new_pattern->exist(new_pattern, new_word, BY_PLAIN))
+	{
+		log_message(DEBUG, _("Add word '%s' in %s pattern"), new_word, xconfig->get_lang_name(xconfig, new_lang));
+		new_pattern->add(new_pattern, new_word);
+		xconfig->save_pattern(xconfig, new_lang);
+	}
+
+	free(new_word);
+}
+
 static void program_add_word_to_dict(struct _program *p, int new_lang)
 {
 	char *tmp = get_last_word(p->buffer->content);
 	if (tmp == NULL)
 		return;
-
+	
 	int curr_lang = get_cur_lang();
 
 	tmp = get_last_word(p->buffer->i18n_content[curr_lang].content);
@@ -1480,11 +1510,11 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 		return;
 	}
 
-	struct _list_char *curr_temp_dicts = xconfig->languages[curr_lang].temp_dicts;
-	if (curr_temp_dicts->exist(curr_temp_dicts, curr_word, BY_PLAIN))
-		curr_temp_dicts->rem(curr_temp_dicts, curr_word);
+	struct _list_char *curr_temp_dict = xconfig->languages[curr_lang].temp_dict;
+	if (curr_temp_dict->exist(curr_temp_dict, curr_word, BY_PLAIN))
+		curr_temp_dict->rem(curr_temp_dict, curr_word);
 
-	struct _list_char *new_temp_dicts = xconfig->languages[new_lang].temp_dicts;
+	struct _list_char *new_temp_dict = xconfig->languages[new_lang].temp_dict;
 
 	tmp = get_last_word(p->buffer->i18n_content[new_lang].content);
 
@@ -1498,30 +1528,32 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 		return;
 	}
 
-	if (!new_temp_dicts->exist(new_temp_dicts, new_word, BY_PLAIN))
+	if (!new_temp_dict->exist(new_temp_dict, new_word, BY_PLAIN))
 	{
-		new_temp_dicts->add(new_temp_dicts, new_word);
+		new_temp_dict->add(new_temp_dict, new_word);
 		free(curr_word);
 		free(new_word);
 		return;
 	}
 
-	struct _list_char *curr_dicts = xconfig->languages[curr_lang].dicts;
-	if (curr_dicts->exist(curr_dicts, curr_word, BY_PLAIN))
+	struct _list_char *curr_dict = xconfig->languages[curr_lang].dict;
+	if (curr_dict->exist(curr_dict, curr_word, BY_PLAIN))
 	{
 		log_message(DEBUG, _("Remove word '%s' from %s dictionary"), curr_word, xconfig->get_lang_name(xconfig, curr_lang));
-		curr_dicts->rem(curr_dicts, curr_word);
-		xconfig->save_dicts(xconfig, curr_lang);
+		curr_dict->rem(curr_dict, curr_word);
+		xconfig->save_dict(xconfig, curr_lang);
 	}
 
-	struct _list_char *new_dicts = xconfig->languages[new_lang].dicts;
-	if (!new_dicts->exist(new_dicts, new_word, BY_PLAIN))
+	struct _list_char *new_dict = xconfig->languages[new_lang].dict;
+	if (!new_dict->exist(new_dict, new_word, BY_PLAIN))
 	{
 		log_message(DEBUG, _("Add word '%s' in %s dictionary"), new_word, xconfig->get_lang_name(xconfig, new_lang));
-		new_dicts->add(new_dicts, new_word);
-		xconfig->save_dicts(xconfig, new_lang);
+		new_dict->add(new_dict, new_word);
+		xconfig->save_dict(xconfig, new_lang);
 	}
 
+	p->add_word_to_pattern(p, new_lang);
+		
 	free(curr_word);
 	free(new_word);
 }
@@ -1578,6 +1610,7 @@ struct _program* program_init(void)
 	p->check_brackets_with_symbols = program_check_brackets_with_symbols;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;
+	p->add_word_to_pattern		= program_add_word_to_pattern;
 	p->process_selection_notify	= program_process_selection_notify;
 	p->change_lang			= program_change_lang;
 	p->change_incidental_caps	= program_change_incidental_caps;

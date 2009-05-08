@@ -185,7 +185,38 @@ void list_char_sort(struct _list_char *list)
 		return;
 
 	char *data1, *data2;
-	int i = 2;
+
+	// Insertion sort
+	int i, j;
+	struct _list_char_data temp;
+	for (i = 1; i < list->data_count; i++) 
+	{
+		temp = list->data[i];
+		for (j = i - 1; j >= 0; j--) 
+		{
+			data1 = list->data[j].string;
+			data2 = temp.string;
+			if (strcmp(data1, data2) < 0)
+				break;
+			swap_data(list, j+1, j);
+		}
+		list->data[j+1] = temp;
+	}
+
+	// Bubble sort
+	/*for(int i = list->data_count-1 ; i > 0 ; i--)
+	{
+		for(int j = 0 ; j < i ; j++)
+		{
+			data1 = list->data[j].string;
+			data2 = list->data[j+1].string;
+            if (strcmp(data1, data2) >= 0)
+				 swap_data(list, j, j+1);
+         }
+     }*/
+
+	// Quick sort (with error!!!)
+	/*int i = 2;
 
 	do
 	{
@@ -239,6 +270,13 @@ void list_char_sort(struct _list_char *list)
 		i--;
 	}
 	while (i >= 1);
+	*/
+	
+	for (int i = 0; i < list->data_count - 1; i++)
+	{
+		if (strcmp(list->data[i].string, list->data[i+1].string) > 0)
+			log_message (ERROR, "Sorting error: %s > %s", list->data[i].string, list->data[i+1].string);
+	}
 }
 
 void list_char_load(struct _list_char *list, char *content)

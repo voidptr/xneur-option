@@ -28,6 +28,7 @@
 #define PROTO_NAME			"proto"
 #define BIG_PROTO_NAME			"proto3"
 #define REGEXP_NAME			"regexp"
+#define PATTERN_NAME		"pattern"
 
 #define SOUNDDIR			"sounds"
 #define LANGUAGEDIR			"languages"
@@ -120,11 +121,12 @@ struct _xneur_language
 	int  group;
 	int  fixed;
 
-	struct _list_char *temp_dicts;
-	struct _list_char *dicts;
-	struct _list_char *protos;
-	struct _list_char *big_protos;
+	struct _list_char *temp_dict;
+	struct _list_char *dict;
+	struct _list_char *proto;
+	struct _list_char *big_proto;
 	struct _list_char *regexp;
+	struct _list_char *pattern;
 };
 
 struct _xneur_hotkey
@@ -193,7 +195,8 @@ struct _xneur_config
 	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter
 	int   check_lang_on_process;			// Check lang on input process
 	int   disable_capslock;				// Disable CapsLock use
-
+	int   pattern_mining;			// Save pattern and mining
+	
 	int   show_osd;					// Show OSD
 	char  *osd_font;
 
@@ -211,7 +214,8 @@ struct _xneur_config
 	int   (*replace) (struct _xneur_config *p);
 	void  (*reload) (struct _xneur_config *p);
 	int   (*kill) (struct _xneur_config *p);
-	void  (*save_dicts) (struct _xneur_config *p, int lang);
+	void  (*save_dict) (struct _xneur_config *p, int lang);
+	void  (*save_pattern) (struct _xneur_config *p, int lang);
 	void  (*set_pid) (struct _xneur_config *p, int pid);
 	int   (*get_pid) (struct _xneur_config *p);
 	void  (*set_manual_mode) (struct _xneur_config *p, int manual_mode);

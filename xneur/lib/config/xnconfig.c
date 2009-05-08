@@ -47,7 +47,7 @@ static const char *fix_names[]  =	{"Fixed"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
-						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "Reserved1",
+						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "PatternMining",
 						"DisableCapsLock", "CheckOnProcess", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
@@ -216,8 +216,16 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->add_language(p, param, dir, atoi(group), fix_index);
 			break;
 		}
-		case 5: // Reserved 1
+		case 5: // Pattern Mining and Recognition
 		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for pattern minig and recognition mode specified"));
+				break;
+			}
+
+			p->pattern_mining = index;
 			break;
 		}
 		case 6: // Disable CapsLock use
@@ -600,21 +608,24 @@ static void free_structures(struct _xneur_config *p)
 
 	for (int lang = 0; lang < p->total_languages; lang++)
 	{
-		if (p->languages[lang].temp_dicts != NULL)
-			p->languages[lang].temp_dicts->uninit(p->languages[lang].temp_dicts);
+		if (p->languages[lang].temp_dict != NULL)
+			p->languages[lang].temp_dict->uninit(p->languages[lang].temp_dict);
 
-		if (p->languages[lang].dicts != NULL)
-			p->languages[lang].dicts->uninit(p->languages[lang].dicts);
+		if (p->languages[lang].dict != NULL)
+			p->languages[lang].dict->uninit(p->languages[lang].dict);
 
-		if (p->languages[lang].protos != NULL)
-			p->languages[lang].protos->uninit(p->languages[lang].protos);
+		if (p->languages[lang].proto != NULL)
+			p->languages[lang].proto->uninit(p->languages[lang].proto);
 
-		if (p->languages[lang].big_protos != NULL)
-			p->languages[lang].big_protos->uninit(p->languages[lang].big_protos);
+		if (p->languages[lang].big_proto != NULL)
+			p->languages[lang].big_proto->uninit(p->languages[lang].big_proto);
 
 		if (p->languages[lang].regexp != NULL)
 			p->languages[lang].regexp->uninit(p->languages[lang].regexp);
 
+		if (p->languages[lang].pattern != NULL)
+			p->languages[lang].pattern->uninit(p->languages[lang].pattern);
+		
 		free(p->languages[lang].name);
 		free(p->languages[lang].dir);
 	}
@@ -714,22 +725,22 @@ static int xneur_config_load(struct _xneur_config *p)
 		char *lang_dir	= p->get_lang_dir(p, lang);
 		char *lang_name	= p->get_lang_name(p, lang);
 
-		p->languages[lang].dicts = load_list(lang_dir, DICT_NAME, TRUE);
-		if (p->languages[lang].dicts == NULL)
+		p->languages[lang].dict = load_list(lang_dir, DICT_NAME, TRUE);
+		if (p->languages[lang].dict == NULL)
 		{
 			log_message(ERROR, _("Can't find dictionary file for %s language"), lang_name);
 			return FALSE;
 		}
 
-		p->languages[lang].protos = load_list(lang_dir, PROTO_NAME, TRUE);
-		if (p->languages[lang].protos == NULL)
+		p->languages[lang].proto = load_list(lang_dir, PROTO_NAME, TRUE);
+		if (p->languages[lang].proto == NULL)
 		{
 			log_message(ERROR, _("Can't find protos file for %s language"), lang_name);
 			return FALSE;
 		}
 
-		p->languages[lang].big_protos = load_list(lang_dir, BIG_PROTO_NAME, TRUE);
-		if (p->languages[lang].big_protos == NULL)
+		p->languages[lang].big_proto = load_list(lang_dir, BIG_PROTO_NAME, TRUE);
+		if (p->languages[lang].big_proto == NULL)
 		{
 			log_message(ERROR, _("Can't find big protos file for %s language"), lang_name);
 			return FALSE;
@@ -742,7 +753,13 @@ static int xneur_config_load(struct _xneur_config *p)
 			return FALSE;
 		}
 
-		p->languages[lang].temp_dicts = p->languages[lang].dicts->clone(p->languages[lang].dicts);
+		p->languages[lang].pattern = load_list(lang_dir, PATTERN_NAME, TRUE);
+		if (p->languages[lang].pattern == NULL)
+		{
+			log_message(WARNING, _("Can't find pattern file for %s language"), lang_name);
+		}
+		
+		p->languages[lang].temp_dict = p->languages[lang].dict->clone(p->languages[lang].dict);
 
 		load_lang = lang;
 	}
@@ -1034,14 +1051,24 @@ static int xneur_config_replace(struct _xneur_config *p)
 	return p->load(p);
 }
 
-static void xneur_config_save_dicts(struct _xneur_config *p, int lang)
+static void xneur_config_save_dict(struct _xneur_config *p, int lang)
 {
 	if (!p->educate)
 		return;
 
 	log_message(LOG, _("Saving %s dictionary"), p->get_lang_name(p, lang));
 
-	save_list(p->languages[lang].dicts, p->get_lang_dir(p, lang), DICT_NAME);
+	save_list(p->languages[lang].dict, p->get_lang_dir(p, lang), DICT_NAME);
+}
+
+static void xneur_config_save_pattern(struct _xneur_config *p, int lang)
+{
+	if (!p->educate)
+		return;
+
+	log_message(LOG, _("Saving %s pattern"), p->get_lang_name(p, lang));
+
+	save_list(p->languages[lang].pattern, p->get_lang_dir(p, lang), PATTERN_NAME);
 }
 
 static char* xneur_config_get_lang_dir(struct _xneur_config *p, int lang)
@@ -1159,7 +1186,8 @@ struct _xneur_config* xneur_config_init(void)
 	p->replace			= xneur_config_replace;
 	p->reload			= xneur_config_reload;
 	p->kill				= xneur_config_kill;
-	p->save_dicts			= xneur_config_save_dicts;
+	p->save_dict			= xneur_config_save_dict;
+	p->save_pattern			= xneur_config_save_pattern;
 	p->set_manual_mode		= xneur_config_set_manual_mode;
 	p->is_manual_mode		= xneur_config_is_manual_mode;
 	p->set_pid			= xneur_config_set_pid;
