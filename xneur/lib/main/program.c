@@ -70,6 +70,8 @@
 
 #define NO_MODIFIER_MASK	0
 
+#define MIN_PATTERN_LEN		4
+
 extern struct _xneur_config *xconfig;
 
 struct _window *main_window;
@@ -732,6 +734,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 					if (p->check_lang_last_syllable(p))
 						p->event->default_event.xkey.keycode = 0;
 
+				p->check_pattern(p);
+				
 				// Unblock keyboard
 				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 				return;
@@ -1244,6 +1248,71 @@ static void program_check_brackets_with_symbols(struct _program *p)
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
 }
 
+
+static void program_check_pattern(struct _program *p)
+{
+	if (!xconfig->pattern_mining)
+		return;
+
+	char *tmp = get_last_word(p->buffer->content);
+	if (tmp == NULL)
+		return;
+	
+	if (strlen(tmp) < MIN_PATTERN_LEN - 1)
+		return;
+	
+	int lang = get_cur_lang();
+	tmp = get_last_word(p->buffer->i18n_content[lang].content);
+
+	char *word = strdup(tmp);
+
+	int len = trim_word(word, strlen(tmp));
+	if (len == 0)
+	{
+		free (word);
+		return;
+	}
+
+	struct _list_char_data *pattern_data = xconfig->languages[lang].pattern->find_alike(xconfig->languages[lang].pattern, word);
+	if (pattern_data == NULL)
+	{
+		free (word);
+		return;
+	}
+	
+	log_message (DEBUG, "Find alike word '%s'", pattern_data->string);
+
+	log_message (DEBUG, "Adding part '%s'", pattern_data->string + strlen(word)*sizeof(char));
+	set_event_mask(p->focus->owner_window, None);
+	grab_spec_keys(p->focus->owner_window, FALSE);
+
+	struct _buffer *tmp_buffer = buffer_init();
+	
+	tmp_buffer->set_content(tmp_buffer, pattern_data->string + strlen(word)*sizeof(char));
+
+	if (tmp_buffer->cur_pos == 0)
+	{
+		tmp_buffer->uninit(tmp_buffer);
+		free (word);
+		return;
+	}
+
+	p->event->event = p->event->default_event;
+	p->event->send_next_event(p->event);
+	
+	p->event->send_string(p->event, tmp_buffer);
+	p->event->send_selection(p->event, tmp_buffer->cur_pos);
+
+	p->event->default_event.xkey.keycode = 0;
+	
+	tmp_buffer->uninit(tmp_buffer);
+	
+	set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+	grab_spec_keys(p->focus->owner_window, TRUE);
+
+	free (word);
+}
+
 static void program_send_string_silent(struct _program *p, int send_backspaces)
 {
 	if (p->buffer->cur_pos == 0)
@@ -1533,7 +1602,7 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 	if (tmp == NULL)
 		return;
 
-	if (strlen(tmp) < 4)
+	if (strlen(tmp) < MIN_PATTERN_LEN)
 		return;
 	
 	tmp = get_last_word(p->buffer->i18n_content[new_lang].content);
@@ -1632,6 +1701,7 @@ struct _program* program_init(void)
 	p->check_space_before_punctuation	= program_check_space_before_punctuation;
 	p->check_space_with_bracket	= program_check_space_with_bracket;
 	p->check_brackets_with_symbols = program_check_brackets_with_symbols;
+	p->check_pattern	= program_check_pattern;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;
 	p->add_word_to_pattern		= program_add_word_to_pattern;
