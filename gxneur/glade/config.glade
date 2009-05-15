@@ -132,7 +132,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton21">
-                                <property name="label" translatable="yes">Enable pattern mining and recognition (autocom</property>
+                                <property name="label" translatable="yes">Enable pattern mining and recognition (autocomplementation)</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
