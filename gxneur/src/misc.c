@@ -123,7 +123,7 @@ static const char *hotkey_names[]			=   {
 										"Correct selected text", "Transliterate selected text", "Change case of selected text", 
 	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text",
 										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
-		                                "Rotate layouts", "Expand abbreviations"
+		                                "Rotate layouts", "Expand abbreviations", "Autocomplementation Confirmation"
                                         };
 
 static const int total_notify_names = sizeof(notify_names) / sizeof(notify_names[0]);
@@ -604,7 +604,7 @@ void xneur_preference(void)
 
 	// 
 	widget = glade_xml_get_widget (gxml, "checkbutton21");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->pattern_mining);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->add_space_after_autocomplementation);
 
 	// Hotkeys List set
 	treeview = glade_xml_get_widget (gxml, "treeview5");
@@ -1556,7 +1556,7 @@ void xneur_save_preference(GladeXML *gxml)
 	xconfig->correct_space_with_punctuation = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton21");
-	xconfig->pattern_mining = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	xconfig->add_space_after_autocomplementation = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	// Show popup
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton22");

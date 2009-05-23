@@ -47,7 +47,7 @@ static const char *fix_names[]  =	{"Fixed"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
-						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "PatternMining",
+						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "Autocomplementation",
 						"DisableCapsLock", "CheckOnProcess", "SetAutoApp", "SetManualApp", "GrabMouse",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
@@ -55,14 +55,14 @@ static const char *option_names[] = 	{
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
 						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup", 
-	                    "CorrectSpaceWithPunctuation"
+	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocomplementation"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-						"RotateLayout","ReplaceAbbreviation"
+						"RotateLayout","ReplaceAbbreviation", "AutocomplementationConfirmation"
 					};
 static const char *notify_names[] =	{
 						"XneurStart", "XneurReload", "XneurStop",
@@ -225,7 +225,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->pattern_mining = index;
+			p->autocomplementation = index;
 			break;
 		}
 		case 6: // Disable CapsLock use
@@ -547,6 +547,14 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 
 			p->correct_space_with_punctuation = index;
+		}
+		case 34:
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+				break;
+
+			p->add_space_after_autocomplementation = index;
 		}
 	}
 	free(full_string);
@@ -1018,10 +1026,15 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#CorrectSpaceWithPunctuation No\n");
 	fprintf(stream, "CorrectSpaceWithPunctuation %s\n", p->get_bool_name(p->correct_space_with_punctuation));
 
-	fprintf(stream, "\n# This option disable or enable pattern mining and recognition\n");
+	fprintf(stream, "\n# This option disable or enable pattern mining and recognition (autocomplementation)\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#PatternMining No\n");
-	fprintf(stream, "PatternMining %s\n", p->get_bool_name(p->pattern_mining));
+	fprintf(stream, "#Autocomplementation No\n");
+	fprintf(stream, "Autocomplementation %s\n", p->get_bool_name(p->autocomplementation));
+
+	fprintf(stream, "\n# This option disable or enable adding space after autocomplementation\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#AddSpaceAfterAutocomplementation No\n");
+	fprintf(stream, "AddSpaceAfterAutocomplementation %s\n", p->get_bool_name(p->add_space_after_autocomplementation));
 
 	fprintf(stream, "\n");
 

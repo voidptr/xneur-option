@@ -35,7 +35,7 @@
 
 #define MAX_FLAGS			4
 #define MAX_NOTIFIES		24
-#define MAX_HOTKEYS			15
+#define MAX_HOTKEYS			16
 
 enum _flag_action
 {
@@ -91,6 +91,7 @@ enum _hotkey_action
 	ACTION_ENABLE_LAYOUT_3,
 	ACTION_ROTATE_LAYOUT,
 	ACTION_REPLACE_ABBREVIATION,
+	ACTION_AUTOCOMPLEMENTATION,
 	ACTION_NONE,
 };
 
@@ -195,7 +196,8 @@ struct _xneur_config
 	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter
 	int   check_lang_on_process;			// Check lang on input process
 	int   disable_capslock;				// Disable CapsLock use
-	int   pattern_mining;			// Save pattern and mining
+	int   autocomplementation;			// Save pattern and mining
+	int   add_space_after_autocomplementation;
 	
 	int   show_osd;					// Show OSD
 	char  *osd_font;
@@ -203,7 +205,7 @@ struct _xneur_config
 	int   show_popup;				// Show popups
 
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
-
+	
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);
 	const char* (*get_bool_name) (int option);

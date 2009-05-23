@@ -704,8 +704,6 @@ static void program_perform_auto_action(struct _program *p, int action)
 			if (p->changed_manual == MANUAL_FLAG_SET)
 				p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 
-			p->last_action = action;
-
 			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
 
 			if (action == KLB_ADD_SYM)
@@ -779,6 +777,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 			if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
+			p->last_action = ACTION_NONE;
+			
 			return;
 		}
 	}
@@ -896,6 +896,33 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		{
 			set_next_keyboard_group();
 			p->event->default_event.xkey.keycode = 0;
+			break;
+		}
+		case ACTION_AUTOCOMPLEMENTATION:
+		{
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			{
+				// Block events of keyboard (push to event queue)
+				set_event_mask(p->focus->owner_window, None);
+				
+				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Right), p->event->event.xkey.state);
+				if (xconfig->add_space_after_autocomplementation)
+					p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_space), p->event->event.xkey.state);
+				p->last_action = ACTION_NONE;
+
+				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				
+				// Unblock keyboard
+				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+				break;
+			}
+			p->event->send_xkey(p->event, p->event->event.xkey.keycode, p->event->event.xkey.state);
+							
+			p->event->event = p->event->default_event;
+			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
+			int modifier_mask =  p->event->get_cur_modifiers(p->event);
+			p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
+
 			break;
 		}
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
@@ -1170,7 +1197,7 @@ static void program_check_space_with_bracket(struct _program *p)
 		
 		p->buffer->del_symbol(p->buffer);
 		p->event->event = p->event->default_event;
-		p->event->event.xkey.keycode = 65;
+		p->event->event.xkey.keycode = XKeysymToKeycode(main_window->display, XK_space);
 		p->event->send_next_event(p->event);
 		int modifier_mask = groups[get_active_keyboard_group()];
 		p->buffer->add_symbol(p->buffer, ' ', p->event->event.xkey.keycode, modifier_mask);
@@ -1209,7 +1236,7 @@ static void program_check_brackets_with_symbols(struct _program *p)
 		
 		p->buffer->del_symbol(p->buffer);
 		p->event->event = p->event->default_event;
-		p->event->event.xkey.keycode = 65;
+		p->event->event.xkey.keycode = XKeysymToKeycode(main_window->display, XK_space);
 		p->event->send_next_event(p->event);
 		int modifier_mask = groups[get_active_keyboard_group()];
 		p->buffer->add_symbol(p->buffer, ' ', p->event->event.xkey.keycode, modifier_mask);
@@ -1248,10 +1275,9 @@ static void program_check_brackets_with_symbols(struct _program *p)
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
 }
 
-
 static void program_check_pattern(struct _program *p)
 {
-	if (!xconfig->pattern_mining)
+	if (!xconfig->autocomplementation)
 		return;
 
 	char *tmp = get_last_word(p->buffer->content);
@@ -1276,6 +1302,7 @@ static void program_check_pattern(struct _program *p)
 	struct _list_char_data *pattern_data = xconfig->languages[lang].pattern->find_alike(xconfig->languages[lang].pattern, word);
 	if (pattern_data == NULL)
 	{
+		p->last_action = ACTION_NONE;
 		free (word);
 		return;
 	}
@@ -1292,6 +1319,7 @@ static void program_check_pattern(struct _program *p)
 	if (tmp_buffer->cur_pos == 0)
 	{
 		tmp_buffer->uninit(tmp_buffer);
+		p->last_action = ACTION_NONE;
 		free (word);
 		return;
 	}
@@ -1309,6 +1337,7 @@ static void program_check_pattern(struct _program *p)
 	set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 	grab_spec_keys(p->focus->owner_window, TRUE);
 
+	p->last_action = ACTION_AUTOCOMPLEMENTATION;
 	free (word);
 }
 
@@ -1594,7 +1623,7 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 
 static void program_add_word_to_pattern(struct _program *p, int new_lang)
 {
-	if (!xconfig->pattern_mining)
+	if (!xconfig->autocomplementation)
 		return;
 	
 	char *tmp = get_last_word(p->buffer->content);
@@ -1615,6 +1644,12 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 		return;
 	}
 
+	if (isdigit(new_word[len-1]) || ispunct(new_word[len-1]))
+	{
+		free(new_word);
+		return;
+	}
+	
 	for (int i = 0; i < xconfig->total_languages; i++)
 	{
 		if (i == new_lang)

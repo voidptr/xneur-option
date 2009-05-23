@@ -51,6 +51,7 @@ static struct _bind_table btable[MAX_HOTKEYS] =	{
 							{0, 0, 0},
 							{0, 0, 0},
 							{0, 0, 0},
+							{0, 0, 0},
 							{0, 0, 0}
 						};
 static const char *normal_action_names[] =	{
@@ -58,7 +59,7 @@ static const char *normal_action_names[] =	{
 							"Change Selected", "Translit Selected", "Changecase Selected",
 							"Change Clipboard", "Translit Clipboard", "Changecase Clipboard",
 							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4",
-							"Rotate Layouts", "Replace Abbreviation"
+							"Rotate Layouts", "Replace Abbreviation", "Autocomplementation Confirmation"
 						};
 extern struct _xneur_config *xconfig;
 

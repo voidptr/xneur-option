@@ -39,9 +39,8 @@ struct _program
 	int  last_window;
 
 	KeySym prev_key;
-	struct _list_char *modifiers_stack;
-	
 	int prev_key_mod;
+	struct _list_char *modifiers_stack;
 	
 	void (*layout_update) (struct _program *p);
 	void (*update) (struct _program *p);
