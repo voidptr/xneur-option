@@ -105,9 +105,6 @@ void set_event_mask(Window window, int event_mask)
 
 void grab_button(Window window, int is_grab)
 {
-	if (!xconfig->grab_mouse)
-		return;
-
 	int status;
 	if (is_grab)
 		status = XGrabButton(main_window->display, Button1, AnyModifier, window, TRUE, BUTTON_HANDLE_MASK, GrabModeSync, GrabModeAsync, None, None);

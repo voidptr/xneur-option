@@ -63,6 +63,7 @@ static GtkListStore *store_osd				= NULL;
 static GtkListStore *store_popup			= NULL;
 static GtkListStore *store_action			= NULL;
 static GtkListStore *store_hotkey			= NULL;
+static GtkListStore *store_autocomplementation_exclude_app		= NULL;
 
 static GtkTreeView *tmp_treeview	= NULL;
 
@@ -562,10 +563,6 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "combobox25");
 	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->default_group);
 	
-	// Mouse Grab 
-	widget = glade_xml_get_widget (gxml, "checkbutton1");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->grab_mouse);
-	
 	// Education Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton2");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->educate);
@@ -602,9 +599,39 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton20");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_space_with_punctuation);
 
-	// 
+	// Autocomplementation
 	widget = glade_xml_get_widget (gxml, "checkbutton21");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->autocomplementation);
+
+	// Space after autocomplementation
+	widget = glade_xml_get_widget (gxml, "checkbutton1");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->add_space_after_autocomplementation);
+
+	// Exclude autocomplementation App set
+	treeview = glade_xml_get_widget (gxml, "treeview8");
+
+	store_autocomplementation_exclude_app = gtk_list_store_new(1, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_autocomplementation_exclude_app));
+	gtk_widget_show(treeview);
+
+	for (int i = 0; i < xconfig->autocomplementation_excluded_apps->data_count; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_autocomplementation_exclude_app), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_autocomplementation_exclude_app), &iter, 0, xconfig->autocomplementation_excluded_apps->data[i].string, -1);
+	}
+
+	cell = gtk_cell_renderer_text_new();
+
+	column = gtk_tree_view_column_new_with_attributes(_("Application"), cell, "text", 0, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	// Adding/Removing Exclude App
+	widget = glade_xml_get_widget (gxml, "button11");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_autocomplementation_exclude_app), G_OBJECT(window));
+
+	widget = glade_xml_get_widget (gxml, "button13");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_autocomplementation_exclude_app), G_OBJECT(treeview));
 
 	// Hotkeys List set
 	treeview = glade_xml_get_widget (gxml, "treeview5");
@@ -917,6 +944,11 @@ void xneur_preference(void)
 void xneur_add_exclude_app(void)
 {
 	add_item(store_exclude_app);
+}
+
+void xneur_add_autocomplementation_exclude_app(void)
+{
+	add_item(store_autocomplementation_exclude_app);
 }
 
 void xneur_add_auto_app(void)
@@ -1244,10 +1276,14 @@ void xneur_edit_sound(GtkWidget *treeview)
 	}
 }
 
-
 void xneur_rem_exclude_app(GtkWidget *widget)
 {
 	remove_item(widget, store_exclude_app);
+}
+
+void xneur_rem_autocomplementation_exclude_app(GtkWidget *widget)
+{
+	remove_item(widget, store_autocomplementation_exclude_app);
 }
 
 void xneur_rem_auto_app(GtkWidget *widget)
@@ -1285,6 +1321,15 @@ gboolean save_exclude_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *i
 	if (model || path || user_data){};
 
 	save_list(store_exclude_app, xconfig->excluded_apps, iter);
+
+	return FALSE;
+}
+
+gboolean save_autocomplementation_exclude_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	save_list(store_autocomplementation_exclude_app, xconfig->autocomplementation_excluded_apps, iter);
 
 	return FALSE;
 }
@@ -1497,13 +1542,11 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_osd), save_osd, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_popup), save_popup, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_hotkey), save_action, NULL);
-	
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_autocomplementation_exclude_app), save_autocomplementation_exclude_app, NULL);
+
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton7");
 	xconfig->manual_mode = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
-
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton1");
-	xconfig->grab_mouse = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton2");
 	xconfig->educate = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
@@ -1556,6 +1599,9 @@ void xneur_save_preference(GladeXML *gxml)
 	xconfig->correct_space_with_punctuation = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton21");
+	xconfig->autocomplementation = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton1");
 	xconfig->add_space_after_autocomplementation = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	// Show popup

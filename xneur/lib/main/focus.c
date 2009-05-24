@@ -63,11 +63,12 @@ static void grab_mouse_button (Window current_window, int grab)
 }
 
 // Private
-static int get_focus(struct _focus *p, int *forced_mode, int *focus_status)
+static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int *autocomplementation_mode)
 {
 	*forced_mode	= FORCE_MODE_NORMAL;
 	*focus_status	= FOCUS_NONE;
-
+	*autocomplementation_mode	= AUTOCOMPLEMENTATION_INCLUDED;
+	
 	Window new_window;
 	int show_message = TRUE;
 	while (TRUE)
@@ -97,6 +98,9 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status)
 			*forced_mode = FORCE_MODE_AUTO;
 		else if (xconfig->manual_apps->exist(xconfig->manual_apps, new_app_name, BY_PLAIN))
 			*forced_mode = FORCE_MODE_MANUAL;
+
+		if (xconfig->autocomplementation_excluded_apps->exist(xconfig->autocomplementation_excluded_apps, new_app_name, BY_PLAIN))
+			*autocomplementation_mode	= AUTOCOMPLEMENTATION_EXCLUDED;
 	}
 
 	Window old_window = p->owner_window;
@@ -136,9 +140,9 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status)
 	return FOCUS_CHANGED;
 }
 
-static int focus_get_focus_status(struct _focus *p, int *forced_mode, int *focus_status)
+static int focus_get_focus_status(struct _focus *p, int *forced_mode, int *focus_status, int *autocomplementation_mode)
 {
-	int focus = get_focus(p, forced_mode, focus_status);
+	int focus = get_focus(p, forced_mode, focus_status, autocomplementation_mode);
 
 	if (focus == FOCUS_UNCHANGED)
 		return p->last_focus;

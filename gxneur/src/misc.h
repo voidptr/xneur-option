@@ -56,6 +56,9 @@ void xneur_add_user_action(void);
 void xneur_rem_user_action(GtkWidget *widget);
 void xneur_edit_user_action(GtkWidget *treeview);
 
+void xneur_add_autocomplementation_exclude_app(void);
+void xneur_rem_autocomplementation_exclude_app(GtkWidget *widget);
+
 void xneur_edit_action(GtkWidget *treeview);
 void xneur_clear_action(GtkWidget *treeview);
 

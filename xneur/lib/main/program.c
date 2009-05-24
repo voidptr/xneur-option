@@ -275,7 +275,7 @@ static void program_update(struct _program *p)
 {
 	p->last_window = p->focus->owner_window;
 
-	int status = p->focus->get_focus_status(p->focus, &p->app_forced_mode, &p->app_focus_mode);
+	int status = p->focus->get_focus_status(p->focus, &p->app_forced_mode, &p->app_focus_mode, &p->app_autocomplementation_mode);
 	p->event->set_owner_window(p->event, p->focus->owner_window);
 
 	if (status == FOCUS_UNCHANGED)
@@ -906,6 +906,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				set_event_mask(p->focus->owner_window, None);
 				
 				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Right), p->event->event.xkey.state);
+				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Left), p->event->event.xkey.state);
 				if (xconfig->add_space_after_autocomplementation)
 					p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_space), p->event->event.xkey.state);
 				p->last_action = ACTION_NONE;
@@ -1280,6 +1281,9 @@ static void program_check_pattern(struct _program *p)
 	if (!xconfig->autocomplementation)
 		return;
 
+	if (p->app_autocomplementation_mode == AUTOCOMPLEMENTATION_EXCLUDED)
+		return;
+	
 	char *tmp = get_last_word(p->buffer->content);
 	if (tmp == NULL)
 		return;

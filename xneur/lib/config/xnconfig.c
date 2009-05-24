@@ -48,7 +48,7 @@ static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
 						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "Autocomplementation",
-						"DisableCapsLock", "CheckOnProcess", "SetAutoApp", "SetManualApp", "GrabMouse",
+						"DisableCapsLock", "CheckOnProcess", "SetAutoApp", "SetManualApp", "AutocomplementationExcludeApp",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"SaveLog", "ReplaceAbbreviation",
@@ -262,16 +262,9 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->manual_apps->add(p->manual_apps, full_string);
 			break;
 		}
-		case 10: // Get Mouse Grab Mode
+		case 10: // Autocomplementation Exclude App
 		{
-			int index = get_option_index(bool_names, param);
-			if (index == -1)
-			{
-				log_message(WARNING, _("Invalid value for mouse grab mode specified"));
-				break;
-			}
-
-			p->grab_mouse = index;
+			p->autocomplementation_excluded_apps->add(p->autocomplementation_excluded_apps, full_string);
 			break;
 		}
 		case 11: // Get Education Mode
@@ -595,7 +588,8 @@ static void free_structures(struct _xneur_config *p)
 	p->auto_apps->uninit(p->auto_apps);
 	p->layout_remember_apps->uninit(p->layout_remember_apps);
 	p->excluded_apps->uninit(p->excluded_apps);
-
+	p->autocomplementation_excluded_apps->uninit(p->autocomplementation_excluded_apps);
+	
 	for (int hotkey = 0; hotkey < MAX_HOTKEYS; hotkey++)
 	{
 		if (p->hotkeys[hotkey].key != NULL)
@@ -784,6 +778,7 @@ static void xneur_config_clear(struct _xneur_config *p)
 	p->auto_apps			= list_char_init();
 	p->layout_remember_apps		= list_char_init();
 	p->excluded_apps		= list_char_init();
+	p->autocomplementation_excluded_apps	= list_char_init();
 	p->abbreviations		= list_char_init();
 
 	p->version	= NULL;
@@ -922,11 +917,6 @@ static int xneur_config_save(struct _xneur_config *p)
 	}
 	fprintf(stream, "\n");
 
-	fprintf(stream, "# This option enable or disable mouse processing\n");
-	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#GrabMouse Yes\n");
-	fprintf(stream, "GrabMouse %s\n\n", p->get_bool_name(p->grab_mouse));
-
 	fprintf(stream, "# This option enable or disable self education of xneur\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#EducationMode No\n");
@@ -1035,7 +1025,14 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#AddSpaceAfterAutocomplementation No\n");
 	fprintf(stream, "AddSpaceAfterAutocomplementation %s\n", p->get_bool_name(p->add_space_after_autocomplementation));
+	fprintf(stream, "\n");
 
+	fprintf(stream, "# Add Applications names to exclude it from autocomplementation process\n");
+	fprintf(stream, "# Xneur will not process the autocomplementation for this applications\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#AutocomplementationExcludeApp Gnome-terminal\n");
+	for (int i = 0; i < p->autocomplementation_excluded_apps->data_count; i++)
+		fprintf(stream, "AutocomplementationExcludeApp %s\n", p->autocomplementation_excluded_apps->data[i].string);
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# That's all\n");
@@ -1190,6 +1187,7 @@ struct _xneur_config* xneur_config_init(void)
 	p->layout_remember_apps		= list_char_init();
 	p->window_layouts		= list_char_init();
 	p->abbreviations		= list_char_init();
+	p->autocomplementation_excluded_apps	= list_char_init();
 
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;

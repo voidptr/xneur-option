@@ -35,6 +35,9 @@
 #define FORCE_MODE_MANUAL	1
 #define FORCE_MODE_AUTO		2
 
+#define AUTOCOMPLEMENTATION_INCLUDED	0
+#define AUTOCOMPLEMENTATION_EXCLUDED	1
+
 struct _focus
 {
 	Window owner_window;		// Input focus window
@@ -42,7 +45,7 @@ struct _focus
 	Window last_parent_window;	// Last grab parent window
 	int last_focus;			// Last focus status
 
-	int  (*get_focus_status) (struct _focus *p, int *forced_mode, int *focus_status);
+	int  (*get_focus_status) (struct _focus *p, int *forced_mode, int *focus_status, int *autocomplementation_mode);
 	void (*update_events) (struct _focus *p, int mode);
 	void (*uninit) (struct _focus *p);
 };

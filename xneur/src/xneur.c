@@ -130,7 +130,6 @@ static void xneur_load_config(int final)
 
 	log_message(LOG, _("Default group for all new windows set to %d"), xconfig->default_group);
 	log_message(LOG, _("Manual mode set to %s"), xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
-	log_message(LOG, _("Mouse processing mode set to %s"), xconfig->get_bool_name(xconfig->grab_mouse));
 	log_message(LOG, _("Education mode set to %s"), xconfig->get_bool_name(xconfig->educate));
 	log_message(LOG, _("Layout remember mode set to %s"), xconfig->get_bool_name(xconfig->remember_layout));
 	log_message(LOG, _("Save selection mode set to %s"), xconfig->get_bool_name(xconfig->save_selection));

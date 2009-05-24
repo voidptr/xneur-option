@@ -184,7 +184,6 @@ struct _xneur_config
 	int   default_group;				// Initial keyboard layout for all new applications
 
 	int   play_sounds;				// Play sound samples or not
-	int   grab_mouse;				// Grab mouse or not
 	int   educate;					// Education xneur
 	int   remember_layout;				// Remember layout for each of window
 	int   save_selection;				// Save selection after convert
@@ -196,8 +195,10 @@ struct _xneur_config
 	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter
 	int   check_lang_on_process;			// Check lang on input process
 	int   disable_capslock;				// Disable CapsLock use
+	
 	int   autocomplementation;			// Save pattern and mining
 	int   add_space_after_autocomplementation;
+	struct _list_char *autocomplementation_excluded_apps;
 	
 	int   show_osd;					// Show OSD
 	char  *osd_font;
