@@ -905,8 +905,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				// Block events of keyboard (push to event queue)
 				set_event_mask(p->focus->owner_window, None);
 				
-				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Right), p->event->event.xkey.state);
 				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Left), p->event->event.xkey.state);
+				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Right), p->event->event.xkey.state);
 				if (xconfig->add_space_after_autocomplementation)
 					p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_space), p->event->event.xkey.state);
 				p->last_action = ACTION_NONE;
