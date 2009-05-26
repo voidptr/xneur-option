@@ -176,6 +176,9 @@ static void xneur_cleanup(void)
 	sound_uninit();
 	log_message(DEBUG, _("Current sound data is freed"));
 
+	unbind_user_actions();
+	log_message(DEBUG, _("Current user keybinds is freed"));
+	
 	if (program != NULL)
 		program->uninit(program);
 
@@ -214,6 +217,7 @@ static void xneur_reload(int status)
 	show_notify(NOTIFY_XNEUR_RELOAD, NULL);
 
 	sound_uninit();
+	unbind_user_actions();
 
 	if (xconfig != NULL)
 		xconfig->uninit(xconfig);

@@ -191,3 +191,8 @@ void bind_user_actions(void)
 	for (int action = 0; action < xconfig->actions_count; action++)
 		bind_user_action(action);
 }
+
+void unbind_user_actions(void)
+{
+	free(ubtable);
+}

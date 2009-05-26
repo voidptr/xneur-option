@@ -24,6 +24,7 @@
 
 void bind_manual_actions(void);
 void bind_user_actions(void);
+void unbind_user_actions(void);
 
 enum _hotkey_action get_manual_action(KeySym key_sym, int mask);
 int get_user_action(KeySym key_sym, int mask);

@@ -54,15 +54,18 @@ static void osd_show_thread(void *osd_text)
 
 	xosd_wait_until_no_display(osd);
 	xosd_destroy(osd);
-
+	
 	free(osd_text);
 }
 
 void osd_show(char *osd_text)
 {
 	if (!xconfig->show_osd)
+	{
+		free(osd_text);
 		return;
-
+	}
+	
 	pthread_attr_t osd_thread_attr;
 	pthread_attr_init(&osd_thread_attr);
 	pthread_attr_setdetachstate(&osd_thread_attr, PTHREAD_CREATE_DETACHED);

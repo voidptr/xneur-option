@@ -172,13 +172,21 @@ static void buffer_set_content(struct _buffer *p, const char *new_content)
 		set_new_size(p, p->cur_pos + 1);
 
 	if (p->content == NULL || p->keycode == NULL || p->keycode_modifiers == NULL)
+	{
+		free(content);
 		return;
-
+	}
+	
 	p->content[p->cur_pos] = NULLSYM;
 	if (!p->cur_pos)
+	{
+		free(content);
 		return;
-
+	}
+	
 	memcpy(p->content, content, p->cur_pos);
+	free(content);
+	
 	main_window->keymap->convert_text_to_ascii(main_window->keymap, p->content, p->keycode, p->keycode_modifiers);
 
 	p->cur_pos = strlen(p->content);
@@ -190,8 +198,6 @@ static void buffer_set_content(struct _buffer *p, const char *new_content)
 	p->content[p->cur_pos] = NULLSYM;
 	if (!p->cur_pos)
 		return;
-
-	free(content);
 }
 
 static void buffer_change_case(struct _buffer *p)

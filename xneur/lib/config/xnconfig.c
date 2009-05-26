@@ -731,6 +731,8 @@ static int xneur_config_load(struct _xneur_config *p)
 		if (p->languages[lang].dict == NULL)
 		{
 			log_message(ERROR, _("Can't find dictionary file for %s language"), lang_name);
+			if (lang_dir != NULL)
+				free(lang_dir);
 			return FALSE;
 		}
 
@@ -738,6 +740,8 @@ static int xneur_config_load(struct _xneur_config *p)
 		if (p->languages[lang].proto == NULL)
 		{
 			log_message(ERROR, _("Can't find protos file for %s language"), lang_name);
+			if (lang_dir != NULL)
+				free(lang_dir);
 			return FALSE;
 		}
 
@@ -745,6 +749,8 @@ static int xneur_config_load(struct _xneur_config *p)
 		if (p->languages[lang].big_proto == NULL)
 		{
 			log_message(ERROR, _("Can't find big protos file for %s language"), lang_name);
+			if (lang_dir != NULL)
+				free(lang_dir);
 			return FALSE;
 		}
 
@@ -752,6 +758,8 @@ static int xneur_config_load(struct _xneur_config *p)
 		if (p->languages[lang].regexp == NULL)
 		{
 			log_message(ERROR, _("Can't find regexp file for %s language"), lang_name);
+			if (lang_dir != NULL)
+				free(lang_dir);
 			return FALSE;
 		}
 
@@ -764,8 +772,11 @@ static int xneur_config_load(struct _xneur_config *p)
 		p->languages[lang].temp_dict = p->languages[lang].dict->clone(p->languages[lang].dict);
 
 		load_lang = lang;
-	}
 
+		if (lang_dir != NULL)
+			free(lang_dir);
+	}
+	
 	return TRUE;
 }
 
@@ -1073,7 +1084,9 @@ static void xneur_config_save_dict(struct _xneur_config *p, int lang)
 
 	log_message(LOG, _("Saving %s dictionary"), p->get_lang_name(p, lang));
 
-	save_list(p->languages[lang].dict, p->get_lang_dir(p, lang), DICT_NAME);
+	char *lang_dir = p->get_lang_dir(p, lang);
+	save_list(p->languages[lang].dict, lang_dir, DICT_NAME);
+	free(lang_dir);
 }
 
 static void xneur_config_save_pattern(struct _xneur_config *p, int lang)
@@ -1083,7 +1096,9 @@ static void xneur_config_save_pattern(struct _xneur_config *p, int lang)
 
 	log_message(LOG, _("Saving %s pattern"), p->get_lang_name(p, lang));
 
-	save_list(p->languages[lang].pattern, p->get_lang_dir(p, lang), PATTERN_NAME);
+	char *lang_dir = p->get_lang_dir(p, lang);
+	save_list(p->languages[lang].pattern, lang_dir, PATTERN_NAME);
+	free(lang_dir);
 }
 
 static char* xneur_config_get_lang_dir(struct _xneur_config *p, int lang)

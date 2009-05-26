@@ -935,8 +935,11 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			// Check last word to acronym list
 			char *word = get_last_word(utf_string);
 			if (!word)
+			{
+				free(utf_string);
 				return FALSE;
-
+			}
+			
 			for (int words = 0; words < xconfig->abbreviations->data_count; words++)
 			{
 				char *string		= strdup(xconfig->abbreviations->data[words].string);
@@ -1146,15 +1149,24 @@ static void program_check_space_before_punctuation(struct _program *p)
 		return;
 
 	if (p->buffer->cur_pos < 3)
+	{
+		free(text);
 		return;
+	}
 	
 	int text_len = strlen(text);
 	if (text[text_len - 1] != '.' && text[text_len - 1] != ',' && text[text_len - 1] != '!' && 
 	    text[text_len - 1] != '?' && text[text_len - 1] != ';' && text[text_len - 1] != ':')
+	{
+		free(text);
 		return;
+	}
 	
 	if (p->buffer->content[p->buffer->cur_pos-2] != ' ')
+	{
+		free(text);
 		return;
+	}
 	
 	log_message(DEBUG, _("Find spaces before punctuation, correction..."));
 
@@ -1170,6 +1182,8 @@ static void program_check_space_before_punctuation(struct _program *p)
 	char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
 	int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
+
+	free(text);
 }
 
 static void program_check_space_with_bracket(struct _program *p)
@@ -1182,16 +1196,25 @@ static void program_check_space_with_bracket(struct _program *p)
 		return;
 
 	if (p->buffer->cur_pos < 3)
+	{
+		free(text);
 		return;
+	}
 	
 	int text_len = strlen(text);
 	if (text[text_len - 1] != '(' && text[text_len - 1] != ')')
+	{
+		free(text);
 		return;
+	}
 	
 	if (((text[text_len - 1] == '(') && (text[text_len - 2] == ' ' || text[text_len - 2] == ':' || text[text_len - 2] == ';' || text[text_len - 2] == '-' || isdigit(text[text_len - 2]))) ||
 	    ((text[text_len - 1] == ')' && text[text_len - 2] != ' ' )))
+	{
+		free(text);
 		return;
-
+	}
+	
 	if (text[text_len - 1] == '(')
 	{
 		log_message(DEBUG, _("Find no space before left bracket, correction..."));
@@ -1224,6 +1247,8 @@ static void program_check_space_with_bracket(struct _program *p)
 		int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 		p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
 	}
+
+	free(text);
 }
 
 static void program_check_brackets_with_symbols(struct _program *p)
