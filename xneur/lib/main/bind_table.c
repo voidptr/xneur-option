@@ -186,7 +186,6 @@ void bind_user_actions(void)
 {
 	log_message(DEBUG, _("Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"));
 
-	// Fixme MEMLEAK!!!!!
 	ubtable = (struct _bind_table *) malloc(xconfig->actions_count * sizeof(struct _bind_table));
 	for (int action = 0; action < xconfig->actions_count; action++)
 		bind_user_action(action);

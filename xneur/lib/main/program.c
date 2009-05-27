@@ -618,15 +618,22 @@ static void program_on_key_action(struct _program *p, int type)
 		
 		if (p->prev_key != key)
 			return;
-
+		
 		p->prev_key = None;
 		
 		modifier_mask = p->prev_key_mod;
 		if (IsModifierKey(key))
 			modifier_mask &= ~p->event->get_cur_modifiers_by_keysym(p->event);
-		
+
+		p->modifiers_stack->rem(p->modifiers_stack, XKeysymToString(XK_Shift_R));
+		p->modifiers_stack->rem(p->modifiers_stack, XKeysymToString(XK_Shift_L));
+		if (get_key_state(XK_Shift_R) != 0)
+			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_Shift_R));
+		if (get_key_state(XK_Shift_L) != 0)
+			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_Shift_L));
+
 		p->update_modifiers_stack(p);
-		
+
 		int user_action = get_user_action(key, modifier_mask);
 		if (user_action >= 0)
 		{
@@ -639,7 +646,9 @@ static void program_on_key_action(struct _program *p, int type)
 		if (manual_action != ACTION_NONE)
 		{
 			if (p->perform_manual_action(p, manual_action))
+			{
 				return;
+			}
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
 		}
 	}
@@ -1740,11 +1749,12 @@ struct _program* program_init(void)
 		free(p);
 		return NULL;
 	}
-
+	
 	p->event			= event_init();			// X Event processor
 	p->focus			= focus_init();			// X Input Focus and Pointer processor
 	p->buffer			= buffer_init();		// Input string buffer
 
+	
 	p->modifiers_stack	= list_char_init();
 	
 	// Function mapping
