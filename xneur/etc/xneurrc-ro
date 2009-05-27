@@ -90,11 +90,6 @@ AddSound CorrectIncidentalCaps
 AddSound CorrectTwoCapitalLetter 
 AddSound ExecuteUserAction
 
-# This option enable or disable mouse processing
-# Example:
-#GrabMouse Yes
-GrabMouse No
-
 # This option enable or disable self education of xneur
 # Example:
 #EducationMode No
@@ -115,18 +110,23 @@ LayoutRememberMode Yes
 #SaveSelectionMode No
 SaveSelectionMode Yes
 
-# This option define delay before sendind events to application (in milliseconds until 0 to 50).
-SendDelay 1
+# This option define delay before sendind events to application (in milliseconds between 0 to 50).
+SendDelay 0
+
+# This option enable or disable logging keyboard
+# Example:
+#SaveLog No
+SaveLog Yes
 
 # This option enable or disable correction of iNCIDENTAL CapsLock
 # Example:
 #CorrectIncidentalCaps Yes
-CorrectIncidentalCaps No
+CorrectIncidentalCaps Yes
 
 # This option enable or disable correction of two CApital letter
 # Example:
 #CorrectTwoCapitalLetter Yes
-CorrectTwoCapitalLetter No
+CorrectTwoCapitalLetter Yes
 
 # This option enable or disable flushing internal buffer when pressed Enter or Tab
 # Example:
@@ -138,10 +138,6 @@ FlushBufferWhenPressEnter No
 #DontProcessWhenPressEnter Yes
 DontProcessWhenPressEnter No
 
-# This option add user action when pressed key bind
-# Example:
-#AddAction Control Alt f firefox"
-
 # This option disable or enable show OSD
 # Example:
 #ShowOSD Yes
@@ -152,28 +148,31 @@ ShowOSD No
 #FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
 FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
 
-# Binds notifies for some actions
-AddOSD XneurStart
-AddOSD XneurReload
-AddOSD XneurStop
-AddOSD PressKeyLayout1  
-AddOSD PressKeyLayout2 
-AddOSD PressKeyLayout3  
-AddOSD PressKeyLayout4 
-AddOSD EnableLayout1 
-AddOSD EnableLayout2 
-AddOSD EnableLayout3 
-AddOSD EnableLayout4 
-AddOSD AutomaticChangeWord 
-AddOSD ManualChangeWord 
-AddOSD ChangeString 
-AddOSD ChangeSelected 
-AddOSD TranslitSelected 
-AddOSD ChangecaseSelected 
-AddOSD ReplaceAbbreviation 
-AddOSD CorrectIncidentalCaps 
-AddOSD CorrectTwoCapitalLetter 
-AddOSD ExecuteUserAction Runned
+# Binds OSDs for some actions
+AddOSD XneurStart X Neural Switcher запущен
+AddOSD XneurReload X Neural Switcher перезагружен
+AddOSD XneurStop X Neural Switcher остановлен
+AddOSD PressKeyLayout1
+AddOSD PressKeyLayout2
+AddOSD PressKeyLayout3
+AddOSD PressKeyLayout4
+AddOSD EnableLayout1
+AddOSD EnableLayout2
+AddOSD EnableLayout3
+AddOSD EnableLayout4
+AddOSD AutomaticChangeWord
+AddOSD ManualChangeWord
+AddOSD ChangeString
+AddOSD ChangeSelected
+AddOSD TranslitSelected
+AddOSD ChangecaseSelected
+AddOSD ChangeClipboard
+AddOSD TranslitClipboard
+AddOSD ChangecaseClipboard
+AddOSD ReplaceAbbreviation
+AddOSD CorrectIncidentalCaps
+AddOSD CorrectTwoCapitalLetter
+AddOSD ExecuteUserAction Запущен
 
 # This option disable or enable show popup messages
 # Example:
@@ -181,9 +180,9 @@ AddOSD ExecuteUserAction Runned
 ShowPopup Yes
 
 # Binds popup messages for some actions
-AddPopup XneurStart X Neural Switcher runned
-AddPopup XneurReload X Neural Switcher reloaded
-AddPopup XneurStop X Neural Switcher stopped
+AddPopup XneurStart X Neural Switcher запущен
+AddPopup XneurReload X Neural Switcher перезагружен
+AddPopup XneurStop X Neural Switcher остановлен
 AddPopup PressKeyLayout1
 AddPopup PressKeyLayout2
 AddPopup PressKeyLayout3
@@ -200,6 +199,44 @@ AddPopup TranslitSelected
 AddPopup ChangecaseSelected
 AddPopup ChangeClipboard
 AddPopup TranslitClipboard
+AddPopup ChangecaseClipboard
+AddPopup ReplaceAbbreviation
+AddPopup CorrectIncidentalCaps
+AddPopup CorrectTwoCapitalLetter
+AddPopup ExecuteUserAction Запущен
+
+# This option disable or enable checking language on input process
+# Example:
+#CheckOnProcess Yes
+CheckOnProcess Yes
+
+# This option disable or enable CapsLock use
+# Example:
+#DisableCapsLock Yes
+DisableCapsLock No
+
+# This option disable or enable correction spaces befor punctuation
+# Example:
+#CorrectSpaceWithPunctuation No
+CorrectSpaceWithPunctuation Yes
+
+# This option disable or enable pattern mining and recognition (autocomplementation)
+# Example:
+#Autocomplementation No
+Autocomplementation Yes
+
+# This option disable or enable adding space after autocomplementation
+# Example:
+#AddSpaceAfterAutocomplementation No
+AddSpaceAfterAutocomplementation Yes
+
+# Add Applications names to exclude it from autocomplementation process
+# Xneur will not process the autocomplementation for this applications
+# Example:
+#AutocomplementationExcludeApp Gnome-terminal
+AutocomplementationExcludeApp Gnome-terminal
+
+# That's all
 AddPopup ChangecaseClipboard
 AddPopup ReplaceAbbreviation
 AddPopup CorrectIncidentalCaps

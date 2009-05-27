@@ -95,11 +95,6 @@ Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurSt
 
 <sound> is .wav file placed in ~/.xneur/sounds or in basic place ({prefix}/share/xneur/sounds/).
 .TP 8
-.B GrabMouse <param>
-Defines, if xneur will intercept mouse events to clear its buffer.
-
-Here, <param> takes the values "Yes", "No". 
-.TP 8
 .B EducationMode <param>
 Defines, if XNeur will work in self-training. A wrong input will be added to the dictionary, if it is twice converted into a specific layout manually. If this option is on, this will lead to a bigger dictionary. Does not make sence for the manual operating mode.
 
@@ -162,7 +157,54 @@ Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurSt
 "EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 "AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
 
-<text> is text will be displayed. For option "ExecuteUserAction" possible use pattern %s to display of the command.
+<text> is text will be displayed.
+.TP 8
+.B ShowPopup <param>
+This option disable or enable show popup messages.
+
+Here, <param> takes the values "Yes", "No".
+.TP 8
+.B AddPopup <action> <text>
+Binds popup messages for some actions.
+
+Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurStop", "PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
+"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
+"AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
+
+<text> is text will be displayed.
+.TP 8
+.B CheckOnProcess <param>
+This option disable or enable checking language on input process.
+
+Here, <param> takes the values "Yes", "No".
+.TP 8
+.B DisableCapsLock <param>
+This option disable or enable CapsLock use.
+
+Here, <param> takes the values "Yes", "No".
+.TP 8
+.B CorrectSpaceWithPunctuation <param>
+This option disable or enable correction spaces before and after punctuation.
+
+Here, <param> takes the values "Yes", "No".
+.TP 8
+.B Autocomplementation <param>
+This option disable or enable pattern mining and recognition (autocomplementation).
+
+Here, <param> takes the values "Yes", "No".
+.TP 8
+.B AddSpaceAfterAutocomplementation <param>
+This option disable or enable adding space after autocomplementation.
+
+Here, <param> takes the values "Yes", "No".
+.TP 8
+.B AutocomplementationExcludeApp <app_name>
+Defines an application, in which the program will exclude it from autocomplementation process.
+
+Here, <app_name> is an identifier of the program window, input in which is processed by xneur.
+app_name can be obtained with the xprop utility.
+Multiple entries for this option in a single configuration file are allowed, like "one program - one option AutocomplementationExcludeApp". 
+
 
 
 .SH "SEE ALSO"
