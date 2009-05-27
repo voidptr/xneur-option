@@ -86,20 +86,26 @@ msgstr ""
 msgid "Change case of clipboard text"
 msgstr ""
 
-msgid "Switch to Layout 1"
+msgid "Rotate layouts"
+msgstr ""
+
+msgid "Switch to layout 1"
 msgstr "אפשר את הפריסה הראשונה"
 
-msgid "Switch to Layout 2"
+msgid "Switch to layout 2"
 msgstr "אפשר את הפריסה השניה"
 
-msgid "Switch to Layout 3"
+msgid "Switch to layout 3"
 msgstr "אפשר את הפריסה השלישית"
 
-msgid "Switch to Layout 4"
+msgid "Switch to layout 4"
 msgstr "אפשר את הפריסה הרביעית"
 
 msgid "Expand abbreviations"
 msgstr "החלף ראשי תיבות"
+
+msgid "Autocomplementation confirmation"
+msgstr ""
 
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
@@ -112,14 +118,6 @@ msgstr "ראשי תיבות"
 #: glade/abbr_add.glade:45
 msgid "Expansion text:"
 msgstr "טקסט מלא"
-
-#: glade/abbr_add.glade:77 glade/action_add.glade:77
-msgid "gtk-cancel"
-msgstr ""
-
-#: glade/abbr_add.glade:88 glade/action_add.glade:92
-msgid "gtk-ok"
-msgstr ""
 
 #: glade/about.glade:7
 msgid "gXNeur About..."
@@ -163,64 +161,76 @@ msgstr "בחר קובץ..."
 msgid "XNeur Settings"
 msgstr "הגדרות XNeur"
 
-#: glade/config.glade:32
+#: glade/config.glade:37
 msgid "Use manual switching mode"
 msgstr "אפשר מצב החלפה ידני"
 
-#: glade/config.glade:46
-msgid "Correct aCCIDENTAL caps"
-msgstr "תקן CapsLock מקרי"
-
-#: glade/config.glade:60
-msgid "Disable CapsLock use"
-msgstr ""
-
-#: glade/config.glade:74
-msgid "Correct TWo INitial caps"
-msgstr "תקן כפל אותיות גדולות"
-
-#: glade/config.glade:88
+#: glade/config.glade:51
 msgid "Enable auto-learning mode"
 msgstr "מצב למידה אוטומטי"
 
-#: glade/config.glade:102
+#: glade/config.glade:65
 msgid "Keep selection after changing selected text"
 msgstr "שמור על הבחירה לאחר שינוי הטקסט הנבחר"
 
-#: glade/config.glade:116
+#: glade/config.glade:79
 msgid "Enable keyboard logging"
 msgstr "אפשר מעקב אחר המקלדת"
 
-#: glade/config.glade:130
+#: glade/config.glade:93
 msgid "Flush internal buffer on Enter or Tab"
 msgstr "נקה את החוצץ הפנימי בעת לחיצה על Enter או על Tab"
 
-#: glade/config.glade:144
+#: glade/config.glade:107
 msgid "Don't process words on Enter or Tab"
 msgstr "אל תעבד את המילה אם נלחצו Enter או Tab"
 
-#: glade/config.glade:158
+#: glade/config.glade:121
 msgid "Check language on input process"
 msgstr ""
 
-#: glade/config.glade:185
+#: glade/config.glade:141
+msgid "Main"
+msgstr ""
+
+#: glade/config.glade:154
+msgid "Correct aCCIDENTAL caps"
+msgstr "תקן CapsLock מקרי"
+
+#: glade/config.glade:168
+msgid "Disable CapsLock use"
+msgstr ""
+
+#: glade/config.glade:182
+msgid "Correct TWo INitial caps"
+msgstr "תקן כפל אותיות גדולות"
+
+#: glade/config.glade:196
+msgid "Correct spaces with punctuation"
+msgstr ""
+
+#: glade/config.glade:216
+msgid "Typographics"
+msgstr ""
+
+#: glade/config.glade:239
 msgid "<b>General</b>"
 msgstr "<b>כללי</b>"
 
-#: glade/config.glade:271
+#: glade/config.glade:325
 msgid "Fixed"
 msgstr ""
 
-#: glade/config.glade:284
+#: glade/config.glade:338
 msgid "Layout"
 msgstr "פריסה"
 
-#: glade/config.glade:295
+#: glade/config.glade:349
 msgid "Number\t"
 msgstr "מספר\t"
 
-#: glade/config.glade:307 glade/config.glade:324 glade/config.glade:341
-#: glade/config.glade:358 glade/config.glade:626
+#: glade/config.glade:361 glade/config.glade:378 glade/config.glade:395
+#: glade/config.glade:412 glade/config.glade:680
 msgid ""
 "0\n"
 "1\n"
@@ -232,13 +242,13 @@ msgstr ""
 "2\n"
 "3"
 
-#: glade/config.glade:374 glade/config.glade:391 glade/config.glade:408
-#: glade/config.glade:424
+#: glade/config.glade:428 glade/config.glade:445 glade/config.glade:462
+#: glade/config.glade:478
 msgid "Dictionary..."
 msgstr "מילון..."
 
-#: glade/config.glade:442 glade/config.glade:471 glade/config.glade:500
-#: glade/config.glade:529
+#: glade/config.glade:496 glade/config.glade:525 glade/config.glade:554
+#: glade/config.glade:583
 msgid ""
 "\n"
 "Belarusian\n"
@@ -261,118 +271,108 @@ msgid ""
 "Uzbek"
 msgstr ""
 
-#: glade/config.glade:557 glade/config.glade:574 glade/config.glade:591
-#: glade/config.glade:608
+#: glade/config.glade:611 glade/config.glade:628 glade/config.glade:645
+#: glade/config.glade:662
 msgid "Regular Expressions..."
 msgstr "ביטויים רגולריים..."
 
-#: glade/config.glade:644
+#: glade/config.glade:698
 msgid "Initial layout number:"
 msgstr "מספר הפריסה הראשוני "
 
-#: glade/config.glade:687
+#: glade/config.glade:741
 msgid "Remember keyboard layout for each application instance"
 msgstr "זכור את פריסת המקלדת עבור כל עותק של היישום בנפרד"
 
-#: glade/config.glade:739 glade/config.glade:938 glade/config.glade:1145
-#: glade/config.glade:1236 glade/config.glade:1327 glade/config.glade:1785
-msgid "gtk-add"
-msgstr ""
-
-#: glade/config.glade:753 glade/config.glade:968 glade/config.glade:1159
-#: glade/config.glade:1250 glade/config.glade:1341 glade/config.glade:1800
-msgid "gtk-remove"
-msgstr ""
-
-#: glade/config.glade:780
+#: glade/config.glade:834
 msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr "חריגות (פריסת מקלדת אחת לכל העותקים של היישום)"
 
-#: glade/config.glade:810
+#: glade/config.glade:864
 msgid "<b>Layouts</b>"
 msgstr "<b>פריסות</b>"
 
-#: glade/config.glade:860 glade/config.glade:953 glade/config.glade:1480
-msgid "gtk-edit"
-msgstr ""
-
-#: glade/config.glade:875
-msgid "gtk-clear"
-msgstr ""
-
-#: glade/config.glade:1011
+#: glade/config.glade:1065
 msgid "<b>Hotkeys</b>"
 msgstr "<b>צירופי מקשים</b>"
 
-#: glade/config.glade:1034
-msgid "Flush internal buffer on mouse click"
-msgstr "נקה את החוצץ הפנימי בעת לחיצת עכבר"
+#: glade/config.glade:1088
+msgid "Enable pattern mining and recognition (autocomplementation)"
+msgstr ""
 
-#: glade/config.glade:1086
-msgid "<b>Mouse</b>"
-msgstr "<b>עכבר</b>"
+#: glade/config.glade:1102
+msgid "Add space after autocomplementation"
+msgstr ""
 
-#: glade/config.glade:1186
+#: glade/config.glade:1205
+msgid "Disable the autocomplementation for these applications"
+msgstr ""
+
+#: glade/config.glade:1241
+msgid "<b>Autocomplementation</b>"
+msgstr ""
+
+#: glade/config.glade:1341
 msgid "Ignore these applications"
 msgstr "אל תעבד יישומים אלו"
 
-#: glade/config.glade:1277
+#: glade/config.glade:1432
 msgid "Force automatic mode for these applications"
 msgstr "הכרח מצב אוטומטי עבור יישומים אלו"
 
-#: glade/config.glade:1368
+#: glade/config.glade:1523
 msgid "Force manual mode for these applications"
 msgstr "הכרח מצב ידני עבור יישומים אלו"
 
-#: glade/config.glade:1398
+#: glade/config.glade:1553
 msgid "<b>Applications</b>"
 msgstr "<b>יישומים</b>"
 
-#: glade/config.glade:1430
+#: glade/config.glade:1585
 msgid "Enable sounds"
 msgstr "השמע צלילים"
 
-#: glade/config.glade:1507
+#: glade/config.glade:1662
 msgid "Sounds"
 msgstr ""
 
-#: glade/config.glade:1524
+#: glade/config.glade:1679
 msgid "Show OSD"
 msgstr ""
 
-#: glade/config.glade:1544
+#: glade/config.glade:1699
 msgid "OSD Font"
 msgstr ""
 
-#: glade/config.glade:1575
+#: glade/config.glade:1730
 msgid "Use command <b>xfontsel -print</b> to get new font."
 msgstr ""
 
-#: glade/config.glade:1624
+#: glade/config.glade:1779
 msgid "OSD"
 msgstr ""
 
-#: glade/config.glade:1642
+#: glade/config.glade:1797
 msgid "Show popup messages"
 msgstr ""
 
-#: glade/config.glade:1696
+#: glade/config.glade:1851
 msgid "Popup messages"
 msgstr ""
 
-#: glade/config.glade:1722
+#: glade/config.glade:1877
 msgid "<b>Notifications</b>"
 msgstr ""
 
-#: glade/config.glade:1745
+#: glade/config.glade:1900
 msgid "Ignore keyboard layout for abbreviations"
 msgstr "התעלם מפריסת המקלדת עבור ראשי תיבות"
 
-#: glade/config.glade:1838
+#: glade/config.glade:1993
 msgid "<b>Abbreviations</b>"
 msgstr "<b>החלפה אוטומטית</b>"
 
-#: glade/config.glade:1864
+#: glade/config.glade:2019
 msgid ""
 "Error\n"
 "Warning\n"
@@ -381,15 +381,15 @@ msgid ""
 "Trace"
 msgstr ""
 
-#: glade/config.glade:1899
+#: glade/config.glade:2054
 msgid "Log verbosity level"
 msgstr "הודעות ברמת התוכנה ייכתבו לפלט"
 
-#: glade/config.glade:1912
+#: glade/config.glade:2067
 msgid "Delay before sending events (in milliseconds)"
 msgstr "השהייה לפני שליחת האירועים (במילישניות)"
 
-#: glade/config.glade:1931
+#: glade/config.glade:2086
 msgid "<b>Advanced</b>"
 msgstr "<b>מתקדם</b>"
 
@@ -397,11 +397,11 @@ msgstr "<b>מתקדם</b>"
 msgid "File Editing"
 msgstr "עריכת קבצים"
 
-#: src/callbacks.c:188 src/misc.c:1644
+#: src/callbacks.c:188 src/misc.c:1717
 msgid "Press any key"
 msgstr "לחץ על מקש כלשהו"
 
-#: src/misc.c:302 src/misc.c:303
+#: src/misc.c:312 src/misc.c:313
 #, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
@@ -410,12 +410,12 @@ msgstr ""
 "גירסת ספריית תצורת api שגויה של XNeur.\n"
 "אנא, התקן את libxnconfig גירסה %d.0.%d\n"
 
-#: src/misc.c:309
+#: src/misc.c:319
 #, c-format
 msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
 msgstr "עושה שימוש ב־API של libxnconfig גירסה %d.0.%d (נבנה באמצעות %d.0.%d)\n"
 
-#: src/misc.c:313 src/misc.c:314
+#: src/misc.c:323 src/misc.c:324
 #, c-format
 msgid ""
 "XNeur config broken!\n"
@@ -424,66 +424,66 @@ msgstr ""
 "תצורת XNeur פגומה!\n"
 "אנא, הסר את ~/.xneur/xneurrc והתקן מחדש את החבילה XNeur!\n"
 
-#: src/misc.c:326 src/misc.c:327
+#: src/misc.c:336 src/misc.c:337
 #, c-format
 msgid ""
 "Couldn't start xneur\n"
 "Verify that it installed\n"
 msgstr ""
 
-#: src/misc.c:377
+#: src/misc.c:387
 msgid "Current Version"
 msgstr "גירסה נוכחית"
 
-#: src/misc.c:441 src/misc.c:467 src/misc.c:494 src/misc.c:520
+#: src/misc.c:451 src/misc.c:477 src/misc.c:504 src/misc.c:530 src/misc.c:626
 msgid "Application"
 msgstr "יישום"
 
-#: src/misc.c:616 src/misc.c:696 src/misc.c:837 src/misc.c:877
+#: src/misc.c:660 src/misc.c:740 src/misc.c:881 src/misc.c:921
 msgid "Action"
 msgstr "פעולה"
 
-#: src/misc.c:621 src/misc.c:795
+#: src/misc.c:665 src/misc.c:839
 msgid "Key bind"
 msgstr ""
 
-#: src/misc.c:653
+#: src/misc.c:697
 msgid "Abbreviation"
 msgstr "ראשי תיבות"
 
-#: src/misc.c:662
+#: src/misc.c:706
 msgid "Expansion text"
 msgstr "טקסט מלא"
 
-#: src/misc.c:701
+#: src/misc.c:745
 msgid "Sound"
 msgstr "צליל"
 
-#: src/misc.c:790
+#: src/misc.c:834
 msgid "User action"
 msgstr ""
 
-#: src/misc.c:842
+#: src/misc.c:886
 msgid "OSD text"
 msgstr ""
 
-#: src/misc.c:882
+#: src/misc.c:926
 msgid "Popup message text"
 msgstr ""
 
-#: src/misc.c:933
+#: src/misc.c:982
 msgid "Abbreviation field is empty!"
 msgstr ""
 
-#: src/misc.c:938
+#: src/misc.c:987
 msgid "Expansion text field is empty!"
 msgstr ""
 
-#: src/misc.c:982
+#: src/misc.c:1031
 msgid "Key bind field is empty!"
 msgstr ""
 
-#: src/misc.c:987
+#: src/misc.c:1036
 msgid "User action field is empty!"
 msgstr ""
 
@@ -515,9 +515,3 @@ msgstr "X המחליף העצבי הופסק ("
 #: src/trayicon.c:195
 msgid "X Neural Switcher"
 msgstr "X המחליף העצבי"
-
-#~ msgid "<b>Sounds</b>"
-#~ msgstr "<b>צלילים</b>"
-
-#~ msgid "<b>OSD</b>"
-#~ msgstr "<b>OSD</b>"

@@ -124,7 +124,7 @@ static const char *hotkey_names[]			=   {
 										"Correct selected text", "Transliterate selected text", "Change case of selected text", 
 	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text",
 										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
-		                                "Rotate layouts", "Expand abbreviations", "Autocomplementation Confirmation"
+		                                "Rotate layouts", "Expand abbreviations", "Autocomplementation confirmation"
                                         };
 
 static const int total_notify_names = sizeof(notify_names) / sizeof(notify_names[0]);
