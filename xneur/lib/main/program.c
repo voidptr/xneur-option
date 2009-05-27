@@ -646,9 +646,7 @@ static void program_on_key_action(struct _program *p, int type)
 		if (manual_action != ACTION_NONE)
 		{
 			if (p->perform_manual_action(p, manual_action))
-			{
 				return;
-			}
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
 		}
 	}
