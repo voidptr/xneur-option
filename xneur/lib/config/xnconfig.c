@@ -55,7 +55,7 @@ static const char *option_names[] = 	{
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
 						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup", 
-	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocomplementation"
+	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocomplementation", "LoadModule"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -540,6 +540,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 
 			p->correct_space_with_punctuation = index;
+			break;
 		}
 		case 34:
 		{
@@ -548,6 +549,12 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 
 			p->add_space_after_autocomplementation = index;
+			break;
+		}
+		case 35: // Add plugin 
+		{
+			p->plugins->add(p->plugins, full_string);
+			break;
 		}
 	}
 	free(full_string);
@@ -791,7 +798,8 @@ static void xneur_config_clear(struct _xneur_config *p)
 	p->excluded_apps		= list_char_init();
 	p->autocomplementation_excluded_apps	= list_char_init();
 	p->abbreviations		= list_char_init();
-
+	p->plugins				= list_char_init();
+	
 	p->version	= NULL;
 	p->osd_font	= NULL;
 	p->languages	= NULL;
@@ -1046,6 +1054,13 @@ static int xneur_config_save(struct _xneur_config *p)
 		fprintf(stream, "AutocomplementationExcludeApp %s\n", p->autocomplementation_excluded_apps->data[i].string);
 	fprintf(stream, "\n");
 
+	fprintf(stream, "# Modules list\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#AddModule libtest.so\n");
+	for (int plugins = 0; plugins < p->plugins->data_count; plugins++)
+		fprintf(stream, "AddModule %s\n", p->plugins->data[plugins].string);
+	fprintf(stream, "\n");
+	        
 	fprintf(stream, "# That's all\n");
 
 	fclose(stream);
@@ -1203,6 +1218,7 @@ struct _xneur_config* xneur_config_init(void)
 	p->window_layouts		= list_char_init();
 	p->abbreviations		= list_char_init();
 	p->autocomplementation_excluded_apps	= list_char_init();
+	p->plugins		= list_char_init();
 
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;

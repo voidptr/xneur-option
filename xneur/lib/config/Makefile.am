@@ -7,12 +7,12 @@ xninclude_HEADERS = xnconfig.h
 
 noinst_HEADERS =		\
 	xnconfig_files.h	\
-	xnconfig_memory.h
+	xnconfig_memory.h	
 
 libxnconfig_la_SOURCES =	\
 	xnconfig_files.c	\
 	xnconfig.c		\
-	xnconfig_memory.c
+	xnconfig_memory.c	
 
 libxnconfig_la_CFLAGS = -I@top_srcdir@/lib/misc @DEFAULT_CFLAGS@
 libxnconfig_la_LDFLAGS = -version-info 9:5:0

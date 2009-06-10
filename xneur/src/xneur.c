@@ -45,6 +45,7 @@
 #include "colors.h"
 #include "sound.h"
 #include "notify.h"
+#include "plugin.h"
 
 #include "newlang_creation.h"
 
@@ -204,6 +205,8 @@ static void xneur_terminate(int status)
 	show_notify(NOTIFY_XNEUR_STOP, NULL);
 	sleep(1);
 
+	program->plugin->xneur_stop(program->plugin);
+	
 	xneur_cleanup();
 
 	exit(EXIT_SUCCESS);
@@ -232,6 +235,8 @@ static void xneur_reload(int status)
 	xneur_load_config(TRUE);
 	xneur_init();
 	sound_init();
+
+	program->plugin->xneur_reload(program->plugin);
 }
 
 static void xneur_usage(void)
@@ -383,6 +388,8 @@ int main(int argc, char *argv[])
 	xneur_trap(SIGINT, xneur_terminate);
 	xneur_trap(SIGHUP, xneur_reload);
 
+	program->plugin->xneur_start(program->plugin);
+			
 	if (xneur_generate_proto)
 		generate_protos();
 	else

@@ -5,7 +5,8 @@ SUBDIRS =			\
 	src			\
 	share			\
 	etc			\
-	po
+	po			\
+	plugins
 
 AUTOMAKE_OPTIONS =		\
 	1.9			\

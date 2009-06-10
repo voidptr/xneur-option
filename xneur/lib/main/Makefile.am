@@ -11,6 +11,8 @@ libxnx_la_SOURCES =		\
 	focus.h			\
 	keymap.c		\
 	keymap.h		\
+	plugin.c		\
+	plugin.h		\
 	program.c		\
 	program.h		\
 	selection.c		\

@@ -45,6 +45,7 @@
 #include "window.h"
 #include "keymap.h"
 #include "utils.h"
+#include "plugin.h"
 
 #include "types.h"
 #include "list_char.h"
@@ -596,9 +597,12 @@ static void program_on_key_action(struct _program *p, int type)
 			p->event->default_event.xkey.keycode = 0;
 			return;
 		}
+
+		p->plugin->key_press(p->plugin, key, p->prev_key_mod);
 		
 		int auto_action = get_auto_action(key, p->prev_key_mod);
 		p->perform_auto_action(p, auto_action);
+		
 	}
 
 	if (type == KeyRelease)
@@ -634,6 +638,8 @@ static void program_on_key_action(struct _program *p, int type)
 
 		p->update_modifiers_stack(p);
 
+		p->plugin->key_release(p->plugin, key, p->prev_key_mod);
+		
 		int user_action = get_user_action(key, modifier_mask);
 		if (user_action >= 0)
 		{
@@ -673,6 +679,8 @@ static void program_perform_user_action(struct _program *p, int action)
 static void program_perform_auto_action(struct _program *p, int action)
 {
 	struct _buffer *string = p->buffer;
+
+	p->plugin->change_action(p->plugin, action);
 
 	switch (action)
 	{
@@ -793,6 +801,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 static int program_perform_manual_action(struct _program *p, enum _hotkey_action action)
 {
+	p->plugin->hotkey_action(p->plugin, action);
+			
 	switch (action)
 	{
 		case ACTION_NONE:
@@ -1119,9 +1129,9 @@ static void program_check_caps_last_word(struct _program *p)
 
 static void program_check_tcl_last_word(struct _program *p)
 {
-	if (xconfig->correct_two_capital_letter)
+	if (!xconfig->correct_two_capital_letter)
 		return;
-	
+
 	int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 
 	if (!isalpha(p->buffer->content[offset]))
@@ -1726,6 +1736,8 @@ static void program_uninit(struct _program *p)
 	p->focus->uninit(p->focus);
 	p->event->uninit(p->event);
 	p->buffer->uninit(p->buffer);
+	p->plugin->uninit(p->plugin);
+	
 	main_window->uninit(main_window);
 
 	p->modifiers_stack->uninit(p->modifiers_stack);
@@ -1751,7 +1763,12 @@ struct _program* program_init(void)
 	p->event			= event_init();			// X Event processor
 	p->focus			= focus_init();			// X Input Focus and Pointer processor
 	p->buffer			= buffer_init();		// Input string buffer
-
+	
+	p->plugin			= plugin_init();
+	for (int i=0; i<xconfig->plugins->data_count; i++)
+	{
+		p->plugin->add(p->plugin, xconfig->plugins->data[i].string);
+	}
 	
 	p->modifiers_stack	= list_char_init();
 	

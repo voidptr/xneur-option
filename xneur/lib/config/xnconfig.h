@@ -165,7 +165,8 @@ struct _xneur_config
 	struct _list_char *layout_remember_apps;
 	struct _list_char *window_layouts;
 	struct _list_char *abbreviations;
-
+	struct _list_char *plugins;
+	
 	struct _xneur_data *xneur_data;
 	struct _xneur_language *languages;		// Array of languages used in program
 	struct _xneur_hotkey *hotkeys;			// Array of hotkeys used in program

@@ -27,7 +27,8 @@ struct _program
 	struct _event *event;
 	struct _focus *focus;
 	struct _buffer *buffer;
-
+	struct _plugin *plugin;
+	
 	int  last_action;
 	int  changed_manual;
 	int  app_forced_mode;
@@ -67,6 +68,7 @@ struct _program
 	void (*change_incidental_caps) (struct _program *p);
 	void (*change_two_capital_letter) (struct _program *p);
 	void (*send_string_silent) (struct _program *p, int send_backspaces);
+	void (*plugin_process) ();
 	void (*uninit) (struct _program *p);
 };
 
