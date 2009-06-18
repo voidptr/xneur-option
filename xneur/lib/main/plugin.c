@@ -44,6 +44,12 @@ void plugin_add(struct _plugin *p, char* plugin_name)
 	}
 	
 	/* Get functions adresses */
+	p->plugin[p->plugin_count].on_init = NULL;
+	p->plugin[p->plugin_count].on_init = dlsym(p->plugin[p->plugin_count].module, "on_init");
+
+	p->plugin[p->plugin_count].on_fini = NULL;
+	p->plugin[p->plugin_count].on_fini = dlsym(p->plugin[p->plugin_count].module, "on_fini");
+
 	p->plugin[p->plugin_count].on_xneur_start = NULL;
 	p->plugin[p->plugin_count].on_xneur_start = dlsym(p->plugin[p->plugin_count].module, "on_xneur_start");
 
@@ -64,6 +70,9 @@ void plugin_add(struct _plugin *p, char* plugin_name)
 
 	p->plugin[p->plugin_count].on_change_action = NULL;
 	p->plugin[p->plugin_count].on_change_action = dlsym(p->plugin[p->plugin_count].module, "on_change_action");
+
+	// Run init of plugin
+	p->plugin[p->plugin_count].on_init();
 	
 	p->plugin_count++;
 }
@@ -101,25 +110,29 @@ void plugin_xneur_stop(struct _plugin *p)
 	}
 }
 
-void plugin_key_press(struct _plugin *p, KeySym key, int modifier_mask)
+void plugin_key_press(struct _plugin *p, struct _program *program, KeySym key, int modifier_mask)
 {
+	if (program) {};
+	
 	for (int i=0; i<p->plugin_count; i++)
 	{
 		if (p->plugin[i].on_key_press == NULL)
 			continue;
 		
-		p->plugin[i].on_key_press(key, modifier_mask);
+		p->plugin[i].on_key_press(program, key, modifier_mask);
 	}
 }
 
-void plugin_key_release(struct _plugin *p, KeySym key, int modifier_mask)
+void plugin_key_release(struct _plugin *p, struct _program *program, KeySym key, int modifier_mask)
 {
+	if (program) {};
+	
 	for (int i=0; i<p->plugin_count; i++)
 	{
 		if (p->plugin[i].on_key_release == NULL)
 			continue;
 		
-		p->plugin[i].on_key_release(key, modifier_mask);
+		p->plugin[i].on_key_release(program, key, modifier_mask);
 	}
 }
 
@@ -149,6 +162,9 @@ void plugin_uninit(struct _plugin *p)
 {
 	for (int i=0; i<p->plugin_count; i++)
 	{
+		if (p->plugin[i].on_fini != NULL)
+			p->plugin[i].on_fini();
+		
 		dlclose(p->plugin[i].module);
 	}
 	

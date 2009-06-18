@@ -598,11 +598,10 @@ static void program_on_key_action(struct _program *p, int type)
 			return;
 		}
 
-		p->plugin->key_press(p->plugin, key, p->prev_key_mod);
+		p->plugin->key_press(p->plugin, p, key, p->prev_key_mod);
 		
 		int auto_action = get_auto_action(key, p->prev_key_mod);
 		p->perform_auto_action(p, auto_action);
-		
 	}
 
 	if (type == KeyRelease)
@@ -638,7 +637,7 @@ static void program_on_key_action(struct _program *p, int type)
 
 		p->update_modifiers_stack(p);
 
-		p->plugin->key_release(p->plugin, key, p->prev_key_mod);
+		p->plugin->key_release(p->plugin, p, key, p->prev_key_mod);
 		
 		int user_action = get_user_action(key, modifier_mask);
 		if (user_action >= 0)

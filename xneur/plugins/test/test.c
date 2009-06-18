@@ -30,6 +30,12 @@
 
 extern struct _xneur_config *xconfig;
 
+int on_init(void)
+{
+	printf("Plugin receive initialisation");
+	return (0);
+}
+
 int on_xneur_start(void)
 {
 	printf("Plugin receive xneur start");
@@ -69,5 +75,11 @@ int on_hotkey_action(enum _hotkey_action ha)
 int on_change_action(enum _change_action ca)
 {
 	printf("Plugin receive Change Action '%d'\n", ca);
+	return (0);
+}
+
+int on_fini(void)
+{
+	printf("Plugin receive finalisation");
 	return (0);
 }

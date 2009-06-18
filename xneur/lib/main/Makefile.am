@@ -1,5 +1,8 @@
 noinst_LTLIBRARIES = libxnx.la
 
+xnconfigdir = $(includedir)/xneur
+xnconfig_HEADERS = program.h
+
 libxnx_la_SOURCES =		\
 	bind_table.c		\
 	bind_table.h		\
