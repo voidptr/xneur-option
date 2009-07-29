@@ -32,6 +32,10 @@
 #include <pthread.h>
 #include <ctype.h>
 
+#ifdef WITH_ASPELL
+#  include <aspell.h>
+#endif
+
 #include "xnconfig.h"
 #include "xnconfig_files.h"
 
@@ -1718,6 +1722,27 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 		}
 		free (old_word);
 	}
+
+#ifdef WITH_ASPELL
+	AspellConfig *spell_config = new_aspell_config();
+	aspell_config_replace(spell_config, "lang", xconfig->languages[new_lang].dir);
+	AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
+
+	if (aspell_error_number(possible_err) != 0)
+	{
+		free(new_word);
+		return;
+	}
+	
+	AspellSpeller *spell_checker = to_aspell_speller(possible_err);
+	int correct = aspell_speller_check(spell_checker, new_word, strlen(new_word));
+	delete_aspell_speller(spell_checker);
+	if (!correct)
+	{
+		free(new_word);
+		return;
+	}
+#endif
 	
 	struct _list_char *new_pattern = xconfig->languages[new_lang].pattern;
 	if (!new_pattern->exist(new_pattern, new_word, BY_PLAIN))
