@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2008 XNeur Team
+ *  Copyright (C) 2006-2009 XNeur Team
  *
  */
 
@@ -110,29 +110,25 @@ void plugin_xneur_stop(struct _plugin *p)
 	}
 }
 
-void plugin_key_press(struct _plugin *p, struct _program *program, KeySym key, int modifier_mask)
+void plugin_key_press(struct _plugin *p, KeySym key, int modifier_mask)
 {
-	if (program) {};
-	
 	for (int i=0; i<p->plugin_count; i++)
 	{
 		if (p->plugin[i].on_key_press == NULL)
 			continue;
 		
-		p->plugin[i].on_key_press(program, key, modifier_mask);
+		p->plugin[i].on_key_press(key, modifier_mask);
 	}
 }
 
-void plugin_key_release(struct _plugin *p, struct _program *program, KeySym key, int modifier_mask)
+void plugin_key_release(struct _plugin *p, KeySym key, int modifier_mask)
 {
-	if (program) {};
-	
 	for (int i=0; i<p->plugin_count; i++)
 	{
 		if (p->plugin[i].on_key_release == NULL)
 			continue;
 		
-		p->plugin[i].on_key_release(program, key, modifier_mask);
+		p->plugin[i].on_key_release(key, modifier_mask);
 	}
 }
 

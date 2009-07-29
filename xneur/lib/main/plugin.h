@@ -23,9 +23,6 @@
 #include <X11/XKBlib.h>
 
 #include "xnconfig.h"
-//#include <xneur/xnconfig.h>
-#include "program.h"
-//#include <xneur/program.h>
 
 struct _plugin_functions
 {
@@ -37,8 +34,8 @@ struct _plugin_functions
 	void (*on_xneur_start)(void);
 	void (*on_xneur_reload)(void);
 	void (*on_xneur_stop)(void);
-	void (*on_key_press)(struct _program *program, KeySym key, int modifier_mask);
-	void (*on_key_release)(struct _program *program, KeySym key, int modifier_mask);
+	void (*on_key_press)(KeySym key, int modifier_mask);
+	void (*on_key_release)(KeySym key, int modifier_mask);
 	void (*on_hotkey_action)(enum _hotkey_action ha);
 	void (*on_change_action)(enum _change_action ca);
 };
@@ -51,8 +48,8 @@ struct _plugin
 	void (*xneur_start) (struct _plugin *p);
 	void (*xneur_reload) (struct _plugin *p);
 	void (*xneur_stop) (struct _plugin *p);
-	void (*key_press) (struct _plugin *p, struct _program *program, KeySym key, int modifier_mask);
-	void (*key_release) (struct _plugin *p, struct _program *program, KeySym key, int modifier_mask);
+	void (*key_press) (struct _plugin *p, KeySym key, int modifier_mask);
+	void (*key_release) (struct _plugin *p, KeySym key, int modifier_mask);
 	void (*hotkey_action) (struct _plugin *p, enum _hotkey_action ha);
 	void (*change_action) (struct _plugin *p, enum _change_action ca);
 	

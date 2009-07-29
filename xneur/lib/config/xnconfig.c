@@ -1056,9 +1056,9 @@ static int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "# Modules list\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#AddModule libtest.so\n");
+	fprintf(stream, "#LoadModule libxntest.so\n");
 	for (int plugins = 0; plugins < p->plugins->data_count; plugins++)
-		fprintf(stream, "AddModule %s\n", p->plugins->data[plugins].string);
+		fprintf(stream, "LoadModule %s\n", p->plugins->data[plugins].string);
 	fprintf(stream, "\n");
 	        
 	fprintf(stream, "# That's all\n");
