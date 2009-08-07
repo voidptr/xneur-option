@@ -48,7 +48,7 @@
 
 #define MAX_LANGUAGES			4
 #define XNEUR_NEEDED_MAJOR_VERSION	9
-#define XNEUR_BUILD_MINOR_VERSION	5
+#define XNEUR_BUILD_MINOR_VERSION	6
 	
 struct _xneur_config *xconfig				= NULL;
 	

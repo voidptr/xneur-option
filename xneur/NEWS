@@ -1,3 +1,11 @@
+August 04 2009:
+Version 0.9.5 released.
+Add lock to Caps
+Add check puntuation
+Pattern mining and recognition
+Clipboard correction
+Add popup messages
+
 April 21 2009:
 Version 0.9.4 released.
 Remove pixmap flag near of cursor
