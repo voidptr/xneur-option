@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2008 XNeur Team
+ *  Copyright (C) 2006-2009 XNeur Team
  *
  *  Based on egtrayicon's code (Copyright (C) 2002 Anders Carlsson <andersca@gnu.org>)
  *

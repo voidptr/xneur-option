@@ -116,4 +116,3 @@ void do_selection_notify(enum _selection_type sel_type)
 	else if (status == BadWindow)
 		log_message(ERROR, _("Failed to convert selection with error BadWindow"));
 }
-
