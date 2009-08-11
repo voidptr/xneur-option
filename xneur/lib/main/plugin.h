@@ -38,6 +38,9 @@ struct _plugin_functions
 	void (*on_key_release)(KeySym key, int modifier_mask);
 	void (*on_hotkey_action)(enum _hotkey_action ha);
 	void (*on_change_action)(enum _change_action ca);
+	void (*on_plugin_reload)(void);
+	void (*on_plugin_configure)(void);
+	void (*on_plugin_about)(void);
 };
 
 struct _plugin
@@ -52,7 +55,10 @@ struct _plugin
 	void (*key_release) (struct _plugin *p, KeySym key, int modifier_mask);
 	void (*hotkey_action) (struct _plugin *p, enum _hotkey_action ha);
 	void (*change_action) (struct _plugin *p, enum _change_action ca);
-	
+	void (*plugin_reload) (struct _plugin *p);
+	void (*plugin_configure) (struct _plugin *p);
+	void (*plugin_about) (struct _plugin *p);
+
 	void (*add) (struct _plugin *p, char* plugin_name);
 	void (*uninit) (struct _plugin *p);
 };

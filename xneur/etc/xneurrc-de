@@ -26,6 +26,7 @@ DefaultXkbGroup 0
 # Xneur will not process the input for this applications
 # Example:
 #ExcludeApp Gaim
+ExcludeApp rdesktop
 
 # Use this parameter to force set work mode in current application to Auto.
 # Example:

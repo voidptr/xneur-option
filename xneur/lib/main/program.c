@@ -1382,7 +1382,7 @@ static void program_check_pattern(struct _program *p)
 	p->event->default_event.xkey.keycode = 0;
 	
 	tmp_buffer->uninit(tmp_buffer);
-	
+
 	set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 	grab_spec_keys(p->focus->owner_window, TRUE);
 

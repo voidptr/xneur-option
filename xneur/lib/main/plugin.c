@@ -24,6 +24,8 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <dlfcn.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "types.h"
 #include "log.h"
@@ -37,6 +39,7 @@ void plugin_add(struct _plugin *p, char* plugin_name)
 	p->plugin = (struct _plugin_functions *) realloc(p->plugin, (p->plugin_count + 1) * sizeof(struct _plugin_functions));
 
 	p->plugin[p->plugin_count].module = dlopen(plugin_name, RTLD_NOW);
+
 	if(!p->plugin[p->plugin_count].module)
 	{
 		log_message (ERROR, "Can't load module %s", plugin_name);
@@ -70,6 +73,15 @@ void plugin_add(struct _plugin *p, char* plugin_name)
 
 	p->plugin[p->plugin_count].on_change_action = NULL;
 	p->plugin[p->plugin_count].on_change_action = dlsym(p->plugin[p->plugin_count].module, "on_change_action");
+
+	p->plugin[p->plugin_count].on_plugin_reload = NULL;
+	p->plugin[p->plugin_count].on_plugin_reload = dlsym(p->plugin[p->plugin_count].module, "on_plugin_reload");
+
+	p->plugin[p->plugin_count].on_plugin_configure = NULL;
+	p->plugin[p->plugin_count].on_plugin_configure = dlsym(p->plugin[p->plugin_count].module, "on_plugin_configure");
+
+	p->plugin[p->plugin_count].on_plugin_about = NULL;
+	p->plugin[p->plugin_count].on_plugin_about = dlsym(p->plugin[p->plugin_count].module, "on_plugin_about");
 
 	// Run init of plugin
 	p->plugin[p->plugin_count].on_init();
@@ -154,6 +166,39 @@ void plugin_change_action(struct _plugin *p, enum _change_action ca)
 	}
 }
 
+void plugin_plugin_reload(struct _plugin *p)
+{
+	for (int i=0; i<p->plugin_count; i++)
+	{
+		if (p->plugin[i].on_plugin_reload == NULL)
+			continue;
+		
+		p->plugin[i].on_plugin_reload();
+	}
+}
+
+void plugin_plugin_configure(struct _plugin *p)
+{
+	for (int i=0; i<p->plugin_count; i++)
+	{
+		if (p->plugin[i].on_plugin_configure == NULL)
+			continue;
+		
+		p->plugin[i].on_plugin_configure();
+	}
+}
+
+void plugin_plugin_about(struct _plugin *p)
+{
+	for (int i=0; i<p->plugin_count; i++)
+	{
+		if (p->plugin[i].on_plugin_about == NULL)
+			continue;
+
+		p->plugin[i].on_plugin_about();
+	}
+}
+
 void plugin_uninit(struct _plugin *p)
 {
 	for (int i=0; i<p->plugin_count; i++)
@@ -189,6 +234,9 @@ struct _plugin* plugin_init(void)
 	p->key_release = plugin_key_release;
 	p->hotkey_action = plugin_hotkey_action;
 	p->change_action = plugin_change_action;
+	p->plugin_reload = plugin_plugin_reload;
+	p->plugin_configure = plugin_plugin_configure;
+	p->plugin_about = plugin_plugin_about;
 
 	p->uninit		= plugin_uninit;
 

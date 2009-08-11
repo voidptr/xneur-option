@@ -78,6 +78,24 @@ int on_change_action(enum _change_action ca)
 	return (0);
 }
 
+int on_plugin_reload(void)
+{
+	printf("Plugin reload\n");
+	return (0);
+}
+
+int on_plugin_configure(void)
+{
+	printf("Plugin configure\n");
+	return (0);
+}
+
+int on_plugin_about(void)
+{
+	printf("Plugin about\n");
+	return (0);
+}
+
 int on_fini(void)
 {
 	printf("Plugin receive finalisation");
