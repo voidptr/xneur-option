@@ -771,6 +771,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 				p->check_lang_last_word(p);
 
 			p->add_word_to_pattern(p, get_cur_lang());
+			
 			// Add symbol to internal bufer
 			p->event->event = p->event->default_event;
 			int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
@@ -1507,7 +1508,10 @@ static void program_change_word(struct _program *p, enum _change_action action)
 
 			p->change_lang(p, 0);
 
-			p->send_string_silent(p, p->buffer->cur_pos - 1);
+			int len = p->buffer->cur_pos - 1;
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+				len = p->buffer->cur_pos;
+			p->send_string_silent(p, len);
 
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
@@ -1522,7 +1526,10 @@ static void program_change_word(struct _program *p, enum _change_action action)
 
 			p->change_lang(p, 1);
 
-			p->send_string_silent(p, p->buffer->cur_pos - 1);
+			int len = p->buffer->cur_pos - 1;
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+				len = p->buffer->cur_pos;
+			p->send_string_silent(p, len);
 
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
@@ -1537,7 +1544,10 @@ static void program_change_word(struct _program *p, enum _change_action action)
 
 			p->change_lang(p, 2);
 
-			p->send_string_silent(p, p->buffer->cur_pos - 1);
+			int len = p->buffer->cur_pos - 1;
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+				len = p->buffer->cur_pos;
+			p->send_string_silent(p, len);
 
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
@@ -1552,7 +1562,10 @@ static void program_change_word(struct _program *p, enum _change_action action)
 
 			p->change_lang(p, 3);
 
-			p->send_string_silent(p, p->buffer->cur_pos - 1);
+			int len = p->buffer->cur_pos - 1;
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+				len = p->buffer->cur_pos;
+			p->send_string_silent(p, len);
 
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
