@@ -26,8 +26,8 @@ AC_SUBST(GLADE_LIBS)
 AM_GNU_GETTEXT_VERSION([0.16.1])
 AM_GNU_GETTEXT([external])
 
-CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
-AC_SUBST(CFLAGS)
+DEFAULT_CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
++AC_SUBST(DEFAULT_CFLAGS)
 
 AC_OUTPUT([Makefile src/Makefile pixmaps/Makefile glade/Makefile po/Makefile.in])
 
