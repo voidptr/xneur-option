@@ -22,5 +22,13 @@ echo "Find and delete xneur libraries"
 find /usr -name "*libxnconfig*" -type f -print | xargs /bin/chmod a+rw
 find /usr -name "*libxnconfig*" -type f -print | xargs /bin/rm -f
 
+echo "Find and delete xneur libraries links"
+find /usr -name "*libxntest*" -type l -print | xargs /bin/chmod a+rw
+find /usr -name "*libxntest*" -type l -print | xargs /bin/rm -f
+
+echo "Find and delete xneur libraries"
+find /usr -name "*libxntest*" -type f -print | xargs /bin/chmod a+rw
+find /usr -name "*libxntest*" -type f -print | xargs /bin/rm -f
+
 echo " "
 echo "All Done!"

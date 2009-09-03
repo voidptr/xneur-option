@@ -2,7 +2,7 @@
 
 INCLUDES = -DPACKAGE_SYSCONFDIR_DIR=\""@sysconfdir@/xneur"\" -DPACKAGE_SHAREDIR_DIR=\""@datarootdir@/xneur"\"
 
-lib_LTLIBRARIES = libxntest.la
+pkglib_LTLIBRARIES = libxntest.la
 
 libxntest_la_SOURCES = \
 	test.c

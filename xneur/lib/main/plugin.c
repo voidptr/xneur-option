@@ -38,14 +38,20 @@ void plugin_add(struct _plugin *p, char* plugin_name)
 {
 	p->plugin = (struct _plugin_functions *) realloc(p->plugin, (p->plugin_count + 1) * sizeof(struct _plugin_functions));
 
-	p->plugin[p->plugin_count].module = dlopen(plugin_name, RTLD_NOW);
+	size_t len = strlen(XNEUR_PLUGIN_DIR) + strlen(plugin_name) + 2;
+	char * plugin_file = malloc(sizeof(char)*len);
+	snprintf(plugin_file, len, "%s/%s", XNEUR_PLUGIN_DIR, plugin_name);
+	p->plugin[p->plugin_count].module = dlopen(plugin_file, RTLD_NOW);
 
 	if(!p->plugin[p->plugin_count].module)
 	{
-		log_message (ERROR, "Can't load module %s", plugin_name);
+		log_message (ERROR, "Can't load module %s", plugin_file);
+		free(plugin_file);
 		return;
 	}
 	
+	free(plugin_file);
+
 	/* Get functions adresses */
 	p->plugin[p->plugin_count].on_init = NULL;
 	p->plugin[p->plugin_count].on_init = dlsym(p->plugin[p->plugin_count].module, "on_init");
