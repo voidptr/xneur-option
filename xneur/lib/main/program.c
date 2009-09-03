@@ -683,8 +683,6 @@ static void program_perform_auto_action(struct _program *p, int action)
 {
 	struct _buffer *string = p->buffer;
 
-	p->plugin->change_action(p->plugin, action);
-
 	switch (action)
 	{
 		case KLB_NO_ACTION:
@@ -1614,6 +1612,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			break;
 		}
 	}
+	p->plugin->change_action(p->plugin, action);
 }
 
 static void program_add_word_to_dict(struct _program *p, int new_lang)

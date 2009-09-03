@@ -1,2 +1,3 @@
 SUBDIRS =			\
-	test
+	test			\
+	statistic

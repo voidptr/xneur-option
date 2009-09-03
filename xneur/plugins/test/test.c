@@ -32,72 +32,72 @@ extern struct _xneur_config *xconfig;
 
 int on_init(void)
 {
-	printf("Plugin receive initialisation");
+	printf("[PLG] Plugin for test receive initialisation\n");
 	return (0);
 }
 
 int on_xneur_start(void)
 {
-	printf("Plugin receive xneur start");
+	printf("[PLG] Plugin receive xneur start\n");
 	return (0);
 }
 
 int on_xneur_reload(void)
 {
-	printf("Plugin receive xneur stop");
+	printf("[PLG] Plugin receive xneur stop\n");
 	return (0);
 }
 
 int on_xneur_stop(void)
 {
-	printf("Plugin receive xneur stop");
+	printf("[PLG] Plugin receive xneur stop\n");
 	return (0);
 }
 
 int on_key_press(KeySym key, int modifier_mask)
 {
-	printf("Plugin receive KeyPress '%s' with mask %d\n", XKeysymToString(key), modifier_mask);
+	printf("[PLG] Plugin receive KeyPress '%s' with mask %d\n", XKeysymToString(key), modifier_mask);
 	return (0);
 }
 
 int on_key_release(KeySym key, int modifier_mask)
 {
-	printf("Plugin receive KeyRelease '%s' with mask %d\n", XKeysymToString(key), modifier_mask);
+	printf("[PLG] Plugin receive KeyRelease '%s' with mask %d\n", XKeysymToString(key), modifier_mask);
 	return (0);
 }
 
 int on_hotkey_action(enum _hotkey_action ha)
 {
-	printf("Plugin receive Hotkey Action '%d'\n", ha);
+	printf("[PLG] Plugin receive Hotkey Action '%d'\n", ha);
 	return (0);
 }
 
 int on_change_action(enum _change_action ca)
 {
-	printf("Plugin receive Change Action '%d'\n", ca);
+	printf("[PLG] Plugin receive Change Action '%d'\n", ca);
 	return (0);
 }
 
 int on_plugin_reload(void)
 {
-	printf("Plugin reload\n");
+	printf("[PLG] Plugin reload\n");
 	return (0);
 }
 
 int on_plugin_configure(void)
 {
-	printf("Plugin configure\n");
+	printf("[PLG] Plugin configure\n");
 	return (0);
 }
 
 int on_plugin_about(void)
 {
-	printf("Plugin about\n");
+	printf("[PLG] Plugin about\n");
 	return (0);
 }
 
 int on_fini(void)
 {
-	printf("Plugin receive finalisation");
+	printf("[PLG] Plugin receive finalisation\n");
 	return (0);
 }
