@@ -1181,14 +1181,14 @@ static void program_check_space_before_punctuation(struct _program *p)
 		return;
 	}
 	
-	if (p->buffer->content[p->buffer->cur_pos-2] != ' ')
+	if (text[text_len - 2] != ' ')
 	{
 		free(text);
 		return;
 	}
 	
 	log_message(DEBUG, _("Find spaces before punctuation, correction..."));
-
+	
 	p->event->send_backspaces(p->event, 1);
 	p->buffer->del_symbol(p->buffer);
 	while (p->buffer->content[p->buffer->cur_pos-2] == ' ')
@@ -1274,8 +1274,14 @@ static void program_check_brackets_with_symbols(struct _program *p)
 {
 	if (!xconfig->correct_space_with_punctuation)
 		return;
+
+	char *text = p->buffer->get_utf_string(p->buffer);
+	if (text == NULL)
+		return;
+
+	int text_len = strlen(text);
 	
-	if (p->buffer->content[p->buffer->cur_pos - 2] == ')')
+	if (text[text_len - 2] == ')')
 	{
 		log_message(DEBUG, _("Find no spaces after right bracket, correction..."));
 		
@@ -1292,19 +1298,25 @@ static void program_check_brackets_with_symbols(struct _program *p)
 		p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
 	}
 
-	if (p->buffer->content[p->buffer->cur_pos - 2] != ' ')
+	if (text[text_len - 2] != ' ')
+	{
+		free(text);
 		return;
-
+	}
+	
 	int space_count = 0;
-	int pos = p->buffer->cur_pos - 2;
-	while ((pos >= 0) && (p->buffer->content[pos] == ' '))
+	int pos = text_len - 2;
+	while ((pos >= 0) && (text[pos] == ' '))
 	{
 		space_count++;
 		pos--;
 	} 
 	
-	if (pos < 0 || p->buffer->content[pos] != '(')
+	if (pos < 0 || text[pos] != '(')
+	{
+		free(text);
 	    return;
+	}
 	    
 	log_message(DEBUG, _("Find spaces after left bracket, correction..."));
 
@@ -1318,6 +1330,8 @@ static void program_check_brackets_with_symbols(struct _program *p)
 	char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
 	int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
+
+	free(text);
 }
 
 static void program_check_pattern(struct _program *p)
