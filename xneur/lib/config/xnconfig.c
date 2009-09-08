@@ -59,8 +59,8 @@ static const char *option_names[] = 	{
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
-						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
-						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",
+						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "CalculateSelected",
+						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "CalculateClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"RotateLayout","ReplaceAbbreviation", "AutocomplementationConfirmation"
 					};
@@ -69,8 +69,8 @@ static const char *notify_names[] =	{
 						"PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"AutomaticChangeWord", "ManualChangeWord", "ChangeString",
-						"ChangeSelected", "TranslitSelected", "ChangecaseSelected",
-						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",
+						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "CalculateSelected",
+						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "CalculateClipboard",
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"ExecuteUserAction"
 					};

@@ -77,6 +77,9 @@
 
 #define MIN_PATTERN_LEN		4
 
+#define CALC "calc"
+#define STR_MAX 4096
+
 extern struct _xneur_config *xconfig;
 
 struct _window *main_window;
@@ -527,6 +530,74 @@ static void program_process_selection_notify(struct _program *p)
 			show_notify(NOTIFY_TRANSLIT_CLIPBOARD, NULL);
 			break;
 		}
+		case ACTION_CALC_SELECTED:
+		{
+			char *text = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
+			text[0] = NULLSYM;
+			sprintf(text, "%s \"%s\"", CALC, p->buffer->content);
+			
+			FILE *fp = popen(text, "r");
+			free (text);
+			if (fp == NULL)
+				break;
+
+			char buffer[STR_MAX];
+			if (fgets(buffer, STR_MAX, fp) == NULL)
+				break;
+	
+			if (pclose(fp))
+				break;
+
+			const char* err = "Error";
+			if (strncmp(buffer+1, err, strlen(err)) == 0)
+				break;
+			if (strlen(buffer) == 0)
+				break;
+
+			buffer[strlen(buffer) - 1] = NULLSYM;
+
+			text = malloc ((strlen (buffer) + strlen (p->buffer->content) + 2)*sizeof(char));
+			text[0] = NULLSYM;
+			sprintf(text, "%s=%s", p->buffer->content, buffer+1);
+			
+			p->buffer->set_content(p->buffer, text);
+
+			free (text);
+			
+			show_notify(NOTIFY_CALC_SELECTED, NULL);
+			break;
+		}
+		case ACTION_CALC_CLIPBOARD:
+		{
+			char *formula = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
+			formula[0] = NULLSYM;
+			sprintf(formula, "%s \"%s\"", CALC, p->buffer->content);
+			
+			FILE *fp = popen(formula, "r");
+			free (formula);
+			if (fp == NULL)
+				break;
+
+			char buffer[STR_MAX];
+			if (fgets(buffer, STR_MAX, fp) == NULL)
+				break;
+	
+			if (pclose(fp))
+				break;
+
+			const char* err = "Error";
+			if (strncmp(buffer+1, err, strlen(err)) == 0)
+				break;
+			if (strlen(buffer) == 0)
+				break;
+
+			buffer[strlen(buffer) - 1] = NULLSYM;
+			
+			p->buffer->set_content(p->buffer, buffer+1);
+		
+			show_notify(NOTIFY_CALC_SELECTED, NULL);
+			break;
+		}
 	}
 
 	// Disable receiving events
@@ -820,6 +891,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_CHANGE_SELECTED:
 		case ACTION_TRANSLIT_SELECTED:
 		case ACTION_CHANGECASE_SELECTED:
+		case ACTION_CALC_SELECTED:
 		{
 			p->selected_mode = action;
 			do_selection_notify(SELECTION_PRIMARY);
@@ -829,6 +901,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_CHANGE_CLIPBOARD:
 		case ACTION_TRANSLIT_CLIPBOARD:
 		case ACTION_CHANGECASE_CLIPBOARD:
+		case ACTION_CALC_CLIPBOARD:
 		{
 			p->selected_mode = action;
 			do_selection_notify(SELECTION_CLIPBOARD);
@@ -1465,6 +1538,8 @@ static void program_change_word(struct _program *p, enum _change_action action)
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
+			p->last_action = ACTION_NONE;
+			
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
 			break;
@@ -1483,6 +1558,8 @@ static void program_change_word(struct _program *p, enum _change_action action)
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
+			p->last_action = ACTION_NONE;
+			
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
 			break;
@@ -1501,6 +1578,8 @@ static void program_change_word(struct _program *p, enum _change_action action)
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
+			p->last_action = ACTION_NONE;
+			
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
 			break;
@@ -1519,6 +1598,8 @@ static void program_change_word(struct _program *p, enum _change_action action)
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
+			p->last_action = ACTION_NONE;
+			
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
 			break;

@@ -68,9 +68,11 @@ struct _xneur_statistic
 	int action_change_selected;
 	int action_translit_selected;
 	int action_changecase_selected;
+	int action_calculate_selected;
 	int action_change_clipboard;
 	int action_translit_clipboard;
 	int action_changecase_clipboard;
+	int action_calculate_clipboard;
 	int action_enable_layout_0;
 	int action_enable_layout_1;
 	int action_enable_layout_2;
@@ -107,9 +109,11 @@ int on_init(void)
 	statistic.action_change_selected = 0;
 	statistic.action_translit_selected = 0;
 	statistic.action_changecase_selected = 0;
+	statistic.action_calculate_selected = 0;
 	statistic.action_change_clipboard = 0;
 	statistic.action_translit_clipboard = 0;
 	statistic.action_changecase_clipboard = 0;
+	statistic.action_calculate_clipboard = 0;
 	statistic.action_enable_layout_0 = 0;
 	statistic.action_enable_layout_1 = 0;
 	statistic.action_enable_layout_2 = 0;
@@ -266,6 +270,10 @@ int on_xneur_stop(void)
 	{
 		fprintf(stream, "	Manual changecase selected count = %d\n", statistic.action_changecase_selected);
 	}
+	if (statistic.action_calculate_selected != 0)
+	{
+		fprintf(stream, "	Manual calculate selected count = %d\n", statistic.action_calculate_selected);
+	}
 	if (statistic.action_change_clipboard != 0)
 	{
 		fprintf(stream, "	Manual change clipboard count = %d\n", statistic.action_change_clipboard);
@@ -277,6 +285,10 @@ int on_xneur_stop(void)
 	if (statistic.action_changecase_clipboard != 0)
 	{
 		fprintf(stream, "	Manual changecase clipboard count = %d\n", statistic.action_changecase_clipboard);
+	}
+	if (statistic.action_calculate_clipboard != 0)
+	{
+		fprintf(stream, "	Manual calculate clipboard count = %d\n", statistic.action_calculate_clipboard);
 	}
 	if (statistic.action_enable_layout_0 != 0)
 	{
@@ -353,6 +365,11 @@ int on_hotkey_action(enum _hotkey_action ha)
 			statistic.action_changecase_selected++;
 			break;
 		}
+		case ACTION_CALC_SELECTED:
+		{
+			statistic.action_calculate_selected++;
+			break;
+		}
 		case ACTION_CHANGE_CLIPBOARD:
 		{
 			statistic.action_change_clipboard++;
@@ -366,6 +383,11 @@ int on_hotkey_action(enum _hotkey_action ha)
 		case ACTION_CHANGECASE_CLIPBOARD:
 		{
 			statistic.action_changecase_clipboard++;
+			break;
+		}
+		case ACTION_CALC_CLIPBOARD:
+		{
+			statistic.action_calculate_clipboard++;
 			break;
 		}
 		case ACTION_CHANGE_STRING:	// User needs to change current string
