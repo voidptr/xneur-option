@@ -21,6 +21,8 @@
 #  include "config.h"
 #endif
 
+#ifdef WITH_PLUGINS
+
 #include <X11/keysym.h>
 #include <X11/XKBlib.h>
 
@@ -101,3 +103,5 @@ int on_fini(void)
 	printf("[PLG] Plugin receive finalisation\n");
 	return (0);
 }
+
+#endif /* WITH_PLUGINS */

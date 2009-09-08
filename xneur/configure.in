@@ -162,6 +162,11 @@ if test "x$with_libnotify" != "xno"; then
 	AC_DEFINE(WITH_LIBNOTIFY, 1, [Define if you want libnotify message support])
 fi
 
+AC_ARG_WITH(plugins, [  --without-plugins	  Compile without plugins support])
+if test "x$with_plugins" != "xno"; then
+	AC_DEFINE(WITH_PLUGINS, 1, [Define if you want plugins support])
+fi
+
 DEFAULT_CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
 AC_SUBST(DEFAULT_CFLAGS)
 

@@ -21,6 +21,8 @@
 #  include "config.h"
 #endif
 
+#ifdef WITH_PLUGINS
+
 #include <X11/keysym.h>
 #include <X11/XKBlib.h>
 
@@ -30,13 +32,16 @@
 #include <time.h>
 
 #include "xnconfig.h"
+#include "xnconfig_files.h"
+
+#define STAT_FILE "xneurstat"
 
 extern struct _xneur_config *xconfig;
 
 struct _xneur_statistic
 {
-	char *start_time;
-	char *end_time;
+	time_t start_time;
+	time_t end_time;
 
 	int key_count;
 	
@@ -77,9 +82,6 @@ struct _xneur_statistic
 
 int on_init(void)
 {
-	statistic.start_time = malloc(256 * sizeof(char));
-	statistic.end_time = malloc(256 * sizeof(char));
-
 	statistic.key_count = 0;
 	
 	statistic.change_incidental_caps = 0;
@@ -122,12 +124,7 @@ int on_init(void)
 
 int on_xneur_start(void)
 {
-	time_t curtime = time(NULL);
-	struct tm *loctime = localtime(&curtime);
-	if (loctime == NULL)
-		return 0;
-
-	strftime(statistic.start_time, 256, "%c", loctime);
+	statistic.start_time = time(NULL);
 	
 	printf("[PLG] Plugin for keyboard statistic receive xneur start\n");
 	return (0);
@@ -141,150 +138,182 @@ int on_xneur_reload(void)
 
 int on_xneur_stop(void)
 {
-	time_t curtime = time(NULL);
-	struct tm *loctime = localtime(&curtime);
-	if (loctime == NULL)
+	char *file_path_name = get_home_file_path_name(NULL, STAT_FILE);
+	FILE *stream = fopen(file_path_name, "a");
+	free(file_path_name);
+	if (stream == NULL)
 		return 0;
 
-	strftime(statistic.end_time, 256, "%c", loctime);
+	statistic.end_time = time(NULL);
+	
+	char *start_time = malloc(256 * sizeof(char));
+	char *end_time = malloc(256 * sizeof(char));
+	
+	struct tm *loctime = localtime(&statistic.start_time);
+	if (loctime == NULL)
+	{
+		fclose(stream);
+		free(start_time);
+		free(end_time);
+		return 0;
+	}
+	strftime(start_time, 256, "%c", loctime);
 
-	printf("XNeur statistic (from %s to %s)\n", statistic.start_time, statistic.end_time);
-	printf("Count:\n");
+	loctime = localtime(&statistic.end_time);
+	if (loctime == NULL)
+	{
+		fclose(stream);
+		free(start_time);
+		free(end_time);
+		return 0;
+	}
+	strftime(end_time, 256, "%c", loctime);
+	
+
+	fprintf(stream, "XNeur statistic (from %s to %s)\n", start_time, end_time);
+	fprintf(stream, "Count:\n");
 	if (statistic.key_count != 0)
 	{
-		printf("	Key press count = %d\n", statistic.key_count);
+		fprintf(stream, "	Key press count = %d\n", statistic.key_count);
+		fprintf(stream, "	Aprox. typing speed = %d key/min\n", statistic.key_count * (60 / (int) difftime(statistic.end_time, statistic.start_time)));
 	}
 	if (statistic.change_incidental_caps != 0)
 	{
-		printf("	Change incidental caps count = %d\n", statistic.change_incidental_caps);
+		fprintf(stream, "	Change incidental caps count = %d\n", statistic.change_incidental_caps);
 	}
 	if (statistic.change_two_capital_letter != 0)
 	{
-		printf("	Change two capital letter count = %d\n", statistic.change_two_capital_letter);
+		fprintf(stream, "	Change two capital letter count = %d\n", statistic.change_two_capital_letter);
 	}
 	if (statistic.change_word_to_0 != 0)
 	{	
-		printf("	Change word to layout 0 count = %d\n", statistic.change_word_to_0);
+		fprintf(stream, "	Change word to layout 0 count = %d\n", statistic.change_word_to_0);
 	}
 	if (statistic.change_word_to_1 != 0)
 	{
-		printf("	Change word to layout 1 count = %d\n", statistic.change_word_to_1);
+		fprintf(stream, "	Change word to layout 1 count = %d\n", statistic.change_word_to_1);
 	}
 	if (statistic.change_word_to_2 != 0)
 	{
-		printf("	Change word to layout 2 count = %d\n", statistic.change_word_to_2);
+		fprintf(stream, "	Change word to layout 2 count = %d\n", statistic.change_word_to_2);
 	}
 	if (statistic.change_word_to_3 != 0)
 	{
-		printf("	Change word to layout 3 count = %d\n", statistic.change_word_to_3);
+		fprintf(stream, "	Change word to layout 3 count = %d\n", statistic.change_word_to_3);
 	}
 	if (statistic.change_syll_to_0 != 0)
 	{
-		printf("	Change syllable to layout 0 count = %d\n", statistic.change_syll_to_0);
+		fprintf(stream, "	Change syllable to layout 0 count = %d\n", statistic.change_syll_to_0);
 	}
 	if (statistic.change_syll_to_1 != 0)
 	{
-		printf("	Change syllable to layout 1 count = %d\n", statistic.change_syll_to_1);
+		fprintf(stream, "	Change syllable to layout 1 count = %d\n", statistic.change_syll_to_1);
 	}
 	if (statistic.change_syll_to_2 != 0)
 	{
-		printf("	Change syllable to layout 2 count = %d\n", statistic.change_syll_to_2);
+		fprintf(stream, "	Change syllable to layout 2 count = %d\n", statistic.change_syll_to_2);
 	}
 	if (statistic.change_syll_to_3 != 0)
 	{
-		printf("	Change syllable to layout 3 count = %d\n", statistic.change_syll_to_3);
+		fprintf(stream, "	Change syllable to layout 3 count = %d\n", statistic.change_syll_to_3);
 	}
 	if (statistic.change_selection != 0)
 	{
-		printf("	Change selection count = %d\n", statistic.change_selection);
+		fprintf(stream, "	Change selection count = %d\n", statistic.change_selection);
 	}
 	if (statistic.change_string_to_0 != 0)
 	{
-		printf("	Change string to layout 0 count = %d\n", statistic.change_string_to_0);
+		fprintf(stream, "	Change string to layout 0 count = %d\n", statistic.change_string_to_0);
 	}
 	if (statistic.change_string_to_1 != 0)
 	{
-		printf("	Change string to layout 1 count = %d\n", statistic.change_string_to_1);
+		fprintf(stream, "	Change string to layout 1 count = %d\n", statistic.change_string_to_1);
 	}
 	if (statistic.change_string_to_2 != 0)
 	{
-		printf("	Change string to layout 2 count = %d\n", statistic.change_string_to_2);
+		fprintf(stream, "	Change string to layout 2 count = %d\n", statistic.change_string_to_2);
 	}
 	if (statistic.change_string_to_3 != 0)
 	{
-		printf("	Change string to layout 3 count = %d\n", statistic.change_string_to_3);
+		fprintf(stream, "	Change string to layout 3 count = %d\n", statistic.change_string_to_3);
 	}
 	if (statistic.change_abreviation != 0)
 	{
-		printf("	Change abbreviations count = %d\n", statistic.change_abreviation);
+		fprintf(stream, "	Change abbreviations count = %d\n", statistic.change_abreviation);
 	}
 
 	if (statistic.action_change_word != 0)
 	{
-		printf("	Manual change word count = %d\n", statistic.action_change_word);
+		fprintf(stream, "	Manual change word count = %d\n", statistic.action_change_word);
 	}
 	if (statistic.action_change_string != 0)
 	{
-		printf("	Manual change string count = %d\n", statistic.action_change_string);
+		fprintf(stream, "	Manual change string count = %d\n", statistic.action_change_string);
 	}
 	if (statistic.action_change_mode != 0)
 	{
-		printf("	Manual change mode count = %d\n", statistic.action_change_mode);
+		fprintf(stream, "	Manual change mode count = %d\n", statistic.action_change_mode);
 	}
 	if (statistic.action_change_selected != 0)
 	{
-		printf("	Manual change selected count = %d\n", statistic.action_change_selected);
+		fprintf(stream, "	Manual change selected count = %d\n", statistic.action_change_selected);
 	}
 	if (statistic.action_translit_selected != 0)
 	{
-		printf("	Manual transit selected count = %d\n", statistic.action_translit_selected);
+		fprintf(stream, "	Manual transit selected count = %d\n", statistic.action_translit_selected);
 	}
 	if (statistic.action_changecase_selected != 0)
 	{
-		printf("	Manual changecase selected count = %d\n", statistic.action_changecase_selected);
+		fprintf(stream, "	Manual changecase selected count = %d\n", statistic.action_changecase_selected);
 	}
 	if (statistic.action_change_clipboard != 0)
 	{
-		printf("	Manual change clipboard count = %d\n", statistic.action_change_clipboard);
+		fprintf(stream, "	Manual change clipboard count = %d\n", statistic.action_change_clipboard);
 	}
 	if (statistic.action_translit_clipboard != 0)
 	{
-		printf("	Manual translit clipboard count = %d\n", statistic.action_translit_clipboard);
+		fprintf(stream, "	Manual translit clipboard count = %d\n", statistic.action_translit_clipboard);
 	}
 	if (statistic.action_changecase_clipboard != 0)
 	{
-		printf("	Manual changecase clipboard count = %d\n", statistic.action_changecase_clipboard);
+		fprintf(stream, "	Manual changecase clipboard count = %d\n", statistic.action_changecase_clipboard);
 	}
 	if (statistic.action_enable_layout_0 != 0)
 	{
-		printf("	Manual enable layout 0 count = %d\n", statistic.action_enable_layout_0);
+		fprintf(stream, "	Manual enable layout 0 count = %d\n", statistic.action_enable_layout_0);
 	}
 	if (statistic.action_enable_layout_1 != 0)
 	{
-		printf("	Manual enable layout 1 count = %d\n", statistic.action_enable_layout_1);
+		fprintf(stream, "	Manual enable layout 1 count = %d\n", statistic.action_enable_layout_1);
 	}
 	if (statistic.action_enable_layout_2 != 0)
 	{
-		printf("	Manual enable layout 2 count = %d\n", statistic.action_enable_layout_2);
+		fprintf(stream, "	Manual enable layout 2 count = %d\n", statistic.action_enable_layout_2);
 	}
 	if (statistic.action_enable_layout_3 != 0)
 	{
-		printf("	Manual enable layout 3 count = %d\n", statistic.action_enable_layout_3);
+		fprintf(stream, "	Manual enable layout 3 count = %d\n", statistic.action_enable_layout_3);
 	}
 	if (statistic.action_rotate_layout != 0)
 	{
-		printf("	Manual rotate layout count = %d\n", statistic.action_rotate_layout);
+		fprintf(stream, "	Manual rotate layout count = %d\n", statistic.action_rotate_layout);
 	}
 	if (statistic.action_replace_abbreviation != 0)
 	{
-		printf("	Manual replace abbreviation count = %d\n", statistic.action_replace_abbreviation);
+		fprintf(stream, "	Manual replace abbreviation count = %d\n", statistic.action_replace_abbreviation);
 	}
 	if (statistic.action_autocomplementation != 0)
 	{
-		printf("	Autocomplementation count = %d\n", statistic.action_autocomplementation);
+		fprintf(stream, "	Autocomplementation count = %d\n", statistic.action_autocomplementation);
 	}
-
+	fprintf(stream, "\n");
+	
 	printf("[PLG] Plugin for keyboard statistic receive xneur stop\n");
+	
+	fclose(stream);
+	free(start_time);
+	free(end_time);
+	
 	return (0);
 }
 
@@ -480,9 +509,8 @@ int on_change_action(enum _change_action ca)
 
 int on_fini(void)
 {
-	free(statistic.start_time);
-	free(statistic.end_time);
-	
 	printf("[PLG] Plugin receive finalisation\n");
 	return (0);
 }
+
+#endif /* WITH_PLUGINS */

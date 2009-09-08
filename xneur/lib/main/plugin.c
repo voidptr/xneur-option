@@ -27,10 +27,12 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "plugin.h"
+
+#ifdef WITH_PLUGINS
+
 #include "types.h"
 #include "log.h"
-
-#include "plugin.h"
 
 extern struct _xneur_config *xconfig;
 
@@ -220,6 +222,70 @@ void plugin_uninit(struct _plugin *p)
 
 	log_message(DEBUG, _("Plugins is freed"));
 }
+
+#else /* WITH_PLUGINS */
+
+void plugin_add(struct _plugin *p, char* plugin_name)
+{
+	if (p || plugin_name) {};
+}
+
+void plugin_xneur_start(struct _plugin *p)
+{
+	if (p) {};
+}
+
+void plugin_xneur_reload(struct _plugin *p)
+{
+	if (p) {};
+}
+
+void plugin_xneur_stop(struct _plugin *p)
+{
+	if (p) {};
+}
+
+void plugin_key_press(struct _plugin *p, KeySym key, int modifier_mask)
+{
+	if (p || key || modifier_mask) {};
+}
+
+void plugin_key_release(struct _plugin *p, KeySym key, int modifier_mask)
+{
+	if (p || key || modifier_mask) {};
+}
+
+void plugin_hotkey_action(struct _plugin *p, enum _hotkey_action ha)
+{
+	if (p || ha) {};
+}
+
+void plugin_change_action(struct _plugin *p, enum _change_action ca)
+{
+	if (p || ca) {};
+}
+
+void plugin_plugin_reload(struct _plugin *p)
+{
+	if (p) {};
+}
+
+void plugin_plugin_configure(struct _plugin *p)
+{
+	if (p) {};
+}
+
+void plugin_plugin_about(struct _plugin *p)
+{
+	if (p) {};
+}
+
+void plugin_uninit(struct _plugin *p)
+{
+	if (p) {};
+}
+
+#endif /* WITH_PLUGINS */
 
 struct _plugin* plugin_init(void)
 {

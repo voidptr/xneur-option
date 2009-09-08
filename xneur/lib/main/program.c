@@ -1460,7 +1460,10 @@ static void program_change_word(struct _program *p, enum _change_action action)
 
 			p->change_lang(p, 0);
 
-			p->send_string_silent(p, p->buffer->cur_pos);
+			int len = p->buffer->cur_pos;
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+				len = p->buffer->cur_pos + 1;
+			p->send_string_silent(p, len);
 
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
@@ -1475,7 +1478,10 @@ static void program_change_word(struct _program *p, enum _change_action action)
 
 			p->change_lang(p, 1);
 
-			p->send_string_silent(p, p->buffer->cur_pos);
+			int len = p->buffer->cur_pos;
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+				len = p->buffer->cur_pos + 1;
+			p->send_string_silent(p, len);
 
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
@@ -1490,7 +1496,10 @@ static void program_change_word(struct _program *p, enum _change_action action)
 
 			p->change_lang(p, 2);
 
-			p->send_string_silent(p, p->buffer->cur_pos);
+			int len = p->buffer->cur_pos;
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+				len = p->buffer->cur_pos + 1;
+			p->send_string_silent(p, len);
 
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
@@ -1505,7 +1514,10 @@ static void program_change_word(struct _program *p, enum _change_action action)
 
 			p->change_lang(p, 3);
 
-			p->send_string_silent(p, p->buffer->cur_pos);
+			int len = p->buffer->cur_pos;
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+				len = p->buffer->cur_pos + 1;
+			p->send_string_silent(p, len);
 
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);

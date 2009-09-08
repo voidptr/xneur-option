@@ -99,8 +99,11 @@ static void buffer_save_log(struct _buffer *p, char *file_name, Window window)
 	time_t curtime = time(NULL);
 	struct tm *loctime = localtime(&curtime);
 	if (loctime == NULL)
+	{
+		fclose(stream);
 		return;
-
+	}
+	
 	char *buffer = malloc(256 * sizeof(char));
 	strftime(buffer, 256, "%c", loctime);
 	fprintf(stream, "  (%s): ", buffer);
