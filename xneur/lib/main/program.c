@@ -577,8 +577,8 @@ static void program_process_selection_notify(struct _program *p)
 			char *text = str_replace (selected_text, ",", ".");
 			free (selected_text);
 			
-			FILE *fp = popen(formula, "r");
-			free (formula);
+			FILE *fp = popen(text, "r");
+			free (text);
 			if (fp == NULL)
 				break;
 
