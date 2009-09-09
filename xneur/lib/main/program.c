@@ -571,9 +571,11 @@ static void program_process_selection_notify(struct _program *p)
 		}
 		case ACTION_CALC_CLIPBOARD:
 		{
-			char *formula = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
-			formula[0] = NULLSYM;
-			sprintf(formula, "%s \"%s\"", CALC, p->buffer->content);
+			char *selected_text = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
+			selected_text[0] = NULLSYM;
+			sprintf(selected_text, "%s \"%s\"", CALC, p->buffer->content);
+			char *text = str_replace (selected_text, ",", ".");
+			free (selected_text);
 			
 			FILE *fp = popen(formula, "r");
 			free (formula);
