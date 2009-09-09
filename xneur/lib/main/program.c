@@ -796,7 +796,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 				p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 
 			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
-
+			log_message (ERROR, "\"%c\"", sym);
 			if (action == KLB_ADD_SYM)
 			{
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)

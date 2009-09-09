@@ -37,6 +37,8 @@
 
 #include "keymap.h"
 
+#define NumlockMask 0x10
+
 extern struct _xneur_config *xconfig;
 extern struct _window *main_window;
 
@@ -271,7 +273,9 @@ static char keymap_get_cur_ascii_char(struct _keymap *p, XEvent e)
 	int mod = 0;
 	if (ke->state & ShiftMask)
 		mod = ShiftMask;
-
+	if (ke->state & NumlockMask)
+		mod |= NumlockMask;
+	
 	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
 
 	ke->state = get_keycode_mod(p->latin_group);
