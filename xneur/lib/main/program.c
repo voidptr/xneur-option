@@ -532,9 +532,11 @@ static void program_process_selection_notify(struct _program *p)
 		}
 		case ACTION_CALC_SELECTED:
 		{
-			char *text = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
-			text[0] = NULLSYM;
-			sprintf(text, "%s \"%s\"", CALC, p->buffer->content);
+			char *selected_text = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
+			selected_text[0] = NULLSYM;
+			sprintf(selected_text, "%s \"%s\"", CALC, p->buffer->content);
+			char *text = str_replace (selected_text, ",", ".");
+			free (selected_text);
 			
 			FILE *fp = popen(text, "r");
 			free (text);
