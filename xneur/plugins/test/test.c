@@ -98,6 +98,11 @@ int on_plugin_about(void)
 	return (0);
 }
 
+char *on_plugin_info(void)
+{
+	return ("Test plugin");
+}
+
 int on_fini(void)
 {
 	printf("[PLG] Plugin receive finalisation\n");

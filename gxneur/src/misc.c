@@ -24,9 +24,13 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
+#include <dirent.h>
+#include <dlfcn.h>
 
 #include <xneur/xnconfig.h>
 #include <xneur/list_char.h>
@@ -64,6 +68,7 @@ static GtkListStore *store_popup			= NULL;
 static GtkListStore *store_action			= NULL;
 static GtkListStore *store_hotkey			= NULL;
 static GtkListStore *store_autocomplementation_exclude_app		= NULL;
+static GtkListStore *store_plugin			= NULL;
 
 static GtkTreeView *tmp_treeview	= NULL;
 
@@ -410,6 +415,18 @@ static void column_1_edited (GtkCellRendererText *renderer, gchar *path, gchar *
 	model = gtk_tree_view_get_model (treeview);
 	if (gtk_tree_model_get_iter_from_string (model, &iter, path))
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 1, new_text, -1);
+}
+
+static void plug_enable (GtkCellRendererToggle *renderer, gchar *path, GtkTreeView *treeview)
+{
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+
+	gboolean value = !gtk_cell_renderer_toggle_get_active (renderer);
+
+	model = gtk_tree_view_get_model (treeview);
+	if (gtk_tree_model_get_iter_from_string (model, &iter, path))
+		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, value, -1);
 }
 
 void xneur_preference(void)
@@ -931,6 +948,84 @@ void xneur_preference(void)
 						(gpointer) treeview);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
+	// Plugins
+	treeview = glade_xml_get_widget (gxml, "treeview11");
+	store_plugin = gtk_list_store_new(3, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_plugin));
+	gtk_widget_show(treeview);
+
+	cell = gtk_cell_renderer_toggle_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Enabled"), cell, "active", 0, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+	g_object_set (cell, "activatable", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "toggled",
+						G_CALLBACK (plug_enable),
+						(gpointer) treeview);
+	
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Description"), cell, "text", 1, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+	
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("File name"), cell, "text", 2, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+	
+	DIR *dp;
+	struct dirent *ep;
+
+	dp = opendir (XNEUR_PLUGIN_DIR);
+	if (dp != NULL)
+	{
+		ep = readdir (dp);
+		while (ep)
+		{
+			if (strncmp(ep->d_name + strlen(ep->d_name) - 3, ".so", 3) != 0)
+			{
+				ep = readdir (dp);
+				continue;
+			}
+
+			size_t len = strlen(XNEUR_PLUGIN_DIR) + strlen(ep->d_name) + 2;
+			char * plugin_file = malloc(sizeof(char)*len);
+			snprintf(plugin_file, len, "%s/%s", XNEUR_PLUGIN_DIR, ep->d_name);
+			void *module = dlopen(plugin_file, RTLD_NOW);
+			free(plugin_file);
+			if(!module)
+			{
+				ep = readdir (dp);
+				continue;
+			}
+
+			char* (*module_info)(void);
+			module_info = dlsym(module, "on_plugin_info");
+
+			gboolean state = FALSE;
+			for (int i = 0; i < xconfig->plugins->data_count; i++)
+			{
+				if (strcmp(xconfig->plugins->data[i].string, ep->d_name) == 0)
+				{
+					state = TRUE;
+					break;
+				}
+			}
+			
+			GtkTreeIter iter;
+			gtk_list_store_append(GTK_LIST_STORE(store_plugin), &iter);
+			gtk_list_store_set(GTK_LIST_STORE(store_plugin), &iter, 
+												0, state,
+												1, (gchar *)module_info(),
+												2, ep->d_name,
+												-1);
+	
+			ep = readdir (dp);
+			dlclose(module);
+		}
+ 		(void) closedir (dp);
+	}
+	
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
@@ -1507,6 +1602,23 @@ gboolean save_popup(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, g
 	return FALSE;
 }
 
+gboolean save_plugin(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	gchar *string;
+	gboolean state = FALSE;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_plugin), iter, 0, &state, 2, &string, -1);
+	
+	if ((string != NULL) && state)
+	{
+		xconfig->plugins->add(xconfig->plugins, string);
+		g_free(string);
+	}
+	
+	return FALSE;
+}
+
 void xneur_save_preference(GladeXML *gxml)
 {
 	xconfig->clear(xconfig);
@@ -1543,7 +1655,7 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_popup), save_popup, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_hotkey), save_action, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_autocomplementation_exclude_app), save_autocomplementation_exclude_app, NULL);
-
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_plugin), save_plugin, NULL);
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton7");
 	xconfig->manual_mode = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

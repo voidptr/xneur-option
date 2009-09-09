@@ -221,7 +221,8 @@ static void xneur_reload(int status)
 
 	sound_uninit();
 	unbind_user_actions();
-
+	program->plugin->xneur_reload(program->plugin);
+	
 	if (xconfig != NULL)
 		xconfig->uninit(xconfig);
 
@@ -235,8 +236,11 @@ static void xneur_reload(int status)
 	xneur_load_config(TRUE);
 	xneur_init();
 	sound_init();
-
-	program->plugin->xneur_reload(program->plugin);
+	
+	for (int i=0; i<xconfig->plugins->data_count; i++)
+	{
+		program->plugin->add(program->plugin, xconfig->plugins->data[i].string);
+	}
 }
 
 static void xneur_usage(void)

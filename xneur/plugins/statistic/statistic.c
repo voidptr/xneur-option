@@ -529,6 +529,11 @@ int on_change_action(enum _change_action ca)
 	return (0);
 }
 
+char *on_plugin_info(void)
+{
+	return ("Xneur statistic plugin");
+}
+
 int on_fini(void)
 {
 	printf("[PLG] Plugin receive finalisation\n");

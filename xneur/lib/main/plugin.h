@@ -26,7 +26,7 @@
 
 struct _plugin_functions
 {
-	void * module;
+	void *module;
 
 	void (*on_init)(void);
 	void (*on_fini)(void);
@@ -41,6 +41,7 @@ struct _plugin_functions
 	void (*on_plugin_reload)(void);
 	void (*on_plugin_configure)(void);
 	void (*on_plugin_about)(void);
+	void (*on_plugin_info)(void);
 };
 
 struct _plugin
@@ -58,7 +59,8 @@ struct _plugin
 	void (*plugin_reload) (struct _plugin *p);
 	void (*plugin_configure) (struct _plugin *p);
 	void (*plugin_about) (struct _plugin *p);
-
+	void (*plugin_info)(struct _plugin *p);
+	
 	void (*add) (struct _plugin *p, char* plugin_name);
 	void (*uninit) (struct _plugin *p);
 };

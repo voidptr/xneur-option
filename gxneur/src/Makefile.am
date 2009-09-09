@@ -1,6 +1,7 @@
 INCLUDES = 	-DPACKAGE_PIXMAPS_DIR=\""@datadir@/gxneur/pixmaps"\" 	\
 		-DLOCALEDIR=\""@localedir@"\"				\
-		-DPACKAGE_GLADE_FILE_DIR=\""@datadir@/gxneur/glade"\"
+		-DPACKAGE_GLADE_FILE_DIR=\""@datadir@/gxneur/glade"\"	\
+		-DXNEUR_PLUGIN_DIR=\""@libdir@/xneur"\"
 
 bin_PROGRAMS = gxneur
 

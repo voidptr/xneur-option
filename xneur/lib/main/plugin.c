@@ -91,6 +91,9 @@ void plugin_add(struct _plugin *p, char* plugin_name)
 	p->plugin[p->plugin_count].on_plugin_about = NULL;
 	p->plugin[p->plugin_count].on_plugin_about = dlsym(p->plugin[p->plugin_count].module, "on_plugin_about");
 
+	p->plugin[p->plugin_count].on_plugin_info = NULL;
+	p->plugin[p->plugin_count].on_plugin_info = dlsym(p->plugin[p->plugin_count].module, "on_plugin_info");
+	
 	// Run init of plugin
 	p->plugin[p->plugin_count].on_init();
 	
@@ -182,7 +185,10 @@ void plugin_plugin_reload(struct _plugin *p)
 			continue;
 		
 		p->plugin[i].on_plugin_reload();
+		dlclose(p->plugin[i].module);
 	}
+	
+	free(p->plugin);
 }
 
 void plugin_plugin_configure(struct _plugin *p)
@@ -204,6 +210,17 @@ void plugin_plugin_about(struct _plugin *p)
 			continue;
 
 		p->plugin[i].on_plugin_about();
+	}
+}
+
+void plugin_plugin_info(struct _plugin *p)
+{
+	for (int i=0; i<p->plugin_count; i++)
+	{
+		if (p->plugin[i].on_plugin_info == NULL)
+			continue;
+
+		p->plugin[i].on_plugin_info();
 	}
 }
 
