@@ -27,28 +27,20 @@ msgstr "Xneur gestoppt"
 msgid "Execute user action"
 msgstr "Benutzerdefinierte Aktion ausführen"
 
-msgid "Flag pixmap for Layout 4"
-msgstr "Bild für die Flagge der Belegung 4"
-
-msgid "Flag pixmap for Layout 3"
-msgstr "Bild für die Flagge der Belegung 3"
-
-msgid "Flag pixmap for Layout 2"
-msgstr "Bild für die Flagge der Belegung 2"
-
-msgid "Flag pixmap for Layout 1"
-msgstr "Bild für die Flagge der Belegung 1"
-
-msgid "Keypress on Layout 1"
+#, fuzzy
+msgid "Keypress on layout 1"
 msgstr "Tastendruck bei der Belegung 1"
 
-msgid "Keypress on Layout 2"
+#, fuzzy
+msgid "Keypress on layout 2"
 msgstr "Tastendruck bei der Belegung 2"
 
-msgid "Keypress on Layout 3"
+#, fuzzy
+msgid "Keypress on layout 3"
 msgstr "Tastendruck bei der Belegung 3"
 
-msgid "Keypress on Layout 4"
+#, fuzzy
+msgid "Keypress on layout 4"
 msgstr "Tastendruck bei der Belegung 4"
 
 msgid "Correct word automatically"
@@ -75,6 +67,10 @@ msgstr "Markierten Text transliterieren"
 msgid "Change case of selected text"
 msgstr "Groß- bzw. Kleinschreibung des markierten Textes wechseln"
 
+#, fuzzy
+msgid "Calculate formula on selected text"
+msgstr "Groß- bzw. Kleinschreibung des markierten Textes wechseln"
+
 msgid "Correct clipboard text"
 msgstr ""
 
@@ -82,6 +78,9 @@ msgid "Transliterate clipboard text"
 msgstr ""
 
 msgid "Change case of clipboard text"
+msgstr ""
+
+msgid "Calculate formula on clipboard text"
 msgstr ""
 
 msgid "Rotate layouts"
@@ -398,6 +397,11 @@ msgstr "Verzögerung beim Senden von Ereignissen (in Millisekunden)"
 msgid "<b>Advanced</b>"
 msgstr "<b>Erweitert</b>"
 
+#: glade/config.glade:2148
+#, fuzzy
+msgid "<b>Plugins</b>"
+msgstr "<b>Anwendungen</b>"
+
 #: glade/list.glade:7
 msgid "File Editing"
 msgstr "Dateiverarbeitung"
@@ -479,6 +483,19 @@ msgstr "OSD-Text"
 msgid "Popup message text"
 msgstr ""
 
+#: src/misc.c:958
+#, fuzzy
+msgid "Enabled"
+msgstr "Klänge aktivieren"
+
+#: src/misc.c:967
+msgid "Description"
+msgstr ""
+
+#: src/misc.c:972
+msgid "File name"
+msgstr ""
+
 #: src/misc.c:982
 msgid "Abbreviation field is empty!"
 msgstr "Abkürzung ist leer!"
@@ -523,3 +540,15 @@ msgstr "X Neural Switcher gestoppt ("
 #: src/trayicon.c:195
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
+
+#~ msgid "Flag pixmap for Layout 4"
+#~ msgstr "Bild für die Flagge der Belegung 4"
+
+#~ msgid "Flag pixmap for Layout 3"
+#~ msgstr "Bild für die Flagge der Belegung 3"
+
+#~ msgid "Flag pixmap for Layout 2"
+#~ msgstr "Bild für die Flagge der Belegung 2"
+
+#~ msgid "Flag pixmap for Layout 1"
+#~ msgstr "Bild für die Flagge der Belegung 1"

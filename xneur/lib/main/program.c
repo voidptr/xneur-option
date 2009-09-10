@@ -364,6 +364,7 @@ static void program_process_input(struct _program *p)
 					p->event->event = p->event->default_event;
 					p->event->send_next_event(p->event);
 				}
+				p->update(p);
 				break;
 			}
 			case FocusIn:

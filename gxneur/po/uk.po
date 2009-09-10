@@ -29,28 +29,20 @@ msgstr "Xneur зупинено"
 msgid "Execute user action"
 msgstr "Виконати дію користувача"
 
-msgid "Flag pixmap for Layout 4"
-msgstr "Зображення прапора для розкладки 4"
-
-msgid "Flag pixmap for Layout 3"
-msgstr "Зображення прапора для розкладки 3"
-
-msgid "Flag pixmap for Layout 2"
-msgstr "Зображення прапора для розкладки 2"
-
-msgid "Flag pixmap for Layout 1"
-msgstr "Зображення прапора для розкладки 1"
-
-msgid "Keypress on Layout 1"
+#, fuzzy
+msgid "Keypress on layout 1"
 msgstr "Натискання клавіші при розкладці 1"
 
-msgid "Keypress on Layout 2"
+#, fuzzy
+msgid "Keypress on layout 2"
 msgstr "Натискання клавіші при розкладці 2"
 
-msgid "Keypress on Layout 3"
+#, fuzzy
+msgid "Keypress on layout 3"
 msgstr "Натискання клавіші при розкладці 3"
 
-msgid "Keypress on Layout 4"
+#, fuzzy
+msgid "Keypress on layout 4"
 msgstr "Натискання клавіші при розкладці 4"
 
 msgid "Correct word automatically"
@@ -77,6 +69,10 @@ msgstr "Транслітерація виділеного тексту"
 msgid "Change case of selected text"
 msgstr "Зміна регістру виділеного тексту"
 
+#, fuzzy
+msgid "Calculate formula on selected text"
+msgstr "Зміна регістру виділеного тексту"
+
 msgid "Correct clipboard text"
 msgstr ""
 
@@ -84,6 +80,9 @@ msgid "Transliterate clipboard text"
 msgstr ""
 
 msgid "Change case of clipboard text"
+msgstr ""
+
+msgid "Calculate formula on clipboard text"
 msgstr ""
 
 msgid "Rotate layouts"
@@ -417,6 +416,11 @@ msgstr "Затримка перед відправленням подій (в м
 msgid "<b>Advanced</b>"
 msgstr "<b>Додатково</b>"
 
+#: glade/config.glade:2148
+#, fuzzy
+msgid "<b>Plugins</b>"
+msgstr "<b>Програми</b>"
+
 #: glade/list.glade:7
 msgid "File Editing"
 msgstr "Редагування файлу"
@@ -497,6 +501,19 @@ msgstr "Екранний текст"
 msgid "Popup message text"
 msgstr ""
 
+#: src/misc.c:958
+#, fuzzy
+msgid "Enabled"
+msgstr "Ввімкнути звуки"
+
+#: src/misc.c:967
+msgid "Description"
+msgstr ""
+
+#: src/misc.c:972
+msgid "File name"
+msgstr ""
+
 #: src/misc.c:982
 msgid "Abbreviation field is empty!"
 msgstr "Поле скорочення незаповнене!"
@@ -541,3 +558,15 @@ msgstr "X Neural Switcher зупинений ("
 #: src/trayicon.c:195
 msgid "X Neural Switcher"
 msgstr "Перемикач X Neural"
+
+#~ msgid "Flag pixmap for Layout 4"
+#~ msgstr "Зображення прапора для розкладки 4"
+
+#~ msgid "Flag pixmap for Layout 3"
+#~ msgstr "Зображення прапора для розкладки 3"
+
+#~ msgid "Flag pixmap for Layout 2"
+#~ msgstr "Зображення прапора для розкладки 2"
+
+#~ msgid "Flag pixmap for Layout 1"
+#~ msgstr "Зображення прапора для розкладки 1"

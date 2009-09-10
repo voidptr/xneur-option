@@ -193,6 +193,7 @@ static int event_get_cur_modifiers_by_keysym(struct _event *p)
 static int event_get_next_event(struct _event *p)
 {
 	XNextEvent(main_window->display, &(p->event));
+	
 	return p->event.type;
 }
 

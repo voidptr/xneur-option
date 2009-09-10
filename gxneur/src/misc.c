@@ -114,9 +114,9 @@ static char *dirs[]					= {"be",
 
 static const char *notify_names[]			=   {
 										"Xneur started", "Xneur reloaded", "Xneur stopped",
-										"Keypress on Layout 1", "Keypress on Layout 2", "Keypress on Layout 3",
-										"Keypress on Layout 4", "Switch to Layout 1", "Switch to Layout 2",
-										"Switch to Layout 3", "Switch to Layout 4", "Correct word automatically",
+										"Keypress on layout 1", "Keypress on layout 2", "Keypress on layout 3",
+										"Keypress on layout 4", "Switch to layout 1", "Switch to layout 2",
+										"Switch to layout 3", "Switch to layout 4", "Correct word automatically",
 										"Correct word manually", "Correct last line", "Correct selected text",
 										"Transliterate selected text", "Change case of selected text", "Calculate formula on selected text",
 										"Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Calculate formula on clipboard text",

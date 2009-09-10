@@ -18,39 +18,27 @@ msgstr ""
 "X-Generator: Launchpad (build Unknown)\n"
 
 msgid "Xneur started"
-msgstr "Xneur запущен"
+msgstr "Запуск Xneur"
 
 msgid "Xneur reloaded"
-msgstr "Xneur перезагружен"
+msgstr "Перезагрузка Xneur"
 
 msgid "Xneur stopped"
-msgstr "Xneur остановлен"
+msgstr "Останов Xneur"
 
 msgid "Execute user action"
 msgstr "Выполнение пользовательского действия"
 
-msgid "Flag pixmap for Layout 4"
-msgstr "Рисунок флага для раскладки 4"
-
-msgid "Flag pixmap for Layout 3"
-msgstr "Рисунок флага для раскладки 3"
-
-msgid "Flag pixmap for Layout 2"
-msgstr "Рисунок флага для раскладки 2"
-
-msgid "Flag pixmap for Layout 1"
-msgstr "Рисунок флага для раскладки 1"
-
-msgid "Keypress on Layout 1"
+msgid "Keypress on layout 1"
 msgstr "Нажатие клавиши при раскладке 1"
 
-msgid "Keypress on Layout 2"
+msgid "Keypress on layout 2"
 msgstr "Нажатие клавиши при раскладке 2"
 
-msgid "Keypress on Layout 3"
+msgid "Keypress on layout 3"
 msgstr "Нажатие клавиши при раскладке 3"
 
-msgid "Keypress on Layout 4"
+msgid "Keypress on layout 4"
 msgstr "Нажатие клавиши при раскладке 4"
 
 msgid "Correct word automatically"
@@ -77,6 +65,9 @@ msgstr "Транслитерация выделеного текста"
 msgid "Change case of selected text"
 msgstr "Смена регистра выделеного текста"
 
+msgid "Calculate formula on selected text"
+msgstr "Рассчет формулы в выделеном тексте"
+
 msgid "Correct clipboard text"
 msgstr "Коррекция буфера обмена"
 
@@ -86,26 +77,29 @@ msgstr "Транслитерация буфера обмена"
 msgid "Change case of clipboard text"
 msgstr "Смена регистра буфера обмена"
 
+msgid "Calculate formula on clipboard text"
+msgstr "Рассчет формулы в  буфере обмена"
+
 msgid "Rotate layouts"
-msgstr "Переключить раскладку"
+msgstr "Переключение раскладки"
 
 msgid "Switch to layout 1"
-msgstr "Включить первую раскладку"
+msgstr "Включение первой раскладки"
 
 msgid "Switch to layout 2"
-msgstr "Включить вторую раскладку"
+msgstr "Включение второй раскладки"
 
 msgid "Switch to layout 3"
-msgstr "Включить третью раскладку"
+msgstr "Включение третьей раскладки"
 
 msgid "Switch to layout 4"
-msgstr "Включить четвертую раскладку"
+msgstr "Включение четвертой раскладки"
 
 msgid "Expand abbreviations"
 msgstr "Замена сокращений"
 
 msgid "Autocomplementation confirmation"
-msgstr "Подтвердить автодополнение"
+msgstr "Подтверждение автодополнения"
 
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
@@ -195,19 +189,19 @@ msgstr "Основное"
 
 #: glade/config.glade:154
 msgid "Correct aCCIDENTAL caps"
-msgstr "Исправлять сЛУЧАЙНЫЙ CapsLock"
+msgstr "Исправление сЛУЧАЙНОГО CapsLock"
 
 #: glade/config.glade:168
 msgid "Disable CapsLock use"
-msgstr "Отключить кнопку CapsLock"
+msgstr "Отключение кнопки CapsLock"
 
 #: glade/config.glade:182
 msgid "Correct TWo INitial caps"
-msgstr "Исправлять две ПРописные буквы"
+msgstr "Исправление двух ПРописных букв"
 
 #: glade/config.glade:196
 msgid "Correct spaces with punctuation"
-msgstr "Исправлять пробелы со знаками пунктуации"
+msgstr "Исправление пробелов со знаками пунктуации"
 
 #: glade/config.glade:216
 msgid "Typographics"
@@ -418,6 +412,10 @@ msgstr "Задержка перед отправкой событий (в мил
 msgid "<b>Advanced</b>"
 msgstr "<b>Специальное</b>"
 
+#: glade/config.glade:2148
+msgid "<b>Plugins</b>"
+msgstr "<b>Модули</b>"
+
 #: glade/list.glade:7
 msgid "File Editing"
 msgstr "Редактирование файла"
@@ -498,6 +496,18 @@ msgstr "Текст OSD"
 msgid "Popup message text"
 msgstr "Текст всплывающего сообщения"
 
+#: src/misc.c:958
+msgid "Enabled"
+msgstr "Включено"
+
+#: src/misc.c:967
+msgid "Description"
+msgstr "Описание"
+
+#: src/misc.c:972
+msgid "File name"
+msgstr "Имя файла"
+
 #: src/misc.c:982
 msgid "Abbreviation field is empty!"
 msgstr "Сокращение пусто!"
@@ -542,3 +552,4 @@ msgstr "X Neural Switcher остановлен ("
 #: src/trayicon.c:195
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
+

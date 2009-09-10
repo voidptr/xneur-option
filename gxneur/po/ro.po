@@ -29,28 +29,16 @@ msgstr "Xneur oprit"
 msgid "Execute user action"
 msgstr "Executa acțiune utilizatorului"
 
-msgid "Flag pixmap for Layout 4"
+msgid "Keypress on layout 1"
 msgstr ""
 
-msgid "Flag pixmap for Layout 3"
+msgid "Keypress on layout 2"
 msgstr ""
 
-msgid "Flag pixmap for Layout 2"
+msgid "Keypress on layout 3"
 msgstr ""
 
-msgid "Flag pixmap for Layout 1"
-msgstr ""
-
-msgid "Keypress on Layout 1"
-msgstr ""
-
-msgid "Keypress on Layout 2"
-msgstr ""
-
-msgid "Keypress on Layout 3"
-msgstr ""
-
-msgid "Keypress on Layout 4"
+msgid "Keypress on layout 4"
 msgstr ""
 
 msgid "Correct word automatically"
@@ -77,6 +65,10 @@ msgstr ""
 msgid "Change case of selected text"
 msgstr ""
 
+#, fuzzy
+msgid "Calculate formula on selected text"
+msgstr "Corecta textul selecționat"
+
 msgid "Correct clipboard text"
 msgstr ""
 
@@ -84,6 +76,9 @@ msgid "Transliterate clipboard text"
 msgstr ""
 
 msgid "Change case of clipboard text"
+msgstr ""
+
+msgid "Calculate formula on clipboard text"
 msgstr ""
 
 msgid "Rotate layouts"
@@ -417,6 +412,11 @@ msgstr ""
 msgid "<b>Advanced</b>"
 msgstr "<b>Avansat</b>"
 
+#: glade/config.glade:2148
+#, fuzzy
+msgid "<b>Plugins</b>"
+msgstr "<b>Aplicații</b>"
+
 #: glade/list.glade:7
 msgid "File Editing"
 msgstr "Editare"
@@ -489,6 +489,18 @@ msgstr ""
 
 #: src/misc.c:926
 msgid "Popup message text"
+msgstr ""
+
+#: src/misc.c:958
+msgid "Enabled"
+msgstr ""
+
+#: src/misc.c:967
+msgid "Description"
+msgstr ""
+
+#: src/misc.c:972
+msgid "File name"
 msgstr ""
 
 #: src/misc.c:982
