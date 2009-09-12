@@ -1492,7 +1492,7 @@ rvim
 s2p
 sane-find-scanner
 sas_disk_blink
-savelog
+LogSave
 scanimage
 scim
 scim-bridge

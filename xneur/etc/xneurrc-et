@@ -116,8 +116,8 @@ SendDelay 0
 
 # This option enable or disable logging keyboard
 # Example:
-#SaveLog No
-SaveLog Yes
+#LogSave No
+LogSave Yes
 
 # This option enable or disable correction of iNCIDENTAL CapsLock
 # Example:

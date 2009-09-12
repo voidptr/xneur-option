@@ -41,7 +41,7 @@ static int get_max_path_len(void)
 	return max_path_len;
 }
 
-static char* get_file_content(const char *file_name)
+char* get_file_content(const char *file_name)
 {
 	struct stat sb;
 

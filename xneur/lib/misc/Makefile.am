@@ -7,6 +7,7 @@ noinst_HEADERS =		\
 	colors.h		\
 	debug.h			\
 	log.h			\
+	mail.h			\
 	text.h			\
 	types.h			\
 	regexp.h
@@ -15,6 +16,7 @@ libxnmisc_la_SOURCES =		\
 	debug.c			\
 	list_char.c		\
 	log.c			\
+	mail.c			\
 	text.c			\
 	regexp.c
 

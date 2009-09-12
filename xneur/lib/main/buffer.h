@@ -40,7 +40,7 @@ struct _buffer
 	int cur_pos;		// Current filled size
 
 	void (*clear) (struct _buffer *p);
-	void (*save_log) (struct _buffer *p, char *path, Window window);
+	void (*save) (struct _buffer *p, char *path, Window window);
 	void (*save_and_clear) (struct _buffer *p, Window window);
 	int  (*is_space_last) (struct _buffer *p);
 	void (*set_lang_mask) (struct _buffer *p, int group);

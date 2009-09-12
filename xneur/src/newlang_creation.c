@@ -37,33 +37,6 @@
 
 extern struct _window *main_window;
 
-static char* get_file_content(const char *file_name)
-{
-	struct stat sb;
-
-	if (stat(file_name, &sb) != 0 || sb.st_size < 0)
-		return NULL;
-
-	FILE *stream = fopen(file_name, "rb");
-	if (stream == NULL)
-		return NULL;
-
-	unsigned int file_len = sb.st_size;
-
-	char *content = (char *) malloc((file_len + 2) * sizeof(char)); // + 1 '\0'
-	if (fread(content, 1, file_len, stream) != file_len)
-	{
-		free(content);
-		fclose(stream);
-		return NULL;
-	}
-
-	content[file_len] = '\0';
-	fclose(stream);
-
-	return content;
-}
-
 void generate_protos(void)
 {
 	printf("THIS OPTION FOR DEVELOPERS ONLY!\n");

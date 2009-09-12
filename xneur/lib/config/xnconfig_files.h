@@ -24,5 +24,6 @@ struct _list_char* load_list(const char *dir_name, const char *file_name, int so
 int   save_list(struct _list_char *list, const char *dir_name, const char *file_name);
 char* get_file_path_name(const char *dir_name, const char *file_name);
 char* get_home_file_path_name(const char *dir_name, const char *file_name);
+char* get_file_content(const char *file_name);
 
 #endif /* _CONFIG_FILES_H_ */

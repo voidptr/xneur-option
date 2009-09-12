@@ -20,6 +20,9 @@
 #include <X11/Xlocale.h>
 #include <X11/keysym.h>
 
+
+#include <sys/stat.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -38,6 +41,7 @@
 #include "text.h"
 #include "conversion.h"
 #include "log.h"
+#include "mail.h"
 
 #include "buffer.h"
 
@@ -77,38 +81,72 @@ static void buffer_set_uncaps_mask(struct _buffer *p)
 		p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~LockMask);
 }
 
-static void buffer_save_log(struct _buffer *p, char *file_name, Window window)
+static void buffer_save(struct _buffer *p, char *file_name, Window window)
 {
 	if (!xconfig->save_keyboard_log || p->cur_pos == 0 || file_name == NULL)
 		return;
 
+	int save = FALSE;
+	for (int i = 0; i < p->cur_pos; i++)
+		if (isgraph (p->content[i]))
+		{
+			save = TRUE;
+			break;
+		}
+	if (!save)
+		return;
+	
 	char *file_path_name = get_home_file_path_name(NULL, file_name);
+
+	time_t curtime = time(NULL);
+	struct tm *loctime = localtime(&curtime);
+	if (loctime == NULL)
+		return;
+	
+	char *buffer = malloc(256 * sizeof(char));
+	
+	// Check file size
+	struct stat sb;
+
+	if (stat(file_path_name, &sb) == 0 && sb.st_size > xconfig->size_keyboard_log)
+	{
+		strftime(buffer, 256, "%c", loctime);
+		int len = strlen(file_path_name) + strlen(buffer) + 3;
+		char *arch_file_path_name = malloc(len * sizeof (char));
+		snprintf(arch_file_path_name, len, "%s %s", file_path_name, buffer);
+
+		if (rename(file_path_name, arch_file_path_name) != 0)
+		{
+			log_message(ERROR, _("Can't move file!"));
+
+			free(arch_file_path_name);
+			return;
+		}
+		
+		send_mail(get_file_content(arch_file_path_name), xconfig->host_keyboard_log, xconfig->mail_keyboard_log);
+		free(arch_file_path_name);
+	}
+	//
+	
 	FILE *stream = fopen(file_path_name, "a");
 	free(file_path_name);
 	if (stream == NULL)
 		return;
 
+	strftime(buffer, 256, "%x", loctime);
+
 	if (window != last_log_window)
 	{
 		last_log_window = window;
 		char *app_name = get_wm_class_name(window);
-		fprintf(stream, "[%s]\n", app_name);
+		fprintf(stream, "\n[%s] [%s]\n", app_name, buffer);
 		free(app_name);
 	}
 
-	time_t curtime = time(NULL);
-	struct tm *loctime = localtime(&curtime);
-	if (loctime == NULL)
-	{
-		fclose(stream);
-		return;
-	}
-	
-	char *buffer = malloc(256 * sizeof(char));
-	strftime(buffer, 256, "%c", loctime);
+	strftime(buffer, 256, "%X", loctime);
 	fprintf(stream, "  (%s): ", buffer);
 	free(buffer);
-
+	
 	for (int i = 0; i < p->cur_pos; i++)
 	{
 		if (p->keycode[i] == 36)			// Return
@@ -320,7 +358,7 @@ static char *buffer_get_utf_string(struct _buffer *p)
 
 static void buffer_save_and_clear(struct _buffer *p, Window window)
 {
-	p->save_log(p, LOG_NAME, window);
+	p->save(p, LOG_NAME, window);
 	p->clear(p);
 }
 
@@ -385,7 +423,7 @@ struct _buffer* buffer_init(void)
 
 	// Functions mapping
 	p->clear		= buffer_clear;
-	p->save_log		= buffer_save_log;
+	p->save			= buffer_save;
 	p->save_and_clear	= buffer_save_and_clear;
 	p->is_space_last	= buffer_is_space_last;
 	p->set_lang_mask	= buffer_set_lang_mask;

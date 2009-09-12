@@ -36,6 +36,7 @@
 #define MAX_FLAGS			4
 #define MAX_NOTIFIES		26
 #define MAX_HOTKEYS			18
+#define MAX_LOG_SIZE		5000
 
 enum _flag_action
 {
@@ -192,7 +193,7 @@ struct _xneur_config
 	int   educate;					// Education xneur
 	int   remember_layout;				// Remember layout for each of window
 	int   save_selection;				// Save selection after convert
-	int   save_keyboard_log;			// Save keyboard log
+
 	int   correct_incidental_caps;			// Change iNCIDENTAL CapsLock
 	int   correct_two_capital_letter;		// Change two CApital letter
 	int   correct_space_with_punctuation;	// Correct spaces before punctuation
@@ -211,6 +212,11 @@ struct _xneur_config
 	int   show_popup;				// Show popups
 
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
+
+	int   save_keyboard_log;			// Save keyboard log
+	int   size_keyboard_log;			// Size keyboard log
+	char* mail_keyboard_log;
+	char* host_keyboard_log;
 	
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);

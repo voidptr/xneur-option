@@ -51,11 +51,12 @@ static const char *option_names[] = 	{
 						"DisableCapsLock", "CheckOnProcess", "SetAutoApp", "SetManualApp", "AutocomplementationExcludeApp",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
-						"SaveLog", "ReplaceAbbreviation",
+						"LogSave", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
 						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup", 
-	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocomplementation", "LoadModule"
+	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocomplementation", "LoadModule",
+						"LogSize", "LogMail", "LogHostIP"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -556,6 +557,23 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->plugins->add(p->plugins, full_string);
 			break;
 		}
+		case 36: // Log Size
+		{
+			p->size_keyboard_log = atoi (param);
+			if (p->size_keyboard_log > MAX_LOG_SIZE)
+				p->size_keyboard_log = MAX_LOG_SIZE;
+			break;
+		}
+		case 37: // Log E-Mail 
+		{
+			p->mail_keyboard_log = strdup (param);
+			break;
+		}
+		case 38: // Log host ip
+		{
+			p->host_keyboard_log = strdup (param);
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -964,8 +982,23 @@ static int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "# This option enable or disable logging keyboard\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#SaveLog No\n");
-	fprintf(stream, "SaveLog %s\n\n", p->get_bool_name(p->save_keyboard_log));
+	fprintf(stream, "#LogSave No\n");
+	fprintf(stream, "LogSave %s\n\n", p->get_bool_name(p->save_keyboard_log));
+
+	fprintf(stream, "# This option set max size of log file (bytes). No more 5000 bytes.\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#LogSize 5000\n");
+	fprintf(stream, "LogSize %d\n\n", p->size_keyboard_log);
+
+	fprintf(stream, "# This option define e-mail for send log file, if it's size greater then max size.\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#LogMail your.mail@your.server.com\n");
+	fprintf(stream, "LogMail %s\n\n", p->mail_keyboard_log);
+
+	fprintf(stream, "# This option define host to send e-mail without login and password.\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#LogHostIP 127.0.0.1\n");
+	fprintf(stream, "LogHostIP %s\n\n", p->host_keyboard_log);
 
 	fprintf(stream, "# This option enable or disable correction of iNCIDENTAL CapsLock\n");
 	fprintf(stream, "# Example:\n");
@@ -1210,6 +1243,9 @@ struct _xneur_config* xneur_config_init(void)
 	p->popups = (struct _xneur_file *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_file));
 	bzero(p->popups, MAX_NOTIFIES * sizeof(struct _xneur_file));
 
+	p->mail_keyboard_log = NULL;
+	p->host_keyboard_log = NULL;
+	
 	p->log_level			= LOG;
 	p->excluded_apps		= list_char_init();
 	p->auto_apps			= list_char_init();
