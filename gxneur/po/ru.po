@@ -432,6 +432,9 @@ msgstr "<b>Модули</b>"
 msgid "File Editing"
 msgstr "Редактирование файла"
 
+msgid "<b>Hotkeys</b>"
+msgstr "<b>Комбинации клавиш</b>"
+
 #: src/callbacks.c:188 src/misc.c:1717
 msgid "Press any key"
 msgstr "Нажмите любую клавишу"
@@ -564,6 +567,3 @@ msgstr "X Neural Switcher остановлен ("
 #: src/trayicon.c:195
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
-
-#~ msgid "<b>Hotkeys</b>"
-#~ msgstr "<b>Комбинации клавиш</b>"

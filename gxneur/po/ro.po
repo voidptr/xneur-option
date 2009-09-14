@@ -434,6 +434,10 @@ msgstr "<b>Aplicații</b>"
 msgid "File Editing"
 msgstr "Editare"
 
+#, fuzzy
+msgid "<b>Hotkeys</b>"
+msgstr "<b>Aplicații</b>"
+
 #: src/callbacks.c:188 src/misc.c:1717
 msgid "Press any key"
 msgstr ""

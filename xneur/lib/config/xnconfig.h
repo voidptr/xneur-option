@@ -36,7 +36,6 @@
 #define MAX_FLAGS			4
 #define MAX_NOTIFIES		26
 #define MAX_HOTKEYS			18
-#define MAX_LOG_SIZE		5000
 
 enum _flag_action
 {

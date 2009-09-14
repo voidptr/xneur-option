@@ -4,6 +4,7 @@ xnconfigdir = $(includedir)/xneur
 xnconfig_HEADERS = list_char.h
 
 noinst_HEADERS =		\
+	archiver.h		\
 	colors.h		\
 	debug.h			\
 	log.h			\
@@ -13,6 +14,7 @@ noinst_HEADERS =		\
 	regexp.h
 
 libxnmisc_la_SOURCES =		\
+	archiver.c		\
 	debug.c			\
 	list_char.c		\
 	log.c			\

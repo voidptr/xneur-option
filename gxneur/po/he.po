@@ -414,6 +414,9 @@ msgstr "<b>יישומים</b>"
 msgid "File Editing"
 msgstr "עריכת קבצים"
 
+msgid "<b>Hotkeys</b>"
+msgstr "<b>צירופי מקשים</b>"
+
 #: src/callbacks.c:188 src/misc.c:1717
 msgid "Press any key"
 msgstr "לחץ על מקש כלשהו"
@@ -545,9 +548,6 @@ msgstr "X המחליף העצבי הופסק ("
 #: src/trayicon.c:195
 msgid "X Neural Switcher"
 msgstr "X המחליף העצבי"
-
-#~ msgid "<b>Hotkeys</b>"
-#~ msgstr "<b>צירופי מקשים</b>"
 
 #~ msgid "Flag pixmap for Layout 4"
 #~ msgstr "סימון מפת סמלים לפריסה 4"

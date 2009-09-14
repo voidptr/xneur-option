@@ -395,6 +395,9 @@ msgstr ""
 msgid "File Editing"
 msgstr ""
 
+msgid "<b>Hotkeys</b>"
+msgstr ""
+
 #: src/callbacks.c:188 src/misc.c:1717
 msgid "Press any key"
 msgstr ""

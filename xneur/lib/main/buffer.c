@@ -20,7 +20,7 @@
 #include <X11/Xlocale.h>
 #include <X11/keysym.h>
 
-
+#include <pthread.h>
 #include <sys/stat.h>
 
 #include <stdlib.h>
@@ -42,6 +42,7 @@
 #include "conversion.h"
 #include "log.h"
 #include "mail.h"
+#include "archiver.h"
 
 #include "buffer.h"
 
@@ -81,6 +82,51 @@ static void buffer_set_uncaps_mask(struct _buffer *p)
 		p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~LockMask);
 }
 
+static void buffer_mail_and_archive(char *file_path_name)
+{
+	time_t curtime = time(NULL);
+	struct tm *loctime = localtime(&curtime);
+	if (loctime == NULL)
+		return;
+	
+	char *date = malloc(256 * sizeof(char));
+	char *time = malloc(256 * sizeof(char));
+	strftime(date, 256, "%x", loctime);
+	strftime(time, 256, "%X", loctime);
+		
+	int len = strlen(file_path_name) + strlen(date) + strlen(time) + 4;
+	char *arch_file_path_name = malloc(len * sizeof (char));
+	snprintf(arch_file_path_name, len, "%s %s %s", file_path_name, date, time);
+		
+	if (rename(file_path_name, arch_file_path_name) == 0)
+	{
+		// Send to e-mail
+		send_mail(get_file_content(arch_file_path_name), xconfig->host_keyboard_log, xconfig->mail_keyboard_log);
+		log_message(DEBUG, _("Sended log to e-mail %s via %s host"), xconfig->mail_keyboard_log, xconfig->host_keyboard_log);
+		
+		// Compress the file
+		char *gz_arch_file_path_name = malloc(len+3 * sizeof (char));
+		snprintf(gz_arch_file_path_name, len+3, "%s%s", arch_file_path_name, ".gz");
+	
+		FILE *source = fopen(arch_file_path_name, "r");
+		FILE *dest = fopen(gz_arch_file_path_name, "w");
+		if ((source != NULL) && (dest != NULL))
+			file_compress (source, dest);
+		if (source != NULL)
+			fclose (source);
+		if (dest != NULL)
+			fclose (dest);
+
+		// Remove uncompressed file
+		remove(arch_file_path_name);
+
+		log_message(DEBUG, _("Compressed old log file to %s"), gz_arch_file_path_name);
+
+		free(gz_arch_file_path_name);
+	}
+	free(arch_file_path_name);
+}
+
 static void buffer_save(struct _buffer *p, char *file_name, Window window)
 {
 	if (!xconfig->save_keyboard_log || p->cur_pos == 0 || file_name == NULL)
@@ -110,21 +156,14 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 
 	if (stat(file_path_name, &sb) == 0 && sb.st_size > xconfig->size_keyboard_log)
 	{
-		strftime(buffer, 256, "%c", loctime);
-		int len = strlen(file_path_name) + strlen(buffer) + 3;
-		char *arch_file_path_name = malloc(len * sizeof (char));
-		snprintf(arch_file_path_name, len, "%s %s", file_path_name, buffer);
+		pthread_attr_t mail_and_archive_thread_attr;
+		pthread_attr_init(&mail_and_archive_thread_attr);
+		pthread_attr_setdetachstate(&mail_and_archive_thread_attr, PTHREAD_CREATE_DETACHED);
 
-		if (rename(file_path_name, arch_file_path_name) != 0)
-		{
-			log_message(ERROR, _("Can't move file!"));
+		pthread_t mail_and_archive_thread;
+		pthread_create(&mail_and_archive_thread, &mail_and_archive_thread_attr, (void*) &buffer_mail_and_archive, file_path_name);
 
-			free(arch_file_path_name);
-			return;
-		}
-		
-		send_mail(get_file_content(arch_file_path_name), xconfig->host_keyboard_log, xconfig->mail_keyboard_log);
-		free(arch_file_path_name);
+		pthread_attr_destroy(&mail_and_archive_thread_attr);
 	}
 	//
 	

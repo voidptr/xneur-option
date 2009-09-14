@@ -419,6 +419,9 @@ msgstr "<b>Anwendungen</b>"
 msgid "File Editing"
 msgstr "Dateiverarbeitung"
 
+msgid "<b>Hotkeys</b>"
+msgstr "<b>Tastenkombinationen</b>"
+
 #: src/callbacks.c:188 src/misc.c:1717
 msgid "Press any key"
 msgstr "Beliebige Taste drücken"
@@ -553,9 +556,6 @@ msgstr "X Neural Switcher gestoppt ("
 #: src/trayicon.c:195
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
-
-#~ msgid "<b>Hotkeys</b>"
-#~ msgstr "<b>Tastenkombinationen</b>"
 
 #~ msgid "Flag pixmap for Layout 4"
 #~ msgstr "Bild für die Flagge der Belegung 4"

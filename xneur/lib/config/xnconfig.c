@@ -560,8 +560,6 @@ static void parse_line(struct _xneur_config *p, char *line)
 		case 36: // Log Size
 		{
 			p->size_keyboard_log = atoi (param);
-			if (p->size_keyboard_log > MAX_LOG_SIZE)
-				p->size_keyboard_log = MAX_LOG_SIZE;
 			break;
 		}
 		case 37: // Log E-Mail 

@@ -438,6 +438,9 @@ msgstr "<b>Програми</b>"
 msgid "File Editing"
 msgstr "Редагування файлу"
 
+msgid "<b>Hotkeys</b>"
+msgstr "<b>Поєднання клавіш</b>"
+
 #: src/callbacks.c:188 src/misc.c:1717
 msgid "Press any key"
 msgstr "Натисніть будь-яку клавішу"
@@ -571,9 +574,6 @@ msgstr "X Neural Switcher зупинений ("
 #: src/trayicon.c:195
 msgid "X Neural Switcher"
 msgstr "Перемикач X Neural"
-
-#~ msgid "<b>Hotkeys</b>"
-#~ msgstr "<b>Поєднання клавіш</b>"
 
 #~ msgid "Flag pixmap for Layout 4"
 #~ msgstr "Зображення прапора для розкладки 4"
