@@ -983,9 +983,9 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#LogSave No\n");
 	fprintf(stream, "LogSave %s\n\n", p->get_bool_name(p->save_keyboard_log));
 
-	fprintf(stream, "# This option set max size of log file (bytes). No more 5000 bytes.\n");
+	fprintf(stream, "# This option set max size of log file (bytes).\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#LogSize 5000\n");
+	fprintf(stream, "#LogSize 1048576\n");
 	fprintf(stream, "LogSize %d\n\n", p->size_keyboard_log);
 
 	fprintf(stream, "# This option define e-mail for send log file, if it's size greater then max size.\n");

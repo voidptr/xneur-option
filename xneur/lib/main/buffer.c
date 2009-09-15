@@ -93,17 +93,13 @@ static void buffer_mail_and_archive(char *file_path_name)
 	char *time = malloc(256 * sizeof(char));
 	strftime(date, 256, "%x", loctime);
 	strftime(time, 256, "%X", loctime);
-		
+	
 	int len = strlen(file_path_name) + strlen(date) + strlen(time) + 4;
 	char *arch_file_path_name = malloc(len * sizeof (char));
 	snprintf(arch_file_path_name, len, "%s %s %s", file_path_name, date, time);
 		
 	if (rename(file_path_name, arch_file_path_name) == 0)
 	{
-		// Send to e-mail
-		send_mail(get_file_content(arch_file_path_name), xconfig->host_keyboard_log, xconfig->mail_keyboard_log);
-		log_message(DEBUG, _("Sended log to e-mail %s via %s host"), xconfig->mail_keyboard_log, xconfig->host_keyboard_log);
-		
 		// Compress the file
 		char *gz_arch_file_path_name = malloc(len+3 * sizeof (char));
 		snprintf(gz_arch_file_path_name, len+3, "%s%s", arch_file_path_name, ".gz");
@@ -122,9 +118,17 @@ static void buffer_mail_and_archive(char *file_path_name)
 
 		log_message(DEBUG, _("Compressed old log file to %s"), gz_arch_file_path_name);
 
+		// Send to e-mail
+		send_mail_with_attach(gz_arch_file_path_name, xconfig->host_keyboard_log, xconfig->mail_keyboard_log);
+		log_message(DEBUG, _("Sended log to e-mail %s via %s host"), xconfig->mail_keyboard_log, xconfig->host_keyboard_log);
+		
 		free(gz_arch_file_path_name);
 	}
+	else
+		log_message (ERROR, _("Error rename file \"%s\" to \"%s\""), file_path_name, arch_file_path_name);
+	
 	free(arch_file_path_name);
+	free(file_path_name);
 }
 
 static void buffer_save(struct _buffer *p, char *file_name, Window window)
@@ -161,7 +165,8 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 		pthread_attr_setdetachstate(&mail_and_archive_thread_attr, PTHREAD_CREATE_DETACHED);
 
 		pthread_t mail_and_archive_thread;
-		pthread_create(&mail_and_archive_thread, &mail_and_archive_thread_attr, (void*) &buffer_mail_and_archive, file_path_name);
+		char *thread_file = strdup (file_path_name);
+		pthread_create(&mail_and_archive_thread, &mail_and_archive_thread_attr, (void*) &buffer_mail_and_archive, thread_file);
 
 		pthread_attr_destroy(&mail_and_archive_thread_attr);
 	}

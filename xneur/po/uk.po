@@ -540,14 +540,29 @@ msgstr ""
 msgid "Sorting error: %s > %s"
 msgstr ""
 
-#: lib/misc/mail.c:66
+#: lib/misc/mail.c:115
 msgid "Unable open socket!"
 msgstr ""
 
-#: lib/misc/mail.c:72
+#: lib/misc/mail.c:121
 #, fuzzy, c-format
 msgid "Unable to connect to %s"
 msgstr "Ручний режим встановлено для %s"
+
+#: lib/misc/mail.c:128
+#, fuzzy, c-format
+msgid "Can't get state of file \"%s\""
+msgstr "Не можу створити файл %s"
+
+#: lib/misc/mail.c:135
+#, fuzzy, c-format
+msgid "Can't open to read file \"%s\""
+msgstr "Не можу створити файл %s"
+
+#: lib/misc/mail.c:192
+#, c-format
+msgid "Mail server return Error %d"
+msgstr ""
 
 #: lib/misc/regexp.c:47
 #, c-format
@@ -618,17 +633,22 @@ msgid ""
 "(64)):"
 msgstr ""
 
-#: lib/main/buffer.c:105
-#, c-format
-msgid "Sended log to e-mail %s via %s host"
-msgstr ""
-
-#: lib/main/buffer.c:123
+#: lib/main/buffer.c:119
 #, c-format
 msgid "Compressed old log file to %s"
 msgstr ""
 
-#: lib/main/buffer.c:437
+#: lib/main/buffer.c:123
+#, c-format
+msgid "Sended log to e-mail %s via %s host"
+msgstr ""
+
+#: lib/main/buffer.c:128
+#, c-format
+msgid "Error rename file \"%s\" to \"%s\""
+msgstr ""
+
+#: lib/main/buffer.c:442
 msgid "String is freed"
 msgstr ""
 
