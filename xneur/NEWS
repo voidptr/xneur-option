@@ -1,3 +1,9 @@
+September 16 2009:
+Version 0.9.6 released.
+Add option to send archived log to e-mail
+Add plugins system and plugin for xneur statistic.
+Bug fix for numeric keyboard
+
 August 04 2009:
 Version 0.9.5 released.
 Add lock to Caps
