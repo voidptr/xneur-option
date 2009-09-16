@@ -545,19 +545,19 @@ msgid "Unable open socket!"
 msgstr ""
 
 #: lib/misc/mail.c:121
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to %s"
-msgstr "Ручний режим встановлено для %s"
+msgstr ""
 
 #: lib/misc/mail.c:128
-#, fuzzy, c-format
+#, c-format
 msgid "Can't get state of file \"%s\""
-msgstr "Не можу створити файл %s"
+msgstr ""
 
 #: lib/misc/mail.c:135
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open to read file \"%s\""
-msgstr "Не можу створити файл %s"
+msgstr ""
 
 #: lib/misc/mail.c:192
 #, c-format

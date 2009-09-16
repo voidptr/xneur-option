@@ -29,19 +29,15 @@ msgstr "Xneur зупинено"
 msgid "Execute user action"
 msgstr "Виконати дію користувача"
 
-#, fuzzy
 msgid "Keypress on layout 1"
 msgstr "Натискання клавіші при розкладці 1"
 
-#, fuzzy
 msgid "Keypress on layout 2"
 msgstr "Натискання клавіші при розкладці 2"
 
-#, fuzzy
 msgid "Keypress on layout 3"
 msgstr "Натискання клавіші при розкладці 3"
 
-#, fuzzy
 msgid "Keypress on layout 4"
 msgstr "Натискання клавіші при розкладці 4"
 
@@ -69,9 +65,8 @@ msgstr "Транслітерація виділеного тексту"
 msgid "Change case of selected text"
 msgstr "Зміна регістру виділеного тексту"
 
-#, fuzzy
 msgid "Calculate formula on selected text"
-msgstr "Зміна регістру виділеного тексту"
+msgstr ""
 
 msgid "Correct clipboard text"
 msgstr ""
@@ -399,9 +394,8 @@ msgid "Log file size in bytes"
 msgstr ""
 
 #: glade/config.glade:2123
-#, fuzzy
 msgid "<b>Log</b>"
-msgstr "<b>Розкладки</b>"
+msgstr ""
 
 #: glade/config.glade:2149
 msgid ""
@@ -430,9 +424,8 @@ msgid "<b>Advanced</b>"
 msgstr "<b>Додатково</b>"
 
 #: glade/config.glade:2278
-#, fuzzy
 msgid "<b>Plugins</b>"
-msgstr "<b>Програми</b>"
+msgstr ""
 
 #: glade/list.glade:7
 msgid "File Editing"
@@ -518,7 +511,6 @@ msgid "Popup message text"
 msgstr ""
 
 #: src/misc.c:958
-#, fuzzy
 msgid "Enabled"
 msgstr "Ввімкнути звуки"
 

@@ -29,19 +29,15 @@ msgstr ""
 msgid "Execute user action"
 msgstr ""
 
-#, fuzzy
 msgid "Keypress on layout 1"
 msgstr "לחץ על מקש בפריסה 1"
 
-#, fuzzy
 msgid "Keypress on layout 2"
 msgstr "לחץ על מקש בפריסה 2"
 
-#, fuzzy
 msgid "Keypress on layout 3"
 msgstr "לחץ על מקש בפריסה 3"
 
-#, fuzzy
 msgid "Keypress on layout 4"
 msgstr "לחץ על מקש בפריסה 4"
 
@@ -69,9 +65,8 @@ msgstr "שעתק את הטקסט הנבחר"
 msgid "Change case of selected text"
 msgstr "שנה את הרישיות של הטקסט הנבחר"
 
-#, fuzzy
 msgid "Calculate formula on selected text"
-msgstr "שנה את הרישיות של הטקסט הנבחר"
+msgstr ""
 
 msgid "Correct clipboard text"
 msgstr ""
@@ -380,9 +375,8 @@ msgid "Log file size in bytes"
 msgstr ""
 
 #: glade/config.glade:2123
-#, fuzzy
 msgid "<b>Log</b>"
-msgstr "<b>פריסות</b>"
+msgstr ""
 
 #: glade/config.glade:2149
 msgid ""
@@ -406,9 +400,8 @@ msgid "<b>Advanced</b>"
 msgstr "<b>מתקדם</b>"
 
 #: glade/config.glade:2278
-#, fuzzy
 msgid "<b>Plugins</b>"
-msgstr "<b>יישומים</b>"
+msgstr ""
 
 #: glade/list.glade:7
 msgid "File Editing"
@@ -492,9 +485,8 @@ msgid "Popup message text"
 msgstr ""
 
 #: src/misc.c:958
-#, fuzzy
 msgid "Enabled"
-msgstr "השמע צלילים"
+msgstr ""
 
 #: src/misc.c:967
 msgid "Description"

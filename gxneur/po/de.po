@@ -27,19 +27,15 @@ msgstr "Xneur gestoppt"
 msgid "Execute user action"
 msgstr "Benutzerdefinierte Aktion ausführen"
 
-#, fuzzy
 msgid "Keypress on layout 1"
 msgstr "Tastendruck bei der Belegung 1"
 
-#, fuzzy
 msgid "Keypress on layout 2"
 msgstr "Tastendruck bei der Belegung 2"
 
-#, fuzzy
 msgid "Keypress on layout 3"
 msgstr "Tastendruck bei der Belegung 3"
 
-#, fuzzy
 msgid "Keypress on layout 4"
 msgstr "Tastendruck bei der Belegung 4"
 
@@ -67,9 +63,8 @@ msgstr "Markierten Text transliterieren"
 msgid "Change case of selected text"
 msgstr "Groß- bzw. Kleinschreibung des markierten Textes wechseln"
 
-#, fuzzy
 msgid "Calculate formula on selected text"
-msgstr "Groß- bzw. Kleinschreibung des markierten Textes wechseln"
+msgstr ""
 
 msgid "Correct clipboard text"
 msgstr ""
@@ -380,9 +375,8 @@ msgid "Log file size in bytes"
 msgstr ""
 
 #: glade/config.glade:2123
-#, fuzzy
 msgid "<b>Log</b>"
-msgstr "<b>Belegungen</b>"
+msgstr ""
 
 #: glade/config.glade:2149
 msgid ""
@@ -411,9 +405,8 @@ msgid "<b>Advanced</b>"
 msgstr "<b>Erweitert</b>"
 
 #: glade/config.glade:2278
-#, fuzzy
 msgid "<b>Plugins</b>"
-msgstr "<b>Anwendungen</b>"
+msgstr ""
 
 #: glade/list.glade:7
 msgid "File Editing"
@@ -500,9 +493,8 @@ msgid "Popup message text"
 msgstr ""
 
 #: src/misc.c:958
-#, fuzzy
 msgid "Enabled"
-msgstr "Klänge aktivieren"
+msgstr ""
 
 #: src/misc.c:967
 msgid "Description"

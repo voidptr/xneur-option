@@ -65,9 +65,8 @@ msgstr ""
 msgid "Change case of selected text"
 msgstr ""
 
-#, fuzzy
 msgid "Calculate formula on selected text"
-msgstr "Corecta textul selecționat"
+msgstr ""
 
 msgid "Correct clipboard text"
 msgstr ""
@@ -395,9 +394,8 @@ msgid "Log file size in bytes"
 msgstr ""
 
 #: glade/config.glade:2123
-#, fuzzy
 msgid "<b>Log</b>"
-msgstr "<b>Aplicații</b>"
+msgstr ""
 
 #: glade/config.glade:2149
 msgid ""
@@ -426,17 +424,15 @@ msgid "<b>Advanced</b>"
 msgstr "<b>Avansat</b>"
 
 #: glade/config.glade:2278
-#, fuzzy
 msgid "<b>Plugins</b>"
-msgstr "<b>Aplicații</b>"
+msgstr ""
 
 #: glade/list.glade:7
 msgid "File Editing"
 msgstr "Editare"
 
-#, fuzzy
 msgid "<b>Hotkeys</b>"
-msgstr "<b>Aplicații</b>"
+msgstr ""
 
 #: src/callbacks.c:188 src/misc.c:1717
 msgid "Press any key"
