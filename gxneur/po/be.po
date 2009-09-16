@@ -30,7 +30,6 @@ msgstr "Xneur астаноўлены"
 msgid "Execute user action"
 msgstr "Выканаць дзеяньне юзера"
 
-
 msgid "Keypress on layout 1"
 msgstr "Націсканьне клявішы (раскладка 1)"
 
