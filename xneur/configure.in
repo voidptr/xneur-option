@@ -19,7 +19,13 @@ PKG_PROG_PKG_CONFIG([0.20])
 AM_GNU_GETTEXT_VERSION([0.16.1])
 AM_GNU_GETTEXT([external])
 
-AC_CHECK_HEADERS([sys/io.h, zlib.h])
+AC_CHECK_HEADERS([sys/io.h])
+
+AC_CHECK_HEADERS([zlib.h], found_z="yes", found_z="no")
+if test "x$found_z" != "xno"; then
+	Z_LIBS="-lz"
+	AC_SUBST(Z_LIBS)
+fi
 
 PKG_CHECK_MODULES(X11, [x11 >= 1.1], found_x11="yes", found_x11="no")
 if test "x$found_x11" = "xno"; then
