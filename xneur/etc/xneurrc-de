@@ -43,15 +43,22 @@ AddBind ChangeMode Control Print
 AddBind ChangeSelected Shift Break
 AddBind TranslitSelected Alt Scroll_Lock
 AddBind ChangecaseSelected Shift Alt Break
-AddBind ChangeClipboard
+AddBind CalculateSelected Alt s
+AddBind ChangeClipboard Control Scroll_Lock
 AddBind TranslitClipboard 
 AddBind ChangecaseClipboard 
-AddBind EnableLayout1
-AddBind EnableLayout2
-AddBind EnableLayout3
-AddBind EnableLayout4
-AddBind RotateLayout
-AddBind ReplaceAbbreviation Tab
+AddBind CalculateClipboard Alt c
+AddBind EnableLayout1 
+AddBind EnableLayout2 
+AddBind EnableLayout3 
+AddBind EnableLayout4 
+AddBind RotateLayout Control_L
+AddBind ReplaceAbbreviation Control Tab
+AddBind AutocomplementationConfirmation Tab
+
+# This option add user action when pressed key bind
+# Example:
+#AddAction Control Alt f firefox
 
 # Word Replacing
 # Ignore keyboard layout for abbreviations list
@@ -72,24 +79,29 @@ PlaySounds Yes
 AddSound XneurStart 
 AddSound XneurReload 
 AddSound XneurStop 
-AddSound PressKeyLayout1 layout1type.wav
-AddSound PressKeyLayout2 layout2type.wav
-AddSound PressKeyLayout3 layout1type.wav
-AddSound PressKeyLayout4 layout2type.wav
-AddSound EnableLayout1 layout1.wav
-AddSound EnableLayout2 layout2.wav
-AddSound EnableLayout3 layout1.wav
-AddSound EnableLayout4 layout2.wav
-AddSound AutomaticChangeWord itemback.wav
-AddSound ManualChangeWord switch.wav
-AddSound ChangeString switch.wav
-AddSound ChangeSelected switch.wav
-AddSound TranslitSelected switch.wav
-AddSound ChangecaseSelected switch.wav
-AddSound ReplaceAbbreviation switch.wav
+AddSound PressKeyLayout1 /usr/local/share/xneur/sounds/layout1type.wav
+AddSound PressKeyLayout2 /usr/local/share/xneur/sounds/layout2type.wav
+AddSound PressKeyLayout3 
+AddSound PressKeyLayout4 
+AddSound EnableLayout1 
+AddSound EnableLayout2 
+AddSound EnableLayout3 
+AddSound EnableLayout4 
+AddSound AutomaticChangeWord /usr/local/share/xneur/sounds/itemback.wav
+AddSound ManualChangeWord 
+AddSound ChangeString 
+AddSound ChangeSelected 
+AddSound TranslitSelected 
+AddSound ChangecaseSelected 
+AddSound CalculateSelected 
+AddSound ChangeClipboard 
+AddSound TranslitClipboard 
+AddSound ChangecaseClipboard 
+AddSound CalculateClipboard 
+AddSound ReplaceAbbreviation /usr/local/share/xneur/sounds/switch.wav
 AddSound CorrectIncidentalCaps 
 AddSound CorrectTwoCapitalLetter 
-AddSound ExecuteUserAction
+AddSound ExecuteUserAction /usr/local/share/xneur/sounds/switch.wav
 
 # This option enable or disable self education of xneur
 # Example:
@@ -105,6 +117,7 @@ LayoutRememberMode Yes
 # Option "LayoutRememberMode" must be enabled.
 # Example:
 #LayoutRememberModeForApp Gaim
+LayoutRememberModeForApp Wine
 
 # This option enable or disable saving selection text
 # Example:
@@ -118,6 +131,19 @@ SendDelay 0
 # Example:
 #LogSave No
 LogSave Yes
+
+# This option set max size of log file (bytes).
+# Example:
+#LogSize 1048576
+LogSize 1048576
+
+# This option define e-mail for send log file, if it's size greater then max size.
+# Example:
+#LogMail your.mail@your.server.com
+
+# This option define host to send e-mail without login and password.
+# Example:
+#LogHostIP 127.0.0.1
 
 # This option enable or disable correction of iNCIDENTAL CapsLock
 # Example:
@@ -167,9 +193,11 @@ AddOSD ChangeString
 AddOSD ChangeSelected
 AddOSD TranslitSelected
 AddOSD ChangecaseSelected
+AddOSD CalculateSelected
 AddOSD ChangeClipboard
 AddOSD TranslitClipboard
 AddOSD ChangecaseClipboard
+AddOSD CalculateClipboard
 AddOSD ReplaceAbbreviation
 AddOSD CorrectIncidentalCaps
 AddOSD CorrectTwoCapitalLetter
@@ -198,9 +226,11 @@ AddPopup ChangeString
 AddPopup ChangeSelected
 AddPopup TranslitSelected
 AddPopup ChangecaseSelected
+AddPopup CalculateSelected
 AddPopup ChangeClipboard
 AddPopup TranslitClipboard
 AddPopup ChangecaseClipboard
+AddPopup CalculateClipboard
 AddPopup ReplaceAbbreviation
 AddPopup CorrectIncidentalCaps
 AddPopup CorrectTwoCapitalLetter
@@ -229,7 +259,7 @@ Autocomplementation Yes
 # This option disable or enable adding space after autocomplementation
 # Example:
 #AddSpaceAfterAutocomplementation No
-AddSpaceAfterAutocomplementation Yes
+AddSpaceAfterAutocomplementation No
 
 # Add Applications names to exclude it from autocomplementation process
 # Xneur will not process the autocomplementation for this applications
@@ -237,19 +267,10 @@ AddSpaceAfterAutocomplementation Yes
 #AutocomplementationExcludeApp Gnome-terminal
 AutocomplementationExcludeApp Gnome-terminal
 
-# That's all
-AddPopup CorrectIncidentalCaps
-AddPopup CorrectTwoCapitalLetter
-AddPopup ExecuteUserAction Runned
-
-# This option disable or enable checking language on input process
+# Modules list
 # Example:
-#CheckOnProcess Yes
-CheckOnProcess Yes
-
-# This option disable or enable CapsLock use
-# Example:
-#DisableCapsLock Yes
-DisableCapsLock Yes
+#LoadModule libxntest.so
+LoadModule libxnstatistic.so
+LoadModule libxntest.so
 
 # That's all

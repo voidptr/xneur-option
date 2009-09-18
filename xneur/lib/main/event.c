@@ -182,9 +182,9 @@ static int event_get_cur_modifiers_by_keysym(struct _event *p)
 		mask += (1 << 4);
 	if (key_sym == XK_Num_Lock)
 		mask += (1 << 5);
-	if (key_sym == XK_Hyper_L || key_sym == XK_Hyper_R)
-		mask += (1 << 6);
 	if (key_sym == XK_Super_L || key_sym == XK_Super_R)
+		mask += (1 << 6);
+	if (key_sym == XK_Hyper_L || key_sym == XK_Hyper_R)
 		mask += (1 << 7);
 
 	return mask;

@@ -120,6 +120,15 @@ This option enable or disable logging keyboard. Log places in ~/.xneur/xneurlog
 
 Here, <param> takes the values "Yes", "No". 
 .TP 8
+.B LogSize <bytes>
+This option set max size of log file (bytes)
+.TP 8
+.B LogMail <e-mail>
+This option define e-mail for send log file, if it's size greater then max size
+.TP 8
+.B LogHostIP <ip>
+This option define ip of host to send e-mail without login and password.
+.TP 8
 .B CorrectIncidentalCaps <param>
 This option enable or disable correction of iNCIDENTAL CapsLock.
 
@@ -204,6 +213,11 @@ Defines an application, in which the program will exclude it from autocomplement
 Here, <app_name> is an identifier of the program window, input in which is processed by xneur.
 app_name can be obtained with the xprop utility.
 Multiple entries for this option in a single configuration file are allowed, like "one program - one option AutocomplementationExcludeApp". 
+.TP 8
+.B LoadModule <module.so>
+This option define loadable plugin for xneur.
+
+Here, <module.so> is name of shared library.
 
 
 
