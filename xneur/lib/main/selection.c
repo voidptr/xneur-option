@@ -13,14 +13,19 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2009 XNeur Team
+ *  Copyright (C) 2006-2008 XNeur Team
  *
  */
+
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 
 #include <X11/Xatom.h>
 
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 
 #include "window.h"
 
@@ -32,7 +37,7 @@
 
 extern struct _window *main_window;
 
-char* get_selected_text(XSelectionEvent *event)
+/*char* get_selected_text(XSelectionEvent *event)
 {
 	if (event->property == None)
 	{
@@ -115,4 +120,151 @@ void do_selection_notify(enum _selection_type sel_type)
 		log_message(ERROR, _("Failed to convert selection with error BadAtom"));
 	else if (status == BadWindow)
 		log_message(ERROR, _("Failed to convert selection with error BadWindow"));
+}*/
+
+static Display * display;
+static Window window;
+
+static Atom utf8_atom;
+static Atom compound_text_atom;
+
+static unsigned char *wait_selection (Atom selection)
+{
+	XEvent event;
+	Atom target;
+
+	int format;
+	unsigned long bytesafter, length;
+	unsigned char * value, * retval = NULL;
+	int keep_waiting = True;
+
+	while (keep_waiting) 
+	{
+		XNextEvent (display, &event);
+
+		switch (event.type) 
+		{
+			case SelectionNotify:
+				if (event.xselection.selection != selection) 
+					break;
+
+				if (event.xselection.property == None) 
+				{
+					log_message(WARNING, _("Conversion refused"));
+					value = NULL;
+					keep_waiting = False;
+				} 
+				else 
+				{
+					XGetWindowProperty (event.xselection.display,
+						event.xselection.requestor,
+						event.xselection.property, 0L, 1000000,
+						False, (Atom)AnyPropertyType, &target, &format, &length, &bytesafter, &value);
+
+					if (target != utf8_atom && target != XA_STRING && target != compound_text_atom) 
+					{
+						/* Report non-TEXT atoms */
+						log_message(WARNING, _("Selection is not a string."));
+						free (retval);
+						retval = NULL;
+						keep_waiting = False;
+					} 
+					else 
+					{
+						retval = (unsigned char *)strdup ((char *)value);
+						XFree (value);
+						keep_waiting = False;
+					}
+
+					XDeleteProperty (event.xselection.display, event.xselection.requestor, event.xselection.property);
+		    	}
+				break;
+    		default:
+     			 break;
+    	}
+	}
+	return retval;
+}
+
+static Time get_timestamp (void)
+{
+  XEvent event;
+
+  XChangeProperty (display, window, XA_WM_NAME, XA_STRING, 8,
+                   PropModeAppend, NULL, 0);
+
+  while (1) {
+    XNextEvent (display, &event);
+
+    if (event.type == PropertyNotify)
+      return event.xproperty.time;
+  }
+}
+
+static unsigned char *get_selection (Atom selection, Atom request_target)
+{
+	Atom prop;
+	unsigned char * retval;
+
+	Window root;
+	int black;
+	display = XOpenDisplay (NULL);
+	if (display == NULL)
+		return NULL;
+	root = XDefaultRootWindow (display);
+  
+	//Create an unmapped window for receiving events
+	black = BlackPixel (display, DefaultScreen (display));
+	window = XCreateSimpleWindow (display, root, 0, 0, 1, 1, 0, black, black);
+
+	log_message(WARNING, _("Selection Window id: 0x%x (unmapped)"), window);
+
+	// Get a timestamp 
+	XSelectInput (display, window, PropertyChangeMask);
+	
+	prop = XInternAtom (display, "XSEL_DATA", False);
+	Time timestamp = get_timestamp ();
+	XConvertSelection (display, selection, request_target, prop, window, timestamp);
+	XSync (display, False);
+
+	retval = wait_selection (selection);
+
+	XDestroyWindow(display, window);
+	XCloseDisplay(display);
+	
+	return retval;
+}
+
+unsigned char *get_selection_text (enum _selection_type sel_type)
+{
+	log_message(ERROR, "FUNCTION NEW!");
+	char *sel_name = "NONE";
+	switch (sel_type)
+	{
+		case SELECTION_PRIMARY:
+		{
+			sel_name = "PRIMARY";
+			break;
+		}
+		case SELECTION_SECONDARY:
+		{
+			sel_name = "SECONDARY";
+			break;
+		}
+		case SELECTION_CLIPBOARD:
+		{
+			sel_name = "CLIPBOARD";
+			break;
+		}
+	}
+	Atom selection = XInternAtom(main_window->display, sel_name, FALSE);
+
+	utf8_atom = XInternAtom (display, "UTF8_STRING", True);
+	compound_text_atom = XInternAtom (display, "COMPOUND_TEXT", False);
+	
+	unsigned char * retval;
+	if ((retval = get_selection (selection, utf8_atom)) == NULL)
+		retval = get_selection (selection, XA_STRING);
+
+	return retval;
 }

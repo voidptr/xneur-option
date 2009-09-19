@@ -470,8 +470,11 @@ static void program_change_two_capital_letter(struct _program *p)
 static void program_process_selection_notify(struct _program *p)
 {
 	char *event_text = NULL;
-	event_text = get_selected_text(&p->event->event.xselection);
-
+	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
+		event_text = (char *)get_selection_text(SELECTION_PRIMARY);
+	else if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
+		event_text = (char *)get_selection_text(SELECTION_CLIPBOARD);
+		
 	if (event_text == NULL)
 	{
 		p->selected_mode = ACTION_NONE;
@@ -616,12 +619,12 @@ static void program_process_selection_notify(struct _program *p)
 
 	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
 	{
-		on_selection_converted(SELECTION_PRIMARY);
+		//on_selection_converted(SELECTION_PRIMARY);
 		if (xconfig->save_selection)
 			p->event->send_selection(p->event, p->buffer->cur_pos);
 	}
-	if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
-		on_selection_converted(SELECTION_PRIMARY);
+	//if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
+		//on_selection_converted(SELECTION_PRIMARY);
 
 	p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
@@ -898,7 +901,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_CALC_SELECTED:
 		{
 			p->selected_mode = action;
-			do_selection_notify(SELECTION_PRIMARY);
+			//do_selection_notify(SELECTION_PRIMARY);
+			p->process_selection_notify(p);
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
 		}
@@ -908,7 +912,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_CALC_CLIPBOARD:
 		{
 			p->selected_mode = action;
-			do_selection_notify(SELECTION_CLIPBOARD);
+			//do_selection_notify(SELECTION_CLIPBOARD);
+			p->process_selection_notify(p);
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
 		}

@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2009 XNeur Team
+ *  Copyright (C) 2006-2008 XNeur Team
  *
  */
 
@@ -27,8 +27,10 @@ enum _selection_type
 	SELECTION_CLIPBOARD,
 };
 
-char* get_selected_text(XSelectionEvent *event);
+/*char* get_selected_text(XSelectionEvent *event);
 void  on_selection_converted(enum _selection_type sel_type);
-void  do_selection_notify(enum _selection_type sel_type);
+void  do_selection_notify(enum _selection_type sel_type);*/
+
+unsigned char *get_selection_text (enum _selection_type sel_type);
 
 #endif /* _SELECTION_H_ */
