@@ -35,93 +35,6 @@
 
 #include "selection.h"
 
-extern struct _window *main_window;
-
-/*char* get_selected_text(XSelectionEvent *event)
-{
-	if (event->property == None)
-	{
-		log_message(DEBUG, _("Convert to selection target return None answer"));
-		return NULL;
-	}
-
-	unsigned long len, bytes_left, dummy;
-	unsigned char *data = NULL;
-	int format;
-	Atom type;
-
-	XGetWindowProperty(main_window->display, main_window->window, event->property, 0, 0, 0, AnyPropertyType, &type, &format, &len, &bytes_left, &data);
-	if (bytes_left == 0)
-	{
-		log_message(DEBUG, _("Selected text length is 0"));
-		return NULL;
-	}
-
-	if (XGetWindowProperty(main_window->display, main_window->window, event->property, 0, bytes_left, 0, AnyPropertyType, &type,&format, &len, &dummy, &data) != Success)
-	{
-		log_message(ERROR, _("Failed to get selected text data"));
-		return NULL;
-	}
-
-	return (char *) data;
-}
-
-void on_selection_converted(enum _selection_type sel_type)
-{
-	char *sel_name = "NONE";
-	switch (sel_type)
-	{
-		case SELECTION_PRIMARY:
-		{
-			sel_name = "PRIMARY";
-			break;
-		}
-		case SELECTION_SECONDARY:
-		{
-			sel_name = "SECONDARY";
-			break;
-		}
-		case SELECTION_CLIPBOARD:
-		{
-			sel_name = "CLIPBOARD";
-			break;
-		}
-	}
-	Atom selection = XInternAtom(main_window->display, sel_name, FALSE);
-	XSetSelectionOwner(main_window->display, selection, None, CurrentTime);
-}
-
-void do_selection_notify(enum _selection_type sel_type)
-{
-	char *sel_name = "NONE";
-	switch (sel_type)
-	{
-		case SELECTION_PRIMARY:
-		{
-			sel_name = "PRIMARY";
-			break;
-		}
-		case SELECTION_SECONDARY:
-		{
-			sel_name = "SECONDARY";
-			break;
-		}
-		case SELECTION_CLIPBOARD:
-		{
-			sel_name = "CLIPBOARD";
-			break;
-		}
-	}
-	Atom target = XInternAtom(main_window->display, "UTF8_STRING", FALSE);
-	Atom selection = XInternAtom(main_window->display, sel_name, FALSE);
-
-	int status = XConvertSelection(main_window->display, selection, target, None, main_window->window, CurrentTime);
-	if (status == BadAtom)
-		log_message(ERROR, _("Failed to convert selection with error BadAtom"));
-	else if (status == BadWindow)
-		log_message(ERROR, _("Failed to convert selection with error BadWindow"));
-}*/
-
 static Display * display;
 static Window window;
 
@@ -152,7 +65,7 @@ static unsigned char *wait_selection (Atom selection)
 				{
 					log_message(WARNING, _("Conversion refused"));
 					value = NULL;
-					keep_waiting = False;
+					keep_waiting = FALSE;
 				} 
 				else 
 				{
@@ -160,20 +73,20 @@ static unsigned char *wait_selection (Atom selection)
 						event.xselection.requestor,
 						event.xselection.property, 0L, 1000000,
 						False, (Atom)AnyPropertyType, &target, &format, &length, &bytesafter, &value);
-
+					
 					if (target != utf8_atom && target != XA_STRING && target != compound_text_atom) 
 					{
 						/* Report non-TEXT atoms */
 						log_message(WARNING, _("Selection is not a string."));
 						free (retval);
 						retval = NULL;
-						keep_waiting = False;
+						keep_waiting = FALSE;
 					} 
 					else 
 					{
 						retval = (unsigned char *)strdup ((char *)value);
 						XFree (value);
-						keep_waiting = False;
+						keep_waiting = FALSE;
 					}
 
 					XDeleteProperty (event.xselection.display, event.xselection.requestor, event.xselection.property);
@@ -208,11 +121,11 @@ static unsigned char *get_selection (Atom selection, Atom request_target)
 	// Get a timestamp 
 	XSelectInput (display, window, PropertyChangeMask);
 	
-	Atom prop = XInternAtom (display, "XSEL_DATA", False);
+	Atom prop = XInternAtom (display, "XSEL_DATA", FALSE);
 	Time timestamp = get_timestamp ();
 	
 	XConvertSelection (display, selection, request_target, prop, window, timestamp);
-	XSync (display, False);
+	XSync (display, FALSE);
 
 	retval = wait_selection (selection);
 	
@@ -221,39 +134,37 @@ static unsigned char *get_selection (Atom selection, Atom request_target)
 
 unsigned char *get_selection_text (enum _selection_type sel_type)
 {
+	display = XOpenDisplay (NULL);
+	if (display == NULL)
+		return NULL;
+	
 	Atom selection = 0;
 	switch (sel_type)
 	{
 		case SELECTION_PRIMARY:
 		{
-			selection = XInternAtom(main_window->display, "PRIMARY", FALSE);
+			selection = XInternAtom(display, "PRIMARY", FALSE);
 			break;
 		}
 		case SELECTION_SECONDARY:
 		{
-			selection = XInternAtom(main_window->display, "SECONDARY", FALSE);
+			selection = XInternAtom(display, "SECONDARY", FALSE);
 			break;
 		}
 		case SELECTION_CLIPBOARD:
 		{
-			selection = XInternAtom(main_window->display, "CLIPBOARD", FALSE);
+			selection = XInternAtom(display, "CLIPBOARD", FALSE);
 			break;
 		}
 	}
-
-	Window root;
-	int black;
-	display = XOpenDisplay (NULL);
-	if (display == NULL)
-		return NULL;
-	root = XDefaultRootWindow (display);
 	
 	//Create an unmapped window for receiving events
-	black = BlackPixel (display, DefaultScreen (display));
+	int black = BlackPixel (display, DefaultScreen (display));
+	Window root = XDefaultRootWindow (display);
 	window = XCreateSimpleWindow (display, root, 0, 0, 1, 1, 0, black, black);
 
 	utf8_atom = XInternAtom (display, "UTF8_STRING", FALSE);
-	compound_text_atom = XInternAtom (display, "COMPOUND_TEXT", False);
+	compound_text_atom = XInternAtom (display, "COMPOUND_TEXT", FALSE);
 
 	unsigned char * retval;
 	if ((retval = get_selection (selection, utf8_atom)) == NULL)
