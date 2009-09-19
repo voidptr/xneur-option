@@ -203,8 +203,43 @@ static Time get_timestamp (void)
 
 static unsigned char *get_selection (Atom selection, Atom request_target)
 {
-	Atom prop;
 	unsigned char * retval;
+
+	// Get a timestamp 
+	XSelectInput (display, window, PropertyChangeMask);
+	
+	Atom prop = XInternAtom (display, "XSEL_DATA", False);
+	Time timestamp = get_timestamp ();
+	
+	XConvertSelection (display, selection, request_target, prop, window, timestamp);
+	XSync (display, False);
+
+	retval = wait_selection (selection);
+	
+	return retval;
+}
+
+unsigned char *get_selection_text (enum _selection_type sel_type)
+{
+	Atom selection = 0;
+	switch (sel_type)
+	{
+		case SELECTION_PRIMARY:
+		{
+			selection = XInternAtom(main_window->display, "PRIMARY", FALSE);
+			break;
+		}
+		case SELECTION_SECONDARY:
+		{
+			selection = XInternAtom(main_window->display, "SECONDARY", FALSE);
+			break;
+		}
+		case SELECTION_CLIPBOARD:
+		{
+			selection = XInternAtom(main_window->display, "CLIPBOARD", FALSE);
+			break;
+		}
+	}
 
 	Window root;
 	int black;
@@ -212,59 +247,20 @@ static unsigned char *get_selection (Atom selection, Atom request_target)
 	if (display == NULL)
 		return NULL;
 	root = XDefaultRootWindow (display);
-  
+	
 	//Create an unmapped window for receiving events
 	black = BlackPixel (display, DefaultScreen (display));
 	window = XCreateSimpleWindow (display, root, 0, 0, 1, 1, 0, black, black);
 
-	log_message(WARNING, _("Selection Window id: 0x%x (unmapped)"), window);
-
-	// Get a timestamp 
-	XSelectInput (display, window, PropertyChangeMask);
-	
-	prop = XInternAtom (display, "XSEL_DATA", False);
-	Time timestamp = get_timestamp ();
-	XConvertSelection (display, selection, request_target, prop, window, timestamp);
-	XSync (display, False);
-
-	retval = wait_selection (selection);
-
-	XDestroyWindow(display, window);
-	XCloseDisplay(display);
-	
-	return retval;
-}
-
-unsigned char *get_selection_text (enum _selection_type sel_type)
-{
-	log_message(ERROR, "FUNCTION NEW!");
-	char *sel_name = "NONE";
-	switch (sel_type)
-	{
-		case SELECTION_PRIMARY:
-		{
-			sel_name = "PRIMARY";
-			break;
-		}
-		case SELECTION_SECONDARY:
-		{
-			sel_name = "SECONDARY";
-			break;
-		}
-		case SELECTION_CLIPBOARD:
-		{
-			sel_name = "CLIPBOARD";
-			break;
-		}
-	}
-	Atom selection = XInternAtom(main_window->display, sel_name, FALSE);
-
-	utf8_atom = XInternAtom (display, "UTF8_STRING", True);
+	utf8_atom = XInternAtom (display, "UTF8_STRING", FALSE);
 	compound_text_atom = XInternAtom (display, "COMPOUND_TEXT", False);
-	
+
 	unsigned char * retval;
 	if ((retval = get_selection (selection, utf8_atom)) == NULL)
 		retval = get_selection (selection, XA_STRING);
+
+	XDestroyWindow(display, window);
+	XCloseDisplay(display);
 
 	return retval;
 }

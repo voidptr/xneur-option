@@ -396,13 +396,11 @@ static void program_process_input(struct _program *p)
 			case SelectionNotify:
 			{
 				log_message(TRACE, _("Received SelectionNotify (event type %d)"), type);
-				p->process_selection_notify(p);
 				break;
 			}
 			case SelectionRequest:
 			{
 				log_message(TRACE, _("Received SelectionRequest (event type %d)"), p->event->event.xselectionrequest.requestor, type);
-				p->process_selection_notify(p);
 				break;
 			}
 			case ButtonPress:
@@ -481,6 +479,8 @@ static void program_process_selection_notify(struct _program *p)
 		return;
 	}
 
+	log_message (DEBUG, _("Received selected text '%s'"), event_text);
+	
 	if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
 		convert_text_to_translit(&event_text);
 
@@ -619,12 +619,9 @@ static void program_process_selection_notify(struct _program *p)
 
 	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
 	{
-		//on_selection_converted(SELECTION_PRIMARY);
 		if (xconfig->save_selection)
 			p->event->send_selection(p->event, p->buffer->cur_pos);
 	}
-	//if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
-		//on_selection_converted(SELECTION_PRIMARY);
 
 	p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
