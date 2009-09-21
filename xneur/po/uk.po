@@ -743,36 +743,36 @@ msgstr ""
 msgid "Received SelectionNotify (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:397 lib/main/program.c:404
+#: lib/main/~program.c:397 lib/main/program.c:403
 #, c-format
 msgid "Received SelectionRequest (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:404 lib/main/program.c:411
+#: lib/main/~program.c:404 lib/main/program.c:409
 #, c-format
 msgid "Received ButtonPress on window %d (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:414 lib/main/program.c:421
+#: lib/main/~program.c:414 lib/main/program.c:419
 #, c-format
 msgid "Received Property Notify (layout switch event) (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:423 lib/main/program.c:430
+#: lib/main/~program.c:423 lib/main/program.c:428
 #, c-format
 msgid "Uncatched event with type %d)"
 msgstr ""
 
-#: lib/main/~program.c:432 lib/main/program.c:439
+#: lib/main/~program.c:432 lib/main/program.c:437
 #, c-format
 msgid "Changing language from %s to %s"
 msgstr ""
 
-#: lib/main/~program.c:439 lib/main/program.c:446
+#: lib/main/~program.c:439 lib/main/program.c:444
 msgid "Correcting iNCIDENTAL CapsLock"
 msgstr ""
 
-#: lib/main/~program.c:457 lib/main/program.c:464
+#: lib/main/~program.c:457 lib/main/program.c:462
 msgid "Correcting two CApital letter"
 msgstr ""
 
@@ -786,87 +786,80 @@ msgstr ""
 msgid "Manual mode changed to %s"
 msgstr ""
 
-#: lib/main/~program.c:994 lib/main/program.c:1074
+#: lib/main/~program.c:994 lib/main/program.c:1076
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr ""
 
-#: lib/main/~program.c:1043 lib/main/~program.c:1085 lib/main/program.c:1123
-#: lib/main/program.c:1165
+#: lib/main/~program.c:1043 lib/main/~program.c:1085 lib/main/program.c:1125
+#: lib/main/program.c:1167
 msgid "No language found to change to"
 msgstr ""
 
-#: lib/main/~program.c:1187 lib/main/program.c:1267
+#: lib/main/~program.c:1187 lib/main/program.c:1269
 msgid "Find spaces before punctuation, correction..."
 msgstr ""
 
-#: lib/main/~program.c:1236 lib/main/program.c:1316
+#: lib/main/~program.c:1236 lib/main/program.c:1318
 msgid "Find no space before left bracket, correction..."
 msgstr ""
 
-#: lib/main/~program.c:1253 lib/main/program.c:1333
+#: lib/main/~program.c:1253 lib/main/program.c:1335
 msgid "Find spaces before right bracket, correction..."
 msgstr ""
 
-#: lib/main/~program.c:1277 lib/main/program.c:1363
+#: lib/main/~program.c:1277 lib/main/program.c:1365
 msgid "Find no spaces after right bracket, correction..."
 msgstr ""
 
-#: lib/main/~program.c:1306 lib/main/program.c:1398
+#: lib/main/~program.c:1306 lib/main/program.c:1400
 msgid "Find spaces after left bracket, correction..."
 msgstr ""
 
-#: lib/main/~program.c:1393 lib/main/program.c:1487
+#: lib/main/~program.c:1393 lib/main/program.c:1489
 msgid "No string to change"
 msgstr ""
 
-#: lib/main/~program.c:1397 lib/main/program.c:1491
+#: lib/main/~program.c:1397 lib/main/program.c:1493
 #, c-format
 msgid "Processing string '%s'"
 msgstr ""
 
-#: lib/main/~program.c:1650 lib/main/program.c:1777
+#: lib/main/~program.c:1650 lib/main/program.c:1779
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr ""
 
-#: lib/main/~program.c:1658 lib/main/program.c:1785
+#: lib/main/~program.c:1658 lib/main/program.c:1787
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr ""
 
-#: lib/main/~program.c:1715 lib/main/program.c:1842
+#: lib/main/~program.c:1715 lib/main/program.c:1844
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr ""
 
-#: lib/main/~program.c:1725 lib/main/program.c:1873
+#: lib/main/~program.c:1725 lib/main/program.c:1875
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr ""
 
-#: lib/main/~program.c:1746 lib/main/program.c:1894
+#: lib/main/~program.c:1746 lib/main/program.c:1896
 msgid "Program is freed"
 msgstr ""
 
-#: lib/main/selection.c:39
-msgid "Convert to selection target return None answer"
+#: lib/main/program.c:482
+#, c-format
+msgid "Received selected text '%s'"
 msgstr ""
 
-#: lib/main/selection.c:51
-msgid "Selected text length is 0"
+#: lib/main/selection.c:66
+msgid "Convert to selection target error"
 msgstr ""
 
-#: lib/main/selection.c:57
-msgid "Failed to get selected text data"
-msgstr ""
-
-#: lib/main/selection.c:115
-msgid "Failed to convert selection with error BadAtom"
-msgstr ""
-
-#: lib/main/selection.c:117
-msgid "Failed to convert selection with error BadWindow"
+#: lib/main/selection.c:80
+msgid "Selection is not a string"
 msgstr ""
 
 #: lib/main/switchlang.c:54

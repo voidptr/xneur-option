@@ -63,7 +63,7 @@ static unsigned char *wait_selection (Atom selection)
 
 				if (event.xselection.property == None) 
 				{
-					log_message(WARNING, _("Conversion refused"));
+					log_message(WARNING, _("Convert to selection target error"));
 					value = NULL;
 					keep_waiting = FALSE;
 				} 
@@ -77,7 +77,7 @@ static unsigned char *wait_selection (Atom selection)
 					if (target != utf8_atom && target != XA_STRING && target != compound_text_atom) 
 					{
 						/* Report non-TEXT atoms */
-						log_message(WARNING, _("Selection is not a string."));
+						log_message(WARNING, _("Selection is not a string"));
 						free (retval);
 						retval = NULL;
 						keep_waiting = FALSE;
