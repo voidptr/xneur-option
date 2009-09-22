@@ -751,7 +751,7 @@ static void program_perform_user_action(struct _program *p, int action)
 
 	pthread_attr_destroy(&action_thread_attr);
 
-	show_notify(NOTIFY_EXEC_USER_ACTION, xconfig->actions[action].command);
+	show_notify(NOTIFY_EXEC_USER_ACTION, xconfig->actions[action].name);
 }
 
 static void program_perform_auto_action(struct _program *p, int action)

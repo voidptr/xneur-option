@@ -2,7 +2,7 @@
 # All values writted XNeur
 
 # Config version
-Version 0.9.5
+Version 0.9.7
 
 # Work in manual mode
 ManualMode No
@@ -58,7 +58,14 @@ AddBind AutocomplementationConfirmation Tab
 
 # This option add user action when pressed key bind
 # Example:
-#AddAction Control Alt f firefox
+#AddAction Control Alt f Firefox Browser <cmd>firefox</cmd>
+AddAction Alt t Вызов терминала <cmd>gnome-terminal</cmd>
+AddAction Alt g Открыть Gedit <cmd>gedit</cmd>
+AddAction Super_L Открыть Nautilus <cmd>nautilus ~/</cmd>
+AddAction Super f Открыть ссылку в Firefox <cmd>xsel -o | xargs firefox --new-tab</cmd>
+AddAction Super g Google - Искать <cmd>xsel -o | sed -r '2~1d;s/(^\s+|\s+$)//g;s/%/%25/g;s/#/%23/g;s/\$/%24/g;s/&/%26/g;s/\+/%2B/;s/,/%2C/g;s/:/%3A/g;s/;/%3B/g;s/=/%3D/g;s/\?/%3F/g;s/@/%40/g;s/\s/+/g' | awk '{print "http://www.google.ru/search?hl=ru&q=" $1}' | xargs firefox -new-tab</cmd>
+AddAction Super r Google - Перевести на русский <cmd>xsel -o | sed -r '2~1d;s/(^\s+|\s+$)//g;s/%/%25/g;s/#/%23/g;s/\$/%24/g;s/&/%26/g;s/\+/%2B/;s/,/%2C/g;s/:/%3A/g;s/;/%3B/g;s/=/%3D/g;s/\?/%3F/g;s/@/%40/g;s/\s/+/g' | awk '{print "translate.google.com/translate_t?hl=ru#auto|ru|" $1}' | xargs firefox -new-tab</cmd>
+AddAction Super a Google - Перевести на английский <cmd>xsel -o | sed -r '2~1d;s/(^\s+|\s+$)//g;s/%/%25/g;s/#/%23/g;s/\$/%24/g;s/&/%26/g;s/\+/%2B/;s/,/%2C/g;s/:/%3A/g;s/;/%3B/g;s/=/%3D/g;s/\?/%3F/g;s/@/%40/g;s/\s/+/g' | awk '{print "translate.google.com/translate_t?hl=ru#auto|en|" $1}' | xargs firefox -new-tab</cmd>
 
 # Word Replacing
 # Ignore keyboard layout for abbreviations list

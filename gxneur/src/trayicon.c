@@ -18,6 +18,7 @@
  */
 
 #include <gtk/gtk.h>
+#include <stdlib.h>
 
 #include "support.h"
 
@@ -94,14 +95,34 @@ GtkWidget* create_menu_icon(struct _tray_icon *tray, gboolean runned, int state)
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_start_stop), tray);
 
-	menu_text = _("Auto-correction");
-	menuitem = gtk_check_menu_item_new_with_mnemonic(menu_text);
+	menuitem = gtk_check_menu_item_new_with_mnemonic(_("Auto-correction"));
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem), !state);
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_auto_manual), tray);
 	if (runned == FALSE)
 		gtk_widget_set_sensitive(menuitem, FALSE);
+	
+	// Separator
+	menuitem = gtk_separator_menu_item_new();
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	gtk_widget_set_sensitive(menuitem, FALSE);
+
+	// User Actions Submenu
+	GtkWidget *action_submenu = gtk_menu_new();
+
+	for (int action = 0; action < xconfig->actions_count; action++)
+	{
+		menuitem = gtk_menu_item_new_with_mnemonic(xconfig->actions[action].name);
+		gtk_widget_show(menuitem);
+		g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(system), xconfig->actions[action].command);
+		gtk_container_add(GTK_CONTAINER(action_submenu), menuitem);
+	}
+	menuitem = gtk_menu_item_new_with_mnemonic(_("User action"));
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), action_submenu);
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
 	
 	// Separator
 	menuitem = gtk_separator_menu_item_new();

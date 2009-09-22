@@ -140,10 +140,15 @@ msgid "Add user action..."
 msgstr "Adăugă acțiunea utilizătorului"
 
 #: glade/action_add.glade:25
+#, fuzzy
+msgid "Action name:"
+msgstr "Acţiune"
+
+#: glade/action_add.glade:47
 msgid "Key bind:"
 msgstr ""
 
-#: glade/action_add.glade:48
+#: glade/action_add.glade:71
 msgid "User action:"
 msgstr "Acțiune utilizatorului"
 
@@ -373,31 +378,31 @@ msgstr ""
 msgid "Ignore keyboard layout for abbreviations"
 msgstr ""
 
-#: glade/config.glade:1979
+#: glade/config.glade:1977
 msgid "<b>Abbreviations</b>"
 msgstr "<b>Abrevieri</b>"
 
-#: glade/config.glade:2003
+#: glade/config.glade:2001
 msgid "Enable keyboard logging"
 msgstr ""
 
-#: glade/config.glade:2024
+#: glade/config.glade:2022
 msgid "Send log to e-mail"
 msgstr ""
 
-#: glade/config.glade:2050
+#: glade/config.glade:2048
 msgid "Send log via host (IP)"
 msgstr ""
 
-#: glade/config.glade:2076
+#: glade/config.glade:2074
 msgid "Log file size in bytes"
 msgstr ""
 
-#: glade/config.glade:2123
+#: glade/config.glade:2121
 msgid "<b>Log</b>"
 msgstr ""
 
-#: glade/config.glade:2149
+#: glade/config.glade:2147
 msgid ""
 "Error\n"
 "Warning\n"
@@ -411,19 +416,19 @@ msgstr ""
 "Debug\n"
 "Trace"
 
-#: glade/config.glade:2184
+#: glade/config.glade:2182
 msgid "Log verbosity level"
 msgstr ""
 
-#: glade/config.glade:2197
+#: glade/config.glade:2195
 msgid "Delay before sending events (in milliseconds)"
 msgstr ""
 
-#: glade/config.glade:2216
+#: glade/config.glade:2214
 msgid "<b>Advanced</b>"
 msgstr "<b>Avansat</b>"
 
-#: glade/config.glade:2278
+#: glade/config.glade:2276
 msgid "<b>Plugins</b>"
 msgstr ""
 

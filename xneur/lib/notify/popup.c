@@ -52,10 +52,7 @@ time_t timestamp = 0;
 static void popup_show_thread(void *popup_text)
 {
 	if (!notify_init("xneur"))
-	{
-		free(popup_text);
 		return;
-	}
 	
 	NotifyNotification *notify = notify_notification_new(popup_text, NULL, icon, NULL);
 
@@ -66,23 +63,17 @@ static void popup_show_thread(void *popup_text)
 	notify_notification_show(notify, NULL);
 
 	notify_uninit();
-	free(popup_text);
 }
 
 void popup_show(char *popup_text)
 {
 	if (!xconfig->show_popup)
-	{
-		free(popup_text);
 		return;
-	}
 	
 	time_t curtime = time(NULL);
 	if ((curtime - timestamp) < 1)
-	{
-		free(popup_text);
 		return;
-	}
+
 	timestamp = curtime;
 	
 	pthread_attr_t popup_thread_attr;
@@ -101,7 +92,7 @@ void popup_show(char *popup_text)
 
 void popup_show(char *popup_text)
 {
-	free(popup_text);
+	return;
 }
 
 #endif /* WITH_LIBNOTIFY */

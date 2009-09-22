@@ -154,6 +154,7 @@ struct _xneur_data
 struct _xneur_action
 {
 	struct _xneur_hotkey hotkey;
+	char *name;
 	char *command;
 };
 

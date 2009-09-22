@@ -38,8 +38,11 @@
 #include "xnconfig.h"
 
 #define LIBRARY_VERSION_MAJOR		9
-#define LIBRARY_VERSION_MINOR		6
+#define LIBRARY_VERSION_MINOR		7
 #define OPTIONS_DELIMETER		" "
+
+#define USR_CMD_START 	"<cmd>"
+#define USR_CMD_END 	"</cmd>"
 
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
 static const char *bool_names[] =	{"No", "Yes"};
@@ -459,7 +462,32 @@ static void parse_line(struct _xneur_config *p, char *line)
 					if (param != NULL)
 						p->actions[p->actions_count].hotkey.key = strdup(param);
 					if (line != NULL)
-						p->actions[p->actions_count].command = strdup(line);
+					{
+						char *cmd = strstr(line, USR_CMD_START);
+						if (cmd == NULL)
+						{
+							p->actions[p->actions_count].name = NULL;
+							p->actions[p->actions_count].command = strdup(line);
+							break;
+						}
+						int len = strlen(line) - strlen(cmd);
+						p->actions[p->actions_count].name = strdup(line);
+						p->actions[p->actions_count].name[len - 1] = NULLSYM;
+
+						p->actions[p->actions_count].command = strdup(cmd + strlen(USR_CMD_START)*sizeof(char));
+						cmd = strstr(cmd + strlen(USR_CMD_START)*sizeof(char), USR_CMD_END);
+						if (cmd == NULL)
+						{
+							free(p->actions[p->actions_count].command);
+							p->actions[p->actions_count].command = NULL;
+							break;
+						}
+						len = strlen(p->actions[p->actions_count].command) - strlen(cmd);
+						p->actions[p->actions_count].command[len] = NULLSYM;
+
+						//log_message (ERROR, "\"%s\" \"%s\"", p->actions[p->actions_count].name, p->actions[p->actions_count].command);
+						
+					}
 					break;
 				}
 
@@ -659,6 +687,8 @@ static void free_structures(struct _xneur_config *p)
 	{
 		if (p->actions[action].hotkey.key != NULL)
 			free(p->actions[action].hotkey.key);
+		if (p->actions[action].name != NULL)
+			free(p->actions[action].name);
 		if (p->actions[action].command != NULL)
 			free(p->actions[action].command);
 	}
@@ -909,7 +939,7 @@ static int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "# This option add user action when pressed key bind\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#AddAction Control Alt f firefox\n");
+	fprintf(stream, "#AddAction Control Alt f Firefox Browser <cmd>firefox</cmd>\n");
 	for (int action = 0; action < p->actions_count; action++)
 	{
 		fprintf(stream, "AddAction ");
@@ -920,8 +950,10 @@ static int xneur_config_save(struct _xneur_config *p)
 			if (p->actions[action].hotkey.modifiers & (1 << i))
 				fprintf(stream, "%s ", modifier_names[i]);
 		}
-
-		fprintf(stream, "%s %s\n", p->actions[action].hotkey.key, p->actions[action].command);
+		if (p->actions[action].name == NULL)
+			fprintf(stream, "%s %s\n", p->actions[action].hotkey.key, p->actions[action].command);
+		else
+			fprintf(stream, "%s %s %s%s%s\n", p->actions[action].hotkey.key, p->actions[action].name, USR_CMD_START, p->actions[action].command, USR_CMD_END);
 	}
 	fprintf(stream, "\n");
 

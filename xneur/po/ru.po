@@ -787,7 +787,7 @@ msgstr "Исправление двух ПРописных букв"
 #: lib/main/~program.c:664 lib/main/program.c:743
 #, c-format
 msgid "Execute user action \"%s\""
-msgstr "Выполнение поользовательского действия \"%s\""
+msgstr "Выполнение пользовательского действия \"%s\""
 
 #: lib/main/~program.c:813 lib/main/program.c:891
 #, c-format

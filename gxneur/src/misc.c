@@ -52,7 +52,7 @@
 
 #define MAX_LANGUAGES			4
 #define XNEUR_NEEDED_MAJOR_VERSION	9
-#define XNEUR_BUILD_MINOR_VERSION	6
+#define XNEUR_BUILD_MINOR_VERSION	7
 	
 struct _xneur_config *xconfig				= NULL;
 	
@@ -831,7 +831,7 @@ void xneur_preference(void)
 	// User Actions List set
 	treeview = glade_xml_get_widget (gxml, "treeview9");
 
-	store_action = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	store_action = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_action));
 	gtk_widget_show(treeview);
 
@@ -855,27 +855,39 @@ void xneur_preference(void)
 		strcat(text, xconfig->actions[action].hotkey.key);
 		
 		gtk_list_store_set(GTK_LIST_STORE(store_action), &iter, 
-												0, xconfig->actions[action].command,
-												1, text, 
+												0, xconfig->actions[action].name,
+												1, text,
+												2, xconfig->actions[action].command,
 												-1);
 		free(text);
 	}
 
 	cell = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("User action"), cell, "text", 0, NULL);
+	column = gtk_tree_view_column_new_with_attributes(_("Action"), cell, "text", 0, NULL);
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
-	gtk_tree_view_column_set_sizing(GTK_TREE_VIEW_COLUMN(column), GTK_TREE_VIEW_COLUMN_FIXED);
-    gtk_tree_view_column_set_fixed_width(GTK_TREE_VIEW_COLUMN(column), 400);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
-
-	cell = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("Key bind"), cell, "text", 1, NULL);
 	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
 	g_signal_connect (G_OBJECT (cell), "edited",
 						G_CALLBACK (column_1_edited),
 						(gpointer) treeview);
+	gtk_tree_view_column_set_sizing(GTK_TREE_VIEW_COLUMN(column), GTK_TREE_VIEW_COLUMN_FIXED);
+    gtk_tree_view_column_set_fixed_width(GTK_TREE_VIEW_COLUMN(column), 200);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Key bind"), cell, "text", 1, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("User action"), cell, "text", 2, NULL);
+	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "edited",
+						G_CALLBACK (column_1_edited),
+						(gpointer) treeview);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_column_set_sizing(GTK_TREE_VIEW_COLUMN(column), GTK_TREE_VIEW_COLUMN_FIXED);
+    gtk_tree_view_column_set_fixed_width(GTK_TREE_VIEW_COLUMN(column), 200);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+	
 	// Button Add User Action
 	widget = glade_xml_get_widget (gxml, "button36");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_user_action), G_OBJECT(treeview));
@@ -1135,6 +1147,7 @@ static void xneur_insert_user_action(GladeXML *gxml)
 {
 	GtkWidget *entry1 = glade_xml_get_widget (gxml, "entry1");
 	GtkWidget *entry2 = glade_xml_get_widget (gxml, "entry2");
+	GtkWidget *entry3 = glade_xml_get_widget (gxml, "entry3");
 	const gchar *action = gtk_entry_get_text(GTK_ENTRY(entry1));
 	const gchar *key_bind = gtk_entry_get_text(GTK_ENTRY(entry2));
 	if (strlen(key_bind) == 0) 
@@ -1151,8 +1164,9 @@ static void xneur_insert_user_action(GladeXML *gxml)
 	GtkTreeIter iter;
 	gtk_list_store_append(GTK_LIST_STORE(store_action), &iter);
 	gtk_list_store_set(GTK_LIST_STORE(store_action), &iter, 
-											0, gtk_entry_get_text(GTK_ENTRY(entry1)),
-											1, gtk_entry_get_text(GTK_ENTRY(entry2)), 
+	                   						0, gtk_entry_get_text(GTK_ENTRY(entry3)),
+											1, gtk_entry_get_text(GTK_ENTRY(entry2)),
+											2, gtk_entry_get_text(GTK_ENTRY(entry1)), 
 										   -1);
 	
 	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
@@ -1195,9 +1209,11 @@ static void xneur_replace_user_action(GladeXML *gxml)
 	{
 		GtkWidget *widget1= glade_xml_get_widget (gxml, "entry1");
 		GtkWidget *widget2= glade_xml_get_widget (gxml, "entry2");
+		GtkWidget *widget3= glade_xml_get_widget (gxml, "entry3");
 		gtk_list_store_set(GTK_LIST_STORE(store_action), &iter, 
-											0, gtk_entry_get_text(GTK_ENTRY(widget1)),
-											1, gtk_entry_get_text(GTK_ENTRY(widget2)), 
+		                   					0, gtk_entry_get_text(GTK_ENTRY(widget3)),
+											1, gtk_entry_get_text(GTK_ENTRY(widget2)),
+											2, gtk_entry_get_text(GTK_ENTRY(widget1)), 
 										   -1);
 	}
 	
@@ -1230,7 +1246,8 @@ void xneur_edit_user_action(GtkWidget *treeview)
 	
 		char *key_bind;
 		char *user_action;
-		gtk_tree_model_get(GTK_TREE_MODEL(store_action), &iter, 0, &user_action, 1, &key_bind, -1);
+		char *action_name;
+		gtk_tree_model_get(GTK_TREE_MODEL(store_action), &iter, 0, &action_name, 1, &key_bind, 2, &user_action, -1);
 
 		GtkWidget *widget= glade_xml_get_widget (gxml, "entry1");
 		gtk_entry_set_text(GTK_ENTRY(widget), user_action);
@@ -1239,6 +1256,9 @@ void xneur_edit_user_action(GtkWidget *treeview)
 		g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
 		g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
 		gtk_entry_set_text(GTK_ENTRY(widget), key_bind);
+
+		widget= glade_xml_get_widget (gxml, "entry3");
+		gtk_entry_set_text(GTK_ENTRY(widget), action_name);
 		
 		gtk_widget_show(window);
 		
@@ -1498,8 +1518,10 @@ gboolean save_user_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *i
 
 	gchar *key_bind;
 	gchar *action_text;
-	gtk_tree_model_get(GTK_TREE_MODEL(store_action), iter, 0, &action_text, 1, &key_bind, -1);
-
+	gchar *action_name;
+	
+	gtk_tree_model_get(GTK_TREE_MODEL(store_action), iter, 0, &action_name, 1, &key_bind, 2, &action_text, -1);
+	
 	char **key_stat = g_strsplit(key_bind, "+", 4);
 
 	int last = is_correct_hotkey(key_stat);
@@ -1530,7 +1552,10 @@ gboolean save_user_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *i
 		if (assigned == FALSE)
 		{
 			xconfig->actions[action].hotkey.key = strdup(key_stat[i]); 
-			xconfig->actions[action].command = strdup(action_text);
+			if (action_text != NULL)
+				xconfig->actions[action].command = strdup(action_text);
+			if (action_name != NULL)
+				xconfig->actions[action].name = strdup(action_name);
 		}
 	}
 
@@ -1540,6 +1565,7 @@ gboolean save_user_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *i
 	
 	g_free(key_bind);
 	g_free(action_text);
+	g_free(action_name);
 
 	return FALSE;
 }

@@ -34,26 +34,15 @@ extern struct _xneur_config *xconfig;
 
 void show_notify(int notify, char *command)
 {
-	if (command == NULL) 
-	{
-		command = "\0";
-	}
-
 	play_file(notify);
 
-	if (xconfig->osds[notify].file != NULL)
-	{
-		char *buffer = (char *) malloc((strlen(xconfig->osds[notify].file) + strlen(command) + 2) * sizeof(char));
-		sprintf(buffer, "%s %s", xconfig->osds[notify].file, command);
+	if (command == NULL)
+		osd_show(xconfig->osds[notify].file);
+	else
+		osd_show(strdup(command));
 
-		osd_show(buffer);
-	}
-
-	if (xconfig->popups[notify].file != NULL)
-	{
-		char *buffer = (char *) malloc((strlen(xconfig->osds[notify].file) + strlen(command) + 2) * sizeof(char));
-		sprintf(buffer, "%s %s", xconfig->popups[notify].file, command);
-
-		popup_show(buffer);
-	}
+	if (command == NULL)
+		popup_show(xconfig->popups[notify].file);
+	else
+		popup_show(command);
 }

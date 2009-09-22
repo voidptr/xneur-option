@@ -136,6 +136,9 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 	if (!xconfig->save_keyboard_log || p->cur_pos == 0 || file_name == NULL)
 		return;
 
+	if (strlen (p->content) < 4)
+		return;
+	
 	int save = FALSE;
 	for (int i = 0; i < p->cur_pos; i++)
 		if (isgraph (p->content[i]))

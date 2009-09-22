@@ -140,10 +140,14 @@ msgid "Add user action..."
 msgstr "Добавить пользовательское действие..."
 
 #: glade/action_add.glade:25
+msgid "Action name:"
+msgstr "Название действия:"
+
+#: glade/action_add.glade:47
 msgid "Key bind:"
 msgstr "Комбинация клавиш:"
 
-#: glade/action_add.glade:48
+#: glade/action_add.glade:71
 msgid "User action:"
 msgstr "Пользовательское действие:"
 
@@ -374,31 +378,31 @@ msgstr "<b>Уведомления</b>"
 msgid "Ignore keyboard layout for abbreviations"
 msgstr "Игнорировать раскладку для сокращений"
 
-#: glade/config.glade:1979
+#: glade/config.glade:1977
 msgid "<b>Abbreviations</b>"
 msgstr "<b>Сокращения</b>"
 
-#: glade/config.glade:2003
+#: glade/config.glade:2001
 msgid "Enable keyboard logging"
 msgstr "Включить сохранение набираемого текста в файл журнала"
 
-#: glade/config.glade:2024
+#: glade/config.glade:2022
 msgid "Send log to e-mail"
 msgstr "Отправить журнал на e-mail"
 
-#: glade/config.glade:2050
+#: glade/config.glade:2048
 msgid "Send log via host (IP)"
 msgstr "Отправить журнал через сервер (IP)"
 
-#: glade/config.glade:2076
+#: glade/config.glade:2074
 msgid "Log file size in bytes"
 msgstr "Размер журнала в байтах"
 
-#: glade/config.glade:2123
+#: glade/config.glade:2121
 msgid "<b>Log</b>"
 msgstr "<b>Журнал</b>"
 
-#: glade/config.glade:2149
+#: glade/config.glade:2147
 msgid ""
 "Error\n"
 "Warning\n"
@@ -412,19 +416,19 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2184
+#: glade/config.glade:2182
 msgid "Log verbosity level"
 msgstr "Уровень подробности выводимых сообщений"
 
-#: glade/config.glade:2197
+#: glade/config.glade:2195
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Задержка перед отправкой событий (в миллисекундах)"
 
-#: glade/config.glade:2216
+#: glade/config.glade:2214
 msgid "<b>Advanced</b>"
 msgstr "<b>Специальное</b>"
 
-#: glade/config.glade:2278
+#: glade/config.glade:2276
 msgid "<b>Plugins</b>"
 msgstr "<b>Модули</b>"
 
