@@ -134,7 +134,7 @@ static void bind_user_action(int action)
 	ubtable[action].key_sym = key_sym;
 	ubtable[action].key_sym_shift = key_sym_shift;
 
-	log_message(DEBUG, _("   Action \"%s\" with mod_mask %d and key \"%s (%s)\""), xconfig->actions[action].command, ubtable[action].modifier_mask, XKeysymToString(ubtable[action].key_sym), XKeysymToString(ubtable[action].key_sym_shift));
+	log_message(DEBUG, _("   Action \"%s\" with mod_mask %d and key \"%s (%s)\""), xconfig->actions[action].name, ubtable[action].modifier_mask, XKeysymToString(ubtable[action].key_sym), XKeysymToString(ubtable[action].key_sym_shift));
 }
 
 enum _hotkey_action get_manual_action(KeySym key_sym, int mask)

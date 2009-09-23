@@ -69,6 +69,9 @@ void popup_show(char *popup_text)
 {
 	if (!xconfig->show_popup)
 		return;
+
+	if (popup_text == NULL)
+		return;
 	
 	time_t curtime = time(NULL);
 	if ((curtime - timestamp) < 1)

@@ -119,7 +119,11 @@ GtkWidget* create_menu_icon(struct _tray_icon *tray, gboolean runned, int state)
 		g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(system), xconfig->actions[action].command);
 		gtk_container_add(GTK_CONTAINER(action_submenu), menuitem);
 	}
-	menuitem = gtk_menu_item_new_with_mnemonic(_("User action"));
+	menuitem = gtk_image_menu_item_new_with_mnemonic(_("User action"));
+	image = gtk_image_new_from_stock("gtk-execute", GTK_ICON_SIZE_MENU);
+	gtk_widget_set_name(image, "image");
+	gtk_widget_show(image);
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), action_submenu);
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
