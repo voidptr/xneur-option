@@ -44,8 +44,8 @@ extern struct _xneur_config *xconfig;
 
 static const char *icon = "distributor-logo";
 static const char *type = NULL;
-static const NotifyUrgency urgency = NOTIFY_URGENCY_NORMAL;
-static const long expire_timeout = NOTIFY_EXPIRES_DEFAULT;
+static const NotifyUrgency urgency = NOTIFY_URGENCY_LOW;
+static const int expire_timeout = NOTIFY_EXPIRES_DEFAULT;
 
 time_t timestamp = 0;
 
@@ -74,7 +74,7 @@ void popup_show(char *popup_text)
 		return;
 	
 	time_t curtime = time(NULL);
-	if ((curtime - timestamp) < 1)
+	if ((curtime - timestamp) < 2)
 		return;
 
 	timestamp = curtime;
