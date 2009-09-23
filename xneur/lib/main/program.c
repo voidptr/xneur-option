@@ -468,14 +468,15 @@ static void program_change_two_capital_letter(struct _program *p)
 static void program_process_selection_notify(struct _program *p)
 {
 	char *event_text = NULL;
-	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
+	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED || p->selected_mode == ACTION_CALC_SELECTED)
 		event_text = (char *)get_selection_text(SELECTION_PRIMARY);
-	else if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD)
+	else if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD || p->selected_mode == ACTION_CALC_CLIPBOARD)
 		event_text = (char *)get_selection_text(SELECTION_CLIPBOARD);
 		
 	if (event_text == NULL)
 	{
 		p->selected_mode = ACTION_NONE;
+		log_message (DEBUG, _("Received selected text is NULL"));
 		return;
 	}
 
