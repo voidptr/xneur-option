@@ -476,7 +476,7 @@ static void program_process_selection_notify(struct _program *p)
 	if (event_text == NULL)
 	{
 		p->selected_mode = ACTION_NONE;
-		log_message (DEBUG, _("Received selected text is NULL"));
+		log_message (DEBUG, _("Received selected text is '%s'"), "NULL");
 		return;
 	}
 
