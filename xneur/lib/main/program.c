@@ -468,9 +468,9 @@ static void program_change_two_capital_letter(struct _program *p)
 static void program_process_selection_notify(struct _program *p)
 {
 	char *event_text = NULL;
-	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED || p->selected_mode == ACTION_CALC_SELECTED)
+	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED || p->selected_mode == ACTION_CALC_SELECTED || p->selected_mode == ACTION_PREVIEW_CHANGE_SELECTED)
 		event_text = (char *)get_selection_text(SELECTION_PRIMARY);
-	else if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD || p->selected_mode == ACTION_CALC_CLIPBOARD)
+	else if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD || p->selected_mode == ACTION_CALC_CLIPBOARD || p->selected_mode == ACTION_PREVIEW_CHANGE_CLIPBOARD)
 		event_text = (char *)get_selection_text(SELECTION_CLIPBOARD);
 		
 	if (event_text == NULL)
@@ -606,6 +606,20 @@ static void program_process_selection_notify(struct _program *p)
 			show_notify(NOTIFY_CALC_SELECTED, NULL);
 			break;
 		}
+		case ACTION_PREVIEW_CHANGE_SELECTED:
+		{
+			p->buffer->rotate_layout(p->buffer);
+
+			show_notify(NOTIFY_PREVIEW_CHANGE_SELECTED, p->buffer->get_utf_string(p->buffer));
+			break;
+		}
+		case ACTION_PREVIEW_CHANGE_CLIPBOARD:
+		{
+			p->buffer->rotate_layout(p->buffer);
+
+			show_notify(NOTIFY_PREVIEW_CHANGE_CLIPBOARD, p->buffer->get_utf_string(p->buffer));
+			break;
+		}
 	}
 
 	// Disable receiving events
@@ -616,7 +630,8 @@ static void program_process_selection_notify(struct _program *p)
 	grab_spec_keys(p->focus->owner_window, FALSE);
 
 	// Selection
-	p->change_word(p, CHANGE_SELECTION);
+	if ((p->selected_mode != ACTION_PREVIEW_CHANGE_SELECTED) && (p->selected_mode != ACTION_PREVIEW_CHANGE_CLIPBOARD))
+		p->change_word(p, CHANGE_SELECTION);
 
 	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
 	{
@@ -897,9 +912,9 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_TRANSLIT_SELECTED:
 		case ACTION_CHANGECASE_SELECTED:
 		case ACTION_CALC_SELECTED:
+		case ACTION_PREVIEW_CHANGE_SELECTED:
 		{
 			p->selected_mode = action;
-			//do_selection_notify(SELECTION_PRIMARY);
 			p->process_selection_notify(p);
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
@@ -908,9 +923,9 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_TRANSLIT_CLIPBOARD:
 		case ACTION_CHANGECASE_CLIPBOARD:
 		case ACTION_CALC_CLIPBOARD:
+		case ACTION_PREVIEW_CHANGE_CLIPBOARD:
 		{
 			p->selected_mode = action;
-			//do_selection_notify(SELECTION_CLIPBOARD);
 			p->process_selection_notify(p);
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;

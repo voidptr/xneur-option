@@ -342,6 +342,8 @@ int on_hotkey_action(enum _hotkey_action ha)
 	switch (ha)
 	{
 		case ACTION_NONE:
+		case ACTION_PREVIEW_CHANGE_SELECTED:
+		case ACTION_PREVIEW_CHANGE_CLIPBOARD:
 		{
 			break;
 		}

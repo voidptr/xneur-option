@@ -66,6 +66,10 @@ msgstr "Groß- bzw. Kleinschreibung des markierten Textes wechseln"
 msgid "Calculate formula on selected text"
 msgstr ""
 
+#, fuzzy
+msgid "Preview correcting of selected text"
+msgstr "Ausgewählten Text korrigieren"
+
 msgid "Correct clipboard text"
 msgstr ""
 
@@ -76,6 +80,9 @@ msgid "Change case of clipboard text"
 msgstr ""
 
 msgid "Calculate formula on clipboard text"
+msgstr ""
+
+msgid "Preview correcting of clipboard text"
 msgstr ""
 
 msgid "Rotate layouts"

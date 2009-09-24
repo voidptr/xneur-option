@@ -118,16 +118,16 @@ static const char *notify_names[]			=   {
 										"Keypress on layout 4", "Switch to layout 1", "Switch to layout 2",
 										"Switch to layout 3", "Switch to layout 4", "Correct word automatically",
 										"Correct word manually", "Correct last line", "Correct selected text",
-										"Transliterate selected text", "Change case of selected text", "Calculate formula on selected text",
-										"Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Calculate formula on clipboard text",
+										"Transliterate selected text", "Change case of selected text", "Calculate formula on selected text", "Preview correcting of selected text",
+										"Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Calculate formula on clipboard text", "Preview correcting of clipboard text",
 	                                    "Expand abbreviations",
 										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Execute user action"
 										};
 
 static const char *hotkey_names[]			=   {
 										"Correct/Undo correction", "Correct last line", "Switch between processing modes", 
-										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Calculate formula on selected text",
-	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text","Calculate formula on clipboard text",
+										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Calculate formula on selected text", "Preview correcting of selected text",
+	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text","Calculate formula on clipboard text", "Preview correcting of clipboard text",
 										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
 		                                "Rotate layouts", "Expand abbreviations", "Autocomplementation confirmation"
                                         };

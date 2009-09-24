@@ -69,6 +69,10 @@ msgstr "Зьмена рэгістра выдзеленага тэксту"
 msgid "Calculate formula on selected text"
 msgstr ""
 
+#, fuzzy
+msgid "Preview correcting of selected text"
+msgstr "Замена выдзеленага тэксту"
+
 msgid "Correct clipboard text"
 msgstr ""
 
@@ -79,6 +83,9 @@ msgid "Change case of clipboard text"
 msgstr ""
 
 msgid "Calculate formula on clipboard text"
+msgstr ""
+
+msgid "Preview correcting of clipboard text"
 msgstr ""
 
 msgid "Rotate layouts"

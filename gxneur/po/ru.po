@@ -68,6 +68,9 @@ msgstr "Смена регистра выделеного текста"
 msgid "Calculate formula on selected text"
 msgstr "Рассчет формулы в выделеном тексте"
 
+msgid "Preview correcting of selected text"
+msgstr "Предпросмотр коррекции выделеного текста"
+
 msgid "Correct clipboard text"
 msgstr "Коррекция буфера обмена"
 
@@ -79,6 +82,9 @@ msgstr "Смена регистра буфера обмена"
 
 msgid "Calculate formula on clipboard text"
 msgstr "Рассчет формулы в  буфере обмена"
+
+msgid "Preview correcting of clipboard text"
+msgstr "Предпросмотр коррекции буфера обмена"
 
 msgid "Rotate layouts"
 msgstr "Переключение раскладки"
