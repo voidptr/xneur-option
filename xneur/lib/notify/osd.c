@@ -54,6 +54,7 @@ static void osd_show_thread(void *osd_text)
 
 	xosd_wait_until_no_display(osd);
 	xosd_destroy(osd);
+	free(osd_text);
 }
 
 void osd_show(char *osd_text)
@@ -71,7 +72,7 @@ void osd_show(char *osd_text)
 	log_message(DEBUG, _("Show OSD \"%s\""), osd_text);
 
 	pthread_t osd_thread;
-	pthread_create(&osd_thread, &osd_thread_attr, (void *) &osd_show_thread, osd_text);
+	pthread_create(&osd_thread, &osd_thread_attr, (void *) &osd_show_thread, strdup(osd_text));
 
 	pthread_attr_destroy(&osd_thread_attr);
 }

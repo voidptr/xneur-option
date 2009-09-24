@@ -44,7 +44,7 @@ extern struct _xneur_config *xconfig;
 
 static const char *icon = "distributor-logo";
 static const char *type = NULL;
-static const NotifyUrgency urgency = NOTIFY_URGENCY_LOW;
+static const NotifyUrgency urgency = NOTIFY_URGENCY_CRITICAL;
 static const int expire_timeout = NOTIFY_EXPIRES_DEFAULT;
 
 time_t timestamp = 0;
@@ -62,15 +62,16 @@ static void popup_show_thread(void *popup_text)
 
 	notify_notification_show(notify, NULL);
 
+	free(popup_text);
 	notify_uninit();
 }
 
 void popup_show(char *popup_text)
 {
-	if (!xconfig->show_popup)
-		return;
-
 	if (popup_text == NULL)
+		return;
+	
+	if (!xconfig->show_popup)
 		return;
 	
 	time_t curtime = time(NULL);
@@ -86,7 +87,7 @@ void popup_show(char *popup_text)
 	log_message(DEBUG, _("Show popup message \"%s\""), popup_text);
 
 	pthread_t popup_thread;
-	pthread_create(&popup_thread, &popup_thread_attr, (void*) &popup_show_thread, popup_text);
+	pthread_create(&popup_thread, &popup_thread_attr, (void*) &popup_show_thread, strdup(popup_text));
 
 	pthread_attr_destroy(&popup_thread_attr);
 }
