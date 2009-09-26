@@ -49,12 +49,18 @@ static const int expire_timeout = NOTIFY_EXPIRES_DEFAULT;
 
 time_t timestamp = 0;
 
-static void popup_show_thread(void *popup_text)
+static void popup_show_thread(struct _popup_body *popup_body)
 {
 	if (!notify_init("xneur"))
 		return;
+
+	if (popup_body->header == NULL)
+	{
+		popup_body->header = popup_body->content;
+		popup_body->content = NULL;
+	}
 	
-	NotifyNotification *notify = notify_notification_new(popup_text, NULL, icon, NULL);
+	NotifyNotification *notify = notify_notification_new(popup_body->header, popup_body->content, icon, NULL);
 
 	notify_notification_set_category(notify, type);
 	notify_notification_set_urgency(notify, urgency);
@@ -62,40 +68,54 @@ static void popup_show_thread(void *popup_text)
 
 	notify_notification_show(notify, NULL);
 
-	free(popup_text);
+	if (popup_body->header != NULL)
+		free(popup_body->header);
+	if (popup_body->content != NULL)
+		free(popup_body->content);
+	free (popup_body);
+	
 	notify_uninit();
 }
 
-void popup_show(char *popup_text)
-{
-	if (popup_text == NULL)
+void popup_show(int notify, char *command)
+{	
+	if (!xconfig->show_popup)
 		return;
 	
-	if (!xconfig->show_popup)
+	if ((xconfig->popups[notify].file == NULL) && (command == NULL))
 		return;
 	
 	time_t curtime = time(NULL);
 	if ((curtime - timestamp) < 2)
 		return;
-
+	
 	timestamp = curtime;
 	
 	pthread_attr_t popup_thread_attr;
 	pthread_attr_init(&popup_thread_attr);
 	pthread_attr_setdetachstate(&popup_thread_attr, PTHREAD_CREATE_DETACHED);
+	
+	log_message(DEBUG, _("Show popup message \"%s\" with content \"%s\""), xconfig->popups[notify].file, command);
 
-	log_message(DEBUG, _("Show popup message \"%s\""), popup_text);
-
+	struct _popup_body *popup_body = (struct _popup_body*) malloc(sizeof (struct _popup_body));
+	popup_body->header = NULL;
+	popup_body->content = NULL;
+	if (xconfig->popups[notify].file != NULL)
+		popup_body->header = strdup(xconfig->popups[notify].file);
+	if (command != NULL)
+		popup_body->content = strdup(command);
+	
 	pthread_t popup_thread;
-	pthread_create(&popup_thread, &popup_thread_attr, (void*) &popup_show_thread, strdup(popup_text));
+	pthread_create(&popup_thread, &popup_thread_attr, (void*) &popup_show_thread, (void*)popup_body);
 
 	pthread_attr_destroy(&popup_thread_attr);
 }
 
 #else /* WITH_LIBNOTIFY */
 
-void popup_show(char *popup_text)
+void popup_show(int notify, char *command)
 {
+	if (notify || command) {};
 	return;
 }
 

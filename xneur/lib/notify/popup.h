@@ -20,6 +20,12 @@
 #ifndef _POPUP_H_
 #define _POPUP_H_
 
-void popup_show(char *popup_text);
+struct _popup_body
+{
+	char *header;
+	char *content;
+};
+
+void popup_show(int notify, char *command);
 
 #endif /* _POPUP_H_ */

@@ -35,6 +35,7 @@
 
 #include "debug.h"
 #include "log.h"
+#include "types.h"
 
 #include "osd.h"
 
@@ -57,30 +58,44 @@ static void osd_show_thread(void *osd_text)
 	free(osd_text);
 }
 
-void osd_show(char *osd_text)
+void osd_show(int notify, char *command)
 {
 	if (!xconfig->show_osd)
 		return;
 
-	if (osd_text == NULL)
+	if ((xconfig->osds[notify].file == NULL) && (command == NULL))
 		return;
 	
 	pthread_attr_t osd_thread_attr;
 	pthread_attr_init(&osd_thread_attr);
 	pthread_attr_setdetachstate(&osd_thread_attr, PTHREAD_CREATE_DETACHED);
 
+	char *osd_text = malloc (sizeof(char));
+	osd_text[0] = NULLSYM;
+	if (xconfig->osds[notify].file != NULL) 
+	{
+		osd_text = realloc(osd_text, (strlen(osd_text) + strlen(xconfig->osds[notify].file)) * sizeof(char));
+		osd_text = strcat(osd_text, xconfig->osds[notify].file);
+	}
+	if (command != NULL)
+	{
+		osd_text = realloc(osd_text, (strlen(osd_text) + strlen(command) + 1) * sizeof(char));
+		sprintf(osd_text, "%s %s", osd_text, command);
+	}
+	//
 	log_message(DEBUG, _("Show OSD \"%s\""), osd_text);
 
 	pthread_t osd_thread;
-	pthread_create(&osd_thread, &osd_thread_attr, (void *) &osd_show_thread, strdup(osd_text));
+	pthread_create(&osd_thread, &osd_thread_attr, (void *) &osd_show_thread, osd_text);
 
 	pthread_attr_destroy(&osd_thread_attr);
 }
 
 #else /* WITH_XOSD */
 
-void osd_show(char *osd_text)
+void osd_show(int notify, char *command)
 {
+	if (notify || command) {};
 	return;
 }
 
