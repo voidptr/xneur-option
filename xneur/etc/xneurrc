@@ -209,7 +209,7 @@ AddOSD CalculateClipboard
 AddOSD ReplaceAbbreviation
 AddOSD CorrectIncidentalCaps
 AddOSD CorrectTwoCapitalLetter
-AddOSD ExecuteUserAction Запущен
+AddOSD ExecuteUserAction Выполняется команда
 
 # This option disable or enable show popup messages
 # Example:
@@ -235,14 +235,16 @@ AddPopup ChangeSelected
 AddPopup TranslitSelected
 AddPopup ChangecaseSelected
 AddPopup CalculateSelected
+AddPopup PreviewChangeSelected Предпросмотр коррекции выделеного текста
 AddPopup ChangeClipboard
 AddPopup TranslitClipboard
 AddPopup ChangecaseClipboard
 AddPopup CalculateClipboard
+AddPopup PreviewChangeClipboard Предпросмотр коррекции буфера обмена
 AddPopup ReplaceAbbreviation
 AddPopup CorrectIncidentalCaps
 AddPopup CorrectTwoCapitalLetter
-AddPopup ExecuteUserAction Запущен
+AddPopup ExecuteUserAction Выполнение пользовательского действия
 
 # This option disable or enable checking language on input process
 # Example:
@@ -257,7 +259,7 @@ DisableCapsLock No
 # This option disable or enable correction spaces befor punctuation
 # Example:
 #CorrectSpaceWithPunctuation No
-CorrectSpaceWithPunctuation Yes
+CorrectSpaceWithPunctuation No
 
 # This option disable or enable pattern mining and recognition (autocomplementation)
 # Example:
