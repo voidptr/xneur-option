@@ -1278,7 +1278,7 @@ static void xneur_replace_action(GladeXML *gxml)
 	GtkTreeIter iter;
 	if (gtk_tree_selection_get_selected(select, &model, &iter))
 	{
-		GtkWidget *widget1= glade_xml_get_widget (gxml, "entry1");
+		GtkWidget *widget1= glade_xml_get_widget (gxml, "entry3");
 		GtkWidget *widget2= glade_xml_get_widget (gxml, "entry2");
 		gtk_list_store_set(GTK_LIST_STORE(store_hotkey), &iter, 
 											0, gtk_entry_get_text(GTK_ENTRY(widget1)),
@@ -1334,7 +1334,7 @@ void xneur_edit_action(GtkWidget *treeview)
 		char *action;
 		gtk_tree_model_get(GTK_TREE_MODEL(store_hotkey), &iter, 0, &action, 1, &key_bind, -1);
 
-		GtkWidget *widget= glade_xml_get_widget (gxml, "entry1");
+		GtkWidget *widget= glade_xml_get_widget (gxml, "entry3");
 		gtk_editable_set_editable(GTK_EDITABLE(widget), FALSE);
 		gtk_entry_set_text(GTK_ENTRY(widget), action);
 		
@@ -1342,6 +1342,11 @@ void xneur_edit_action(GtkWidget *treeview)
 		g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
 		g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
 		gtk_entry_set_text(GTK_ENTRY(widget), key_bind);
+
+		widget= glade_xml_get_widget (gxml, "entry1");
+		gtk_widget_hide (widget);
+		widget= glade_xml_get_widget (gxml, "label1");
+		gtk_widget_hide (widget);
 		
 		gtk_widget_show(window);
 		
