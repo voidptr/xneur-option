@@ -85,7 +85,7 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 			log_message(DEBUG, _("New window empty"));
 			show_message = FALSE;
 		}
-		usleep(10000);
+		usleep(1000);
 	}
 
 	char *new_app_name = get_wm_class_name(new_window);
