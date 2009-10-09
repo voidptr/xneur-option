@@ -779,7 +779,7 @@ Uzbek</property>
                                         <property name="visible">True</property>
                                         <child>
                                           <widget class="GtkButton" id="button27">
-                                            <property name="label" translatable="yes">gtk-add</property>
+                                            <property name="label">gtk-add</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
@@ -793,7 +793,7 @@ Uzbek</property>
                                         </child>
                                         <child>
                                           <widget class="GtkButton" id="button28">
-                                            <property name="label" translatable="yes">gtk-remove</property>
+                                            <property name="label">gtk-remove</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
@@ -900,7 +900,7 @@ Uzbek</property>
                             <property name="layout_style">start</property>
                             <child>
                               <widget class="GtkButton" id="button10">
-                                <property name="label" translatable="yes">gtk-edit</property>
+                                <property name="label">gtk-edit</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -915,7 +915,7 @@ Uzbek</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button1">
-                                <property name="label" translatable="yes">gtk-clear</property>
+                                <property name="label">gtk-clear</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -978,7 +978,7 @@ Uzbek</property>
                                 <property name="layout_style">start</property>
                                 <child>
                                   <widget class="GtkButton" id="button36">
-                                    <property name="label" translatable="yes">gtk-add</property>
+                                    <property name="label">gtk-add</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -993,7 +993,7 @@ Uzbek</property>
                                 </child>
                                 <child>
                                   <widget class="GtkButton" id="button38">
-                                    <property name="label" translatable="yes">gtk-edit</property>
+                                    <property name="label">gtk-edit</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -1008,7 +1008,7 @@ Uzbek</property>
                                 </child>
                                 <child>
                                   <widget class="GtkButton" id="button37">
-                                    <property name="label" translatable="yes">gtk-remove</property>
+                                    <property name="label">gtk-remove</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -1149,7 +1149,7 @@ Uzbek</property>
                                         <property name="orientation">vertical</property>
                                         <child>
                                           <widget class="GtkButton" id="button11">
-                                            <property name="label" translatable="yes">gtk-add</property>
+                                            <property name="label">gtk-add</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
@@ -1163,7 +1163,7 @@ Uzbek</property>
                                         </child>
                                         <child>
                                           <widget class="GtkButton" id="button13">
-                                            <property name="label" translatable="yes">gtk-remove</property>
+                                            <property name="label">gtk-remove</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
@@ -1286,7 +1286,7 @@ Uzbek</property>
                                         <property name="visible">True</property>
                                         <child>
                                           <widget class="GtkButton" id="button2">
-                                            <property name="label" translatable="yes">gtk-add</property>
+                                            <property name="label">gtk-add</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
@@ -1300,7 +1300,7 @@ Uzbek</property>
                                         </child>
                                         <child>
                                           <widget class="GtkButton" id="button3">
-                                            <property name="label" translatable="yes">gtk-remove</property>
+                                            <property name="label">gtk-remove</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
@@ -1377,7 +1377,7 @@ Uzbek</property>
                                         <property name="visible">True</property>
                                         <child>
                                           <widget class="GtkButton" id="button19">
-                                            <property name="label" translatable="yes">gtk-add</property>
+                                            <property name="label">gtk-add</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
@@ -1391,7 +1391,7 @@ Uzbek</property>
                                         </child>
                                         <child>
                                           <widget class="GtkButton" id="button20">
-                                            <property name="label" translatable="yes">gtk-remove</property>
+                                            <property name="label">gtk-remove</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
@@ -1468,7 +1468,7 @@ Uzbek</property>
                                         <property name="visible">True</property>
                                         <child>
                                           <widget class="GtkButton" id="button21">
-                                            <property name="label" translatable="yes">gtk-add</property>
+                                            <property name="label">gtk-add</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
@@ -1482,7 +1482,7 @@ Uzbek</property>
                                         </child>
                                         <child>
                                           <widget class="GtkButton" id="button22">
-                                            <property name="label" translatable="yes">gtk-remove</property>
+                                            <property name="label">gtk-remove</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
@@ -1585,12 +1585,47 @@ Uzbek</property>
                                   </packing>
                                 </child>
                                 <child>
+                                  <widget class="GtkHBox" id="hbox2">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <widget class="GtkLabel" id="label27">
+                                        <property name="visible">True</property>
+                                        <property name="xalign">0</property>
+                                        <property name="label" translatable="yes">Sound volume</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkSpinButton" id="spinbutton3">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="invisible_char">&#x25CF;</property>
+                                        <property name="adjustment">1 0 100 1 1 1</property>
+                                        <property name="snap_to_ticks">True</property>
+                                        <property name="numeric">True</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <widget class="GtkHSeparator" id="hseparator5">
                                     <property name="visible">True</property>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="position">1</property>
+                                    <property name="position">2</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -1612,7 +1647,7 @@ Uzbek</property>
                                     </child>
                                   </widget>
                                   <packing>
-                                    <property name="position">2</property>
+                                    <property name="position">3</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -1621,7 +1656,7 @@ Uzbek</property>
                                     <property name="layout_style">start</property>
                                     <child>
                                       <widget class="GtkButton" id="button12">
-                                        <property name="label" translatable="yes">gtk-edit</property>
+                                        <property name="label">gtk-edit</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
@@ -1638,7 +1673,7 @@ Uzbek</property>
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
-                                    <property name="position">3</property>
+                                    <property name="position">4</property>
                                   </packing>
                                 </child>
                               </widget>
@@ -1927,7 +1962,7 @@ Uzbek</property>
                             <property name="layout_style">start</property>
                             <child>
                               <widget class="GtkButton" id="button32">
-                                <property name="label" translatable="yes">gtk-add</property>
+                                <property name="label">gtk-add</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1942,7 +1977,7 @@ Uzbek</property>
                             </child>
                             <child>
                               <widget class="GtkButton" id="button33">
-                                <property name="label" translatable="yes">gtk-remove</property>
+                                <property name="label">gtk-remove</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -2083,7 +2118,7 @@ Uzbek</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">&#x25CF;</property>
-                                <property name="adjustment">1 1 1000001 1 1 1</property>
+                                <property name="adjustment">1 1 1000000001 1 1 1</property>
                                 <property name="snap_to_ticks">True</property>
                                 <property name="numeric">True</property>
                               </widget>
@@ -2163,6 +2198,7 @@ Trace</property>
                           <widget class="GtkSpinButton" id="spinbutton1">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="max_length">2</property>
                             <property name="invisible_char">&#x25CF;</property>
                             <property name="adjustment">0 0 50 1 10 10</property>
                             <property name="snap_to_ticks">True</property>

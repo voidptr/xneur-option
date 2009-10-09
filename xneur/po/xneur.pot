@@ -112,126 +112,131 @@ msgstr ""
 
 #: src/xneur.c:138
 #, c-format
-msgid "Logging keyboard mode set to %s"
+msgid "Sound playing volume percentage set to %d"
 msgstr ""
 
 #: src/xneur.c:139
 #, c-format
-msgid "Max file size of keyboard log set to %d bytes"
+msgid "Logging keyboard mode set to %s"
 msgstr ""
 
 #: src/xneur.c:140
 #, c-format
-msgid "Keyboard log will send to %s via %s host"
+msgid "Max file size of keyboard log set to %d bytes"
 msgstr ""
 
 #: src/xneur.c:141
 #, c-format
-msgid "Ignore keyboard layout for abbreviations mode set to %s"
+msgid "Keyboard log will send to %s via %s host"
 msgstr ""
 
 #: src/xneur.c:142
 #, c-format
-msgid "Correct of iNCIDENTAL CapsLock mode set to %s"
+msgid "Ignore keyboard layout for abbreviations mode set to %s"
 msgstr ""
 
 #: src/xneur.c:143
 #, c-format
-msgid "Correct of two CApital letter mode set to %s"
+msgid "Correct of iNCIDENTAL CapsLock mode set to %s"
 msgstr ""
 
 #: src/xneur.c:144
 #, c-format
-msgid "Correct of spaces with punctuation mode set to %s"
+msgid "Correct of two CApital letter mode set to %s"
 msgstr ""
 
 #: src/xneur.c:145
 #, c-format
-msgid "Disable CapsLock use mode set to %s"
+msgid "Correct of spaces with punctuation mode set to %s"
 msgstr ""
 
 #: src/xneur.c:146
 #, c-format
-msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
+msgid "Disable CapsLock use mode set to %s"
 msgstr ""
 
 #: src/xneur.c:147
 #, c-format
-msgid "Don't process word when pressed Enter or Tab mode set to %s"
+msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
 msgstr ""
 
 #: src/xneur.c:148
 #, c-format
-msgid "Show OSD mode set to %s"
+msgid "Don't process word when pressed Enter or Tab mode set to %s"
 msgstr ""
 
 #: src/xneur.c:149
 #, c-format
-msgid "Show popup messages mode set to %s"
+msgid "Show OSD mode set to %s"
 msgstr ""
 
 #: src/xneur.c:150
 #, c-format
-msgid "Check language on input process mode set to %s"
+msgid "Show popup messages mode set to %s"
 msgstr ""
 
 #: src/xneur.c:151
 #, c-format
-msgid "Pattern minig and recognition (autocomplementation) mode set to %s"
+msgid "Check language on input process mode set to %s"
 msgstr ""
 
 #: src/xneur.c:152
 #, c-format
+msgid "Pattern minig and recognition (autocomplementation) mode set to %s"
+msgstr ""
+
+#: src/xneur.c:153
+#, c-format
 msgid "Add space after autocomplementation mode set to %s"
 msgstr ""
 
-#: src/xneur.c:162
+#: src/xneur.c:163
 #, c-format
 msgid " already running with pid %d"
 msgstr ""
 
-#: src/xneur.c:174
+#: src/xneur.c:175
 #, c-format
 msgid " pid is %d with nice %d"
 msgstr ""
 
-#: src/xneur.c:180
+#: src/xneur.c:181
 msgid "Current sound data is freed"
 msgstr ""
 
-#: src/xneur.c:183
+#: src/xneur.c:184
 msgid "Current user keybinds is freed"
 msgstr ""
 
-#: src/xneur.c:188
+#: src/xneur.c:189
 msgid "Current program info is freed"
 msgstr ""
 
-#: src/xneur.c:195
+#: src/xneur.c:196
 msgid "Current configuration data is freed"
 msgstr ""
 
-#: src/xneur.c:206
+#: src/xneur.c:207
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr ""
 
-#: src/xneur.c:221
+#: src/xneur.c:222
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr ""
 
-#: src/xneur.c:234 src/xneur.c:371
+#: src/xneur.c:235 src/xneur.c:372
 msgid "Can't init libxnconfig"
 msgstr ""
 
-#: src/xneur.c:349
+#: src/xneur.c:350
 msgid "Can't trap signal"
 msgstr ""
 
-#: src/xneur.c:381
+#: src/xneur.c:382
 msgid "Failed to init program structure"
 msgstr ""
 
-#: src/xneur.c:390
+#: src/xneur.c:391
 msgid "Init program structure complete"
 msgstr ""
 
@@ -407,70 +412,70 @@ msgstr ""
 msgid "Invalid value for show popup message mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:612
+#: lib/config/xnconfig.c:619
 #, c-format
 msgid "Can't find config file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:774
+#: lib/config/xnconfig.c:781
 msgid "No languages specified in config file"
 msgstr ""
 
-#: lib/config/xnconfig.c:786
+#: lib/config/xnconfig.c:793
 #, c-format
 msgid "Can't find dictionary file for %s language"
 msgstr ""
 
-#: lib/config/xnconfig.c:795
+#: lib/config/xnconfig.c:802
 #, c-format
 msgid "Can't find protos file for %s language"
 msgstr ""
 
-#: lib/config/xnconfig.c:804
+#: lib/config/xnconfig.c:811
 #, c-format
 msgid "Can't find big protos file for %s language"
 msgstr ""
 
-#: lib/config/xnconfig.c:813
+#: lib/config/xnconfig.c:820
 #, c-format
 msgid "Can't find regexp file for %s language"
 msgstr ""
 
-#: lib/config/xnconfig.c:822
+#: lib/config/xnconfig.c:829
 #, c-format
 msgid "Can't find pattern file for %s language"
 msgstr ""
 
-#: lib/config/xnconfig.c:859
+#: lib/config/xnconfig.c:866
 #, c-format
 msgid "Saving main config to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:864
+#: lib/config/xnconfig.c:871
 #, c-format
 msgid "Can't create file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1139
+#: lib/config/xnconfig.c:1151
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1145
+#: lib/config/xnconfig.c:1157
 msgid "Can't move file!"
-msgstr ""
-
-#: lib/config/xnconfig.c:1163
-#, c-format
-msgid "Saving %s dictionary"
 msgstr ""
 
 #: lib/config/xnconfig.c:1175
 #, c-format
+msgid "Saving %s dictionary"
+msgstr ""
+
+#: lib/config/xnconfig.c:1187
+#, c-format
 msgid "Saving %s pattern"
 msgstr ""
 
-#: lib/config/xnconfig.c:1222
+#: lib/config/xnconfig.c:1234
 msgid "Can't add language with empty name or dir"
 msgstr ""
 
@@ -574,32 +579,37 @@ msgstr ""
 msgid "Show popup message \"%s\" with content \"%s\""
 msgstr ""
 
-#: lib/notify/sound.c:125
+#: lib/notify/sound.c:124
 #, c-format
 msgid "Play sound sample %s (use Gstreamer engine)"
 msgstr ""
 
-#: lib/notify/sound.c:139
+#: lib/notify/sound.c:140
 msgid "Failed to create gstreamer context"
 msgstr ""
 
-#: lib/notify/sound.c:177
+#: lib/notify/sound.c:180
 #, c-format
 msgid "Initializing ALCdevice: %s "
 msgstr ""
 
-#: lib/notify/sound.c:191
+#: lib/notify/sound.c:194
 #, c-format
 msgid "Play sound sample %s (use OpenAL library)"
 msgstr ""
 
-#: lib/notify/sound.c:197
+#: lib/notify/sound.c:200
 msgid "Failed to create OpenAL buffer"
 msgstr ""
 
-#: lib/notify/sound.c:244
+#: lib/notify/sound.c:249
 #, c-format
-msgid "Play sound sample %s (use ALSA library)"
+msgid "Play sound sample %s (use aplay)"
+msgstr ""
+
+#: lib/notify/sound.c:256
+#, c-format
+msgid "Can't execute command '%s'"
 msgstr ""
 
 #: lib/main/bind_table.c:78 lib/main/bind_table.c:114
@@ -694,76 +704,149 @@ msgstr ""
 msgid "Plugins is freed"
 msgstr ""
 
-#: lib/main/program.c:271
+#: lib/main/~program.c:264 lib/main/program.c:271
 #, c-format
 msgid "Restore layout group to %d"
 msgstr ""
 
-#: lib/main/program.c:278
+#: lib/main/~program.c:271 lib/main/program.c:278
 #, c-format
 msgid "Store default layout group to %d"
 msgstr ""
 
-#: lib/main/program.c:328
+#: lib/main/~program.c:321 lib/main/program.c:328
 msgid "Exitting from main cycle"
 msgstr ""
 
-#: lib/main/program.c:335
+#: lib/main/~program.c:328 lib/main/program.c:335
 #, c-format
 msgid "Received KeyPress '%s' (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:353
+#: lib/main/~program.c:346 lib/main/program.c:353
 #, c-format
 msgid "Received KeyRelease '%s' (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:375
+#: lib/main/~program.c:368 lib/main/program.c:375
 #, c-format
 msgid "Received FocusIn (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:390
+#: lib/main/~program.c:383 lib/main/program.c:390
 #, c-format
 msgid "Received FocusOut (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:398
+#: lib/main/~program.c:391 lib/main/program.c:398
 #, c-format
 msgid "Received SelectionNotify (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:403
+#: lib/main/~program.c:397 lib/main/program.c:403
 #, c-format
 msgid "Received SelectionRequest (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:409
+#: lib/main/~program.c:404 lib/main/program.c:409
 #, c-format
 msgid "Received ButtonPress on window %d (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:419
+#: lib/main/~program.c:414 lib/main/program.c:419
 #, c-format
 msgid "Received Property Notify (layout switch event) (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:428
+#: lib/main/~program.c:423 lib/main/program.c:428
 #, c-format
 msgid "Uncatched event with type %d)"
 msgstr ""
 
-#: lib/main/program.c:437
+#: lib/main/~program.c:432 lib/main/program.c:437
 #, c-format
 msgid "Changing language from %s to %s"
 msgstr ""
 
-#: lib/main/program.c:444
+#: lib/main/~program.c:439 lib/main/program.c:444
 msgid "Correcting iNCIDENTAL CapsLock"
 msgstr ""
 
-#: lib/main/program.c:462
+#: lib/main/~program.c:457 lib/main/program.c:462
 msgid "Correcting two CApital letter"
+msgstr ""
+
+#: lib/main/~program.c:664 lib/main/program.c:759
+#, c-format
+msgid "Execute user action \"%s\""
+msgstr ""
+
+#: lib/main/~program.c:813 lib/main/program.c:907
+#, c-format
+msgid "Manual mode changed to %s"
+msgstr ""
+
+#: lib/main/~program.c:994 lib/main/program.c:1092
+#, c-format
+msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
+msgstr ""
+
+#: lib/main/~program.c:1043 lib/main/~program.c:1085 lib/main/program.c:1141
+#: lib/main/program.c:1183
+msgid "No language found to change to"
+msgstr ""
+
+#: lib/main/~program.c:1187 lib/main/program.c:1285
+msgid "Find spaces before punctuation, correction..."
+msgstr ""
+
+#: lib/main/~program.c:1236 lib/main/program.c:1334
+msgid "Find no space before left bracket, correction..."
+msgstr ""
+
+#: lib/main/~program.c:1253 lib/main/program.c:1351
+msgid "Find spaces before right bracket, correction..."
+msgstr ""
+
+#: lib/main/~program.c:1277 lib/main/program.c:1381
+msgid "Find no spaces after right bracket, correction..."
+msgstr ""
+
+#: lib/main/~program.c:1306 lib/main/program.c:1416
+msgid "Find spaces after left bracket, correction..."
+msgstr ""
+
+#: lib/main/~program.c:1393 lib/main/program.c:1505
+msgid "No string to change"
+msgstr ""
+
+#: lib/main/~program.c:1397 lib/main/program.c:1509
+#, c-format
+msgid "Processing string '%s'"
+msgstr ""
+
+#: lib/main/~program.c:1650 lib/main/program.c:1795
+#, c-format
+msgid "Remove word '%s' from %s dictionary"
+msgstr ""
+
+#: lib/main/~program.c:1658 lib/main/program.c:1803
+#, c-format
+msgid "Add word '%s' in %s dictionary"
+msgstr ""
+
+#: lib/main/~program.c:1715 lib/main/program.c:1860
+#, c-format
+msgid "Remove word '%s' from %s pattern"
+msgstr ""
+
+#: lib/main/~program.c:1725 lib/main/program.c:1891
+#, c-format
+msgid "Add word '%s' in %s pattern"
+msgstr ""
+
+#: lib/main/~program.c:1746 lib/main/program.c:1912
+msgid "Program is freed"
 msgstr ""
 
 #: lib/main/program.c:479
@@ -774,78 +857,6 @@ msgstr ""
 #: lib/main/program.c:483
 #, c-format
 msgid "Received selected text '%s'"
-msgstr ""
-
-#: lib/main/program.c:759
-#, c-format
-msgid "Execute user action \"%s\""
-msgstr ""
-
-#: lib/main/program.c:907
-#, c-format
-msgid "Manual mode changed to %s"
-msgstr ""
-
-#: lib/main/program.c:1092
-#, c-format
-msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
-msgstr ""
-
-#: lib/main/program.c:1141 lib/main/program.c:1183
-msgid "No language found to change to"
-msgstr ""
-
-#: lib/main/program.c:1285
-msgid "Find spaces before punctuation, correction..."
-msgstr ""
-
-#: lib/main/program.c:1334
-msgid "Find no space before left bracket, correction..."
-msgstr ""
-
-#: lib/main/program.c:1351
-msgid "Find spaces before right bracket, correction..."
-msgstr ""
-
-#: lib/main/program.c:1381
-msgid "Find no spaces after right bracket, correction..."
-msgstr ""
-
-#: lib/main/program.c:1416
-msgid "Find spaces after left bracket, correction..."
-msgstr ""
-
-#: lib/main/program.c:1505
-msgid "No string to change"
-msgstr ""
-
-#: lib/main/program.c:1509
-#, c-format
-msgid "Processing string '%s'"
-msgstr ""
-
-#: lib/main/program.c:1795
-#, c-format
-msgid "Remove word '%s' from %s dictionary"
-msgstr ""
-
-#: lib/main/program.c:1803
-#, c-format
-msgid "Add word '%s' in %s dictionary"
-msgstr ""
-
-#: lib/main/program.c:1860
-#, c-format
-msgid "Remove word '%s' from %s pattern"
-msgstr ""
-
-#: lib/main/program.c:1891
-#, c-format
-msgid "Add word '%s' in %s pattern"
-msgstr ""
-
-#: lib/main/program.c:1912
-msgid "Program is freed"
 msgstr ""
 
 #: lib/main/selection.c:66

@@ -79,7 +79,7 @@ if test "x$with_sound" != "xno"; then
 			AC_SUBST(APLAY_LIBS)
 			;;
 		*)
-			AC_MSG_ERROR([Unsupported sound system selected, --with-sound=[[yes|no|gstreamer|openal]]])
+			AC_MSG_ERROR([Unsupported sound system selected, --with-sound=[[yes|no|gstreamer|openal|aplay]]])
 			;;
 	esac
 

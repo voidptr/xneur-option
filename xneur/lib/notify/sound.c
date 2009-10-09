@@ -36,7 +36,6 @@
 #elif WITH_APLAY
 
 #include <signal.h>
-#include <string.h>
 #include <stdio.h>
 
 #endif
@@ -128,29 +127,34 @@ void *play_file_thread(void *param)
 	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
 
 	// Initialize gst-elements
-	GstElement *pipeline = gst_pipeline_new        ("audio-player");
-	GstElement *source   = gst_element_factory_make("filesrc",  NULL);
-	GstElement *parser   = gst_element_factory_make("wavparse", NULL);
-	GstElement *sink     = gst_element_factory_make("alsasink", NULL);
-
-	if (!pipeline || !source || !parser || !sink)
+	GstElement *pipeline = gst_pipeline_new        ("xneur");
+	GstElement *source   = gst_element_factory_make("filesrc",  "file-source");
+	GstElement *parser   = gst_element_factory_make("wavparse", "wav-parcer");
+	GstElement *volume   = gst_element_factory_make("volume", "volume");
+	GstElement *conv     = gst_element_factory_make ("audioconvert",  "converter");
+	GstElement *sink     = gst_element_factory_make("alsasink", "audio-output");
+	
+	if (!pipeline || !source || !parser || !conv || !volume || !sink)
 	{
 		free(path);
 		log_message(ERROR, _("Failed to create gstreamer context"));
 		return NULL;
   	}
 
-	gst_bin_add_many(GST_BIN(pipeline), source, parser, sink, NULL);
-	gst_element_link(source, parser);
-
-	g_signal_connect(parser, "pad-added", G_CALLBACK(new_pad), sink);
-
-	// Set filename property on the file source. Also add a message handler.
 	g_object_set(G_OBJECT(source), "location", path, NULL);
-
+	double i = (double) xconfig->volume_percent / 100.0;
+	g_object_set (G_OBJECT (volume), "volume", (double)i, NULL);
+	
 	GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipeline));
 	gst_bus_add_watch(bus, bus_call, loop);
 	gst_object_unref(bus);
+	
+	gst_bin_add_many(GST_BIN(pipeline), source, parser, conv, volume, sink, NULL);
+	
+	gst_element_link(source, parser);
+	gst_element_link_many (conv, volume, sink, NULL);
+	
+	g_signal_connect(parser, "pad-added", G_CALLBACK(new_pad), conv);
 
 	gst_element_set_state(pipeline, GST_STATE_PLAYING);
 	g_main_loop_run(loop);
@@ -159,7 +163,6 @@ void *play_file_thread(void *param)
 	gst_element_set_state(pipeline, GST_STATE_NULL);
 	gst_object_unref(GST_OBJECT(pipeline));
 
-	free(path);
 	return NULL;
 }
 
@@ -201,6 +204,8 @@ void *play_file_thread(void *param)
 	ALuint AlutSource;
 	alGenSources(1, &AlutSource);
 	alSourcei(AlutSource, AL_BUFFER, AlutBuffer);
+	double i = (double) xconfig->volume_percent / 100.0;
+	alSourcef(AlutSource, AL_GAIN, (double)i);
 	alSourcePlay(AlutSource);
 
 	ALint result;
@@ -241,13 +246,14 @@ void sound_uninit(void)
 void *play_file_thread(void *param)
 {
 	char *path = (char *) param;
-	log_message(TRACE, _("Play sound sample %s (use ALSA library)"), path);
+	log_message(TRACE, _("Play sound sample %s (use aplay)"), path);
 
 	static const char *program_name = "aplay";
 
 	char *command = malloc((strlen(path) + strlen(program_name) + 1) * sizeof(char));
 	sprintf(command, "%s %s", program_name, path);
-	system(command);
+	if (system(command) == -1)
+		log_message(ERROR, _("Can't execute command '%s'"), command);
 
 	free(command);
 

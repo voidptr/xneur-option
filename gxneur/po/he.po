@@ -68,9 +68,8 @@ msgstr "שנה את הרישיות של הטקסט הנבחר"
 msgid "Calculate formula on selected text"
 msgstr ""
 
-#, fuzzy
 msgid "Preview correcting of selected text"
-msgstr "החלף את הטקסט הנבחר"
+msgstr ""
 
 msgid "Correct clipboard text"
 msgstr ""
@@ -147,15 +146,14 @@ msgid "Add user action..."
 msgstr ""
 
 #: glade/action_add.glade:25
-#, fuzzy
 msgid "Action name:"
-msgstr "פעולה"
+msgstr ""
 
 #: glade/action_add.glade:47
 msgid "Key bind:"
 msgstr ""
 
-#: glade/action_add.glade:71
+#: glade/action_add.glade:70
 msgid "User action:"
 msgstr ""
 
@@ -294,6 +292,10 @@ msgstr "חריגות (פריסת מקלדת אחת לכל העותקים של ה
 msgid "<b>Layouts</b>"
 msgstr "<b>פריסות</b>"
 
+#: glade/config.glade:1054
+msgid "<b>Hotkeys</b>"
+msgstr "<b>צירופי מקשים</b>"
+
 #: glade/config.glade:1077
 msgid "Enable pattern mining and recognition (autocomplementation)"
 msgstr ""
@@ -330,67 +332,71 @@ msgstr "<b>יישומים</b>"
 msgid "Enable sounds"
 msgstr "השמע צלילים"
 
-#: glade/config.glade:1651
+#: glade/config.glade:1594
+msgid "Sound volume"
+msgstr ""
+
+#: glade/config.glade:1686
 msgid "Sounds"
 msgstr ""
 
-#: glade/config.glade:1668
+#: glade/config.glade:1703
 msgid "Show OSD"
 msgstr ""
 
-#: glade/config.glade:1688
+#: glade/config.glade:1723
 msgid "OSD Font"
 msgstr ""
 
-#: glade/config.glade:1719
+#: glade/config.glade:1754
 msgid "Use command <b>xfontsel -print</b> to get new font."
 msgstr ""
 
-#: glade/config.glade:1768
+#: glade/config.glade:1803
 msgid "OSD"
 msgstr ""
 
-#: glade/config.glade:1786
+#: glade/config.glade:1821
 msgid "Show popup messages"
 msgstr ""
 
-#: glade/config.glade:1840
+#: glade/config.glade:1875
 msgid "Popup messages"
 msgstr ""
 
-#: glade/config.glade:1866
+#: glade/config.glade:1901
 msgid "<b>Notifications</b>"
 msgstr ""
 
-#: glade/config.glade:1889
+#: glade/config.glade:1924
 msgid "Ignore keyboard layout for abbreviations"
 msgstr "התעלם מפריסת המקלדת עבור ראשי תיבות"
 
-#: glade/config.glade:1977
+#: glade/config.glade:2012
 msgid "<b>Abbreviations</b>"
 msgstr "<b>החלפה אוטומטית</b>"
 
-#: glade/config.glade:2001
+#: glade/config.glade:2036
 msgid "Enable keyboard logging"
 msgstr "אפשר מעקב אחר המקלדת"
 
-#: glade/config.glade:2022
+#: glade/config.glade:2057
 msgid "Send log to e-mail"
 msgstr ""
 
-#: glade/config.glade:2048
+#: glade/config.glade:2083
 msgid "Send log via host (IP)"
 msgstr ""
 
-#: glade/config.glade:2074
+#: glade/config.glade:2109
 msgid "Log file size in bytes"
 msgstr ""
 
-#: glade/config.glade:2121
+#: glade/config.glade:2156
 msgid "<b>Log</b>"
 msgstr ""
 
-#: glade/config.glade:2147
+#: glade/config.glade:2182
 msgid ""
 "Error\n"
 "Warning\n"
@@ -399,28 +405,25 @@ msgid ""
 "Trace"
 msgstr ""
 
-#: glade/config.glade:2182
+#: glade/config.glade:2218
 msgid "Log verbosity level"
 msgstr "הודעות ברמת התוכנה ייכתבו לפלט"
 
-#: glade/config.glade:2195
+#: glade/config.glade:2231
 msgid "Delay before sending events (in milliseconds)"
 msgstr "השהייה לפני שליחת האירועים (במילישניות)"
 
-#: glade/config.glade:2214
+#: glade/config.glade:2250
 msgid "<b>Advanced</b>"
 msgstr "<b>מתקדם</b>"
 
-#: glade/config.glade:2276
+#: glade/config.glade:2312
 msgid "<b>Plugins</b>"
 msgstr ""
 
 #: glade/list.glade:7
 msgid "File Editing"
 msgstr "עריכת קבצים"
-
-msgid "<b>Hotkeys</b>"
-msgstr "<b>צירופי מקשים</b>"
 
 #: src/callbacks.c:188 src/misc.c:1717
 msgid "Press any key"

@@ -153,7 +153,7 @@ msgstr "Название действия:"
 msgid "Key bind:"
 msgstr "Комбинация клавиш:"
 
-#: glade/action_add.glade:71
+#: glade/action_add.glade:70
 msgid "User action:"
 msgstr "Пользовательское действие:"
 
@@ -311,6 +311,10 @@ msgstr "Исключения (одна раскладка для всех коп
 msgid "<b>Layouts</b>"
 msgstr "<b>Раскладки</b>"
 
+#: glade/config.glade:1054
+msgid "<b>Hotkeys</b>"
+msgstr "<b>Комбинации клавиш</b>"
+
 #: glade/config.glade:1077
 msgid "Enable pattern mining and recognition (autocomplementation)"
 msgstr "Включить запоминание паттернов и автодополнение"
@@ -347,68 +351,72 @@ msgstr "<b>Приложения</b>"
 msgid "Enable sounds"
 msgstr "Проигрывать звуки"
 
-#: glade/config.glade:1651
+#: glade/config.glade:1594
+msgid "Sound volume"
+msgstr "Уровень громкости "
+
+#: glade/config.glade:1686
 msgid "Sounds"
 msgstr "Звуки"
 
-#: glade/config.glade:1668
+#: glade/config.glade:1703
 msgid "Show OSD"
 msgstr "Показывать OSD"
 
-#: glade/config.glade:1688
+#: glade/config.glade:1723
 msgid "OSD Font"
 msgstr "Шрифт OSD"
 
-#: glade/config.glade:1719
+#: glade/config.glade:1754
 msgid "Use command <b>xfontsel -print</b> to get new font."
 msgstr ""
 "Используйте команду <b>xfontsel -print</b> для получения нового шрифта."
 
-#: glade/config.glade:1768
+#: glade/config.glade:1803
 msgid "OSD"
 msgstr "OSD"
 
-#: glade/config.glade:1786
+#: glade/config.glade:1821
 msgid "Show popup messages"
 msgstr "Показывать всплывающие сообщения"
 
-#: glade/config.glade:1840
+#: glade/config.glade:1875
 msgid "Popup messages"
 msgstr "Всплывающие сообщения"
 
-#: glade/config.glade:1866
+#: glade/config.glade:1901
 msgid "<b>Notifications</b>"
 msgstr "<b>Уведомления</b>"
 
-#: glade/config.glade:1889
+#: glade/config.glade:1924
 msgid "Ignore keyboard layout for abbreviations"
 msgstr "Игнорировать раскладку для сокращений"
 
-#: glade/config.glade:1977
+#: glade/config.glade:2012
 msgid "<b>Abbreviations</b>"
 msgstr "<b>Сокращения</b>"
 
-#: glade/config.glade:2001
+#: glade/config.glade:2036
 msgid "Enable keyboard logging"
 msgstr "Включить сохранение набираемого текста в файл журнала"
 
-#: glade/config.glade:2022
+#: glade/config.glade:2057
 msgid "Send log to e-mail"
 msgstr "Отправить журнал на e-mail"
 
-#: glade/config.glade:2048
+#: glade/config.glade:2083
 msgid "Send log via host (IP)"
 msgstr "Отправить журнал через сервер (IP)"
 
-#: glade/config.glade:2074
+#: glade/config.glade:2109
 msgid "Log file size in bytes"
 msgstr "Размер журнала в байтах"
 
-#: glade/config.glade:2121
+#: glade/config.glade:2156
 msgid "<b>Log</b>"
 msgstr "<b>Журнал</b>"
 
-#: glade/config.glade:2147
+#: glade/config.glade:2182
 msgid ""
 "Error\n"
 "Warning\n"
@@ -422,28 +430,25 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2182
+#: glade/config.glade:2218
 msgid "Log verbosity level"
 msgstr "Уровень подробности выводимых сообщений"
 
-#: glade/config.glade:2195
+#: glade/config.glade:2231
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Задержка перед отправкой событий (в миллисекундах)"
 
-#: glade/config.glade:2214
+#: glade/config.glade:2250
 msgid "<b>Advanced</b>"
 msgstr "<b>Специальное</b>"
 
-#: glade/config.glade:2276
+#: glade/config.glade:2312
 msgid "<b>Plugins</b>"
 msgstr "<b>Модули</b>"
 
 #: glade/list.glade:7
 msgid "File Editing"
 msgstr "Редактирование файла"
-
-msgid "<b>Hotkeys</b>"
-msgstr "<b>Комбинации клавиш</b>"
 
 #: src/callbacks.c:188 src/misc.c:1717
 msgid "Press any key"

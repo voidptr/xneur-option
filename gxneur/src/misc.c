@@ -595,7 +595,10 @@ void xneur_preference(void)
 	// Sound Playing Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton5");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->play_sounds);
-	
+	// Volume Percent
+	widget = glade_xml_get_widget (gxml, "spinbutton3");
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->volume_percent);
+
 	// Logging Keyboard Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton6");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->save_keyboard_log);
@@ -782,7 +785,7 @@ void xneur_preference(void)
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
 	// Button Edit Sound
-	widget = glade_xml_get_widget (gxml, "button34");
+	widget = glade_xml_get_widget (gxml, "button12");
 	tmp_treeview = GTK_TREE_VIEW(treeview);
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_sound), G_OBJECT(treeview));
 
@@ -1719,6 +1722,9 @@ void xneur_save_preference(GladeXML *gxml)
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton5");
 	xconfig->play_sounds = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton3");
+	xconfig->volume_percent = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound));
+
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton6");
 	xconfig->save_keyboard_log = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 

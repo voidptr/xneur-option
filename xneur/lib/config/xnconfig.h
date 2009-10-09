@@ -194,6 +194,8 @@ struct _xneur_config
 	int   default_group;				// Initial keyboard layout for all new applications
 
 	int   play_sounds;				// Play sound samples or not
+	int   volume_percent;			// Sound Volume Percent
+
 	int   educate;					// Education xneur
 	int   remember_layout;				// Remember layout for each of window
 	int   save_selection;				// Save selection after convert

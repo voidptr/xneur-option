@@ -59,7 +59,7 @@ static const char *option_names[] = 	{
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
 						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup", 
 	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocomplementation", "LoadModule",
-						"LogSize", "LogMail", "LogHostIP"
+						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "ChangeString", "ChangeMode",
@@ -600,6 +600,13 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->host_keyboard_log = strdup (param);
 			break;
 		}
+		case 39: // Get volume percentage
+		{
+			p->volume_percent = atoi(get_word(&param));
+			if ((p->volume_percent < 0) || (p->volume_percent > 100))
+				p->volume_percent = 30;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -974,6 +981,11 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#PlaySounds No\n");
 	fprintf(stream, "PlaySounds %s\n\n", p->get_bool_name(p->play_sounds));
 
+	fprintf(stream, "# This option defined sound playing volume percent\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#SoundVolumePercent 10\n");
+	fprintf(stream, "SoundVolumePercent %d\n\n", p->volume_percent);
+	    
 	fprintf(stream, "# Binds sounds for some actions\n");
 	for (int sound = 0; sound < MAX_NOTIFIES; sound++)
 	{

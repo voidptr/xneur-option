@@ -135,6 +135,7 @@ static void xneur_load_config(int final)
 	log_message(LOG, _("Layout remember mode set to %s"), xconfig->get_bool_name(xconfig->remember_layout));
 	log_message(LOG, _("Save selection mode set to %s"), xconfig->get_bool_name(xconfig->save_selection));
 	log_message(LOG, _("Sound playing mode set to %s"), xconfig->get_bool_name(xconfig->play_sounds));
+	log_message(LOG, _("Sound playing volume percentage set to %d"), xconfig->volume_percent);
 	log_message(LOG, _("Logging keyboard mode set to %s"), xconfig->get_bool_name(xconfig->save_keyboard_log));
 	log_message(LOG, _("Max file size of keyboard log set to %d bytes"), xconfig->size_keyboard_log);
 	log_message(LOG, _("Keyboard log will send to %s via %s host"), xconfig->mail_keyboard_log, xconfig->host_keyboard_log);

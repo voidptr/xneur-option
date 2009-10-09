@@ -10,6 +10,14 @@ libxnnotify_la_SOURCES =	\
 	sound.c			\
 	sound.h			
 
-libxnnotify_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc @X11_CFLAGS@ @FREEALUT_CFLAGS@ @GSTREAMER_CFLAGS@ @DEFAULT_CFLAGS@ @XOSD_CFLAGS@ @LIBNOTIFY_CFLAGS@
-libxnnotify_la_LDFLAGS = -static @X11_LIBS@ @FREEALUT_LIBS@ @GSTREAMER_LIBS@  @APLAY_LIBS@ @XOSD_LIBS@ @LIBNOTIFY_LIBS@
+libxnnotify_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc @X11_CFLAGS@ @DEFAULT_CFLAGS@ 	\
+										@FREEALUT_CFLAGS@ 		\
+										@GSTREAMER_CFLAGS@ 		\
+										@XOSD_CFLAGS@ 			\
+										@LIBNOTIFY_CFLAGS@
+libxnnotify_la_LDFLAGS = -static @X11_LIBS@ 			\
+					@FREEALUT_LIBS@ 	\
+					@GSTREAMER_LIBS@ 	\
+					@XOSD_LIBS@ 		\
+					@LIBNOTIFY_LIBS@
 
