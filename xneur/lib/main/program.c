@@ -173,32 +173,6 @@ static int get_auto_action(KeySym key, int modifier_mask)
 	if (modifier_mask & ControlMask || modifier_mask & Mod1Mask || modifier_mask & Mod4Mask)
 		return KLB_NO_ACTION;
 
-	int lang = get_cur_lang();
-	switch (lang)
-	{
-		default:
-		case 0:
-		{
-			show_notify(NOTIFY_PRESS_KEY_LAYOUT_0, NULL);
-			break;
-		}
-		case 1:
-		{
-			show_notify(NOTIFY_PRESS_KEY_LAYOUT_1, NULL);
-			break;
-		}
-		case 2:
-		{
-			show_notify(NOTIFY_PRESS_KEY_LAYOUT_2, NULL);
-			break;
-		}
-		case 3:
-		{
-			show_notify(NOTIFY_PRESS_KEY_LAYOUT_3, NULL);
-			break;
-		}
-	}
-
 	return KLB_ADD_SYM;
 }
 
@@ -696,6 +670,32 @@ static void program_on_key_action(struct _program *p, int type)
 		p->plugin->key_press(p->plugin, key, p->prev_key_mod);
 		
 		int auto_action = get_auto_action(key, p->prev_key_mod);
+		int lang = get_cur_lang();
+		switch (lang)
+		{
+			default:
+			case 0:
+			{
+				show_notify(NOTIFY_PRESS_KEY_LAYOUT_0, NULL);
+				break;
+			}
+			case 1:
+			{
+				show_notify(NOTIFY_PRESS_KEY_LAYOUT_1, NULL);
+				break;
+			}
+			case 2:
+			{
+				show_notify(NOTIFY_PRESS_KEY_LAYOUT_2, NULL);
+				break;
+			}
+			case 3:
+			{
+				show_notify(NOTIFY_PRESS_KEY_LAYOUT_3, NULL);
+				break;
+			}
+		}
+		
 		p->perform_auto_action(p, auto_action);
 	}
 
