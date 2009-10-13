@@ -670,29 +670,32 @@ static void program_on_key_action(struct _program *p, int type)
 		p->plugin->key_press(p->plugin, key, p->prev_key_mod);
 		
 		int auto_action = get_auto_action(key, p->prev_key_mod);
-		int lang = get_cur_lang();
-		switch (lang)
+		if ((auto_action != KLB_NO_ACTION) && (auto_action != KLB_CLEAR))
 		{
-			default:
-			case 0:
+			int lang = get_cur_lang();
+			switch (lang)
 			{
-				show_notify(NOTIFY_PRESS_KEY_LAYOUT_0, NULL);
-				break;
-			}
-			case 1:
-			{
-				show_notify(NOTIFY_PRESS_KEY_LAYOUT_1, NULL);
-				break;
-			}
-			case 2:
-			{
-				show_notify(NOTIFY_PRESS_KEY_LAYOUT_2, NULL);
-				break;
-			}
-			case 3:
-			{
-				show_notify(NOTIFY_PRESS_KEY_LAYOUT_3, NULL);
-				break;
+				default:
+				case 0:
+				{
+					show_notify(NOTIFY_PRESS_KEY_LAYOUT_0, NULL);
+					break;
+				}
+				case 1:
+				{
+					show_notify(NOTIFY_PRESS_KEY_LAYOUT_1, NULL);
+					break;
+				}
+				case 2:
+				{
+					show_notify(NOTIFY_PRESS_KEY_LAYOUT_2, NULL);
+					break;
+				}
+				case 3:
+				{
+					show_notify(NOTIFY_PRESS_KEY_LAYOUT_3, NULL);
+					break;
+				}
 			}
 		}
 		
