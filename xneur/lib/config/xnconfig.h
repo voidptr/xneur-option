@@ -144,9 +144,10 @@ struct _xneur_hotkey
 	char *key;
 };
 
-struct _xneur_file
+struct _xneur_notify
 {
 	char *file;
+	int enabled;
 };
 
 struct _xneur_data
@@ -179,9 +180,9 @@ struct _xneur_config
 	struct _xneur_data *xneur_data;
 	struct _xneur_language *languages;		// Array of languages used in program
 	struct _xneur_hotkey *hotkeys;			// Array of hotkeys used in program
-	struct _xneur_file *sounds;			// Array of sounds for actions
-	struct _xneur_file *osds;			// Array of OSDs for actions
-	struct _xneur_file *popups;			// Array of popups for actions
+	struct _xneur_notify *sounds;			// Array of sounds for actions
+	struct _xneur_notify *osds;			// Array of OSDs for actions
+	struct _xneur_notify *popups;			// Array of popups for actions
 	struct _xneur_action *actions;			// Array of actions
 
 	int   actions_count;				// Count of actions

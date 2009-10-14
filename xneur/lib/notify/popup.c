@@ -84,6 +84,9 @@ void popup_show(int notify, char *command)
 	
 	if ((xconfig->popups[notify].file == NULL) && (command == NULL))
 		return;
+
+	if (!xconfig->popups[notify].enabled)
+		return;
 	
 	time_t curtime = time(NULL);
 	if ((curtime - timestamp) < 2)

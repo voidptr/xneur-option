@@ -65,6 +65,9 @@ void osd_show(int notify, char *command)
 
 	if ((xconfig->osds[notify].file == NULL) && (command == NULL))
 		return;
+
+	if (!xconfig->osds[notify].enabled)
+		return;
 	
 	pthread_attr_t osd_thread_attr;
 	pthread_attr_init(&osd_thread_attr);

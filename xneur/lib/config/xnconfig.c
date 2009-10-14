@@ -46,6 +46,7 @@
 
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
 static const char *bool_names[] =	{"No", "Yes"};
+static const char *status_names[] =	{"Disable", "Enable"};
 static const char *fix_names[]  =	{"Fixed"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
@@ -110,6 +111,17 @@ static void xneur_config_get_library_version(int *major_version, int *minor_vers
 static const char* xneur_config_get_bool_name(int option)
 {
 	return bool_names[option];
+}
+
+static int xneur_config_get_status(char *str)
+{
+	if (strcmp(str, status_names[0]) == 0)
+		return FALSE;
+
+	if (strcmp(str, status_names[1]) == 0)
+		return TRUE;
+
+	return -1;
 }
 
 static void parse_line(struct _xneur_config *p, char *line)
@@ -328,14 +340,24 @@ static void parse_line(struct _xneur_config *p, char *line)
 
 			if (line == NULL)
 				break;
+			
+			char *param1 = get_word(&line);
+			char *param2 = get_word(&line);
 
-			char *file = strdup(get_word(&line));
-			if (strlen(file) != 0)
+			if (strlen(param1) != 0)
 			{
-				p->sounds[sound].file = get_file_path_name(SOUNDDIR, file);
+				p->sounds[sound].enabled = xneur_config_get_status(param1);
+
+				if (p->sounds[sound].enabled == -1)
+				{
+					p->sounds[sound].enabled = TRUE;
+					p->sounds[sound].file = get_file_path_name(SOUNDDIR, param1);
+				}
+				else if (strlen(param2) != 0)
+					p->sounds[sound].file = get_file_path_name(SOUNDDIR, param2);
 			}
-			if (file != NULL)
-				free(file);
+			if (p->sounds[sound].file == NULL)
+				p->sounds[sound].enabled = FALSE;
 
 			break;
 		}
@@ -521,10 +543,32 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 
 			if (line == NULL)
+			{
+				p->osds[osd].file = NULL;
+				p->osds[osd].enabled = FALSE;
 				break;
+			}
+			
+			char *tmp = strdup(line);
+			char *param1 = get_word(&line);
 
-			if (strlen(line) != 0)
-				p->osds[osd].file = strdup(line);
+			if (strlen(param1) != 0)
+			{
+				p->osds[osd].enabled = xneur_config_get_status(param1);
+
+				if (p->osds[osd].enabled == -1)
+				{
+					p->osds[osd].enabled = TRUE;
+					if (strlen(tmp) != 0)
+						p->osds[osd].file = strdup(tmp);
+				}
+				else if (strlen(line) != 0)
+					p->osds[osd].file = strdup(line);
+			}
+			if (p->osds[osd].file == NULL)
+				p->osds[osd].enabled = FALSE;
+			
+			free(tmp);
 
 			break;
 		}
@@ -555,11 +599,33 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 
 			if (line == NULL)
+			{
+				p->popups[popup].file = NULL;
+				p->popups[popup].enabled = FALSE;
 				break;
+			}
+			
+			char *tmp = strdup(line);
+			char *param1 = get_word(&line);
 
-			if (strlen(line) != 0)
-				p->popups[popup].file = strdup(line);
+			if (strlen(param1) != 0)
+			{
+				p->popups[popup].enabled = xneur_config_get_status(param1);
 
+				if (p->popups[popup].enabled == -1)
+				{
+					p->popups[popup].enabled = TRUE;
+					if (strlen(tmp) != 0)
+						p->popups[popup].file = strdup(tmp);
+				}
+				else if (strlen(line) != 0)
+					p->popups[popup].file = strdup(line);
+			}
+			if (p->popups[popup].file == NULL)
+				p->popups[popup].enabled = FALSE;
+
+			free(tmp);
+			
 			break;
 		}
 		case 33:
@@ -701,9 +767,9 @@ static void free_structures(struct _xneur_config *p)
 	}
 
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
-	bzero(p->sounds, MAX_NOTIFIES * sizeof(struct _xneur_file));
-	bzero(p->osds, MAX_NOTIFIES * sizeof(struct _xneur_file));
-	bzero(p->popups, MAX_NOTIFIES * sizeof(struct _xneur_file));
+	bzero(p->sounds, MAX_NOTIFIES * sizeof(struct _xneur_notify));
+	bzero(p->osds, MAX_NOTIFIES * sizeof(struct _xneur_notify));
+	bzero(p->popups, MAX_NOTIFIES * sizeof(struct _xneur_notify));
 
 	p->total_languages = 0;
 	p->actions_count = 0;
@@ -992,7 +1058,7 @@ static int xneur_config_save(struct _xneur_config *p)
 		if (p->sounds[sound].file == NULL)
 			fprintf(stream, "AddSound %s \n", notify_names[sound]);
 		else
-			fprintf(stream, "AddSound %s %s\n", notify_names[sound], p->sounds[sound].file);
+			fprintf(stream, "AddSound %s %s %s\n", notify_names[sound], status_names[p->sounds[sound].enabled], p->sounds[sound].file);
 	}
 	fprintf(stream, "\n");
 
@@ -1078,7 +1144,7 @@ static int xneur_config_save(struct _xneur_config *p)
 		if (p->osds[notify].file == NULL)
 			fprintf(stream, "AddOSD %s\n", notify_names[notify]);
 		else
-			fprintf(stream, "AddOSD %s %s\n", notify_names[notify], p->osds[notify].file);
+			fprintf(stream, "AddOSD %s %s %s\n", notify_names[notify], status_names[p->osds[notify].enabled], p->osds[notify].file);
 	}
 
 	fprintf(stream, "\n# This option disable or enable show popup messages\n");
@@ -1092,7 +1158,7 @@ static int xneur_config_save(struct _xneur_config *p)
 		if (p->popups[notify].file == NULL)
 			fprintf(stream, "AddPopup %s\n", notify_names[notify]);
 		else
-			fprintf(stream, "AddPopup %s %s\n", notify_names[notify], p->popups[notify].file);
+			fprintf(stream, "AddPopup %s %s %s\n", notify_names[notify], status_names[p->popups[notify].enabled], p->popups[notify].file);
 	}
 
 	fprintf(stream, "\n# This option disable or enable checking language on input process\n");
@@ -1276,14 +1342,14 @@ struct _xneur_config* xneur_config_init(void)
 	p->hotkeys = (struct _xneur_hotkey *) malloc(MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 
-	p->sounds = (struct _xneur_file *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_file));
-	bzero(p->sounds, MAX_NOTIFIES * sizeof(struct _xneur_file));
+	p->sounds = (struct _xneur_notify *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_notify));
+	bzero(p->sounds, MAX_NOTIFIES * sizeof(struct _xneur_notify));
 
-	p->osds = (struct _xneur_file *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_file));
-	bzero(p->osds, MAX_NOTIFIES * sizeof(struct _xneur_file));
+	p->osds = (struct _xneur_notify *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_notify));
+	bzero(p->osds, MAX_NOTIFIES * sizeof(struct _xneur_notify));
 
-	p->popups = (struct _xneur_file *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_file));
-	bzero(p->popups, MAX_NOTIFIES * sizeof(struct _xneur_file));
+	p->popups = (struct _xneur_notify *) malloc(MAX_NOTIFIES * sizeof(struct _xneur_notify));
+	bzero(p->popups, MAX_NOTIFIES * sizeof(struct _xneur_notify));
 
 	p->mail_keyboard_log = NULL;
 	p->host_keyboard_log = NULL;

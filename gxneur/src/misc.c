@@ -40,6 +40,7 @@
 #define GLADE_FILE_ABBREVIATION_ADD PACKAGE_GLADE_FILE_DIR"/abbr_add.glade"
 #define GLADE_FILE_CHOOSE PACKAGE_GLADE_FILE_DIR"/choose_file.glade"
 #define GLADE_FILE_ACTION_ADD PACKAGE_GLADE_FILE_DIR"/action_add.glade"
+#define GLADE_FILE_APP_ADD PACKAGE_GLADE_FILE_DIR"/app_add.glade"
 
 #define LANGUAGES_DIR "languages"
 #define DIR_SEPARATOR		"/"
@@ -70,7 +71,7 @@ static GtkListStore *store_hotkey			= NULL;
 static GtkListStore *store_autocomplementation_exclude_app		= NULL;
 static GtkListStore *store_plugin			= NULL;
 
-static GtkTreeView *tmp_treeview	= NULL;
+static GtkWidget *tmp_widget	= NULL;
 
 static const char *modifier_names[]			= {"Shift", "Control", "Alt", "Super"};
 static const char *all_modifiers[]			= {"Control", "Shift", "Alt", "Super", "Control_R", "Shift_R", "Alt_R", "Super_R", "Control_L", "Shift_L", "Alt_L", "Super_L"};
@@ -218,7 +219,7 @@ static void split_bind(char *text, int action)
 	g_strfreev(key_stat);
 }
 
-static void add_item(GtkListStore *store)
+static void get_xprop_name(GladeXML *gxml)
 {
 	FILE *fp = popen("xprop WM_CLASS", "r");
 	if (fp == NULL)
@@ -246,10 +247,56 @@ static void add_item(GtkListStore *store)
 		return;
 
 	p[len - 2] = '\0';
+
+	GtkWidget *entry1 = glade_xml_get_widget (gxml, "entry1");
+	gtk_entry_set_text(GTK_ENTRY(entry1), p);
+}
+
+static void xneur_insert_application(GladeXML *gxml)
+{
+	GtkWidget *entry1 = glade_xml_get_widget (gxml, "entry1");
+
+	if (gtk_entry_get_text(GTK_ENTRY(entry1)) != NULL)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(tmp_widget), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(tmp_widget), &iter, 0, gtk_entry_get_text(GTK_ENTRY(entry1)), -1);
+	}
+
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+	gtk_widget_destroy(window);
+}
+
+static void xneur_add_application(GtkListStore *store)
+{
+	GladeXML *gxml = glade_xml_new (GLADE_FILE_APP_ADD, NULL, NULL);
+
+	glade_xml_signal_autoconnect (gxml);
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+
+	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+	if (window_icon_pixbuf)
+	{
+		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+		gdk_pixbuf_unref (window_icon_pixbuf);
+	}
 	
-	GtkTreeIter iter;
-	gtk_list_store_append(GTK_LIST_STORE(store), &iter);
-	gtk_list_store_set(GTK_LIST_STORE(store), &iter, 0, p, -1);
+	gtk_widget_show(window);
+
+	GtkWidget *widget = glade_xml_get_widget (gxml, "button3");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(get_xprop_name), gxml);
+
+	// Button OK
+	tmp_widget = GTK_WIDGET(store);
+	widget = glade_xml_get_widget (gxml, "button2");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_insert_application), gxml);
+
+	//char* p = get_xprop_name();
+	//if (p == NULL)
+		//return;
+	
+	
+	if (store) {};
 }
 
 static void remove_item(GtkWidget *treeview, GtkListStore *store)
@@ -427,6 +474,18 @@ static void plug_enable (GtkCellRendererToggle *renderer, gchar *path, GtkTreeVi
 	model = gtk_tree_view_get_model (treeview);
 	if (gtk_tree_model_get_iter_from_string (model, &iter, path))
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, value, -1);
+}
+
+static void notify_enable (GtkCellRendererToggle *renderer, gchar *path, GtkTreeView *treeview)
+{
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+
+	gboolean value = !gtk_cell_renderer_toggle_get_active (renderer);
+
+	model = gtk_tree_view_get_model (treeview);
+	if (gtk_tree_model_get_iter_from_string (model, &iter, path))
+		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 2, value, -1);
 }
 
 void xneur_preference(void)
@@ -756,20 +815,10 @@ void xneur_preference(void)
 	// Sound List set
 	treeview = glade_xml_get_widget (gxml, "treeview7");
 
-	store_sound = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	store_sound = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_sound));
 	gtk_widget_show(treeview);
 
-	for (int i = 0; i < total_notify_names; i++)
-	{
-		GtkTreeIter iter;
-		gtk_list_store_append(GTK_LIST_STORE(store_sound), &iter);
-		gtk_list_store_set(GTK_LIST_STORE(store_sound), &iter, 
-												0, _(notify_names[i]),
-												1, xconfig->sounds[i].file, 
-												-1);
-	}
-	
 	cell = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Action"), cell, "text", 0, NULL);
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
@@ -784,9 +833,29 @@ void xneur_preference(void)
 						(gpointer) treeview);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
+	cell = gtk_cell_renderer_toggle_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Enabled"), cell, "active", 2, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+	g_object_set (cell, "activatable", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "toggled",
+						G_CALLBACK (notify_enable),
+						(gpointer) treeview);
+
+	for (int i = 0; i < total_notify_names; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_sound), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_sound), &iter, 
+												0, _(notify_names[i]),
+												1, xconfig->sounds[i].file,
+		    									2, xconfig->sounds[i].enabled, 
+												-1);
+	}
+
 	// Button Edit Sound
 	widget = glade_xml_get_widget (gxml, "button12");
-	tmp_treeview = GTK_TREE_VIEW(treeview);
+	tmp_widget = GTK_WIDGET(treeview);
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_sound), G_OBJECT(treeview));
 
 	// Set Callbacks for Dict and Regexp
@@ -911,20 +980,10 @@ void xneur_preference(void)
 	// OSD List set
 	treeview = glade_xml_get_widget (gxml, "treeview10");
 
-	store_osd = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	store_osd = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_osd));
 	gtk_widget_show(treeview);
 
-	for (int i = 0; i < total_notify_names; i++)
-	{
-		GtkTreeIter iter;
-		gtk_list_store_append(GTK_LIST_STORE(store_osd), &iter);
-		gtk_list_store_set(GTK_LIST_STORE(store_osd), &iter, 
-												0, _(notify_names[i]),
-												1, xconfig->osds[i].file, 
-												-1);
-	}
-	
 	cell = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Action"), cell, "text", 0, NULL);
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
@@ -939,6 +998,26 @@ void xneur_preference(void)
 						(gpointer) treeview);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
+	cell = gtk_cell_renderer_toggle_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Enabled"), cell, "active", 2, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+	g_object_set (cell, "activatable", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "toggled",
+						G_CALLBACK (notify_enable),
+						(gpointer) treeview);
+	
+	for (int i = 0; i < total_notify_names; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_osd), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_osd), &iter, 
+												0, _(notify_names[i]),
+												1, xconfig->osds[i].file,
+		    									2, xconfig->osds[i].enabled,
+												-1);
+	}
+	
 	// OSD Font
 	widget = glade_xml_get_widget (gxml, "entry2");
 	gtk_entry_set_text(GTK_ENTRY(widget), xconfig->osd_font);
@@ -951,19 +1030,9 @@ void xneur_preference(void)
 	// Popup List set
 	treeview = glade_xml_get_widget (gxml, "treeview12");
 
-	store_popup = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	store_popup = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_popup));
 	gtk_widget_show(treeview);
-
-	for (int i = 0; i < total_notify_names; i++)
-	{
-		GtkTreeIter iter;
-		gtk_list_store_append(GTK_LIST_STORE(store_popup), &iter);
-		gtk_list_store_set(GTK_LIST_STORE(store_popup), &iter, 
-												0, _(notify_names[i]),
-												1, xconfig->popups[i].file, 
-												-1);
-	}
 	
 	cell = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Action"), cell, "text", 0, NULL);
@@ -979,6 +1048,26 @@ void xneur_preference(void)
 						(gpointer) treeview);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
+	cell = gtk_cell_renderer_toggle_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Enabled"), cell, "active", 2, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+	g_object_set (cell, "activatable", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "toggled",
+						G_CALLBACK (notify_enable),
+						(gpointer) treeview);
+
+	for (int i = 0; i < total_notify_names; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_popup), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_popup), &iter, 
+												0, _(notify_names[i]),
+												1, xconfig->popups[i].file, 
+		    									2, xconfig->popups[i].enabled,
+												-1);
+	}
+	
 	// Plugins
 	treeview = glade_xml_get_widget (gxml, "treeview11");
 	store_plugin = gtk_list_store_new(3, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
@@ -1069,32 +1158,27 @@ void xneur_preference(void)
 
 void xneur_add_exclude_app(void)
 {
-	add_item(store_exclude_app);
+	xneur_add_application(store_exclude_app);
 }
 
 void xneur_add_autocomplementation_exclude_app(void)
 {
-	add_item(store_autocomplementation_exclude_app);
+	xneur_add_application(store_autocomplementation_exclude_app);
 }
 
 void xneur_add_auto_app(void)
 {
-	add_item(store_auto_app);
+	xneur_add_application(store_auto_app);
 }
 
 void xneur_add_manual_app(void)
 {
-	add_item(store_manual_app);
+	xneur_add_application(store_manual_app);
 }
 
 void xneur_add_layout_app(void)
 {
-	add_item(store_layout_app);
-}
-
-void xneur_add_draw_flag_app(void)
-{
-	add_item(store_draw_flag_app);
+	xneur_add_application(store_layout_app);
 }
 
 static void xneur_insert_abbreviation(GladeXML *gxml)
@@ -1203,7 +1287,7 @@ void xneur_add_user_action(void)
 static void xneur_replace_user_action(GladeXML *gxml)
 {
 	GtkTreeModel *model = GTK_TREE_MODEL(store_action);
-	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_widget));
 
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
 
@@ -1226,7 +1310,7 @@ static void xneur_replace_user_action(GladeXML *gxml)
 
 void xneur_edit_user_action(GtkWidget *treeview)
 {
-	tmp_treeview = GTK_TREE_VIEW(treeview);
+	tmp_widget = GTK_WIDGET(treeview);
 	GtkTreeModel *model = GTK_TREE_MODEL(store_action);
 	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 
@@ -1274,7 +1358,7 @@ void xneur_edit_user_action(GtkWidget *treeview)
 static void xneur_replace_action(GladeXML *gxml)
 {
 	GtkTreeModel *model = GTK_TREE_MODEL(store_hotkey);
-	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_widget));
 
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
 
@@ -1295,9 +1379,9 @@ static void xneur_replace_action(GladeXML *gxml)
 
 void xneur_clear_action(GtkWidget *treeview)
 {
-	tmp_treeview = GTK_TREE_VIEW(treeview);
+	tmp_widget = GTK_WIDGET(treeview);
 	GtkTreeModel *model = GTK_TREE_MODEL(store_hotkey);
-	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_widget));
 
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
 
@@ -1312,7 +1396,7 @@ void xneur_clear_action(GtkWidget *treeview)
 
 void xneur_edit_action(GtkWidget *treeview)
 {
-	tmp_treeview = GTK_TREE_VIEW(treeview);
+	tmp_widget = GTK_WIDGET(treeview);
 	GtkTreeModel *model = GTK_TREE_MODEL(store_hotkey);
 	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 
@@ -1362,7 +1446,7 @@ void xneur_edit_action(GtkWidget *treeview)
 static void xneur_replace_sound(GladeXML *gxml)
 {
 	GtkTreeModel *model = GTK_TREE_MODEL(store_sound);
-	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_treeview));
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tmp_widget));
 
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
 
@@ -1382,7 +1466,7 @@ static void xneur_replace_sound(GladeXML *gxml)
 
 void xneur_edit_sound(GtkWidget *treeview)
 {
-	tmp_treeview = GTK_TREE_VIEW(treeview);
+	tmp_widget = GTK_WIDGET(treeview);
 	GtkTreeModel *model = GTK_TREE_MODEL(store_sound);
 	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 
@@ -1597,7 +1681,8 @@ gboolean save_sound(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, g
 	if (model || path || user_data){};
 
 	gchar *file_path;
-	gtk_tree_model_get(GTK_TREE_MODEL(store_sound), iter, 1, &file_path, -1);
+	gboolean enabled;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_sound), iter, 1, &file_path, 2, &enabled, -1);
 	
 	int i = atoi(gtk_tree_path_to_string(path));
 	if (xconfig->sounds[i].file != NULL)
@@ -1608,6 +1693,8 @@ gboolean save_sound(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, g
 		xconfig->sounds[i].file = strdup(file_path);
 		g_free(file_path);
 	}
+
+	xconfig->sounds[i].enabled = enabled;
 	
 	return FALSE;
 }
@@ -1617,7 +1704,8 @@ gboolean save_osd(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpo
 	if (model || path || user_data){};
 
 	gchar *string;
-	gtk_tree_model_get(GTK_TREE_MODEL(store_osd), iter, 1, &string, -1);
+	gboolean enabled;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_osd), iter, 1, &string, 2, &enabled, -1);
 	
 	int i = atoi(gtk_tree_path_to_string(path));
 	if (xconfig->osds[i].file != NULL)
@@ -1628,6 +1716,8 @@ gboolean save_osd(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpo
 		xconfig->osds[i].file = strdup(string);
 		g_free(string);
 	}
+
+	xconfig->osds[i].enabled = enabled;
 	
 	return FALSE;
 }
@@ -1637,7 +1727,8 @@ gboolean save_popup(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, g
 	if (model || path || user_data){};
 
 	gchar *string;
-	gtk_tree_model_get(GTK_TREE_MODEL(store_popup), iter, 1, &string, -1);
+	gboolean enabled;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_popup), iter, 1, &string, 2, &enabled, -1);
 	
 	int i = atoi(gtk_tree_path_to_string(path));
 	if (xconfig->popups[i].file != NULL)
@@ -1648,6 +1739,8 @@ gboolean save_popup(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, g
 		xconfig->popups[i].file = strdup(string);
 		g_free(string);
 	}
+
+	xconfig->popups[i].enabled = enabled;
 	
 	return FALSE;
 }

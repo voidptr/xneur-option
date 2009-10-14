@@ -158,6 +158,18 @@ msgstr "Прысвоiць клявiшу:"
 msgid "User action:"
 msgstr "Дзеяньне юзера:"
 
+#: glade/app_add.glade:7
+msgid "Add application..."
+msgstr ""
+
+#: glade/app_add.glade:26
+msgid "Application name"
+msgstr ""
+
+#: glade/app_add.glade:47
+msgid "Get application name..."
+msgstr ""
+
 #: glade/choose_file.glade:7
 msgid "Choose File..."
 msgstr "Выбраць файл…"

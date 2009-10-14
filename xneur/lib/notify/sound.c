@@ -267,9 +267,13 @@ void play_file(int file_type)
 {
 	if (!xconfig->play_sounds)
 		return;
+	
 	if (xconfig->sounds[file_type].file == NULL)
 		return;
-
+	
+	if (!xconfig->sounds[file_type].enabled)
+		return;
+	
 	char *path = get_file_path_name(SOUNDDIR, xconfig->sounds[file_type].file);
 	if (path == NULL)
 		return;

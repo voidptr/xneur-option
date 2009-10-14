@@ -157,6 +157,18 @@ msgstr "Скорочення клавіш:"
 msgid "User action:"
 msgstr "Дія користувача:"
 
+#: glade/app_add.glade:7
+msgid "Add application..."
+msgstr ""
+
+#: glade/app_add.glade:26
+msgid "Application name"
+msgstr ""
+
+#: glade/app_add.glade:47
+msgid "Get application name..."
+msgstr ""
+
 #: glade/choose_file.glade:7
 msgid "Choose File..."
 msgstr "Обрати файл..."

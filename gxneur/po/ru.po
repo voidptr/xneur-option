@@ -157,6 +157,18 @@ msgstr "Комбинация клавиш:"
 msgid "User action:"
 msgstr "Пользовательское действие:"
 
+#: glade/app_add.glade:7
+msgid "Add application..."
+msgstr "Добавить приложение..."
+
+#: glade/app_add.glade:26
+msgid "Application name"
+msgstr "Имя приложения"
+
+#: glade/app_add.glade:47
+msgid "Get application name..."
+msgstr "Получить имя приложения..."
+
 #: glade/choose_file.glade:7
 msgid "Choose File..."
 msgstr "Выбор Файла..."
