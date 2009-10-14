@@ -83,19 +83,24 @@ ReplaceAbbreviationIgnoreLayout Yes
 #PlaySounds No
 PlaySounds Yes
 
+# This option defined sound playing volume percent
+# Example:
+#SoundVolumePercent 10
+SoundVolumePercent 15
+
 # Binds sounds for some actions
 AddSound XneurStart 
 AddSound XneurReload 
 AddSound XneurStop 
-AddSound PressKeyLayout1 /usr/local/share/xneur/sounds/layout1type.wav
-AddSound PressKeyLayout2 /usr/local/share/xneur/sounds/layout2type.wav
+AddSound PressKeyLayout1 Enable /usr/local/share/xneur/sounds/layout1type.wav
+AddSound PressKeyLayout2 Enable /usr/local/share/xneur/sounds/layout2type.wav
 AddSound PressKeyLayout3 
 AddSound PressKeyLayout4 
 AddSound EnableLayout1 
 AddSound EnableLayout2 
 AddSound EnableLayout3 
 AddSound EnableLayout4 
-AddSound AutomaticChangeWord /usr/local/share/xneur/sounds/itemback.wav
+AddSound AutomaticChangeWord Enable /usr/local/share/xneur/sounds/itemback.wav
 AddSound ManualChangeWord 
 AddSound ChangeString 
 AddSound ChangeSelected 
@@ -106,10 +111,10 @@ AddSound ChangeClipboard
 AddSound TranslitClipboard 
 AddSound ChangecaseClipboard 
 AddSound CalculateClipboard 
-AddSound ReplaceAbbreviation /usr/local/share/xneur/sounds/switch.wav
+AddSound ReplaceAbbreviation Enable /usr/local/share/xneur/sounds/switch.wav
 AddSound CorrectIncidentalCaps 
 AddSound CorrectTwoCapitalLetter 
-AddSound ExecuteUserAction /usr/local/share/xneur/sounds/switch.wav
+AddSound ExecuteUserAction Enable /usr/local/share/xneur/sounds/switch.wav
 
 # This option enable or disable self education of xneur
 # Example:
@@ -184,9 +189,9 @@ ShowOSD No
 FontOSD -*-*-*-*-*-*-32-*-*-*-*-*-*-u
 
 # Binds OSDs for some actions
-AddOSD XneurStart X Neural Switcher запущен
-AddOSD XneurReload X Neural Switcher перезагружен
-AddOSD XneurStop X Neural Switcher остановлен
+AddOSD XneurStart Enable X Neural Switcher запущен
+AddOSD XneurReload Enable X Neural Switcher перезагружен
+AddOSD XneurStop Enable X Neural Switcher остановлен
 AddOSD PressKeyLayout1
 AddOSD PressKeyLayout2
 AddOSD PressKeyLayout3
@@ -209,7 +214,7 @@ AddOSD CalculateClipboard
 AddOSD ReplaceAbbreviation
 AddOSD CorrectIncidentalCaps
 AddOSD CorrectTwoCapitalLetter
-AddOSD ExecuteUserAction Выполняется команда
+AddOSD ExecuteUserAction Enable Выполняется команда
 
 # This option disable or enable show popup messages
 # Example:
@@ -217,9 +222,9 @@ AddOSD ExecuteUserAction Выполняется команда
 ShowPopup Yes
 
 # Binds popup messages for some actions
-AddPopup XneurStart X Neural Switcher запущен
-AddPopup XneurReload X Neural Switcher перезагружен
-AddPopup XneurStop X Neural Switcher остановлен
+AddPopup XneurStart Enable X Neural Switcher запущен
+AddPopup XneurReload Enable X Neural Switcher перезагружен
+AddPopup XneurStop Enable X Neural Switcher остановлен
 AddPopup PressKeyLayout1
 AddPopup PressKeyLayout2
 AddPopup PressKeyLayout3
@@ -235,16 +240,16 @@ AddPopup ChangeSelected
 AddPopup TranslitSelected
 AddPopup ChangecaseSelected
 AddPopup CalculateSelected
-AddPopup PreviewChangeSelected Предпросмотр коррекции выделеного текста
+AddPopup PreviewChangeSelected Enable Предпросмотр коррекции выделеного текста
 AddPopup ChangeClipboard
 AddPopup TranslitClipboard
 AddPopup ChangecaseClipboard
 AddPopup CalculateClipboard
-AddPopup PreviewChangeClipboard Предпросмотр коррекции буфера обмена
+AddPopup PreviewChangeClipboard Enable Предпросмотр коррекции буфера обмена
 AddPopup ReplaceAbbreviation
 AddPopup CorrectIncidentalCaps
 AddPopup CorrectTwoCapitalLetter
-AddPopup ExecuteUserAction Выполнение пользовательского действия
+AddPopup ExecuteUserAction Enable Выполняется команда
 
 # This option disable or enable checking language on input process
 # Example:

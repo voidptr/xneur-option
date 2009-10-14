@@ -86,7 +86,7 @@ This option enable or disable sound playing.
 
 Here, <param> takes the values "Yes", "No".
 .TP 8
-.B AddSound <action> <sound>
+.B AddSound <action> <state> <sound>
 Binds sounds for some actions.
 
 Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurStop", "PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
@@ -94,6 +94,13 @@ Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurSt
 "AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
 
 <sound> is .wav file placed in ~/.xneur/sounds or in basic place ({prefix}/share/xneur/sounds/).
+
+<state> takes the values "Disable", "Enable".
+.TP 8
+.B SoundVolumePercent <percent>
+Defined sound playing volume percent. 
+
+Here, <percent> takes the values from 0 to 100. 
 .TP 8
 .B EducationMode <param>
 Defines, if XNeur will work in self-training. A wrong input will be added to the dictionary, if it is twice converted into a specific layout manually. If this option is on, this will lead to a bigger dictionary. Does not make sence for the manual operating mode.
@@ -159,7 +166,7 @@ This option set font for OSD.
 
 Here, <param> takes the value, that can be received with command "xfontsel -print".
 .TP 8
-.B AddOSD <action> <text>
+.B AddOSD <action> <state> <text>
 Binds OSD for some actions.
 
 Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurStop", "PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
@@ -167,13 +174,15 @@ Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurSt
 "AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
 
 <text> is text will be displayed.
+
+<state> takes the values "Disable", "Enable".
 .TP 8
 .B ShowPopup <param>
 This option disable or enable show popup messages.
 
 Here, <param> takes the values "Yes", "No".
 .TP 8
-.B AddPopup <action> <text>
+.B AddPopup <action> <state> <text>
 Binds popup messages for some actions.
 
 Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurStop", "PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
@@ -181,6 +190,8 @@ Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurSt
 "AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
 
 <text> is text will be displayed.
+
+<state> takes the values "Disable", "Enable".
 .TP 8
 .B CheckOnProcess <param>
 This option disable or enable checking language on input process.
