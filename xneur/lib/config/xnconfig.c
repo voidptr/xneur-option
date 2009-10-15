@@ -38,7 +38,7 @@
 #include "xnconfig.h"
 
 #define LIBRARY_VERSION_MAJOR		9
-#define LIBRARY_VERSION_MINOR		7
+#define LIBRARY_VERSION_MINOR		8
 #define OPTIONS_DELIMETER		" "
 
 #define USR_CMD_START 	"<cmd>"

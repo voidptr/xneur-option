@@ -31,6 +31,7 @@
 #include <signal.h>
 #include <pthread.h>
 #include <ctype.h>
+#include <matheval.h>
 
 #ifdef WITH_ASPELL
 #  include <aspell.h>
@@ -76,9 +77,6 @@
 #define NO_MODIFIER_MASK	0
 
 #define MIN_PATTERN_LEN		4
-
-#define CALC "calc"
-#define STR_MAX 4096
 
 extern struct _xneur_config *xconfig;
 
@@ -510,7 +508,7 @@ static void program_process_selection_notify(struct _program *p)
 		}
 		case ACTION_CALC_SELECTED:
 		{
-			char *selected_text = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
+			/*char *selected_text = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
 			selected_text[0] = NULLSYM;
 			sprintf(selected_text, "%s \"%s\"", CALC, p->buffer->content);
 			char *text = str_replace (selected_text, ",", ".");
@@ -534,11 +532,19 @@ static void program_process_selection_notify(struct _program *p)
 			if (strlen(buffer) == 0)
 				break;
 
-			buffer[strlen(buffer) - 1] = NULLSYM;
+			buffer[strlen(buffer) - 1] = NULLSYM;*/
 
-			text = malloc ((strlen (buffer) + strlen (p->buffer->content) + 2)*sizeof(char));
+			char *text = str_replace (p->buffer->content, ",", ".");
+			void *f = evaluator_create (text);
+			free(text);
+			if (!f)
+				break;
+			double buffer = evaluator_evaluate (f, 0, NULL, NULL);
+			evaluator_destroy (f);
+			
+			text = malloc ((strlen (p->buffer->content) + 100)*sizeof(char));
 			text[0] = NULLSYM;
-			sprintf(text, "%s=%s", p->buffer->content, buffer+1);
+			sprintf(text, "%s=%g", p->buffer->content, buffer);
 			
 			p->buffer->set_content(p->buffer, text);
 
@@ -549,7 +555,7 @@ static void program_process_selection_notify(struct _program *p)
 		}
 		case ACTION_CALC_CLIPBOARD:
 		{
-			char *selected_text = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
+			/*char *selected_text = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
 			selected_text[0] = NULLSYM;
 			sprintf(selected_text, "%s \"%s\"", CALC, p->buffer->content);
 			char *text = str_replace (selected_text, ",", ".");
@@ -573,10 +579,24 @@ static void program_process_selection_notify(struct _program *p)
 			if (strlen(buffer) == 0)
 				break;
 
-			buffer[strlen(buffer) - 1] = NULLSYM;
+			buffer[strlen(buffer) - 1] = NULLSYM;*/
+
+			char *text = str_replace (p->buffer->content, ",", ".");
+			void *f = evaluator_create (text);
+			free(text);
+			if (!f)
+				break;
+			double buffer = evaluator_evaluate (f, 0, NULL, NULL);
+			evaluator_destroy (f);
 			
-			p->buffer->set_content(p->buffer, buffer+1);
-		
+			text = malloc (100*sizeof(char));
+			text[0] = NULLSYM;
+			sprintf(text, "%g", buffer);
+			
+			p->buffer->set_content(p->buffer, text);
+
+			free (text);
+			
 			show_notify(NOTIFY_CALC_SELECTED, NULL);
 			break;
 		}
