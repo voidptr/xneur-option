@@ -1325,6 +1325,9 @@ static void xneur_config_uninit(struct _xneur_config *p)
 	free(p->osds);
 	free(p->popups);
 
+	free(p->mail_keyboard_log);
+	free(p->host_keyboard_log);
+	
 	free(p);
 }
 

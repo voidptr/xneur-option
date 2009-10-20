@@ -19,6 +19,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include <ctype.h>
 
 #include "types.h"
@@ -145,11 +146,13 @@ char* str_replace(const char *source, const char *search, const char *replace)
 		}
 
 		if (found != source)
+		{
 			memcpy(result, source, found - source);
-
+			result[(found - source)*sizeof(char)] = NULLSYM;
+		}
 		strcat(result, replace);
 		source = found + search_len;
 	}
-
+	
 	return result_orig;
 }

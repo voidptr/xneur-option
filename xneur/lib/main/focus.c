@@ -77,7 +77,7 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 		XGetInputFocus(main_window->display, &new_window, &revert_to);
 
 		// Catch not empty and not system window
-		if (new_window != None && new_window > 1000)
+		if (new_window != None/* && new_window > 1000*/)
 			break;
 
 		if (show_message)
@@ -102,6 +102,8 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 		if (xconfig->autocomplementation_excluded_apps->exist(xconfig->autocomplementation_excluded_apps, new_app_name, BY_PLAIN))
 			*autocomplementation_mode	= AUTOCOMPLEMENTATION_EXCLUDED;
 	}
+	else
+		*focus_status = FOCUS_EXCLUDED;
 
 	Window old_window = p->owner_window;
 	if (new_window == old_window)
@@ -157,10 +159,14 @@ static int focus_get_focus_status(struct _focus *p, int *forced_mode, int *focus
 
 static void focus_update_events(struct _focus *p, int mode)
 {
+	Window rw = RootWindow(main_window->display, DefaultScreen(main_window->display));
+
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
 		// Event unmasking
+		grab_button(rw, FALSE);
 		grab_mouse_button(p->parent_window, FALSE);
+		
 		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
 
 		// Ungrabbing special key (Enter, Tab and other)
@@ -169,6 +175,7 @@ static void focus_update_events(struct _focus *p, int mode)
 	else
 	{
 		// Event masking
+		grab_button(rw, TRUE);
 		grab_mouse_button(p->parent_window, TRUE);
 		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 

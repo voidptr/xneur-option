@@ -384,6 +384,15 @@ static void program_process_input(struct _program *p)
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 				break;
 			}
+			case ButtonRelease:
+			{
+				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				log_message(TRACE, _("Received ButtonRelease on window %d (event type %d)"), p->event->event.xbutton.window, type);
+
+				// Unfreeze and resend grabbed event
+				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
+				break;
+			}
 			case PropertyNotify:
 			{
 				if (XInternAtom(main_window->display, "XKLAVIER_STATE", FALSE) == p->event->event.xproperty.atom)
@@ -508,96 +517,71 @@ static void program_process_selection_notify(struct _program *p)
 		}
 		case ACTION_CALC_SELECTED:
 		{
-			/*char *selected_text = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
-			selected_text[0] = NULLSYM;
-			sprintf(selected_text, "%s \"%s\"", CALC, p->buffer->content);
-			char *text = str_replace (selected_text, ",", ".");
-			free (selected_text);
+			char *formula = str_replace (p->buffer->content, ",", ".");
+			if (formula == NULL)
+				break;
+			int length = strlen(formula);
+			if (length == 0)
+			{
+				free(formula);
+				break;
+			}
+			if (formula[length] != NULLSYM)
+			{
+				free(formula);
+				break;
+			}
 			
-			FILE *fp = popen(text, "r");
-			free (text);
-			if (fp == NULL)
-				break;
-
-			char buffer[STR_MAX];
-			if (fgets(buffer, STR_MAX, fp) == NULL)
-				break;
-	
-			if (pclose(fp))
-				break;
-
-			const char* err = "Error";
-			if (strncmp(buffer+1, err, strlen(err)) == 0)
-				break;
-			if (strlen(buffer) == 0)
-				break;
-
-			buffer[strlen(buffer) - 1] = NULLSYM;*/
-
-			char *text = str_replace (p->buffer->content, ",", ".");
-			void *f = evaluator_create (text);
-			free(text);
+			void *f = evaluator_create (formula);
+			free(formula);
 			if (!f)
 				break;
-			double buffer = evaluator_evaluate (f, 0, NULL, NULL);
+
+			char *eval_string = evaluator_get_string(f);
+			
+			char* return_text = malloc ((strlen (p->buffer->content) + strlen(eval_string) + 2)*sizeof(char));
+			return_text[0] = NULLSYM;
+			sprintf(return_text, "%s=%s", p->buffer->get_utf_string(p->buffer), eval_string);
+			p->buffer->set_content(p->buffer, return_text);
+			free (return_text);
+
+			evaluator_destroy (f);
+			show_notify(NOTIFY_CALC_SELECTED, NULL);
+
+			char *buffer = "17.0-3.5";
+       		f = evaluator_create (buffer);
+			printf ("  %s = %g\n", buffer, evaluator_evaluate (f, 0, NULL, NULL));
 			evaluator_destroy (f);
 			
-			text = malloc ((strlen (p->buffer->content) + 100)*sizeof(char));
-			text[0] = NULLSYM;
-			sprintf(text, "%s=%g", p->buffer->content, buffer);
-			
-			p->buffer->set_content(p->buffer, text);
-
-			free (text);
-			
-			show_notify(NOTIFY_CALC_SELECTED, NULL);
 			break;
 		}
 		case ACTION_CALC_CLIPBOARD:
 		{
-			/*char *selected_text = malloc((strlen (CALC) + strlen (p->buffer->content) + 4)*sizeof(char));
-			selected_text[0] = NULLSYM;
-			sprintf(selected_text, "%s \"%s\"", CALC, p->buffer->content);
-			char *text = str_replace (selected_text, ",", ".");
-			free (selected_text);
+			char *formula = str_replace (p->buffer->content, ",", ".");
+			if (formula == NULL)
+				break;
+			int length = strlen(formula);
+			if (length == 0)
+			{
+				free(formula);
+				break;
+			}
+			if (formula[length] != NULLSYM)
+			{
+				free(formula);
+				break;
+			}
 			
-			FILE *fp = popen(text, "r");
-			free (text);
-			if (fp == NULL)
-				break;
-
-			char buffer[STR_MAX];
-			if (fgets(buffer, STR_MAX, fp) == NULL)
-				break;
-	
-			if (pclose(fp))
-				break;
-
-			const char* err = "Error";
-			if (strncmp(buffer+1, err, strlen(err)) == 0)
-				break;
-			if (strlen(buffer) == 0)
-				break;
-
-			buffer[strlen(buffer) - 1] = NULLSYM;*/
-
-			char *text = str_replace (p->buffer->content, ",", ".");
-			void *f = evaluator_create (text);
-			free(text);
+			void *f = evaluator_create (formula);
+			free(formula);
 			if (!f)
 				break;
-			double buffer = evaluator_evaluate (f, 0, NULL, NULL);
+			
+			p->buffer->set_content(p->buffer, evaluator_get_string(f));
+
 			evaluator_destroy (f);
 			
-			text = malloc (100*sizeof(char));
-			text[0] = NULLSYM;
-			sprintf(text, "%g", buffer);
-			
-			p->buffer->set_content(p->buffer, text);
-
-			free (text);
-			
-			show_notify(NOTIFY_CALC_SELECTED, NULL);
+			show_notify(NOTIFY_CALC_CLIPBOARD, NULL);
 			break;
 		}
 		case ACTION_PREVIEW_CHANGE_SELECTED:
@@ -1130,6 +1114,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 
 				free(replacement);
 				free(utf_string);
+
 				return TRUE;
 			}
 
