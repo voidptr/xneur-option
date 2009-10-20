@@ -156,3 +156,41 @@ char* str_replace(const char *source, const char *search, const char *replace)
 	
 	return result_orig;
 }
+
+void  del_final_numeric_char(char *word)
+{
+	for (int i = strlen(word); i>0; i--)
+	{
+		switch (word[i-1])
+		{
+			case '=':
+			case '+':
+			case '-':
+			case '/':
+			case '|':
+			case '\\':
+			case '?':
+			case ';':
+			case ',':
+			case '.':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+			case '0':
+			{
+				word[i-1] = '\0';
+				break;
+			}
+			default:
+			{
+				return;
+			}
+		}
+	}
+}

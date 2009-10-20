@@ -145,7 +145,7 @@ static int get_auto_action(KeySym key, int modifier_mask)
 		case XK_Tab:
 			return KLB_ENTER;
 		case XK_space:
-		case XK_equal:
+		/*case XK_equal:
 		case XK_plus:
 		case XK_minus:
 		case XK_slash:
@@ -164,7 +164,7 @@ static int get_auto_action(KeySym key, int modifier_mask)
 		case XK_7:
 		case XK_8:
 		case XK_9:
-		case XK_0:
+		case XK_0:*/
 			return KLB_SPACE;
 	}
 
@@ -379,15 +379,6 @@ static void program_process_input(struct _program *p)
 			{
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.window, type);
-
-				// Unfreeze and resend grabbed event
-				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
-				break;
-			}
-			case ButtonRelease:
-			{
-				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
-				log_message(TRACE, _("Received ButtonRelease on window %d (event type %d)"), p->event->event.xbutton.window, type);
 
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);

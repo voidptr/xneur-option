@@ -27,5 +27,6 @@ int   trim_word(char *word, int len);
 void  lower_word_inplace(char *word);
 char* lower_word(const char *word, int len);
 char* str_replace(const char *source, const char *search, const char *replace);
+void  del_final_numeric_char(char *word);
 
 #endif /* _TEXT_H_ */
