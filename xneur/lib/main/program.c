@@ -1442,7 +1442,7 @@ static void program_check_pattern(struct _program *p)
 	
 	if (strlen(tmp) < MIN_PATTERN_LEN - 1)
 		return;
-	
+
 	int lang = get_cur_lang();
 	tmp = get_last_word(p->buffer->i18n_content[lang].content);
 
