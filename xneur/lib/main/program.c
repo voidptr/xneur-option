@@ -1463,8 +1463,8 @@ static void program_check_pattern(struct _program *p)
 		return;
 	}
 	
-	log_message (DEBUG, "Recognition word '%s', autocompletation...", pattern_data->string);
-
+	log_message (DEBUG, _("Recognition word '%s' from text '%s' (layout %d), autocompletation..."), pattern_data->string, word, get_cur_lang());
+	
 	set_event_mask(p->focus->owner_window, None);
 	grab_spec_keys(p->focus->owner_window, FALSE);
 

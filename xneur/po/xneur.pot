@@ -302,180 +302,180 @@ msgstr ""
 msgid "   [-] This word has hits in all languages proto of size %d"
 msgstr ""
 
-#: lib/ai/detection.c:246
+#: lib/ai/detection.c:247
 #, c-format
 msgid "Processing word '%s'"
 msgstr ""
 
-#: lib/ai/detection.c:274
+#: lib/ai/detection.c:275
 msgid "End word processing"
 msgstr ""
 
-#: lib/config/xnconfig.c:125
+#: lib/config/xnconfig.c:137
 #, c-format
 msgid "Unrecognized option \"%s\" detected"
 msgstr ""
 
-#: lib/config/xnconfig.c:135
+#: lib/config/xnconfig.c:147
 #, c-format
 msgid "Param mismatch for option %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:146
+#: lib/config/xnconfig.c:158
 msgid "Invalid value for manual mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:164
+#: lib/config/xnconfig.c:176
 msgid "Invalid value for action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:192
+#: lib/config/xnconfig.c:204
 msgid "Invalid value for log level specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:208
+#: lib/config/xnconfig.c:220
 msgid "Argument number mismatch for AddLanguage option"
 msgstr ""
 
-#: lib/config/xnconfig.c:228
+#: lib/config/xnconfig.c:240
 msgid "Invalid value for pattern minig and recognition mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:240
+#: lib/config/xnconfig.c:252
 msgid "Invalid value for disable CapsLock using mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:252
+#: lib/config/xnconfig.c:264
 msgid "Invalid value for check language on input process mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:279
+#: lib/config/xnconfig.c:291
 msgid "Invalid value for education mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:296
+#: lib/config/xnconfig.c:308
 msgid "Invalid value for remember layout mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:308
+#: lib/config/xnconfig.c:320
 msgid "Invalid value for save selection mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:325
+#: lib/config/xnconfig.c:337
 msgid "Invalid value for sound action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:347
+#: lib/config/xnconfig.c:369
 msgid "Invalid value for play sounds mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:359
+#: lib/config/xnconfig.c:381
 msgid "Send delay must be between 0 and 50"
 msgstr ""
 
-#: lib/config/xnconfig.c:374
+#: lib/config/xnconfig.c:396
 msgid "Invalid value for save keyboard log mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:391
+#: lib/config/xnconfig.c:413
 msgid ""
 "Invalid value for ignore keyboard layout for abbreviations mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:403
+#: lib/config/xnconfig.c:425
 msgid "Invalid value for change iNCIDENTAL CapsLock mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:415
+#: lib/config/xnconfig.c:437
 msgid "Invalid value for change two CApital letter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:427
+#: lib/config/xnconfig.c:449
 msgid ""
 "Invalid value for flush internal buffer when pressed Enter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:439
+#: lib/config/xnconfig.c:461
 msgid ""
 "Invalid value for don't processing word when pressed Enter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:507
+#: lib/config/xnconfig.c:529
 msgid "Invalid value for show OSD mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:519 lib/config/xnconfig.c:553
+#: lib/config/xnconfig.c:541 lib/config/xnconfig.c:597
 msgid "Invalid value for OSD action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:541
+#: lib/config/xnconfig.c:585
 msgid "Invalid value for show popup message mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:619
+#: lib/config/xnconfig.c:685
 #, c-format
 msgid "Can't find config file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:781
+#: lib/config/xnconfig.c:847
 msgid "No languages specified in config file"
 msgstr ""
 
-#: lib/config/xnconfig.c:793
+#: lib/config/xnconfig.c:859
 #, c-format
 msgid "Can't find dictionary file for %s language"
 msgstr ""
 
-#: lib/config/xnconfig.c:802
+#: lib/config/xnconfig.c:868
 #, c-format
 msgid "Can't find protos file for %s language"
 msgstr ""
 
-#: lib/config/xnconfig.c:811
+#: lib/config/xnconfig.c:877
 #, c-format
 msgid "Can't find big protos file for %s language"
 msgstr ""
 
-#: lib/config/xnconfig.c:820
+#: lib/config/xnconfig.c:886
 #, c-format
 msgid "Can't find regexp file for %s language"
 msgstr ""
 
-#: lib/config/xnconfig.c:829
+#: lib/config/xnconfig.c:895
 #, c-format
 msgid "Can't find pattern file for %s language"
 msgstr ""
 
-#: lib/config/xnconfig.c:866
+#: lib/config/xnconfig.c:932
 #, c-format
 msgid "Saving main config to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:871
+#: lib/config/xnconfig.c:937
 #, c-format
 msgid "Can't create file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1151
+#: lib/config/xnconfig.c:1217
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1157
+#: lib/config/xnconfig.c:1223
 msgid "Can't move file!"
 msgstr ""
 
-#: lib/config/xnconfig.c:1175
+#: lib/config/xnconfig.c:1241
 #, c-format
 msgid "Saving %s dictionary"
 msgstr ""
 
-#: lib/config/xnconfig.c:1187
+#: lib/config/xnconfig.c:1253
 #, c-format
 msgid "Saving %s pattern"
 msgstr ""
 
-#: lib/config/xnconfig.c:1234
+#: lib/config/xnconfig.c:1300
 msgid "Can't add language with empty name or dir"
 msgstr ""
 
@@ -569,12 +569,12 @@ msgstr ""
 msgid "Can't exec regular expression '%s', eror code %d"
 msgstr ""
 
-#: lib/notify/osd.c:86
+#: lib/notify/osd.c:89
 #, c-format
 msgid "Show OSD \"%s\""
 msgstr ""
 
-#: lib/notify/popup.c:98
+#: lib/notify/popup.c:101
 #, c-format
 msgid "Show popup message \"%s\" with content \"%s\""
 msgstr ""
@@ -660,17 +660,17 @@ msgstr ""
 msgid "New window empty"
 msgstr ""
 
-#: lib/main/focus.c:114
+#: lib/main/focus.c:116
 #, c-format
 msgid "Focused window %d"
 msgstr ""
 
-#: lib/main/focus.c:136
+#: lib/main/focus.c:138
 #, c-format
 msgid "Process new window (ID %d) with name '%s' (status %s, mode %s)"
 msgstr ""
 
-#: lib/main/focus.c:186
+#: lib/main/focus.c:193
 msgid "Focus is freed"
 msgstr ""
 
@@ -704,159 +704,164 @@ msgstr ""
 msgid "Plugins is freed"
 msgstr ""
 
-#: lib/main/~program.c:264 lib/main/program.c:271
+#: lib/main/~program.c:264 lib/main/program.c:243
 #, c-format
 msgid "Restore layout group to %d"
 msgstr ""
 
-#: lib/main/~program.c:271 lib/main/program.c:278
+#: lib/main/~program.c:271 lib/main/program.c:250
 #, c-format
 msgid "Store default layout group to %d"
 msgstr ""
 
-#: lib/main/~program.c:321 lib/main/program.c:328
+#: lib/main/~program.c:321 lib/main/program.c:300
 msgid "Exitting from main cycle"
 msgstr ""
 
-#: lib/main/~program.c:328 lib/main/program.c:335
+#: lib/main/~program.c:328 lib/main/program.c:307
 #, c-format
 msgid "Received KeyPress '%s' (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:346 lib/main/program.c:353
+#: lib/main/~program.c:346 lib/main/program.c:325
 #, c-format
 msgid "Received KeyRelease '%s' (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:368 lib/main/program.c:375
+#: lib/main/~program.c:368 lib/main/program.c:347
 #, c-format
 msgid "Received FocusIn (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:383 lib/main/program.c:390
+#: lib/main/~program.c:383 lib/main/program.c:362
 #, c-format
 msgid "Received FocusOut (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:391 lib/main/program.c:398
+#: lib/main/~program.c:391 lib/main/program.c:370
 #, c-format
 msgid "Received SelectionNotify (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:397 lib/main/program.c:403
+#: lib/main/~program.c:397 lib/main/program.c:375
 #, c-format
 msgid "Received SelectionRequest (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:404 lib/main/program.c:409
+#: lib/main/~program.c:404 lib/main/program.c:381
 #, c-format
 msgid "Received ButtonPress on window %d (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:414 lib/main/program.c:419
+#: lib/main/~program.c:414 lib/main/program.c:391
 #, c-format
 msgid "Received Property Notify (layout switch event) (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:423 lib/main/program.c:428
+#: lib/main/~program.c:423 lib/main/program.c:400
 #, c-format
 msgid "Uncatched event with type %d)"
 msgstr ""
 
-#: lib/main/~program.c:432 lib/main/program.c:437
+#: lib/main/~program.c:432 lib/main/program.c:409
 #, c-format
 msgid "Changing language from %s to %s"
 msgstr ""
 
-#: lib/main/~program.c:439 lib/main/program.c:444
+#: lib/main/~program.c:439 lib/main/program.c:416
 msgid "Correcting iNCIDENTAL CapsLock"
 msgstr ""
 
-#: lib/main/~program.c:457 lib/main/program.c:462
+#: lib/main/~program.c:457 lib/main/program.c:434
 msgid "Correcting two CApital letter"
 msgstr ""
 
-#: lib/main/~program.c:664 lib/main/program.c:759
+#: lib/main/~program.c:664 lib/main/program.c:757
 #, c-format
 msgid "Execute user action \"%s\""
 msgstr ""
 
-#: lib/main/~program.c:813 lib/main/program.c:907
+#: lib/main/~program.c:813 lib/main/program.c:905
 #, c-format
 msgid "Manual mode changed to %s"
 msgstr ""
 
-#: lib/main/~program.c:994 lib/main/program.c:1092
+#: lib/main/~program.c:994 lib/main/program.c:1090
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr ""
 
-#: lib/main/~program.c:1043 lib/main/~program.c:1085 lib/main/program.c:1141
-#: lib/main/program.c:1183
+#: lib/main/~program.c:1043 lib/main/~program.c:1085 lib/main/program.c:1140
+#: lib/main/program.c:1182
 msgid "No language found to change to"
 msgstr ""
 
-#: lib/main/~program.c:1187 lib/main/program.c:1285
+#: lib/main/~program.c:1187 lib/main/program.c:1284
 msgid "Find spaces before punctuation, correction..."
 msgstr ""
 
-#: lib/main/~program.c:1236 lib/main/program.c:1334
+#: lib/main/~program.c:1236 lib/main/program.c:1333
 msgid "Find no space before left bracket, correction..."
 msgstr ""
 
-#: lib/main/~program.c:1253 lib/main/program.c:1351
+#: lib/main/~program.c:1253 lib/main/program.c:1350
 msgid "Find spaces before right bracket, correction..."
 msgstr ""
 
-#: lib/main/~program.c:1277 lib/main/program.c:1381
+#: lib/main/~program.c:1277 lib/main/program.c:1380
 msgid "Find no spaces after right bracket, correction..."
 msgstr ""
 
-#: lib/main/~program.c:1306 lib/main/program.c:1416
+#: lib/main/~program.c:1306 lib/main/program.c:1415
 msgid "Find spaces after left bracket, correction..."
 msgstr ""
 
-#: lib/main/~program.c:1393 lib/main/program.c:1505
+#: lib/main/~program.c:1393 lib/main/program.c:1504
 msgid "No string to change"
 msgstr ""
 
-#: lib/main/~program.c:1397 lib/main/program.c:1509
+#: lib/main/~program.c:1397 lib/main/program.c:1508
 #, c-format
 msgid "Processing string '%s'"
 msgstr ""
 
-#: lib/main/~program.c:1650 lib/main/program.c:1795
+#: lib/main/~program.c:1650 lib/main/program.c:1794
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr ""
 
-#: lib/main/~program.c:1658 lib/main/program.c:1803
+#: lib/main/~program.c:1658 lib/main/program.c:1802
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr ""
 
-#: lib/main/~program.c:1715 lib/main/program.c:1860
+#: lib/main/~program.c:1715 lib/main/program.c:1859
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr ""
 
-#: lib/main/~program.c:1725 lib/main/program.c:1891
+#: lib/main/~program.c:1725 lib/main/program.c:1890
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr ""
 
-#: lib/main/~program.c:1746 lib/main/program.c:1912
+#: lib/main/~program.c:1746 lib/main/program.c:1911
 msgid "Program is freed"
 msgstr ""
 
-#: lib/main/program.c:479
+#: lib/main/program.c:451
 #, c-format
 msgid "Received selected text is '%s'"
 msgstr ""
 
-#: lib/main/program.c:483
+#: lib/main/program.c:455
 #, c-format
 msgid "Received selected text '%s'"
+msgstr ""
+
+#: lib/main/program.c:1466
+#, c-format
+msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr ""
 
 #: lib/main/selection.c:66
