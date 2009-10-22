@@ -99,7 +99,6 @@ static int window_create(struct _window *p)
 
 	p->display 	= display;
 	p->window  	= window;
-	p->flag_window  = flag_window;
 
 	log_message(LOG, _("Main window with id %d created"), window);
 
@@ -115,7 +114,6 @@ static void window_destroy(struct _window *p)
 		return;
 
 	p->window	= None;
-	p->flag_window	= None;
 }
 
 static int window_init_keymap(struct _window *p)

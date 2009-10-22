@@ -29,8 +29,6 @@ struct _window
 	Display *display;
 	Window window;
 
-	Window flag_window;
-
 	Atom close_atom;
 	Atom protocols_atom;
 

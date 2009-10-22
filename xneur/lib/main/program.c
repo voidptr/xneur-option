@@ -286,9 +286,6 @@ static void program_process_input(struct _program *p)
 	{
 		int type = p->event->get_next_event(p->event);
 
-		if (p->event->event.xany.window == main_window->flag_window)
-			continue;
-
 		switch (type)
 		{
 			case ClientMessage:
