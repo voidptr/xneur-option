@@ -157,9 +157,11 @@ char* str_replace(const char *source, const char *search, const char *replace)
 	return result_orig;
 }
 
-void  del_final_numeric_char(char *word)
+void del_final_numeric_char(char *word)
 {
-	for (int i = strlen(word); i>0; i--)
+	int offset = 0;
+	int len = strlen(word);
+	for (int i = len; i>0; i--)
 	{
 		switch (word[i-1])
 		{
@@ -184,13 +186,15 @@ void  del_final_numeric_char(char *word)
 			case '9':
 			case '0':
 			{
-				word[i-1] = '\0';
+				offset++;
 				break;
 			}
 			default:
-			{
-				return;
-			}
+				break;
 		}
 	}
+	if (offset == len)
+		return;
+	
+	word[len - offset] = NULLSYM;
 }
