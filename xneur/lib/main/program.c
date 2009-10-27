@@ -392,9 +392,16 @@ static void program_process_input(struct _program *p)
 				}
 				break;
 			}
+			case MappingNotify:
+			{
+				log_message(TRACE, _("Received MappingNotify (event type %d)"), type);
+
+				p->update(p);
+				break;
+			}
 			default:
 			{
-				log_message(DEBUG, _("Uncatched event with type %d)"), type);
+				log_message(DEBUG, _("Uncatched event with type %d (see X11/X.h for details)"), type);
 				break;
 			}
 		}
