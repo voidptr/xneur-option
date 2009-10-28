@@ -543,7 +543,7 @@ static void program_process_selection_notify(struct _program *p)
 			evaluator_destroy (f);
 			show_notify(NOTIFY_CALC_SELECTED, NULL);
 
-			char *buffer = "(17.0-3.5 )";
+			char *buffer = "(17.0-3.5)";
        		f = evaluator_create (buffer);
 			printf ("  %s = %g\n", buffer, evaluator_evaluate (f, 0, NULL, NULL));
 			evaluator_destroy (f);
