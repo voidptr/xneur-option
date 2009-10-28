@@ -705,149 +705,58 @@ msgstr ""
 msgid "Plugins is freed"
 msgstr ""
 
-#: lib/main/~program.c:264 lib/main/program.c:243
+#: lib/main/program.c:243
 #, c-format
 msgid "Restore layout group to %d"
 msgstr ""
 
-#: lib/main/~program.c:271 lib/main/program.c:250
+#: lib/main/program.c:250
 #, c-format
 msgid "Store default layout group to %d"
 msgstr ""
 
-#: lib/main/~program.c:321 lib/main/program.c:297
+#: lib/main/program.c:297
 msgid "Exitting from main cycle"
 msgstr ""
 
-#: lib/main/~program.c:328 lib/main/program.c:304
+#: lib/main/program.c:304
 #, c-format
 msgid "Received KeyPress '%s' (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:346 lib/main/program.c:322
+#: lib/main/program.c:322
 #, c-format
 msgid "Received KeyRelease '%s' (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:368 lib/main/program.c:344
+#: lib/main/program.c:344
 #, c-format
 msgid "Received FocusIn (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:383 lib/main/program.c:359
+#: lib/main/program.c:359
 #, c-format
 msgid "Received FocusOut (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:391 lib/main/program.c:367
+#: lib/main/program.c:367
 #, c-format
 msgid "Received SelectionNotify (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:397 lib/main/program.c:372
+#: lib/main/program.c:372
 #, c-format
 msgid "Received SelectionRequest (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:404 lib/main/program.c:378
+#: lib/main/program.c:378
 #, c-format
 msgid "Received ButtonPress on window %d (event type %d)"
 msgstr ""
 
-#: lib/main/~program.c:414 lib/main/program.c:388
+#: lib/main/program.c:388
 #, c-format
 msgid "Received Property Notify (layout switch event) (event type %d)"
-msgstr ""
-
-#: lib/main/~program.c:423
-#, c-format
-msgid "Uncatched event with type %d)"
-msgstr ""
-
-#: lib/main/~program.c:432 lib/main/program.c:413
-#, c-format
-msgid "Changing language from %s to %s"
-msgstr ""
-
-#: lib/main/~program.c:439 lib/main/program.c:420
-msgid "Correcting iNCIDENTAL CapsLock"
-msgstr "vERSEHENTLICHE Caps korrigieren"
-
-#: lib/main/~program.c:457 lib/main/program.c:438
-msgid "Correcting two CApital letter"
-msgstr ""
-
-#: lib/main/~program.c:664 lib/main/program.c:761
-#, c-format
-msgid "Execute user action \"%s\""
-msgstr ""
-
-#: lib/main/~program.c:813 lib/main/program.c:909
-#, c-format
-msgid "Manual mode changed to %s"
-msgstr ""
-
-#: lib/main/~program.c:994 lib/main/program.c:1094
-#, c-format
-msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
-msgstr ""
-
-#: lib/main/~program.c:1043 lib/main/~program.c:1085 lib/main/program.c:1144
-#: lib/main/program.c:1186
-msgid "No language found to change to"
-msgstr ""
-
-#: lib/main/~program.c:1187 lib/main/program.c:1288
-msgid "Find spaces before punctuation, correction..."
-msgstr ""
-
-#: lib/main/~program.c:1236 lib/main/program.c:1337
-msgid "Find no space before left bracket, correction..."
-msgstr ""
-
-#: lib/main/~program.c:1253 lib/main/program.c:1354
-msgid "Find spaces before right bracket, correction..."
-msgstr ""
-
-#: lib/main/~program.c:1277 lib/main/program.c:1384
-msgid "Find no spaces after right bracket, correction..."
-msgstr ""
-
-#: lib/main/~program.c:1306 lib/main/program.c:1419
-msgid "Find spaces after left bracket, correction..."
-msgstr ""
-
-#: lib/main/~program.c:1393 lib/main/program.c:1508
-msgid "No string to change"
-msgstr ""
-
-#: lib/main/~program.c:1397 lib/main/program.c:1512
-#, c-format
-msgid "Processing string '%s'"
-msgstr ""
-
-#: lib/main/~program.c:1650 lib/main/program.c:1798
-#, c-format
-msgid "Remove word '%s' from %s dictionary"
-msgstr ""
-
-#: lib/main/~program.c:1658 lib/main/program.c:1806
-#, c-format
-msgid "Add word '%s' in %s dictionary"
-msgstr ""
-
-#: lib/main/~program.c:1715 lib/main/program.c:1863
-#, c-format
-msgid "Remove word '%s' from %s pattern"
-msgstr ""
-
-#: lib/main/~program.c:1725 lib/main/program.c:1894
-#, c-format
-msgid "Add word '%s' in %s pattern"
-msgstr ""
-
-#: lib/main/~program.c:1746 lib/main/program.c:1915
-msgid "Program is freed"
 msgstr ""
 
 #: lib/main/program.c:397
@@ -860,6 +769,19 @@ msgstr ""
 msgid "Uncatched event with type %d (see X11/X.h for details)"
 msgstr ""
 
+#: lib/main/program.c:413
+#, c-format
+msgid "Changing language from %s to %s"
+msgstr ""
+
+#: lib/main/program.c:420
+msgid "Correcting iNCIDENTAL CapsLock"
+msgstr "vERSEHENTLICHE Caps korrigieren"
+
+#: lib/main/program.c:438
+msgid "Correcting two CApital letter"
+msgstr ""
+
 #: lib/main/program.c:455
 #, c-format
 msgid "Received selected text is '%s'"
@@ -870,9 +792,81 @@ msgstr ""
 msgid "Received selected text '%s'"
 msgstr ""
 
+#: lib/main/program.c:761
+#, c-format
+msgid "Execute user action \"%s\""
+msgstr ""
+
+#: lib/main/program.c:909
+#, c-format
+msgid "Manual mode changed to %s"
+msgstr ""
+
+#: lib/main/program.c:1094
+#, c-format
+msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
+msgstr ""
+
+#: lib/main/program.c:1144 lib/main/program.c:1186
+msgid "No language found to change to"
+msgstr ""
+
+#: lib/main/program.c:1288
+msgid "Find spaces before punctuation, correction..."
+msgstr ""
+
+#: lib/main/program.c:1337
+msgid "Find no space before left bracket, correction..."
+msgstr ""
+
+#: lib/main/program.c:1354
+msgid "Find spaces before right bracket, correction..."
+msgstr ""
+
+#: lib/main/program.c:1384
+msgid "Find no spaces after right bracket, correction..."
+msgstr ""
+
+#: lib/main/program.c:1419
+msgid "Find spaces after left bracket, correction..."
+msgstr ""
+
 #: lib/main/program.c:1470
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
+msgstr ""
+
+#: lib/main/program.c:1508
+msgid "No string to change"
+msgstr ""
+
+#: lib/main/program.c:1512
+#, c-format
+msgid "Processing string '%s'"
+msgstr ""
+
+#: lib/main/program.c:1798
+#, c-format
+msgid "Remove word '%s' from %s dictionary"
+msgstr ""
+
+#: lib/main/program.c:1806
+#, c-format
+msgid "Add word '%s' in %s dictionary"
+msgstr ""
+
+#: lib/main/program.c:1863
+#, c-format
+msgid "Remove word '%s' from %s pattern"
+msgstr ""
+
+#: lib/main/program.c:1894
+#, c-format
+msgid "Add word '%s' in %s pattern"
+msgstr ""
+
+#: lib/main/program.c:1915
+msgid "Program is freed"
 msgstr ""
 
 #: lib/main/selection.c:68
