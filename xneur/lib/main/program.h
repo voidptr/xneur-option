@@ -35,7 +35,7 @@ struct _program
 	int  app_focus_mode;
 	int  app_autocomplementation_mode;
 	
-	int  selected_mode;
+	int  action_mode;
 
 	int  last_layout;
 	int  last_window;

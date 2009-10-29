@@ -44,7 +44,24 @@ msgstr "לחץ על מקש בפריסה 4"
 msgid "Correct word automatically"
 msgstr "שינוי מילה אוטומטי"
 
-msgid "Correct word manually"
+#, fuzzy
+msgid "Correct last word manually"
+msgstr "שינוי מילה ידני"
+
+#, fuzzy
+msgid "Transliterate last word manually"
+msgstr "שינוי מילה ידני"
+
+#, fuzzy
+msgid "Change case of last word manually"
+msgstr "שינוי מילה ידני"
+
+#, fuzzy
+msgid "Calculate formula on last word manually"
+msgstr "שינוי מילה ידני"
+
+#, fuzzy
+msgid "Preview correction of last word manually"
 msgstr "שינוי מילה ידני"
 
 msgid "Switch between processing modes"
@@ -54,6 +71,20 @@ msgid "Correct last line"
 msgstr "החלף את המחרוזת האחרונה"
 
 msgid "Correct/Undo correction"
+msgstr "החלף / בטל את החלפת"
+
+#, fuzzy
+msgid "Transliterate"
+msgstr "שעתק את הטקסט הנבחר"
+
+msgid "Change case"
+msgstr ""
+
+msgid "Calculate formula"
+msgstr ""
+
+#, fuzzy
+msgid "Preview correction"
 msgstr "החלף / בטל את החלפת"
 
 msgid "Correct selected text"
@@ -68,8 +99,9 @@ msgstr "שנה את הרישיות של הטקסט הנבחר"
 msgid "Calculate formula on selected text"
 msgstr ""
 
-msgid "Preview correcting of selected text"
-msgstr ""
+#, fuzzy
+msgid "Preview correction of selected text"
+msgstr "החלף את הטקסט הנבחר"
 
 msgid "Correct clipboard text"
 msgstr ""
@@ -83,7 +115,7 @@ msgstr ""
 msgid "Calculate formula on clipboard text"
 msgstr ""
 
-msgid "Preview correcting of clipboard text"
+msgid "Preview correction of clipboard text"
 msgstr ""
 
 msgid "Rotate layouts"

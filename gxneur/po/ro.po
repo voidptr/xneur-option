@@ -44,7 +44,24 @@ msgstr ""
 msgid "Correct word automatically"
 msgstr "Corecta cuvinte automatic"
 
-msgid "Correct word manually"
+#, fuzzy
+msgid "Correct last word manually"
+msgstr "Corecta cuvinte manual"
+
+#, fuzzy
+msgid "Transliterate last word manually"
+msgstr "Corecta cuvinte manual"
+
+#, fuzzy
+msgid "Change case of last word manually"
+msgstr "Corecta cuvinte manual"
+
+#, fuzzy
+msgid "Calculate formula on last word manually"
+msgstr "Corecta cuvinte manual"
+
+#, fuzzy
+msgid "Preview correction of last word manually"
 msgstr "Corecta cuvinte manual"
 
 msgid "Switch between processing modes"
@@ -54,6 +71,18 @@ msgid "Correct last line"
 msgstr ""
 
 msgid "Correct/Undo correction"
+msgstr ""
+
+msgid "Transliterate"
+msgstr ""
+
+msgid "Change case"
+msgstr ""
+
+msgid "Calculate formula"
+msgstr ""
+
+msgid "Preview correction"
 msgstr ""
 
 msgid "Correct selected text"
@@ -68,8 +97,9 @@ msgstr ""
 msgid "Calculate formula on selected text"
 msgstr ""
 
-msgid "Preview correcting of selected text"
-msgstr ""
+#, fuzzy
+msgid "Preview correction of selected text"
+msgstr "Corecta textul selecționat"
 
 msgid "Correct clipboard text"
 msgstr ""
@@ -83,7 +113,7 @@ msgstr ""
 msgid "Calculate formula on clipboard text"
 msgstr ""
 
-msgid "Preview correcting of clipboard text"
+msgid "Preview correction of clipboard text"
 msgstr ""
 
 msgid "Rotate layouts"

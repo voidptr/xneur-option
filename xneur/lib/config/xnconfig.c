@@ -63,7 +63,8 @@ static const char *option_names[] = 	{
 						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent"
 					};
 static const char *action_names[] =	{
-						"ChangeWord", "ChangeString", "ChangeMode",
+						"ChangeWord", "TranslitWord", "ChangecaseWord", "CalculateWord", "PreviewChangeWord",
+						"ChangeString", "ChangeMode",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "CalculateSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "CalculateClipboard", "PreviewChangeClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
@@ -73,7 +74,8 @@ static const char *notify_names[] =	{
 						"XneurStart", "XneurReload", "XneurStop",
 						"PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-						"AutomaticChangeWord", "ManualChangeWord", "ChangeString",
+						"AutomaticChangeWord", "ManualChangeWord", "ManualTranslitWord", "ManualChangecaseWord", "ManualCalculateWord", "ManualPreviewChangeWord",
+						"ChangeString",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "CalculateSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "CalculateClipboard",  "PreviewChangeClipboard",
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",

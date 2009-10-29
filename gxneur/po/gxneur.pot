@@ -43,7 +43,19 @@ msgstr ""
 msgid "Correct word automatically"
 msgstr ""
 
-msgid "Correct word manually"
+msgid "Correct last word manually"
+msgstr ""
+
+msgid "Transliterate last word manually"
+msgstr ""
+
+msgid "Change case of last word manually"
+msgstr ""
+
+msgid "Calculate formula on last word manually"
+msgstr ""
+
+msgid "Preview correction of last word manually"
 msgstr ""
 
 msgid "Switch between processing modes"
@@ -53,6 +65,18 @@ msgid "Correct last line"
 msgstr ""
 
 msgid "Correct/Undo correction"
+msgstr ""
+
+msgid "Transliterate"
+msgstr ""
+
+msgid "Change case"
+msgstr ""
+
+msgid "Calculate formula"
+msgstr ""
+
+msgid "Preview correction"
 msgstr ""
 
 msgid "Correct selected text"
@@ -67,7 +91,7 @@ msgstr ""
 msgid "Calculate formula on selected text"
 msgstr ""
 
-msgid "Preview correcting of selected text"
+msgid "Preview correction of selected text"
 msgstr ""
 
 msgid "Correct clipboard text"
@@ -82,7 +106,7 @@ msgstr ""
 msgid "Calculate formula on clipboard text"
 msgstr ""
 
-msgid "Preview correcting of clipboard text"
+msgid "Preview correction of clipboard text"
 msgstr ""
 
 msgid "Rotate layouts"

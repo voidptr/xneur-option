@@ -339,7 +339,8 @@ int on_key_press(KeySym key, int modifier_mask)
 
 int on_hotkey_action(enum _hotkey_action ha)
 {
-	switch (ha)
+	if (ha) {};
+	/*switch (ha)
 	{
 		case ACTION_NONE:
 		case ACTION_PREVIEW_CHANGE_SELECTED:
@@ -437,14 +438,16 @@ int on_hotkey_action(enum _hotkey_action ha)
 			statistic.action_replace_abbreviation++;
 			break;
 		}
-	}
+	}*/
 	
 	return (0);
 }
 
 int on_change_action(enum _change_action ca)
 {
-	switch (ca)
+	if (ca) {};
+	
+	/*switch (ca)
 	{
 		case CHANGE_INCIDENTAL_CAPS:
 		{
@@ -526,7 +529,7 @@ int on_change_action(enum _change_action ca)
 			statistic.change_abreviation++;
 			break;
 		}
-	}
+	}*/
 	
 	return (0);
 }

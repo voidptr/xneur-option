@@ -41,7 +41,7 @@ extern struct _window *main_window;
 const char *verbose_forced_mode[]	= {"Default", "Manual", "Automatic"};
 const char *verbose_focus_status[]	= {"Processed", "Changed Focus", "Unchanged Focus", "Excluded"};
 
-static void grab_mouse_button (Window current_window, int grab)
+/*static void grab_mouse_button (Window current_window, int grab)
 {
 	if (current_window == None)
 		return;
@@ -60,7 +60,7 @@ static void grab_mouse_button (Window current_window, int grab)
 		grab_mouse_button (children_return[i], grab);
 
 	XFree(children_return);
-}
+}*/
 
 // Private
 static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int *autocomplementation_mode)
@@ -165,7 +165,7 @@ static void focus_update_events(struct _focus *p, int mode)
 	{
 		// Event unmasking
 		grab_button(rw, FALSE);
-		grab_mouse_button(p->parent_window, FALSE);
+		//grab_mouse_button(p->parent_window, FALSE);
 		
 		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
 
@@ -176,7 +176,8 @@ static void focus_update_events(struct _focus *p, int mode)
 	{
 		// Event masking
 		grab_button(rw, TRUE);
-		grab_mouse_button(p->parent_window, TRUE);
+		//grab_mouse_button(p->parent_window, TRUE);
+		
 		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 
 		// Grabbing special key (Enter, Tab and other)

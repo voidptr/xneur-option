@@ -23,6 +23,7 @@
 
 #include <X11/keysym.h>
 #include <X11/XKBlib.h>
+//#include <X11/extensions/XTest.h>
 
 #include <stdlib.h>
 #include <strings.h>
@@ -375,10 +376,31 @@ static void program_process_input(struct _program *p)
 			case ButtonPress:
 			{
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
-				log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.window, type);
+				log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
 
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
+				//XAllowEvents(main_window->display, SyncPointer, CurrentTime);
+				
+				/*p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+				XTestFakeButtonEvent (main_window->display, 1, TRUE, CurrentTime);
+				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);*/
+
+				break;
+			}
+			case ButtonRelease:
+			{
+				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				log_message(TRACE, _("Received ButtonRelease on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
+
+				// Unfreeze and resend grabbed event
+				XAllowEvents(main_window->display, ReplayPointer|SyncPointer, CurrentTime);
+				//XAllowEvents(main_window->display, SyncPointer, CurrentTime);
+				
+				/*p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+				XTestFakeButtonEvent (main_window->display, 1, FALSE, CurrentTime);
+				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);*/
+				
 				break;
 			}
 			case PropertyNotify:
@@ -444,27 +466,27 @@ static void program_change_two_capital_letter(struct _program *p)
 static void program_process_selection_notify(struct _program *p)
 {
 	char *event_text = NULL;
-	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED || p->selected_mode == ACTION_CALC_SELECTED || p->selected_mode == ACTION_PREVIEW_CHANGE_SELECTED)
+	if (p->action_mode == ACTION_CHANGE_SELECTED || p->action_mode == ACTION_CHANGECASE_SELECTED || p->action_mode == ACTION_TRANSLIT_SELECTED || p->action_mode == ACTION_CALC_SELECTED || p->action_mode == ACTION_PREVIEW_CHANGE_SELECTED)
 		event_text = (char *)get_selection_text(SELECTION_PRIMARY);
-	else if (p->selected_mode == ACTION_CHANGE_CLIPBOARD || p->selected_mode == ACTION_CHANGECASE_CLIPBOARD || p->selected_mode == ACTION_TRANSLIT_CLIPBOARD || p->selected_mode == ACTION_CALC_CLIPBOARD || p->selected_mode == ACTION_PREVIEW_CHANGE_CLIPBOARD)
+	else if (p->action_mode == ACTION_CHANGE_CLIPBOARD || p->action_mode == ACTION_CHANGECASE_CLIPBOARD || p->action_mode == ACTION_TRANSLIT_CLIPBOARD || p->action_mode == ACTION_CALC_CLIPBOARD || p->action_mode == ACTION_PREVIEW_CHANGE_CLIPBOARD)
 		event_text = (char *)get_selection_text(SELECTION_CLIPBOARD);
 		
 	if (event_text == NULL)
 	{
-		p->selected_mode = ACTION_NONE;
+		p->action_mode = ACTION_NONE;
 		log_message (DEBUG, _("Received selected text is '%s'"), "NULL");
 		return;
 	}
 
 	log_message (DEBUG, _("Received selected text '%s'"), event_text);
 	
-	if (p->selected_mode == ACTION_TRANSLIT_SELECTED)
+	if (p->action_mode == ACTION_TRANSLIT_SELECTED)
 		convert_text_to_translit(&event_text);
 
 	p->buffer->set_content(p->buffer, event_text);
 	XFree(event_text);
 
-	switch (p->selected_mode)
+	switch (p->action_mode)
 	{
 		case ACTION_CHANGE_SELECTED:
 		{
@@ -603,10 +625,10 @@ static void program_process_selection_notify(struct _program *p)
 	grab_spec_keys(p->focus->owner_window, FALSE);
 
 	// Selection
-	if ((p->selected_mode != ACTION_PREVIEW_CHANGE_SELECTED) && (p->selected_mode != ACTION_PREVIEW_CHANGE_CLIPBOARD))
+	if ((p->action_mode != ACTION_PREVIEW_CHANGE_SELECTED) && (p->action_mode != ACTION_PREVIEW_CHANGE_CLIPBOARD))
 		p->change_word(p, CHANGE_SELECTION);
 
-	if (p->selected_mode == ACTION_CHANGE_SELECTED || p->selected_mode == ACTION_CHANGECASE_SELECTED || p->selected_mode == ACTION_TRANSLIT_SELECTED)
+	if (p->action_mode == ACTION_CHANGE_SELECTED || p->action_mode == ACTION_CHANGECASE_SELECTED || p->action_mode == ACTION_TRANSLIT_SELECTED)
 	{
 		if (xconfig->save_selection)
 			p->event->send_selection(p->event, p->buffer->cur_pos);
@@ -615,7 +637,7 @@ static void program_process_selection_notify(struct _program *p)
 	p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 	p->update(p);
-	p->selected_mode = ACTION_NONE;
+	p->action_mode = ACTION_NONE;
 }
 
 static void program_update_modifiers_stack(struct _program *p)
@@ -916,7 +938,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_CALC_SELECTED:
 		case ACTION_PREVIEW_CHANGE_SELECTED:
 		{
-			p->selected_mode = action;
+			p->action_mode = action;
 			p->process_selection_notify(p);
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
@@ -927,7 +949,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_CALC_CLIPBOARD:
 		case ACTION_PREVIEW_CHANGE_CLIPBOARD:
 		{
-			p->selected_mode = action;
+			p->action_mode = action;
 			p->process_selection_notify(p);
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
@@ -952,32 +974,54 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			break;
 		}
 		case ACTION_CHANGE_WORD:	// User needs to cancel last change
+		case ACTION_TRANSLIT_WORD:
+		case ACTION_CHANGECASE_WORD:
+		case ACTION_CALC_WORD:
+		case ACTION_PREVIEW_CHANGE_WORD:
 		{
+			p->action_mode = action;
 			int new_lang = get_next_lang(get_cur_lang());
 
-			if (xconfig->educate)
+			if ((xconfig->educate) && (action == ACTION_CHANGE_WORD))
 				p->add_word_to_dict(p, new_lang);
 
 			set_event_mask(p->focus->owner_window, None);
 			grab_spec_keys(p->focus->owner_window, FALSE);
 
-			int action;
-			if (new_lang == 0)
-				action = CHANGE_WORD_TO_LAYOUT_0;
-			else if (new_lang == 1)
-				action = CHANGE_WORD_TO_LAYOUT_1;
-			else if (new_lang == 2)
-				action = CHANGE_WORD_TO_LAYOUT_2;
-			else
-				action = CHANGE_WORD_TO_LAYOUT_3;
-
-			p->change_word(p, action);
-
-			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-			grab_spec_keys(p->focus->owner_window, TRUE);
+			int change_action = ACTION_NONE;
+			
+			if (action == ACTION_CHANGE_WORD)
+			{
+				if (new_lang == 0)
+					change_action = CHANGE_WORD_TO_LAYOUT_0;
+				else if (new_lang == 1)
+					change_action = CHANGE_WORD_TO_LAYOUT_1;
+				else if (new_lang == 2)
+					change_action = CHANGE_WORD_TO_LAYOUT_2;
+				else
+					change_action = CHANGE_WORD_TO_LAYOUT_3;
+			}	
+			
+			if (action == ACTION_TRANSLIT_WORD)
+				change_action = CHANGE_WORD_TRANSLIT;
+			
+			if (action == ACTION_CHANGECASE_WORD)
+				change_action = CHANGE_WORD_CHANGECASE;
+			
+			if (action == ACTION_CALC_WORD)
+				change_action = CHANGE_WORD_CALC;
+			
+			if (action == ACTION_PREVIEW_CHANGE_WORD)
+				change_action = CHANGE_WORD_PREVIEW_CHANGE;
+			
+			p->change_word(p, change_action);
 
 			show_notify(NOTIFY_MANUAL_CHANGE_WORD, NULL);
 			p->event->default_event.xkey.keycode = 0;
+			
+			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+			grab_spec_keys(p->focus->owner_window, TRUE);
+
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_0:
@@ -1627,6 +1671,70 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
+			break;
+		}
+		case CHANGE_WORD_TRANSLIT:
+		{
+			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
+			p->buffer->set_offset(p->buffer, offset);
+			int curr_lang = get_cur_lang();
+			char *text = strdup(get_last_word(p->buffer->i18n_content[curr_lang].content));
+			p->buffer->unset_offset(p->buffer, offset);
+
+			convert_text_to_translit(&text);
+			p->buffer->set_content(p->buffer, text);
+
+			free(text);
+
+			int len = p->buffer->cur_pos;
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+				len = p->buffer->cur_pos + 1;
+			p->send_string_silent(p, len);
+
+			p->last_action = ACTION_NONE;
+
+			show_notify(NOTIFY_MANUAL_TRANSLIT_WORD, NULL);
+			break;
+		}
+		case CHANGE_WORD_CHANGECASE:
+		{
+			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
+
+			// Shift fields to point to begin of word
+			p->buffer->set_offset(p->buffer, offset);
+
+			p->buffer->change_case(p->buffer);
+
+			int len = p->buffer->cur_pos;
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+				len = p->buffer->cur_pos + 1;
+			p->send_string_silent(p, len);
+
+			p->last_action = ACTION_NONE;
+			
+			// Revert fields back
+			p->buffer->unset_offset(p->buffer, offset);
+
+			show_notify(NOTIFY_MANUAL_CHANGECASE_WORD, NULL);
+			break;
+		}
+		case CHANGE_WORD_CALC:
+		{
+			show_notify(NOTIFY_MANUAL_CALC_WORD, NULL);
+			break;
+		}
+		case CHANGE_WORD_PREVIEW_CHANGE:
+		{
+			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
+
+			// Shift fields to point to begin of word
+			p->buffer->set_offset(p->buffer, offset);
+			
+			p->buffer->rotate_layout(p->buffer);
+
+			show_notify(NOTIFY_MANUAL_PREVIEW_CHANGE_WORD, p->buffer->get_utf_string(p->buffer));
+			p->buffer->unset_offset(p->buffer, offset);
+			
 			break;
 		}
 		case CHANGE_SYLL_TO_LAYOUT_0:

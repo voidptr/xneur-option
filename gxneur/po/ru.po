@@ -44,8 +44,20 @@ msgstr "Нажатие клавиши при раскладке 4"
 msgid "Correct word automatically"
 msgstr "Автоматическое изменение слова"
 
-msgid "Correct word manually"
-msgstr "Ручное изменение слова"
+msgid "Correct last word manually"
+msgstr "Ручное изменение последнего слова"
+
+msgid "Transliterate last word manually"
+msgstr "Транслитерация последнего слова"
+
+msgid "Change case of last word manually"
+msgstr "Смена регистра последнего слова"
+
+msgid "Calculate formula on last word manually"
+msgstr "Рассчет формулы в последнем слове"
+
+msgid "Preview correction of last word manually"
+msgstr "Предпросмотр коррекции последнего слова"
 
 msgid "Switch between processing modes"
 msgstr "Смена режима работы"
@@ -55,6 +67,18 @@ msgstr "Коррекция последней строки"
 
 msgid "Correct/Undo correction"
 msgstr "Коррекция/Отмена коррекции"
+
+msgid "Transliterate"
+msgstr "Транслитерация"
+
+msgid "Change case"
+msgstr "Смена регистра"
+
+msgid "Calculate formula"
+msgstr "Рассчет формулы"
+
+msgid "Preview correction"
+msgstr "Предпросмотр коррекции"
 
 msgid "Correct selected text"
 msgstr "Коррекция выделеного текста"
@@ -68,7 +92,7 @@ msgstr "Смена регистра выделеного текста"
 msgid "Calculate formula on selected text"
 msgstr "Рассчет формулы в выделеном тексте"
 
-msgid "Preview correcting of selected text"
+msgid "Preview correction of selected text"
 msgstr "Предпросмотр коррекции выделеного текста"
 
 msgid "Correct clipboard text"
@@ -81,9 +105,9 @@ msgid "Change case of clipboard text"
 msgstr "Смена регистра буфера обмена"
 
 msgid "Calculate formula on clipboard text"
-msgstr "Рассчет формулы в  буфере обмена"
+msgstr "Рассчет формулы в буфере обмена"
 
-msgid "Preview correcting of clipboard text"
+msgid "Preview correction of clipboard text"
 msgstr "Предпросмотр коррекции буфера обмена"
 
 msgid "Rotate layouts"
