@@ -42,25 +42,20 @@ msgstr "Tastendruck bei der Belegung 4"
 msgid "Correct word automatically"
 msgstr "Automatische Wortkorrektur"
 
-#, fuzzy
 msgid "Correct last word manually"
-msgstr "Manuelle Wortkorrektur"
+msgstr ""
 
-#, fuzzy
 msgid "Transliterate last word manually"
-msgstr "Manuelle Wortkorrektur"
+msgstr ""
 
-#, fuzzy
 msgid "Change case of last word manually"
-msgstr "Manuelle Wortkorrektur"
+msgstr ""
 
-#, fuzzy
 msgid "Calculate formula on last word manually"
-msgstr "Manuelle Wortkorrektur"
+msgstr ""
 
-#, fuzzy
 msgid "Preview correction of last word manually"
-msgstr "Manuelle Wortkorrektur"
+msgstr ""
 
 msgid "Switch between processing modes"
 msgstr "Verarbeitungsmodi wechseln"
@@ -71,9 +66,8 @@ msgstr "Letzte Zeile korrigieren"
 msgid "Correct/Undo correction"
 msgstr "Korrigieren/Korrektur rückgängig machen"
 
-#, fuzzy
 msgid "Transliterate"
-msgstr "Markierten Text transliterieren"
+msgstr ""
 
 msgid "Change case"
 msgstr ""
@@ -81,9 +75,8 @@ msgstr ""
 msgid "Calculate formula"
 msgstr ""
 
-#, fuzzy
 msgid "Preview correction"
-msgstr "Korrigieren/Korrektur rückgängig machen"
+msgstr ""
 
 msgid "Correct selected text"
 msgstr "Ausgewählten Text korrigieren"
@@ -97,9 +90,8 @@ msgstr "Groß- bzw. Kleinschreibung des markierten Textes wechseln"
 msgid "Calculate formula on selected text"
 msgstr ""
 
-#, fuzzy
 msgid "Preview correction of selected text"
-msgstr "Ausgewählten Text korrigieren"
+msgstr ""
 
 msgid "Correct clipboard text"
 msgstr ""

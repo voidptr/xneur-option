@@ -44,25 +44,20 @@ msgstr ""
 msgid "Correct word automatically"
 msgstr "Corecta cuvinte automatic"
 
-#, fuzzy
 msgid "Correct last word manually"
-msgstr "Corecta cuvinte manual"
+msgstr ""
 
-#, fuzzy
 msgid "Transliterate last word manually"
-msgstr "Corecta cuvinte manual"
+msgstr ""
 
-#, fuzzy
 msgid "Change case of last word manually"
-msgstr "Corecta cuvinte manual"
+msgstr ""
 
-#, fuzzy
 msgid "Calculate formula on last word manually"
-msgstr "Corecta cuvinte manual"
+msgstr ""
 
-#, fuzzy
 msgid "Preview correction of last word manually"
-msgstr "Corecta cuvinte manual"
+msgstr ""
 
 msgid "Switch between processing modes"
 msgstr ""
@@ -97,9 +92,8 @@ msgstr ""
 msgid "Calculate formula on selected text"
 msgstr ""
 
-#, fuzzy
 msgid "Preview correction of selected text"
-msgstr "Corecta textul selecționat"
+msgstr ""
 
 msgid "Correct clipboard text"
 msgstr ""

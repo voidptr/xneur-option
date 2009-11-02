@@ -45,25 +45,20 @@ msgstr "Націсканьне клявішы (раскладка 4)"
 msgid "Correct word automatically"
 msgstr "Аўтаматычная замена слова"
 
-#, fuzzy
 msgid "Correct last word manually"
-msgstr "Ручная замена слова"
+msgstr ""
 
-#, fuzzy
 msgid "Transliterate last word manually"
-msgstr "Ручная замена слова"
+msgstr ""
 
-#, fuzzy
 msgid "Change case of last word manually"
-msgstr "Ручная замена слова"
+msgstr ""
 
-#, fuzzy
 msgid "Calculate formula on last word manually"
-msgstr "Ручная замена слова"
+msgstr ""
 
-#, fuzzy
 msgid "Preview correction of last word manually"
-msgstr "Ручная замена слова"
+msgstr ""
 
 msgid "Switch between processing modes"
 msgstr "Зьмена рэжыму працы"
@@ -74,9 +69,8 @@ msgstr "Замена апошняга радка"
 msgid "Correct/Undo correction"
 msgstr "Выпраўленьне Замена/Адмена"
 
-#, fuzzy
 msgid "Transliterate"
-msgstr "Транслітэрацыя выдзеленага тэксту"
+msgstr "Транслітэрацыя"
 
 msgid "Change case"
 msgstr ""
@@ -84,9 +78,8 @@ msgstr ""
 msgid "Calculate formula"
 msgstr ""
 
-#, fuzzy
 msgid "Preview correction"
-msgstr "Выпраўленьне Замена/Адмена"
+msgstr ""
 
 msgid "Correct selected text"
 msgstr "Замена выдзеленага тэксту"
@@ -100,9 +93,8 @@ msgstr "Зьмена рэгістра выдзеленага тэксту"
 msgid "Calculate formula on selected text"
 msgstr ""
 
-#, fuzzy
 msgid "Preview correction of selected text"
-msgstr "Замена выдзеленага тэксту"
+msgstr ""
 
 msgid "Correct clipboard text"
 msgstr ""
