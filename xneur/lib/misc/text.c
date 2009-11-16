@@ -53,13 +53,13 @@ int is_upper_non_alpha_cyr(char symbol)
 int get_last_word_offset(const char *string, int string_len)
 {
 	int len = string_len;
-	while (len != 0 && isspace(string[len - 1]))
+	while (len != 0 && (isspace(string[len - 1]) || (string[len - 1] == '-')))
 		len--;
 
 	if (len == 0)
 		return string_len;
 
-	while (len != 0 && !isspace(string[len - 1]))
+	while (len != 0 && (!isspace(string[len - 1]) && !(string[len - 1] == '-')))
 		len--;
 
 	return len;
