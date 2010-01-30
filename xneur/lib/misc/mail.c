@@ -23,7 +23,6 @@
 #include <stdlib.h>
 
 #include <sys/stat.h>
-#include <sys/io.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
