@@ -34,6 +34,9 @@ extern struct _xneur_config *xconfig;
 
 void show_notify(int notify, char *command)
 {
+	if (xconfig->silent_mode)
+		return;
+	
 	play_file(notify);
 	popup_show(notify, command);
 	osd_show(notify, command);

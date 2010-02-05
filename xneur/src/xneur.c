@@ -37,9 +37,13 @@
 #include "bind_table.h"
 #include "switchlang.h"
 #include "program.h"
+#include "buffer.h"
 #include "keymap.h"
 
+#include "detection.h"
+
 #include "types.h"
+#include "text.h"
 #include "list_char.h"
 #include "log.h"
 #include "colors.h"
@@ -56,6 +60,7 @@ static struct _program *program = NULL;
 
 static int xneur_check_lock = TRUE;
 static int xneur_generate_proto = FALSE;
+static int xneur_check_word = FALSE;
 
 static void xneur_reload(int status);
 
@@ -103,6 +108,9 @@ static void xneur_init(void)
 
 static void xneur_load_config(int final)
 {
+	if (xneur_check_word)
+		xconfig->silent_mode = TRUE;
+	
 	log_message(LOG, _("Loading configuration"));
 
 	if (!xconfig->load(xconfig))
@@ -111,7 +119,7 @@ static void xneur_load_config(int final)
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
-
+	
 	xneur_check_config_version(final);
 
 	log_message(LOG, _("Log level is set to %s"), xconfig->get_log_level_name(xconfig));
@@ -172,6 +180,10 @@ static void xneur_set_lock(void)
 
 	setpriority(PRIO_PROCESS, process_id, -19);
 	priority = getpriority(PRIO_PROCESS, process_id);
+	
+	if (xneur_check_word)
+		return;
+	
 	log_message(DEBUG, _(PACKAGE" pid is %d with nice %d"), process_id, priority);
 }
 
@@ -257,6 +269,7 @@ static void xneur_usage(void)
 	printf("  -a, --about             About for " PACKAGE "\n");
 	printf("  -f, --force             Skip check for other instances of " PACKAGE " runned\n");
 	printf("  -g, --generate          Generate proto for new language. THIS OPTION FOR DEVELOPERS ONLY!\n");
+	printf("  -w, --word              Check word.\n");
 }
 
 static void xneur_version(void)
@@ -276,6 +289,26 @@ static void xneur_about(void)
 	printf("web: http://www.xneur.ru/\n");
 }
 
+static void check_word(struct _program *p, const char *w)
+{
+	if (!w)
+		return;
+	
+	p->buffer->set_content(p->buffer, w);
+
+	int cur_lang = get_cur_lang();
+	int new_lang = check_lang(p->buffer, cur_lang);
+
+	if (new_lang == NO_LANGUAGE)
+	{
+		printf("%s", w);
+		return;
+	}
+
+	p->buffer->set_lang_mask(p->buffer, new_lang);
+	printf("%s", p->buffer->get_utf_string(p->buffer));
+}
+
 static void xneur_get_options(int argc, char *argv[])
 {
 	static struct option longopts[] =
@@ -285,12 +318,13 @@ static void xneur_get_options(int argc, char *argv[])
 			{ "about",		no_argument,	NULL,	'a' },
 			{ "force",		no_argument,	NULL,	'f' },
 			{ "generate",	no_argument,	NULL,	'g' },
+			{ "word",	no_argument,	NULL,	'w' },
 			{ NULL,			0,		NULL,	0 }
 	};
 
 	int opted = FALSE;
 	int opt;
-	while ((opt = getopt_long(argc, argv, "vhafg", longopts, NULL)) != -1)
+	while ((opt = getopt_long(argc, argv, "vhafgw", longopts, NULL)) != -1)
 	{
 		opted = TRUE;
 		switch (opt)
@@ -317,6 +351,13 @@ static void xneur_get_options(int argc, char *argv[])
 				opted = FALSE;
 				break;
 			}
+			case 'w':
+			{
+				xneur_check_lock = FALSE;
+				xneur_check_word = TRUE;
+				opted = FALSE;
+				break;
+			}
 			case '?':
 			case 'h':
 			{
@@ -332,6 +373,9 @@ static void xneur_get_options(int argc, char *argv[])
 
 static void xneur_reklama(void)
 {
+	if (xneur_check_word)
+		return;
+	
 	printf("\n");
 	printf(LIGHT_PURPLE_COLOR "====================================================" NORMAL_COLOR "\n");
 	printf(LIGHT_PURPLE_COLOR ">>> " LIGHT_PURPLE_COLOR "Please visit " RED_COLOR "http://www.xneur.ru" LIGHT_BLUE_COLOR " for support" LIGHT_PURPLE_COLOR " <<<" NORMAL_COLOR "\n");
@@ -361,11 +405,10 @@ int main(int argc, char *argv[])
 	textdomain(PACKAGE);
 #endif
 
-
-	xneur_reklama();
-
 	xneur_get_options(argc, argv);
-
+	
+	xneur_reklama();
+	
 	xconfig = xneur_config_init();
 	if (xconfig == NULL)
 	{
@@ -375,7 +418,7 @@ int main(int argc, char *argv[])
 
 	xneur_set_lock();
 	xneur_load_config(FALSE);
-
+	
 	program = program_init();
 	if (program == NULL)
 	{
@@ -399,7 +442,9 @@ int main(int argc, char *argv[])
 			
 	if (xneur_generate_proto)
 		generate_protos();
-	else
+	else if (xneur_check_word)
+		check_word(program, argv[2]);
+	else	
 		program->process_input(program);
 
 	xneur_cleanup();

@@ -241,6 +241,8 @@ struct _xneur_config
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);
 	const char* (*get_bool_name) (int option);
 
+	int   silent_mode; // Without notify and log messages
+	
 	int   (*load) (struct _xneur_config *p);
 	void  (*clear) (struct _xneur_config *p);
 	int   (*save) (struct _xneur_config *p);

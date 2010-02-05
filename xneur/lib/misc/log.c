@@ -27,6 +27,10 @@
 
 #include "log.h"
 
+#include "xnconfig.h"
+
+extern struct _xneur_config *xconfig;
+
 static int LOG_LEVEL = DEBUG;
 
 void log_set_level(int level)
@@ -36,6 +40,9 @@ void log_set_level(int level)
 
 void log_message(int level, const char *string, ...)
 {
+	if (xconfig->silent_mode)
+		return;
+	
 	if (level > LOG_LEVEL)
 		return;
 

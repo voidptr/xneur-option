@@ -251,6 +251,32 @@ static int buffer_is_space_last(struct _buffer *p)
 	return FALSE;
 }
 
+static void buffer_set_i18n_content(struct _buffer *p)
+{
+	// i18n_content
+	int languages_mask = get_languages_mask();
+	for (int k = 0; k < p->cur_size-1; k++)
+	{
+		int modifier = p->keycode_modifiers[k] & (~languages_mask);
+
+		for (int i = 0; i < xconfig->total_languages; i++)
+		{
+			int group = xconfig->get_lang_group(xconfig, i);
+
+			char *symbol = keycode_to_symbol(p->keycode[k], group, modifier & (~ShiftMask));
+			if (symbol == NULL)
+				continue;
+
+			p->i18n_content[i].content = (char *) realloc(p->i18n_content[i].content, (strlen(p->i18n_content[i].content) + strlen(symbol) + 1) * sizeof(char));
+			p->i18n_content[i].content = strcat(p->i18n_content[i].content, symbol);
+
+			p->i18n_content[i].symbol_len = (int *) realloc(p->i18n_content[i].symbol_len, (k + 1) * sizeof(int));
+			p->i18n_content[i].symbol_len[k] = strlen(symbol);
+
+			free(symbol);
+		}
+	}
+}
 static void buffer_set_content(struct _buffer *p, const char *new_content)
 {
 	char *content = strdup(new_content);
@@ -283,9 +309,7 @@ static void buffer_set_content(struct _buffer *p, const char *new_content)
 	if (p->content == NULL || p->keycode == NULL || p->keycode_modifiers == NULL)
 		return;
 
-	p->content[p->cur_pos] = NULLSYM;
-	if (!p->cur_pos)
-		return;
+	buffer_set_i18n_content(p);
 }
 
 static void buffer_change_case(struct _buffer *p)

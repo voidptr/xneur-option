@@ -190,11 +190,13 @@ void del_final_numeric_char(char *word)
 				break;
 			}
 			default:
+			{
+				i = 0;
 				break;
+			}
 		}
 	}
 	if (offset == len)
 		return;
-	
 	word[len - offset] = NULLSYM;
 }
