@@ -98,12 +98,6 @@ static void xneur_check_config_version(int final)
 
 static void xneur_init(void)
 {
-	if (!print_keyboard_groups())
-	{
-		xconfig->uninit(xconfig);
-		exit(EXIT_FAILURE);
-	}
-
 	bind_manual_actions();
 	bind_user_actions();
 }

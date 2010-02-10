@@ -37,6 +37,8 @@
 
 #include "xnconfig.h"
 
+#include "switchlang.h"
+
 #define LIBRARY_VERSION_MAJOR		9
 #define LIBRARY_VERSION_MINOR		8
 #define OPTIONS_DELIMETER		" "
@@ -213,7 +215,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 4: // Add Language
 		{
-			char *dir	= get_word(&line);
+			/*char *dir	= get_word(&line);
 			char *group	= get_word(&line);
 			char *fixed	= get_word(&line);
 
@@ -231,7 +233,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 					fix_index = TRUE;
 			}
 
-			p->add_language(p, param, dir, atoi(group), fix_index);
+			p->add_language(p, param, dir, atoi(group), fix_index);*/
 			break;
 		}
 		case 5: // Pattern Mining and Recognition
@@ -841,6 +843,9 @@ static int xneur_config_is_manual_mode(struct _xneur_config *p)
 
 static int xneur_config_load(struct _xneur_config *p)
 {
+	if (!parse_keyboard_groups())
+		return FALSE;
+	
 	if (!parse_config_file(p, NULL, CONFIG_NAME))
 		return FALSE;
 
@@ -1295,24 +1300,6 @@ static int xneur_config_find_group_lang(struct _xneur_config *p, int group)
 	return -1;
 }
 
-static void xneur_config_add_language(struct _xneur_config *p, const char *name, const char *dir, int group, int fixed)
-{
-	if (name == NULL || dir == NULL)
-	{
-		log_message(ERROR, _("Can't add language with empty name or dir"));
-		return;
-	}
-
-	p->languages = (struct _xneur_language *) realloc(p->languages, (p->total_languages + 1) * sizeof(struct _xneur_language));
-	bzero(&(p->languages[p->total_languages]), sizeof(struct _xneur_language));
-
-	p->languages[p->total_languages].name	= strdup(name);
-	p->languages[p->total_languages].dir	= strdup(dir);
-	p->languages[p->total_languages].group	= group;
-	p->languages[p->total_languages].fixed	= fixed;
-	p->total_languages++;
-}
-
 static const char* xneur_config_get_log_level_name(struct _xneur_config *p)
 {
 	return log_levels[p->log_level];
@@ -1394,7 +1381,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->get_lang_name		= xneur_config_get_lang_name;
 	p->get_lang_group		= xneur_config_get_lang_group;
 	p->find_group_lang		= xneur_config_find_group_lang;
-	p->add_language			= xneur_config_add_language;
 	p->get_log_level_name		= xneur_config_get_log_level_name;
 
 	p->uninit			= xneur_config_uninit;

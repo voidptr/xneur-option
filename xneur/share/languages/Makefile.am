@@ -1,6 +1,6 @@
 SUBDIRS =			\
-	be			\
 	bg			\
+	by			\
 	cs			\
 	de			\
 	el			\
