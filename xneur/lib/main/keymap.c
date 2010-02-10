@@ -136,6 +136,7 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 // Private
 static int init_keymaps(struct _keymap *p)
 {
+	p->keyboard_groups_count = xconfig->total_languages;
 	// Define all key codes and key symbols
 	XDisplayKeycodes(main_window->display, &(p->min_keycode), &(p->max_keycode));
 

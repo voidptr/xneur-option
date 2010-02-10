@@ -865,14 +865,11 @@ static int parse_keyboard_groups(struct _xneur_config *p)
 		return FALSE;
 	}
 
-	log_message(LOG, _("Keyboard layouts present in system:"));
-
 	Atom symbols_atom = kbd_desc_ptr->names->symbols;
 	char *symbols	= XGetAtomName(display, symbols_atom);
 	char *tmp_symbols = strdup(symbols);
 	strsep(&tmp_symbols, "+");
 	
-	int valid_count = 0;
 	for (int group = 0; group < groups_count; group++)
 	{
 		Atom group_atom = kbd_desc_ptr->names->groups[group];
@@ -893,15 +890,11 @@ static int parse_keyboard_groups(struct _xneur_config *p)
 		p->languages[p->total_languages].group	= group;
 		p->languages[p->total_languages].excluded	= FALSE;
 		p->total_languages++;
-		
-		log_message(LOG, _("   XKB Group '%s', layout '%s', group '%d'"), group_name, short_name, group);
-		valid_count++;
 	}
 
 	free(symbols);
 	XCloseDisplay(display);
 
-	log_message(LOG, _("Total %d valid keyboard layouts detected"), valid_count);
 	return TRUE;
 }
 
@@ -919,6 +912,7 @@ static int xneur_config_load(struct _xneur_config *p)
 		return FALSE;
 	}
 
+	log_message(LOG, _("Keyboard layouts present in system:"));
 	for (int lang = 0; lang < p->total_languages; lang++)
 	{
 		char *lang_dir	= p->get_lang_dir(p, lang);
@@ -971,12 +965,15 @@ static int xneur_config_load(struct _xneur_config *p)
 		    p->languages[lang].regexp->data_count == 0) || 
 			(p->languages[lang].excluded))
 		{
-			p->languages[p->total_languages].excluded	= TRUE;
-			log_message(LOG, _("Excluded XKB Group '%s', layout '%s', group '%d'"), p->languages[lang].name, p->languages[lang].dir, lang);
+			p->languages[lang].excluded	= TRUE;
+			log_message(LOG, _("   Excluded XKB Group '%s', layout '%s', group '%d'"), p->languages[lang].name, p->languages[lang].dir, lang);
 
 		}
+		else
+			log_message(LOG, _("   Encluded XKB Group '%s', layout '%s', group '%d'"), p->languages[lang].name, p->languages[lang].dir, lang);
+		
 	}
-	
+	log_message(LOG, _("Total %d keyboard layouts detected"), p->total_languages);
 	return TRUE;
 }
 

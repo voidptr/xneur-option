@@ -119,7 +119,7 @@ static void window_destroy(struct _window *p)
 static int window_init_keymap(struct _window *p)
 {
 	p->keymap = keymap_init();
-	if (!p->keymap)
+	if (p->keymap == NULL)
 		return FALSE;
 	return TRUE;
 }

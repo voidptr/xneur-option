@@ -290,14 +290,14 @@ static void buffer_set_content(struct _buffer *p, const char *new_content)
 		free(content);
 		return;
 	}
-	
+
 	p->content[p->cur_pos] = NULLSYM;
 	if (!p->cur_pos)
 	{
 		free(content);
 		return;
 	}
-	
+
 	memcpy(p->content, content, p->cur_pos);
 	free(content);
 	

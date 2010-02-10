@@ -51,7 +51,7 @@
 extern struct _xneur_config *xconfig;
 extern struct _window *main_window;
 
-static int is_fixed_layout(int cur_lang)
+static int is_excluded_layout(int cur_lang)
 {
 	return xconfig->languages[cur_lang].excluded;
 }
@@ -60,7 +60,7 @@ static int get_dict_lang(char **word)
 {
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
-		if (is_fixed_layout(lang))
+		if (is_excluded_layout(lang))
 			continue;
 
 		if (xconfig->languages[lang].dict->exist(xconfig->languages[lang].dict, word[lang], BY_PLAIN))
@@ -78,7 +78,7 @@ static int get_regexp_lang(char **word)
 {
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
-		if (is_fixed_layout(lang))
+		if (xconfig->languages[lang].excluded)
 			continue;
 
 		if (xconfig->languages[lang].regexp->exist(xconfig->languages[lang].regexp, word[lang], BY_REGEXP))
@@ -97,23 +97,49 @@ static int get_aspell_hits(char **word, int len)
 {
 	AspellConfig *spell_config = new_aspell_config();
 
+	const AspellDictInfo *entry;
+	AspellDictInfoList *dlist = get_aspell_dict_info_list (spell_config);
+
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
-		if (is_fixed_layout(lang))
+		if (is_excluded_layout(lang))
 			continue;
 
 		if (len < 2)
 			continue;
 
+		AspellDictInfoEnumeration *dels = aspell_dict_info_list_elements (dlist);
 		aspell_config_replace(spell_config, "lang", xconfig->languages[lang].dir);
 		AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
 
-		if (aspell_error_number(possible_err) != 0)
+		char *upper_dir = strdup (xconfig->languages[lang].dir);
+ 		for (int i = 0; i < (int) strlen(upper_dir); i++) 
+			upper_dir[i] = toupper (upper_dir[i]);
+
+		int aspell_error = aspell_error_number(possible_err);
+		while (aspell_error != 0)
 		{
+			entry = aspell_dict_info_enumeration_next (dels);
+			if (entry)
+			{
+				if (strstr(entry->name, upper_dir) != NULL)
+				{
+					aspell_config_replace(spell_config, "lang", entry->name);
+					possible_err = new_aspell_speller(spell_config);
+					aspell_error = aspell_error_number(possible_err);	
+				}
+				continue;
+			}
 			log_message(DEBUG, _("   [!] Error aspell checking for %s aspell dictionary"), xconfig->get_lang_name(xconfig, lang));
-			continue;
+			break;
 		}
 
+		free (upper_dir);
+		delete_aspell_dict_info_enumeration (dels);
+		
+		if (aspell_error != 0)
+			continue;
+		
 		AspellSpeller *spell_checker = to_aspell_speller(possible_err);
 		int correct = aspell_speller_check(spell_checker, word[lang], strlen(word[lang]));
 		delete_aspell_speller(spell_checker);
@@ -209,7 +235,7 @@ static int get_proto_lang(char **word, int **sym_len, int len, int offset, int c
 
 	for (int lang = 0; lang < xconfig->total_languages; lang++)
 	{
-		if ((lang == cur_lang) || (is_fixed_layout(lang)))
+		if ((lang == cur_lang) || (is_excluded_layout(lang)))
 			continue;
 
 		int hits = get_proto_hits_function(word[lang], sym_len[lang], len, offset, lang);
@@ -229,7 +255,7 @@ static int get_proto_lang(char **word, int **sym_len, int len, int offset, int c
 
 int check_lang(struct _buffer *p, int cur_lang)
 {
-	if (is_fixed_layout(cur_lang))
+	if (is_excluded_layout(cur_lang))
 		return NO_LANGUAGE;
 
 	int group = get_active_keyboard_group();
@@ -244,11 +270,13 @@ int check_lang(struct _buffer *p, int cur_lang)
 		word[i] = strdup(get_last_word(p->i18n_content[i].content));
 		del_final_numeric_char(word[i]);
 		
-		log_message(DEBUG, _("Processing word '%s'"), word[i]);
+		log_message(DEBUG, _("Processing word '%s' on layout '%s'"), word[i], xconfig->languages[i].dir);
 
 		sym_len[i] = p->i18n_content[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
 	}
-
+	
+	log_message(DEBUG, _("Start word processing..."));
+	
 	// Check by regexp
 	int lang = get_regexp_lang(word);
 
@@ -272,7 +300,7 @@ int check_lang(struct _buffer *p, int cur_lang)
 	if (lang == NO_LANGUAGE)
 		lang = get_proto_lang(word, sym_len, len, offset, cur_lang, BIG_PROTO_LEN);
 
-	log_message(DEBUG, _("End word processing"));
+	log_message(DEBUG, _("End word processing."));
 
 	for (int i = 0; i < xconfig->total_languages; i++)
 		free(word[i]);
