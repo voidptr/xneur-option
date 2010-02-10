@@ -140,7 +140,7 @@ struct _xneur_language
 	char *dir;
 	char *name;
 	int  group;
-	int  fixed;
+	int  excluded;
 
 	struct _list_char *temp_dict;
 	struct _list_char *dict;

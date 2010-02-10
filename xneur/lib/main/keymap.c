@@ -45,8 +45,6 @@ extern struct _window *main_window;
 static const int keyboard_groups[]	= {0x00000000, 0x00002000, 0x00004000, 0x00006000};
 static const int state_masks[]		= {0x00, 0x01, 0x80, 0x10}; // None, NumLock, Alt, Shift
 
-static const int max_groups_count	= sizeof(keyboard_groups) / sizeof(keyboard_groups[0]);
-
 static int locale_create(void)
 {
 	if (setlocale(LC_ALL, "") == NULL)
@@ -66,7 +64,7 @@ static int locale_create(void)
 int get_languages_mask(void)
 {
 	int languages_mask = 0;
-	for (int group = 0; group < max_groups_count; group++)
+	for (int group = 0; group < 4; group++)
 		languages_mask = languages_mask | keyboard_groups[group];
 	return languages_mask;
 }
@@ -138,13 +136,6 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 // Private
 static int init_keymaps(struct _keymap *p)
 {
-	p->keyboard_groups_count = get_keyboard_groups_count();
-	if (p->keyboard_groups_count > max_groups_count)
-	{
-		log_message(ERROR, _("Too many keyboard layouts (max %d)"), max_groups_count);
-		return FALSE;
-	}
-
 	// Define all key codes and key symbols
 	XDisplayKeycodes(main_window->display, &(p->min_keycode), &(p->max_keycode));
 

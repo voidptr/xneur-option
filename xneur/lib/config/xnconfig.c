@@ -21,6 +21,8 @@
 #  include "config.h"
 #endif
 
+#include <X11/XKBlib.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
@@ -37,8 +39,6 @@
 
 #include "xnconfig.h"
 
-#include "switchlang.h"
-
 #define LIBRARY_VERSION_MAJOR		9
 #define LIBRARY_VERSION_MINOR		8
 #define OPTIONS_DELIMETER		" "
@@ -53,7 +53,7 @@ static const char *fix_names[]  =	{"Fixed"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
-						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "AddLanguage", "Autocomplementation",
+						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "ExcludeLanguage", "Autocomplementation",
 						"DisableCapsLock", "CheckOnProcess", "SetAutoApp", "SetManualApp", "AutocomplementationExcludeApp",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
@@ -215,25 +215,16 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 4: // Add Language
 		{
-			/*char *dir	= get_word(&line);
-			char *group	= get_word(&line);
-			char *fixed	= get_word(&line);
-
-			if (dir == NULL || group == NULL)
+			if (param == NULL)
 			{
-				log_message(ERROR, _("Argument number mismatch for AddLanguage option"));
+				log_message(ERROR, _("Argument number mismatch for ExcludeLanguage option"));
 				break;
 			}
-
-			int fix_index = FALSE;
-			if (fixed != NULL)
+			for (int lang = 0; lang < p->total_languages; lang++)
 			{
-				int index = get_option_index(fix_names, fixed);
-				if (index == 0) // Fixed
-					fix_index = TRUE;
+				if (strcmp(p->languages[lang].dir, param) == 0)
+					p->languages[lang].excluded = TRUE;
 			}
-
-			p->add_language(p, param, dir, atoi(group), fix_index);*/
 			break;
 		}
 		case 5: // Pattern Mining and Recognition
@@ -841,9 +832,82 @@ static int xneur_config_is_manual_mode(struct _xneur_config *p)
 	return (p->xneur_data->manual_mode == TRUE);
 }
 
+static int parse_keyboard_groups(struct _xneur_config *p)
+{
+	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
+	if (kbd_desc_ptr == NULL)
+	{
+		log_message(ERROR, _("Failed to allocate keyboard descriptor"));
+		return FALSE;
+	}
+
+	Display *display = XOpenDisplay(NULL);
+	XkbGetNames(display, XkbAllNamesMask, kbd_desc_ptr);
+
+	if (kbd_desc_ptr->names == NULL)
+	{
+		XCloseDisplay(display);
+		log_message(ERROR, _("Failed to get keyboard group names"));
+		return FALSE;
+	}
+
+	int groups_count = 0;
+	for (; groups_count < XkbNumKbdGroups; groups_count++)
+	{
+		if (kbd_desc_ptr->names->groups[groups_count] == None)
+			break;
+	}
+	
+	if (groups_count == 0)
+	{
+		XCloseDisplay(display);
+		log_message(ERROR, _("No keyboard layout found"));
+		return FALSE;
+	}
+
+	log_message(LOG, _("Keyboard layouts present in system:"));
+
+	Atom symbols_atom = kbd_desc_ptr->names->symbols;
+	char *symbols	= XGetAtomName(display, symbols_atom);
+	char *tmp_symbols = strdup(symbols);
+	strsep(&tmp_symbols, "+");
+	
+	int valid_count = 0;
+	for (int group = 0; group < groups_count; group++)
+	{
+		Atom group_atom = kbd_desc_ptr->names->groups[group];
+			
+		if (group_atom == None)
+			continue;
+
+		char *group_name	= XGetAtomName(display, group_atom);
+		
+		char *short_name = strsep(&tmp_symbols, "+");
+		short_name[2] = NULLSYM;
+
+		p->languages = (struct _xneur_language *) realloc(p->languages, (p->total_languages + 1) * sizeof(struct _xneur_language));
+		bzero(&(p->languages[p->total_languages]), sizeof(struct _xneur_language));
+
+		p->languages[p->total_languages].name	= strdup(group_name);
+		p->languages[p->total_languages].dir	= strdup(short_name);
+		p->languages[p->total_languages].group	= group;
+		p->languages[p->total_languages].excluded	= FALSE;
+		p->total_languages++;
+		
+		log_message(LOG, _("   XKB Group '%s', layout '%s', group '%d'"), group_name, short_name, group);
+		valid_count++;
+	}
+
+	free(symbols);
+	XCloseDisplay(display);
+
+	log_message(LOG, _("Total %d valid keyboard layouts detected"), valid_count);
+	return TRUE;
+}
+
 static int xneur_config_load(struct _xneur_config *p)
 {
-	if (!parse_keyboard_groups())
+	if (!parse_keyboard_groups(p))
 		return FALSE;
 	
 	if (!parse_config_file(p, NULL, CONFIG_NAME))
@@ -863,37 +927,29 @@ static int xneur_config_load(struct _xneur_config *p)
 		p->languages[lang].dict = load_list(lang_dir, DICT_NAME, TRUE);
 		if (p->languages[lang].dict == NULL)
 		{
-			log_message(ERROR, _("Can't find dictionary file for %s language"), lang_name);
-			if (lang_dir != NULL)
-				free(lang_dir);
-			return FALSE;
+			p->languages[lang].dict->data_count = 0;
+			log_message(DEBUG, _("Can't find dictionary file for %s language"), lang_name);
 		}
 
 		p->languages[lang].proto = load_list(lang_dir, PROTO_NAME, TRUE);
 		if (p->languages[lang].proto == NULL)
 		{
-			log_message(ERROR, _("Can't find protos file for %s language"), lang_name);
-			if (lang_dir != NULL)
-				free(lang_dir);
-			return FALSE;
+			p->languages[lang].proto->data_count = 0;
+			log_message(DEBUG, _("Can't find protos file for %s language"), lang_name);
 		}
 
 		p->languages[lang].big_proto = load_list(lang_dir, BIG_PROTO_NAME, TRUE);
 		if (p->languages[lang].big_proto == NULL)
 		{
-			log_message(ERROR, _("Can't find big protos file for %s language"), lang_name);
-			if (lang_dir != NULL)
-				free(lang_dir);
-			return FALSE;
+			p->languages[lang].big_proto->data_count = 0;
+			log_message(DEBUG, _("Can't find big protos file for %s language"), lang_name);
 		}
 
 		p->languages[lang].regexp = load_list(lang_dir, REGEXP_NAME, TRUE);
 		if (p->languages[lang].regexp == NULL)
 		{
-			log_message(ERROR, _("Can't find regexp file for %s language"), lang_name);
-			if (lang_dir != NULL)
-				free(lang_dir);
-			return FALSE;
+			p->languages[lang].regexp->data_count = 0;
+			log_message(DEBUG, _("Can't find regexp file for %s language"), lang_name);
 		}
 
 		p->languages[lang].pattern = load_list(lang_dir, PATTERN_NAME, TRUE);
@@ -908,6 +964,17 @@ static int xneur_config_load(struct _xneur_config *p)
 
 		if (lang_dir != NULL)
 			free(lang_dir);
+
+		if ((p->languages[lang].dict->data_count == 0 &&
+		    p->languages[lang].proto->data_count == 0 &&
+		    p->languages[lang].big_proto->data_count == 0 &&
+		    p->languages[lang].regexp->data_count == 0) || 
+			(p->languages[lang].excluded))
+		{
+			p->languages[p->total_languages].excluded	= TRUE;
+			log_message(LOG, _("Excluded XKB Group '%s', layout '%s', group '%d'"), p->languages[lang].name, p->languages[lang].dir, lang);
+
+		}
 	}
 	
 	return TRUE;
@@ -967,7 +1034,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	for (int lang = 0; lang < p->total_languages; lang++)
 	{
 		fprintf(stream, "AddLanguage %s %s %d ", p->languages[lang].name, p->languages[lang].dir, p->languages[lang].group);
-		if (p->languages[lang].fixed)
+		if (p->languages[lang].excluded)
 			fprintf(stream, "%s\n", fix_names[0]);
 		else
 			fprintf(stream, "\n");

@@ -65,7 +65,7 @@ void switch_group(int new_group)
 	XkbLockGroup(main_window->display, XkbUseCoreKbd, new_group);
 }
 
-int get_keyboard_groups_count(void)
+/*int get_keyboard_groups_count(void)
 {
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)
@@ -92,17 +92,17 @@ int get_keyboard_groups_count(void)
 	}
 
 	return groups_count;
-}
+}*/
 
 void set_next_keyboard_group(void)
 {
 	int new_layout_group = get_active_keyboard_group() + 1;
-	if (new_layout_group == get_keyboard_groups_count())
+	if (new_layout_group == xconfig->total_languages - 1)
 		new_layout_group = 0;
 	switch_group (new_layout_group);
 }
 
-int print_keyboard_groups(void)
+/*int print_keyboard_groups(void)
 {
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)
@@ -165,9 +165,9 @@ int print_keyboard_groups(void)
 
 	log_message(LOG, _("Total %d valid keyboard layouts detected"), valid_count);
 	return TRUE;
-}
+}*/
 
-int parse_keyboard_groups(void)
+/*int parse_keyboard_groups(void)
 {
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)
@@ -232,4 +232,4 @@ int parse_keyboard_groups(void)
 
 	log_message(LOG, _("Total %d valid keyboard layouts detected"), valid_count);
 	return TRUE;
-}
+}*/

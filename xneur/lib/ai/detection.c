@@ -53,7 +53,7 @@ extern struct _window *main_window;
 
 static int is_fixed_layout(int cur_lang)
 {
-	return xconfig->languages[cur_lang].fixed;
+	return xconfig->languages[cur_lang].excluded;
 }
 
 static int get_dict_lang(char **word)

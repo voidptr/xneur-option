@@ -1,9 +1,9 @@
-noinst_LTLIBRARIES = libxnx.la
+noinst_LTLIBRARIES = libxnmain.la
 
 xnconfigdir = $(includedir)/xneur
 xnconfig_HEADERS = program.h
 
-libxnx_la_SOURCES =		\
+libxnmain_la_SOURCES =		\
 	bind_table.c		\
 	bind_table.h		\
 	buffer.c		\
@@ -29,5 +29,6 @@ libxnx_la_SOURCES =		\
 	defines.h
 
 
-libxnx_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc  -I@top_srcdir@/lib/notify -I@top_srcdir@/lib/ai @X11_CFLAGS@ @MATHEVAL_CFLAGS@ @DEFAULT_CFLAGS@ -DXNEUR_PLUGIN_DIR=\""@libdir@/xneur"\"
-libxnx_la_LDFLAGS = -static @X11_LIBS@ @MATHEVAL_LIBS@
+libxnmain_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc  -I@top_srcdir@/lib/notify -I@top_srcdir@/lib/ai @X11_CFLAGS@ @MATHEVAL_CFLAGS@ @DEFAULT_CFLAGS@ -DXNEUR_PLUGIN_DIR=\""@libdir@/xneur"\"
+libxnmain_la_LDFLAGS = -static @X11_LIBS@ @MATHEVAL_LIBS@
+
