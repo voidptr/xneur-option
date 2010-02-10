@@ -24,9 +24,6 @@ int  get_active_keyboard_group(void);
 int  get_cur_lang(void);
 void switch_lang(int new_lang);
 void switch_group(int new_group);
-//int  get_keyboard_groups_count(void);
-//int  print_keyboard_groups(void);
-//int  parse_keyboard_groups(void);
 void set_next_keyboard_group(void);
 
 #endif /* _SWITCHLANG_H_ */
