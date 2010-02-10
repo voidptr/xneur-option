@@ -112,7 +112,7 @@ int print_keyboard_groups(void)
 	}
 
 	Display *display = XOpenDisplay(NULL);
-	XkbGetNames(display, XkbGroupNamesMask, kbd_desc_ptr);
+	XkbGetNames(display, XkbAllNamesMask, kbd_desc_ptr);
 
 	if (kbd_desc_ptr->names == NULL)
 	{
@@ -131,26 +131,36 @@ int print_keyboard_groups(void)
 
 	log_message(LOG, _("Keyboard layouts present in system:"));
 
+	Atom symbols_atom = kbd_desc_ptr->names->symbols;
+	char *symbols	= XGetAtomName(display, symbols_atom);
+	char *tmp_symbols = strdup(symbols);
+	strsep(&tmp_symbols, "+");
+	
 	int valid_count = 0;
 	for (int group = 0; group < groups_count; group++)
 	{
 		Atom group_atom = kbd_desc_ptr->names->groups[group];
+		
 		if (group_atom == None)
 			continue;
 
 		char *group_name	= XGetAtomName(display, group_atom);
 		char *lang_name		= xconfig->get_lang_name(xconfig, xconfig->find_group_lang(xconfig, group));
 
+		char *short_name = strsep(&tmp_symbols, "+");
+		short_name[2] = NULLSYM;
+		
 		if (lang_name == NULL)
 		{
-			log_message(ERROR, _("   XKB Group '%s' not defined in configuration file (group %d)"), group_name, group);
+			log_message(ERROR, _("   XKB Group '%s (%s)' not defined in configuration file (group %d)"), group_name, short_name, group);
 			continue;
 		}
 
-		log_message(LOG, _("   XKB Group '%s' must be for '%s' language (group %d)"), group_name, lang_name, group);
+		log_message(LOG, _("   XKB Group '%s (%s)' must be for '%s' language (group %d)"), group_name, short_name, lang_name, group);
 		valid_count++;
 	}
 
+	free(symbols);
 	XCloseDisplay(display);
 
 	log_message(LOG, _("Total %d valid keyboard layouts detected"), valid_count);

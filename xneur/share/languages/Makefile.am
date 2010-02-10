@@ -16,4 +16,5 @@ SUBDIRS =			\
 	ro			\
 	ru			\
 	uk			\
+	us			\
 	uz

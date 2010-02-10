@@ -66,6 +66,7 @@ static void xneur_reload(int status);
 
 static void xneur_check_config_version(int final)
 {
+	/*
 	log_message(LOG, _("Checking configuration file version..."));
 
 	if (xconfig->version != NULL && strcmp(xconfig->version, VERSION) == 0)
@@ -75,13 +76,13 @@ static void xneur_check_config_version(int final)
 	}
 
 	log_message(ERROR, _("Configuration file version is out of date!"));
-
+	*/
 	if (final)
 	{
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
-
+	/*
 	if (!xconfig->replace(xconfig))
 	{
 		log_message(ERROR, _("Default configuration file not founded in system! Please, reinstall XNeur!"));
@@ -90,8 +91,9 @@ static void xneur_check_config_version(int final)
 	}
 
 	log_message(LOG, _("Configuration file replaced to default one"));
-
+	
 	xneur_reload(0);
+	*/
 }
 
 static void xneur_init(void)
