@@ -1,7 +1,7 @@
 pixmapsdir = @datarootdir@/gxneur/pixmaps
 pixmaps_DATA =			\
-	be.png			\
 	bg.png			\
+	by.png			\
 	cs.png			\
 	de.png			\
 	el.png			\
@@ -18,6 +18,7 @@ pixmaps_DATA =			\
 	ro.png			\
 	ru.png			\
 	uk.png			\
+	us.png			\
 	uz.png
 
 EXTRA_DIST = $(pixmaps_DATA)

@@ -41,6 +41,7 @@
 #define GLADE_FILE_CHOOSE PACKAGE_GLADE_FILE_DIR"/choose_file.glade"
 #define GLADE_FILE_ACTION_ADD PACKAGE_GLADE_FILE_DIR"/action_add.glade"
 #define GLADE_FILE_APP_ADD PACKAGE_GLADE_FILE_DIR"/app_add.glade"
+#define GLADE_FILE_LIST PACKAGE_GLADE_FILE_DIR"/list.glade"
 
 #define LANGUAGES_DIR "languages"
 #define DIR_SEPARATOR		"/"
@@ -50,6 +51,9 @@
 #include "trayicon.h"
 
 #include "misc.h"
+
+void xneur_edit_regexp(GtkWidget *treeview);
+void xneur_edit_dictionary(GtkWidget *treeview);
 
 #define MAX_LANGUAGES			4
 #define XNEUR_NEEDED_MAJOR_VERSION	9
@@ -70,48 +74,12 @@ static GtkListStore *store_action			= NULL;
 static GtkListStore *store_hotkey			= NULL;
 static GtkListStore *store_autocomplementation_exclude_app		= NULL;
 static GtkListStore *store_plugin			= NULL;
+static GtkListStore *store_language			= NULL;
 
 static GtkWidget *tmp_widget	= NULL;
 
 static const char *modifier_names[]			= {"Shift", "Control", "Alt", "Super"};
 static const char *all_modifiers[]			= {"Control", "Shift", "Alt", "Super", "Control_R", "Shift_R", "Alt_R", "Super_R", "Control_L", "Shift_L", "Alt_L", "Super_L"};
-static const char *language_names[]			= {"Belarusian", 
-	                                           "Bulgarian",
-	                                           "Czech",
-	                                           "German",
-                                               "Greek",
-                                               "English",
-                                               "Spanish",
-	                                           "Estonian",
-                                               "French",
-                                               "Armenian",
-                                               "Kazakh",
-                                               "Lithuanian",
-                                               "Latvian",
-                                               "Poland",
-                                               "Romanian",
-                                               "Russian", 
-                                               "Ukrainian",
-                                               "Uzbek"};
-
-static char *dirs[]					= {"be", 
-	                                   "bg", 
-	                                   "cs", 
-	                                   "de",
-                                       "el",
-                                       "en",
-                                       "es",
-	                                   "et", 
-	                                   "fr",
-                                       "hy",
-	                                   "kk", 
-	                                   "lt", 
-	                                   "lv", 
-	                                   "pl", 
-	                                   "ro", 
-	                                   "ru", 
-	                                   "uk", 
-	                                   "uz"};
 
 static const char *notify_names[]			=   {
 										"Xneur started", "Xneur reloaded", "Xneur stopped",
@@ -137,14 +105,8 @@ static const char *hotkey_names[]			=   {
 
 static const int total_notify_names = sizeof(notify_names) / sizeof(notify_names[0]);
 
-
-static const char *language_name_boxes[MAX_LANGUAGES]	= {"combobox21", "combobox22", "combobox23", "combobox24"};
-static const char *language_combo_boxes[MAX_LANGUAGES]	= {"combobox13", "combobox14", "combobox15", "combobox16"};
-static const char *language_fix_boxes[MAX_LANGUAGES]	= {"checkbutton14", "checkbutton15", "checkbutton16", "checkbutton17"};
-
 static const int total_modifiers			= sizeof(modifier_names) / sizeof(modifier_names[0]); 
 static const int total_all_modifiers			= sizeof(all_modifiers) / sizeof(all_modifiers[0]);
-static const int total_languages			= sizeof(language_names) / sizeof(language_names[0]);
 
 static void error_msg(const char *msg, ...)
 {
@@ -292,11 +254,6 @@ static void xneur_add_application(GtkListStore *store)
 	tmp_widget = GTK_WIDGET(store);
 	widget = glade_xml_get_widget (gxml, "button2");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_insert_application), gxml);
-
-	//char* p = get_xprop_name();
-	//if (p == NULL)
-		//return;
-	
 	
 	if (store) {};
 }
@@ -321,33 +278,6 @@ static void save_list(GtkListStore *store, struct _list_char *list, GtkTreeIter 
 	list->add(list, ptr);
 
 	g_free(ptr);
-}
-
-static char* get_dir_by_index(int index)
-{
-	if (index == 0)
-		return NULL;
-	
-	int dir_len = strlen(LANGUAGES_DIR) + strlen(DIR_SEPARATOR) + strlen(dirs[index - 1]) + 1;
-	char *dir = (char *) malloc(dir_len * sizeof(char));
-	snprintf(dir, dir_len, "%s%s%s", LANGUAGES_DIR, DIR_SEPARATOR, dirs[index - 1]);
-	return dir;
-}
-
-static const char* get_lang_by_index(int index)
-{
-	if (index == 0)
-		return NULL;
-
-	return language_names[index - 1];
-}
-
-static const char* get_lang_code_by_index(int index)
-{
-	if (index == 0)
-		return NULL;
-	
-	return dirs[index - 1];
 }
 
 static void init_libxnconfig(void)
@@ -616,27 +546,48 @@ void xneur_preference(void)
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_layout_app), G_OBJECT(treeview));
 	
 	// Languages
+	treeview = glade_xml_get_widget (gxml, "treeview13");
+
+	store_language = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_language));
+	gtk_widget_show(treeview);
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Description"), cell, "text", 0, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	cell = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Layout"), cell, "text", 1, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	cell = gtk_cell_renderer_toggle_new();
+	column = gtk_tree_view_column_new_with_attributes(_("Excluded"), cell, "active", 2, NULL);
+	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+	g_object_set (cell, "activatable", TRUE, NULL);
+	g_signal_connect (G_OBJECT (cell), "toggled",
+						G_CALLBACK (notify_enable),
+						(gpointer) treeview);
+	
 	for (int lang = 0; lang < xconfig->total_languages && lang < MAX_LANGUAGES; lang++)
 	{
-		GtkWidget *name = glade_xml_get_widget (gxml,  language_name_boxes[lang]);
-		widget = glade_xml_get_widget (gxml, language_combo_boxes[lang]);
-
-		gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->get_lang_group(xconfig, lang));
-
-		const char *lang_name = xconfig->get_lang_name(xconfig, lang);
-		for (int j = 0; j < total_languages; j++)
-		{
-			if (strcmp(lang_name, language_names[j]) != 0)
-				continue;
-
-			gtk_combo_box_set_active(GTK_COMBO_BOX(name), j + 1);
-			break;
-		}
-		
-		widget = glade_xml_get_widget (gxml, language_fix_boxes[lang]);
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->languages[lang].fixed);
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_language), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_language), &iter, 
+												0, xconfig->languages[lang].name,
+												1, xconfig->languages[lang].dir,
+		    									2, xconfig->languages[lang].excluded,
+												-1);
 	}
-		
+
+	widget = glade_xml_get_widget (gxml, "button7");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_regexp), G_OBJECT(treeview));
+
+	widget = glade_xml_get_widget (gxml, "button6");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_dictionary), G_OBJECT(treeview));
+
 	// Default Layout Group
 	widget = glade_xml_get_widget (gxml, "combobox25");
 	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->default_group);
@@ -860,24 +811,6 @@ void xneur_preference(void)
 	tmp_widget = GTK_WIDGET(treeview);
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_sound), G_OBJECT(treeview));
 
-	// Set Callbacks for Dict and Regexp
-	widget= glade_xml_get_widget (gxml, "button8");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button8_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button9");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button9_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button7");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button7_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button6");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button6_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button23");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button23_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button24");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button24_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button25");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button25_clicked), gxml);
-	widget = glade_xml_get_widget (gxml, "button26");
-	g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_button26_clicked), gxml);
-	
 	// Delay Before Send
 	widget = glade_xml_get_widget (gxml, "spinbutton1");
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->send_delay);
@@ -1501,6 +1434,123 @@ void xneur_edit_sound(GtkWidget *treeview)
 	}
 }
 
+void xneur_edit_regexp(GtkWidget *treeview)
+{
+	tmp_widget = GTK_WIDGET(treeview);
+	GtkTreeModel *model = GTK_TREE_MODEL(store_language);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		char *dir;
+		gtk_tree_model_get(GTK_TREE_MODEL(store_language), &iter, 1, &dir, -1);
+		
+		GladeXML *gxml = glade_xml_new (GLADE_FILE_LIST, NULL, NULL);
+
+		int dir_len = strlen(LANGUAGES_DIR) + strlen(DIR_SEPARATOR) + strlen(dir) + 1;
+		char *dir_name = (char *) malloc(dir_len * sizeof(char));
+		snprintf(dir_name, dir_len, "%s%s%s", LANGUAGES_DIR, DIR_SEPARATOR, dir);
+		
+		char *text_path		= xconfig->get_global_dict_path(dir_name, "regexp");
+		char *text_home_path	= xconfig->get_home_dict_path(dir_name, "regexp");
+		char *text		= xneur_get_file_content(text_path);
+
+		if (text == NULL)
+		{
+			free(text_home_path);
+			free(text_path);
+			return;
+		}
+	
+		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+		if (window_icon_pixbuf)
+		{
+			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+			gdk_pixbuf_unref (window_icon_pixbuf);
+		}
+		gtk_widget_show(window);
+
+		GtkWidget *widget = glade_xml_get_widget (gxml, "textview1");
+		GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widget));
+		gtk_text_buffer_set_text(buffer, text, strlen(text));
+
+		widget = glade_xml_get_widget (gxml, "entry10");
+		gtk_entry_set_text(GTK_ENTRY(widget), text_home_path);
+
+		widget= glade_xml_get_widget (gxml, "okbutton1");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_okbutton1_clicked), gxml);
+		widget = glade_xml_get_widget (gxml, "cancelbutton1");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_cancelbutton1_clicked), gxml);
+	
+		free(text);
+		free(text_home_path);
+		free(text_path);
+	}
+}
+
+void xneur_edit_dictionary(GtkWidget *treeview)
+{
+	tmp_widget = GTK_WIDGET(treeview);
+	GtkTreeModel *model = GTK_TREE_MODEL(store_language);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		char *dir;
+		gtk_tree_model_get(GTK_TREE_MODEL(store_language), &iter, 1, &dir, -1);
+		
+		GladeXML *gxml = glade_xml_new (GLADE_FILE_LIST, NULL, NULL);
+
+		int dir_len = strlen(LANGUAGES_DIR) + strlen(DIR_SEPARATOR) + strlen(dir) + 1;
+		char *dir_name = (char *) malloc(dir_len * sizeof(char));
+		snprintf(dir_name, dir_len, "%s%s%s", LANGUAGES_DIR, DIR_SEPARATOR, dir);
+
+		char *text_path		= xconfig->get_global_dict_path(dir_name, "dict");
+		char *text_home_path	= xconfig->get_home_dict_path(dir_name, "dict");
+		char *text		= xneur_get_file_content(text_path);
+
+		printf("%s %s\n", text_path, text_home_path);
+		if (text == NULL)
+		{
+			free(text_home_path);
+			free(text_path);
+			return;
+		}
+	
+		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+		if (window_icon_pixbuf)
+		{
+			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+			gdk_pixbuf_unref (window_icon_pixbuf);
+		}
+		gtk_widget_show(window);
+
+		GtkWidget *widget = glade_xml_get_widget (gxml, "textview1");
+		GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widget));
+		gtk_text_buffer_set_text(buffer, text, strlen(text));
+
+		widget = glade_xml_get_widget (gxml, "entry10");
+		gtk_entry_set_text(GTK_ENTRY(widget), text_home_path);
+
+		widget= glade_xml_get_widget (gxml, "okbutton1");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_okbutton1_clicked), gxml);
+		widget = glade_xml_get_widget (gxml, "cancelbutton1");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_cancelbutton1_clicked), gxml);
+	
+		free(text);
+		free(text_home_path);
+		free(text_path);
+	}
+}
+
 void xneur_rem_exclude_app(GtkWidget *widget)
 {
 	remove_item(widget, store_exclude_app);
@@ -1764,27 +1814,35 @@ gboolean save_plugin(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, 
 	return FALSE;
 }
 
+gboolean save_language(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	gchar *name;
+	gchar *dir;	
+	gboolean state = FALSE;
+	gtk_tree_model_get(GTK_TREE_MODEL(store_language), iter, 0, &name, 1, &dir, 2, &state, -1);
+
+	int i = atoi(gtk_tree_path_to_string(path));
+
+	xconfig->languages = (struct _xneur_language *) realloc(xconfig->languages, (xconfig->total_languages + 1) * sizeof(struct _xneur_language));
+	bzero(&(xconfig->languages[xconfig->total_languages]), sizeof(struct _xneur_language));
+
+	xconfig->languages[xconfig->total_languages].name	= strdup(name);
+	xconfig->languages[xconfig->total_languages].dir	= strdup(dir);
+	xconfig->languages[xconfig->total_languages].group	= i;
+	xconfig->languages[xconfig->total_languages].excluded	= state;
+	xconfig->total_languages++;
+	
+	return FALSE;
+}
+
 void xneur_save_preference(GladeXML *gxml)
 {
 	xconfig->clear(xconfig);
 
-	for (int i = 0; i < MAX_LANGUAGES; i++)
-	{
-		GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, language_name_boxes[i]);
-		GtkWidget *widgetPtrToBefound2 = glade_xml_get_widget (gxml, language_combo_boxes[i]);
-
-		if (gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)) == -1)
-			continue;
-
-		const char *lang_name = get_lang_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
-		const char *lang_dir = get_lang_code_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
-		int lang_group = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound2));
-
-		widgetPtrToBefound = glade_xml_get_widget (gxml, language_fix_boxes[i]);
-		int fixed = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
-	
-		xconfig->add_language(xconfig, lang_name, lang_dir, lang_group, fixed);
-	}
+	xconfig->total_languages = 0;
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_language), save_language, NULL);
 	
 	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox25");
 	xconfig->default_group = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound));
@@ -1896,24 +1954,6 @@ void xneur_dontsave_preference(GladeXML *gxml)
 {
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);
-}
-
-char* xneur_get_dict_path(GladeXML *gxml, int layout_no, const char *file_name)
-{
-	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, language_name_boxes[layout_no]);
-
-	char *dir_name = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
-
-	return xconfig->get_global_dict_path(dir_name, file_name);
-}
-
-char* xneur_get_home_dict_path(GladeXML *gxml, int layout_no, const char *file_name)
-{
-	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, language_name_boxes[layout_no]);
-
-	char *dir_name = get_dir_by_index(gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound)));
-
-	return xconfig->get_home_dict_path(dir_name, file_name);
 }
 
 char* xneur_get_file_content(const char *path)
