@@ -284,7 +284,5 @@ AutocomplementationExcludeApp Gnome-terminal
 # Modules list
 # Example:
 #LoadModule libxntest.so
-LoadModule libxnstatistic.so
-LoadModule libxntest.so
 
 # That's all
