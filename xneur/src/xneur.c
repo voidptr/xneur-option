@@ -64,9 +64,9 @@ static int xneur_check_word = FALSE;
 
 static void xneur_reload(int status);
 
-static void xneur_check_config_version(int final)
+/*static void xneur_check_config_version(void)
 {
-	/*
+	
 	log_message(LOG, _("Checking configuration file version..."));
 
 	if (xconfig->version != NULL && strcmp(xconfig->version, VERSION) == 0)
@@ -76,13 +76,13 @@ static void xneur_check_config_version(int final)
 	}
 
 	log_message(ERROR, _("Configuration file version is out of date!"));
-	*/
+
 	if (final)
 	{
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
-	/*
+
 	if (!xconfig->replace(xconfig))
 	{
 		log_message(ERROR, _("Default configuration file not founded in system! Please, reinstall XNeur!"));
@@ -93,8 +93,8 @@ static void xneur_check_config_version(int final)
 	log_message(LOG, _("Configuration file replaced to default one"));
 	
 	xneur_reload(0);
-	*/
-}
+	
+}*/
 
 static void xneur_init(void)
 {
@@ -102,7 +102,7 @@ static void xneur_init(void)
 	bind_user_actions();
 }
 
-static void xneur_load_config(int final)
+static void xneur_load_config(void)
 {
 	if (xneur_check_word)
 		xconfig->silent_mode = TRUE;
@@ -115,8 +115,8 @@ static void xneur_load_config(int final)
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
-	
-	xneur_check_config_version(final);
+
+	//xneur_check_config_version;
 
 	log_message(LOG, _("Log level is set to %s"), xconfig->get_log_level_name(xconfig));
 	log_message(LOG, _("Total detected %d languages"), xconfig->total_languages);
@@ -238,16 +238,17 @@ static void xneur_reload(int status)
 		xconfig->uninit(xconfig);
 
 	xconfig = xneur_config_init();
+
 	if (xconfig == NULL)
 	{
 		log_message(ERROR, _("Can't init libxnconfig"));
 		exit(EXIT_FAILURE);
 	}
 
-	xneur_load_config(TRUE);
+	xneur_load_config();
 	xneur_init();
 	sound_init();
-	
+
 	for (int i=0; i<xconfig->plugins->data_count; i++)
 	{
 		program->plugin->add(program->plugin, xconfig->plugins->data[i].string);
@@ -413,7 +414,7 @@ int main(int argc, char *argv[])
 	}
 
 	xneur_set_lock();
-	xneur_load_config(FALSE);
+	xneur_load_config();
 	
 	program = program_init();
 	if (program == NULL)

@@ -8,6 +8,7 @@ SUBDIRS =			\
 	es			\
 	et			\
 	fr			\
+	gb			\
 	hy			\
 	kk			\
 	lt			\
