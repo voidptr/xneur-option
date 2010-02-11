@@ -14,10 +14,9 @@ ManualMode No
 #LogLevel Debug
 LogLevel Debug
 
-# Define used languages
-# See Settings page on http://www.xneur.ru for details
-AddLanguage English en 0
-AddLanguage Russian ru 1
+# Define unused languages
+# Example:
+#ExcludeLanguage de
 
 # Define initial keyboard layout for all new applications
 DefaultXkbGroup 0

@@ -19,10 +19,10 @@ Defines level of diagnostic output to console.
 
 Here, <level> takes the values "Error", "Warning", "Log", "Debug", "Trace". By changing this parameter, the detail of output to console can be controlled. 
 .TP 8
-.B AddLanguage <language> <dir> <group> [Fixed]
-Defines the language, with which the program will work.
+.B ExcludeLanguage <language>
+Defines the language, with which the program WILL NOT work.
 
-Here, <language> stands for the language, for which the layout should be specified (English or Russian), <dir> is a subdirectory in ~/.xneur/, where a config file for this language is located, and <group> is layout number group for the language in the system (takes values from 0 to 3). Add word "Fixed" at the line's end if this layout excluded from processing.
+Here, <language> stands for the language, for which the layout should be specified (e.g. ru, us, by, de...).
 .TP 8
 .B DefaultXkbGroup <group>
 Define initial keyboard layout for all new applications.

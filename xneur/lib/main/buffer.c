@@ -329,24 +329,20 @@ static void buffer_rotate_layout(struct _buffer *p)
 
 	for (int i = 0; i < p->cur_pos; i++)
 	{
+		// Get current lang. modifier
+		int km = p->keycode_modifiers[i] & (~languages_mask);
 		for (int lang = 0; lang < xconfig->total_languages; lang++)
 		{
-			int km = p->keycode_modifiers[i] & (~languages_mask);
-
-			int group = xconfig->get_lang_group(xconfig, lang);
-			if (p->keycode_modifiers[i] != (get_keycode_mod(group) | km))
-				continue;
-
-			int new_lang = lang + 1;
-			if (lang == xconfig->total_languages - 1)
-				new_lang = 0;
-
-			group = xconfig->get_lang_group(xconfig, new_lang);
-
-			int keycode_mod	= get_keycode_mod(group);
-			p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~languages_mask);
-			p->keycode_modifiers[i] = p->keycode_modifiers[i] | keycode_mod;
-			break;
+			if (p->keycode_modifiers[i] == (get_keycode_mod(lang) | km))
+			{
+				lang++;
+				if (lang == xconfig->total_languages)
+					lang = 0;
+				int keycode_mod	= get_keycode_mod(lang);
+				p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~languages_mask);
+				p->keycode_modifiers[i] = p->keycode_modifiers[i] | keycode_mod;
+				break;
+			}
 		}
 	}
 }

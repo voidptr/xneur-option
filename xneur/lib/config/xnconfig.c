@@ -49,7 +49,6 @@
 static const char *log_levels[] =	{"Error", "Warning", "Log", "Debug", "Trace"};
 static const char *bool_names[] =	{"No", "Yes"};
 static const char *status_names[] =	{"Disable", "Enable"};
-static const char *fix_names[]  =	{"Fixed"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
@@ -1025,16 +1024,14 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#LogLevel Trace\n");
 	fprintf(stream, "LogLevel %s\n\n", p->get_log_level_name(p));
 
-	fprintf(stream, "# Define used languages\n");
-	fprintf(stream, "# See Settings page on http://www.xneur.ru for details\n");
+	fprintf(stream, "# Define unused languages\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#ExcludeLanguage de\n");
 
 	for (int lang = 0; lang < p->total_languages; lang++)
 	{
-		fprintf(stream, "AddLanguage %s %s %d ", p->languages[lang].name, p->languages[lang].dir, p->languages[lang].group);
 		if (p->languages[lang].excluded)
-			fprintf(stream, "%s\n", fix_names[0]);
-		else
-			fprintf(stream, "\n");
+			fprintf(stream, "ExcludeLanguage %s\n", p->languages[lang].dir);
 	}
 	fprintf(stream, "\n");
 
