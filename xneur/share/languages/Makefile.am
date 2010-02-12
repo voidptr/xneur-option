@@ -1,21 +1,21 @@
 SUBDIRS =			\
+	am			\
 	bg			\
 	by			\
-	cs			\
+	cz			\
 	de			\
-	el			\
+	gr			\
+	ee			\
 	en			\
 	es			\
-	et			\
 	fr			\
 	gb			\
-	hy			\
-	kk			\
+	kz			\
 	lt			\
 	lv			\
 	pl			\
 	ro			\
 	ru			\
-	uk			\
+	ua			\
 	us			\
 	uz
