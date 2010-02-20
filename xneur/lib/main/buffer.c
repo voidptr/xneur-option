@@ -49,7 +49,6 @@
 #define INIT_STRING_LENGTH 64
 
 extern struct _xneur_config *xconfig;
-extern struct _window *main_window;
 
 Window last_log_window = 0;
 

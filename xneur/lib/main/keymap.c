@@ -89,6 +89,7 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
 
 	int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
+	
 	XCloseDisplay(display);
 	
 	if (nbytes <= 0)
@@ -282,6 +283,7 @@ static char keymap_get_ascii(struct _keymap *p, const char *sym, KeyCode *kc, in
 						free(symbol);
 						*kc		= event.xkey.keycode;
 						*modifier	= get_keycode_mod(lang) | event.xkey.state;
+						XCloseDisplay(display);
 						return sym;
 					}
 				}

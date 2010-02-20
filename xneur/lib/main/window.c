@@ -128,7 +128,7 @@ static void window_uninit(struct _window *p)
 {
 	if (p->keymap != NULL)
 		p->keymap->uninit(p->keymap);
-
+	
 	p->destroy(p);
 	free(p);
 
