@@ -20,6 +20,7 @@
 #include <X11/keysym.h>
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -38,10 +39,12 @@
 #include "event.h"
 
 extern struct _window *main_window;
-extern struct _xneur_config *xconfig;
 
 int get_key_state(int key)
 {
+	if (main_window->display == NULL)
+		return 0;
+	
 	KeyCode key_code = XKeysymToKeycode(main_window->display, key);
 	if (key_code == NoSymbol)
 		return 0;
@@ -59,30 +62,13 @@ int get_key_state(int key)
 
 	if (key_mask == 0)
 		return 0;
-
+	
 	Window wDummy;
 	int iDummy;
 	unsigned int mask;
 	XQueryPointer(main_window->display, DefaultRootWindow(main_window->display), &wDummy, &wDummy, &iDummy, &iDummy, &iDummy, &iDummy, &mask);
 
 	return ((mask & key_mask) != 0);
-}
-
-XEvent create_basic_event(void)
-{
-	XEvent event;
-
-	event.type		= KeyPress;
-	event.xkey.type		= KeyPress;
-	event.xkey.root		= RootWindow(main_window->display, DefaultScreen(main_window->display));
-	event.xkey.subwindow	= None;
-	event.xkey.same_screen	= True;
-	event.xkey.display	= main_window->display;
-	event.xkey.state	= 0;
-	event.xkey.keycode	= XKeysymToKeycode(main_window->display, XK_space);
-	event.xkey.time		= CurrentTime;
-
-	return event;
 }
 
 void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
@@ -99,17 +85,6 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 	p->event.xkey.time		= CurrentTime;
 
 	XSendEvent(main_window->display, p->owner_window, TRUE, KeyPressMask, &p->event);
-
-	/*
-	p->event.type			= KeyRelease;
-	p->event.xkey.type		= KeyRelease;
-	p->event.xkey.time		= CurrentTime;
-
-	if (xconfig->send_delay > 0)
-		usleep(xconfig->send_delay);
-
-	XSendEvent(main_window->display, p->owner_window, TRUE, KeyReleaseMask, &p->event);
-	*/
 }
 
 static void event_send_backspaces(struct _event *p, int count)
@@ -193,7 +168,6 @@ static int event_get_cur_modifiers_by_keysym(struct _event *p)
 static int event_get_next_event(struct _event *p)
 {
 	XNextEvent(main_window->display, &(p->event));
-	
 	return p->event.type;
 }
 
@@ -218,7 +192,7 @@ struct _event* event_init(void)
 	p->backspace		= XKeysymToKeycode(main_window->display, XK_BackSpace);
 	p->left			= XKeysymToKeycode(main_window->display, XK_Left);
 	p->right		= XKeysymToKeycode(main_window->display, XK_Right);
-
+	
 	// Functions mapping
 	p->get_next_event	= event_get_next_event;
 	p->send_next_event	= event_send_next_event;

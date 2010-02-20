@@ -25,7 +25,6 @@
 #include "buffer.h"
 
 int get_key_state(int key);
-XEvent create_basic_event(void);
 
 struct _event
 {

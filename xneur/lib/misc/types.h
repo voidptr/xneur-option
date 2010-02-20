@@ -27,4 +27,12 @@
 
 #define NULLSYM		0
 
+#define DICT_NAME			"dict"
+#define PROTO_NAME			"proto"
+#define BIG_PROTO_NAME			"proto3"
+#define REGEXP_NAME			"regexp"
+#define PATTERN_NAME		"pattern"
+
+#define LANGUAGEDIR			"languages"
+
 #endif /* _TYPES_H_ */

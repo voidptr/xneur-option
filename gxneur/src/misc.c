@@ -34,6 +34,7 @@
 
 #include <xneur/xnconfig.h>
 #include <xneur/list_char.h>
+#include <xneur/xneur.h>
 
 #define GLADE_FILE_ABOUT PACKAGE_GLADE_FILE_DIR"/about.glade"
 #define GLADE_FILE_CONFIG PACKAGE_GLADE_FILE_DIR"/config.glade"
@@ -313,6 +314,19 @@ static void init_libxnconfig(void)
 
 void xneur_start(void)
 {
+	/*struct _xneur_handle *xnh;
+	xnh = xneur_handle_create();
+
+	char *nw=NULL;
+	int layout=-1;
+
+	xneur_check(xnh, "ghbdtn", layout, nw);
+
+	printf("%d %s\n", layout, nw);
+	free(nw);
+
+	xneur_handle_destroy(xnh);*/
+	
 	init_libxnconfig();
 
 	if (!g_spawn_command_line_async("xneur", NULL))
@@ -571,14 +585,14 @@ void xneur_preference(void)
 						G_CALLBACK (notify_enable),
 						(gpointer) treeview);
 	
-	for (int lang = 0; lang < xconfig->total_languages && lang < MAX_LANGUAGES; lang++)
+	for (int lang = 0; lang < xconfig->handle->total_languages && lang < MAX_LANGUAGES; lang++)
 	{
 		GtkTreeIter iter;
 		gtk_list_store_append(GTK_LIST_STORE(store_language), &iter);
 		gtk_list_store_set(GTK_LIST_STORE(store_language), &iter, 
-												0, xconfig->languages[lang].name,
-												1, xconfig->languages[lang].dir,
-		    									2, xconfig->languages[lang].excluded,
+												0, xconfig->handle->languages[lang].name,
+												1, xconfig->handle->languages[lang].dir,
+		    									2, xconfig->handle->languages[lang].excluded,
 												-1);
 	}
 
@@ -1825,14 +1839,14 @@ gboolean save_language(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter
 
 	int i = atoi(gtk_tree_path_to_string(path));
 
-	xconfig->languages = (struct _xneur_language *) realloc(xconfig->languages, (xconfig->total_languages + 1) * sizeof(struct _xneur_language));
-	bzero(&(xconfig->languages[xconfig->total_languages]), sizeof(struct _xneur_language));
+	xconfig->handle->languages = (struct _xneur_language *) realloc(xconfig->handle->languages, (xconfig->handle->total_languages + 1) * sizeof(struct _xneur_language));
+	bzero(&(xconfig->handle->languages[xconfig->handle->total_languages]), sizeof(struct _xneur_language));
 
-	xconfig->languages[xconfig->total_languages].name	= strdup(name);
-	xconfig->languages[xconfig->total_languages].dir	= strdup(dir);
-	xconfig->languages[xconfig->total_languages].group	= i;
-	xconfig->languages[xconfig->total_languages].excluded	= state;
-	xconfig->total_languages++;
+	xconfig->handle->languages[xconfig->handle->total_languages].name	= strdup(name);
+	xconfig->handle->languages[xconfig->handle->total_languages].dir	= strdup(dir);
+	xconfig->handle->languages[xconfig->handle->total_languages].group	= i;
+	xconfig->handle->languages[xconfig->handle->total_languages].excluded	= state;
+	xconfig->handle->total_languages++;
 	
 	return FALSE;
 }
@@ -1841,7 +1855,7 @@ void xneur_save_preference(GladeXML *gxml)
 {
 	xconfig->clear(xconfig);
 
-	xconfig->total_languages = 0;
+	xconfig->handle->total_languages = 0;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_language), save_language, NULL);
 	
 	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox25");

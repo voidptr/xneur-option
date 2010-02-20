@@ -3,4 +3,5 @@ SUBDIRS =			\
 	config			\
 	notify			\
 	main			\
+	lib			\
 	ai

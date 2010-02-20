@@ -201,7 +201,7 @@ static void program_layout_update(struct _program *p)
 		free(last_app_name);
 
 	// Remove layout for old window
-	for (int lang = 0; lang < xconfig->total_languages; lang++)
+	for (int lang = 0; lang < xconfig->handle->total_languages; lang++)
 	{
 		sprintf(window_layouts, "%s %d", text_to_find, lang);
 
@@ -230,9 +230,9 @@ static void program_layout_update(struct _program *p)
 		free(curr_app_name);
 
 	// Restore layout for new window
-	for (int lang = 0; lang < xconfig->total_languages; lang++)
+	for (int lang = 0; lang < xconfig->handle->total_languages; lang++)
 	{
-		sprintf(window_layouts, "%s %d", text_to_find, xconfig->get_lang_group(xconfig, lang));
+		sprintf(window_layouts, "%s %d", text_to_find, lang);
 
 		if (!xconfig->window_layouts->exist(xconfig->window_layouts, window_layouts, BY_PLAIN))
 			continue;
@@ -241,7 +241,7 @@ static void program_layout_update(struct _program *p)
 		free(window_layouts);
 
 		switch_lang(lang);
-		log_message(DEBUG, _("Restore layout group to %d"), xconfig->get_lang_group(xconfig, lang));
+		log_message(DEBUG, _("Restore layout group to %d"), lang);
 		return;
 	}
 
@@ -263,7 +263,9 @@ static void program_update(struct _program *p)
 		return;
 
 	p->layout_update(p);
-	p->buffer->save_and_clear(p->buffer, p->last_window);
+
+	if (xconfig->save_keyboard_log) 
+		p->buffer->save_and_clear(p->buffer, p->last_window);
 
 	if (status == FOCUS_NONE)
 		return;
@@ -375,7 +377,8 @@ static void program_process_input(struct _program *p)
 			}
 			case ButtonPress:
 			{
-				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				if (xconfig->save_keyboard_log) 
+					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
 
 				// Unfreeze and resend grabbed event
@@ -390,7 +393,8 @@ static void program_process_input(struct _program *p)
 			}
 			case ButtonRelease:
 			{
-				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				if (xconfig->save_keyboard_log) 
+					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				log_message(TRACE, _("Received ButtonRelease on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
 
 				// Unfreeze and resend grabbed event
@@ -432,7 +436,7 @@ static void program_process_input(struct _program *p)
 
 static void program_change_lang(struct _program *p, int new_lang)
 {
-	log_message(DEBUG, _("Changing language from %s to %s"), xconfig->get_lang_name(xconfig, get_cur_lang()), xconfig->get_lang_name(xconfig, new_lang));
+	log_message(DEBUG, _("Changing language from %s to %s"), xconfig->handle->languages[get_active_keyboard_group()].name, xconfig->handle->languages[new_lang].name);
 	p->buffer->set_lang_mask(p->buffer, new_lang);
 	switch_lang(new_lang);
 }
@@ -518,7 +522,7 @@ static void program_process_selection_notify(struct _program *p)
 		}
 		case ACTION_TRANSLIT_SELECTED:
 		{
-			int lang = xconfig->find_group_lang(xconfig, main_window->keymap->latin_group);
+			int lang = main_window->keymap->latin_group;
 			p->change_lang(p, lang);
 
 			show_notify(NOTIFY_TRANSLIT_SELECTED, NULL);
@@ -526,7 +530,7 @@ static void program_process_selection_notify(struct _program *p)
 		}
 		case ACTION_TRANSLIT_CLIPBOARD:
 		{
-			int lang = xconfig->find_group_lang(xconfig, main_window->keymap->latin_group);
+			int lang = main_window->keymap->latin_group;
 			p->change_lang(p, lang);
 
 			show_notify(NOTIFY_TRANSLIT_CLIPBOARD, NULL);
@@ -634,7 +638,8 @@ static void program_process_selection_notify(struct _program *p)
 			p->event->send_selection(p->event, p->buffer->cur_pos);
 	}
 
-	p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+	if (xconfig->save_keyboard_log) 
+		p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 	p->update(p);
 	p->action_mode = ACTION_NONE;
@@ -693,7 +698,7 @@ static void program_on_key_action(struct _program *p, int type)
 		int auto_action = get_auto_action(key, p->prev_key_mod);
 		if ((auto_action != KLB_NO_ACTION) && (auto_action != KLB_CLEAR))
 		{
-			int lang = get_cur_lang();
+			int lang = get_active_keyboard_group();
 			switch (lang)
 			{
 				default:
@@ -817,7 +822,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 		}
 		case KLB_CLEAR:
 		{
-			p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+			if (xconfig->save_keyboard_log) 
+				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 			return;
 		}
 		case KLB_DEL_SYM:
@@ -883,7 +889,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 				p->check_lang_last_word(p);
 
-			p->add_word_to_pattern(p, get_cur_lang());
+			p->add_word_to_pattern(p, get_active_keyboard_group());
 			
 			// Add symbol to internal bufer
 			p->event->event = p->event->default_event;
@@ -907,7 +913,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 
 			if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
-				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				if (xconfig->save_keyboard_log) 
+					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 			p->last_action = ACTION_NONE;
 			
@@ -956,13 +963,16 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_CHANGE_STRING:	// User needs to change current string
 		{
-			int new_lang = get_next_lang(get_cur_lang());
+			int next_lang = get_active_keyboard_group() + 1;
+			if (next_lang >= xconfig->handle->total_languages)
+				next_lang = 0;
+			
 			int action;
-			if (new_lang == 0)
+			if (next_lang == 0)
 				action = CHANGE_STRING_TO_LAYOUT_0;
-			else if (new_lang == 1)
+			else if (next_lang == 1)
 				action = CHANGE_STRING_TO_LAYOUT_1;
-			else if (new_lang == 2)
+			else if (next_lang == 2)
 				action = CHANGE_STRING_TO_LAYOUT_2;
 			else
 				action = CHANGE_STRING_TO_LAYOUT_3;
@@ -980,10 +990,12 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_PREVIEW_CHANGE_WORD:
 		{
 			p->action_mode = action;
-			int new_lang = get_next_lang(get_cur_lang());
+			int next_lang = get_active_keyboard_group() + 1;
+			if (next_lang >= xconfig->handle->total_languages)
+				next_lang = 0;
 
 			if ((xconfig->educate) && (action == ACTION_CHANGE_WORD))
-				p->add_word_to_dict(p, new_lang);
+				p->add_word_to_dict(p, next_lang);
 
 			set_event_mask(p->focus->owner_window, None);
 			grab_spec_keys(p->focus->owner_window, FALSE);
@@ -992,11 +1004,11 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			
 			if (action == ACTION_CHANGE_WORD)
 			{
-				if (new_lang == 0)
+				if (next_lang == 0)
 					change_action = CHANGE_WORD_TO_LAYOUT_0;
-				else if (new_lang == 1)
+				else if (next_lang == 1)
 					change_action = CHANGE_WORD_TO_LAYOUT_1;
-				else if (new_lang == 2)
+				else if (next_lang == 2)
 					change_action = CHANGE_WORD_TO_LAYOUT_2;
 				else
 					change_action = CHANGE_WORD_TO_LAYOUT_3;
@@ -1054,7 +1066,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_ROTATE_LAYOUT:
 		{
-			set_next_keyboard_group();
+			set_next_keyboard_group(xconfig->handle);
 			p->event->default_event.xkey.keycode = 0;
 			break;
 		}
@@ -1071,7 +1083,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 					p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_space), p->event->event.xkey.state);
 				p->last_action = ACTION_NONE;
 
-				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				if (xconfig->save_keyboard_log) 
+					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				
 				// Unblock keyboard
 				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
@@ -1146,7 +1159,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				grab_spec_keys(p->focus->owner_window, TRUE);
 
 				show_notify(NOTIFY_REPLACE_ABBREVIATION, NULL);
-				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				if (xconfig->save_keyboard_log) 
+					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 				//Incapsulate to p->event->clear_code() or smth else
 				p->event->default_event.xkey.keycode = 0;
@@ -1180,8 +1194,8 @@ static int program_check_lang_last_word(struct _program *p)
 	if (!word)
 		return FALSE;
 
-	int cur_lang = get_cur_lang();
-	int new_lang = check_lang(p->buffer, cur_lang);
+	int cur_lang = get_active_keyboard_group();
+	int new_lang = check_lang(xconfig->handle, p->buffer, cur_lang);
 
 	if (new_lang == NO_LANGUAGE)
 	{
@@ -1222,8 +1236,8 @@ static int program_check_lang_last_syllable(struct _program *p)
 	if (strlen(word) < 3)
 		return FALSE;
 
-	int cur_lang = get_cur_lang();
-	int new_lang = check_lang(p->buffer, cur_lang);
+	int cur_lang = get_active_keyboard_group();
+	int new_lang = check_lang(xconfig->handle, p->buffer, cur_lang);
 
 	if (new_lang == NO_LANGUAGE)
 	{
@@ -1491,7 +1505,7 @@ static void program_check_pattern(struct _program *p)
 	if (strlen(tmp) < MIN_PATTERN_LEN - 1)
 		return;
 
-	int lang = get_cur_lang();
+	int lang = get_active_keyboard_group();
 	tmp = get_last_word(p->buffer->i18n_content[lang].content);
 
 	char *word = strdup(tmp);
@@ -1503,7 +1517,7 @@ static void program_check_pattern(struct _program *p)
 		return;
 	}
 
-	struct _list_char_data *pattern_data = xconfig->languages[lang].pattern->find_alike(xconfig->languages[lang].pattern, word);
+	struct _list_char_data *pattern_data = xconfig->handle->languages[lang].pattern->find_alike(xconfig->handle->languages[lang].pattern, word);
 	if (pattern_data == NULL)
 	{
 		p->last_action = ACTION_NONE;
@@ -1511,12 +1525,12 @@ static void program_check_pattern(struct _program *p)
 		return;
 	}
 	
-	log_message (DEBUG, _("Recognition word '%s' from text '%s' (layout %d), autocompletation..."), pattern_data->string, word, get_cur_lang());
+	log_message (DEBUG, _("Recognition word '%s' from text '%s' (layout %d), autocompletation..."), pattern_data->string, word, get_active_keyboard_group());
 	
 	set_event_mask(p->focus->owner_window, None);
 	grab_spec_keys(p->focus->owner_window, FALSE);
 
-	struct _buffer *tmp_buffer = buffer_init();
+	struct _buffer *tmp_buffer = buffer_init(xconfig->handle);
 	
 	tmp_buffer->set_content(tmp_buffer, pattern_data->string + strlen(word)*sizeof(char));
 
@@ -1677,7 +1691,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		{
 			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 			p->buffer->set_offset(p->buffer, offset);
-			int curr_lang = get_cur_lang();
+			int curr_lang = get_active_keyboard_group();
 			char *text = strdup(get_last_word(p->buffer->i18n_content[curr_lang].content));
 			p->buffer->unset_offset(p->buffer, offset);
 
@@ -1861,7 +1875,7 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 	if (tmp == NULL)
 		return;
 	
-	int curr_lang = get_cur_lang();
+	int curr_lang = get_active_keyboard_group();
 
 	tmp = get_last_word(p->buffer->i18n_content[curr_lang].content);
 
@@ -1874,11 +1888,11 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 		return;
 	}
 
-	struct _list_char *curr_temp_dict = xconfig->languages[curr_lang].temp_dict;
+	struct _list_char *curr_temp_dict = xconfig->handle->languages[curr_lang].temp_dict;
 	if (curr_temp_dict->exist(curr_temp_dict, curr_word, BY_PLAIN))
 		curr_temp_dict->rem(curr_temp_dict, curr_word);
 
-	struct _list_char *new_temp_dict = xconfig->languages[new_lang].temp_dict;
+	struct _list_char *new_temp_dict = xconfig->handle->languages[new_lang].temp_dict;
 
 	tmp = get_last_word(p->buffer->i18n_content[new_lang].content);
 
@@ -1900,18 +1914,18 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 		return;
 	}
 
-	struct _list_char *curr_dict = xconfig->languages[curr_lang].dict;
+	struct _list_char *curr_dict = xconfig->handle->languages[curr_lang].dict;
 	if (curr_dict->exist(curr_dict, curr_word, BY_PLAIN))
 	{
-		log_message(DEBUG, _("Remove word '%s' from %s dictionary"), curr_word, xconfig->get_lang_name(xconfig, curr_lang));
+		log_message(DEBUG, _("Remove word '%s' from %s dictionary"), curr_word, xconfig->handle->languages[curr_lang].name);
 		curr_dict->rem(curr_dict, curr_word);
 		xconfig->save_dict(xconfig, curr_lang);
 	}
 
-	struct _list_char *new_dict = xconfig->languages[new_lang].dict;
+	struct _list_char *new_dict = xconfig->handle->languages[new_lang].dict;
 	if (!new_dict->exist(new_dict, new_word, BY_PLAIN))
 	{
-		log_message(DEBUG, _("Add word '%s' in %s dictionary"), new_word, xconfig->get_lang_name(xconfig, new_lang));
+		log_message(DEBUG, _("Add word '%s' in %s dictionary"), new_word, xconfig->handle->languages[new_lang].name);
 		new_dict->add(new_dict, new_word);
 		xconfig->save_dict(xconfig, new_lang);
 	}
@@ -1951,7 +1965,7 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 		return;
 	}
 	
-	for (int i = 0; i < xconfig->total_languages; i++)
+	for (int i = 0; i < xconfig->handle->total_languages; i++)
 	{
 		if (i == new_lang)
 			continue;
@@ -1965,10 +1979,10 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 			free (old_word);
 			continue;
 		}
-		struct _list_char *old_pattern = xconfig->languages[i].pattern;
+		struct _list_char *old_pattern = xconfig->handle->languages[i].pattern;
 		if (old_pattern->exist(old_pattern, old_word, BY_PLAIN))
 		{
-			log_message(DEBUG, _("Remove word '%s' from %s pattern"), old_word, xconfig->get_lang_name(xconfig, i));
+			log_message(DEBUG, _("Remove word '%s' from %s pattern"), old_word, xconfig->handle->languages[i].name);
 			old_pattern->rem(old_pattern, old_word);
 			xconfig->save_pattern(xconfig, i);
 		}
@@ -1977,7 +1991,7 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 
 #ifdef WITH_ASPELL
 	AspellConfig *spell_config = new_aspell_config();
-	aspell_config_replace(spell_config, "lang", xconfig->languages[new_lang].dir);
+	aspell_config_replace(spell_config, "lang", xconfig->handle->languages[new_lang].dir);
 	AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
 
 	if (aspell_error_number(possible_err) != 0)
@@ -1996,10 +2010,10 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 	}
 #endif
 	
-	struct _list_char *new_pattern = xconfig->languages[new_lang].pattern;
+	struct _list_char *new_pattern = xconfig->handle->languages[new_lang].pattern;
 	if (!new_pattern->exist(new_pattern, new_word, BY_PLAIN))
 	{
-		log_message(DEBUG, _("Add word '%s' in %s pattern"), new_word, xconfig->get_lang_name(xconfig, new_lang));
+		log_message(DEBUG, _("Add word '%s' in %s pattern"), new_word, xconfig->handle->languages[new_lang].name);
 		new_pattern->add(new_pattern, new_word);
 		xconfig->save_pattern(xconfig, new_lang);
 	}
@@ -2038,7 +2052,7 @@ struct _program* program_init(void)
 	
 	p->event			= event_init();			// X Event processor
 	p->focus			= focus_init();			// X Input Focus and Pointer processor
-	p->buffer			= buffer_init();		// Input string buffer
+	p->buffer			= buffer_init(xconfig->handle);		// Input string buffer
 	
 	p->plugin			= plugin_init();
 	for (int i=0; i<xconfig->plugins->data_count; i++)

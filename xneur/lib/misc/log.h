@@ -20,11 +20,12 @@
 #ifndef _LOG_H_
 #define _LOG_H_
 
-#define ERROR		0
-#define WARNING		1
-#define LOG		2
-#define DEBUG		3
-#define TRACE		4
+#define NONE		0
+#define ERROR		1
+#define WARNING		2
+#define LOG			3
+#define DEBUG		4
+#define TRACE		5
 
 /*
  * Standard gettext macros.

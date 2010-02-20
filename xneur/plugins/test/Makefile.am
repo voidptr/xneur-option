@@ -7,7 +7,7 @@ pkglib_LTLIBRARIES = libxntest.la
 libxntest_la_SOURCES = \
 	test.c
 
-libxntest_la_CFLAGS = -I@top_srcdir@/lib/config @DEFAULT_CFLAGS@
+libxntest_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/lib @DEFAULT_CFLAGS@
 libxntest_la_LDFLAGS = @X11_LIBS@
 	 
 libxntest_la_LIBADD = 

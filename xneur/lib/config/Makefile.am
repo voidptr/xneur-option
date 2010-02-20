@@ -14,9 +14,9 @@ libxnconfig_la_SOURCES =	\
 	xnconfig.c		\
 	xnconfig_memory.c	
 
-libxnconfig_la_CFLAGS = -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/main @DEFAULT_CFLAGS@
+libxnconfig_la_CFLAGS = -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/main -I@top_srcdir@/lib/lib @DEFAULT_CFLAGS@
 libxnconfig_la_LDFLAGS = -version-info 9:8:0
-libxnconfig_la_LIBADD = ../misc/libxnmisc.la
+libxnconfig_la_LIBADD = ../misc/libxnmisc.la ../lib/libxneur.la
 
 EXTRA_DIST = $(config_DATA)
 

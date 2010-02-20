@@ -22,6 +22,8 @@
 
 #include <X11/Xutil.h>
 
+#include "xneur.h"
+
 struct _buffer_content
 {
 	char *content;
@@ -30,6 +32,8 @@ struct _buffer_content
 
 struct _buffer
 {
+	struct _xneur_handle *handle;
+	
 	struct _buffer_content *i18n_content;
 
 	char *content;		// String itself
@@ -56,6 +60,6 @@ struct _buffer
 	void (*uninit) (struct _buffer *p);
 };
 
-struct _buffer* buffer_init(void);
+struct _buffer* buffer_init(struct _xneur_handle *handle);
 
 #endif /* _BUFFER_H_ */

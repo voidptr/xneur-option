@@ -20,7 +20,7 @@
 #ifndef _XKB_H_
 #define _XKB_H_
 
-int get_active_keyboard_group(void);
-int set_next_keyboard_group(void);
+int get_active_kbd_group(void);
+int set_next_kbd_group(void);
 
 #endif /* _XKB_H_ */

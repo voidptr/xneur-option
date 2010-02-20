@@ -31,7 +31,7 @@
 
 extern struct _xneur_config *xconfig;
 
-static int LOG_LEVEL = DEBUG;
+static int LOG_LEVEL = NONE;
 
 void log_set_level(int level)
 {
@@ -40,8 +40,9 @@ void log_set_level(int level)
 
 void log_message(int level, const char *string, ...)
 {
-	if (xconfig->silent_mode)
-		return;
+	if (xconfig != NULL)
+		if (xconfig->silent_mode)
+			return;
 	
 	if (level > LOG_LEVEL)
 		return;
@@ -75,6 +76,11 @@ void log_message(int level, const char *string, ...)
 		case TRACE:
 		{
 			modifier = BLUE_COLOR "[TRA] " NORMAL_COLOR;
+			break;
+		}
+		case NONE:
+		{
+			modifier = "[NON] ";
 			break;
 		}
 	}

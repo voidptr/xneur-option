@@ -1819,7 +1819,8 @@
                         <child>
                           <widget class="GtkComboBox" id="combobox1">
                             <property name="visible">True</property>
-                            <property name="items" translatable="yes">Error
+                            <property name="items" translatable="yes">None
+Error
 Warning
 Log
 Debug

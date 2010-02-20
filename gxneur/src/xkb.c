@@ -21,7 +21,7 @@
 
 #include "xkb.h"
 
-int get_active_keyboard_group(void)
+int get_active_kbd_group(void)
 {
 	Display *dpy = XOpenDisplay(NULL);
 
@@ -32,11 +32,11 @@ int get_active_keyboard_group(void)
 	return xkbState.group;
 }
 
-int set_next_keyboard_group(void)
+int set_next_kbd_group(void)
 {
 	Display *dpy = XOpenDisplay(NULL);
 
-	int active_layout_group = get_active_keyboard_group();
+	int active_layout_group = get_active_kbd_group();
 	
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)

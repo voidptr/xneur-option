@@ -22,8 +22,12 @@
 
 #include <X11/Xutil.h>
 
+#include "xneur.h"
+
 struct _window
 {
+	struct _xneur_handle *handle;
+	
 	struct _keymap *keymap;
 
 	Display *display;
@@ -39,6 +43,6 @@ struct _window
 	void (*uninit) (struct _window *p);
 };
 
-struct _window* window_init(void);
+struct _window* window_init(struct _xneur_handle *handle;);
 
 #endif /* _WINDOW_H_ */

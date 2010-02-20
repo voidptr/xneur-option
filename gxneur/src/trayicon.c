@@ -59,7 +59,7 @@ gboolean tray_icon_press(GtkWidget *widget, GdkEventButton *event, struct _tray_
 	
 	if (event->button == 1)
 	{
-		set_next_keyboard_group();
+		set_next_kbd_group();
 		return FALSE;
 	}
 	
@@ -161,7 +161,7 @@ void clock_check(Clock *clock)
 	
 	int xneur_pid = xconfig->get_pid(xconfig);
 	int xneur_state = xconfig->is_manual_mode(xconfig);
-	int xneur_group = get_active_keyboard_group();
+	int xneur_group = get_active_kbd_group();
 
 	if (xneur_pid == xneur_old_pid && xneur_state == xneur_old_state && xneur_group == xneur_old_group)
 		return;
@@ -179,9 +179,9 @@ void clock_check(Clock *clock)
 void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 {
 	char *layout_name = "gxneur";
-	int lang = xconfig->find_group_lang(xconfig, get_active_keyboard_group());
+	int lang = get_active_kbd_group();
 	if (lang != -1)
-		layout_name = xconfig->languages[xconfig->find_group_lang(xconfig, get_active_keyboard_group())].dir;
+		layout_name = xconfig->handle->languages[lang].dir;
 
 	char *image_file = g_strdup_printf("%s%s", layout_name, ".png");
 	

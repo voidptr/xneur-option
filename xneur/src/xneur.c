@@ -119,16 +119,16 @@ static void xneur_load_config(void)
 	//xneur_check_config_version;
 
 	log_message(LOG, _("Log level is set to %s"), xconfig->get_log_level_name(xconfig));
-	log_message(LOG, _("Total detected %d languages"), xconfig->total_languages);
+	log_message(LOG, _("Total detected %d languages"), xconfig->handle->total_languages);
 
-	for (int lang = 0; lang < xconfig->total_languages; lang++)
+	for (int lang = 0; lang < xconfig->handle->total_languages; lang++)
 	{
-		char *lang_name = xconfig->get_lang_name(xconfig, lang);
+		char *lang_name = xconfig->handle->languages[lang].name;
 
-		log_message(DEBUG, _("%s dictionary has %d records"), lang_name, xconfig->languages[lang].dict->data_count);
-		log_message(DEBUG, _("%s proto has %d records"), lang_name, xconfig->languages[lang].proto->data_count);
-		log_message(DEBUG, _("%s big proto has %d records"), lang_name, xconfig->languages[lang].big_proto->data_count);
-		log_message(DEBUG, _("%s regexp has %d records"), lang_name, xconfig->languages[lang].regexp->data_count);
+		log_message(DEBUG, _("%s dictionary has %d records"), lang_name, xconfig->handle->languages[lang].dict->data_count);
+		log_message(DEBUG, _("%s proto has %d records"), lang_name, xconfig->handle->languages[lang].proto->data_count);
+		log_message(DEBUG, _("%s big proto has %d records"), lang_name, xconfig->handle->languages[lang].big_proto->data_count);
+		log_message(DEBUG, _("%s regexp has %d records"), lang_name, xconfig->handle->languages[lang].regexp->data_count);
 	}
 
 	log_message(DEBUG, _("Configuration load complete"));
@@ -288,7 +288,8 @@ static void xneur_about(void)
 
 static void check_word(struct _program *p, const char *w)
 {
-	if (!w)
+	if (w || p) {};
+	/*if (!w)
 		return;
 	
 	p->buffer->set_content(p->buffer, w);
@@ -303,7 +304,7 @@ static void check_word(struct _program *p, const char *w)
 	}
 
 	p->buffer->set_lang_mask(p->buffer, new_lang);
-	printf("%s", p->buffer->get_utf_string(p->buffer));
+	printf("%s", p->buffer->get_utf_string(p->buffer));*/
 }
 
 static void xneur_get_options(int argc, char *argv[])

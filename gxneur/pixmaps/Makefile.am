@@ -1,23 +1,23 @@
 pixmapsdir = @datarootdir@/gxneur/pixmaps
 pixmaps_DATA =			\
+	am.png			\
 	bg.png			\
 	by.png			\
-	cs.png			\
+	cz.png			\
 	de.png			\
-	el.png			\
 	en.png			\
 	es.png			\
-	et.png			\
+	ee.png			\
 	fr.png			\
+	gr.png			\
 	gxneur.png		\
-	hy.png			\
-	kk.png			\
+	kz.png			\
 	lt.png			\
 	lv.png			\
 	pl.png			\
 	ro.png			\
 	ru.png			\
-	uk.png			\
+	ua.png			\
 	us.png			\
 	uz.png
 

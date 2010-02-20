@@ -30,8 +30,6 @@
 #  include <aspell.h>
 #endif
 
-#include "xnconfig.h"
-
 #include "switchlang.h"
 
 #include "keymap.h"
@@ -48,24 +46,34 @@
 #define PROTO_LEN	2
 #define BIG_PROTO_LEN	3
 
-extern struct _xneur_config *xconfig;
 extern struct _window *main_window;
 
-static int is_excluded_layout(int cur_lang)
+#ifdef WITH_ASPELL
+static char *layout_names[] =
 {
-	return xconfig->languages[cur_lang].excluded;
-}
+	"am","bg","by","cz","de","gr","ee","en","es","fr","gb","kz","lt","lv","pl",
+	"ro","ru","ua","us","uz"
+};
 
-static int get_dict_lang(char **word)
+static char *aspell_names[] =
 {
-	for (int lang = 0; lang < xconfig->total_languages; lang++)
+	"hy","bg","be","cs","de","el","et","en","es","fr","en","kk","lt","lv","pl",
+	"ro","ru","uk","en","uz"
+};
+
+static const int names_len = sizeof(layout_names) / sizeof(layout_names[0]);
+#endif
+
+static int get_dict_lang(struct _xneur_handle *handle, char **word)
+{
+	for (int lang = 0; lang < handle->total_languages; lang++)
 	{
-		if (is_excluded_layout(lang))
+		if (handle->languages[lang].excluded)
 			continue;
 
-		if (xconfig->languages[lang].dict->exist(xconfig->languages[lang].dict, word[lang], BY_PLAIN))
+		if (handle->languages[lang].dict->exist(handle->languages[lang].dict, word[lang], BY_PLAIN))
 		{
-			log_message(DEBUG, _("   [+] Found this word in %s language dictionary"), xconfig->get_lang_name(xconfig, lang));
+			log_message(DEBUG, _("   [+] Found this word in %s language dictionary"), handle->languages[lang].name);
 			return lang;
 		}
 	}
@@ -74,16 +82,16 @@ static int get_dict_lang(char **word)
 	return NO_LANGUAGE;
 }
 
-static int get_regexp_lang(char **word)
+static int get_regexp_lang(struct _xneur_handle *handle, char **word)
 {
-	for (int lang = 0; lang < xconfig->total_languages; lang++)
+	for (int lang = 0; lang < handle->total_languages; lang++)
 	{
-		if (xconfig->languages[lang].excluded)
+		if (handle->languages[lang].excluded)
 			continue;
 
-		if (xconfig->languages[lang].regexp->exist(xconfig->languages[lang].regexp, word[lang], BY_REGEXP))
+		if (handle->languages[lang].regexp->exist(handle->languages[lang].regexp, word[lang], BY_REGEXP))
 		{
-			log_message(DEBUG, _("   [+] Found this word in %s language regular expressions file"), xconfig->get_lang_name(xconfig, lang));
+			log_message(DEBUG, _("   [+] Found this word in %s language regular expressions file"), handle->languages[lang].name);
 			return lang;
 		}
 	}
@@ -93,59 +101,41 @@ static int get_regexp_lang(char **word)
 }
 
 #ifdef WITH_ASPELL
-static int get_aspell_hits(char **word, int len)
+static int get_aspell_hits(struct _xneur_handle *handle, char **word, int len)
 {
 	AspellConfig *spell_config = new_aspell_config();
 
-	const AspellDictInfo *entry;
-	AspellDictInfoList *dlist = get_aspell_dict_info_list (spell_config);
-
-	for (int lang = 0; lang < xconfig->total_languages; lang++)
+	for (int lang = 0; lang < handle->total_languages; lang++)
 	{
-		if (is_excluded_layout(lang))
+		if (handle->languages[lang].excluded)
 			continue;
 
 		if (len < 2)
 			continue;
 
-		AspellDictInfoEnumeration *dels = aspell_dict_info_list_elements (dlist);
-		aspell_config_replace(spell_config, "lang", xconfig->languages[lang].dir);
+		int i = 0;
+		for (i = 0; i < names_len; i++)
+		{
+			if (strcmp(layout_names[i], handle->languages[lang].dir) == 0)
+				break;
+				
+		}
+		aspell_config_replace(spell_config, "lang", aspell_names[i]);
 		AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
 
-		char *upper_dir = strdup (xconfig->languages[lang].dir);
- 		for (int i = 0; i < (int) strlen(upper_dir); i++) 
-			upper_dir[i] = toupper (upper_dir[i]);
-
 		int aspell_error = aspell_error_number(possible_err);
-		while (aspell_error != 0)
-		{
-			entry = aspell_dict_info_enumeration_next (dels);
-			if (entry)
-			{
-				if (strstr(entry->name, upper_dir) != NULL)
-				{
-					aspell_config_replace(spell_config, "lang", entry->name);
-					possible_err = new_aspell_speller(spell_config);
-					aspell_error = aspell_error_number(possible_err);	
-				}
-				continue;
-			}
-			log_message(DEBUG, _("   [!] Error aspell checking for %s aspell dictionary"), xconfig->get_lang_name(xconfig, lang));
-			break;
-		}
-
-		free (upper_dir);
-		delete_aspell_dict_info_enumeration (dels);
-		
 		if (aspell_error != 0)
+		{
+			log_message(DEBUG, _("   [!] Error aspell checking for %s aspell dictionary"), handle->languages[lang].name);
 			continue;
+		}
 		
 		AspellSpeller *spell_checker = to_aspell_speller(possible_err);
 		int correct = aspell_speller_check(spell_checker, word[lang], strlen(word[lang]));
 		delete_aspell_speller(spell_checker);
 		if (correct)
 		{
-			log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), xconfig->get_lang_name(xconfig, lang));
+			log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[lang].name);
 			return lang;
 		}
 	}
@@ -155,7 +145,7 @@ static int get_aspell_hits(char **word, int len)
 }
 #endif
 
-static int get_proto_hits(char *word, int *sym_len, int len, int offset, int lang)
+static int get_proto_hits(struct _xneur_handle *handle, char *word, int *sym_len, int len, int offset, int lang)
 {
 	int n_bytes = 0;
 	for (int i = 0; i < PROTO_LEN; i++)
@@ -169,7 +159,7 @@ static int get_proto_hits(char *word, int *sym_len, int len, int offset, int lan
 		strncpy(proto, word + local_offset, n_bytes);
 		proto[n_bytes] = NULLSYM;
 
-		if (xconfig->languages[lang].proto->exist(xconfig->languages[lang].proto, proto, BY_PLAIN))
+		if (handle->languages[lang].proto->exist(handle->languages[lang].proto, proto, BY_PLAIN))
 		{
 			free(proto);
 			return TRUE;
@@ -182,7 +172,7 @@ static int get_proto_hits(char *word, int *sym_len, int len, int offset, int lan
 	return FALSE;
 }
 
-static int get_big_proto_hits(char *word, int *sym_len, int len, int offset, int lang)
+static int get_big_proto_hits(struct _xneur_handle *handle, char *word, int *sym_len, int len, int offset, int lang)
 {
 	int n_bytes = 0;
 	for (int i = 0; i < BIG_PROTO_LEN; i++)
@@ -196,7 +186,7 @@ static int get_big_proto_hits(char *word, int *sym_len, int len, int offset, int
 		strncpy(proto, word+local_offset, n_bytes);
 		proto[n_bytes] = NULLSYM;
 
-		if (xconfig->languages[lang].proto->exist(xconfig->languages[lang].big_proto, proto, BY_PLAIN))
+		if (handle->languages[lang].proto->exist(handle->languages[lang].big_proto, proto, BY_PLAIN))
 		{
 			free(proto);
 			return TRUE;
@@ -209,9 +199,9 @@ static int get_big_proto_hits(char *word, int *sym_len, int len, int offset, int
 	return FALSE;
 }
 
-static int get_proto_lang(char **word, int **sym_len, int len, int offset, int cur_lang, int proto_len)
+static int get_proto_lang(struct _xneur_handle *handle, char **word, int **sym_len, int len, int offset, int cur_lang, int proto_len)
 {
-	int (*get_proto_hits_function) (char *word, int *sym_len, int len, int offset, int lang);
+	int (*get_proto_hits_function) (struct _xneur_handle *handle, char *word, int *sym_len, int len, int offset, int lang);
 
 	if (proto_len == PROTO_LEN)
 		get_proto_hits_function = get_proto_hits;
@@ -224,28 +214,28 @@ static int get_proto_lang(char **word, int **sym_len, int len, int offset, int c
 		return NO_LANGUAGE;
 	}
 
-	int hits = get_proto_hits_function(word[cur_lang], sym_len[cur_lang], len, offset, cur_lang);
+	int hits = get_proto_hits_function(handle, word[cur_lang], sym_len[cur_lang], len, offset, cur_lang);
 	if (hits == 0)
 	{
-		log_message(DEBUG, _("   [-] This word is ok for %s proto of size %d"), xconfig->get_lang_name(xconfig, cur_lang), proto_len);
+		log_message(DEBUG, _("   [-] This word is ok for %s proto of size %d"), handle->languages[cur_lang].name, proto_len);
 		return NO_LANGUAGE;
 	}
 
-	log_message(DEBUG, _("   [*] This word has hits for %s proto of size %d"), xconfig->get_lang_name(xconfig, cur_lang), proto_len);
+	log_message(DEBUG, _("   [*] This word has hits for %s proto of size %d"), handle->languages[cur_lang].name, proto_len);
 
-	for (int lang = 0; lang < xconfig->total_languages; lang++)
+	for (int lang = 0; lang < handle->total_languages; lang++)
 	{
-		if ((lang == cur_lang) || (is_excluded_layout(lang)))
+		if ((lang == cur_lang) || (handle->languages[lang].excluded))
 			continue;
 
-		int hits = get_proto_hits_function(word[lang], sym_len[lang], len, offset, lang);
+		int hits = get_proto_hits_function(handle, word[lang], sym_len[lang], len, offset, lang);
 		if (hits != 0)
 		{
-			log_message(DEBUG, _("   [*] This word has hits for %s language proto of size %d"), xconfig->get_lang_name(xconfig, lang), proto_len);
+			log_message(DEBUG, _("   [*] This word has hits for %s language proto of size %d"), handle->languages[lang].name, proto_len);
 			continue;
 		}
 
-		log_message(DEBUG, _("   [+] This word has no hits for %s language proto of size %d"), xconfig->get_lang_name(xconfig, lang), proto_len);
+		log_message(DEBUG, _("   [+] This word has no hits for %s language proto of size %d"), handle->languages[lang].name, proto_len);
 		return lang;
 	}
 
@@ -253,24 +243,20 @@ static int get_proto_lang(char **word, int **sym_len, int len, int offset, int c
 	return NO_LANGUAGE;
 }
 
-int check_lang(struct _buffer *p, int cur_lang)
+int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 {
-	if (is_excluded_layout(cur_lang))
+	if (handle->languages[cur_lang].excluded)
 		return NO_LANGUAGE;
 
-	int group = get_active_keyboard_group();
-	if (xconfig->find_group_lang(xconfig, group) == -1)
-		return NO_LANGUAGE;
+	char **word = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
+	int **sym_len = (int **) malloc((handle->total_languages + 1) * sizeof(int *));
 
-	char **word = (char **) malloc((xconfig->total_languages + 1) * sizeof(char *));
-	int **sym_len = (int **) malloc((xconfig->total_languages + 1) * sizeof(int *));
-
-	for (int i = 0; i < xconfig->total_languages; i++)
+	for (int i = 0; i < handle->total_languages; i++)
 	{
 		word[i] = strdup(get_last_word(p->i18n_content[i].content));
 		del_final_numeric_char(word[i]);
 		
-		log_message(DEBUG, _("Processing word '%s' on layout '%s'"), word[i], xconfig->languages[i].dir);
+		log_message(DEBUG, _("Processing word '%s' on layout '%s'"), word[i], handle->languages[i].dir);
 
 		sym_len[i] = p->i18n_content[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
 	}
@@ -278,42 +264,34 @@ int check_lang(struct _buffer *p, int cur_lang)
 	log_message(DEBUG, _("Start word processing..."));
 	
 	// Check by regexp
-	int lang = get_regexp_lang(word);
+	int lang = get_regexp_lang(handle, word);
 
 	// Check by dictionary
 	if (lang == NO_LANGUAGE)
-		lang = get_dict_lang(word);
+		lang = get_dict_lang(handle, word);
 
 	int len = strlen(get_last_word(p->content));
 #ifdef WITH_ASPELL
 	// Check by aspell
 	if (lang == NO_LANGUAGE)
-		lang = get_aspell_hits(word, len);
+		lang = get_aspell_hits(handle, word, len);
 #endif
 
 	// If not found in dictionary, try to find in proto
 	len = strlen(p->content);
 	int offset = get_last_word_offset(p->content, len);
 	if (lang == NO_LANGUAGE)
-		lang = get_proto_lang(word, sym_len, len, offset, cur_lang, PROTO_LEN);
+		lang = get_proto_lang(handle, word, sym_len, len, offset, cur_lang, PROTO_LEN);
 
 	if (lang == NO_LANGUAGE)
-		lang = get_proto_lang(word, sym_len, len, offset, cur_lang, BIG_PROTO_LEN);
+		lang = get_proto_lang(handle, word, sym_len, len, offset, cur_lang, BIG_PROTO_LEN);
 
 	log_message(DEBUG, _("End word processing."));
 
-	for (int i = 0; i < xconfig->total_languages; i++)
+	for (int i = 0; i < handle->total_languages; i++)
 		free(word[i]);
 	free(word);
 	free(sym_len);
 	return lang;
 }
 
-int get_next_lang(int cur_lang)
-{
-	int next_lang = cur_lang + 1;
-	if (next_lang >= xconfig->total_languages)
-		next_lang = 0;
-
-	return next_lang;
-}

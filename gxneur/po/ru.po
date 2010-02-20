@@ -482,7 +482,7 @@ msgstr "Раскладка"
 
 #: src/misc.c:566
 msgid "Excluded"
-msgstr "Неиспользуется"
+msgstr "Не используется"
 
 #: src/misc.c:704 src/misc.c:776 src/misc.c:873 src/misc.c:923 src/misc.c:973
 msgid "Action"

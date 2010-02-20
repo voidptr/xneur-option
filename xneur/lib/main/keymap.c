@@ -39,8 +39,7 @@
 
 #define NumlockMask 0x10
 
-extern struct _xneur_config *xconfig;
-extern struct _window *main_window;
+//extern struct _window *main_window;
 
 static const int keyboard_groups[]	= {0x00000000, 0x00002000, 0x00004000, 0x00006000};
 static const int state_masks[]		= {0x00, 0x01, 0x80, 0x10}; // None, NumLock, Alt, Shift
@@ -57,7 +56,7 @@ static int locale_create(void)
 	if (locale == NULL || (strstr(locale, "UTF") == NULL && strstr(locale, "utf") == NULL) )
 		log_message(WARNING, _("Your default locale is not UTF-8"));
 
-	log_message(LOG, _("Using locale %s"), locale);
+	log_message(DEBUG, _("Using locale %s"), locale);
 	return TRUE;
 }
 
@@ -71,9 +70,18 @@ int get_languages_mask(void)
 
 char* keycode_to_symbol(KeyCode kc, int group, int state)
 {
-	XEvent event = create_basic_event();
+	Display *display = XOpenDisplay(NULL);
+	XEvent event;
+	event.type		= KeyPress;
+	event.xkey.type		= KeyPress;
+	event.xkey.root		= RootWindow(display, DefaultScreen(display));
+	event.xkey.subwindow	= None;
+	event.xkey.same_screen	= True;
+	event.xkey.display	= display;
 	event.xkey.keycode = kc;
 	event.xkey.state = 0;
+	event.xkey.time		= CurrentTime;
+	
 	if (group >= 0)
 		event.xkey.state = keyboard_groups[group];
 	event.xkey.state |= state;
@@ -81,6 +89,8 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
 
 	int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
+	XCloseDisplay(display);
+	
 	if (nbytes <= 0)
 		return NULL;
 	symbol[nbytes] = NULLSYM;
@@ -95,8 +105,6 @@ int get_keycode_mod(int group)
 
 void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 {
-	Display *display = XOpenDisplay(NULL);
-
 	if (keyname == NULL)
 	{
 		*lower = NoSymbol;
@@ -106,13 +114,13 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 
 	KeySym inbound_key = XStringToKeysym(keyname);
 
+	Display *display = XOpenDisplay(NULL);
+	
 	int min_keycode, max_keycode;
 	XDisplayKeycodes(display, &min_keycode, &max_keycode);
 
 	int keysyms_per_keycode;
 	KeySym *keymap = XGetKeyboardMapping(display, min_keycode, max_keycode - min_keycode + 1, &keysyms_per_keycode);
-
-	XCloseDisplay(display);
 
 	for (int i = min_keycode; i <= max_keycode; i++)
 	{
@@ -126,21 +134,25 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 
 			*lower = keymap[0];
 			*upper = keymap[1];
+			XCloseDisplay(display);
+			
 			return;
 		}
 
 		keymap += keysyms_per_keycode;
 	}
+	XCloseDisplay(display);
 }
 
 // Private
 static int init_keymaps(struct _keymap *p)
 {
-	p->keyboard_groups_count = xconfig->total_languages;
 	// Define all key codes and key symbols
-	XDisplayKeycodes(main_window->display, &(p->min_keycode), &(p->max_keycode));
+	Display *display = XOpenDisplay(NULL);
+	XDisplayKeycodes(display, &(p->min_keycode), &(p->max_keycode));
+	p->keymap = XGetKeyboardMapping(display, p->min_keycode, p->max_keycode - p->min_keycode + 1, &(p->keysyms_per_keycode));
+	XCloseDisplay(display);
 
-	p->keymap = XGetKeyboardMapping(main_window->display, p->min_keycode, p->max_keycode - p->min_keycode + 1, &(p->keysyms_per_keycode));
 	if (!p->keymap)
 	{
 		log_message(ERROR, _("Unable to get keyboard mapping table"));
@@ -151,14 +163,27 @@ static int init_keymaps(struct _keymap *p)
 
 static void keymap_char_to_keycode(struct _keymap *p, char ch, KeyCode *kc, int *modifier)
 {
+	Display *display = XOpenDisplay(NULL);
+	
 	if (ch == 10 || ch == 13)
 	{
-		*kc		= XKeysymToKeycode(main_window->display, XK_Return);
+		*kc		= XKeysymToKeycode(display, XK_Return);
 		*modifier	= 0;
+		XCloseDisplay(display);
 		return;
 	}
 
-	XEvent event = create_basic_event();
+	XEvent event;
+	event.type		= KeyPress;
+	event.xkey.type		= KeyPress;
+	event.xkey.root		= RootWindow(display, DefaultScreen(display));
+	event.xkey.subwindow	= None;
+	event.xkey.same_screen	= True;
+	event.xkey.display	= display;
+	event.xkey.state	= 0;
+	event.xkey.keycode	= XKeysymToKeycode(display, XK_space);
+	event.xkey.time		= CurrentTime;
+
 	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
 
 	for (int i = p->min_keycode + 1; i <= p->max_keycode; i++)
@@ -180,16 +205,28 @@ static void keymap_char_to_keycode(struct _keymap *p, char ch, KeyCode *kc, int 
 	*kc		= event.xkey.keycode;
 	*modifier	= (event.xkey.state == ShiftMask) ? 1 : 0;
 	free(symbol);
+	
+	XCloseDisplay(display);
 }
 
 static char keymap_get_ascii(struct _keymap *p, const char *sym, KeyCode *kc, int *modifier)
 {
-	XEvent event		= create_basic_event();
-
+	Display *display = XOpenDisplay(NULL);
+	XEvent event;
+	event.type		= KeyPress;
+	event.xkey.type		= KeyPress;
+	event.xkey.root		= RootWindow(display, DefaultScreen(display));
+	event.xkey.subwindow	= None;
+	event.xkey.same_screen	= True;
+	event.xkey.display	= display;
+	event.xkey.state	= 0;
+	event.xkey.keycode	= XKeysymToKeycode(display, XK_space);
+	event.xkey.time		= CurrentTime;
+	
 	char *symbol		= (char *) malloc((256 + 1) * sizeof(char));
 	char *prev_symbols	= (char *) malloc((256 + 1) * sizeof(char));
 
-	for (int lang = 0; lang < p->keyboard_groups_count; lang++)
+	for (int lang = 0; lang < p->handle->total_languages; lang++)
 	{
 		if (lang == p->latin_group)
 			continue;
@@ -253,6 +290,8 @@ static char keymap_get_ascii(struct _keymap *p, const char *sym, KeyCode *kc, in
 		}
 	}
 
+	XCloseDisplay(display);
+	
 	free(prev_symbols);
 	free(symbol);
 	return NULLSYM;
@@ -327,6 +366,8 @@ static char* keymap_lower_by_keymaps(struct _keymap *p, int gr, char *text)
 
 	char *newtext = strdup(text);
 
+	Display *display = XOpenDisplay(NULL);
+	
 	KeySym *keymap = p->keymap;
 	for (int i = p->min_keycode; i <= p->max_keycode; i++)
 	{
@@ -349,12 +390,19 @@ static char* keymap_lower_by_keymaps(struct _keymap *p, int gr, char *text)
 						continue;
 
 					// Get BIG symbol from keymap
-					XEvent event		= create_basic_event();
+					XEvent event;
+					event.type		= KeyPress;
+					event.xkey.type		= KeyPress;
+					event.xkey.root		= RootWindow(display, DefaultScreen(display));
+					event.xkey.subwindow	= None;
+					event.xkey.same_screen	= True;
+					event.xkey.display	= display;
 					event.xkey.keycode	= i;
 					event.xkey.state	= get_keycode_mod(gr);
 					event.xkey.state	|= state_masks[m];
 					event.xkey.state	|= state_masks[n];
-
+					event.xkey.time		= CurrentTime;
+					
 					int nbytes = XLookupString((XKeyEvent *) &event, symbol_old, 256, NULL, NULL);
 					if (nbytes <= 0)
 						continue;
@@ -390,6 +438,8 @@ static char* keymap_lower_by_keymaps(struct _keymap *p, int gr, char *text)
 	free(symbol_new);
 	free(symbol_old);
 
+	XCloseDisplay(display);
+	
 	return newtext;
 }
 
@@ -398,15 +448,15 @@ static void keymap_uninit(struct _keymap *p)
 	if (p->keymap != NULL)
 		XFree(p->keymap);
 	free(p);
-
-	log_message(DEBUG, _("Keymap is freed"));
 }
 
-struct _keymap* keymap_init(void)
+struct _keymap* keymap_init(struct _xneur_handle *handle)
 {
 	struct _keymap *p = (struct _keymap *) malloc(sizeof(struct _keymap));
 	bzero(p, sizeof(struct _keymap));
 
+	p->handle = handle;
+	
 	if (!locale_create() || !init_keymaps(p))
 	{
 		free(p);

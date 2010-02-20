@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "xnconfig.h"
+#include "xneur.h"
 
 #include "window.h"
 #include "keymap.h"
@@ -33,31 +33,20 @@
 
 #include "switchlang.h"
 
-extern struct _xneur_config *xconfig;
 extern struct _window *main_window;
 
 int get_active_keyboard_group(void)
 {
 	XkbStateRec xkbState;
-	XkbGetState(main_window->display, XkbUseCoreKbd, &xkbState);
+	Display *display = XOpenDisplay(NULL);
+	XkbGetState(display, XkbUseCoreKbd, &xkbState);
+	XCloseDisplay(display);
 	return xkbState.group;
-}
-
-int get_cur_lang(void)
-{
-	int group = get_active_keyboard_group();
-
-	int lang = xconfig->find_group_lang(xconfig, group);
-	if (lang != -1)
-		return lang;
-
-	log_message(ERROR, _("Can't find language for this XKB Group"));
-	return 0;
 }
 
 void switch_lang(int new_lang)
 {
-	XkbLockGroup(main_window->display, XkbUseCoreKbd, xconfig->get_lang_group(xconfig, new_lang));
+	XkbLockGroup(main_window->display, XkbUseCoreKbd, new_lang);
 }
 
 void switch_group(int new_group)
@@ -65,10 +54,10 @@ void switch_group(int new_group)
 	XkbLockGroup(main_window->display, XkbUseCoreKbd, new_group);
 }
 
-void set_next_keyboard_group(void)
+void set_next_keyboard_group(struct _xneur_handle *handle)
 {
 	int new_layout_group = get_active_keyboard_group() + 1;
-	if (new_layout_group == xconfig->total_languages - 1)
+	if (new_layout_group == handle->total_languages - 1)
 		new_layout_group = 0;
 	switch_group (new_layout_group);
 }

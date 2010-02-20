@@ -24,18 +24,12 @@
 #define CONFIG_BCK_NAME			"xneurrc~"
 #define LOG_NAME			"xneurlog"
 
-#define DICT_NAME			"dict"
-#define PROTO_NAME			"proto"
-#define BIG_PROTO_NAME			"proto3"
-#define REGEXP_NAME			"regexp"
-#define PATTERN_NAME		"pattern"
-
 #define SOUNDDIR			"sounds"
-#define LANGUAGEDIR			"languages"
 
-#define MAX_FLAGS			4
 #define MAX_NOTIFIES		32
 #define MAX_HOTKEYS			24
+
+#include "xneur.h"
 
 enum _flag_action
 {
@@ -135,21 +129,6 @@ enum _change_action
 	CHANGE_ABBREVIATION,
 };
 
-struct _xneur_language
-{
-	char *dir;
-	char *name;
-	int  group;
-	int  excluded;
-
-	struct _list_char *temp_dict;
-	struct _list_char *dict;
-	struct _list_char *proto;
-	struct _list_char *big_proto;
-	struct _list_char *regexp;
-	struct _list_char *pattern;
-};
-
 struct _xneur_hotkey
 {
 	int modifiers; // Shift (0x1), Control (0x2), Alt (0x4), Super (0x8)
@@ -190,7 +169,7 @@ struct _xneur_config
 	struct _list_char *plugins;
 	
 	struct _xneur_data *xneur_data;
-	struct _xneur_language *languages;		// Array of languages used in program
+	struct _xneur_handle *handle;		// Array of languages used in program
 	struct _xneur_hotkey *hotkeys;			// Array of hotkeys used in program
 	struct _xneur_notify *sounds;			// Array of sounds for actions
 	struct _xneur_notify *osds;			// Array of OSDs for actions
@@ -202,7 +181,6 @@ struct _xneur_config
 	int   manual_mode;				// Enable manual processing mode
 	int   log_level;				// Maximum level of log messages to print
 	int   send_delay;				// Delay before send event (in milliseconds)
-	int   total_languages;				// Total languages to work with
 
 	int   default_group;				// Initial keyboard layout for all new applications
 
@@ -256,9 +234,6 @@ struct _xneur_config
 	void  (*set_manual_mode) (struct _xneur_config *p, int manual_mode);
 	int   (*is_manual_mode) (struct _xneur_config *p);
 	char* (*get_lang_dir) (struct _xneur_config *p, int lang);
-	char* (*get_lang_name) (struct _xneur_config *p, int lang);
-	int   (*get_lang_group) (struct _xneur_config *p, int lang);
-	int   (*find_group_lang) (struct _xneur_config *p, int group);
 	const char* (*get_log_level_name) (struct _xneur_config *p);
 	void  (*uninit) (struct _xneur_config *p);
 };

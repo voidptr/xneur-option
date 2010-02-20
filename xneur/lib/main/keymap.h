@@ -22,6 +22,8 @@
 
 #include <X11/Xutil.h>
 
+#include "xneur.h"
+
 int   get_keycode_mod(int keyboard_group);
 int   get_languages_mask(void);
 void  get_keysyms_by_string(char *keyname, KeySym *Lower, KeySym *Upper);
@@ -29,6 +31,8 @@ char* keycode_to_symbol(KeyCode kc, int group, int state);
 
 struct _keymap
 {
+	struct _xneur_handle *handle;
+	
 	KeySym *keymap;
 
 	int latin_group;
@@ -36,7 +40,6 @@ struct _keymap
 	int min_keycode;
 	int max_keycode;
 	int keysyms_per_keycode;
-	int keyboard_groups_count;
 
 	char  (*get_ascii)(struct _keymap *p, const char *sym, KeyCode *kc, int *modifier);
 	char  (*get_cur_ascii_char) (struct _keymap *p, XEvent e);
@@ -47,6 +50,6 @@ struct _keymap
 	void  (*uninit) (struct _keymap *p);
 };
 
-struct _keymap *keymap_init(void);
+struct _keymap *keymap_init(struct _xneur_handle *handle);
 
 #endif /* _KEYMAP_H_ */
