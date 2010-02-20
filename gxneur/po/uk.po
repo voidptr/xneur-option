@@ -395,31 +395,33 @@ msgstr ""
 
 #: glade/config.glade:1822
 msgid ""
+"None\n"
 "Error\n"
 "Warning\n"
 "Log\n"
 "Debug\n"
 "Trace"
 msgstr ""
+"Отсутствует\n"
 "Помилка\n"
 "Увага\n"
-"Log\n"
-"Debug\n"
-"Trace"
+"Лог\n"
+"Отладка\n"
+"Трассировка"
 
-#: glade/config.glade:1858
+#: glade/config.glade:1859
 msgid "Log verbosity level"
 msgstr "Рівень докладності повідомлень, що виводяться"
 
-#: glade/config.glade:1871
+#: glade/config.glade:1872
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Затримка перед відправленням подій (в мілісекундах)"
 
-#: glade/config.glade:1890
+#: glade/config.glade:1891
 msgid "<b>Advanced</b>"
 msgstr "<b>Додатково</b>"
 
-#: glade/config.glade:1952
+#: glade/config.glade:1953
 msgid "<b>Plugins</b>"
 msgstr ""
 

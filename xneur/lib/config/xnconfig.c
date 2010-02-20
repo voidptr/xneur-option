@@ -911,6 +911,7 @@ static int xneur_config_load(struct _xneur_config *p)
 		return FALSE;
 	}
 
+	/*
 	log_message(LOG, _("Keyboard layouts present in system:"));
 	for (int lang = 0; lang < p->handle->total_languages; lang++)
 	{
@@ -929,6 +930,7 @@ static int xneur_config_load(struct _xneur_config *p)
 		
 	}
 	log_message(LOG, _("Total %d keyboard layouts detected"), p->handle->total_languages);
+	*/
 	return TRUE;
 }
 

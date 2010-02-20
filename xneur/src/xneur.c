@@ -119,21 +119,35 @@ static void xneur_load_config(void)
 	//xneur_check_config_version;
 
 	log_message(LOG, _("Log level is set to %s"), xconfig->get_log_level_name(xconfig));
-	log_message(LOG, _("Total detected %d languages"), xconfig->handle->total_languages);
-
-	for (int lang = 0; lang < xconfig->handle->total_languages; lang++)
-	{
-		char *lang_name = xconfig->handle->languages[lang].name;
-
-		log_message(DEBUG, _("%s dictionary has %d records"), lang_name, xconfig->handle->languages[lang].dict->data_count);
-		log_message(DEBUG, _("%s proto has %d records"), lang_name, xconfig->handle->languages[lang].proto->data_count);
-		log_message(DEBUG, _("%s big proto has %d records"), lang_name, xconfig->handle->languages[lang].big_proto->data_count);
-		log_message(DEBUG, _("%s regexp has %d records"), lang_name, xconfig->handle->languages[lang].regexp->data_count);
-	}
-
+	
 	log_message(DEBUG, _("Configuration load complete"));
 
-	log_message(LOG, _("Default group for all new windows set to %d"), xconfig->default_group);
+	log_message(LOG, _("Keyboard layouts present in system:"));
+	for (int lang = 0; lang < xconfig->handle->total_languages; lang++)
+	{
+		if ((xconfig->handle->languages[lang].dict->data_count == 0 &&
+		    xconfig->handle->languages[lang].proto->data_count == 0 &&
+		    xconfig->handle->languages[lang].big_proto->data_count == 0 &&
+		    xconfig->handle->languages[lang].regexp->data_count == 0) || 
+			(xconfig->handle->languages[lang].excluded))
+		{
+			xconfig->handle->languages[lang].excluded	= TRUE;
+			log_message(LOG, _("   Excluded XKB Group '%s', layout '%s', group '%d'"), xconfig->handle->languages[lang].name, xconfig->handle->languages[lang].dir, lang);
+
+		}
+		else
+			log_message(LOG, _("   Encluded XKB Group '%s', layout '%s', group '%d'"), xconfig->handle->languages[lang].name, xconfig->handle->languages[lang].dir, lang);
+
+		char *lang_name = xconfig->handle->languages[lang].name;
+
+		log_message(DEBUG, _("      %s dictionary has %d records"), lang_name, xconfig->handle->languages[lang].dict->data_count);
+		log_message(DEBUG, _("      %s proto has %d records"), lang_name, xconfig->handle->languages[lang].proto->data_count);
+		log_message(DEBUG, _("      %s big proto has %d records"), lang_name, xconfig->handle->languages[lang].big_proto->data_count);
+		log_message(DEBUG, _("      %s regexp has %d records"), lang_name, xconfig->handle->languages[lang].regexp->data_count);
+	}
+	log_message(LOG, _("Total %d keyboard layouts detected"), xconfig->handle->total_languages);
+
+	log_message(LOG, _("Default keyboard group for all new windows set to %d"), xconfig->default_group);
 	log_message(LOG, _("Manual mode set to %s"), xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
 	log_message(LOG, _("Education mode set to %s"), xconfig->get_bool_name(xconfig->educate));
 	log_message(LOG, _("Layout remember mode set to %s"), xconfig->get_bool_name(xconfig->remember_layout));
