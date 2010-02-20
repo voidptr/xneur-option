@@ -173,32 +173,38 @@ void xneur_handle_destroy (struct _xneur_handle *handle)
 	free(handle);
 }
 
-void xneur_check (struct _xneur_handle *handle, char *word, int layout, char *new_word)
+int xneur_get_layout (struct _xneur_handle *handle, char *word)
 {
 	if (!word || handle == NULL)
-	{
-		layout = -1;
-		new_word = NULL;
-		return;
-	}
+		return -1;
+	
+	struct _buffer *buffer = buffer_init(handle);
+	buffer->set_content(buffer, word);
+	int cur_lang = get_active_keyboard_group();
+	int new_lang = check_lang(handle, buffer, cur_lang);
+	buffer->uninit(buffer);
+	if (new_lang == NO_LANGUAGE)
+		new_lang = cur_lang;
+
+	return new_lang;
+}
+
+char *xneur_get_word (struct _xneur_handle *handle, char *word)
+{
+	if (!word || handle == NULL)
+		return NULL;
 	
 	struct _buffer *buffer = buffer_init(handle);
 	buffer->set_content(buffer, word);
 	int cur_lang = get_active_keyboard_group();
 	int new_lang = check_lang(handle, buffer, cur_lang);
 	if (new_lang == NO_LANGUAGE)
-	{
-		new_word = strdup(word);
-		layout = cur_lang;
-		return;
-	}
+		return strdup(word);
 
 	buffer->set_lang_mask(buffer, new_lang);
-	new_word = strdup(buffer->get_utf_string(buffer));
-	layout = new_lang;
+	char *new_word = strdup(buffer->get_utf_string(buffer));
 	buffer->uninit(buffer);
 
-	printf("%d %s\n", layout, new_word);
-	return;
+	return new_word;
 }
 

@@ -49,6 +49,9 @@ struct _xneur_handle *xneur_handle_create (void);
 void xneur_handle_destroy (struct _xneur_handle *handle);
 
 // Check WORD. Library return alleged new word and it's layout
-void xneur_check (struct _xneur_handle *handle, char *word, int layout, char *new_word);
+// 1. Layout
+int xneur_get_layout (struct _xneur_handle *handle, char *word);
+// 1. New word
+char *xneur_get_word (struct _xneur_handle *handle, char *word);
 
 #endif /* _XNEUR_H_ */
