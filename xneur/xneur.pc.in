@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: xneur
+Description: XNeur library
+Version: @VERSION@
+Libs: -L@libdir@ -lxneur
+Cflags: -I@includedir@
