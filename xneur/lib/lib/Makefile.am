@@ -11,7 +11,7 @@ libxneur_la_SOURCES =		\
 
 libxneur_la_CFLAGS = -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/main -I@top_srcdir@/lib/ai -I@top_srcdir@/lib/config  @DEFAULT_CFLAGS@ @X11_CFLAGS@
 libxneur_la_LDFLAGS = -version-info 9:8:0 -static
-libxneur_la_LIBADD = ../misc/libxnmisc.la ../main/libxnmain.la ../ai/libxnai.la ../notify/libxnnotify.la 
+libxneur_la_LIBADD = ../misc/libxnmisc.la ../main/libxnmain.la ../ai/libxnai.la
 
 EXTRA_DIST = $(config_DATA)
 

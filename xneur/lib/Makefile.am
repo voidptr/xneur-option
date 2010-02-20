@@ -1,7 +1,7 @@
 SUBDIRS =			\
 	misc			\
-	config			\
-	notify			\
 	main			\
+	ai			\
 	lib			\
-	ai
+	config			\
+	notify			
