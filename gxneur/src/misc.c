@@ -314,17 +314,6 @@ static void init_libxnconfig(void)
 
 void xneur_start(void)
 {
-	struct _xneur_handle *xnh;
-	xnh = xneur_handle_create();
-
-	int layout = xneur_get_layout(xnh, "ghbdtn");
-	char *nw = xneur_get_word(xnh, "ghbdtn");
-
-	printf("%d %s\n", layout, nw);
-	free(nw);
-
-	xneur_handle_destroy(xnh);
-	
 	init_libxnconfig();
 
 	if (!g_spawn_command_line_async("xneur", NULL))
