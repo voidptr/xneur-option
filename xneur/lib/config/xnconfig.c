@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2009 XNeur Team
+ *  Copyright (C) 2006-2010 XNeur Team
  *
  */
 
@@ -1349,8 +1349,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->autocomplementation_excluded_apps	= list_char_init();
 	p->plugins		= list_char_init();
 
-	p->silent_mode = FALSE;
-		
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;
 	p->get_global_dict_path		= get_file_path_name;

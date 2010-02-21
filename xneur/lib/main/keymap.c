@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2009 XNeur Team
+ *  Copyright (C) 2006-2010 XNeur Team
  *
  */
 
@@ -38,8 +38,6 @@
 #include "keymap.h"
 
 #define NumlockMask 0x10
-
-//extern struct _window *main_window;
 
 static const int keyboard_groups[]	= {0x00000000, 0x00002000, 0x00004000, 0x00006000};
 static const int state_masks[]		= {0x00, 0x01, 0x80, 0x10}; // None, NumLock, Alt, Shift

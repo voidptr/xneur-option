@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2009 XNeur Team
+ *  Copyright (C) 2006-2010 XNeur Team
  *
  */
 
@@ -60,7 +60,6 @@ static struct _program *program = NULL;
 
 static int xneur_check_lock = TRUE;
 static int xneur_generate_proto = FALSE;
-static int xneur_check_word = FALSE;
 
 static void xneur_reload(int status);
 
@@ -104,9 +103,6 @@ static void xneur_init(void)
 
 static void xneur_load_config(void)
 {
-	if (xneur_check_word)
-		xconfig->silent_mode = TRUE;
-	
 	log_message(LOG, _("Loading configuration"));
 
 	if (!xconfig->load(xconfig))
@@ -190,9 +186,6 @@ static void xneur_set_lock(void)
 
 	setpriority(PRIO_PROCESS, process_id, -19);
 	priority = getpriority(PRIO_PROCESS, process_id);
-	
-	if (xneur_check_word)
-		return;
 	
 	log_message(DEBUG, _(PACKAGE" pid is %d with nice %d"), process_id, priority);
 }
@@ -300,27 +293,6 @@ static void xneur_about(void)
 	printf("web: http://www.xneur.ru/\n");
 }
 
-static void check_word(struct _program *p, const char *w)
-{
-	if (w || p) {};
-	/*if (!w)
-		return;
-	
-	p->buffer->set_content(p->buffer, w);
-
-	int cur_lang = get_cur_lang();
-	int new_lang = check_lang(p->buffer, cur_lang);
-
-	if (new_lang == NO_LANGUAGE)
-	{
-		printf("%s", w);
-		return;
-	}
-
-	p->buffer->set_lang_mask(p->buffer, new_lang);
-	printf("%s", p->buffer->get_utf_string(p->buffer));*/
-}
-
 static void xneur_get_options(int argc, char *argv[])
 {
 	static struct option longopts[] =
@@ -330,7 +302,6 @@ static void xneur_get_options(int argc, char *argv[])
 			{ "about",		no_argument,	NULL,	'a' },
 			{ "force",		no_argument,	NULL,	'f' },
 			{ "generate",	no_argument,	NULL,	'g' },
-			{ "word",	no_argument,	NULL,	'w' },
 			{ NULL,			0,		NULL,	0 }
 	};
 
@@ -363,13 +334,6 @@ static void xneur_get_options(int argc, char *argv[])
 				opted = FALSE;
 				break;
 			}
-			case 'w':
-			{
-				xneur_check_lock = FALSE;
-				xneur_check_word = TRUE;
-				opted = FALSE;
-				break;
-			}
 			case '?':
 			case 'h':
 			{
@@ -385,9 +349,6 @@ static void xneur_get_options(int argc, char *argv[])
 
 static void xneur_reklama(void)
 {
-	if (xneur_check_word)
-		return;
-	
 	printf("\n");
 	printf(LIGHT_PURPLE_COLOR "====================================================" NORMAL_COLOR "\n");
 	printf(LIGHT_PURPLE_COLOR ">>> " LIGHT_PURPLE_COLOR "Please visit " RED_COLOR "http://www.xneur.ru" LIGHT_BLUE_COLOR " for support" LIGHT_PURPLE_COLOR " <<<" NORMAL_COLOR "\n");
@@ -454,8 +415,6 @@ int main(int argc, char *argv[])
 			
 	if (xneur_generate_proto)
 		generate_protos();
-	else if (xneur_check_word)
-		check_word(program, argv[2]);
 	else	
 		program->process_input(program);
 

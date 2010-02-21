@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2009 XNeur Team
+ *  Copyright (C) 2006-2010 XNeur Team
  *
  */
 
@@ -34,9 +34,6 @@ extern struct _xneur_config *xconfig;
 
 void show_notify(int notify, char *command)
 {
-	if (xconfig->silent_mode)
-		return;
-	
 	play_file(notify);
 	popup_show(notify, command);
 	osd_show(notify, command);

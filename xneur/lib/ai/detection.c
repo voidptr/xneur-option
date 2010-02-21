@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2009 XNeur Team
+ *  Copyright (C) 2006-2010 XNeur Team
  *
  */
 
@@ -45,8 +45,6 @@
 
 #define PROTO_LEN	2
 #define BIG_PROTO_LEN	3
-
-extern struct _window *main_window;
 
 #ifdef WITH_ASPELL
 static char *layout_names[] =

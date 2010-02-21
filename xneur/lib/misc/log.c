@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2009 XNeur Team
+ *  Copyright (C) 2006-2010 XNeur Team
  *
  */
 
@@ -27,10 +27,6 @@
 
 #include "log.h"
 
-#include "xnconfig.h"
-
-extern struct _xneur_config *xconfig;
-
 static int LOG_LEVEL = NONE;
 
 void log_set_level(int level)
@@ -40,10 +36,6 @@ void log_set_level(int level)
 
 void log_message(int level, const char *string, ...)
 {
-	if (xconfig != NULL)
-		if (xconfig->silent_mode)
-			return;
-	
 	if (level > LOG_LEVEL)
 		return;
 
