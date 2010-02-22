@@ -273,7 +273,6 @@ static void xneur_usage(void)
 	printf("  -a, --about             About for " PACKAGE "\n");
 	printf("  -f, --force             Skip check for other instances of " PACKAGE " runned\n");
 	printf("  -g, --generate          Generate proto for new language. THIS OPTION FOR DEVELOPERS ONLY!\n");
-	printf("  -w, --word              Check word.\n");
 }
 
 static void xneur_version(void)
@@ -307,7 +306,7 @@ static void xneur_get_options(int argc, char *argv[])
 
 	int opted = FALSE;
 	int opt;
-	while ((opt = getopt_long(argc, argv, "vhafgw", longopts, NULL)) != -1)
+	while ((opt = getopt_long(argc, argv, "vhafg", longopts, NULL)) != -1)
 	{
 		opted = TRUE;
 		switch (opt)

@@ -6,5 +6,5 @@ includedir=@includedir@
 Name: xneur
 Description: XNeur library
 Version: @VERSION@
-Libs: -L@libdir@ -lxneur
+Libs: -L@libdir@ -lxneur @ASPELL_LIBS@ @PCRE_LIBS@
 Cflags: -I@includedir@

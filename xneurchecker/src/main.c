@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2009 XNeur Team
+ *  Copyright (C) 2010 XNeur Team
  *
  */
 
@@ -24,19 +24,89 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <stdio.h>
+#include <getopt.h>
 
-#include "misc.h"
+#include <xneur/xnconfig.h>
+#include <xneur/list_char.h>
+#include <xneur/xneur.h>
 
-int main()
+struct _xneur_config *xconfig				= NULL;
+
+int main(int argc, char *argv[])
 {
-/*#ifdef ENABLE_NLS
-	setlocale(LC_ALL, "");
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	bind_textdomain_codeset(PACKAGE, "UTF-8");
-	textdomain(PACKAGE);
-#endif*/
+	int layouts = 0;
+	int translates = 0;
+    static struct option longopts[] =
+	{
+			{ "help",		no_argument,	NULL,	'h' },
+			{ "layouts",		no_argument,	NULL,	'l' },
+			{ "words",	no_argument,	NULL,	'w' },
+			{ NULL,			0,		NULL,	0 }
+	};
+
+	int opt;
+	while ((opt = getopt_long(argc, argv, "hlw", longopts, NULL)) != -1)
+	{
+		switch (opt)
+		{
+			case 'l':
+			{
+				layouts++;
+				break;
+			}
+			case 'w':
+			{
+				translates++;
+				break;
+			}
+			case '?':
+			case 'h':
+			{
+			    printf("\nxneurchecker - manual text checker based on xneur library (version %s) \n", VERSION);
+				printf("usage: xneurchecker [options] <word_1> <...word_n>\n");
+				printf("  where options are:\n");
+				printf("\n");
+				printf("  -h, --help		This help!\n");
+				printf("  -l, --about		Get probable layouts.\n");
+				printf("  -w, --word		Get probable translate.\n");
+				exit(EXIT_SUCCESS);
+				break;
+			}
+		}
+	}
+
+	int words_count = argc - layouts - translates - 1;
+	if (words_count == 0)
+		exit(EXIT_SUCCESS);
 	
-	xneur_start();
+	struct _xneur_handle *xnh;
+	xnh = xneur_handle_create();
+
+	if ((!layouts) && (!translates))
+		translates = 1;
+	
+	if (layouts)
+	{
+		for (int i = argc - words_count; i < argc; i++)
+		{
+			int layout = xneur_get_layout(xnh, argv[i]);
+			printf(" %d", layout);
+		}
+		printf("\n");
+	}
+	
+	if (translates)
+	{
+		for (int i = argc - words_count; i < argc; i++)
+		{
+			char *nw = xneur_get_word(xnh, argv[i]);
+			printf(" %s", nw);
+			free(nw);
+		}
+		printf("\n");
+	}
+
+	xneur_handle_destroy(xnh);
 
 	return EXIT_SUCCESS;
 }
