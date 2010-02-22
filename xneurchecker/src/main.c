@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 		for (int i = argc - words_count; i < argc; i++)
 		{
 			int layout = xneur_get_layout(xnh, argv[i]);
-			printf(" %d", layout);
+			printf("%d ", layout);
 		}
 		printf("\n");
 	}
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 		for (int i = argc - words_count; i < argc; i++)
 		{
 			char *nw = xneur_get_word(xnh, argv[i]);
-			printf(" %s", nw);
+			printf("%s ", nw);
 			free(nw);
 		}
 		printf("\n");
