@@ -26,11 +26,7 @@
 #include <stdio.h>
 #include <getopt.h>
 
-#include <xneur/xnconfig.h>
-#include <xneur/list_char.h>
 #include <xneur/xneur.h>
-
-struct _xneur_config *xconfig				= NULL;
 
 int main(int argc, char *argv[])
 {

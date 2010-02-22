@@ -243,9 +243,6 @@ static int get_proto_lang(struct _xneur_handle *handle, char **word, int **sym_l
 
 int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 {
-	if (handle->languages[cur_lang].excluded)
-		return NO_LANGUAGE;
-
 	char **word = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	int **sym_len = (int **) malloc((handle->total_languages + 1) * sizeof(int *));
 

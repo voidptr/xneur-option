@@ -34,6 +34,8 @@
 
 #include "detection.h"
 
+struct _xneur_config *xconfig				= NULL;
+
 struct _xneur_handle *xneur_handle_create (void)
 {
 	struct _xneur_handle *handle = (struct _xneur_handle *) malloc(sizeof(struct _xneur_handle));;
