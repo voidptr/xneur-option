@@ -66,7 +66,7 @@ struct _xneur_handle *xneur_handle_create (void)
 
 	Atom symbols_atom = kbd_desc_ptr->names->symbols;
 	char *symbols	= XGetAtomName(display, symbols_atom);
-	char *tmp_symbols = strdup(symbols);
+	char *tmp_symbols = symbols;
 	strsep(&tmp_symbols, "+");
 
 	handle->languages = (struct _xneur_language *) malloc(sizeof(struct _xneur_language));
@@ -79,7 +79,7 @@ struct _xneur_handle *xneur_handle_create (void)
 			continue;
 
 		char *group_name	= XGetAtomName(display, group_atom);
-		
+
 		char *short_name = strsep(&tmp_symbols, "+");
 		short_name[2] = NULLSYM;
 
