@@ -35,6 +35,10 @@
 #define MWM_HINTS_DECORATIONS   (1L << 1) 
 #define PROP_MWM_HINTS_ELEMENTS 5
 
+#define HOME_CONF_DIR		".xcurf"
+#define DEFAULT_MAX_PATH	4096
+#define DIR_SEPARATOR		"/"
+
 typedef struct {
 	int flags;
 	int functions;
@@ -215,6 +219,62 @@ void cursor_show(void)
 	XFlush(display);
 }
 
+static int get_max_path_len(void)
+{
+	int max_path_len = pathconf(PACKAGE_SYSCONFDIR_DIR, _PC_PATH_MAX);
+	if (max_path_len <= 0)
+		return DEFAULT_MAX_PATH;
+	return max_path_len;
+}
+
+char* get_file_path_name(const char *dir_name, const char *file_name)
+{
+	#define SEARCH_IN(DIRECTORY) \
+	if (dir_name == NULL)\
+		snprintf(path_file, max_path_len, "%s/%s", DIRECTORY, file_name);\
+	else\
+		snprintf(path_file, max_path_len, "%s/%s/%s", DIRECTORY, dir_name, file_name);\
+	stream = fopen(path_file, "r");\
+	if (stream != NULL)\
+	{\
+		fclose(stream);\
+		return path_file;\
+	}
+
+	int max_path_len = get_max_path_len();
+
+	char *path_file = (char *) malloc((max_path_len + 1) * sizeof(char));
+
+	// Search by only full path
+	strcpy(path_file, file_name);
+
+	FILE *stream = fopen(path_file, "r");
+	if (stream != NULL)
+	{
+		fclose(stream);
+		return path_file;
+	}
+
+	// Search conf in ~/.xneur
+	if (dir_name == NULL)
+		snprintf(path_file, max_path_len, "%s/%s/%s", getenv("HOME"), HOME_CONF_DIR, file_name);
+	else
+		snprintf(path_file, max_path_len, "%s/%s/%s/%s", getenv("HOME"), HOME_CONF_DIR, dir_name, file_name);
+
+	stream = fopen(path_file, "r");
+	if (stream != NULL)
+	{
+		fclose(stream);
+		return path_file;
+	}
+
+	SEARCH_IN(PACKAGE_SYSCONFDIR_DIR);
+	SEARCH_IN("/etc/xneur");
+	SEARCH_IN(PACKAGE_SHAREDIR_DIR);
+
+	return NULL;
+}
+
 int main(int argc, char *argv[])
 {
 	// Set hook to terminate
@@ -225,14 +285,56 @@ int main(int argc, char *argv[])
 	int i;
 	for (i=0; i<4; i++)
 		pixmaps[i] = NULL;
-	for (i=1; i<argc; i++)
+
+	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
+	if (kbd_desc_ptr == NULL)
+		return (1);
+
+	display = XOpenDisplay(NULL);
+	XkbGetNames(display, XkbAllNamesMask, kbd_desc_ptr);
+
+	if (kbd_desc_ptr->names == NULL)
 	{
-		pixmaps[i - 1] = malloc(strlen(argv[i]) * sizeof(char));
-		if (pixmaps[i - 1] == NULL)
-			exit(1);
-		memcpy(pixmaps[i - 1], argv[i], strlen(argv[i]) * sizeof(char));
-		printf("%s\n",pixmaps[i - 1]);
+		XCloseDisplay(display);
+		return (1);
 	}
+
+	int groups_count = 0;
+	for (; groups_count < XkbNumKbdGroups; groups_count++)
+	{
+		if (kbd_desc_ptr->names->groups[groups_count] == None)
+			break;
+	}
+	
+	if (groups_count == 0)
+	{
+		XCloseDisplay(display);
+		return (1);
+	}
+	
+	Atom symbols_atom = kbd_desc_ptr->names->symbols;
+	char *symbols	= XGetAtomName(display, symbols_atom);
+	char *tmp_symbols = symbols;
+	strsep(&tmp_symbols, "+");
+
+	int group = 0;
+	for (group = 0; group < groups_count; group++)
+	{
+		Atom group_atom = kbd_desc_ptr->names->groups[group];
+		
+		if (group_atom == None)
+			continue;
+		
+		char *short_name = strsep(&tmp_symbols, "+");
+		short_name[2] = '\0';
+
+		pixmaps[group] = malloc((2 /*language code*/ + 4 /*.png*/ +1 /*\0*/) * sizeof(char));
+		sprintf(pixmaps[group], "%s.png", short_name);
+		pixmaps[group] = get_file_path_name("pixmaps", pixmaps[group]);
+		printf("%s\n", pixmaps[group]);
+	}
+
+	free(symbols);
 	
 	// Open display
 	display = XOpenDisplay(NULL);

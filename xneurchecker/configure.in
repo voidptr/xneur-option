@@ -3,7 +3,7 @@ AC_PREREQ(2.59)
 AM_CONFIG_HEADER(config.h)
 
 AC_CONFIG_MACRO_DIR(m4)
-AM_INIT_AUTOMAKE(xneurchecker, 0.9.8)
+AM_INIT_AUTOMAKE(xneurchecker, 0.1)
 
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
@@ -16,8 +16,7 @@ AC_HEADER_STDC
 
 PKG_PROG_PKG_CONFIG([0.20])
 
-PKG_CHECK_MODULES(XNEUR, [xnconfig = 0.9.8])
-PKG_CHECK_MODULES(XNEURLIB, [xneur = 0.9.8])
+PKG_CHECK_MODULES(XNEUR, [xneur = 0.9.8])
 
 AM_GNU_GETTEXT_VERSION([0.16.1])
 AM_GNU_GETTEXT([external])
@@ -35,10 +34,7 @@ $PACKAGE $VERSION configured successfully:
 
 	Compiler flags:         $CFLAGS
 
-	XNeur Config flags:	$XNEUR_CFLAGS
-	XNeur Config libs:	$XNEUR_LIBS
-
-	XNeur Library flags:	$XNEURLIB_CFLAGS
-	XNeur Library libs:	$XNEURLIB_LIBS
+	XNeur Library flags:	$XNEUR_CFLAGS
+	XNeur Library libs:	$XNEUR_LIBS
 
 EOF

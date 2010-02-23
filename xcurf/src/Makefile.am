@@ -1,6 +1,4 @@
-## Process this file with automake to produce Makefile.in
-
-## Created by Anjuta
+INCLUDES = -DPACKAGE_SYSCONFDIR_DIR=\""@sysconfdir@/xcurf"\" -DPACKAGE_SHAREDIR_DIR=\""@datarootdir@/xcurf"\"
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \

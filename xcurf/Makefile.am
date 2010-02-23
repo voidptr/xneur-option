@@ -1,7 +1,4 @@
-## Process this file with automake to produce Makefile.in
-## Created by Anjuta
-
-SUBDIRS = src po
+SUBDIRS = src po pixmaps
 
 xcfdocdir = ${prefix}/doc/xcf
 xcfdoc_DATA = \
