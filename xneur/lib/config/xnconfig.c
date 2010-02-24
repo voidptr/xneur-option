@@ -750,6 +750,7 @@ static void free_structures(struct _xneur_config *p)
 		free(p->handle->languages[lang].dir);
 	}
 
+	
 	for (int action = 0; action < p->actions_count; action++)
 	{
 		if (p->actions[action].hotkey.key != NULL)
@@ -831,75 +832,6 @@ static int xneur_config_is_manual_mode(struct _xneur_config *p)
 	return (p->xneur_data->manual_mode == TRUE);
 }
 
-/*static int parse_keyboard_groups(struct _xneur_config *p)
-{
-	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
-	if (kbd_desc_ptr == NULL)
-	{
-		log_message(ERROR, _("Failed to allocate keyboard descriptor"));
-		return FALSE;
-	}
-
-	Display *display = XOpenDisplay(NULL);
-	XkbGetNames(display, XkbAllNamesMask, kbd_desc_ptr);
-
-	if (kbd_desc_ptr->names == NULL)
-	{
-		XCloseDisplay(display);
-		log_message(ERROR, _("Failed to get keyboard group names"));
-		return FALSE;
-	}
-
-	int groups_count = 0;
-	for (; groups_count < XkbNumKbdGroups; groups_count++)
-	{
-		if (kbd_desc_ptr->names->groups[groups_count] == None)
-			break;
-	}
-	
-	if (groups_count == 0)
-	{
-		XCloseDisplay(display);
-		log_message(ERROR, _("No keyboard layout found"));
-		return FALSE;
-	}
-
-	Atom symbols_atom = kbd_desc_ptr->names->symbols;
-	char *symbols	= XGetAtomName(display, symbols_atom);
-	char *tmp_symbols = strdup(symbols);
-	strsep(&tmp_symbols, "+");
-
-	p->handle = (struct _xneur_handle *) malloc(sizeof(struct _xneur_handle));
-	p->handle->languages = (struct _xneur_language *) malloc(sizeof(struct _xneur_language));
-	for (int group = 0; group < groups_count; group++)
-	{
-		Atom group_atom = kbd_desc_ptr->names->groups[group];
-			
-		if (group_atom == None)
-			continue;
-
-		char *group_name	= XGetAtomName(display, group_atom);
-		
-		char *short_name = strsep(&tmp_symbols, "+");
-		short_name[2] = NULLSYM;
-
-		p->handle->languages = (struct _xneur_language *) realloc(p->handle->languages, (p->handle->total_languages + 1) * sizeof(struct _xneur_language));
-		bzero(&(p->handle->languages[p->handle->total_languages]), sizeof(struct _xneur_language));
-
-		p->handle->languages[p->handle->total_languages].name	= strdup(group_name);
-		p->handle->languages[p->handle->total_languages].dir	= strdup(short_name);
-		p->handle->languages[p->handle->total_languages].group	= group;
-		p->handle->languages[p->handle->total_languages].excluded	= FALSE;
-
-		p->handle->total_languages++;
-	}
-
-	free(symbols);
-	XCloseDisplay(display);
-
-	return TRUE;
-}*/
-
 static int xneur_config_load(struct _xneur_config *p)
 {
 	if (!parse_config_file(p, NULL, CONFIG_NAME))
@@ -911,26 +843,6 @@ static int xneur_config_load(struct _xneur_config *p)
 		return FALSE;
 	}
 
-	/*
-	log_message(LOG, _("Keyboard layouts present in system:"));
-	for (int lang = 0; lang < p->handle->total_languages; lang++)
-	{
-		if ((p->handle->languages[lang].dict->data_count == 0 &&
-		    p->handle->languages[lang].proto->data_count == 0 &&
-		    p->handle->languages[lang].big_proto->data_count == 0 &&
-		    p->handle->languages[lang].regexp->data_count == 0) || 
-			(p->handle->languages[lang].excluded))
-		{
-			p->handle->languages[lang].excluded	= TRUE;
-			log_message(LOG, _("   Excluded XKB Group '%s', layout '%s', group '%d'"), p->handle->languages[lang].name, p->handle->languages[lang].dir, lang);
-
-		}
-		else
-			log_message(LOG, _("   Encluded XKB Group '%s', layout '%s', group '%d'"), p->handle->languages[lang].name, p->handle->languages[lang].dir, lang);
-		
-	}
-	log_message(LOG, _("Total %d keyboard layouts detected"), p->handle->total_languages);
-	*/
 	return TRUE;
 }
 
@@ -1307,6 +1219,8 @@ static void xneur_config_uninit(struct _xneur_config *p)
 
 	free(p->mail_keyboard_log);
 	free(p->host_keyboard_log);
+
+	xneur_handle_destroy(p->handle);
 	
 	free(p);
 }
