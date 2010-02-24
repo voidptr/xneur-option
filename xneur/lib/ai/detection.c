@@ -49,14 +49,14 @@
 #ifdef WITH_ASPELL
 static char *layout_names[] =
 {
-	"am","bg","by","cz","de","gr","ee","en","es","fr","gb","kz","lt","lv","pl",
-	"ro","ru","ua","us","uz"
+	"am","bg","by","cz","de","gr","ee","en","es","fr","gb","kz","lt","lv",
+	"pl","ro","ru","ua","us","uz"
 };
 
 static char *aspell_names[] =
 {
-	"hy","bg","be","cs","de","el","et","en","es","fr","en","kk","lt","lv","pl",
-	"ro","ru","uk","en","uz"
+	"hy","bg","be","cs","de","el","et","en","es","fr","en","kk","lt","lv",
+	"pl","ro","ru","uk","en","uz"
 };
 
 static const int names_len = sizeof(layout_names) / sizeof(layout_names[0]);
@@ -118,6 +118,9 @@ static int get_aspell_hits(struct _xneur_handle *handle, char **word, int len)
 				break;
 				
 		}
+		if (i == names_len)
+			continue;
+		
 		aspell_config_replace(spell_config, "lang", aspell_names[i]);
 		AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
 

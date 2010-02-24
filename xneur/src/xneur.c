@@ -127,9 +127,7 @@ static void xneur_load_config(void)
 		    xconfig->handle->languages[lang].regexp->data_count == 0) || 
 			(xconfig->handle->languages[lang].excluded))
 		{
-			xconfig->handle->languages[lang].excluded	= TRUE;
 			log_message(LOG, _("   Excluded XKB Group '%s', layout '%s', group '%d'"), xconfig->handle->languages[lang].name, xconfig->handle->languages[lang].dir, lang);
-
 		}
 		else
 			log_message(LOG, _("   Encluded XKB Group '%s', layout '%s', group '%d'"), xconfig->handle->languages[lang].name, xconfig->handle->languages[lang].dir, lang);
