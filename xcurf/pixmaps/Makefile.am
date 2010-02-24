@@ -8,13 +8,24 @@ pixmaps_DATA =			\
 	en.png			\
 	es.png			\
 	ee.png			\
+	fi.png			\
 	fr.png			\
 	gr.png			\
+	hr.png			\
+	hu.png			\
+	is.png			\
+	it.png			\
 	kz.png			\
 	lt.png			\
 	lv.png			\
+	no.png			\
 	pl.png			\
+	pt.png			\
 	ro.png			\
+	se.png			\
+	si.png			\
+	sk.png			\
+	sr.png			\
 	ru.png			\
 	ua.png			\
 	us.png			\

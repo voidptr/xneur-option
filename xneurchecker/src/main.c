@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 				printf("  where options are:\n");
 				printf("\n");
 				printf("  -h, --help		This help!\n");
-				printf("  -l, --about		Get probable layouts.\n");
+				printf("  -l, --layout		Get probable layouts.\n");
 				printf("  -w, --word		Get probable translate.\n");
 				exit(EXIT_SUCCESS);
 				break;
