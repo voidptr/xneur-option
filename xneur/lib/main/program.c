@@ -23,7 +23,6 @@
 
 #include <X11/keysym.h>
 #include <X11/XKBlib.h>
-//#include <X11/extensions/XTest.h>
 
 #include <stdlib.h>
 #include <strings.h>
@@ -32,7 +31,7 @@
 #include <signal.h>
 #include <pthread.h>
 #include <ctype.h>
-#include <matheval.h>
+//#include <matheval.h>
 
 #ifdef WITH_ASPELL
 #  include <aspell.h>
@@ -61,6 +60,8 @@
 #include "conversion.h"
 
 #include "notify.h"
+
+#include "math.h"
 
 #include "program.h"
 
@@ -552,33 +553,37 @@ static void program_process_selection_notify(struct _program *p)
 				free(formula);
 				break;
 			}
-			
-			void *f = evaluator_create (formula);
+
+			char *eval_string = calc(formula);
+			free(formula);
+			if (eval_string == NULL)
+				break;
+			/*void *f = evaluator_create (formula);
 			free(formula);
 			if (!f)
 				break;
 
 			char *eval_string = evaluator_get_string(f);
-			
+			evaluator_destroy (f);*/
+			 
 			char* return_text = malloc ((strlen (p->buffer->content) + strlen(eval_string) + 2)*sizeof(char));
 			return_text[0] = NULLSYM;
 			sprintf(return_text, "%s=%s", p->buffer->get_utf_string(p->buffer), eval_string);
 			p->buffer->set_content(p->buffer, return_text);
 			free (return_text);
 
-			evaluator_destroy (f);
 			show_notify(NOTIFY_CALC_SELECTED, NULL);
-
-			char *buffer = "(17.0-3.5)";
-       		f = evaluator_create (buffer);
-			printf ("  %s = %g\n", buffer, evaluator_evaluate (f, 0, NULL, NULL));
-			evaluator_destroy (f);
+			
+			//char *buffer = "(17.0-3.5)";
+       		//f = evaluator_create (buffer);
+			//printf ("  %s = %g\n", buffer, evaluator_evaluate (f, 0, NULL, NULL));
+			//evaluator_destroy (f);
 			
 			break;
 		}
 		case ACTION_CALC_CLIPBOARD:
 		{
-			char *formula = str_replace (p->buffer->content, ",", ".");
+			/*char *formula = str_replace (p->buffer->content, ",", ".");
 			if (formula == NULL)
 				break;
 			int length = strlen(formula);
@@ -602,7 +607,7 @@ static void program_process_selection_notify(struct _program *p)
 
 			evaluator_destroy (f);
 			
-			show_notify(NOTIFY_CALC_CLIPBOARD, NULL);
+			show_notify(NOTIFY_CALC_CLIPBOARD, NULL);*/
 			break;
 		}
 		case ACTION_PREVIEW_CHANGE_SELECTED:
