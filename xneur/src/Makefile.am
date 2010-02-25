@@ -11,4 +11,4 @@ xneur_CFLAGS = -I@top_srcdir@/lib/lib -I@top_srcdir@/lib/ai -I@top_srcdir@/lib/c
 
 xneur_LDFLAGS = -L$(top_srcdir)/lib/lib -L$(top_srcdir)/lib/ai -L$(top_srcdir)/lib/config -L$(top_srcdir)/lib/misc -L$(top_srcdir)/lib/main -L$(top_srcdir)/lib/notify  @X11_LIBS@ -lpthread
 
-xneur_LDADD = ../lib/main/libxnmain.la ../lib/ai/libxnai.la ../lib/config/libxnconfig.la ../lib/misc/libxnmisc.la ../lib/notify/libxnnotify.la
+xneur_LDADD = ../lib/main/libxnmain.la ../lib/ai/libxnai.la ../lib/config/libxnconfig.la ../lib/misc/libxnmisc.la ../lib/notify/libxnnotify.la ../lib/math/libxnmath.la
