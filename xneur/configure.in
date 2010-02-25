@@ -197,9 +197,6 @@ $PACKAGE $VERSION configured successfully:
 	X11 compiler flags:		$X11_CFLAGS
 	X11 linker flags:		$X11_LIBS
 
-#	Xtst compiler flags:		$XTST_CFLAGS
-#	Xtst linker flags:		$XTST_LIBS
-
 	Pcre compiler flags:		$PCRE_CFLAGS
 	Pcre linker flags:		$PCRE_LIBS
 
