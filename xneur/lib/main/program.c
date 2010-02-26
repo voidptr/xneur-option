@@ -489,7 +489,7 @@ static void program_process_selection_notify(struct _program *p)
 		convert_text_to_translit(&event_text);
 
 	p->buffer->set_content(p->buffer, event_text);
-	XFree(event_text);
+	free(event_text);
 
 	switch (p->action_mode)
 	{
@@ -558,19 +558,23 @@ static void program_process_selection_notify(struct _program *p)
 			free(formula);
 			if (eval_string == NULL)
 				break;
-			/*void *f = evaluator_create (formula);
-			free(formula);
-			if (!f)
-				break;
 
-			char *eval_string = evaluator_get_string(f);
-			evaluator_destroy (f);*/
-			 
-			char* return_text = malloc ((strlen (p->buffer->content) + strlen(eval_string) + 2)*sizeof(char));
+			char *base_string = p->buffer->get_utf_string(p->buffer);
+			char* return_text = malloc ((strlen (base_string) + strlen(eval_string) + 2)*sizeof(char));
+			if (return_text == NULL)
+			{
+				free(eval_string);
+				free(base_string);
+				break;
+			}
 			return_text[0] = NULLSYM;
-			sprintf(return_text, "%s=%s", p->buffer->get_utf_string(p->buffer), eval_string);
+
+			sprintf(return_text, "%s=%s", base_string, eval_string);
 			p->buffer->set_content(p->buffer, return_text);
-			free (return_text);
+
+			free(eval_string);
+			free(base_string);
+			free(return_text);
 
 			show_notify(NOTIFY_CALC_SELECTED, NULL);
 			
