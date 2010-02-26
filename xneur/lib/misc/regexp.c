@@ -64,15 +64,6 @@ char* check_regexp_match(const char *str, const char *pattern)
 	if (count == PCRE_ERROR_NOMATCH)
 		return NULL;
 	
-	/*for(int i = 0; i < count; i++)
-	{
-		printf("%i substring - '", i);
-
-		for(int j=ovector[i*2]; j < ovector[i*2+1]; j++) 
-		    putchar(str[j]);
-		putchar('\''); putchar('\n');
-	}*/
-	
 	const char *pcre_string = NULL;
 	if(pcre_get_substring(str, ovector, count, 0, &pcre_string) < 0)
 		return NULL;
@@ -86,7 +77,7 @@ char* check_regexp_match(const char *str, const char *pattern)
 
 #else
 
-int check_regexp_match(const char *str, const char *pattern)
+char* check_regexp_match(const char *str, const char *pattern)
 {
 	if (str || pattern){}
 	return NULL;
