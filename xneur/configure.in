@@ -180,7 +180,7 @@ if test "x$with_plugins" != "xno"; then
 	AC_DEFINE(WITH_PLUGINS, 1, [Define if you want plugins support])
 fi
 
-DEFAULT_CFLAGS="-Wall -Wextra -Werror -g0 -fPIC -std=gnu99"
+DEFAULT_CFLAGS="-Wall -Wextra -Werror -g0 -std=gnu99"
 AC_SUBST(DEFAULT_CFLAGS)
 
 AC_OUTPUT([plugins/Makefile plugins/test/Makefile plugins/statistic/Makefile share/Makefile share/sounds/Makefile share/languages/Makefile share/languages/by/Makefile share/languages/bg/Makefile share/languages/cz/Makefile share/languages/de/Makefile share/languages/gr/Makefile share/languages/en/Makefile share/languages/es/Makefile share/languages/ee/Makefile share/languages/fr/Makefile share/languages/gb/Makefile share/languages/am/Makefile share/languages/kz/Makefile share/languages/lt/Makefile share/languages/lv/Makefile share/languages/pl/Makefile share/languages/ro/Makefile share/languages/ru/Makefile share/languages/ua/Makefile share/languages/us/Makefile share/languages/uz/Makefile etc/Makefile lib/Makefile  lib/lib/Makefile lib/ai/Makefile lib/config/Makefile lib/misc/Makefile lib/notify/Makefile lib/math/Makefile lib/main/Makefile src/Makefile po/Makefile.in Makefile xnconfig.pc xneur.pc])
