@@ -471,9 +471,9 @@ static void program_change_two_capital_letter(struct _program *p)
 static void program_process_selection_notify(struct _program *p)
 {
 	char *event_text = NULL;
-	if (p->action_mode == ACTION_CHANGE_SELECTED || p->action_mode == ACTION_CHANGECASE_SELECTED || p->action_mode == ACTION_TRANSLIT_SELECTED || p->action_mode == ACTION_CALC_SELECTED || p->action_mode == ACTION_PREVIEW_CHANGE_SELECTED)
+	if (p->action_mode == ACTION_CHANGE_SELECTED || p->action_mode == ACTION_CHANGECASE_SELECTED || p->action_mode == ACTION_TRANSLIT_SELECTED || p->action_mode == ACTION_PREVIEW_CHANGE_SELECTED)
 		event_text = (char *)get_selection_text(SELECTION_PRIMARY);
-	else if (p->action_mode == ACTION_CHANGE_CLIPBOARD || p->action_mode == ACTION_CHANGECASE_CLIPBOARD || p->action_mode == ACTION_TRANSLIT_CLIPBOARD || p->action_mode == ACTION_CALC_CLIPBOARD || p->action_mode == ACTION_PREVIEW_CHANGE_CLIPBOARD)
+	else if (p->action_mode == ACTION_CHANGE_CLIPBOARD || p->action_mode == ACTION_CHANGECASE_CLIPBOARD || p->action_mode == ACTION_TRANSLIT_CLIPBOARD || p->action_mode == ACTION_PREVIEW_CHANGE_CLIPBOARD)
 		event_text = (char *)get_selection_text(SELECTION_CLIPBOARD);
 		
 	if (event_text == NULL)
@@ -535,83 +535,6 @@ static void program_process_selection_notify(struct _program *p)
 			p->change_lang(p, lang);
 
 			show_notify(NOTIFY_TRANSLIT_CLIPBOARD, NULL);
-			break;
-		}
-		case ACTION_CALC_SELECTED:
-		{
-			char *formula = str_replace (p->buffer->content, ",", ".");
-			if (formula == NULL)
-				break;
-			int length = strlen(formula);
-			if (length == 0)
-			{
-				free(formula);
-				break;
-			}
-			if (formula[length] != NULLSYM)
-			{
-				free(formula);
-				break;
-			}
-
-			char *eval_string = calc(formula);
-			free(formula);
-			if (eval_string == NULL)
-				break;
-
-			char *base_string = p->buffer->get_utf_string(p->buffer);
-			char* return_text = malloc ((strlen (base_string) + strlen(eval_string) + 2)*sizeof(char));
-			if (return_text == NULL)
-			{
-				free(eval_string);
-				free(base_string);
-				break;
-			}
-			return_text[0] = NULLSYM;
-
-			sprintf(return_text, "%s=%s", base_string, eval_string);
-			p->buffer->set_content(p->buffer, return_text);
-
-			free(eval_string);
-			free(base_string);
-			free(return_text);
-
-			show_notify(NOTIFY_CALC_SELECTED, NULL);
-			
-			//char *buffer = "(17.0-3.5)";
-       		//f = evaluator_create (buffer);
-			//printf ("  %s = %g\n", buffer, evaluator_evaluate (f, 0, NULL, NULL));
-			//evaluator_destroy (f);
-			
-			break;
-		}
-		case ACTION_CALC_CLIPBOARD:
-		{
-			/*char *formula = str_replace (p->buffer->content, ",", ".");
-			if (formula == NULL)
-				break;
-			int length = strlen(formula);
-			if (length == 0)
-			{
-				free(formula);
-				break;
-			}
-			if (formula[length] != NULLSYM)
-			{
-				free(formula);
-				break;
-			}
-			
-			void *f = evaluator_create (formula);
-			free(formula);
-			if (!f)
-				break;
-			
-			p->buffer->set_content(p->buffer, evaluator_get_string(f));
-
-			evaluator_destroy (f);
-			
-			show_notify(NOTIFY_CALC_CLIPBOARD, NULL);*/
 			break;
 		}
 		case ACTION_PREVIEW_CHANGE_SELECTED:
@@ -951,7 +874,6 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_CHANGE_SELECTED:
 		case ACTION_TRANSLIT_SELECTED:
 		case ACTION_CHANGECASE_SELECTED:
-		case ACTION_CALC_SELECTED:
 		case ACTION_PREVIEW_CHANGE_SELECTED:
 		{
 			p->action_mode = action;
@@ -962,7 +884,6 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_CHANGE_CLIPBOARD:
 		case ACTION_TRANSLIT_CLIPBOARD:
 		case ACTION_CHANGECASE_CLIPBOARD:
-		case ACTION_CALC_CLIPBOARD:
 		case ACTION_PREVIEW_CHANGE_CLIPBOARD:
 		{
 			p->action_mode = action;
@@ -995,7 +916,6 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_CHANGE_WORD:	// User needs to cancel last change
 		case ACTION_TRANSLIT_WORD:
 		case ACTION_CHANGECASE_WORD:
-		case ACTION_CALC_WORD:
 		case ACTION_PREVIEW_CHANGE_WORD:
 		{
 			p->action_mode = action;
@@ -1028,9 +948,6 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			
 			if (action == ACTION_CHANGECASE_WORD)
 				change_action = CHANGE_WORD_CHANGECASE;
-			
-			if (action == ACTION_CALC_WORD)
-				change_action = CHANGE_WORD_CALC;
 			
 			if (action == ACTION_PREVIEW_CHANGE_WORD)
 				change_action = CHANGE_WORD_PREVIEW_CHANGE;
@@ -1739,11 +1656,6 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->buffer->unset_offset(p->buffer, offset);
 
 			show_notify(NOTIFY_MANUAL_CHANGECASE_WORD, NULL);
-			break;
-		}
-		case CHANGE_WORD_CALC:
-		{
-			show_notify(NOTIFY_MANUAL_CALC_WORD, NULL);
 			break;
 		}
 		case CHANGE_WORD_PREVIEW_CHANGE:

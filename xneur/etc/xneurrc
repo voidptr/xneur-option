@@ -37,21 +37,24 @@ ExcludeApp rdesktop
 
 # Binds hotkeys for some actions
 AddBind ChangeWord Break
-AddBind ChangeString Control Break
+AddBind TranslitWord 
+AddBind ChangecaseWord 
+AddBind PreviewChangeWord 
+AddBind ChangeString 
 AddBind ChangeMode Control Print
 AddBind ChangeSelected Shift Break
 AddBind TranslitSelected Alt Scroll_Lock
 AddBind ChangecaseSelected Shift Alt Break
-AddBind CalculateSelected Alt s
+AddBind PreviewChangeSelected Control Pause
 AddBind ChangeClipboard Control Scroll_Lock
 AddBind TranslitClipboard 
 AddBind ChangecaseClipboard 
-AddBind CalculateClipboard Alt c
+AddBind PreviewChangeClipboard 
 AddBind EnableLayout1 
 AddBind EnableLayout2 
 AddBind EnableLayout3 
 AddBind EnableLayout4 
-AddBind RotateLayout Control_L
+AddBind RotateLayout 
 AddBind ReplaceAbbreviation Control Tab
 AddBind AutocomplementationConfirmation Tab
 

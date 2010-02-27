@@ -57,9 +57,6 @@ static struct _bind_table btable[MAX_HOTKEYS] =	{
 							{0, 0, 0},
 							{0, 0, 0},
 							{0, 0, 0},
-							{0, 0, 0},
-							{0, 0, 0},
-							{0, 0, 0},
 							{0, 0, 0}
 						};
 static const char *normal_action_names[] =	{

@@ -64,10 +64,10 @@ static const char *option_names[] = 	{
 						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent"
 					};
 static const char *action_names[] =	{
-						"ChangeWord", "TranslitWord", "ChangecaseWord", "CalculateWord", "PreviewChangeWord",
+						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
 						"ChangeString", "ChangeMode",
-						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "CalculateSelected", "PreviewChangeSelected",
-						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "CalculateClipboard", "PreviewChangeClipboard",
+						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
+						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "PreviewChangeClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"RotateLayout","ReplaceAbbreviation", "AutocomplementationConfirmation"
 					};
@@ -75,10 +75,10 @@ static const char *notify_names[] =	{
 						"XneurStart", "XneurReload", "XneurStop",
 						"PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-						"AutomaticChangeWord", "ManualChangeWord", "ManualTranslitWord", "ManualChangecaseWord", "ManualCalculateWord", "ManualPreviewChangeWord",
+						"AutomaticChangeWord", "ManualChangeWord", "ManualTranslitWord", "ManualChangecaseWord", "ManualPreviewChangeWord",
 						"ChangeString",
-						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "CalculateSelected", "PreviewChangeSelected",
-						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "CalculateClipboard",  "PreviewChangeClipboard",
+						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
+						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",  "PreviewChangeClipboard",
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"ExecuteUserAction"
 					};
