@@ -108,11 +108,9 @@ AddSound ChangeString
 AddSound ChangeSelected 
 AddSound TranslitSelected 
 AddSound ChangecaseSelected 
-AddSound CalculateSelected 
 AddSound ChangeClipboard 
 AddSound TranslitClipboard 
 AddSound ChangecaseClipboard 
-AddSound CalculateClipboard 
 AddSound ReplaceAbbreviation Enable /usr/local/share/xneur/sounds/switch.wav
 AddSound CorrectIncidentalCaps 
 AddSound CorrectTwoCapitalLetter 
@@ -208,11 +206,9 @@ AddOSD ChangeString
 AddOSD ChangeSelected
 AddOSD TranslitSelected
 AddOSD ChangecaseSelected
-AddOSD CalculateSelected
 AddOSD ChangeClipboard
 AddOSD TranslitClipboard
 AddOSD ChangecaseClipboard
-AddOSD CalculateClipboard
 AddOSD ReplaceAbbreviation
 AddOSD CorrectIncidentalCaps
 AddOSD CorrectTwoCapitalLetter
@@ -241,12 +237,10 @@ AddPopup ChangeString
 AddPopup ChangeSelected
 AddPopup TranslitSelected
 AddPopup ChangecaseSelected
-AddPopup CalculateSelected
 AddPopup PreviewChangeSelected Enable Предпросмотр коррекции выделеного текста
 AddPopup ChangeClipboard
 AddPopup TranslitClipboard
 AddPopup ChangecaseClipboard
-AddPopup CalculateClipboard
 AddPopup PreviewChangeClipboard Enable Предпросмотр коррекции буфера обмена
 AddPopup ReplaceAbbreviation
 AddPopup CorrectIncidentalCaps
