@@ -31,7 +31,6 @@
 #include <signal.h>
 #include <pthread.h>
 #include <ctype.h>
-//#include <matheval.h>
 
 #ifdef WITH_ASPELL
 #  include <aspell.h>
@@ -170,9 +169,12 @@ static int get_auto_action(KeySym key, int modifier_mask)
 			return KLB_SPACE;
 	}
 
-	if (modifier_mask & ControlMask || modifier_mask & Mod1Mask || modifier_mask & Mod4Mask)
+	if (modifier_mask & Mod1Mask || modifier_mask & Mod4Mask)
 		return KLB_NO_ACTION;
 
+	if (modifier_mask & ControlMask)
+		return KLB_CLEAR;
+	
 	return KLB_ADD_SYM;
 }
 
