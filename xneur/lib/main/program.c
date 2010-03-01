@@ -710,7 +710,9 @@ static void program_on_key_action(struct _program *p, int type)
 		{
 			if (p->perform_manual_action(p, manual_action))
 				return;
+			set_event_mask(p->focus->owner_window, None);
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
+			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 		}
 	}
 }
@@ -1018,8 +1020,15 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 				break;
 			}
+			
+			// Block events of keyboard (push to event queue)
+			set_event_mask(p->focus->owner_window, None);
+			grab_spec_keys(p->focus->owner_window, FALSE);
 			p->event->send_xkey(p->event, p->event->event.xkey.keycode, p->event->event.xkey.state);
-							
+			// Unblock keyboard
+			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+			grab_spec_keys(p->focus->owner_window, TRUE);
+			
 			p->event->event = p->event->default_event;
 			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
 			int modifier_mask =  p->event->get_cur_modifiers(p->event);
