@@ -85,12 +85,21 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 	p->event.xkey.time		= CurrentTime;
 
 	XSendEvent(main_window->display, p->owner_window, TRUE, KeyPressMask, &p->event);
+
+	p->event.type			= KeyRelease;
+	p->event.xkey.type		= KeyRelease;
+	p->event.xkey.time		= CurrentTime;
+
+	XSendEvent(main_window->display, p->owner_window, TRUE, KeyReleaseMask, &p->event);
 }
 
 static void event_send_backspaces(struct _event *p, int count)
 {
+	
 	for (int i = 0; i < count; i++)
+	{
 		p->send_xkey(p, p->backspace, None);
+	}
 }
 
 static void event_send_selection(struct _event *p, int count)
