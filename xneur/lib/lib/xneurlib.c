@@ -36,6 +36,17 @@
 
 struct _xneur_config *xconfig				= NULL;
 
+static long get_next_property_value (unsigned char **pointer, long *length, int size, char **string)
+{
+    if (size != 8)
+		return 0;
+	
+    int len = 0; *string = (char *)*pointer;
+    while ((len++, --*length, *((*pointer)++)) && *length>0);
+
+    return len;
+}
+
 struct _xneur_handle *xneur_handle_create (void)
 {
 	struct _xneur_handle *handle = (struct _xneur_handle *) malloc(sizeof(struct _xneur_handle));;
@@ -66,11 +77,57 @@ struct _xneur_handle *xneur_handle_create (void)
 		return NULL;
 	}
 
-	Atom symbols_atom = kbd_desc_ptr->names->symbols;
-	char *symbols	= XGetAtomName(display, symbols_atom);
-	char *tmp_symbols = symbols;
-	strsep(&tmp_symbols, "+");
+	Atom _XKB_RULES_NAMES = XInternAtom(display, "_XKB_RULES_NAMES", 1);
+	if (_XKB_RULES_NAMES == None) 
+		return NULL;
+	Window rw = RootWindow(display, DefaultScreen(display));
+	Atom type;
+    int size;
+    unsigned long nitems;
+    unsigned long nbytes;
+    unsigned long bytes_after;
+    unsigned char *prop;
+    int status;
+	
+    status = XGetWindowProperty(display, rw, _XKB_RULES_NAMES, 0, (10000+3)/4,
+				False, AnyPropertyType, &type,
+				&size, &nitems, &bytes_after,
+				&prop);
+	if (status != Success)
+		return NULL;
 
+	if (size == 32)
+		nbytes = sizeof(long);
+	else if (size == 16)
+		nbytes = sizeof(short);
+	else if (size == 8)
+		nbytes = 1;
+	else if (size == 0)
+		nbytes = 0;
+	else
+		return NULL;
+
+	int prop_count = 0;
+	char *prop_value = NULL;
+    long length = nitems * nbytes;
+	while (length >= size/8) 
+	{
+		int prop_value_len = get_next_property_value(&prop, &length, size, &prop_value);
+		if (prop_value_len == 0)
+			return NULL;
+		
+		prop_count++;
+		// 1 - Keyboard Driver
+		// 2 - Keyboard Model
+		// 3 - Keyboard Layouts
+		// 4 - Keyboard Variants
+		// 5 - Keyboard Led and Grp
+		if (prop_count == 3)
+			break;
+	}
+	if (prop_count != 3)
+		return NULL;
+	
 	handle->languages = (struct _xneur_language *) malloc(sizeof(struct _xneur_language));
 	handle->total_languages = 0;	
 	for (int group = 0; group < groups_count; group++)
@@ -80,10 +137,8 @@ struct _xneur_handle *xneur_handle_create (void)
 		if (group_atom == None)
 			continue;
 
-		char *group_name	= XGetAtomName(display, group_atom);
-
-		char *short_name = strsep(&tmp_symbols, "+");
-		short_name[2] = NULLSYM;
+		char *group_name = XGetAtomName(display, group_atom);
+		char *short_name = strsep(&prop_value, ",");
 
 		handle->languages = (struct _xneur_language *) realloc(handle->languages, (handle->total_languages + 1) * sizeof(struct _xneur_language));
 		bzero(&(handle->languages[handle->total_languages]), sizeof(struct _xneur_language));
@@ -93,9 +148,11 @@ struct _xneur_handle *xneur_handle_create (void)
 		handle->languages[handle->total_languages].group	= group;
 		handle->languages[handle->total_languages].excluded	= FALSE;
 		handle->total_languages++;
+		
+		if (prop_value == NULL)
+			break;
 	}
 
-	free(symbols);
 	XCloseDisplay(display);
 
 	if (handle->total_languages == 0)
