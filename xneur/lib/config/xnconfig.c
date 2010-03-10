@@ -1178,7 +1178,10 @@ static void xneur_config_save_dict(struct _xneur_config *p, int lang)
 
 	log_message(LOG, _("Saving %s dictionary"), p->handle->languages[lang].name);
 
-	save_list(p->handle->languages[lang].dict, p->handle->languages[lang].dir, DICT_NAME);
+	int path_len = strlen(LANGUAGEDIR) + strlen(p->handle->languages[lang].dir) + 2;
+	char *lang_dir = (char *) malloc(path_len * sizeof(char));
+	snprintf(lang_dir, path_len, "%s/%s", LANGUAGEDIR, p->handle->languages[lang].dir);
+	save_list(p->handle->languages[lang].dict, lang_dir, DICT_NAME);
 }
 
 static void xneur_config_save_pattern(struct _xneur_config *p, int lang)
@@ -1188,7 +1191,10 @@ static void xneur_config_save_pattern(struct _xneur_config *p, int lang)
 
 	log_message(LOG, _("Saving %s pattern"), p->handle->languages[lang].name);
 
-	save_list(p->handle->languages[lang].pattern, p->handle->languages[lang].dir, PATTERN_NAME);
+	int path_len = strlen(LANGUAGEDIR) + strlen(p->handle->languages[lang].dir) + 2;
+	char *lang_dir = (char *) malloc(path_len * sizeof(char));
+	snprintf(lang_dir, path_len, "%s/%s", LANGUAGEDIR, p->handle->languages[lang].dir);
+	save_list(p->handle->languages[lang].pattern, lang_dir, PATTERN_NAME);
 }
 
 static char* xneur_config_get_lang_dir(struct _xneur_config *p, int lang)
