@@ -792,6 +792,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 				set_event_mask(p->focus->owner_window, None);
 
 				p->check_brackets_with_symbols(p);
+
+				p->check_pattern(p);
 				
 				if (!xconfig->check_lang_on_process)
 				{
@@ -804,8 +806,6 @@ static void program_perform_auto_action(struct _program *p, int action)
 				if (p->changed_manual == MANUAL_FLAG_UNSET)
 					if (p->check_lang_last_syllable(p))
 						p->event->default_event.xkey.keycode = 0;
-
-				p->check_pattern(p);
 				
 				// Unblock keyboard
 				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
