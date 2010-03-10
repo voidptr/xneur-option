@@ -76,7 +76,9 @@ msgstr "Всего найдено %d раскладок клавиатуры"
 #: src/xneur.c:150
 #, c-format
 msgid "Default keyboard group for all new windows set to %d"
-msgstr "Клавиатурная группа по умолчанию для всех новых окон установлена в значение %d"
+msgstr ""
+"Клавиатурная группа по умолчанию для всех новых окон установлена в значение %"
+"d"
 
 #: src/xneur.c:151
 #, c-format
@@ -902,4 +904,3 @@ msgstr "Создано основное окно с id %d"
 #: lib/main/window.c:135
 msgid "Window is freed"
 msgstr "Текущие данные окна очищены"
-
