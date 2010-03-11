@@ -267,8 +267,7 @@ static void program_update(struct _program *p)
 
 	p->layout_update(p);
 
-	if (xconfig->save_keyboard_log) 
-		p->buffer->save_and_clear(p->buffer, p->last_window);
+	p->buffer->save_and_clear(p->buffer, p->last_window);
 
 	if (status == FOCUS_NONE)
 		return;
@@ -380,8 +379,7 @@ static void program_process_input(struct _program *p)
 			}
 			case ButtonPress:
 			{
-				if (xconfig->save_keyboard_log) 
-					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
 
 				// Unfreeze and resend grabbed event
@@ -396,12 +394,11 @@ static void program_process_input(struct _program *p)
 			}
 			case ButtonRelease:
 			{
-				if (xconfig->save_keyboard_log) 
-					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				log_message(TRACE, _("Received ButtonRelease on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
 
 				// Unfreeze and resend grabbed event
-				XAllowEvents(main_window->display, ReplayPointer|SyncPointer, CurrentTime);
+				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 				//XAllowEvents(main_window->display, SyncPointer, CurrentTime);
 				
 				/*p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
@@ -572,8 +569,7 @@ static void program_process_selection_notify(struct _program *p)
 			p->event->send_selection(p->event, p->buffer->cur_pos);
 	}
 
-	if (xconfig->save_keyboard_log) 
-		p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+	p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 	p->update(p);
 	p->action_mode = ACTION_NONE;
@@ -758,8 +754,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 		}
 		case KLB_CLEAR:
 		{
-			if (xconfig->save_keyboard_log) 
-				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+			p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 			return;
 		}
 		case KLB_DEL_SYM:
@@ -849,8 +844,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 
 			if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
-				if (xconfig->save_keyboard_log) 
-					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 			p->last_action = ACTION_NONE;
 			
@@ -1013,8 +1007,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 					p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_space), p->event->event.xkey.state);
 				p->last_action = ACTION_NONE;
 
-				if (xconfig->save_keyboard_log) 
-					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				
 				// Unblock keyboard
 				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
@@ -1096,8 +1089,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				grab_spec_keys(p->focus->owner_window, TRUE);
 
 				show_notify(NOTIFY_REPLACE_ABBREVIATION, NULL);
-				if (xconfig->save_keyboard_log) 
-					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 				//Incapsulate to p->event->clear_code() or smth else
 				p->event->default_event.xkey.keycode = 0;
