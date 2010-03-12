@@ -9,6 +9,7 @@ pixmaps_DATA =			\
 	es.png			\
 	ee.png			\
 	fr.png			\
+	ge.png			\
 	gr.png			\
 	gxneur.png		\
 	kz.png			\
