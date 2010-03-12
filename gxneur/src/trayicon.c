@@ -180,7 +180,7 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 {
 	char *layout_name = "gxneur";
 	int lang = get_active_kbd_group();
-	if ((lang != -1) && (!xconfig->handle->languages[lang].excluded))
+	if (lang != -1)
 		layout_name = xconfig->handle->languages[lang].dir;
 
 	char *image_file = g_strdup_printf("%s%s", layout_name, ".png");
