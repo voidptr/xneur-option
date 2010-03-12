@@ -239,7 +239,7 @@ int xneur_get_layout (struct _xneur_handle *handle, char *word)
 	
 	struct _buffer *buffer = buffer_init(handle);
 	buffer->set_content(buffer, word);
-	int cur_lang = get_active_keyboard_group();
+	int cur_lang = get_curr_keyboard_group();
 	int new_lang = check_lang(handle, buffer, cur_lang);
 	buffer->uninit(buffer);
 	if (new_lang == NO_LANGUAGE)
@@ -255,7 +255,7 @@ char *xneur_get_word (struct _xneur_handle *handle, char *word)
 	
 	struct _buffer *buffer = buffer_init(handle);
 	buffer->set_content(buffer, word);
-	int cur_lang = get_active_keyboard_group();
+	int cur_lang = get_curr_keyboard_group();
 	int new_lang = check_lang(handle, buffer, cur_lang);
 	if (new_lang == NO_LANGUAGE)
 		return strdup(word);

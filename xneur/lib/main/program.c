@@ -243,7 +243,7 @@ static void program_layout_update(struct _program *p)
 		free(text_to_find);
 		free(window_layouts);
 
-		switch_lang(lang);
+		XkbLockGroup(main_window->display, XkbUseCoreKbd, lang);
 		log_message(DEBUG, _("Restore layout group to %d"), lang);
 		return;
 	}
@@ -252,7 +252,7 @@ static void program_layout_update(struct _program *p)
 	free(window_layouts);
 
 	log_message(DEBUG, _("Store default layout group to %d"), xconfig->default_group);
-	switch_group(xconfig->default_group);
+	XkbLockGroup(main_window->display, XkbUseCoreKbd, xconfig->default_group);
 }
 
 static void program_update(struct _program *p)
@@ -348,7 +348,7 @@ static void program_process_input(struct _program *p)
 				{
 					log_message(TRACE, _("Received FocusIn (event type %d)"), type);
 
-					p->last_layout = get_active_keyboard_group();
+					p->last_layout = get_curr_keyboard_group();
 
 					p->update(p);
 				}
@@ -363,7 +363,7 @@ static void program_process_input(struct _program *p)
 			{
 				log_message(TRACE, _("Received FocusOut (event type %d)"), type);
 
-				p->last_layout = get_active_keyboard_group();
+				p->last_layout = get_curr_keyboard_group();
 				p->update(p);
 				break;
 			}
@@ -436,9 +436,9 @@ static void program_process_input(struct _program *p)
 
 static void program_change_lang(struct _program *p, int new_lang)
 {
-	log_message(DEBUG, _("Changing language from %s to %s"), xconfig->handle->languages[get_active_keyboard_group()].name, xconfig->handle->languages[new_lang].name);
+	log_message(DEBUG, _("Changing language from %s to %s"), xconfig->handle->languages[get_curr_keyboard_group()].name, xconfig->handle->languages[new_lang].name);
 	p->buffer->set_lang_mask(p->buffer, new_lang);
-	switch_lang(new_lang);
+	XkbLockGroup(main_window->display, XkbUseCoreKbd, new_lang);
 }
 
 static void program_change_incidental_caps(struct _program *p)
@@ -628,7 +628,7 @@ static void program_on_key_action(struct _program *p, int type)
 		int auto_action = get_auto_action(key, p->prev_key_mod);
 		if ((auto_action != KLB_NO_ACTION) && (auto_action != KLB_CLEAR))
 		{
-			int lang = get_active_keyboard_group();
+			int lang = get_curr_keyboard_group();
 			switch (lang)
 			{
 				default:
@@ -780,7 +780,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 					p->changed_manual = MANUAL_FLAG_UNSET;
 
 				// Add symbol to internal bufer
-				int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+				int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 				p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
 				// Block events of keyboard (push to event queue)
@@ -822,11 +822,11 @@ static void program_perform_auto_action(struct _program *p, int action)
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 				p->check_lang_last_word(p);
 
-			p->add_word_to_pattern(p, get_active_keyboard_group());
+			p->add_word_to_pattern(p, get_curr_keyboard_group());
 			
 			// Add symbol to internal bufer
 			p->event->event = p->event->default_event;
-			int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+			int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 			p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
 			// Correct space before punctuation
@@ -893,10 +893,17 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_CHANGE_STRING:	// User needs to change current string
 		{
-			int next_lang = get_active_keyboard_group() + 1;
-			if (next_lang >= xconfig->handle->total_languages)
-				next_lang = 0;
+			int next_lang = get_curr_keyboard_group();
+			do
+			{
+				next_lang++;
+				if (next_lang >= xconfig->handle->total_languages)
+					next_lang = 0;
+			} while (xconfig->handle->languages[next_lang].excluded && (next_lang != get_curr_keyboard_group()));
 			
+			if (next_lang == get_curr_keyboard_group())
+				break;
+				
 			int action;
 			if (next_lang == 0)
 				action = CHANGE_STRING_TO_LAYOUT_0;
@@ -904,8 +911,10 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				action = CHANGE_STRING_TO_LAYOUT_1;
 			else if (next_lang == 2)
 				action = CHANGE_STRING_TO_LAYOUT_2;
-			else
+			else if (next_lang == 3)
 				action = CHANGE_STRING_TO_LAYOUT_3;
+			else
+				break;
 
 			p->change_word(p, action);
 			p->update(p);
@@ -919,9 +928,17 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_PREVIEW_CHANGE_WORD:
 		{
 			p->action_mode = action;
-			int next_lang = get_active_keyboard_group() + 1;
-			if (next_lang >= xconfig->handle->total_languages)
-				next_lang = 0;
+
+			int next_lang = get_curr_keyboard_group();
+			do
+			{
+				next_lang++;
+				if (next_lang >= xconfig->handle->total_languages)
+					next_lang = 0;
+			} while (xconfig->handle->languages[next_lang].excluded && (next_lang != get_curr_keyboard_group()));
+			
+			if (next_lang == get_curr_keyboard_group())
+				break;
 
 			if ((xconfig->educate) && (action == ACTION_CHANGE_WORD))
 				p->add_word_to_dict(p, next_lang);
@@ -964,28 +981,28 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_ENABLE_LAYOUT_0:
 		{
-			switch_group(0);
+			XkbLockGroup(main_window->display, XkbUseCoreKbd, 0);
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_0, NULL);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_1:
 		{
-			switch_group(1);
+			XkbLockGroup(main_window->display, XkbUseCoreKbd, 1);
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_1, NULL);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_2:
 		{
-			switch_group(2);
+			XkbLockGroup(main_window->display, XkbUseCoreKbd, 2);
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_2, NULL);
 			break;
 		}
 		case ACTION_ENABLE_LAYOUT_3:
 		{
-			switch_group(3);
+			XkbLockGroup(main_window->display, XkbUseCoreKbd, 3);
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_3, NULL);
 			break;
@@ -1115,6 +1132,9 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 
 static int program_check_lang_last_word(struct _program *p)
 {
+	if (xconfig->handle->languages[get_curr_keyboard_group()].excluded)
+		return FALSE;
+	
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
 		return FALSE;
 
@@ -1125,7 +1145,7 @@ static int program_check_lang_last_word(struct _program *p)
 	if (!word)
 		return FALSE;
 
-	int cur_lang = get_active_keyboard_group();
+	int cur_lang = get_curr_keyboard_group();
 	int new_lang = check_lang(xconfig->handle, p->buffer, cur_lang);
 
 	if (new_lang == NO_LANGUAGE)
@@ -1154,6 +1174,9 @@ static int program_check_lang_last_word(struct _program *p)
 
 static int program_check_lang_last_syllable(struct _program *p)
 {
+	if (xconfig->handle->languages[get_curr_keyboard_group()].excluded)
+		return FALSE;
+	
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
 		return FALSE;
 
@@ -1167,7 +1190,7 @@ static int program_check_lang_last_syllable(struct _program *p)
 	if (strlen(word) < 3)
 		return FALSE;
 
-	int cur_lang = get_active_keyboard_group();
+	int cur_lang = get_curr_keyboard_group();
 	int new_lang = check_lang(xconfig->handle, p->buffer, cur_lang);
 
 	if (new_lang == NO_LANGUAGE)
@@ -1286,7 +1309,7 @@ static void program_check_space_before_punctuation(struct _program *p)
 
 	p->event->event = p->event->default_event;
 	char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
-	int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+	int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
 	free(text);
@@ -1329,7 +1352,7 @@ static void program_check_space_with_bracket(struct _program *p)
 		p->event->event = p->event->default_event;
 		p->event->event.xkey.keycode = XKeysymToKeycode(main_window->display, XK_space);
 		p->event->send_next_event(p->event);
-		int modifier_mask = groups[get_active_keyboard_group()];
+		int modifier_mask = groups[get_curr_keyboard_group()];
 		p->buffer->add_symbol(p->buffer, ' ', p->event->event.xkey.keycode, modifier_mask);
 
 		p->event->event = p->event->default_event;
@@ -1350,7 +1373,7 @@ static void program_check_space_with_bracket(struct _program *p)
 		}
 		p->event->event = p->event->default_event;
 		char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
-		int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+		int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 		p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
 	}
 
@@ -1376,12 +1399,12 @@ static void program_check_brackets_with_symbols(struct _program *p)
 		p->event->event = p->event->default_event;
 		p->event->event.xkey.keycode = XKeysymToKeycode(main_window->display, XK_space);
 		p->event->send_next_event(p->event);
-		int modifier_mask = groups[get_active_keyboard_group()];
+		int modifier_mask = groups[get_curr_keyboard_group()];
 		p->buffer->add_symbol(p->buffer, ' ', p->event->event.xkey.keycode, modifier_mask);
 
 		p->event->event = p->event->default_event;
 		char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
-		modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+		modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 		p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
 	}
 
@@ -1415,7 +1438,7 @@ static void program_check_brackets_with_symbols(struct _program *p)
 	}
 	p->event->event = p->event->default_event;
 	char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
-	int modifier_mask = groups[get_active_keyboard_group()] | p->event->get_cur_modifiers(p->event);
+	int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
 
 	free(text);
@@ -1436,7 +1459,7 @@ static void program_check_pattern(struct _program *p)
 	if (strlen(tmp) < MIN_PATTERN_LEN - 1)
 		return;
 
-	int lang = get_active_keyboard_group();
+	int lang = get_curr_keyboard_group();
 	tmp = get_last_word(p->buffer->i18n_content[lang].content);
 
 	char *word = strdup(tmp);
@@ -1456,7 +1479,7 @@ static void program_check_pattern(struct _program *p)
 		return;
 	}
 	
-	log_message (DEBUG, _("Recognition word '%s' from text '%s' (layout %d), autocompletation..."), pattern_data->string, word, get_active_keyboard_group());
+	log_message (DEBUG, _("Recognition word '%s' from text '%s' (layout %d), autocompletation..."), pattern_data->string, word, get_curr_keyboard_group());
 	
 	set_event_mask(p->focus->owner_window, None);
 	grab_spec_keys(p->focus->owner_window, FALSE);
@@ -1622,7 +1645,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		{
 			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 			p->buffer->set_offset(p->buffer, offset);
-			int curr_lang = get_active_keyboard_group();
+			int curr_lang = get_curr_keyboard_group();
 			char *text = strdup(get_last_word(p->buffer->i18n_content[curr_lang].content));
 			p->buffer->unset_offset(p->buffer, offset);
 
@@ -1801,7 +1824,7 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 	if (tmp == NULL)
 		return;
 	
-	int curr_lang = get_active_keyboard_group();
+	int curr_lang = get_curr_keyboard_group();
 
 	tmp = get_last_word(p->buffer->i18n_content[curr_lang].content);
 
