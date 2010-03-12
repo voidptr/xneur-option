@@ -10,6 +10,7 @@ pixmaps_DATA =			\
 	ee.png			\
 	fi.png			\
 	fr.png			\
+	ge.png			\
 	gr.png			\
 	hr.png			\
 	hu.png			\
