@@ -49,13 +49,13 @@
 #ifdef WITH_ASPELL
 static char *layout_names[] =
 {
-	"am","bg","by","cz","de","gr","ee","en","es","fr","gb","kz","lt","lv",
+	"am","bg","by","cz","de","gr","ee","en","es","fr","ge","gb","kz","lt","lv",
 	"pl","ro","ru","ua","us","uz"
 };
 
 static char *aspell_names[] =
 {
-	"hy","bg","be","cs","de","el","et","en","es","fr","en","kk","lt","lv",
+	"hy","bg","be","cs","de","el","et","en","es","fr","ka","en","kk","lt","lv",
 	"pl","ro","ru","uk","en","uz"
 };
 

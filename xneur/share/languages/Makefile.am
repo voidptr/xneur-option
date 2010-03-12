@@ -4,6 +4,7 @@ SUBDIRS =			\
 	by			\
 	cz			\
 	de			\
+	ge			\
 	gr			\
 	ee			\
 	en			\
