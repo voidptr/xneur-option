@@ -47,7 +47,7 @@ int get_curr_keyboard_group(void)
 void set_next_keyboard_group(struct _xneur_handle *handle)
 {
 	int new_layout_group = get_curr_keyboard_group() + 1;
-	if (new_layout_group == handle->total_languages - 1)
+	if (new_layout_group == handle->total_languages)
 		new_layout_group = 0;
 	XkbLockGroup(main_window->display, XkbUseCoreKbd, new_layout_group);
 }
