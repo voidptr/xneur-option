@@ -20,6 +20,7 @@ pixmaps_DATA =			\
 	ru.png			\
 	ua.png			\
 	us.png			\
-	uz.png
+	uz.png			\
+	x3.png
 
 EXTRA_DIST = $(pixmaps_DATA)

@@ -229,14 +229,14 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 	tray->evbox		= gtk_event_box_new();
 
 	gtk_event_box_set_visible_window(GTK_EVENT_BOX(tray->evbox), 0);
-	gtk_widget_set_size_request(tray->evbox, 27, 18);
+	//gtk_widget_set_size_request(tray->evbox, 27, 18);
 
 	gtk_tooltips_set_tip(tray->tooltip, GTK_WIDGET(tray->widget), hint, NULL);
 	
 	GdkPixbuf *pb = create_pixbuf(image_file);
 	if (pb == NULL)
 	{
-		layout_name = "gxneur";
+		layout_name = "x3";
 		image_file = g_strdup_printf("%s%s", layout_name, ".png");
 		pb = create_pixbuf(image_file);
 	}
