@@ -20,9 +20,11 @@
 #ifndef _TRAYICON_H_
 #define _TRAYICON_H_
 
+#include "tray_widget.h"
+
 struct _tray_icon
 {
-	struct _tray_widget *widget;
+	GtkTrayIcon   *widget;
 
 	GtkTooltips *tooltip;
 	GtkWidget *image;

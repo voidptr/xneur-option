@@ -15,44 +15,61 @@
  *
  *  Copyright (C) 2006-2009 XNeur Team
  *
- *  Based on egtrayicon's code (Copyright (C) 2002 Anders Carlsson <andersca@gnu.org>)
- *
  */
 
-#ifndef _TRAY_WIDGET_H_
-#define _TRAY_WIDGET_H_
+#ifndef __GTK_TRAY_ICON_H__
+#define __GTK_TRAY_ICON_H__
 
-#include <gdk/gdkx.h>
+#include <gtk/gtkplug.h>
 
 G_BEGIN_DECLS
 
-enum _tray_widget_properties
-{
-	PROPERTY_ORIENTATION = 1
-};
+#define GTK_TYPE_TRAY_ICON		(gtk_tray_icon_get_type ())
+#define GTK_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TRAY_ICON, GtkTrayIcon))
+#define GTK_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TRAY_ICON, GtkTrayIconClass))
+#define GTK_IS_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TRAY_ICON))
+#define GTK_IS_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TRAY_ICON))
+#define GTK_TRAY_ICON_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TRAY_ICON, GtkTrayIconClass))
 
-struct _tray_widget_icon
+typedef struct _GtkTrayIcon	   GtkTrayIcon;
+typedef struct _GtkTrayIconPrivate GtkTrayIconPrivate;
+typedef struct _GtkTrayIconClass   GtkTrayIconClass;
+
+struct _GtkTrayIcon
 {
 	GtkPlug parent_instance;
 
-	guint stamp;
-
-	Atom selection_atom;
-	Atom manager_atom;
-	Atom system_tray_opcode_atom;
-	Atom orientation_atom;
-	Window manager_window;
-
-	GtkOrientation orientation;
+	GtkTrayIconPrivate *priv;
 };
 
-struct _tray_widget
+struct _GtkTrayIconClass
 {
 	GtkPlugClass parent_class;
+
+	void (*__gtk_reserved1);
+	void (*__gtk_reserved2);
+	void (*__gtk_reserved3);
+	void (*__gtk_reserved4);
+	void (*__gtk_reserved5);
+	void (*__gtk_reserved6);
 };
 
-struct _tray_widget* tray_widget_init(const gchar *name);
+GType          gtk_tray_icon_get_type         (void) G_GNUC_CONST;
+
+GtkTrayIcon   *_gtk_tray_icon_new_for_screen  (GdkScreen   *screen,
+					       const gchar *name);
+
+GtkTrayIcon   *_gtk_tray_icon_new             (const gchar *name);
+
+guint          _gtk_tray_icon_send_message    (GtkTrayIcon *icon,
+					       gint         timeout,
+					       const gchar *message,
+					       gint         len);
+void           _gtk_tray_icon_cancel_message  (GtkTrayIcon *icon,
+					       guint        id);
+
+GtkOrientation _gtk_tray_icon_get_orientation (GtkTrayIcon *icon);
 
 G_END_DECLS
 
-#endif /* _TRAY_WIDGET_H_ */
+#endif /* __GTK_TRAY_ICON_H__ */

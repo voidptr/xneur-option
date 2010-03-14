@@ -25,7 +25,7 @@
 #include "clock.h"
 #include "xkb.h"
 #include "misc.h"
-#include "tray_widget.h"
+//#include "tray_widget.h"
 
 #include <xneur/xnconfig.h>
 
@@ -217,7 +217,7 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 	{
 		tray = g_new0(struct _tray_icon, 1);	
 
-		tray->widget = tray_widget_init(_("X Neural Switcher"));
+		tray->widget = _gtk_tray_icon_new(_("X Neural Switcher"));
 		g_signal_connect(G_OBJECT(tray->widget), "button_press_event", G_CALLBACK(tray_icon_press), tray);
 		g_signal_connect(G_OBJECT(tray->widget), "button_release_event", G_CALLBACK(tray_icon_release), tray);
 
