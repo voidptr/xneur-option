@@ -190,7 +190,7 @@ static void tray_widget_make_transparent_again(GtkWidget *widget, GtkStyle *prev
 {
 	if (user_data || previous_style){}
 
-	gdk_window_set_back_pixmap(widget->window, NULL, TRUE);
+	gdk_window_set_back_pixmap(widget->window, NULL, FALSE);
 }
 
 static void tray_widget_make_transparent(GtkWidget *widget, gpointer user_data)
@@ -202,7 +202,7 @@ static void tray_widget_make_transparent(GtkWidget *widget, gpointer user_data)
 
 	gtk_widget_set_app_paintable(widget, TRUE);
 	gtk_widget_set_double_buffered(widget, FALSE);
-	gdk_window_set_back_pixmap(widget->window, NULL, TRUE);
+	gdk_window_set_back_pixmap(widget->window, NULL, FALSE);
 
 	g_signal_connect(widget, "expose_event", G_CALLBACK(tray_widget_transparent_expose_event), NULL);
 	g_signal_connect_after(widget, "style_set", G_CALLBACK(tray_widget_make_transparent_again), NULL);
