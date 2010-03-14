@@ -19,6 +19,8 @@
 
 #include <gtk/gtk.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
 #include "support.h"
 
@@ -178,10 +180,10 @@ void clock_check(Clock *clock)
 
 void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 {
-	char *layout_name = "gxneur";
+	char *layout_name = NULL;
 	int lang = get_active_kbd_group();
 	if (lang != -1)
-		layout_name = xconfig->handle->languages[lang].dir;
+		layout_name = strdup(xconfig->handle->languages[lang].dir);
 
 	char *image_file = g_strdup_printf("%s%s", layout_name, ".png");
 	
@@ -218,6 +220,7 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 		tray = g_new0(struct _tray_icon, 1);	
 
 		tray->widget = _gtk_tray_icon_new(_("X Neural Switcher"));
+
 		g_signal_connect(G_OBJECT(tray->widget), "button_press_event", G_CALLBACK(tray_icon_press), tray);
 		g_signal_connect(G_OBJECT(tray->widget), "button_release_event", G_CALLBACK(tray_icon_release), tray);
 
@@ -229,24 +232,36 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 	tray->evbox		= gtk_event_box_new();
 
 	gtk_event_box_set_visible_window(GTK_EVENT_BOX(tray->evbox), 0);
-	//gtk_widget_set_size_request(tray->evbox, 27, 18);
+	gtk_widget_set_size_request(GTK_WIDGET(tray->widget), 27, 18);
 
 	gtk_tooltips_set_tip(tray->tooltip, GTK_WIDGET(tray->widget), hint, NULL);
 	
 	GdkPixbuf *pb = create_pixbuf(image_file);
 	if (pb == NULL)
 	{
-		layout_name = "x3";
-		image_file = g_strdup_printf("%s%s", layout_name, ".png");
-		pb = create_pixbuf(image_file);
-	}
-	gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
-	tray->image = gtk_image_new_from_pixbuf(pb);
+		//layout_name = "x3";
+		//image_file = g_strdup_printf("%s%s", layout_name, ".png");
+		//pb = create_pixbuf(image_file);
 		
+		for (unsigned int i=0; i < strlen(layout_name); i++)
+			layout_name[i] = toupper(layout_name[i]);
+
+
+		tray->image = gtk_label_new ((const gchar *)layout_name);
+		gtk_label_set_justify (GTK_LABEL(tray->image), GTK_JUSTIFY_CENTER);
+	}
+	else
+	{
+		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
+		tray->image = gtk_image_new_from_pixbuf(pb);
+	}	
 	gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 	gtk_container_add(GTK_CONTAINER(tray->widget), tray->evbox);
 	gtk_widget_show_all(GTK_WIDGET(tray->widget));
 
 	if (init_clock == 1)
 		tray->clock = clock_new(clock_check, tray);
+
+	if (layout_name != NULL)
+		free(layout_name);
 }
