@@ -61,7 +61,9 @@ static const char *option_names[] = 	{
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
 						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup", 
 	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocomplementation", "LoadModule",
-						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent"
+						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent",
+						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
+						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -667,6 +669,90 @@ static void parse_line(struct _xneur_config *p, char *line)
 				p->volume_percent = 30;
 			break;
 		}
+		case 40: // Get troubleshooting mode for backspace
+		{
+			int status = get_option_index(bool_names, param);
+			if (status == -1)
+			{
+				log_message(WARNING, _("Invalid value for troubleshooting mode for backspace specified"));
+				break;
+			}
+
+			p->troubleshoot_backspace = status;
+			break;
+		}
+		case 41: // Get troubleshooting mode for left arrow
+		{
+			int status = get_option_index(bool_names, param);
+			if (status == -1)
+			{
+				log_message(WARNING, _("Invalid value for troubleshooting mode for left arrow specified"));
+				break;
+			}
+
+			p->troubleshoot_left_arrow = status;
+			break;
+		}
+		case 42: // Get troubleshooting mode for right arrow
+		{
+			int status = get_option_index(bool_names, param);
+			if (status == -1)
+			{
+				log_message(WARNING, _("Invalid value for troubleshooting mode for right arrow specified"));
+				break;
+			}
+
+			p->troubleshoot_right_arrow = status;
+			break;
+		}
+		case 43: // Get troubleshooting mode for up arrow
+		{
+			int status = get_option_index(bool_names, param);
+			if (status == -1)
+			{
+				log_message(WARNING, _("Invalid value for troubleshooting mode for up arrow specified"));
+				break;
+			}
+
+			p->troubleshoot_up_arrow = status;
+			break;
+		}
+		case 44: // Get troubleshooting mode for down arrow
+		{
+			int status = get_option_index(bool_names, param);
+			if (status == -1)
+			{
+				log_message(WARNING, _("Invalid value for troubleshooting mode for down arrow specified"));
+				break;
+			}
+
+			p->troubleshoot_down_arrow = status;
+			break;
+		}
+		case 45: // Get troubleshooting mode for delete
+		{
+			int status = get_option_index(bool_names, param);
+			if (status == -1)
+			{
+				log_message(WARNING, _("Invalid value for troubleshooting mode for delete specified"));
+				break;
+			}
+
+			p->troubleshoot_delete = status;
+			break;
+		}
+		case 46: // Get troubleshooting mode for keyboard switch
+		{
+			int status = get_option_index(bool_names, param);
+			if (status == -1)
+			{
+				log_message(WARNING, _("Invalid value for troubleshooting mode for keyboard switch specified"));
+				break;
+			}
+
+			p->troubleshoot_switch = status;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1133,6 +1219,15 @@ static int xneur_config_save(struct _xneur_config *p)
 		fprintf(stream, "AutocomplementationExcludeApp %s\n", p->autocomplementation_excluded_apps->data[i].string);
 	fprintf(stream, "\n");
 
+	fprintf(stream, "# Use next options for troubleshoot on autoswitching\n");
+	fprintf(stream, "# Disable autoswitching if pressed backspace\nTroubleshootBackspace %s\n", p->get_bool_name(p->troubleshoot_backspace));
+	fprintf(stream, "# Disable autoswitching if pressed left arrow\nTroubleshootLeftArrow %s\n", p->get_bool_name(p->troubleshoot_left_arrow));
+	fprintf(stream, "# Disable autoswitching if pressed right arrow\nTroubleshootRightArrow %s\n", p->get_bool_name(p->troubleshoot_right_arrow));
+	fprintf(stream, "# Disable autoswitching if pressed up arrow\nTroubleshootUpArrow %s\n", p->get_bool_name(p->troubleshoot_up_arrow));
+	fprintf(stream, "# Disable autoswitching if pressed down arrow\nTroubleshootDownArrow %s\n", p->get_bool_name(p->troubleshoot_down_arrow));
+	fprintf(stream, "# Disable autoswitching if pressed delete\nTroubleshootDelete %s\n", p->get_bool_name(p->troubleshoot_delete));
+	fprintf(stream, "# Disable autoswitching if layout switched\nTroubleshootSwitch %s\n\n", p->get_bool_name(p->troubleshoot_switch));
+	
 	fprintf(stream, "# Modules list\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#LoadModule libxntest.so\n");

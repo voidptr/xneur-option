@@ -278,6 +278,22 @@ AddSpaceAfterAutocomplementation No
 #AutocomplementationExcludeApp Gnome-terminal
 AutocomplementationExcludeApp Gnome-terminal
 
+# Use next options for troubleshoot on autoswitching
+# Disable autoswitching if pressed backspace
+TroubleshootBackspace No
+# Disable autoswitching if pressed left arrow
+TroubleshootLeftArrow No
+# Disable autoswitching if pressed right arrow
+TroubleshootRightArrow No
+# Disable autoswitching if pressed up arrow
+TroubleshootUpArrow No
+# Disable autoswitching if pressed down arrow
+TroubleshootDownArrow No
+# Disable autoswitching if pressed delete
+TroubleshootDelete No
+# Disable autoswitching if layout switched
+TroubleshootSwitch No
+
 # Modules list
 # Example:
 #LoadModule libxntest.so

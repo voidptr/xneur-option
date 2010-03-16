@@ -214,59 +214,51 @@ msgstr "Уключыць рэжым саманавучаньня"
 msgid "Keep selection after changing selected text"
 msgstr "Трымаць выдзяленьне пасьля зьмены выдзеленага тэксту"
 
-#: glade/config.glade:84
-msgid "Flush internal buffer on Enter or Tab"
-msgstr "Ачышаць унутраны буфэр праз Enter альбо Tab"
-
-#: glade/config.glade:98
-msgid "Don't process words on Enter or Tab"
-msgstr "Не правяраць словы пасьля націсканьня Enter альбо Tab"
-
-#: glade/config.glade:112
+#: glade/config.glade:90
 msgid "Check language on input process"
 msgstr ""
 
-#: glade/config.glade:132
+#: glade/config.glade:110
 msgid "Main"
 msgstr ""
 
-#: glade/config.glade:145
+#: glade/config.glade:123
 msgid "Correct aCCIDENTAL caps"
 msgstr "вЫПРАЎЛЯЦЬ вЫПАДКОВЫ cAPSLOCK"
 
-#: glade/config.glade:159
+#: glade/config.glade:137
 msgid "Disable CapsLock use"
 msgstr ""
 
-#: glade/config.glade:173
+#: glade/config.glade:151
 msgid "Correct TWo INitial caps"
 msgstr "Выпраўляць ДЗьве ВЯлікія ЛІтары"
 
-#: glade/config.glade:187
+#: glade/config.glade:165
 msgid "Correct spaces with punctuation"
 msgstr ""
 
-#: glade/config.glade:207
+#: glade/config.glade:185
 msgid "Typographics"
 msgstr ""
 
-#: glade/config.glade:230
+#: glade/config.glade:208
 msgid "<b>General</b>"
 msgstr "<b>Агульнае</b>"
 
-#: glade/config.glade:284
+#: glade/config.glade:262
 msgid "Dictionary..."
 msgstr "Слоўнік…"
 
-#: glade/config.glade:297
+#: glade/config.glade:275
 msgid "Regular Expressions..."
 msgstr "Рэгулярныя выразы…"
 
-#: glade/config.glade:325
+#: glade/config.glade:303
 msgid "Initial layout number:"
 msgstr "Нумар раскладкі па змаўчаньні"
 
-#: glade/config.glade:335
+#: glade/config.glade:313
 msgid ""
 "0\n"
 "1\n"
@@ -278,124 +270,177 @@ msgstr ""
 "2\n"
 "3"
 
-#: glade/config.glade:365
+#: glade/config.glade:343
 msgid "Remember keyboard layout for each application instance"
 msgstr "Захоўваць раскладку асобна для кожнай копіі праграмы"
 
-#: glade/config.glade:459
+#: glade/config.glade:437
 msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr "Выключэньні (аднолькавая раскладка для ўсіх копій праграмы)"
 
-#: glade/config.glade:489
+#: glade/config.glade:467
 msgid "<b>Layouts</b>"
 msgstr "<b>Раскладкі</b>"
 
-#: glade/config.glade:691
+#: glade/config.glade:669
 msgid "<b>Hotkeys</b>"
 msgstr "<b>Спалучэньні клявішаў</b>"
 
-#: glade/config.glade:715
+#: glade/config.glade:693
 msgid "Enable pattern mining and recognition (autocomplementation)"
 msgstr ""
 
-#: glade/config.glade:729
+#: glade/config.glade:707
 msgid "Add space after autocomplementation"
 msgstr ""
 
-#: glade/config.glade:832
+#: glade/config.glade:810
 msgid "Disable the autocomplementation for these applications"
 msgstr ""
 
-#: glade/config.glade:868
+#: glade/config.glade:846
 msgid "<b>Autocomplementation</b>"
 msgstr ""
 
-#: glade/config.glade:969
+#: glade/config.glade:947
 msgid "Ignore these applications"
 msgstr "Не апрацоўваць наступыя праграмы:"
 
-#: glade/config.glade:1060
+#: glade/config.glade:1038
 msgid "Force automatic mode for these applications"
 msgstr "Прымусовы аўтаматычны рэжым для наступых праграмаў:"
 
-#: glade/config.glade:1151
+#: glade/config.glade:1129
 msgid "Force manual mode for these applications"
 msgstr "Прымусовы ручны рэжым для наступых праграмаў:"
 
-#: glade/config.glade:1181
+#: glade/config.glade:1159
 msgid "<b>Applications</b>"
 msgstr "<b>Праграмы</b>"
 
-#: glade/config.glade:1213
+#: glade/config.glade:1191
 msgid "Enable sounds"
 msgstr "Граць гукі"
 
-#: glade/config.glade:1233
+#: glade/config.glade:1211
 msgid "Sound volume"
 msgstr ""
 
-#: glade/config.glade:1325
+#: glade/config.glade:1303
 msgid "Sounds"
 msgstr "Гукі"
 
-#: glade/config.glade:1342
+#: glade/config.glade:1320
 msgid "Show OSD"
 msgstr "Паказваць OSD"
 
-#: glade/config.glade:1362
+#: glade/config.glade:1340
 msgid "OSD Font"
 msgstr "Шрыфт OSD"
 
-#: glade/config.glade:1393
+#: glade/config.glade:1371
 msgid "Use command <b>xfontsel -print</b> to get new font."
 msgstr "Ужывайце каманду <b>xfontsel -print</b>, каб атрымаць новы шрыфт."
 
-#: glade/config.glade:1442
+#: glade/config.glade:1420
 msgid "OSD"
 msgstr ""
 
-#: glade/config.glade:1460
+#: glade/config.glade:1438
 msgid "Show popup messages"
 msgstr ""
 
-#: glade/config.glade:1514
+#: glade/config.glade:1492
 msgid "Popup messages"
 msgstr ""
 
-#: glade/config.glade:1540
+#: glade/config.glade:1518
 msgid "<b>Notifications</b>"
 msgstr ""
 
-#: glade/config.glade:1564
+#: glade/config.glade:1542
 msgid "Ignore keyboard layout for abbreviations"
 msgstr "Ігнараваць раскладку для скаротаў"
 
-#: glade/config.glade:1652
+#: glade/config.glade:1630
 msgid "<b>Abbreviations</b>"
 msgstr "<b>Скароты</b>"
 
-#: glade/config.glade:1676
+#: glade/config.glade:1654
 msgid "Enable keyboard logging"
 msgstr "Уключыць захаваньне набранага тэксту ў часопіс"
 
-#: glade/config.glade:1697
+#: glade/config.glade:1675
 msgid "Send log to e-mail"
 msgstr ""
 
-#: glade/config.glade:1723
+#: glade/config.glade:1701
 msgid "Send log via host (IP)"
 msgstr ""
 
-#: glade/config.glade:1749
+#: glade/config.glade:1727
 msgid "Log file size in bytes"
 msgstr ""
 
-#: glade/config.glade:1796
+#: glade/config.glade:1774
 msgid "<b>Log</b>"
 msgstr ""
 
-#: glade/config.glade:1822
-#, fuzzy
+#: glade/config.glade:1811
+msgid "Backspace"
+msgstr ""
+
+#: glade/config.glade:1825
+msgid "Left arrow"
+msgstr ""
+
+#: glade/config.glade:1839
+msgid "Right arrow"
+msgstr ""
+
+#: glade/config.glade:1853
+msgid "Up arrow"
+msgstr ""
+
+#: glade/config.glade:1867
+msgid "Down arrow"
+msgstr ""
+
+#: glade/config.glade:1881
+msgid "Delete"
+msgstr ""
+
+#: glade/config.glade:1895
+msgid "You changed layout"
+msgstr ""
+
+#: glade/config.glade:1921
+msgid ""
+"This will help avoid switching layout when editing parts previously "
+"introduced word."
+msgstr ""
+
+#: glade/config.glade:1936
+msgid "Don't switch layout if before input where pressed"
+msgstr ""
+
+#: glade/config.glade:1963
+msgid "Flush internal buffer on Enter or Tab"
+msgstr "Ачышаць унутраны буфэр праз Enter альбо Tab"
+
+#: glade/config.glade:1977
+msgid "Don't process words on Enter or Tab"
+msgstr "Не правяраць словы пасьля націсканьня Enter альбо Tab"
+
+#: glade/config.glade:1996
+msgid "Additional"
+msgstr ""
+
+#: glade/config.glade:2020
+msgid "<b>Troubleshooting</b>"
+msgstr ""
+
+#: glade/config.glade:2046
 msgid ""
 "None\n"
 "Error\n"
@@ -404,25 +449,26 @@ msgid ""
 "Debug\n"
 "Trace"
 msgstr ""
+"None\n"
 "Error\n"
 "Warning\n"
 "Log\n"
 "Debug\n"
 "Trace"
 
-#: glade/config.glade:1859
+#: glade/config.glade:2083
 msgid "Log verbosity level"
 msgstr "Узровень падрабязнасьці часопіса"
 
-#: glade/config.glade:1872
+#: glade/config.glade:2096
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Затрымка перад адсылкай падзеяў (у мілісэкундах)"
 
-#: glade/config.glade:1891
+#: glade/config.glade:2115
 msgid "<b>Advanced</b>"
 msgstr "<b>Дадаткова</b>"
 
-#: glade/config.glade:1953
+#: glade/config.glade:2177
 msgid "<b>Plugins</b>"
 msgstr ""
 

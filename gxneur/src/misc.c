@@ -1003,6 +1003,22 @@ void xneur_preference(void)
 		    									2, xconfig->popups[i].enabled,
 												-1);
 	}
+
+	// Troubleshooting
+	widget = glade_xml_get_widget (gxml, "checkbutton14");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_backspace);
+	widget = glade_xml_get_widget (gxml, "checkbutton15");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_left_arrow);
+	widget = glade_xml_get_widget (gxml, "checkbutton16");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_right_arrow);
+	widget = glade_xml_get_widget (gxml, "checkbutton17");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_up_arrow);
+	widget = glade_xml_get_widget (gxml, "checkbutton23");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_down_arrow);
+	widget = glade_xml_get_widget (gxml, "checkbutton24");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_delete);
+	widget = glade_xml_get_widget (gxml, "checkbutton25");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_switch);
 	
 	// Plugins
 	treeview = glade_xml_get_widget (gxml, "treeview11");
@@ -1943,6 +1959,22 @@ void xneur_save_preference(GladeXML *gxml)
 	if (xconfig->osd_font != NULL)
 		free(xconfig->osd_font);
 	xconfig->osd_font = strdup((char *) gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
+
+	// Troubleshooting
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton14");
+	xconfig->troubleshoot_backspace = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton15");
+	xconfig->troubleshoot_left_arrow = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton16");
+	xconfig->troubleshoot_right_arrow = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton17");
+	xconfig->troubleshoot_up_arrow = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton23");
+	xconfig->troubleshoot_down_arrow = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton24");
+	xconfig->troubleshoot_delete = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton25");
+	xconfig->troubleshoot_switch = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));;
 	
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);

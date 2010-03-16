@@ -207,6 +207,15 @@ struct _xneur_config
 	int   size_keyboard_log;			// Size keyboard log
 	char* mail_keyboard_log;
 	char* host_keyboard_log;
+
+	// Troubleshooting
+	int troubleshoot_backspace;
+	int troubleshoot_left_arrow;
+	int troubleshoot_right_arrow;
+	int troubleshoot_up_arrow;
+	int troubleshoot_down_arrow;
+	int troubleshoot_delete;
+	int troubleshoot_switch;
 	
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);

@@ -84,8 +84,16 @@ extern struct _xneur_config *xconfig;
 struct _window *main_window;
 
 // Private
-static int get_auto_action(KeySym key, int modifier_mask)
+static int get_auto_action(struct _program *p, KeySym key, int modifier_mask)
 {
+	if 	(((key == XK_BackSpace) && (xconfig->troubleshoot_backspace)) || 
+		((key == XK_Left) && (xconfig->troubleshoot_left_arrow)) ||
+		((key == XK_Right) && (xconfig->troubleshoot_right_arrow)) ||
+		((key == XK_Up) && (xconfig->troubleshoot_up_arrow)) ||
+		((key == XK_Down) && (xconfig->troubleshoot_down_arrow)) ||
+		((key == XK_Delete) && (xconfig->troubleshoot_delete))) 
+		p->changed_manual = MANUAL_FLAG_SET;
+	
 	// Null symbol
 	if (key == 0)
 		return KLB_NO_ACTION;
@@ -625,7 +633,7 @@ static void program_on_key_action(struct _program *p, int type)
 
 		p->plugin->key_press(p->plugin, key, p->prev_key_mod);
 		
-		int auto_action = get_auto_action(key, p->prev_key_mod);
+		int auto_action = get_auto_action(p, key, p->prev_key_mod);
 		if ((auto_action != KLB_NO_ACTION) && (auto_action != KLB_CLEAR))
 		{
 			int lang = get_curr_keyboard_group();
@@ -768,17 +776,14 @@ static void program_perform_auto_action(struct _program *p, int action)
 		{
 			if (action == KLB_ENTER && xconfig->dont_process_when_press_enter)
 				action = KLB_ADD_SYM;
-
-			if (p->changed_manual == MANUAL_FLAG_SET)
-				p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
-
+			
 			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
 
 			if (action == KLB_ADD_SYM)
 			{
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
 					p->changed_manual = MANUAL_FLAG_UNSET;
-
+				
 				// Add symbol to internal bufer
 				int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 				p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
@@ -799,8 +804,10 @@ static void program_perform_auto_action(struct _program *p, int action)
 				
 				// Checking word
 				if (p->changed_manual == MANUAL_FLAG_UNSET)
+				{
 					if (p->check_lang_last_syllable(p))
 						p->event->default_event.xkey.keycode = 0;
+				}
 
 				p->check_pattern(p);
 				
@@ -843,12 +850,15 @@ static void program_perform_auto_action(struct _program *p, int action)
 			// Unblock keyboard
 			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 
-			p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
+			//p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 
 			if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 			p->last_action = ACTION_NONE;
+
+			if (p->changed_manual == MANUAL_FLAG_SET)
+					p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 			
 			return;
 		}
