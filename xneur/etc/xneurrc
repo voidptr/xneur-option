@@ -292,7 +292,7 @@ TroubleshootDownArrow No
 # Disable autoswitching if pressed delete
 TroubleshootDelete No
 # Disable autoswitching if layout switched
-TroubleshootSwitch No
+TroubleshootSwitch Yes
 
 # Modules list
 # Example:

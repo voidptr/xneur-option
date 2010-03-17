@@ -1135,7 +1135,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 	}
 
 	// When CHANGE_STRING or CHANGE_WORD actions occured
-	p->changed_manual = MANUAL_FLAG_SET;
+	if (xconfig->troubleshoot_switch)
+		p->changed_manual = MANUAL_FLAG_SET;
 
 	return TRUE;
 }

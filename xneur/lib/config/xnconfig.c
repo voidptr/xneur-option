@@ -1364,6 +1364,14 @@ struct _xneur_config* xneur_config_init(void)
 	p->autocomplementation_excluded_apps	= list_char_init();
 	p->plugins		= list_char_init();
 
+	p->troubleshoot_backspace = FALSE; 
+	p->troubleshoot_left_arrow = FALSE; 
+	p->troubleshoot_right_arrow = FALSE;
+	p->troubleshoot_up_arrow = FALSE;
+	p->troubleshoot_down_arrow = FALSE;
+	p->troubleshoot_delete = FALSE;
+	p->troubleshoot_switch = TRUE;
+	
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;
 	p->get_global_dict_path		= get_file_path_name;
