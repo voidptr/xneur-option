@@ -714,6 +714,7 @@ static void program_on_key_action(struct _program *p, int type)
 		{
 			if (p->perform_manual_action(p, manual_action))
 				return;
+
 			set_event_mask(p->focus->owner_window, None);
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
 			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
@@ -850,8 +851,6 @@ static void program_perform_auto_action(struct _program *p, int action)
 			// Unblock keyboard
 			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 
-			//p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
-
 			if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
@@ -868,7 +867,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 static int program_perform_manual_action(struct _program *p, enum _hotkey_action action)
 {
 	p->plugin->hotkey_action(p->plugin, action);
-			
+
 	switch (action)
 	{
 		case ACTION_NONE:
@@ -1061,7 +1060,6 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
 		{
 			//MOVE this code to new function in new module
-
 			char *utf_string = p->buffer->get_utf_string(p->buffer);
 
 			// Check last word to acronym list
@@ -1071,7 +1069,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				free(utf_string);
 				return FALSE;
 			}
-			
+
 			for (int words = 0; words < xconfig->abbreviations->data_count; words++)
 			{
 				char *string		= strdup(xconfig->abbreviations->data[words].string);
@@ -1133,7 +1131,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			return FALSE;
 		}
 	}
-
+printf("c/n");
 	// When CHANGE_STRING or CHANGE_WORD actions occured
 	if (xconfig->troubleshoot_switch)
 		p->changed_manual = MANUAL_FLAG_SET;
@@ -2002,7 +2000,7 @@ struct _program* program_init(void)
 	struct _program *p = (struct _program*) malloc(sizeof(struct _program));
 	bzero(p, sizeof(struct _program));
 
-	main_window = window_init();
+	main_window = window_init(xconfig->handle);
 
 	if (!main_window->create(main_window) || !main_window->init_keymap(main_window))
 	{

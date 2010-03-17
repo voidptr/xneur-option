@@ -253,7 +253,6 @@ static char keymap_get_ascii(struct _keymap *p, const char *sym, KeyCode *kc, in
 						event.xkey.state	= get_keycode_mod(lang);
 						event.xkey.state	|= state_masks[m];
 						event.xkey.state	|= state_masks[n];
-
 						int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
 						if (nbytes <= 0)
 							continue;
