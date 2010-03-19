@@ -19,12 +19,6 @@ private_icons = \
 noinst_DATA = \
 	$(NULL)
 
-EXTRA_DIST = \
-	$(public_icons)		\
-	$(private_icons)	\
-	$(noinst_DATA)		\
-	$(NULL)
-
 ###############################################################################
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t
@@ -90,19 +84,35 @@ pixmaps_DATA =			\
 	en.png			\
 	es.png			\
 	ee.png			\
+	fi.png			\
 	fr.png			\
 	ge.png			\
 	gr.png			\
 	gxneur.png		\
+	hr.png			\
+	hu.png			\
+	is.png			\
+	it.png			\
 	kz.png			\
 	lt.png			\
 	lv.png			\
+	no.png			\
 	pl.png			\
+	pt.png			\
 	ro.png			\
+	se.png			\
+	si.png			\
+	sk.png			\
+	sr.png			\
 	ru.png			\
 	ua.png			\
 	us.png			\
 	uz.png			\
 	x3.png
 
-EXTRA_DIST = $(pixmaps_DATA)
+EXTRA_DIST = \
+	$(public_icons)		\
+	$(private_icons)	\
+	$(noinst_DATA)		\
+	$(pixmaps_DATA)		\
+	$(NULL)

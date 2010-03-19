@@ -19,7 +19,12 @@ noinst_DATA =			\
 	TODO			\
 	ChangeLog
 
-EXTRA_DIST = $(noinst_DATA) m4/ChangeLog gxneur.1
+Multimediadir = $(datadir)/applications
+Multimedia_in_files = gxneur.desktop.in
+Multimedia_DATA = $(Multimedia_in_files:.desktop.in=.desktop)
+
+EXTRA_DIST = $(noinst_DATA) m4/ChangeLog gxneur.1 $(Multimedia_DATA) gxneur.desktop.in
+
 man_MANS = gxneur.1
 
 check-gettext:
