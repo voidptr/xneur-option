@@ -1,3 +1,10 @@
+March 19 2010:
+Version 0.9.8 released.
+New logo of gxneur.
+Add more xneur options.
+Bugfix tray resize.
+Undefined layouts (flag not exist) showing letters.
+
 October 14 2009:
 Version 0.9.7 released.
 Executing user actions from gxneur tray icon menu.

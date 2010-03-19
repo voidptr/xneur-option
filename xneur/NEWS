@@ -1,3 +1,12 @@
+March 19 2010:
+Version 0.9.8 released.
+Automatic identification of system keyboard layouts.
+Calculating clipboard and selected formul's via calc deleted.
+New options for troubleshooting.
+New library (libxneur) for using xneur functional in external apps.
+Add georgian language.
+Lot of bugfixes
+
 October 14 2009:
 Version 0.9.7 released.
 Add option for preview conversation of selected text.

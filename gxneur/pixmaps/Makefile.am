@@ -30,6 +30,7 @@ pixmaps_DATA =			\
 	ge.png			\
 	gr.png			\
 	gxneur.png		\
+	gxneur.svg		\
 	kz.png			\
 	lt.png			\
 	lv.png			\
