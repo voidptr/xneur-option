@@ -43,6 +43,6 @@ struct _window
 	void (*uninit) (struct _window *p);
 };
 
-struct _window* window_init(struct _xneur_handle *handle;);
+struct _window* window_init(struct _xneur_handle *handle);
 
 #endif /* _WINDOW_H_ */
