@@ -58,7 +58,7 @@ void xneur_edit_dictionary(GtkWidget *treeview);
 
 #define MAX_LANGUAGES			4
 #define XNEUR_NEEDED_MAJOR_VERSION	9
-#define XNEUR_BUILD_MINOR_VERSION	8
+#define XNEUR_BUILD_MINOR_VERSION	9
 	
 struct _xneur_config *xconfig				= NULL;
 	
@@ -294,14 +294,14 @@ static void init_libxnconfig(void)
 
 	if ((major_version != XNEUR_NEEDED_MAJOR_VERSION) || (minor_version != XNEUR_BUILD_MINOR_VERSION))
 	{
-		error_msg(_("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.0.%d\n"), XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
-		printf(_("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version %d.0.%d\n"), XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
+		error_msg(_("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version 0.%d.%d\n"), XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
+		printf(_("Wrong XNeur configuration library api version.\nPlease, install libxnconfig version 0.%d.%d\n"), XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}
 
-	//error_msg(_("Using libxnconfig API version %d.0.%d (build with %d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
-	printf(_("Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
+	//error_msg(_("Using libxnconfig API version 0.%d.%d (build with %d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
+	printf(_("Using libxnconfig API version 0.%d.%d (build with 0.%d.%d)\n"), major_version, minor_version, XNEUR_NEEDED_MAJOR_VERSION, XNEUR_BUILD_MINOR_VERSION);
 
 	if (!xconfig->load(xconfig))
 	{

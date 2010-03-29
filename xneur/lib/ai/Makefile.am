@@ -8,4 +8,4 @@ libxnai_la_SOURCES =		\
 
 libxnai_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/main -I@top_srcdir@/lib/lib @X11_CFLAGS@ @ASPELL_CFLAGS@ @DEFAULT_CFLAGS@
 libxnai_la_LDFLAGS = -static @X11_LIBS@ @ASPELL_LIBS@
-libxnai_la_LIBADD = ../misc/libxnmisc.la
+

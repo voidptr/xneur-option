@@ -483,15 +483,15 @@ msgstr "Beliebige Taste drücken"
 #, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
-"Please, install libxnconfig version %d.0.%d\n"
+"Please, install libxnconfig version 0.%d.%d\n"
 msgstr ""
 "Falsche Version der Konfigurationsbibliothek von XNeur\n"
-"Bitte installieren Sie libxnconfig der Version %d.0.%d\n"
+"Bitte installieren Sie libxnconfig der Version 0.%d.%d\n"
 
 #: src/misc.c:303
 #, c-format
-msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
-msgstr "Die libxnconfig API der Version %d.0.%d (kompiliert mit %d.0.%d)\n"
+msgid "Using libxnconfig API version 0.%d.%d (build with 0.%d.%d)\n"
+msgstr "Die libxnconfig API der Version 0.%d.%d (kompiliert mit 0.%d.%d)\n"
 
 #: src/misc.c:307 src/misc.c:308
 #, c-format
