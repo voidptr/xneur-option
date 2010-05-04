@@ -73,8 +73,8 @@ static void popup_show_thread(struct _popup_body *popup_body)
 	if (popup_body->content != NULL)
 		free(popup_body->content);
 	free (popup_body);
-	
-	notify_uninit();
+
+	notify_notification_clear_actions(notify);
 }
 
 void popup_show(int notify, char *command)
