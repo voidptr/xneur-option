@@ -214,8 +214,10 @@ gtk_tray_icon_expose (GtkWidget      *widget,
 		      GdkEventExpose *event)
 {
 	GtkTrayIcon *icon = GTK_TRAY_ICON (widget);
+#ifdef WITH_GTK	
 	GtkWidget *focus_child;
 	gint border_width, x, y, width, height;
+#endif	
 	gboolean retval = FALSE;
 
 	if (icon->priv->manager_visual_rgba)
