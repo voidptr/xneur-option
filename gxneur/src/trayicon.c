@@ -256,8 +256,8 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 	{
 		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
 		tray->image = gtk_image_new_from_pixbuf(pb);
+		gdk_pixbuf_unref(pb);
 	}	
-	gdk_pixbuf_unref(pb);
 	
 	gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 	gtk_container_add(GTK_CONTAINER(tray->widget), tray->evbox);
