@@ -19,10 +19,9 @@ PKG_PROG_PKG_CONFIG([0.20])
 PKG_CHECK_MODULES(GDK, [gdk-2.0])
 PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.18.0], found_gtk="yes", found_gtk="no")
 if test "x$found_gtk" = "xno"; then
-	PKG_CHECK_MODULES(GTK, [gtk+-2.0 < 2.18.0], found_oldgtk="yes", found_oldgtk="no")
-	if test "x$found_oldgtk" != "xno"; then
-		AC_DEFINE(WITH_OLDGTK, 1, [Define if you use GTK+2.0 < 2.18.0 support])
-	fi
+	PKG_CHECK_MODULES(GTK, [gtk+-2.0 < 2.18.0])
+else
+	AC_DEFINE(WITH_GTK, 1, [Define if you use GTK+2.0 >= 2.18.0 support])
 fi
 
 PKG_CHECK_MODULES(XNEUR, [xnconfig = 0.9.9])
@@ -53,9 +52,9 @@ $PACKAGE $VERSION configured successfully:
 
 EOF
 
-if test "x$with_oldgtk" != "xno"; then
+if test "x$found_gtk" != "xno"; then
 cat <<EOF
-	Use GTK+2.0 < 2.18.0 support
+	Use GTK+2.0 >= 2.18.0 support
 
 EOF
 fi
