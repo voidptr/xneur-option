@@ -238,6 +238,7 @@ gtk_tray_icon_expose (GtkWidget      *widget,
 	if (GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->expose_event)
 		retval = GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->expose_event (widget, event);
 
+#ifdef WITH_GTK	
 	focus_child = GTK_CONTAINER (widget)->focus_child;
 	if (focus_child && gtk_widget_has_focus (focus_child))
 	{
@@ -254,7 +255,8 @@ gtk_tray_icon_expose (GtkWidget      *widget,
 				&event->area, widget, "tray_icon",
 				x, y, width, height);
 	}
-
+#endif
+	
 	return retval;
 }
 
