@@ -245,10 +245,6 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 	GdkPixbuf *pb = create_pixbuf(image_file);
 	if (pb == NULL)
 	{
-		//layout_name = "x3";
-		//image_file = g_strdup_printf("%s%s", layout_name, ".png");
-		//pb = create_pixbuf(image_file);
-		
 		for (unsigned int i=0; i < strlen(layout_name); i++)
 			layout_name[i] = toupper(layout_name[i]);
 
@@ -261,6 +257,8 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
 		tray->image = gtk_image_new_from_pixbuf(pb);
 	}	
+	gdk_pixbuf_unref(pb);
+	
 	gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 	gtk_container_add(GTK_CONTAINER(tray->widget), tray->evbox);
 	gtk_widget_show_all(GTK_WIDGET(tray->widget));
@@ -270,4 +268,7 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 
 	if (layout_name != NULL)
 		free(layout_name);
+
+	if (image_file != NULL)
+		free(image_file);
 }
