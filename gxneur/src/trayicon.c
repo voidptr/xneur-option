@@ -165,6 +165,12 @@ void clock_check(Clock *clock)
 	int xneur_state = xconfig->is_manual_mode(xconfig);
 	int xneur_group = get_active_kbd_group();
 
+	if (get_kbd_group_count() != xconfig->handle->total_languages)
+	{
+		g_spawn_command_line_async(PACKAGE, NULL);
+		exit(0);
+	}
+	
 	if (xneur_pid == xneur_old_pid && xneur_state == xneur_old_state && xneur_group == xneur_old_group)
 		return;
 

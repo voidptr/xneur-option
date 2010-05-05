@@ -288,7 +288,7 @@ static void init_libxnconfig(void)
 
 	// Init configuration
 	xconfig = xneur_config_init();
-
+				
 	int major_version, minor_version;
 	xconfig->get_library_version(&major_version, &minor_version);
 

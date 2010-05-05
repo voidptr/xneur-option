@@ -321,7 +321,7 @@ static void program_process_input(struct _program *p)
 
 				// Processing received event
 				p->on_key_action(p, type);
-
+				
 				// Restore event
 				if (p->event->default_event.xkey.keycode != 0)
 				{
@@ -430,6 +430,16 @@ static void program_process_input(struct _program *p)
 			{
 				log_message(TRACE, _("Received MappingNotify (event type %d)"), type);
 
+				main_window->keymap->uninit(main_window->keymap);
+				p->buffer->uninit(p->buffer);
+				
+				xneur_handle_destroy(xconfig->handle);
+				xconfig->handle = xneur_handle_create();
+				
+				p->buffer = buffer_init(xconfig->handle);
+				main_window->keymap = keymap_init(xconfig->handle);
+				
+				log_message (DEBUG, "Now layouts count %d", xconfig->handle->total_languages);
 				p->update(p);
 				break;
 			}
@@ -779,7 +789,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 				action = KLB_ADD_SYM;
 			
 			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
-
+			
 			if (action == KLB_ADD_SYM)
 			{
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
@@ -814,9 +824,10 @@ static void program_perform_auto_action(struct _program *p, int action)
 				
 				// Unblock keyboard
 				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+
 				return;
 			}
-
+			
 			// Block events of keyboard (push to event queue)
 			set_event_mask(p->focus->owner_window, None);
 
@@ -858,7 +869,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 			if (p->changed_manual == MANUAL_FLAG_SET)
 					p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
-			
+
 			return;
 		}
 	}

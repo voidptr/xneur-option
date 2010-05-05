@@ -1398,3 +1398,4 @@ struct _xneur_config* xneur_config_init(void)
 
 	return p;
 }
+

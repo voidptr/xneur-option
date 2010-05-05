@@ -73,3 +73,25 @@ int set_next_kbd_group(void)
 	XCloseDisplay(dpy);
 	return 1;
 }
+
+int get_kbd_group_count(void)
+{
+	Display *dpy = XOpenDisplay(NULL);
+
+	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
+	if (kbd_desc_ptr == NULL)
+		return 0;
+
+	XkbGetControls(dpy, XkbAllControlsMask, kbd_desc_ptr);
+	XkbGetNames(dpy, XkbSymbolsNameMask, kbd_desc_ptr);
+	XkbGetNames(dpy, XkbGroupNamesMask, kbd_desc_ptr);
+	XCloseDisplay(dpy);
+	
+	if (kbd_desc_ptr->names == NULL)
+		return 0;
+
+	if (kbd_desc_ptr->ctrls != NULL)
+		return kbd_desc_ptr->ctrls->num_groups;
+
+	return 0;
+}	

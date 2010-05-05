@@ -21,6 +21,7 @@
 #define _XKB_H_
 
 int get_active_kbd_group(void);
+int get_kbd_group_count(void);
 int set_next_kbd_group(void);
 
 #endif /* _XKB_H_ */
