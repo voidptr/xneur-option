@@ -325,8 +325,10 @@ static void program_process_input(struct _program *p)
 				// Restore event
 				if (p->event->default_event.xkey.keycode != 0)
 				{
+					set_event_mask(p->focus->owner_window, None);
 					p->event->event = p->event->default_event;
 					p->event->send_next_event(p->event);
+					set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 				}
 				break;
 			}
@@ -342,9 +344,11 @@ static void program_process_input(struct _program *p)
 
 				// Resend special key back to window
 				if (p->event->default_event.xkey.keycode != 0)
-				{
+				{		
+					set_event_mask(p->focus->owner_window, None);
 					p->event->event = p->event->default_event;
 					p->event->send_next_event(p->event);
+					set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 				}
 				break;
 			}
@@ -630,6 +634,7 @@ static void program_on_key_action(struct _program *p, int type)
 		{
 			char *keysym_str = XKeysymToString(p->event->get_cur_keysym(p->event));
 			p->modifiers_stack->add(p->modifiers_stack, keysym_str);
+			log_message(DEBUG, "Push to modifier stack '%s'", keysym_str);
 		}
 		p->prev_key_mod |= p->event->get_cur_modifiers_by_keysym(p->event);
 		
@@ -682,7 +687,15 @@ static void program_on_key_action(struct _program *p, int type)
 		if (IsModifierKey(key))
 		{
 			char *keysym_str = XKeysymToString(p->event->get_cur_keysym(p->event));
-			p->modifiers_stack->rem(p->modifiers_stack, keysym_str);
+			if (p->modifiers_stack->exist(p->modifiers_stack, keysym_str, BY_PLAIN))
+			{
+				p->modifiers_stack->rem(p->modifiers_stack, keysym_str);
+				log_message(DEBUG, "Pop to modifier stack '%s'", keysym_str);
+			}
+			else
+			{
+				p->event->default_event.xkey.keycode = 0;
+			}
 		}
 
 		if (p->prev_key == None)

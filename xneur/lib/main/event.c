@@ -183,7 +183,12 @@ static int event_get_next_event(struct _event *p)
 static void event_send_next_event(struct _event *p)
 {
 	p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_curr_keyboard_group()];
-	XSendEvent(main_window->display, p->event.xany.window, TRUE, NoEventMask, &p->event);
+	int event_mask = NoEventMask;
+	if (p->event.type == KeyPress) 
+		event_mask = KeyPressMask;
+	else if (p->event.type == KeyRelease)
+		event_mask = KeyReleaseMask;
+	XSendEvent(main_window->display, p->event.xany.window, TRUE, event_mask, &p->event);
 }
 
 static void event_uninit(struct _event *p)
