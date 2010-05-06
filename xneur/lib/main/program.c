@@ -634,7 +634,6 @@ static void program_on_key_action(struct _program *p, int type)
 		{
 			char *keysym_str = XKeysymToString(p->event->get_cur_keysym(p->event));
 			p->modifiers_stack->add(p->modifiers_stack, keysym_str);
-			log_message(DEBUG, "Push to modifier stack '%s'", keysym_str);
 		}
 		p->prev_key_mod |= p->event->get_cur_modifiers_by_keysym(p->event);
 		
@@ -690,7 +689,6 @@ static void program_on_key_action(struct _program *p, int type)
 			if (p->modifiers_stack->exist(p->modifiers_stack, keysym_str, BY_PLAIN))
 			{
 				p->modifiers_stack->rem(p->modifiers_stack, keysym_str);
-				log_message(DEBUG, "Pop to modifier stack '%s'", keysym_str);
 			}
 			else
 			{
