@@ -170,6 +170,8 @@ struct _xneur_handle *xneur_handle_create (void)
 		handle->languages[handle->total_languages].group	= group;
 		handle->languages[handle->total_languages].excluded	= FALSE;
 		handle->total_languages++;
+
+		free(group_name);
 		
 		if (prop_value == NULL)
 			break;

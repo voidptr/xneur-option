@@ -41,7 +41,9 @@ int get_curr_keyboard_group(void)
 	Display *display = XOpenDisplay(NULL);
 	XkbGetState(display, XkbUseCoreKbd, &xkbState);
 	XCloseDisplay(display);
-	return xkbState.group;
+	int group = xkbState.group;
+	//XFree(xkbState);
+	return group;
 }
 
 void set_next_keyboard_group(struct _xneur_handle *handle)

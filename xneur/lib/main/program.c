@@ -1051,8 +1051,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				// Block events of keyboard (push to event queue)
 				set_event_mask(p->focus->owner_window, None);
 				
-				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Left), p->event->event.xkey.state);
 				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Right), p->event->event.xkey.state);
+				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Left), p->event->event.xkey.state);
 				if (xconfig->add_space_after_autocomplementation)
 					p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_space), p->event->event.xkey.state);
 				p->last_action = ACTION_NONE;
@@ -1153,7 +1153,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			return FALSE;
 		}
 	}
-printf("c/n");
+
 	// When CHANGE_STRING or CHANGE_WORD actions occured
 	if (xconfig->troubleshoot_switch)
 		p->changed_manual = MANUAL_FLAG_SET;
@@ -1977,12 +1977,14 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 	if (aspell_error_number(possible_err) != 0)
 	{
 		free(new_word);
+		delete_aspell_config(spell_config);
 		return;
 	}
 	
 	AspellSpeller *spell_checker = to_aspell_speller(possible_err);
 	int correct = aspell_speller_check(spell_checker, new_word, strlen(new_word));
 	delete_aspell_speller(spell_checker);
+	delete_aspell_config(spell_config);
 	if (!correct)
 	{
 		free(new_word);

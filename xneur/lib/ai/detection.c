@@ -123,7 +123,7 @@ static int get_aspell_hits(struct _xneur_handle *handle, char **word, int len)
 		
 		aspell_config_replace(spell_config, "lang", aspell_names[i]);
 		AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
-
+		
 		int aspell_error = aspell_error_number(possible_err);
 		if (aspell_error != 0)
 		{
@@ -134,14 +134,17 @@ static int get_aspell_hits(struct _xneur_handle *handle, char **word, int len)
 		AspellSpeller *spell_checker = to_aspell_speller(possible_err);
 		int correct = aspell_speller_check(spell_checker, word[lang], strlen(word[lang]));
 		delete_aspell_speller(spell_checker);
+
 		if (correct)
 		{
 			log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[lang].name);
+			delete_aspell_config(spell_config);
 			return lang;
 		}
 	}
 
 	log_message(DEBUG, _("   [-] This word has no hits for all aspell dictionaries"));
+	delete_aspell_config(spell_config);
 	return NO_LANGUAGE;
 }
 #endif

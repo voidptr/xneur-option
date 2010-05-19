@@ -52,8 +52,11 @@ time_t timestamp = 0;
 static void popup_show_thread(struct _popup_body *popup_body)
 {
 	if (!notify_init("xneur"))
+	{	
+		free(popup_body);
 		return;
-
+	}
+	
 	if (popup_body->header == NULL)
 	{
 		popup_body->header = popup_body->content;
@@ -75,6 +78,10 @@ static void popup_show_thread(struct _popup_body *popup_body)
 	free (popup_body);
 
 	notify_notification_clear_actions(notify);
+
+	GError *error = NULL;
+	notify_notification_close(notify, &error);
+	//notify_uninit();
 }
 
 void popup_show(int notify, char *command)

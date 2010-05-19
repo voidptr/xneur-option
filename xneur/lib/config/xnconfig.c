@@ -793,6 +793,8 @@ static void free_structures(struct _xneur_config *p)
 	p->layout_remember_apps->uninit(p->layout_remember_apps);
 	p->excluded_apps->uninit(p->excluded_apps);
 	p->autocomplementation_excluded_apps->uninit(p->autocomplementation_excluded_apps);
+	p->abbreviations->uninit(p->abbreviations);
+	p->plugins->uninit(p->plugins);
 	
 	for (int hotkey = 0; hotkey < MAX_HOTKEYS; hotkey++)
 	{

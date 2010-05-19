@@ -128,6 +128,8 @@ static void buffer_mail_and_archive(char *file_path_name)
 	
 	free(arch_file_path_name);
 	free(file_path_name);
+	free(time);
+	free(date);
 }
 
 static void buffer_save(struct _buffer *p, char *file_name, Window window)
@@ -177,8 +179,11 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 	FILE *stream = fopen(file_path_name, "a");
 	free(file_path_name);
 	if (stream == NULL)
+	{
+		free(buffer);
 		return;
-
+	}
+	
 	strftime(buffer, 256, "%x", loctime);
 
 	if (window != last_log_window)

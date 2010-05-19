@@ -86,6 +86,7 @@ void log_message(int level, const char *string, ...)
 		char *tb = malloc(256 * sizeof(char));
 		strftime(tb, 256, "%T", loctime);
 		sprintf(time_buffer, "%s ", tb);
+		free(tb);
 	}
 
 	int len = strlen(string) + strlen(modifier) + strlen(time_buffer) + 3;

@@ -133,13 +133,14 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 
 			*lower = keymap[0];
 			*upper = keymap[1];
+
 			XCloseDisplay(display);
-			
 			return;
 		}
 
 		keymap += keysyms_per_keycode;
 	}
+
 	XCloseDisplay(display);
 }
 

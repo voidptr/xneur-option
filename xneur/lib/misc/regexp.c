@@ -40,7 +40,6 @@ char* check_regexp_match(const char *str, const char *pattern)
 	int erroffset;
 
 	const unsigned char *tables = pcre_maketables();
-
 	pcre *re = pcre_compile(pattern, options, &error, &erroffset, tables);
 	if (!re)
 	{
@@ -56,11 +55,13 @@ char* check_regexp_match(const char *str, const char *pattern)
 	{
 		log_message(ERROR, _("Can't exec regular expression '%s', eror code %d"), pattern, count);
 		pcre_free(re);
+		free((void*)tables);
 		return FALSE;
 	}
 
 	pcre_free(re);
-
+	free((void*)tables);
+	
 	if (count == PCRE_ERROR_NOMATCH)
 		return NULL;
 	

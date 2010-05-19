@@ -214,7 +214,7 @@ static void xneur_cleanup(void)
 		xconfig->uninit(xconfig);
 	}
 	log_message(DEBUG, _("Current configuration data is freed"));
-
+	
 #ifdef WITH_DEBUG
 	xndebug_uninit();
 #endif
@@ -229,8 +229,9 @@ static void xneur_terminate(int status)
 	sleep(1);
 
 	program->plugin->xneur_stop(program->plugin);
-	
+
 	xneur_cleanup();
+
 
 	exit(EXIT_SUCCESS);
 }
@@ -380,8 +381,7 @@ int main(int argc, char *argv[])
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 	textdomain(PACKAGE);
-#endif
-
+#endif	
 	xneur_get_options(argc, argv);
 	
 	xneur_reklama();

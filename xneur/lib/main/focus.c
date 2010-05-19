@@ -123,11 +123,11 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 		Window *children_return;
 
 		int is_same_screen = XQueryTree(main_window->display, p->parent_window, &root_window, &parent_window, &children_return, &children_count);
+		XFree(children_return);
 		if (!is_same_screen || parent_window == None || parent_window == root_window)
 			break;
 
 		p->parent_window = parent_window;
-		XFree(children_return);
 	}
 
 	// Clear masking on unfocused window
