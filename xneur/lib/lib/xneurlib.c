@@ -61,6 +61,7 @@ struct _xneur_handle *xneur_handle_create (void)
 	if (kbd_desc_ptr->names == NULL)
 	{
 		XCloseDisplay(display);
+		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 		return NULL;
 	}
 
@@ -70,16 +71,21 @@ struct _xneur_handle *xneur_handle_create (void)
 		if (kbd_desc_ptr->names->groups[groups_count] == None)
 			break;
 	}
-	
+
 	if (groups_count == 0)
 	{
 		XCloseDisplay(display);
+		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 		return NULL;
 	}
 
 	Atom _XKB_RULES_NAMES = XInternAtom(display, "_XKB_RULES_NAMES", 1);
 	if (_XKB_RULES_NAMES == None) 
+	{
+		XCloseDisplay(display);
+		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 		return NULL;
+	}
 	Window rw = RootWindow(display, DefaultScreen(display));
 	Atom type;
     int size;
@@ -94,8 +100,12 @@ struct _xneur_handle *xneur_handle_create (void)
 				&size, &nitems, &bytes_after,
 				&prop);
 	if (status != Success)
+	{
+		XCloseDisplay(display);
+		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 		return NULL;
-
+	}
+	
 	if (size == 32)
 		nbytes = sizeof(long);
 	else if (size == 16)
@@ -105,8 +115,12 @@ struct _xneur_handle *xneur_handle_create (void)
 	else if (size == 0)
 		nbytes = 0;
 	else
+	{
+		XCloseDisplay(display);
+		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 		return NULL;
-
+	}
+	
 	int prop_count = 0;
 	char *prop_value = NULL;
     long length = nitems * nbytes;
@@ -114,7 +128,11 @@ struct _xneur_handle *xneur_handle_create (void)
 	{
 		int prop_value_len = get_next_property_value(&prop, &length, size, &prop_value);
 		if (prop_value_len == 0)
+		{
+			XCloseDisplay(display);
+			XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 			return NULL;
+		}
 		
 		prop_count++;
 		// 1 - Keyboard Driver
@@ -126,7 +144,11 @@ struct _xneur_handle *xneur_handle_create (void)
 			break;
 	}
 	if (prop_count != 3)
+	{
+		XCloseDisplay(display);
+		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 		return NULL;
+	}
 	
 	handle->languages = (struct _xneur_language *) malloc(sizeof(struct _xneur_language));
 	handle->total_languages = 0;	
@@ -154,7 +176,8 @@ struct _xneur_handle *xneur_handle_create (void)
 	}
 
 	XCloseDisplay(display);
-
+	XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
+	
 	if (handle->total_languages == 0)
 		return NULL;
 
