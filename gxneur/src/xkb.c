@@ -40,14 +40,21 @@ int set_next_kbd_group(void)
 	
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)
+	{
+		XCloseDisplay(dpy);
 		return 0;
-
+	}
+	
 	XkbGetControls(dpy, XkbAllControlsMask, kbd_desc_ptr);
 	XkbGetNames(dpy, XkbSymbolsNameMask, kbd_desc_ptr);
 	XkbGetNames(dpy, XkbGroupNamesMask, kbd_desc_ptr);	
 	if (kbd_desc_ptr->names == NULL)
+	{
+		XCloseDisplay(dpy);
+		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 		return 0;
-
+	}
+	
 	const Atom *group_source = kbd_desc_ptr->names->groups;
 	int groups_count = 0;
 
@@ -62,9 +69,14 @@ int set_next_kbd_group(void)
 		}
 	}
 
+	XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
+	
 	if (groups_count == 0)
+	{
+		XCloseDisplay(dpy);
 		return 0;
-
+	}
+	
 	int new_layout_group = active_layout_group + 1;
 	if (new_layout_group == groups_count)
 		new_layout_group = 0;
@@ -80,8 +92,11 @@ int get_kbd_group_count(void)
 
 	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
 	if (kbd_desc_ptr == NULL)
+	{
+		XCloseDisplay(dpy);
 		return 0;
-
+	}
+	
 	XkbGetControls(dpy, XkbAllControlsMask, kbd_desc_ptr);
 	XkbGetNames(dpy, XkbSymbolsNameMask, kbd_desc_ptr);
 	XkbGetNames(dpy, XkbGroupNamesMask, kbd_desc_ptr);
@@ -91,7 +106,12 @@ int get_kbd_group_count(void)
 		return 0;
 
 	if (kbd_desc_ptr->ctrls != NULL)
-		return kbd_desc_ptr->ctrls->num_groups;
+	{
+		int num_groups = kbd_desc_ptr->ctrls->num_groups;
+		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
+		return num_groups;
+	}
 
+	XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 	return 0;
 }	

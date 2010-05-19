@@ -271,4 +271,7 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 
 	if (image_file != NULL)
 		free(image_file);
+	
+	if (hint != NULL)
+		free(hint);
 }
