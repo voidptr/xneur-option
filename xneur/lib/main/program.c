@@ -614,9 +614,9 @@ static void program_update_modifiers_stack(struct _program *p)
 		p->prev_key_mod += (1 << 4);
 	if (p->modifiers_stack->exist(p->modifiers_stack, "Num_Lock", BY_PLAIN))
 		p->prev_key_mod += (1 << 5);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Hyper_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Hyper_R", BY_PLAIN))
-		p->prev_key_mod += (1 << 6);
 	if (p->modifiers_stack->exist(p->modifiers_stack, "Super_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Super_R", BY_PLAIN))
+		p->prev_key_mod += (1 << 6);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Hyper_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Hyper_R", BY_PLAIN))
 		p->prev_key_mod += (1 << 7);
 }
 
@@ -717,7 +717,10 @@ static void program_on_key_action(struct _program *p, int type)
 			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_Shift_R));
 		if (get_key_state(XK_Shift_L) != 0)
 			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_Shift_L));
+		if (get_key_state(XK_ISO_Level3_Shift) != 0)
+			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_ISO_Level3_Shift));
 
+		
 		p->update_modifiers_stack(p);
 
 		p->plugin->key_release(p->plugin, key, p->prev_key_mod);

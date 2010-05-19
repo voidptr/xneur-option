@@ -124,6 +124,12 @@ static void event_set_owner_window(struct _event *p, Window window)
 static KeySym event_get_cur_keysym(struct _event *p)
 {
 	return XLookupKeysym(&p->event.xkey, 0);
+	/*KeySym ks;
+    int nbytes = 0;
+    char str[256+1];
+	XKeyEvent *e = (XKeyEvent *) &p->event;
+    nbytes = XLookupString (e, str, 256, &ks, NULL);
+	return ks;*/
 }
 
 static int event_get_cur_modifiers(struct _event *p)

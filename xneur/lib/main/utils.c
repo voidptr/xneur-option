@@ -39,7 +39,7 @@ const KeySym mod_keys[] =	{
 					XK_Control_L, XK_Control_R,
 					XK_Alt_L, XK_Alt_R, XK_Meta_L,
 					XK_Num_Lock, XK_Super_L, XK_Super_R, XK_Hyper_L, XK_Hyper_R,
-					XK_Mode_switch, XK_ISO_Level3_Shift, XK_Menu
+					XK_Mode_switch, XK_ISO_Level3_Shift, XK_Menu, XK_ISO_Prev_Group, XK_ISO_Next_Group
 				};
 
 static const int total_mod_keys = sizeof(mod_keys) / sizeof(mod_keys[0]);
