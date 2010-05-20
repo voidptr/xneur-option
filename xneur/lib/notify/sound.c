@@ -72,7 +72,7 @@ void sound_uninit(void)
 	It is normally not needed to call this function in a normal application as
 	the resources will automatically be freed when the program terminates.
 	*/
-	//gst_deinit();
+	gst_deinit();
 }
 
 static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data)
@@ -163,6 +163,8 @@ void *play_file_thread(void *param)
 	gst_element_set_state(pipeline, GST_STATE_NULL);
 	gst_object_unref(GST_OBJECT(pipeline));
 
+	free(path);
+	
 	return NULL;
 }
 
