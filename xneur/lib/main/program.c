@@ -820,7 +820,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 				
 				if (!xconfig->check_lang_on_process)
 				{
-					p->check_pattern(p);
+					p->check_pattern(p, TRUE);
 					
 					// Unblock keyboard
 					set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
@@ -834,7 +834,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 						p->event->default_event.xkey.keycode = 0;
 				}
 
-				p->check_pattern(p);
+				p->check_pattern(p, TRUE);
 				
 				// Unblock keyboard
 				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
@@ -1050,12 +1050,11 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_AUTOCOMPLEMENTATION:
 		{
 			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
-			{
+			{	
+				p->check_pattern(p, FALSE);
+
 				// Block events of keyboard (push to event queue)
 				set_event_mask(p->focus->owner_window, None);
-				
-				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Right), p->event->event.xkey.state);
-				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Left), p->event->event.xkey.state);
 				if (xconfig->add_space_after_autocomplementation)
 					p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_space), p->event->event.xkey.state);
 				p->last_action = ACTION_NONE;
@@ -1478,7 +1477,7 @@ static void program_check_brackets_with_symbols(struct _program *p)
 	free(text);
 }
 
-static void program_check_pattern(struct _program *p)
+static void program_check_pattern(struct _program *p, int selection)
 {
 	if (!xconfig->autocomplementation)
 		return;
@@ -1534,7 +1533,8 @@ static void program_check_pattern(struct _program *p)
 	p->event->send_next_event(p->event);
 	
 	p->event->send_string(p->event, tmp_buffer);
-	p->event->send_selection(p->event, tmp_buffer->cur_pos);
+	if (selection)
+		p->event->send_selection(p->event, tmp_buffer->cur_pos);
 
 	p->event->default_event.xkey.keycode = 0;
 	

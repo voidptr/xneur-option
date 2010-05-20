@@ -59,7 +59,7 @@ struct _program
 	void (*check_space_before_punctuation) (struct _program *p);
 	void (*check_space_with_bracket) (struct _program *p);
 	void (*check_brackets_with_symbols) (struct _program *p);
-	void (*check_pattern) (struct _program *p);
+	void (*check_pattern) (struct _program *p, int selection);
 	void (*change_word) (struct _program *p, enum _change_action action);
 	void (*add_word_to_dict) (struct _program *p, int new_lang);
 	void (*add_word_to_pattern) (struct _program *p, int new_lang);
