@@ -616,7 +616,7 @@ static void program_update_modifiers_stack(struct _program *p)
 		p->prev_key_mod += (1 << 5);
 	if (p->modifiers_stack->exist(p->modifiers_stack, "Super_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Super_R", BY_PLAIN))
 		p->prev_key_mod += (1 << 6);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Hyper_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Hyper_R", BY_PLAIN))
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Hyper_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Hyper_R", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "ISO_Level3_Shift", BY_PLAIN))
 		p->prev_key_mod += (1 << 7);
 }
 
@@ -803,7 +803,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 				action = KLB_ADD_SYM;
 			
 			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
-			
+
 			if (action == KLB_ADD_SYM)
 			{
 				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
