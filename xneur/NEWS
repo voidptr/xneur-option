@@ -1,3 +1,10 @@
+May 21 2010:
+Version 0.9.9 released.
+Bugfix for change layots count where xneur run.
+Bugfix for new version D-Bus.
+Bugfix for modificator keys.
+Bugfix for ISO Level 3 keys.
+
 March 19 2010:
 Version 0.9.8 released.
 Automatic identification of system keyboard layouts.
