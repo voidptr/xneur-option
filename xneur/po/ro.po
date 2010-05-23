@@ -651,18 +651,15 @@ msgstr ""
 
 #: lib/main/bind_table.c:105 lib/main/bind_table.c:141
 #, c-format
-msgid "   Action \"%s\" with mod_mask %d and key \"%s (%s)\""
+msgid "   Action \"%s\" with key \"%s\""
 msgstr ""
 
 #: lib/main/bind_table.c:166
-msgid ""
-"Binded hotkeys actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
+msgid "Binded hotkeys actions:"
 msgstr ""
 
 #: lib/main/bind_table.c:193
-msgid ""
-"Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win"
-"(64)):"
+msgid "Binded hotkeys user actions:"
 msgstr ""
 
 #: lib/main/buffer.c:118

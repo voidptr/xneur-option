@@ -67,7 +67,50 @@ static const char *normal_action_names[] =	{
 							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4",
 							"Rotate Layouts", "Replace Abbreviation", "Autocomplementation Confirmation"
 						};
+
+static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
+
 extern struct _xneur_config *xconfig;
+
+static char* hotkeys_concat_bind(int action)
+{
+	char *text = (char *) malloc((24 + 1 + strlen(xconfig->hotkeys[action].key)) * sizeof(char));
+	text[0] = '\0';
+
+	int total_modifiers	= sizeof(modifier_names) / sizeof(modifier_names[0]);
+	for (int i = 0; i < total_modifiers; i++)
+	{
+		if ((xconfig->hotkeys[action].modifiers & (0x1 << i)) == 0)
+			continue;
+
+		strcat(text, modifier_names[i]);
+		strcat(text, "+");
+	}
+
+	strcat(text, xconfig->hotkeys[action].key);
+	
+	return text;
+}
+
+static char* user_hotkeys_concat_bind(int action)
+{
+	char *text = (char *) malloc((24 + 1 + strlen(xconfig->actions[action].hotkey.key)) * sizeof(char));
+	text[0] = '\0';
+
+	int total_modifiers	= sizeof(modifier_names) / sizeof(modifier_names[0]);
+	for (int i = 0; i < total_modifiers; i++)
+	{
+		if ((xconfig->actions[action].hotkey.modifiers & (0x1 << i)) == 0)
+			continue;
+
+		strcat(text, modifier_names[i]);
+		strcat(text, "+");
+	}
+
+	strcat(text, xconfig->actions[action].hotkey.key);
+	
+	return text;
+}
 
 static void bind_action(enum _hotkey_action action)
 {
@@ -102,7 +145,9 @@ static void bind_action(enum _hotkey_action action)
 	btable[action].key_sym = key_sym;
 	btable[action].key_sym_shift = key_sym_shift;
 
-	log_message(DEBUG, _("   Action \"%s\" with mod_mask %d and key \"%s (%s)\""), normal_action_names[action], btable[action].modifier_mask, XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift));
+	char *key = hotkeys_concat_bind (action);
+	log_message(DEBUG, _("   Action \"%s\" with key \"%s\""), normal_action_names[action], key);
+	free(key);
 }
 
 static void bind_user_action(int action)
@@ -113,7 +158,7 @@ static void bind_user_action(int action)
 
 	if (xconfig->actions[action].hotkey.key == NULL)
 	{
-		log_message(DEBUG, _("   No key set for action \"%s\""), normal_action_names[action]);
+		log_message(DEBUG, _("   No key set for action \"%s\""), xconfig->actions[action].name);
 		return;
 	}
 
@@ -138,7 +183,9 @@ static void bind_user_action(int action)
 	ubtable[action].key_sym = key_sym;
 	ubtable[action].key_sym_shift = key_sym_shift;
 
-	log_message(DEBUG, _("   Action \"%s\" with mod_mask %d and key \"%s (%s)\""), xconfig->actions[action].name, ubtable[action].modifier_mask, XKeysymToString(ubtable[action].key_sym), XKeysymToString(ubtable[action].key_sym_shift));
+	char *key = user_hotkeys_concat_bind (action);
+	log_message(DEBUG, _("   Action \"%s\" with key \"%s\""), xconfig->actions[action].name, key);
+	free(key);
 }
 
 enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
@@ -151,7 +198,7 @@ enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
 	//log_message (ERROR, "%s %d", XKeysymToString(key_sym), mask);
 	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
 	{
-		//log_message (ERROR, "---%s %s %d", XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift), btable[action].modifier_mask);
+		//log_message (ERROR, "%d---%s %s %d", action, XKeysymToString(btable[action].key_sym), XKeysymToString(btable[action].key_sym_shift), btable[action].modifier_mask);
 		if (btable[action].key_sym != key_sym && btable[action].key_sym_shift != key_sym)
 			continue;
 
@@ -163,7 +210,7 @@ enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
 
 void bind_manual_actions(void)
 {
-	log_message(DEBUG, _("Binded hotkeys actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"));
+	log_message(DEBUG, _("Binded hotkeys actions:"));
 	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
 		bind_action(action);
 }
@@ -190,7 +237,7 @@ int get_user_action(KeySym key_sym, int mask)
 
 void bind_user_actions(void)
 {
-	log_message(DEBUG, _("Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"));
+	log_message(DEBUG, _("Binded hotkeys user actions:"));
 
 	ubtable = (struct _bind_table *) malloc(xconfig->actions_count * sizeof(struct _bind_table));
 	for (int action = 0; action < xconfig->actions_count; action++)

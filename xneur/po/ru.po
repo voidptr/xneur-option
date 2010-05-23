@@ -689,23 +689,16 @@ msgstr "   Не заданы горячие клавиши для действи
 
 #: lib/main/bind_table.c:105 lib/main/bind_table.c:141
 #, c-format
-msgid "   Action \"%s\" with mod_mask %d and key \"%s (%s)\""
-msgstr "   Действие \"%s\" с маской-модификатором %d и клавишей \"%s (%s)\""
+msgid "   Action \"%s\" with key \"%s\""
+msgstr "   Действие \"%s\" с клавишей \"%s\""
 
 #: lib/main/bind_table.c:166
-msgid ""
-"Binded hotkeys actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
-msgstr ""
-"Установлены горячие клавиши (маска-модификатор = Shift(1) + Ctrl(4) + Alt(8) "
-"+ Win(64)):"
+msgid "Binded hotkeys actions:"
+msgstr "Установлены горячие клавиши:"
 
 #: lib/main/bind_table.c:193
-msgid ""
-"Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win"
-"(64)):"
-msgstr ""
-"Установлены горячие клавиши пользовательских действий (маска-модификатор = "
-"Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
+msgid "Binded hotkeys user actions:"
+msgstr "Установлены горячие клавиши пользовательских действий:"
 
 #: lib/main/buffer.c:118
 #, c-format
@@ -992,3 +985,16 @@ msgstr "Создано основное окно с id %d"
 #: lib/main/window.c:135
 msgid "Window is freed"
 msgstr "Текущие данные окна очищены"
+
+#~ msgid ""
+#~ "Binded hotkeys actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
+#~ msgstr ""
+#~ "Установлены горячие клавиши (маска-модификатор = Shift(1) + Ctrl(4) + Alt"
+#~ "(8) + Win(64)):"
+
+#~ msgid ""
+#~ "Binded hotkeys user actions (mod_mask = Shift(1) + Ctrl(4) + Alt(8) + Win"
+#~ "(64)):"
+#~ msgstr ""
+#~ "Установлены горячие клавиши пользовательских действий (маска-модификатор "
+#~ "= Shift(1) + Ctrl(4) + Alt(8) + Win(64)):"
