@@ -62,8 +62,8 @@ static struct _bind_table btable[MAX_HOTKEYS] =	{
 static const char *normal_action_names[] =	{
 							"Change Last Word", "Translit Last Word", "Changecase Last Word", "Calculate Last Word", "Preview Change Last Word",
 							"Change Last String", "Change Mode",
-							"Change Selected", "Translit Selected", "Changecase Selected", "Calculate Selected", "Preview Change Selected",
-							"Change Clipboard", "Translit Clipboard", "Changecase Clipboard", "Calculate Clipboard", "Preview Change Clipboard",
+							"Change Selected", "Translit Selected", "Changecase Selected", "Preview Change Selected",
+							"Change Clipboard", "Translit Clipboard", "Changecase Clipboard", "Preview Change Clipboard",
 							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4",
 							"Rotate Layouts", "Replace Abbreviation", "Autocomplementation Confirmation"
 						};
