@@ -120,10 +120,11 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	{
 		unsigned int children_count;
 		Window root_window, parent_window;
-		Window *children_return;
+		Window *children_return = NULL;
 
 		int is_same_screen = XQueryTree(main_window->display, p->parent_window, &root_window, &parent_window, &children_return, &children_count);
-		XFree(children_return);
+		if (children_return != NULL)
+			XFree(children_return);
 		if (!is_same_screen || parent_window == None || parent_window == root_window)
 			break;
 
