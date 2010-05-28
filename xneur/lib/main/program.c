@@ -177,12 +177,12 @@ static int get_auto_action(struct _program *p, KeySym key, int modifier_mask)
 			return KLB_SPACE;
 	}
 
-	if (modifier_mask & Mod1Mask || modifier_mask & Mod4Mask)
+	/*if (modifier_mask & Mod1Mask || modifier_mask & Mod4Mask)
 		return KLB_NO_ACTION;
 
 	if (modifier_mask & ControlMask)
-		return KLB_CLEAR;
-	
+		return KLB_CLEAR;*/
+
 	return KLB_ADD_SYM;
 }
 
@@ -602,22 +602,30 @@ static void program_update_modifiers_stack(struct _program *p)
 	// Update mask
 	p->prev_key_mod = 0;
 	
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Shift_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Shift_R", BY_PLAIN))
-		p->prev_key_mod += (1 << 0);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Shift_L", BY_PLAIN) || 
+	    p->modifiers_stack->exist(p->modifiers_stack, "Shift_R", BY_PLAIN))
+			p->prev_key_mod += (1 << 0);
 	if (p->modifiers_stack->exist(p->modifiers_stack, "Caps_Lock", BY_PLAIN))
-		p->prev_key_mod += (1 << 1);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Control_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Control_R", BY_PLAIN))
-		p->prev_key_mod += (1 << 2);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Alt_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Alt_R", BY_PLAIN))
-		p->prev_key_mod += (1 << 3);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Meta_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Meta_R", BY_PLAIN))
-		p->prev_key_mod += (1 << 4);
+			p->prev_key_mod += (1 << 1);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Control_L", BY_PLAIN) || 
+	    p->modifiers_stack->exist(p->modifiers_stack, "Control_R", BY_PLAIN)
+	 	/* || p->modifiers_stack->exist(p->modifiers_stack, "ISO_Prev_Group", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "ISO_Next_Group", BY_PLAIN)*/)
+			p->prev_key_mod += (1 << 2);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Alt_L", BY_PLAIN) || 
+	    p->modifiers_stack->exist(p->modifiers_stack, "Alt_R", BY_PLAIN))
+			p->prev_key_mod += (1 << 3);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Meta_L", BY_PLAIN) || 
+	    p->modifiers_stack->exist(p->modifiers_stack, "Meta_R", BY_PLAIN))
+			p->prev_key_mod += (1 << 4);
 	if (p->modifiers_stack->exist(p->modifiers_stack, "Num_Lock", BY_PLAIN))
 		p->prev_key_mod += (1 << 5);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Super_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Super_R", BY_PLAIN))
-		p->prev_key_mod += (1 << 6);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Hyper_L", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "Hyper_R", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "ISO_Level3_Shift", BY_PLAIN))
-		p->prev_key_mod += (1 << 7);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "Super_L", BY_PLAIN) || 
+	    p->modifiers_stack->exist(p->modifiers_stack, "Super_R", BY_PLAIN) ||
+	    p->modifiers_stack->exist(p->modifiers_stack, "Hyper_L", BY_PLAIN) || 
+	    p->modifiers_stack->exist(p->modifiers_stack, "Hyper_R", BY_PLAIN))
+			p->prev_key_mod += (1 << 6);
+	if (p->modifiers_stack->exist(p->modifiers_stack, "ISO_Level3_Shift", BY_PLAIN))
+			p->prev_key_mod += (1 << 7);
 }
 
 static void program_on_key_action(struct _program *p, int type)
@@ -676,7 +684,6 @@ static void program_on_key_action(struct _program *p, int type)
 				}
 			}
 		}
-		
 		p->perform_auto_action(p, auto_action);
 	}
 
@@ -767,7 +774,6 @@ static void program_perform_user_action(struct _program *p, int action)
 static void program_perform_auto_action(struct _program *p, int action)
 {
 	struct _buffer *string = p->buffer;
-
 	switch (action)
 	{
 		case KLB_NO_ACTION:
