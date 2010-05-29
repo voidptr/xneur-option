@@ -34,6 +34,7 @@
 #include "types.h"
 #include "text.h"
 #include "log.h"
+#include "list_char.h"
 
 #include "keymap.h"
 
@@ -87,12 +88,56 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
 
 	int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
-	
 	XCloseDisplay(display);
 	
 	if (nbytes <= 0)
-		return NULL;
-	symbol[nbytes] = NULLSYM;
+	{
+		struct _list_char *locales = list_char_init();
+		
+		FILE *fp = popen("locale -a", "r");
+		if (fp != NULL)
+		{
+			char buffer[1024];
+
+			while(fgets(buffer, 1024, fp) != NULL)
+			{
+				buffer[strlen(buffer) - 1] = NULLSYM;
+				//log_message(ERROR, "%s", buffer);
+				locales->add(locales, buffer);
+			}
+			pclose(fp);
+		}
+			
+		for (int i = 0; i < locales->data_count; i++)
+		{
+			if (setlocale(LC_ALL, locales->data[i].string) != NULL)
+			{
+				Display *dpy = XOpenDisplay(NULL);
+				event.xkey.root		= RootWindow(dpy, DefaultScreen(dpy));
+				event.xkey.display  = dpy;
+				nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
+				XCloseDisplay(dpy);
+				
+				setlocale(LC_ALL, ""); 
+				
+				if (nbytes > 0)
+				{
+					symbol[nbytes] = NULLSYM;
+					locales->uninit(locales);
+					return symbol;
+				}
+			}
+		}
+
+		log_message(ERROR, _("Not find symbol for keycode %d and modifier 0x%x!"), event.xkey.keycode, event.xkey.state);
+		log_message(ERROR, _("Try run the programm with command \"env LC_ALL=<LOCALE> %s\", \nwhere LOCALE available over command \"locale -a\""), PACKAGE);
+		symbol[0] = NULLSYM;
+		strcat(symbol, " ");
+
+		locales->uninit(locales);
+	}
+	else
+		symbol[nbytes] = NULLSYM;
 
 	return symbol;
 }

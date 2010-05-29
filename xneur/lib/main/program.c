@@ -443,7 +443,7 @@ static void program_process_input(struct _program *p)
 				p->buffer = buffer_init(xconfig->handle);
 				main_window->keymap = keymap_init(xconfig->handle);
 				
-				log_message (DEBUG, "Now layouts count %d", xconfig->handle->total_languages);
+				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
 				p->update(p);
 				break;
 			}
