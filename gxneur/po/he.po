@@ -143,14 +143,6 @@ msgstr "ראשי תיבות"
 msgid "Expansion text:"
 msgstr "טקסט מלא"
 
-#: glade/abbr_add.glade:77 glade/action_add.glade:100
-msgid "gtk-cancel"
-msgstr ""
-
-#: glade/abbr_add.glade:88 glade/action_add.glade:115
-msgid "gtk-ok"
-msgstr ""
-
 #: glade/about.glade:7
 msgid "gXNeur About..."
 msgstr "אודות gXNeur..."

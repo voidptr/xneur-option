@@ -143,14 +143,6 @@ msgstr "Сокращение:"
 msgid "Expansion text:"
 msgstr "Полный Текст:"
 
-#: glade/abbr_add.glade:77 glade/action_add.glade:100
-msgid "gtk-cancel"
-msgstr ""
-
-#: glade/abbr_add.glade:88 glade/action_add.glade:115
-msgid "gtk-ok"
-msgstr ""
-
 #: glade/about.glade:7
 msgid "gXNeur About..."
 msgstr "О gXNeur..."
@@ -480,7 +472,7 @@ msgstr ""
 
 #: glade/config.glade:2132
 msgid "Dont send KeyRelease event"
-msgstr ""
+msgstr "Не отправлять событие KeyRelease"
 
 #: glade/config.glade:2169
 msgid "<b>Advanced</b>"
