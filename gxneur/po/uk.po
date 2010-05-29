@@ -143,6 +143,14 @@ msgstr "Скорочення:"
 msgid "Expansion text:"
 msgstr "Повний текст:"
 
+#: glade/abbr_add.glade:77 glade/action_add.glade:100
+msgid "gtk-cancel"
+msgstr ""
+
+#: glade/abbr_add.glade:88 glade/action_add.glade:115
+msgid "gtk-ok"
+msgstr ""
+
 #: glade/about.glade:7
 msgid "gXNeur About..."
 msgstr "Про gXNeur..."
@@ -201,63 +209,63 @@ msgstr "Обрати файл..."
 msgid "XNeur Settings"
 msgstr "Налаштування XNeur"
 
-#: glade/config.glade:39
+#: glade/config.glade:37
 msgid "Use manual switching mode"
 msgstr "Включити ручний режим перемикання"
 
-#: glade/config.glade:53
+#: glade/config.glade:51
 msgid "Enable auto-learning mode"
 msgstr "Включити режим самонавчання"
 
-#: glade/config.glade:67
+#: glade/config.glade:65
 msgid "Keep selection after changing selected text"
 msgstr "Зберігати виділення після зміни виділеного тексту"
 
-#: glade/config.glade:90
+#: glade/config.glade:88
 msgid "Check language on input process"
 msgstr "Перевірити мову в процесі вводу"
 
-#: glade/config.glade:110
+#: glade/config.glade:108
 msgid "Main"
 msgstr ""
 
-#: glade/config.glade:123
+#: glade/config.glade:120
 msgid "Correct aCCIDENTAL caps"
 msgstr "Виправляти вИПАДКОВИЙ CapsLock"
 
-#: glade/config.glade:137
+#: glade/config.glade:134
 msgid "Disable CapsLock use"
 msgstr ""
 
-#: glade/config.glade:151
+#: glade/config.glade:148
 msgid "Correct TWo INitial caps"
 msgstr "Виправляти дві ПОчаткові літери"
 
-#: glade/config.glade:165
+#: glade/config.glade:162
 msgid "Correct spaces with punctuation"
 msgstr ""
 
-#: glade/config.glade:185
+#: glade/config.glade:182
 msgid "Typographics"
 msgstr ""
 
-#: glade/config.glade:208
+#: glade/config.glade:205
 msgid "<b>General</b>"
 msgstr "<b>Загальні</b>"
 
-#: glade/config.glade:262
+#: glade/config.glade:257
 msgid "Dictionary..."
 msgstr "Словник..."
 
-#: glade/config.glade:275
+#: glade/config.glade:270
 msgid "Regular Expressions..."
 msgstr "Регулярні вирази..."
 
-#: glade/config.glade:303
+#: glade/config.glade:298
 msgid "Initial layout number:"
 msgstr "Розкладка за замовченням"
 
-#: glade/config.glade:313
+#: glade/config.glade:308
 msgid ""
 "0\n"
 "1\n"
@@ -269,177 +277,189 @@ msgstr ""
 "2\n"
 "3"
 
-#: glade/config.glade:343
+#: glade/config.glade:338
 msgid "Remember keyboard layout for each application instance"
 msgstr "Запам'ятовувати розкладку окремо для кожної копії програми"
 
-#: glade/config.glade:437
+#: glade/config.glade:431
 msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr "Винятки (Одна розкладка для всіх копій програми)"
 
-#: glade/config.glade:467
+#: glade/config.glade:461
 msgid "<b>Layouts</b>"
 msgstr "<b>Розкладки</b>"
 
-#: glade/config.glade:669
+#: glade/config.glade:661
 msgid "<b>Hotkeys</b>"
 msgstr "<b>Поєднання клавіш</b>"
 
-#: glade/config.glade:693
+#: glade/config.glade:684
 msgid "Enable pattern mining and recognition (autocomplementation)"
 msgstr ""
 
-#: glade/config.glade:707
+#: glade/config.glade:698
 msgid "Add space after autocomplementation"
 msgstr ""
 
-#: glade/config.glade:810
+#: glade/config.glade:800
 msgid "Disable the autocomplementation for these applications"
 msgstr ""
 
-#: glade/config.glade:846
+#: glade/config.glade:836
 msgid "<b>Autocomplementation</b>"
 msgstr ""
 
-#: glade/config.glade:947
+#: glade/config.glade:936
 msgid "Ignore these applications"
 msgstr "Ігнорувати ці програми"
 
-#: glade/config.glade:1038
+#: glade/config.glade:1027
 msgid "Force automatic mode for these applications"
 msgstr "Примусовий автоматичий режим для цих програм"
 
-#: glade/config.glade:1129
+#: glade/config.glade:1118
 msgid "Force manual mode for these applications"
 msgstr "Примусовий ручний режим для цих програм"
 
-#: glade/config.glade:1159
+#: glade/config.glade:1148
 msgid "<b>Applications</b>"
 msgstr "<b>Програми</b>"
 
-#: glade/config.glade:1191
+#: glade/config.glade:1179
 msgid "Enable sounds"
 msgstr "Ввімкнути звуки"
 
-#: glade/config.glade:1211
+#: glade/config.glade:1199
 msgid "Sound volume"
 msgstr ""
 
-#: glade/config.glade:1303
+#: glade/config.glade:1291
 msgid "Sounds"
 msgstr "Звук"
 
-#: glade/config.glade:1320
+#: glade/config.glade:1307
 msgid "Show OSD"
 msgstr "Показати індикатор"
 
-#: glade/config.glade:1340
+#: glade/config.glade:1327
 msgid "OSD Font"
 msgstr "Екранні шрифти"
 
-#: glade/config.glade:1371
+#: glade/config.glade:1358
 msgid "Use command <b>xfontsel -print</b> to get new font."
 msgstr "Використайте команду <b>xfontsel -print</b> щоб отримати новий шрифт."
 
-#: glade/config.glade:1420
+#: glade/config.glade:1407
 msgid "OSD"
 msgstr ""
 
-#: glade/config.glade:1438
+#: glade/config.glade:1424
 msgid "Show popup messages"
 msgstr ""
 
-#: glade/config.glade:1492
+#: glade/config.glade:1478
 msgid "Popup messages"
 msgstr ""
 
-#: glade/config.glade:1518
+#: glade/config.glade:1504
 msgid "<b>Notifications</b>"
 msgstr ""
 
-#: glade/config.glade:1542
+#: glade/config.glade:1527
 msgid "Ignore keyboard layout for abbreviations"
 msgstr "Ігнорувати розкладку для скорочень"
 
-#: glade/config.glade:1630
+#: glade/config.glade:1615
 msgid "<b>Abbreviations</b>"
 msgstr "<b>Скорочення</b>"
 
-#: glade/config.glade:1654
+#: glade/config.glade:1638
 msgid "Enable keyboard logging"
 msgstr "Включити зберігання набраного тексту у файл журналу"
 
-#: glade/config.glade:1675
+#: glade/config.glade:1659
 msgid "Send log to e-mail"
 msgstr ""
 
-#: glade/config.glade:1701
+#: glade/config.glade:1685
 msgid "Send log via host (IP)"
 msgstr ""
 
-#: glade/config.glade:1727
+#: glade/config.glade:1711
 msgid "Log file size in bytes"
 msgstr ""
 
-#: glade/config.glade:1774
+#: glade/config.glade:1758
 msgid "<b>Log</b>"
 msgstr ""
 
-#: glade/config.glade:1811
+#: glade/config.glade:1793
 msgid "Backspace"
 msgstr ""
 
-#: glade/config.glade:1825
+#: glade/config.glade:1807
 msgid "Left arrow"
 msgstr ""
 
-#: glade/config.glade:1839
+#: glade/config.glade:1821
 msgid "Right arrow"
 msgstr ""
 
-#: glade/config.glade:1853
+#: glade/config.glade:1835
 msgid "Up arrow"
 msgstr ""
 
-#: glade/config.glade:1867
+#: glade/config.glade:1849
 msgid "Down arrow"
 msgstr ""
 
-#: glade/config.glade:1881
+#: glade/config.glade:1863
 msgid "Delete"
 msgstr ""
 
-#: glade/config.glade:1895
+#: glade/config.glade:1877
 msgid "You changed layout"
 msgstr ""
 
-#: glade/config.glade:1921
+#: glade/config.glade:1903
 msgid ""
 "This will help avoid switching layout when editing parts previously "
 "introduced word."
 msgstr ""
 
-#: glade/config.glade:1936
+#: glade/config.glade:1928
 msgid "Don't switch layout if before input where pressed"
 msgstr ""
 
-#: glade/config.glade:1963
+#: glade/config.glade:1955
 msgid "Flush internal buffer on Enter or Tab"
 msgstr "Скидати внутрішній буфер при натисканні Enter або Tab"
 
-#: glade/config.glade:1977
+#: glade/config.glade:1969
 msgid "Don't process words on Enter or Tab"
 msgstr "Не перевіряти слово при натисканні Enter або Tab"
 
-#: glade/config.glade:1996
+#: glade/config.glade:1988
 msgid "Additional"
 msgstr ""
 
-#: glade/config.glade:2020
+#: glade/config.glade:2013
 msgid "<b>Troubleshooting</b>"
 msgstr ""
 
-#: glade/config.glade:2046
+#: glade/config.glade:2057
+msgid "Delay before sending events (in milliseconds)"
+msgstr "Затримка перед відправленням подій (в мілісекундах)"
+
+#: glade/config.glade:2068
+msgid "Delay before start program (in milliseconds)"
+msgstr ""
+
+#: glade/config.glade:2100
+msgid "Log verbosity level"
+msgstr "Рівень докладності повідомлень, що виводяться"
+
+#: glade/config.glade:2112
 msgid ""
 "None\n"
 "Error\n"
@@ -455,19 +475,15 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2083
-msgid "Log verbosity level"
-msgstr "Рівень докладності повідомлень, що виводяться"
+#: glade/config.glade:2132
+msgid "Dont send KeyRelease event"
+msgstr ""
 
-#: glade/config.glade:2096
-msgid "Delay before sending events (in milliseconds)"
-msgstr "Затримка перед відправленням подій (в мілісекундах)"
-
-#: glade/config.glade:2115
+#: glade/config.glade:2169
 msgid "<b>Advanced</b>"
 msgstr "<b>Додатково</b>"
 
-#: glade/config.glade:2177
+#: glade/config.glade:2230
 msgid "<b>Plugins</b>"
 msgstr ""
 

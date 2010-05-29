@@ -815,7 +815,11 @@ void xneur_preference(void)
 	// Delay Before Send
 	widget = glade_xml_get_widget (gxml, "spinbutton1");
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->send_delay);
-		
+
+	// Delay Before Start
+	widget = glade_xml_get_widget (gxml, "spinbutton31");
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->start_delay);
+	
 	// Log Level
 	widget = glade_xml_get_widget (gxml, "combobox1");
 	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), xconfig->log_level);
@@ -1019,6 +1023,10 @@ void xneur_preference(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_delete);
 	widget = glade_xml_get_widget (gxml, "checkbutton25");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_switch);
+
+	// Dont Send KeyRelease Mode
+	widget = glade_xml_get_widget (gxml, "checkbutton26");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->dont_send_key_release);
 	
 	// Plugins
 	treeview = glade_xml_get_widget (gxml, "treeview11");
@@ -1916,6 +1924,10 @@ void xneur_save_preference(GladeXML *gxml)
 	// Delay Before Send
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton1");
 	xconfig->send_delay = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound));
+
+	// Delay Before Start
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton31");
+	xconfig->start_delay = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound));
 	
 	// Log Level
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox1");
@@ -1975,6 +1987,10 @@ void xneur_save_preference(GladeXML *gxml)
 	xconfig->troubleshoot_delete = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton25");
 	xconfig->troubleshoot_switch = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));;
+
+	// Dont send KeyRelease mode
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton26");
+	xconfig->dont_send_key_release = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);
