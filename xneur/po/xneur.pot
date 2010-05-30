@@ -218,53 +218,63 @@ msgstr ""
 msgid "Disable autoswitching if layout switched mode set to %s"
 msgstr ""
 
-#: src/xneur.c:182
+#: src/xneur.c:173
+#, c-format
+msgid "Disable send KeyRelease event mode set to %s"
+msgstr ""
+
+#: src/xneur.c:174
+#, c-format
+msgid "Delay before sendind events to application set to (in milliseconds) %d"
+msgstr ""
+
+#: src/xneur.c:185
 #, c-format
 msgid " already running with pid %d"
 msgstr ""
 
-#: src/xneur.c:195
+#: src/xneur.c:198
 #, c-format
 msgid " pid is %d with nice %d"
 msgstr ""
 
-#: src/xneur.c:201
+#: src/xneur.c:204
 msgid "Current sound data is freed"
 msgstr ""
 
-#: src/xneur.c:204
+#: src/xneur.c:207
 msgid "Current user keybinds is freed"
 msgstr ""
 
-#: src/xneur.c:209
+#: src/xneur.c:212
 msgid "Current program info is freed"
 msgstr ""
 
-#: src/xneur.c:216
+#: src/xneur.c:219
 msgid "Current configuration data is freed"
 msgstr ""
 
-#: src/xneur.c:227
+#: src/xneur.c:230
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr ""
 
-#: src/xneur.c:243
+#: src/xneur.c:246
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr ""
 
-#: src/xneur.c:257 src/xneur.c:392
+#: src/xneur.c:260 src/xneur.c:395
 msgid "Can't init libxnconfig"
 msgstr ""
 
-#: src/xneur.c:372
+#: src/xneur.c:375
 msgid "Can't trap signal"
 msgstr ""
 
-#: src/xneur.c:402
+#: src/xneur.c:405
 msgid "Failed to init program structure"
 msgstr ""
 
-#: src/xneur.c:411
+#: src/xneur.c:414
 msgid "Init program structure complete"
 msgstr ""
 
@@ -343,169 +353,177 @@ msgstr ""
 msgid "End word processing."
 msgstr ""
 
-#: lib/config/xnconfig.c:140
+#: lib/config/xnconfig.c:141
 #, c-format
 msgid "Unrecognized option \"%s\" detected"
 msgstr ""
 
-#: lib/config/xnconfig.c:150
+#: lib/config/xnconfig.c:151
 #, c-format
 msgid "Param mismatch for option %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:161
+#: lib/config/xnconfig.c:162
 msgid "Invalid value for manual mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:179
+#: lib/config/xnconfig.c:180
 msgid "Invalid value for action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:207
+#: lib/config/xnconfig.c:208
 msgid "Invalid value for log level specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:219
+#: lib/config/xnconfig.c:220
 msgid "Argument number mismatch for ExcludeLanguage option"
 msgstr ""
 
-#: lib/config/xnconfig.c:236
+#: lib/config/xnconfig.c:237
 msgid "Invalid value for pattern minig and recognition mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:248
+#: lib/config/xnconfig.c:249
 msgid "Invalid value for disable CapsLock using mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:260
+#: lib/config/xnconfig.c:261
 msgid "Invalid value for check language on input process mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:287
+#: lib/config/xnconfig.c:288
 msgid "Invalid value for education mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:304
+#: lib/config/xnconfig.c:305
 msgid "Invalid value for remember layout mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:316
+#: lib/config/xnconfig.c:317
 msgid "Invalid value for save selection mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:333
+#: lib/config/xnconfig.c:334
 msgid "Invalid value for sound action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:365
+#: lib/config/xnconfig.c:366
 msgid "Invalid value for play sounds mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:377
+#: lib/config/xnconfig.c:378
 msgid "Send delay must be between 0 and 50"
 msgstr ""
 
-#: lib/config/xnconfig.c:392
+#: lib/config/xnconfig.c:393
 msgid "Invalid value for save keyboard log mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:409
+#: lib/config/xnconfig.c:410
 msgid ""
 "Invalid value for ignore keyboard layout for abbreviations mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:421
+#: lib/config/xnconfig.c:422
 msgid "Invalid value for change iNCIDENTAL CapsLock mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:433
+#: lib/config/xnconfig.c:434
 msgid "Invalid value for change two CApital letter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:445
+#: lib/config/xnconfig.c:446
 msgid ""
 "Invalid value for flush internal buffer when pressed Enter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:457
+#: lib/config/xnconfig.c:458
 msgid ""
 "Invalid value for don't processing word when pressed Enter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:525
+#: lib/config/xnconfig.c:526
 msgid "Invalid value for show OSD mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:537 lib/config/xnconfig.c:593
+#: lib/config/xnconfig.c:538 lib/config/xnconfig.c:594
 msgid "Invalid value for OSD action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:581
+#: lib/config/xnconfig.c:582
 msgid "Invalid value for show popup message mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:677
+#: lib/config/xnconfig.c:678
 msgid "Invalid value for troubleshooting mode for backspace specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:689
+#: lib/config/xnconfig.c:690
 msgid "Invalid value for troubleshooting mode for left arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:701
+#: lib/config/xnconfig.c:702
 msgid "Invalid value for troubleshooting mode for right arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:713
+#: lib/config/xnconfig.c:714
 msgid "Invalid value for troubleshooting mode for up arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:725
+#: lib/config/xnconfig.c:726
 msgid "Invalid value for troubleshooting mode for down arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:737
+#: lib/config/xnconfig.c:738
 msgid "Invalid value for troubleshooting mode for delete specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:749
+#: lib/config/xnconfig.c:750
 msgid "Invalid value for troubleshooting mode for keyboard switch specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:765
+#: lib/config/xnconfig.c:762
+msgid "Invalid value for dont send KeyRelease event mode"
+msgstr ""
+
+#: lib/config/xnconfig.c:774
+msgid "Start delay must be more 0"
+msgstr ""
+
+#: lib/config/xnconfig.c:788
 #, c-format
 msgid "Can't find config file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:930
+#: lib/config/xnconfig.c:953
 msgid "No languages specified in config file"
 msgstr ""
 
-#: lib/config/xnconfig.c:960
+#: lib/config/xnconfig.c:983
 #, c-format
 msgid "Saving main config to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:965
+#: lib/config/xnconfig.c:988
 #, c-format
 msgid "Can't create file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1252
+#: lib/config/xnconfig.c:1280
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1258
+#: lib/config/xnconfig.c:1286
 msgid "Can't move file!"
 msgstr ""
 
-#: lib/config/xnconfig.c:1276
+#: lib/config/xnconfig.c:1304
 #, c-format
 msgid "Saving %s dictionary"
 msgstr ""
 
-#: lib/config/xnconfig.c:1289
+#: lib/config/xnconfig.c:1317
 #, c-format
 msgid "Saving %s pattern"
 msgstr ""
@@ -680,7 +698,7 @@ msgstr ""
 msgid "String is freed"
 msgstr ""
 
-#: lib/main/event.c:204
+#: lib/main/event.c:210
 msgid "Event is freed"
 msgstr ""
 
@@ -702,32 +720,32 @@ msgstr ""
 msgid "Focus is freed"
 msgstr ""
 
-#: lib/main/keymap.c:49
+#: lib/main/keymap.c:50
 msgid "Couldn't set default locale"
 msgstr ""
 
-#: lib/main/keymap.c:55
+#: lib/main/keymap.c:56
 msgid "Your default locale is not UTF-8"
 msgstr ""
 
-#: lib/main/keymap.c:57
+#: lib/main/keymap.c:58
 #, c-format
 msgid "Using locale %s"
 msgstr ""
 
-#: lib/main/keymap.c:95
+#: lib/main/keymap.c:132
 #, c-format
 msgid "Not find symbol for keycode %d and modifier 0x%x!"
 msgstr ""
 
-#: lib/main/keymap.c:96
+#: lib/main/keymap.c:133
 #, c-format
 msgid ""
 "Try run the programm with command \"env LC_ALL=<LOCALE> %s\", \n"
 "where LOCALE available over command \"locale -a\""
 msgstr ""
 
-#: lib/main/keymap.c:164
+#: lib/main/keymap.c:203
 msgid "Unable to get keyboard mapping table"
 msgstr ""
 
@@ -962,3 +980,4 @@ msgstr ""
 #: lib/main/window.c:135
 msgid "Window is freed"
 msgstr ""
+

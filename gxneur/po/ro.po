@@ -443,10 +443,6 @@ msgstr ""
 msgid "Delay before sending events (in milliseconds)"
 msgstr ""
 
-#: glade/config.glade:2068
-msgid "Delay before start program (in milliseconds)"
-msgstr ""
-
 #: glade/config.glade:2100
 msgid "Log verbosity level"
 msgstr ""

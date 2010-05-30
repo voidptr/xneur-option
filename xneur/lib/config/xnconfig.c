@@ -63,7 +63,8 @@ static const char *option_names[] = 	{
 	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocomplementation", "LoadModule",
 						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent",
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
-						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch"
+						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
+						"DontSendKeyRelease"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -753,6 +754,18 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->troubleshoot_switch = status;
 			break;
 		}
+		case 47: // Get dont send KeyRelease event mode
+		{
+			int status = get_option_index(bool_names, param);
+			if (status == -1)
+			{
+				log_message(WARNING, _("Invalid value for dont send KeyRelease event mode"));
+				break;
+			}
+
+			p->dont_send_key_release = status;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -970,7 +983,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	free(config_file_path_name);
 
 	fprintf(stream, "# It's a X Neural Switcher configuration file by XNeur\n# All values writted XNeur\n\n");
-
+	
 	fprintf(stream, "# Config version\nVersion %s\n\n", VERSION);
 	fprintf(stream, "# Work in manual mode\nManualMode %s\n\n", p->get_bool_name(p->manual_mode));
 
@@ -1113,7 +1126,7 @@ static int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "# This option define delay before sendind events to application (in milliseconds between 0 to 50).\n");
 	fprintf(stream, "SendDelay %d\n\n", p->send_delay);
-
+	
 	fprintf(stream, "# This option enable or disable logging keyboard\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#LogSave No\n");
@@ -1229,6 +1242,8 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Disable autoswitching if pressed down arrow\nTroubleshootDownArrow %s\n", p->get_bool_name(p->troubleshoot_down_arrow));
 	fprintf(stream, "# Disable autoswitching if pressed delete\nTroubleshootDelete %s\n", p->get_bool_name(p->troubleshoot_delete));
 	fprintf(stream, "# Disable autoswitching if layout switched\nTroubleshootSwitch %s\n\n", p->get_bool_name(p->troubleshoot_switch));
+
+	fprintf(stream, "# Disable send KeyRelease event\nDontSendKeyRelease %s\n\n", p->get_bool_name(p->dont_send_key_release));
 	
 	fprintf(stream, "# Modules list\n");
 	fprintf(stream, "# Example:\n");
@@ -1374,7 +1389,9 @@ struct _xneur_config* xneur_config_init(void)
 	p->troubleshoot_down_arrow = FALSE;
 	p->troubleshoot_delete = FALSE;
 	p->troubleshoot_switch = TRUE;
-	
+
+	p->dont_send_key_release = FALSE;
+
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;
 	p->get_global_dict_path		= get_file_path_name;

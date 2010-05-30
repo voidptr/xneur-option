@@ -815,10 +815,6 @@ void xneur_preference(void)
 	// Delay Before Send
 	widget = glade_xml_get_widget (gxml, "spinbutton1");
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->send_delay);
-
-	// Delay Before Start
-	widget = glade_xml_get_widget (gxml, "spinbutton31");
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->start_delay);
 	
 	// Log Level
 	widget = glade_xml_get_widget (gxml, "combobox1");
@@ -1924,10 +1920,6 @@ void xneur_save_preference(GladeXML *gxml)
 	// Delay Before Send
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton1");
 	xconfig->send_delay = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound));
-
-	// Delay Before Start
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton31");
-	xconfig->start_delay = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound));
 	
 	// Log Level
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox1");

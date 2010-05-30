@@ -38,6 +38,7 @@
 
 #include "event.h"
 
+extern struct _xneur_config *xconfig;
 extern struct _window *main_window;
 
 int get_key_state(int key)
@@ -73,6 +74,8 @@ int get_key_state(int key)
 
 void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 {
+	usleep(xconfig->send_delay);
+	
 	p->event.type			= KeyPress;
 	p->event.xkey.type		= KeyPress;
 	p->event.xkey.window		= p->owner_window;
@@ -86,6 +89,9 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 
 	XSendEvent(main_window->display, p->owner_window, TRUE, KeyPressMask, &p->event);
 
+	if (xconfig->dont_send_key_release) 
+		return;
+	
 	p->event.type			= KeyRelease;
 	p->event.xkey.type		= KeyRelease;
 	p->event.xkey.time		= CurrentTime;

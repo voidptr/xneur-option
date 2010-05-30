@@ -174,7 +174,7 @@ struct _xneur_config
 	int   manual_mode;				// Enable manual processing mode
 	int   log_level;				// Maximum level of log messages to print
 	int   send_delay;				// Delay before send event (in milliseconds)
-
+	
 	int   default_group;				// Initial keyboard layout for all new applications
 
 	int   play_sounds;				// Play sound samples or not
@@ -216,6 +216,8 @@ struct _xneur_config
 	int troubleshoot_down_arrow;
 	int troubleshoot_delete;
 	int troubleshoot_switch;
+
+	int dont_send_key_release;
 	
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);
