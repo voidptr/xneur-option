@@ -1024,4 +1024,3 @@ msgstr "Создано основное окно с id %d"
 #: lib/main/window.c:135
 msgid "Window is freed"
 msgstr "Текущие данные окна очищены"
-
