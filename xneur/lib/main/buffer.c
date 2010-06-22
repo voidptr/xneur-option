@@ -17,6 +17,10 @@
  *
  */
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
 #include <X11/Xlocale.h>
 #include <X11/keysym.h>
 
@@ -134,7 +138,9 @@ static void buffer_mail_and_archive(char *file_path_name)
 
 static void buffer_save(struct _buffer *p, char *file_name, Window window)
 {
+#ifdef WITH_KEYLOGGER
 	if (!xconfig->save_keyboard_log || p->cur_pos == 0 || file_name == NULL)
+#endif		
 		return;
 
 	if (strlen (p->content) < 4)

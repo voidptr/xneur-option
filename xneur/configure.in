@@ -3,7 +3,7 @@ AC_PREREQ(2.59)
 AC_CONFIG_HEADER(config.h)
 
 AC_CONFIG_MACRO_DIR(m4)
-AM_INIT_AUTOMAKE(xneur, 0.9.9-svn690)
+AM_INIT_AUTOMAKE(xneur, 0.9.9-svn691)
 
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
@@ -95,6 +95,11 @@ AC_ARG_WITH(pcre, [  --without-pcre	  Compile without pcre support])
 if test "x$with_pcre" != "xno"; then
 	PKG_CHECK_MODULES(PCRE, [libpcre >= 5.0])
 	AC_DEFINE(WITH_PCRE, 1, [Define if you want pcre support])
+fi
+
+AC_ARG_WITH(keylogger, [  --without-keylogger	  Compile without keylogger function])
+if test "x$with_keylogger" != "xno"; then
+	AC_DEFINE(WITH_KEYLOGGER, 1, [Define if you want keylogger function])
 fi
 
 AC_ARG_WITH(aspell, [  --without-aspell	  Compile without aspell support])
