@@ -120,7 +120,7 @@ msgstr ""
 
 #: src/xneur.c:153
 #, c-format
-msgid "Keyboard log will send to %s via %s host"
+msgid "Keyboard log will send to %s via %s:%d host"
 msgstr ""
 
 #: src/xneur.c:154
@@ -228,53 +228,53 @@ msgstr ""
 msgid "Delay before sendind events to application set to (in milliseconds) %d"
 msgstr ""
 
-#: src/xneur.c:185
+#: src/xneur.c:184
 #, c-format
 msgid " already running with pid %d"
 msgstr ""
 
-#: src/xneur.c:198
+#: src/xneur.c:197
 #, c-format
 msgid " pid is %d with nice %d"
 msgstr ""
 
-#: src/xneur.c:204
+#: src/xneur.c:203
 msgid "Current sound data is freed"
 msgstr ""
 
-#: src/xneur.c:207
+#: src/xneur.c:206
 msgid "Current user keybinds is freed"
 msgstr ""
 
-#: src/xneur.c:212
+#: src/xneur.c:211
 msgid "Current program info is freed"
 msgstr ""
 
-#: src/xneur.c:219
+#: src/xneur.c:218
 msgid "Current configuration data is freed"
 msgstr ""
 
-#: src/xneur.c:230
+#: src/xneur.c:229
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr ""
 
-#: src/xneur.c:246
+#: src/xneur.c:245
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr ""
 
-#: src/xneur.c:260 src/xneur.c:395
+#: src/xneur.c:259 src/xneur.c:394
 msgid "Can't init libxnconfig"
 msgstr ""
 
-#: src/xneur.c:375
+#: src/xneur.c:374
 msgid "Can't trap signal"
 msgstr ""
 
-#: src/xneur.c:405
+#: src/xneur.c:404
 msgid "Failed to init program structure"
 msgstr ""
 
-#: src/xneur.c:414
+#: src/xneur.c:413
 msgid "Init program structure complete"
 msgstr ""
 
@@ -486,44 +486,40 @@ msgstr ""
 msgid "Invalid value for dont send KeyRelease event mode"
 msgstr ""
 
-#: lib/config/xnconfig.c:774
-msgid "Start delay must be more 0"
-msgstr ""
-
-#: lib/config/xnconfig.c:788
+#: lib/config/xnconfig.c:785
 #, c-format
 msgid "Can't find config file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:953
+#: lib/config/xnconfig.c:950
 msgid "No languages specified in config file"
 msgstr ""
 
-#: lib/config/xnconfig.c:983
+#: lib/config/xnconfig.c:980
 #, c-format
 msgid "Saving main config to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:988
+#: lib/config/xnconfig.c:985
 #, c-format
 msgid "Can't create file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1280
+#: lib/config/xnconfig.c:1279
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1286
+#: lib/config/xnconfig.c:1285
 msgid "Can't move file!"
 msgstr ""
 
-#: lib/config/xnconfig.c:1304
+#: lib/config/xnconfig.c:1303
 #, c-format
 msgid "Saving %s dictionary"
 msgstr ""
 
-#: lib/config/xnconfig.c:1317
+#: lib/config/xnconfig.c:1316
 #, c-format
 msgid "Saving %s pattern"
 msgstr ""
@@ -584,26 +580,31 @@ msgstr ""
 msgid "Sorting error: %s > %s"
 msgstr ""
 
-#: lib/misc/mail.c:114
+#: lib/misc/mail.c:116
+#, c-format
+msgid "Unknown host %s\n"
+msgstr ""
+
+#: lib/misc/mail.c:126
 msgid "Unable open socket!"
 msgstr ""
 
-#: lib/misc/mail.c:120
+#: lib/misc/mail.c:132
 #, c-format
 msgid "Unable to connect to %s"
 msgstr ""
 
-#: lib/misc/mail.c:127
+#: lib/misc/mail.c:139
 #, c-format
 msgid "Can't get state of file \"%s\""
 msgstr ""
 
-#: lib/misc/mail.c:134
+#: lib/misc/mail.c:146
 #, c-format
 msgid "Can't open to read file \"%s\""
 msgstr ""
 
-#: lib/misc/mail.c:191
+#: lib/misc/mail.c:203
 #, c-format
 msgid "Mail server return Error %d"
 msgstr ""
@@ -679,22 +680,22 @@ msgstr ""
 msgid "Binded hotkeys user actions:"
 msgstr ""
 
-#: lib/main/buffer.c:118
+#: lib/main/buffer.c:122
 #, c-format
 msgid "Compressed old log file to %s"
 msgstr ""
 
-#: lib/main/buffer.c:122
+#: lib/main/buffer.c:126
 #, c-format
-msgid "Sended log to e-mail %s via %s host"
+msgid "Sended log to e-mail %s via %s:%d host"
 msgstr ""
 
-#: lib/main/buffer.c:127
+#: lib/main/buffer.c:131
 #, c-format
 msgid "Error rename file \"%s\" to \"%s\""
 msgstr ""
 
-#: lib/main/buffer.c:481
+#: lib/main/buffer.c:487
 msgid "String is freed"
 msgstr ""
 

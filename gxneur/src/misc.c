@@ -627,6 +627,10 @@ void xneur_preference(void)
 	// Log send via host
 	widget = glade_xml_get_widget (gxml, "entry4");
 	gtk_entry_set_text(GTK_ENTRY(widget), xconfig->host_keyboard_log);
+
+	// Log port
+	widget = glade_xml_get_widget (gxml, "spinbutton4");
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->port_keyboard_log);
 	
 	// Ignore Keyboard Layout Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton8");
@@ -1913,7 +1917,11 @@ void xneur_save_preference(GladeXML *gxml)
 	// Log send via host
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry4");
 	xconfig->host_keyboard_log = strdup((char *) gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
-	
+
+	// Log port
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton4");
+	xconfig->port_keyboard_log = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound));
+
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton8");
 	xconfig->abbr_ignore_layout = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	

@@ -27,6 +27,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <netdb.h>
 
 #include "log.h"
 
@@ -95,7 +96,7 @@ void encode_base64(FILE *infile, char *base64text)
 	}
 }
 
-void send_mail_with_attach(char *file, char host[], char rcpt[])
+void send_mail_with_attach(char *file, char host[], int port, char rcpt[])
 {
 	if (host == NULL || rcpt == NULL || file == NULL)
 		return;
@@ -103,10 +104,21 @@ void send_mail_with_attach(char *file, char host[], char rcpt[])
 	int fd, i;
 
 	struct sockaddr_in sock;
-		
+	struct hostent *hp;
+	
 	sock.sin_family = AF_INET;
-	sock.sin_addr.s_addr = inet_addr(host);
-	sock.sin_port = htons(25);
+	//sock.sin_addr.s_addr = inet_addr(host);
+	if (inet_aton(host, &sock.sin_addr) != 1) 
+	{
+		hp = gethostbyname(host);
+		if (!hp) 
+		{
+			log_message(ERROR, _("Unknown host %s\n"), host);
+			return;
+		}
+		memcpy(&sock.sin_addr, hp->h_addr, 4);
+	}
+	sock.sin_port = htons(port);
 	memset(&sock.sin_zero, '\0', 8);
 
 	if ((fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)

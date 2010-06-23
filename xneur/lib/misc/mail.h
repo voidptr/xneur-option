@@ -20,6 +20,6 @@
 #ifndef _MAIL_H_
 #define _MAIL_H_
 
-void send_mail_with_attach(char text[], char host[], char rcpt[]);
+void send_mail_with_attach(char text[], char host[], int port, char rcpt[]);
 
 #endif /* _MAIL_H_ */

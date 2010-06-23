@@ -374,80 +374,84 @@ msgid "Send log to e-mail"
 msgstr ""
 
 #: glade/config.glade:1685
-msgid "Send log via host (IP)"
+msgid "Send log via host (name or IP)"
 msgstr ""
 
 #: glade/config.glade:1711
 msgid "Log file size in bytes"
 msgstr ""
 
-#: glade/config.glade:1758
+#: glade/config.glade:1756
+msgid "Send log via port"
+msgstr ""
+
+#: glade/config.glade:1789
 msgid "<b>Log</b>"
 msgstr ""
 
-#: glade/config.glade:1793
+#: glade/config.glade:1824
 msgid "Backspace"
 msgstr ""
 
-#: glade/config.glade:1807
+#: glade/config.glade:1838
 msgid "Left arrow"
 msgstr ""
 
-#: glade/config.glade:1821
+#: glade/config.glade:1852
 msgid "Right arrow"
 msgstr ""
 
-#: glade/config.glade:1835
+#: glade/config.glade:1866
 msgid "Up arrow"
 msgstr ""
 
-#: glade/config.glade:1849
+#: glade/config.glade:1880
 msgid "Down arrow"
 msgstr ""
 
-#: glade/config.glade:1863
+#: glade/config.glade:1894
 msgid "Delete"
 msgstr ""
 
-#: glade/config.glade:1877
+#: glade/config.glade:1908
 msgid "You changed layout"
 msgstr ""
 
-#: glade/config.glade:1903
+#: glade/config.glade:1934
 msgid ""
 "This will help avoid switching layout when editing parts previously "
 "introduced word."
 msgstr ""
 
-#: glade/config.glade:1928
+#: glade/config.glade:1959
 msgid "Don't switch layout if before input where pressed"
 msgstr ""
 
-#: glade/config.glade:1955
+#: glade/config.glade:1986
 msgid "Flush internal buffer on Enter or Tab"
 msgstr "Скидати внутрішній буфер при натисканні Enter або Tab"
 
-#: glade/config.glade:1969
+#: glade/config.glade:2000
 msgid "Don't process words on Enter or Tab"
 msgstr "Не перевіряти слово при натисканні Enter або Tab"
 
-#: glade/config.glade:1988
+#: glade/config.glade:2019
 msgid "Additional"
 msgstr ""
 
-#: glade/config.glade:2013
+#: glade/config.glade:2044
 msgid "<b>Troubleshooting</b>"
 msgstr ""
 
-#: glade/config.glade:2057
+#: glade/config.glade:2088
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Затримка перед відправленням подій (в мілісекундах)"
 
-#: glade/config.glade:2100
+#: glade/config.glade:2099
 msgid "Log verbosity level"
 msgstr "Рівень докладності повідомлень, що виводяться"
 
-#: glade/config.glade:2112
+#: glade/config.glade:2111
 msgid ""
 "None\n"
 "Error\n"
@@ -463,15 +467,15 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2132
+#: glade/config.glade:2131
 msgid "Dont send KeyRelease event"
 msgstr ""
 
-#: glade/config.glade:2169
+#: glade/config.glade:2174
 msgid "<b>Advanced</b>"
 msgstr "<b>Додатково</b>"
 
-#: glade/config.glade:2230
+#: glade/config.glade:2235
 msgid "<b>Plugins</b>"
 msgstr ""
 

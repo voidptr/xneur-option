@@ -207,6 +207,7 @@ struct _xneur_config
 	int   size_keyboard_log;			// Size keyboard log
 	char* mail_keyboard_log;
 	char* host_keyboard_log;
+	int   port_keyboard_log;
 
 	// Troubleshooting
 	int troubleshoot_backspace;

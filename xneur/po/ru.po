@@ -123,8 +123,8 @@ msgstr "Максимальный размер пользовательского
 
 #: src/xneur.c:153
 #, c-format
-msgid "Keyboard log will send to %s via %s host"
-msgstr "Пользовательский журнал будет отправлен на %s через хост %s"
+msgid "Keyboard log will send to %s via %s:%d host"
+msgstr "Пользовательский журнал будет отправлен на %s через хост %s:%d"
 
 #: src/xneur.c:154
 #, c-format
@@ -249,53 +249,53 @@ msgstr ""
 "Задержка перед отправкой событий приложению (в миллисекундах) установлена в %"
 "d"
 
-#: src/xneur.c:185
+#: src/xneur.c:184
 #, c-format
 msgid " already running with pid %d"
 msgstr " уже запущен с pid %d"
 
-#: src/xneur.c:198
+#: src/xneur.c:197
 #, c-format
 msgid " pid is %d with nice %d"
 msgstr " pid равен %d с приоритетом %d"
 
-#: src/xneur.c:204
+#: src/xneur.c:203
 msgid "Current sound data is freed"
 msgstr "Текущие данные звука очищены"
 
-#: src/xneur.c:207
+#: src/xneur.c:206
 msgid "Current user keybinds is freed"
 msgstr "Текущие данные пользовательских горячих клавиш очищены"
 
-#: src/xneur.c:212
+#: src/xneur.c:211
 msgid "Current program info is freed"
 msgstr "Текущие данные программной информации очищены"
 
-#: src/xneur.c:219
+#: src/xneur.c:218
 msgid "Current configuration data is freed"
 msgstr "Текущие данные конфигурации очищены"
 
-#: src/xneur.c:230
+#: src/xneur.c:229
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr "Получен сигнал SIGTERM/SIGINT, останов"
 
-#: src/xneur.c:246
+#: src/xneur.c:245
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr "Получен сигнал SIGHUP, перезагрузка конфигурационного файла"
 
-#: src/xneur.c:260 src/xneur.c:395
+#: src/xneur.c:259 src/xneur.c:394
 msgid "Can't init libxnconfig"
 msgstr "Невозможно инициировать библиотеку libxnconfig"
 
-#: src/xneur.c:375
+#: src/xneur.c:374
 msgid "Can't trap signal"
 msgstr "Невозможно поймать сигнал"
 
-#: src/xneur.c:405
+#: src/xneur.c:404
 msgid "Failed to init program structure"
 msgstr "Ошибка инициализации програмной структуры"
 
-#: src/xneur.c:414
+#: src/xneur.c:413
 msgid "Init program structure complete"
 msgstr "Инициализация програмной структуры выполнена"
 
@@ -527,44 +527,40 @@ msgstr ""
 msgid "Invalid value for dont send KeyRelease event mode"
 msgstr "Неправильное значение опции для режима отправки события KeyRelease"
 
-#: lib/config/xnconfig.c:774
-msgid "Start delay must be more 0"
-msgstr "Задержка запуска программы должна быть больше 0"
-
-#: lib/config/xnconfig.c:788
+#: lib/config/xnconfig.c:785
 #, c-format
 msgid "Can't find config file %s"
 msgstr "Не найден конфигурационный файл %s"
 
-#: lib/config/xnconfig.c:953
+#: lib/config/xnconfig.c:950
 msgid "No languages specified in config file"
 msgstr "В конфигурационном файле не определены языки"
 
-#: lib/config/xnconfig.c:983
+#: lib/config/xnconfig.c:980
 #, c-format
 msgid "Saving main config to %s"
 msgstr "Сохранение основной конфигурации в %s"
 
-#: lib/config/xnconfig.c:988
+#: lib/config/xnconfig.c:985
 #, c-format
 msgid "Can't create file %s"
 msgstr "Невозможно создать файл %s"
 
-#: lib/config/xnconfig.c:1280
+#: lib/config/xnconfig.c:1279
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr "Перемещение конфигурационного файла из %s в %s"
 
-#: lib/config/xnconfig.c:1286
+#: lib/config/xnconfig.c:1285
 msgid "Can't move file!"
 msgstr "Невозможно переместить файл!"
 
-#: lib/config/xnconfig.c:1304
+#: lib/config/xnconfig.c:1303
 #, c-format
 msgid "Saving %s dictionary"
 msgstr "Сохранение словаря языка %s"
 
-#: lib/config/xnconfig.c:1317
+#: lib/config/xnconfig.c:1316
 #, c-format
 msgid "Saving %s pattern"
 msgstr "Сохранение паттернов языка %s"
@@ -625,26 +621,31 @@ msgstr "Неосвобожден указатель на область памя
 msgid "Sorting error: %s > %s"
 msgstr "Ошибка сортировки: %s > %s"
 
-#: lib/misc/mail.c:114
+#: lib/misc/mail.c:116
+#, c-format
+msgid "Unknown host %s\n"
+msgstr "Неизвестный адрес %s\n"
+
+#: lib/misc/mail.c:126
 msgid "Unable open socket!"
 msgstr "Невозможно открыть сокет!"
 
-#: lib/misc/mail.c:120
+#: lib/misc/mail.c:132
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "Невозможно соединиться с %s"
 
-#: lib/misc/mail.c:127
+#: lib/misc/mail.c:139
 #, c-format
 msgid "Can't get state of file \"%s\""
 msgstr "Невозможно получить информацию о файле \"%s\""
 
-#: lib/misc/mail.c:134
+#: lib/misc/mail.c:146
 #, c-format
 msgid "Can't open to read file \"%s\""
 msgstr "Невозможно открыть для чтения файл \"%s\""
 
-#: lib/misc/mail.c:191
+#: lib/misc/mail.c:203
 #, c-format
 msgid "Mail server return Error %d"
 msgstr "Почтовый сервер ворнул Ошибку %d"
@@ -720,22 +721,22 @@ msgstr "Установлены горячие клавиши:"
 msgid "Binded hotkeys user actions:"
 msgstr "Установлены горячие клавиши пользовательских действий:"
 
-#: lib/main/buffer.c:118
+#: lib/main/buffer.c:122
 #, c-format
 msgid "Compressed old log file to %s"
 msgstr "Создан архив старого файла журнала %s"
 
-#: lib/main/buffer.c:122
+#: lib/main/buffer.c:126
 #, c-format
-msgid "Sended log to e-mail %s via %s host"
-msgstr "Отправлен журнал на %s через %s"
+msgid "Sended log to e-mail %s via %s:%d host"
+msgstr "Отправлен журнал на %s через %s:%d"
 
-#: lib/main/buffer.c:127
+#: lib/main/buffer.c:131
 #, c-format
 msgid "Error rename file \"%s\" to \"%s\""
 msgstr "Ошибка переименования файла \"%s\" в \"%s\""
 
-#: lib/main/buffer.c:481
+#: lib/main/buffer.c:487
 msgid "String is freed"
 msgstr "Текущие данные строки очищены"
 
@@ -1024,3 +1025,6 @@ msgstr "Создано основное окно с id %d"
 #: lib/main/window.c:135
 msgid "Window is freed"
 msgstr "Текущие данные окна очищены"
+
+#~ msgid "Start delay must be more 0"
+#~ msgstr "Задержка запуска программы должна быть больше 0"

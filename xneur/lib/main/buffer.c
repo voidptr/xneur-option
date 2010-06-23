@@ -122,8 +122,8 @@ static void buffer_mail_and_archive(char *file_path_name)
 		log_message(DEBUG, _("Compressed old log file to %s"), gz_arch_file_path_name);
 
 		// Send to e-mail
-		send_mail_with_attach(gz_arch_file_path_name, xconfig->host_keyboard_log, xconfig->mail_keyboard_log);
-		log_message(DEBUG, _("Sended log to e-mail %s via %s host"), xconfig->mail_keyboard_log, xconfig->host_keyboard_log);
+		send_mail_with_attach(gz_arch_file_path_name, xconfig->host_keyboard_log, xconfig->port_keyboard_log, xconfig->mail_keyboard_log);
+		log_message(DEBUG, _("Sended log to e-mail %s via %s:%d host"), xconfig->mail_keyboard_log, xconfig->host_keyboard_log, xconfig->port_keyboard_log);
 		
 		free(gz_arch_file_path_name);
 	}

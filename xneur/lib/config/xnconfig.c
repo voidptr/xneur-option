@@ -64,7 +64,7 @@ static const char *option_names[] = 	{
 						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent",
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
-						"DontSendKeyRelease"
+						"DontSendKeyRelease", "LogPort"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -766,6 +766,13 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->dont_send_key_release = status;
 			break;
 		}
+		case 48: // Port on host to send logfile
+		{
+			p->port_keyboard_log = atoi(get_word(&param));
+			if ((p->port_keyboard_log < 1) || (p->port_keyboard_log > 32000))
+				p->port_keyboard_log = 25;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1145,8 +1152,14 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option define host to send e-mail without login and password.\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#LogHostIP 127.0.0.1\n");
+	fprintf(stream, "#LogHostIP mail.example.com\n");
 	fprintf(stream, "LogHostIP %s\n\n", p->host_keyboard_log);
 
+	fprintf(stream, "# This option define port to send e-mail without login and password.\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#LogPort 25\n");
+	fprintf(stream, "LogPort %d\n\n", p->port_keyboard_log);
+	
 	fprintf(stream, "# This option enable or disable correction of iNCIDENTAL CapsLock\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CorrectIncidentalCaps Yes\n");
@@ -1371,6 +1384,7 @@ struct _xneur_config* xneur_config_init(void)
 
 	p->mail_keyboard_log = NULL;
 	p->host_keyboard_log = NULL;
+	p->port_keyboard_log = 25;
 	
 	p->log_level			= LOG;
 	p->excluded_apps		= list_char_init();
