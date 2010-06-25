@@ -1079,9 +1079,6 @@ void xneur_preference(void)
 				continue;
 			}
 
-			char* (*module_info)(void);
-			module_info = dlsym(module, "on_plugin_info");
-
 			gboolean state = FALSE;
 			for (int i = 0; i < xconfig->plugins->data_count; i++)
 			{
@@ -1091,21 +1088,29 @@ void xneur_preference(void)
 					break;
 				}
 			}
+
+			char* mod_info = "";
+			char* (*module_info)(void);
+			module_info = dlsym(module, "on_plugin_info");
+			if (module_info != NULL) 
+			{
+				mod_info = (gchar *)module_info();
+			}
 			
 			GtkTreeIter iter;
 			gtk_list_store_append(GTK_LIST_STORE(store_plugin), &iter);
 			gtk_list_store_set(GTK_LIST_STORE(store_plugin), &iter, 
 												0, state,
-												1, (gchar *)module_info(),
+												1, mod_info,
 												2, ep->d_name,
 												-1);
-	
+
 			ep = readdir (dp);
 			dlclose(module);
 		}
  		(void) closedir (dp);
 	}
-	
+
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);

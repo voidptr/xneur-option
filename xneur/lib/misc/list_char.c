@@ -332,6 +332,8 @@ struct _list_char* list_char_init(void)
 	struct _list_char *list = (struct _list_char *) malloc(sizeof(struct _list_char));
 	bzero(list, sizeof(struct _list_char));
 
+	list->data_count = 0;
+	
 	list->uninit	= list_char_uninit;
 	list->add	= list_char_add;
 	list->rem	= list_char_rem;

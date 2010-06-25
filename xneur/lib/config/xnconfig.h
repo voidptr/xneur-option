@@ -22,7 +22,7 @@
 
 #define CONFIG_NAME			"xneurrc"
 #define CONFIG_BCK_NAME			"xneurrc~"
-#define LOG_NAME			"xneurlog"
+#define LOG_NAME			"xneurlog.html"
 
 #define SOUNDDIR			"sounds"
 

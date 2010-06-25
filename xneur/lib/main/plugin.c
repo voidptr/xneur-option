@@ -297,6 +297,11 @@ void plugin_plugin_about(struct _plugin *p)
 	if (p) {};
 }
 
+void plugin_plugin_info(struct _plugin *p)
+{
+	if (p) {};
+}
+
 void plugin_uninit(struct _plugin *p)
 {
 	if (p) {};
