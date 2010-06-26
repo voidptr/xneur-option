@@ -178,10 +178,10 @@ static int get_auto_action(struct _program *p, KeySym key, int modifier_mask)
 	}
 
 	/*if (modifier_mask & Mod1Mask || modifier_mask & Mod4Mask)
-		return KLB_NO_ACTION;
+		return KLB_NO_ACTION;*/
 
 	if (modifier_mask & ControlMask)
-		return KLB_CLEAR;*/
+		return KLB_CLEAR;
 
 	return KLB_ADD_SYM;
 }

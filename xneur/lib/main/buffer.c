@@ -55,6 +55,7 @@
 extern struct _xneur_config *xconfig;
 
 Window last_log_window = 0;
+time_t last_log_time = 0;
 
 // Private
 static void set_new_size(struct _buffer *p, int new_size)
@@ -193,8 +194,8 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 			free(buffer);
 			return;
 		}
-		fprintf(stream, "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"></head><body>\n");
-		fprintf(stream, "</body></html>\n");
+		fprintf(stream, "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"><title>X Neural Switcher Log</title></head><body>\n");
+		fprintf(stream, "<ul></body></html>\n");
 	}
 	fclose (stream);
 	
@@ -208,18 +209,25 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 
 	fseek(stream, -15, SEEK_END);
 
+	bzero(buffer, 256 * sizeof(char));
 	strftime(buffer, 256, "%x", loctime);
 
 	if (window != last_log_window)
 	{
 		last_log_window = window;
+		last_log_time = 0;
 		char *app_name = get_wm_class_name(window);
-		fprintf(stream, "<br><font color=\"#A82F2F\"><b>[%s]</b> <font size=\"2\">[%s]</font></font><br>\n", app_name, buffer);
+		fprintf(stream, "</ul>\n<br><font color=\"#FF0000\"><b>%s <font size=\"2\">[%s]</font></font></b><br><ul>\n", app_name, buffer);
 		free(app_name);
 	}
 
-	strftime(buffer, 256, "%X", loctime);
-	fprintf(stream, "<font color=\"#16569E\" size=\"2\"><ul>(%s): </font>", buffer);
+	if (difftime(curtime, last_log_time) > 300)
+	{
+		last_log_time = curtime;
+		bzero(buffer, 256 * sizeof(char));
+		strftime(buffer, 256, "%X", loctime);
+		fprintf(stream, "</ul><ul>\n<font color=\"#0000FF\" size=\"2\">(%s): </font>", buffer);
+	}
 	free(buffer);
 	
 	for (int i = 0; i < p->cur_pos; i++)
@@ -231,7 +239,7 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 		}
 		if (p->keycode[i] == 23)			// Tab
 		{
-			fprintf(stream, "\t");
+			fprintf(stream, "&nbsp;&nbsp;&nbsp;&nbsp;\t");
 			continue;
 		}
 
@@ -242,11 +250,15 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 			continue;
 		}
 
-		fprintf(stream, "%s", symbol);
+		if (symbol[0] == ' ')
+			fprintf(stream, "&nbsp;");
+		else	
+			fprintf(stream, "%s", symbol);
+		
 		free(symbol);
 	}
 
-	fprintf(stream, "</ul>\n</body></html>\n");
+	fprintf(stream, "\n</body></html>\n");
 	fclose(stream);
 }
 
