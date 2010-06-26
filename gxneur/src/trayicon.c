@@ -27,7 +27,6 @@
 #include "clock.h"
 #include "xkb.h"
 #include "misc.h"
-//#include "tray_widget.h"
 
 #include <xneur/xnconfig.h>
 
@@ -67,6 +66,30 @@ gboolean tray_icon_press(GtkWidget *widget, GdkEventButton *event, struct _tray_
 	
 	gtk_menu_popup(GTK_MENU(tray->popup_menu), NULL, NULL, NULL, NULL, event->button, event->time);
 	return FALSE;
+}
+
+static void exec_user_action(char *cmd)
+{
+	char *command = malloc ((strlen(cmd) + strlen(" 2> /dev/stdout") + 1) * sizeof(char));
+	command[0] = '\0';
+	strcat(command, cmd);
+	strcat(command, " 2> /dev/stdout");
+
+	FILE *fp = popen(command, "r");
+	free(command);
+	if (fp == NULL)
+		return;
+
+	char buffer[NAME_MAX];
+	if (fgets(buffer, NAME_MAX, fp) == NULL)
+	{
+		pclose(fp);
+		return;
+	}
+
+	pclose(fp);
+	
+	error_msg(buffer);
 }
 
 GtkWidget* create_menu_icon(struct _tray_icon *tray, gboolean runned, int state)
@@ -118,7 +141,7 @@ GtkWidget* create_menu_icon(struct _tray_icon *tray, gboolean runned, int state)
 	{
 		menuitem = gtk_menu_item_new_with_mnemonic(xconfig->actions[action].name);
 		gtk_widget_show(menuitem);
-		g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(system), xconfig->actions[action].command);
+		g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(exec_user_action), xconfig->actions[action].command);
 		gtk_container_add(GTK_CONTAINER(action_submenu), menuitem);
 	}
 	menuitem = gtk_image_menu_item_new_with_mnemonic(_("User action"));

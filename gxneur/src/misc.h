@@ -74,4 +74,6 @@ int is_correct_hotkey(gchar **key_stat);
 
 char* modifiers_to_string(unsigned int modifier);
 
+void error_msg(const char *msg, ...);
+
 #endif /* _MISC_H_ */

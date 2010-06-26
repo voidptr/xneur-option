@@ -370,55 +370,59 @@ msgstr "<b>Сокращения</b>"
 msgid "Enable keyboard logging"
 msgstr "Включить сохранение набираемого текста в файл журнала"
 
-#: glade/config.glade:1659
-msgid "Send log to e-mail"
-msgstr "Отправить журнал на e-mail"
-
-#: glade/config.glade:1685
-msgid "Send log via host (name or IP)"
-msgstr "Отправить журнал через сервер (адрес или IP)"
-
-#: glade/config.glade:1711
-msgid "Log file size in bytes"
-msgstr "Размер журнала в байтах"
-
-#: glade/config.glade:1756
+#: glade/config.glade:1677
 msgid "Send log via port"
 msgstr "Отправить журнал через порт"
 
-#: glade/config.glade:1789
+#: glade/config.glade:1703
+msgid "Send log via host (name or IP)"
+msgstr "Отправить журнал через сервер (адрес или IP)"
+
+#: glade/config.glade:1729
+msgid "Send log to e-mail"
+msgstr "Отправить журнал на e-mail"
+
+#: glade/config.glade:1760
+msgid "Log file size in bytes"
+msgstr "Размер журнала в байтах"
+
+#: glade/config.glade:1771
+msgid "View log..."
+msgstr "Посмотреть журнал..."
+
+#: glade/config.glade:1808
 msgid "<b>Log</b>"
 msgstr "<b>Журнал</b>"
 
-#: glade/config.glade:1824
+#: glade/config.glade:1843
 msgid "Backspace"
 msgstr "Backspace"
 
-#: glade/config.glade:1838
+#: glade/config.glade:1857
 msgid "Left arrow"
 msgstr "Стрелка влево"
 
-#: glade/config.glade:1852
+#: glade/config.glade:1871
 msgid "Right arrow"
 msgstr "Стрелка вправо"
 
-#: glade/config.glade:1866
+#: glade/config.glade:1885
 msgid "Up arrow"
 msgstr "Стрелка вверх"
 
-#: glade/config.glade:1880
+#: glade/config.glade:1899
 msgid "Down arrow"
 msgstr "Стрелка вниз"
 
-#: glade/config.glade:1894
+#: glade/config.glade:1913
 msgid "Delete"
 msgstr "Delete"
 
-#: glade/config.glade:1908
+#: glade/config.glade:1927
 msgid "You changed layout"
 msgstr "Вы переключили раскладку"
 
-#: glade/config.glade:1934
+#: glade/config.glade:1953
 msgid ""
 "This will help avoid switching layout when editing parts previously "
 "introduced word."
@@ -426,35 +430,35 @@ msgstr ""
 "Это поможет избежать переключений раскладки при редактировании частей ранее "
 "введенного слова"
 
-#: glade/config.glade:1959
+#: glade/config.glade:1978
 msgid "Don't switch layout if before input where pressed"
 msgstr "Не переключать раскладку, если перед вводом были нажаты"
 
-#: glade/config.glade:1986
+#: glade/config.glade:2005
 msgid "Flush internal buffer on Enter or Tab"
 msgstr "Сбрасывать внутренний буфер при нажатии Enter или Tab"
 
-#: glade/config.glade:2000
+#: glade/config.glade:2019
 msgid "Don't process words on Enter or Tab"
 msgstr "Не проверять слово при нажатии Enter или Tab"
 
-#: glade/config.glade:2019
+#: glade/config.glade:2038
 msgid "Additional"
 msgstr "Дополнительно"
 
-#: glade/config.glade:2044
+#: glade/config.glade:2063
 msgid "<b>Troubleshooting</b>"
 msgstr "<b>Устранение проблем</b>"
 
-#: glade/config.glade:2088
+#: glade/config.glade:2107
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Задержка перед отправкой событий (в миллисекундах)"
 
-#: glade/config.glade:2099
+#: glade/config.glade:2118
 msgid "Log verbosity level"
 msgstr "Уровень подробности выводимых сообщений"
 
-#: glade/config.glade:2111
+#: glade/config.glade:2130
 msgid ""
 "None\n"
 "Error\n"
@@ -470,15 +474,15 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2131
+#: glade/config.glade:2150
 msgid "Dont send KeyRelease event"
 msgstr "Не отправлять событие KeyRelease"
 
-#: glade/config.glade:2174
+#: glade/config.glade:2193
 msgid "<b>Advanced</b>"
 msgstr "<b>Специальное</b>"
 
-#: glade/config.glade:2235
+#: glade/config.glade:2254
 msgid "<b>Plugins</b>"
 msgstr "<b>Модули</b>"
 

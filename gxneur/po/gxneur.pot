@@ -146,7 +146,6 @@ msgstr ""
 msgid "gXNeur About..."
 msgstr ""
 
-
 #: glade/about.glade:15
 msgid ""
 "\n"
@@ -358,89 +357,93 @@ msgstr ""
 msgid "Enable keyboard logging"
 msgstr ""
 
-#: glade/config.glade:1659
-msgid "Send log to e-mail"
-msgstr ""
-
-#: glade/config.glade:1685
-msgid "Send log via host (name or IP)"
-msgstr ""
-
-#: glade/config.glade:1711
-msgid "Log file size in bytes"
-msgstr ""
-
-#: glade/config.glade:1756
+#: glade/config.glade:1677
 msgid "Send log via port"
 msgstr ""
 
-#: glade/config.glade:1789
+#: glade/config.glade:1703
+msgid "Send log via host (name or IP)"
+msgstr ""
+
+#: glade/config.glade:1729
+msgid "Send log to e-mail"
+msgstr ""
+
+#: glade/config.glade:1760
+msgid "Log file size in bytes"
+msgstr ""
+
+#: glade/config.glade:1771
+msgid "View log..."
+msgstr ""
+
+#: glade/config.glade:1808
 msgid "<b>Log</b>"
 msgstr ""
 
-#: glade/config.glade:1824
+#: glade/config.glade:1843
 msgid "Backspace"
 msgstr ""
 
-#: glade/config.glade:1838
+#: glade/config.glade:1857
 msgid "Left arrow"
 msgstr ""
 
-#: glade/config.glade:1852
+#: glade/config.glade:1871
 msgid "Right arrow"
 msgstr ""
 
-#: glade/config.glade:1866
+#: glade/config.glade:1885
 msgid "Up arrow"
 msgstr ""
 
-#: glade/config.glade:1880
+#: glade/config.glade:1899
 msgid "Down arrow"
 msgstr ""
 
-#: glade/config.glade:1894
+#: glade/config.glade:1913
 msgid "Delete"
 msgstr ""
 
-#: glade/config.glade:1908
+#: glade/config.glade:1927
 msgid "You changed layout"
 msgstr ""
 
-#: glade/config.glade:1934
+#: glade/config.glade:1953
 msgid ""
 "This will help avoid switching layout when editing parts previously "
 "introduced word."
 msgstr ""
 
-#: glade/config.glade:1959
+#: glade/config.glade:1978
 msgid "Don't switch layout if before input where pressed"
 msgstr ""
 
-#: glade/config.glade:1986
+#: glade/config.glade:2005
 msgid "Flush internal buffer on Enter or Tab"
 msgstr ""
 
-#: glade/config.glade:2000
+#: glade/config.glade:2019
 msgid "Don't process words on Enter or Tab"
 msgstr ""
 
-#: glade/config.glade:2019
+#: glade/config.glade:2038
 msgid "Additional"
 msgstr ""
 
-#: glade/config.glade:2044
+#: glade/config.glade:2063
 msgid "<b>Troubleshooting</b>"
 msgstr ""
 
-#: glade/config.glade:2088
+#: glade/config.glade:2107
 msgid "Delay before sending events (in milliseconds)"
 msgstr ""
 
-#: glade/config.glade:2099
+#: glade/config.glade:2118
 msgid "Log verbosity level"
 msgstr ""
 
-#: glade/config.glade:2111
+#: glade/config.glade:2130
 msgid ""
 "None\n"
 "Error\n"
@@ -450,15 +453,15 @@ msgid ""
 "Trace"
 msgstr ""
 
-#: glade/config.glade:2131
+#: glade/config.glade:2150
 msgid "Dont send KeyRelease event"
 msgstr ""
 
-#: glade/config.glade:2174
+#: glade/config.glade:2193
 msgid "<b>Advanced</b>"
 msgstr ""
 
-#: glade/config.glade:2235
+#: glade/config.glade:2254
 msgid "<b>Plugins</b>"
 msgstr ""
 

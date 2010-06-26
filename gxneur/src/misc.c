@@ -109,7 +109,7 @@ static const int total_notify_names = sizeof(notify_names) / sizeof(notify_names
 static const int total_modifiers			= sizeof(modifier_names) / sizeof(modifier_names[0]); 
 static const int total_all_modifiers			= sizeof(all_modifiers) / sizeof(all_modifiers[0]);
 
-static void error_msg(const char *msg, ...)
+void error_msg(const char *msg, ...)
 {
 	int len = strlen(msg) + 2;
 
@@ -215,6 +215,35 @@ static void get_xprop_name(GladeXML *gxml)
 
 	GtkWidget *entry1 = glade_xml_get_widget (gxml, "entry1");
 	gtk_entry_set_text(GTK_ENTRY(entry1), p);
+}
+
+static void get_logfile(GladeXML *gxml)
+{
+	if (gxml) {};
+	
+	char *log_home_path	= xconfig->get_home_dict_path(NULL, "xneurlog.html");
+	char *command = malloc ((strlen("xdg-open ") + strlen(log_home_path) + strlen(" 2> /dev/stdout") + 1) * sizeof(char));
+	command[0] = '\0';
+	strcat(command, "xdg-open ");
+	strcat(command, log_home_path);
+	strcat(command, " 2> /dev/stdout");
+
+	FILE *fp = popen(command, "r");
+	free(log_home_path);
+	free(command);
+	if (fp == NULL)
+		return;
+
+	char buffer[NAME_MAX];
+	if (fgets(buffer, NAME_MAX, fp) == NULL)
+	{
+		pclose(fp);
+		return;
+	}
+
+	pclose(fp);
+	
+	error_msg(buffer);
 }
 
 static void xneur_insert_application(GladeXML *gxml)
@@ -631,6 +660,10 @@ void xneur_preference(void)
 	// Log port
 	widget = glade_xml_get_widget (gxml, "spinbutton4");
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->port_keyboard_log);
+
+	// View log
+	widget = glade_xml_get_widget (gxml, "button8");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(get_logfile), gxml);
 	
 	// Ignore Keyboard Layout Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton8");
