@@ -822,6 +822,12 @@ static void program_perform_auto_action(struct _program *p, int action)
 				// Block events of keyboard (push to event queue)
 				set_event_mask(p->focus->owner_window, None);
 
+				// Correct space before punctuation
+			    p->check_space_before_punctuation(p);
+
+			    // Correct spaces with brackets
+			    p->check_space_with_bracket(p);
+				
 				p->check_brackets_with_symbols(p);
 				
 				if (!xconfig->check_lang_on_process)
@@ -1376,7 +1382,7 @@ static void program_check_space_with_bracket(struct _program *p)
 		return;
 	}
 	
-	if (((text[text_len - 1] == '(') && (text[text_len - 2] == ' ' || text[text_len - 2] == ':' || text[text_len - 2] == ';' || text[text_len - 2] == '-' || isdigit(text[text_len - 2]))) ||
+	if (((text[text_len - 1] == '(') && (text[text_len - 2] == ' ' || text[text_len - 2] == ':' || text[text_len - 2] == ';' || text[text_len - 2] == '-' || text[text_len - 2] == '\r' || text[text_len - 2] == '\n' || text[text_len - 2] == '\t' || isdigit(text[text_len - 2]))) ||
 	    ((text[text_len - 1] == ')' && text[text_len - 2] != ' ' )))
 	{
 		free(text);
