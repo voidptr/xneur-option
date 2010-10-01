@@ -426,6 +426,16 @@ static void column_1_edited (GtkCellRendererText *renderer, gchar *path, gchar *
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 1, new_text, -1);
 }
 
+static void column_2_edited (GtkCellRendererText *renderer, gchar *path, gchar *new_text, GtkTreeView *treeview)
+{
+	if (renderer) {};
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+
+	model = gtk_tree_view_get_model (treeview);
+	if (gtk_tree_model_get_iter_from_string (model, &iter, path))
+		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 2, new_text, -1);
+}
 static void plug_enable (GtkCellRendererToggle *renderer, gchar *path, GtkTreeView *treeview)
 {
 	GtkTreeIter iter;
@@ -744,11 +754,15 @@ void xneur_preference(void)
 	gtk_tree_view_column_set_sizing(GTK_TREE_VIEW_COLUMN(column), GTK_TREE_VIEW_COLUMN_FIXED);
     gtk_tree_view_column_set_fixed_width(GTK_TREE_VIEW_COLUMN(column), 400);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
-
+	
 	cell = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Key bind"), cell, "text", 1, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
 
+	g_signal_connect (G_OBJECT (treeview), "row-activated",
+						G_CALLBACK (xneur_edit_action),
+						(gpointer) treeview);
+	
 	// Button Edit Action
 	widget = glade_xml_get_widget (gxml, "button10");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_action), G_OBJECT(treeview));
@@ -844,6 +858,10 @@ void xneur_preference(void)
 												-1);
 	}
 
+	g_signal_connect (G_OBJECT (treeview), "row-activated",
+						G_CALLBACK (xneur_edit_sound),
+						(gpointer) treeview);
+	                  
 	// Button Edit Sound
 	widget = glade_xml_get_widget (gxml, "button12");
 	tmp_widget = GTK_WIDGET(treeview);
@@ -912,7 +930,7 @@ void xneur_preference(void)
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
 	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
 	g_signal_connect (G_OBJECT (cell), "edited",
-						G_CALLBACK (column_1_edited),
+						G_CALLBACK (column_0_edited),
 						(gpointer) treeview);
 	gtk_tree_view_column_set_sizing(GTK_TREE_VIEW_COLUMN(column), GTK_TREE_VIEW_COLUMN_FIXED);
     gtk_tree_view_column_set_fixed_width(GTK_TREE_VIEW_COLUMN(column), 200);
@@ -926,12 +944,16 @@ void xneur_preference(void)
 	column = gtk_tree_view_column_new_with_attributes(_("User action"), cell, "text", 2, NULL);
 	g_object_set (cell, "editable", TRUE, "editable-set", TRUE, NULL);
 	g_signal_connect (G_OBJECT (cell), "edited",
-						G_CALLBACK (column_1_edited),
+						G_CALLBACK (column_2_edited),
 						(gpointer) treeview);
 	gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
 	gtk_tree_view_column_set_sizing(GTK_TREE_VIEW_COLUMN(column), GTK_TREE_VIEW_COLUMN_FIXED);
     gtk_tree_view_column_set_fixed_width(GTK_TREE_VIEW_COLUMN(column), 200);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	g_signal_connect (G_OBJECT (treeview), "row-activated",
+						G_CALLBACK (xneur_edit_user_action),
+						(gpointer) treeview);
 	
 	// Button Add User Action
 	widget = glade_xml_get_widget (gxml, "button36");
