@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "support.h"
 
@@ -51,14 +52,27 @@ int main(int argc, char *argv[])
 
 	
 	GConfClient* gconfClient = gconf_client_get_default();
-    g_assert(GCONF_IS_CLIENT(gconfClient));
- 
-    if(!gconf_client_set_int(gconfClient, GCONF_DIR "mykey", 13, NULL)) {
-      g_warning(" failed to set %smykey (%d)\n", GCONF_DIR, 13);
-    }
- 
-    /* release GConf client */
-    g_object_unref(gconfClient);
+	g_assert(GCONF_IS_CLIENT(gconfClient));
+	
+	GConfValue* gcValue = NULL;
+	gcValue = gconf_client_get_without_default(gconfClient, GCONF_DIR "delay", NULL);
+
+	/* if value pointer remains NULL, the key was not found */
+	int value = 0;
+	if(gcValue != NULL) 
+	{
+		/* Check if value type is integer */
+		if(gcValue->type == GCONF_VALUE_INT) 
+			value = gconf_value_get_int(gcValue);
+
+		/* Release resources */
+		gconf_value_free(gcValue);
+	}
+
+	/* release GConf client */
+	g_object_unref(gconfClient);
+
+	sleep (value);
 	
 	xneur_start();
 

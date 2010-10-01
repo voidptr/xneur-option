@@ -25,6 +25,7 @@
 #include <gdk/gdkx.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <gconf/gconf-client.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -46,6 +47,8 @@
 
 #define LANGUAGES_DIR "languages"
 #define DIR_SEPARATOR		"/"
+
+#define GCONF_DIR "/apps/" PACKAGE "/"
 
 #include "support.h"
 #include "callbacks.h"
@@ -1166,6 +1169,31 @@ void xneur_preference(void)
  		(void) closedir (dp);
 	}
 
+	// Gxneur Properties
+	GConfClient* gconfClient = gconf_client_get_default();
+	g_assert(GCONF_IS_CLIENT(gconfClient));
+	
+	GConfValue* gcValue = NULL;
+	gcValue = gconf_client_get_without_default(gconfClient, GCONF_DIR "delay", NULL);
+
+	/* if value pointer remains NULL, the key was not found */
+	int value = 0;
+	if(gcValue != NULL) 
+	{
+		/* Check if value type is integer */
+		if(gcValue->type == GCONF_VALUE_INT) 
+			value = gconf_value_get_int(gcValue);
+
+		/* Release resources */
+		gconf_value_free(gcValue);
+	}
+
+	widget = glade_xml_get_widget (gxml, "spinbutton5");
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), value);
+	
+	/* release GConf client */
+	g_object_unref(gconfClient);
+	
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
@@ -2052,6 +2080,19 @@ void xneur_save_preference(GladeXML *gxml)
 	// Dont send KeyRelease mode
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton26");
 	xconfig->dont_send_key_release = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	// Log size
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton5");
+	GConfClient* gconfClient = gconf_client_get_default();
+	g_assert(GCONF_IS_CLIENT(gconfClient));
+ 
+	if(!gconf_client_set_int(gconfClient, GCONF_DIR "delay", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound)), NULL)) 
+	{
+	                         g_warning(" failed to set %smykey (%d)\n", GCONF_DIR"delay", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound)));
+	}
+ 
+    /* release GConf client */
+    g_object_unref(gconfClient);
 	
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);
