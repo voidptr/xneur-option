@@ -1424,6 +1424,7 @@ void xneur_edit_action(GtkWidget *treeview)
 		gtk_entry_set_text(GTK_ENTRY(widget), action);
 		
 		widget= glade_xml_get_widget (gxml, "entry2");
+		gtk_widget_grab_focus(widget);
 		g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
 		g_signal_connect ((gpointer) widget, "key-release-event", G_CALLBACK (on_key_release_event), gxml);
 		gtk_entry_set_text(GTK_ENTRY(widget), key_bind);
