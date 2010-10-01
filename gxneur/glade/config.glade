@@ -2273,40 +2273,88 @@ Trace</property>
                       <widget class="GtkVBox" id="vbox24">
                         <property name="visible">True</property>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <widget class="GtkHBox" id="hbox10">
+                          <widget class="GtkFrame" id="frame20">
                             <property name="visible">True</property>
+                            <property name="label_xalign">0</property>
+                            <property name="shadow_type">out</property>
                             <child>
-                              <widget class="GtkLabel" id="label34">
+                              <widget class="GtkAlignment" id="alignment23">
                                 <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Delay before start</property>
+                                <property name="left_padding">12</property>
+                                <child>
+                                  <widget class="GtkVBox" id="vbox25">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <widget class="GtkCheckButton" id="checkbutton27">
+                                        <property name="label" translatable="yes">Autostartup</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="draw_indicator">True</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="padding">1</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkHBox" id="hbox10">
+                                        <property name="visible">True</property>
+                                        <property name="homogeneous">True</property>
+                                        <child>
+                                          <widget class="GtkLabel" id="label34">
+                                            <property name="visible">True</property>
+                                            <property name="xalign">0</property>
+                                            <property name="label" translatable="yes">Delay before startup</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <widget class="GtkSpinButton" id="spinbutton5">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="invisible_char">&#x25CF;</property>
+                                            <property name="adjustment">1 0 1000000001 1 1 1</property>
+                                            <property name="snap_to_ticks">True</property>
+                                            <property name="numeric">True</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="padding">1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                </child>
                               </widget>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
                             </child>
                             <child>
-                              <widget class="GtkSpinButton" id="spinbutton5">
+                              <widget class="GtkLabel" id="label37">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
-                                <property name="adjustment">1 0 1000000001 1 1 1</property>
-                                <property name="snap_to_ticks">True</property>
-                                <property name="numeric">True</property>
+                                <property name="label" translatable="yes">Startup</property>
+                                <property name="use_markup">True</property>
                               </widget>
                               <packing>
-                                <property name="position">1</property>
+                                <property name="type">label_item</property>
                               </packing>
                             </child>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
+                            <property name="position">0</property>
                           </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
                         </child>
                         <child>
                           <placeholder/>

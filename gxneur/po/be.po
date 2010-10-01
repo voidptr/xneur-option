@@ -144,14 +144,6 @@ msgstr "Скарот:"
 msgid "Expansion text:"
 msgstr "Поўны тэкст:"
 
-#: glade/abbr_add.glade:77 glade/action_add.glade:100
-msgid "gtk-cancel"
-msgstr ""
-
-#: glade/abbr_add.glade:88 glade/action_add.glade:115
-msgid "gtk-ok"
-msgstr ""
-
 #: glade/about.glade:7
 msgid "gXNeur About..."
 msgstr "Пра gXNeur…"
@@ -492,7 +484,19 @@ msgstr "<b>Дадаткова</b>"
 msgid "<b>Plugins</b>"
 msgstr ""
 
-#: glade/config.glade:2291
+#: glade/config.glade:2295
+msgid "Autostartup"
+msgstr ""
+
+#: glade/config.glade:2329
+msgid "Delay before startup"
+msgstr ""
+
+#: glade/config.glade:2363
+msgid "Startup"
+msgstr ""
+
+#: glade/config.glade:2400
 msgid "<b>Properties</b>"
 msgstr ""
 
