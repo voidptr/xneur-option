@@ -486,19 +486,27 @@ msgstr "<b>Специальное</b>"
 msgid "<b>Plugins</b>"
 msgstr "<b>Модули</b>"
 
-#: glade/config.glade:2295
+#: glade/config.glade:2289
 msgid "Autostartup"
 msgstr "Запускать автоматически при старте системы"
 
-#: glade/config.glade:2329
+#: glade/config.glade:2309
 msgid "Delay before startup"
 msgstr "Задержка перед запуском"
 
-#: glade/config.glade:2363
+#: glade/config.glade:2343
 msgid "Startup"
 msgstr "Параметры запуска"
 
-#: glade/config.glade:2400
+#: glade/config.glade:2370
+msgid "Show text on the tray"
+msgstr "Показывать текст в системном лотке"
+
+#: glade/config.glade:2393
+msgid "UI"
+msgstr "Внешний вид"
+
+#: glade/config.glade:2427
 msgid "<b>Properties</b>"
 msgstr "<b>Параметры</b>"
 

@@ -483,19 +483,27 @@ msgstr "<b>Додатково</b>"
 msgid "<b>Plugins</b>"
 msgstr ""
 
-#: glade/config.glade:2295
+#: glade/config.glade:2289
 msgid "Autostartup"
 msgstr ""
 
-#: glade/config.glade:2329
+#: glade/config.glade:2309
 msgid "Delay before startup"
 msgstr ""
 
-#: glade/config.glade:2363
+#: glade/config.glade:2343
 msgid "Startup"
 msgstr ""
 
-#: glade/config.glade:2400
+#: glade/config.glade:2370
+msgid "Show text on the tray"
+msgstr ""
+
+#: glade/config.glade:2393
+msgid "UI"
+msgstr ""
+
+#: glade/config.glade:2427
 msgid "<b>Properties</b>"
 msgstr ""
 

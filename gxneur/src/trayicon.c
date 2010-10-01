@@ -18,6 +18,8 @@
  */
 
 #include <gtk/gtk.h>
+#include <gconf/gconf-client.h>
+
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
@@ -31,6 +33,8 @@
 #include <xneur/xnconfig.h>
 
 #include "trayicon.h"
+
+#define GCONF_DIR "/apps/" PACKAGE "/"
 
 extern struct _xneur_config *xconfig;
 
@@ -277,9 +281,40 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 	}
 	else
 	{
-		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
-		tray->image = gtk_image_new_from_pixbuf(pb);
-		gdk_pixbuf_unref(pb);
+		GConfClient* gconfClient = gconf_client_get_default();
+		g_assert(GCONF_IS_CLIENT(gconfClient));
+	
+		GConfValue* gcValue = NULL;
+		gcValue = gconf_client_get_without_default(gconfClient, GCONF_DIR "systray_text", NULL);
+
+		// Check text or pixmap
+		gboolean value = FALSE;
+		if(gcValue != NULL) 
+		{
+			/* Check if value type is integer */
+			if(gcValue->type == GCONF_VALUE_BOOL) 
+				value = gconf_value_get_bool(gcValue);
+
+			/* Release resources */
+			gconf_value_free(gcValue);
+		}
+
+		/* release GConf client */
+		g_object_unref(gconfClient);
+
+		if (value) 
+		{
+			for (unsigned int i=0; i < strlen(layout_name); i++)
+				layout_name[i] = toupper(layout_name[i]);
+			tray->image = gtk_label_new ((const gchar *)layout_name);
+			gtk_label_set_justify (GTK_LABEL(tray->image), GTK_JUSTIFY_CENTER);
+		}
+		else
+		{
+			gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
+			tray->image = gtk_image_new_from_pixbuf(pb);
+			gdk_pixbuf_unref(pb);
+		}
 	}	
 	
 	gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);

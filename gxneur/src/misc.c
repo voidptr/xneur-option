@@ -1202,12 +1202,11 @@ void xneur_preference(void)
 	// Delay before start
 	GConfClient* gconfClient = gconf_client_get_default();
 	g_assert(GCONF_IS_CLIENT(gconfClient));
-	
+
+	// Delay before start
 	GConfValue* gcValue = NULL;
 	gcValue = gconf_client_get_without_default(gconfClient, GCONF_DIR "delay", NULL);
 
-	
-	/* if value pointer remains NULL, the key was not found */
 	int value = 0;
 	if(gcValue != NULL) 
 	{
@@ -1221,6 +1220,23 @@ void xneur_preference(void)
 
 	widget = glade_xml_get_widget (gxml, "spinbutton5");
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), value);
+
+	// Text on tray
+	gcValue = gconf_client_get_without_default(gconfClient, GCONF_DIR "systray_text", NULL);
+
+	value = FALSE;
+	if(gcValue != NULL) 
+	{
+		/* Check if value type is integer */
+		if(gcValue->type == GCONF_VALUE_BOOL) 
+			value = gconf_value_get_bool(gcValue);
+
+		/* Release resources */
+		gconf_value_free(gcValue);
+	}		
+
+	widget = glade_xml_get_widget (gxml, "checkbutton28");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), value);
 	
 	/* release GConf client */
 	g_object_unref(gconfClient);
@@ -2145,17 +2161,25 @@ void xneur_save_preference(GladeXML *gxml)
 		}
 	}
 	free(path_file);
+
 	
-	// Delay before start
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton5");
 	GConfClient* gconfClient = gconf_client_get_default();
 	g_assert(GCONF_IS_CLIENT(gconfClient));
- 
+	// Delay before start
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton5");
+	 
 	if(!gconf_client_set_int(gconfClient, GCONF_DIR "delay", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound)), NULL)) 
 	{
-	                         g_warning(" failed to set %smykey (%d)\n", GCONF_DIR"delay", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound)));
+	    g_warning("Failed to set %s (%d)\n", GCONF_DIR"delay", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound)));
 	}
- 
+
+	// Text on tray
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton28");
+	 
+	if(!gconf_client_set_bool(gconfClient, GCONF_DIR"systray_text", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)), NULL)) 
+	{
+	    g_warning("Failed to set %s (%d)\n", GCONF_DIR"systray_text", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
+	}
     /* release GConf client */
     g_object_unref(gconfClient);
 	
