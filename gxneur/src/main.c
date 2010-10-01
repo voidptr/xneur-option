@@ -22,7 +22,8 @@
 #endif
 
 #include <gtk/gtk.h>
-
+#include <gconf/gconf-client.h>
+ 
 #include <stdlib.h>
 #include <locale.h>
 #include <stdio.h>
@@ -31,6 +32,8 @@
 
 #include "trayicon.h"
 #include "misc.h"
+
+#define GCONF_DIR "/apps/" PACKAGE "/"
 
 int main(int argc, char *argv[])
 {
@@ -46,6 +49,17 @@ int main(int argc, char *argv[])
 
 	add_pixmap_directory(PACKAGE_PIXMAPS_DIR);
 
+	
+	GConfClient* gconfClient = gconf_client_get_default();
+    g_assert(GCONF_IS_CLIENT(gconfClient));
+ 
+    if(!gconf_client_set_int(gconfClient, GCONF_DIR "mykey", 13, NULL)) {
+      g_warning(" failed to set %smykey (%d)\n", GCONF_DIR, 13);
+    }
+ 
+    /* release GConf client */
+    g_object_unref(gconfClient);
+	
 	xneur_start();
 
 	create_tray_icon(NULL, TRUE);

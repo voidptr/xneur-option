@@ -141,6 +141,14 @@ msgstr "Abkürzung:"
 msgid "Expansion text:"
 msgstr "Volltext:"
 
+#: glade/abbr_add.glade:77 glade/action_add.glade:100
+msgid "gtk-cancel"
+msgstr ""
+
+#: glade/abbr_add.glade:88 glade/action_add.glade:115
+msgid "gtk-ok"
+msgstr ""
+
 #: glade/about.glade:7
 msgid "gXNeur About..."
 msgstr "Über gXNeur..."
@@ -481,6 +489,10 @@ msgstr "<b>Erweitert</b>"
 
 #: glade/config.glade:2254
 msgid "<b>Plugins</b>"
+msgstr ""
+
+#: glade/config.glade:2291
+msgid "<b>Properties</b>"
 msgstr ""
 
 #: glade/list.glade:7

@@ -143,6 +143,14 @@ msgstr "Сокращение:"
 msgid "Expansion text:"
 msgstr "Полный Текст:"
 
+#: glade/abbr_add.glade:77 glade/action_add.glade:100
+msgid "gtk-cancel"
+msgstr ""
+
+#: glade/abbr_add.glade:88 glade/action_add.glade:115
+msgid "gtk-ok"
+msgstr ""
+
 #: glade/about.glade:7
 msgid "gXNeur About..."
 msgstr "О gXNeur..."
@@ -485,6 +493,10 @@ msgstr "<b>Специальное</b>"
 #: glade/config.glade:2254
 msgid "<b>Plugins</b>"
 msgstr "<b>Модули</b>"
+
+#: glade/config.glade:2291
+msgid "<b>Properties</b>"
+msgstr "<b>Параметры</b>"
 
 #: glade/list.glade:7
 msgid "File Editing"
