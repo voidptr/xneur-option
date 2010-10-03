@@ -34,8 +34,6 @@
 #include "trayicon.h"
 #include "misc.h"
 
-#define GCONF_DIR "/apps/" PACKAGE "/"
-
 int main(int argc, char *argv[])
 {
 #ifdef ENABLE_NLS
@@ -48,14 +46,35 @@ int main(int argc, char *argv[])
 	gtk_set_locale();
 	gtk_init(&argc, &argv);
 
-	add_pixmap_directory(PACKAGE_PIXMAPS_DIR);
-
-	
 	GConfClient* gconfClient = gconf_client_get_default();
 	g_assert(GCONF_IS_CLIENT(gconfClient));
-	
+
 	GConfValue* gcValue = NULL;
-	gcValue = gconf_client_get_without_default(gconfClient, GCONF_DIR "delay", NULL);
+
+	// Get pixmap directory
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", NULL);
+
+	/* if value pointer remains NULL, the key was not found */
+	if(gcValue == NULL) 
+	{
+		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", PACKAGE_PIXMAPS_DIR, NULL)) 
+		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "pixmap_dir", PACKAGE_PIXMAPS_DIR);
+	
+		add_pixmap_directory(PACKAGE_PIXMAPS_DIR);
+	}
+
+	const char *string_value = NULL;
+	if(gcValue->type == GCONF_VALUE_STRING) 
+	{
+		string_value = gconf_value_get_string(gcValue);
+		add_pixmap_directory(string_value);
+	}
+	/* Release resources */
+	gconf_value_free(gcValue);
+
+	
+	// Get delay from gconf
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "delay", NULL);
 
 	/* if value pointer remains NULL, the key was not found */
 	int value = 0;

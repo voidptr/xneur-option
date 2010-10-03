@@ -17,6 +17,10 @@
  *
  */
 
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include <gtk/gtk.h>
 #include <gconf/gconf-client.h>
 
@@ -33,8 +37,6 @@
 #include <xneur/xnconfig.h>
 
 #include "trayicon.h"
-
-#define GCONF_DIR "/apps/" PACKAGE "/"
 
 extern struct _xneur_config *xconfig;
 
@@ -285,7 +287,7 @@ void create_tray_icon(struct _tray_icon *tray, gboolean runned)
 		g_assert(GCONF_IS_CLIENT(gconfClient));
 	
 		GConfValue* gcValue = NULL;
-		gcValue = gconf_client_get_without_default(gconfClient, GCONF_DIR "systray_text", NULL);
+		gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "systray_text", NULL);
 
 		// Check text or pixmap
 		gboolean value = FALSE;

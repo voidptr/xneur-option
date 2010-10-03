@@ -24,6 +24,8 @@ else
 	AC_DEFINE(WITH_GTK, 1, [Define if you use GTK+2.0 >= 2.18.0 support])
 fi
 
+AC_DEFINE(PACKAGE_GCONF_DIR, "/apps/" PACKAGE "/", [Define GConf directory for settings])
+
 PKG_CHECK_MODULES(XNEUR, [xnconfig >= 0.9.9])
 PKG_CHECK_MODULES(XNEURLIB, [xneur >= 0.9.9])
 

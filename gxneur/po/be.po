@@ -500,11 +500,15 @@ msgstr ""
 msgid "Show text on the tray"
 msgstr ""
 
-#: glade/config.glade:2393
+#: glade/config.glade:2388
+msgid "Pixmaps directory"
+msgstr ""
+
+#: glade/config.glade:2457
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2427
+#: glade/config.glade:2491
 msgid "<b>Properties</b>"
 msgstr ""
 
