@@ -63,15 +63,18 @@ int main(int argc, char *argv[])
 		add_pixmap_directory(PACKAGE_PIXMAPS_DIR);
 	}
 
-	const char *string_value = NULL;
-	if(gcValue->type == GCONF_VALUE_STRING) 
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", NULL);
+	if(gcValue != NULL) 
 	{
-		string_value = gconf_value_get_string(gcValue);
-		add_pixmap_directory(string_value);
+		const char *string_value = NULL;
+		if(gcValue->type == GCONF_VALUE_STRING) 
+		{
+			string_value = gconf_value_get_string(gcValue);
+			add_pixmap_directory(string_value);
+		}
+		/* Release resources */
+		gconf_value_free(gcValue);
 	}
-	/* Release resources */
-	gconf_value_free(gcValue);
-
 	
 	// Get delay from gconf
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "delay", NULL);
@@ -87,19 +90,19 @@ int main(int argc, char *argv[])
 		/* Release resources */
 		gconf_value_free(gcValue);
 	}
-
+	
 	sleep (value);
 	
 	/* release GConf client */
 	g_object_unref(gconfClient);
 
-
-	
 	xneur_start();
 
 	create_tray_icon(NULL, TRUE);
 
 	gtk_main();
+	
+
 
 	return EXIT_SUCCESS;
 }
