@@ -507,7 +507,15 @@ msgstr ""
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2491
+#: glade/config.glade:2488
+msgid "Keyboard properties command"
+msgstr ""
+
+#: glade/config.glade:2560
+msgid "System"
+msgstr ""
+
+#: glade/config.glade:2591
 msgid "<b>Properties</b>"
 msgstr ""
 
@@ -515,11 +523,11 @@ msgstr ""
 msgid "File Editing"
 msgstr "Редагування файлу"
 
-#: src/callbacks.c:97 src/misc.c:2029
+#: src/callbacks.c:97 src/misc.c:2364
 msgid "Press any key"
 msgstr "Натисніть будь-яку клавішу"
 
-#: src/misc.c:296 src/misc.c:297
+#: src/misc.c:341 src/misc.c:342
 #, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
@@ -528,12 +536,12 @@ msgstr ""
 "Неспівпадіння версії бібліотеки конфігурації XNeur.\n"
 "Будь ласка, встановіть libxnconfig версії 0.%d.%d\n"
 
-#: src/misc.c:303
+#: src/misc.c:348
 #, c-format
 msgid "Using libxnconfig API version 0.%d.%d (build with 0.%d.%d)\n"
 msgstr "Використовується libxnconfig API версії 0.%d.%d (зібрано з 0.%d.%d)\n"
 
-#: src/misc.c:307 src/misc.c:308
+#: src/misc.c:352 src/misc.c:353
 #, c-format
 msgid ""
 "XNeur config broken!\n"
@@ -542,88 +550,89 @@ msgstr ""
 "Конфігураційний файл XNeur зіпсований!\n"
 "Будь ласка, видаліть файл ~/.xneur/xneurrc та перевстановіть пакет XNeur!\n"
 
-#: src/misc.c:320 src/misc.c:321
+#: src/misc.c:365 src/misc.c:366 src/misc.c:534 src/misc.c:535
 #, c-format
 msgid ""
-"Couldn't start xneur\n"
+"Couldn't start %s\n"
 "Verify that it installed\n"
 msgstr ""
-"Не можу запустити xneur\n"
+"Не можу запустити %s\n"
 "Переконайтеся, що він інстальований\n"
 
-#: src/misc.c:371
+#: src/misc.c:416
 msgid "Current Version"
 msgstr "Поточна версія"
 
-#: src/misc.c:459 src/misc.c:485 src/misc.c:512 src/misc.c:538 src/misc.c:670
+#: src/misc.c:578 src/misc.c:604 src/misc.c:631 src/misc.c:657 src/misc.c:797
 msgid "Application"
 msgstr "Програма"
 
-#: src/misc.c:556 src/misc.c:1022
+#: src/misc.c:675 src/misc.c:1181
 msgid "Description"
 msgstr ""
 
-#: src/misc.c:561
+#: src/misc.c:680
 msgid "Layout"
 msgstr "Розкладка"
 
-#: src/misc.c:566
+#: src/misc.c:685
 msgid "Excluded"
 msgstr ""
 
-#: src/misc.c:704 src/misc.c:776 src/misc.c:873 src/misc.c:923 src/misc.c:973
+#: src/misc.c:831 src/misc.c:907 src/misc.c:1008 src/misc.c:1062
+#: src/misc.c:1112
 msgid "Action"
 msgstr "Дія"
 
-#: src/misc.c:711 src/misc.c:884
+#: src/misc.c:838 src/misc.c:1019
 msgid "Key bind"
 msgstr "Скорочення клавіш"
 
-#: src/misc.c:743
+#: src/misc.c:874
 msgid "Abbreviation"
 msgstr "Скорочення"
 
-#: src/misc.c:752
+#: src/misc.c:883
 msgid "Expansion text"
 msgstr "Повний текст"
 
-#: src/misc.c:781
+#: src/misc.c:912
 msgid "Sound"
 msgstr "Звук"
 
-#: src/misc.c:790 src/misc.c:937 src/misc.c:987 src/misc.c:1013
+#: src/misc.c:921 src/misc.c:1076 src/misc.c:1126 src/misc.c:1172
 msgid "Enabled"
 msgstr "Ввімкнути звуки"
 
-#: src/misc.c:888 src/trayicon.c:122
+#: src/misc.c:1023 src/trayicon.c:153
 msgid "User action"
 msgstr "Дія користувача"
 
-#: src/misc.c:928
+#: src/misc.c:1067
 msgid "OSD text"
 msgstr "Екранний текст"
 
-#: src/misc.c:978
+#: src/misc.c:1117
 msgid "Popup message text"
 msgstr ""
 
-#: src/misc.c:1027
+#: src/misc.c:1186
 msgid "File name"
 msgstr ""
 
-#: src/misc.c:1127
+#: src/misc.c:1372
 msgid "Abbreviation field is empty!"
 msgstr "Поле скорочення незаповнене!"
 
-#: src/misc.c:1132
+#: src/misc.c:1377
 msgid "Expansion text field is empty!"
 msgstr "Поле розширеного тексту незаповнене!"
 
-#: src/misc.c:1177
+#: src/misc.c:1422
 msgid "Key bind field is empty!"
 msgstr "Поле скорочення клавіші не заповнене!"
 
-#: src/misc.c:1182
+#: src/misc.c:1427
 msgid "User action field is empty!"
 msgstr "Поле дії користувача не заповнене!"
 
@@ -632,27 +641,31 @@ msgstr "Поле дії користувача не заповнене!"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Не вдається знайти файл зображення: %s"
 
-#: src/trayicon.c:79
+#: src/trayicon.c:110
 msgid "Stop daemon"
 msgstr "Зупинити демон"
 
-#: src/trayicon.c:84
+#: src/trayicon.c:115
 msgid "Start daemon"
 msgstr "Запустити демон"
 
-#: src/trayicon.c:98
+#: src/trayicon.c:129
 msgid "Auto-correction"
 msgstr "Включити автокорекцію введення"
 
-#: src/trayicon.c:193
+#: src/trayicon.c:175
+msgid "Keyboard Properties"
+msgstr ""
+
+#: src/trayicon.c:240
 msgid "X Neural Switcher running ("
 msgstr "X Neural Switcher запущений ("
 
-#: src/trayicon.c:198
+#: src/trayicon.c:245
 msgid "X Neural Switcher stopped ("
 msgstr "X Neural Switcher зупинений ("
 
-#: src/trayicon.c:220
+#: src/trayicon.c:267
 msgid "X Neural Switcher"
 msgstr "Перемикач X Neural"
 

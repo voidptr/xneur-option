@@ -75,6 +75,20 @@ int main(int argc, char *argv[])
 		/* Release resources */
 		gconf_value_free(gcValue);
 	}
+
+	// Get keyboard properties command
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
+
+	/* if value pointer remains NULL, the key was not found */
+	if(gcValue == NULL) 
+	{
+		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", KB_PROP_COMMAND, NULL)) 
+		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "keyboard_properties", KB_PROP_COMMAND);
+	}
+	else
+	{
+		gconf_value_free(gcValue);
+	}
 	
 	// Get delay from gconf
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "delay", NULL);

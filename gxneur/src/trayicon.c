@@ -170,6 +170,12 @@ GtkWidget* create_menu_icon(struct _tray_icon *tray, gboolean runned, int state)
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_preference), tray);
+
+	// Keyboard Preference
+	menuitem = gtk_menu_item_new_with_mnemonic(_("Keyboard Properties"));
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_kb_preference), tray);
 	
 	// About
 	menuitem = gtk_image_menu_item_new_from_stock("gtk-about", NULL);

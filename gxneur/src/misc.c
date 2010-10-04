@@ -118,14 +118,12 @@ static const int total_all_modifiers			= sizeof(all_modifiers) / sizeof(all_modi
 
 void error_msg(const char *msg, ...)
 {
-	int len = strlen(msg) + 2;
-
 	va_list ap;
 	va_start(ap, msg);
 	
-	char *buffer = (char *) malloc(1024);
+	char *buffer = (char *) malloc(sizeof(char)*1024*10);
+	bzero(buffer, sizeof(char)*1024*10); 
 	vsprintf(buffer, msg, ap);
-	buffer[len] = 0;
 
 	GtkWidget *dialog = gtk_message_dialog_new (NULL,
 											GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -362,8 +360,8 @@ void xneur_start(void)
 
 	if (!g_spawn_command_line_async("xneur", NULL))
 	{
-		error_msg(_("Couldn't start xneur\nVerify that it installed\n"));
-		fprintf(stderr, _("Couldn't start xneur\nVerify that it installed\n"));
+		error_msg(_("Couldn't start %s\nVerify that it installed\n"), "xneur");
+		fprintf(stderr, _("Couldn't start %s\nVerify that it installed\n"), "xneur");
 	}
 }
 
@@ -514,6 +512,68 @@ static void xneur_edit_pixmap_dir(GladeXML *parent_gxml)
 	// Button OK
 	GtkWidget *widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_replace_pixmap_dir), gxml);
+}
+
+static void xneur_restore_keyboard_properties(GladeXML *gxml)
+{
+	GtkWidget *widget = glade_xml_get_widget (gxml, "entry5");
+
+	gtk_entry_set_text(GTK_ENTRY(widget), KB_PROP_COMMAND);
+}
+
+static void xneur_replace_keyboard_properties(GladeXML *gxml)
+{
+	GtkWidget *window = glade_xml_get_widget (gxml, "filechooserdialog1");
+
+	gtk_entry_set_text(GTK_ENTRY(tmp_widget), gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (window)));
+	
+	gtk_widget_destroy(window);
+}	
+
+static void xneur_edit_keyboard_properties(GladeXML *parent_gxml)
+{
+	GladeXML *gxml = glade_xml_new (GLADE_FILE_CHOOSE, NULL, NULL);
+	
+	glade_xml_signal_autoconnect (gxml);
+	GtkWidget *window = glade_xml_get_widget (gxml, "filechooserdialog1");
+
+	tmp_widget = glade_xml_get_widget (parent_gxml, "entry5");
+	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(window), gtk_entry_get_text(GTK_ENTRY(tmp_widget)));
+	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+	if (window_icon_pixbuf)
+	{
+		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+		gdk_pixbuf_unref (window_icon_pixbuf);
+	}
+	
+	gtk_widget_show(window);
+		
+	// Button OK
+	GtkWidget *widget = glade_xml_get_widget (gxml, "button5");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_replace_keyboard_properties), gxml);
+}
+
+void xneur_kb_preference(void)
+{
+	GConfClient* gconfClient = gconf_client_get_default();
+	g_assert(GCONF_IS_CLIENT(gconfClient));
+
+	GConfValue* gcValue = NULL;
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
+	if(gcValue != NULL) 
+	{
+		const char *string_value = NULL;
+		if(gcValue->type == GCONF_VALUE_STRING) 
+		{
+			string_value = gconf_value_get_string(gcValue);
+			if (!g_spawn_command_line_async(string_value, NULL))
+			{
+				error_msg(_("Couldn't start %s\nVerify that it installed\n"), string_value);
+				fprintf(stderr, _("Couldn't start %s\nVerify that it installed\n"), string_value);
+			}
+		}
+		gconf_value_free(gcValue);
+	}
 }
 
 void xneur_preference(void)
@@ -1299,6 +1359,27 @@ void xneur_preference(void)
 	// Button Pixmap Directory Edit
 	widget = glade_xml_get_widget (gxml, "button14");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_restore_pixmap_dir), gxml);
+
+	
+	// Keyboard properties
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
+
+	if(gcValue != NULL) 
+	{
+		if(gcValue->type == GCONF_VALUE_STRING) 
+		{
+			string_value = gconf_value_get_string(gcValue);
+			widget = glade_xml_get_widget (gxml, "entry5");
+			gtk_entry_set_text(GTK_ENTRY(widget), string_value);
+		}
+	}
+	
+	// Button Pixmap Directory Edit
+	widget = glade_xml_get_widget (gxml, "button15");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_keyboard_properties), gxml);
+	// Button Pixmap Directory Edit
+	widget = glade_xml_get_widget (gxml, "button16");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_restore_keyboard_properties), gxml);
 
 	/* release GConf client */
 	g_object_unref(gconfClient);
@@ -2249,6 +2330,15 @@ void xneur_save_preference(GladeXML *gxml)
 	if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)), NULL)) 
 	{
 	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "pixmap_dir", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
+	}
+	add_pixmap_directory(gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
+
+	// Keyboard properties
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry5");
+	
+	if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)), NULL)) 
+	{
+	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "keyboard_properties", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
 	}
 	add_pixmap_directory(gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
 	

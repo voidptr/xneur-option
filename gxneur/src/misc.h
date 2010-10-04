@@ -32,6 +32,7 @@ char* xneur_modifiers_to_string(unsigned int modifier);
 void xneur_exit(void);
 void xneur_start(void);
 void xneur_preference(void);
+void xneur_kb_preference(void);
 void xneur_about(void);
 
 void xneur_add_exclude_app(void);

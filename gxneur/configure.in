@@ -3,7 +3,7 @@ AC_PREREQ(2.59)
 AM_CONFIG_HEADER(config.h)
 
 AC_CONFIG_MACRO_DIR(m4)
-AM_INIT_AUTOMAKE(gxneur, 0.9.9-svn714)
+AM_INIT_AUTOMAKE(gxneur, 0.9.9-svn715)
 
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
@@ -25,6 +25,8 @@ else
 fi
 
 AC_DEFINE(PACKAGE_GCONF_DIR, "/apps/" PACKAGE "/", [Define GConf directory for settings])
+
+AC_DEFINE(KB_PROP_COMMAND, "/usr/bin/gnome-keyboard-properties", [Define keyboard properties command])
 
 PKG_CHECK_MODULES(XNEUR, [xnconfig >= 0.9.9])
 PKG_CHECK_MODULES(XNEURLIB, [xneur >= 0.9.9])
