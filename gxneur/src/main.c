@@ -91,10 +91,11 @@ int main(int argc, char *argv[])
 		gconf_value_free(gcValue);
 	}
 	
-	sleep (value);
-	
 	/* release GConf client */
 	g_object_unref(gconfClient);
+	
+	sleep (value);
+
 
 	xneur_start();
 
