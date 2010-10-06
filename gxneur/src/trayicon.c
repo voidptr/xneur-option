@@ -24,6 +24,11 @@
 #include <gtk/gtk.h>
 #include <gconf/gconf-client.h>
 
+
+//#include <gdk/gdk.h>
+//#include <gdk/gdkx.h>
+//#include <libxklavier/xklavier.h>
+
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
@@ -194,6 +199,18 @@ GtkWidget* create_menu_icon(struct _tray_icon *tray, gboolean runned, int state)
 
 void clock_check(Clock *clock)
 {
+	/*XklEngine *engine = xkl_engine_get_instance (GDK_DISPLAY ());
+	const gchar **group_names = xkl_engine_get_groups_names (engine);
+	XklConfigRec *config = xkl_config_rec_new ();
+	xkl_config_rec_get_from_server(config, engine);
+	for (int i=0; i<2; i++)
+	{
+		printf("%d(total %d) %s (%s)\n", i,
+		                                 xkl_engine_get_num_groups(engine), 
+		                                 (char*)group_names[i], 
+		                                 (char*)config->layouts[i]);
+	}*/
+	
 	struct _tray_icon *tray = clock->tray;
 	
 	int xneur_pid = xconfig->get_pid(xconfig);

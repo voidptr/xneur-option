@@ -20,6 +20,8 @@
 
 #include <X11/XKBlib.h>
 
+//#include <libxklavier/xklavier.h>
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -46,6 +48,81 @@ static long get_next_property_value (unsigned char **pointer, long *length, int 
 
     return len;
 }
+
+/* Using libxklavier
+ 
+struct _xneur_handle *xneur_handle_create (void)
+{
+	struct _xneur_handle *handle = (struct _xneur_handle *) malloc(sizeof(struct _xneur_handle));;
+
+	Display *display = XOpenDisplay(NULL);
+
+	XklEngine *engine = xkl_engine_get_instance (GDK_DISPLAY());
+	const char **group_names = xkl_engine_get_groups_names (engine);
+	XklConfigRec *config = xkl_config_rec_new ();
+	xkl_config_rec_get_from_server(config, engine);
+
+	handle->languages = (struct _xneur_language *) malloc(sizeof(struct _xneur_language));
+	handle->total_languages = 0;	
+	for (unsigned int group = 0; group < (unsigned int)xkl_engine_get_num_groups(engine); group++)
+	{
+		handle->languages = (struct _xneur_language *) realloc(handle->languages, (handle->total_languages + 1) * sizeof(struct _xneur_language));
+		bzero(&(handle->languages[handle->total_languages]), sizeof(struct _xneur_language));
+
+		handle->languages[handle->total_languages].name	= strdup((char*)group_names[group]);
+		handle->languages[handle->total_languages].dir	= strdup((char*)config->layouts[group]);
+		handle->languages[handle->total_languages].group	= group;
+		handle->languages[handle->total_languages].excluded	= FALSE;
+		handle->total_languages++;
+	}
+
+	XCloseDisplay(display);
+	
+	if (handle->total_languages == 0)
+		return NULL;
+
+	for (int lang = 0; lang < handle->total_languages; lang++)
+	{
+		int path_len = strlen(LANGUAGEDIR) + strlen(handle->languages[lang].dir) + 2;
+		char *lang_dir = (char *) malloc(path_len * sizeof(char));
+		snprintf(lang_dir, path_len, "%s/%s", LANGUAGEDIR, handle->languages[lang].dir);
+
+		handle->languages[lang].dict = load_list(lang_dir, DICT_NAME, TRUE);		
+		if (handle->languages[lang].dict == NULL)
+			handle->languages[lang].dict->data_count = 0;
+
+		handle->languages[lang].proto = load_list(lang_dir, PROTO_NAME, TRUE);
+		if (handle->languages[lang].proto == NULL)
+			handle->languages[lang].proto->data_count = 0;
+
+		handle->languages[lang].big_proto = load_list(lang_dir, BIG_PROTO_NAME, TRUE);
+		if (handle->languages[lang].big_proto == NULL)
+			handle->languages[lang].big_proto->data_count = 0;
+
+		handle->languages[lang].regexp = load_list(lang_dir, REGEXP_NAME, TRUE);
+		if (handle->languages[lang].regexp == NULL)
+			handle->languages[lang].regexp->data_count = 0;
+
+		handle->languages[lang].pattern = load_list(lang_dir, PATTERN_NAME, TRUE);
+		if (handle->languages[lang].pattern == NULL)
+			handle->languages[lang].pattern->data_count = 0;
+		
+		handle->languages[lang].temp_dict = handle->languages[lang].dict->clone(handle->languages[lang].dict);
+
+		if (lang_dir != NULL)
+			free(lang_dir);
+
+		if ((handle->languages[lang].dict->data_count == 0 &&
+		    handle->languages[lang].proto->data_count == 0 &&
+		    handle->languages[lang].big_proto->data_count == 0 &&
+		    handle->languages[lang].regexp->data_count == 0))
+		{
+			handle->languages[lang].excluded	= TRUE;
+		}
+	}
+	return handle;
+}
+*/
 
 struct _xneur_handle *xneur_handle_create (void)
 {
