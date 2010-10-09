@@ -1,3 +1,9 @@
+October 07 2010:
+Version 0.10.0 released.
+Bugfix for locales (bug in XLookupString)
+Send archived log to e-mail possile to named server (smtp.server.org, ex.)
+Log writed to html.
+
 May 21 2010:
 Version 0.9.9 released.
 Bugfix for change layots count where xneur run.

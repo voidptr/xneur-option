@@ -16,7 +16,7 @@ libxnconfig_la_SOURCES =	\
 
 libxnconfig_la_CFLAGS = -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/main -I@top_srcdir@/lib/lib @DEFAULT_CFLAGS@
 libxnconfig_la_LIBADD = ../lib/libxneur.la
-libxnconfig_la_LDFLAGS = -version-info 9:9:0
+libxnconfig_la_LDFLAGS = -version-info 10:0:0
 
 EXTRA_DIST = $(config_DATA)
 
