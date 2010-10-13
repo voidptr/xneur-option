@@ -1059,6 +1059,12 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			p->event->default_event.xkey.keycode = 0;
 			break;
 		}
+		case ACTION_ROTATE_LAYOUT_BACK:
+		{
+			set_prev_keyboard_group(xconfig->handle);
+			p->event->default_event.xkey.keycode = 0;
+			break;
+		}
 		case ACTION_AUTOCOMPLEMENTATION:
 		{
 			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)

@@ -424,6 +424,7 @@ int on_hotkey_action(enum _hotkey_action ha)
 			break;
 		}
 		case ACTION_ROTATE_LAYOUT:
+		case ACTION_ROTATE_LAYOUT_BACK:
 		{
 			statistic.action_rotate_layout++;
 			break;

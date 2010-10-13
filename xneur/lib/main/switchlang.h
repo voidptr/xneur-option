@@ -24,5 +24,6 @@
 
 int  get_curr_keyboard_group(void);
 void set_next_keyboard_group(struct _xneur_handle *handle);
+void set_prev_keyboard_group(struct _xneur_handle *handle);
 
 #endif /* _SWITCHLANG_H_ */

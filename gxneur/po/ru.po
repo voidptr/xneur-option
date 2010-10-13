@@ -113,6 +113,9 @@ msgstr "Предпросмотр коррекции буфера обмена"
 msgid "Rotate layouts"
 msgstr "Переключение раскладки"
 
+msgid "Rotate layouts back"
+msgstr "Переключение раскладки назад"
+
 msgid "Switch to layout 1"
 msgstr "Включение первой раскладки"
 

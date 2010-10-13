@@ -113,6 +113,9 @@ msgstr ""
 msgid "Rotate layouts"
 msgstr ""
 
+msgid "Rotate layouts back"
+msgstr ""
+
 msgid "Switch to layout 1"
 msgstr "אפשר את הפריסה הראשונה"
 
