@@ -228,7 +228,8 @@ struct _xneur_handle *xneur_handle_create (void)
 	}
 	
 	handle->languages = (struct _xneur_language *) malloc(sizeof(struct _xneur_language));
-	handle->total_languages = 0;	
+	handle->total_languages = 0;
+
 	for (int group = 0; group < groups_count; group++)
 	{
 		Atom group_atom = kbd_desc_ptr->names->groups[group];
@@ -244,6 +245,8 @@ struct _xneur_handle *xneur_handle_create (void)
 
 		handle->languages[handle->total_languages].name	= strdup(group_name);
 		handle->languages[handle->total_languages].dir	= strdup(short_name);
+		handle->languages[handle->total_languages].dir	= (char *) realloc (handle->languages[handle->total_languages].dir, sizeof(char) * 3); // 'xx' + '\0'
+		handle->languages[handle->total_languages].dir[2] = NULLSYM;
 		handle->languages[handle->total_languages].group	= group;
 		handle->languages[handle->total_languages].excluded	= FALSE;
 		handle->total_languages++;
