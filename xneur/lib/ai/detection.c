@@ -99,47 +99,91 @@ static int get_regexp_lang(struct _xneur_handle *handle, char **word)
 }
 
 #ifdef WITH_ASPELL
-static int get_aspell_hits(struct _xneur_handle *handle, char **word, int len)
+static int get_aspell_hits(struct _xneur_handle *handle, char **word, int len, int cur_lang)
 {
 	AspellConfig *spell_config = new_aspell_config();
 
-	for (int lang = 0; lang < handle->total_languages; lang++)
+	if (len >= 2)
 	{
-		if (handle->languages[lang].excluded)
-			continue;
-
-		if (len < 2)
-			continue;
-
-		int i = 0;
-		for (i = 0; i < names_len; i++)
+		// check for current language first
+		if (!handle->languages[cur_lang].excluded)
 		{
-			if (strcmp(layout_names[i], handle->languages[lang].dir) == 0)
-				break;
-				
+			int i = 0;
+			for (i = 0; i < names_len; i++)
+			{
+				if (strcmp(layout_names[i], handle->languages[cur_lang].dir) == 0)
+					break;
+
+			}
+			if (i != names_len)
+			{
+				aspell_config_replace(spell_config, "lang", aspell_names[i]);
+				AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
+
+				int aspell_error = aspell_error_number(possible_err);
+
+				if (aspell_error != 0)
+					log_message(DEBUG, _("   [!] Error aspell checking for %s aspell dictionary"), handle->languages[cur_lang].name);
+				else
+				{
+					AspellSpeller *spell_checker = to_aspell_speller(possible_err);
+					int correct = aspell_speller_check(spell_checker, word[cur_lang], strlen(word[cur_lang]));
+
+					if (aspell_error != 0)
+						delete_aspell_speller(spell_checker);
+					else
+						delete_aspell_can_have_error(possible_err);
+
+					if (correct)
+					{
+						log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[cur_lang].name);
+						delete_aspell_config(spell_config);
+						return cur_lang;
+					}
+				}
+			}
 		}
-		if (i == names_len)
-			continue;
-		
-		aspell_config_replace(spell_config, "lang", aspell_names[i]);
-		AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
-		
-		int aspell_error = aspell_error_number(possible_err);
-		if (aspell_error != 0)
-		{
-			log_message(DEBUG, _("   [!] Error aspell checking for %s aspell dictionary"), handle->languages[lang].name);
-			continue;
-		}
-		
-		AspellSpeller *spell_checker = to_aspell_speller(possible_err);
-		int correct = aspell_speller_check(spell_checker, word[lang], strlen(word[lang]));
-		delete_aspell_speller(spell_checker);
 
-		if (correct)
+		for (int lang = 0; lang < handle->total_languages; lang++)
 		{
-			log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[lang].name);
-			delete_aspell_config(spell_config);
-			return lang;
+			if (handle->languages[lang].excluded || lang == cur_lang)
+				continue;
+
+			int i = 0;
+			for (i = 0; i < names_len; i++)
+			{
+				if (strcmp(layout_names[i], handle->languages[lang].dir) == 0)
+					break;
+
+			}
+			if (i == names_len)
+				continue;
+
+			aspell_config_replace(spell_config, "lang", aspell_names[i]);
+			AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
+
+			int aspell_error = aspell_error_number(possible_err);
+
+			if (aspell_error != 0)
+			{
+				log_message(DEBUG, _("   [!] Error aspell checking for %s aspell dictionary"), handle->languages[lang].name);
+				continue;
+			}
+
+			AspellSpeller *spell_checker = to_aspell_speller(possible_err);
+			int correct = aspell_speller_check(spell_checker, word[lang], strlen(word[lang]));
+
+			if (aspell_error != 0)
+				delete_aspell_speller(spell_checker);
+			else
+				delete_aspell_can_have_error(possible_err);
+
+			if (correct)
+			{
+				log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[lang].name);
+				delete_aspell_config(spell_config);
+				return lang;
+			}
 		}
 	}
 
@@ -256,14 +300,14 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 	{
 		word[i] = strdup(get_last_word(p->i18n_content[i].content));
 		del_final_numeric_char(word[i]);
-		
+
 		log_message(DEBUG, _("Processing word '%s' on layout '%s'"), word[i], handle->languages[i].dir);
 
 		sym_len[i] = p->i18n_content[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
 	}
-	
+
 	log_message(DEBUG, _("Start word processing..."));
-	
+
 	// Check by regexp
 	int lang = get_regexp_lang(handle, word);
 
@@ -275,7 +319,7 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 #ifdef WITH_ASPELL
 	// Check by aspell
 	if (lang == NO_LANGUAGE)
-		lang = get_aspell_hits(handle, word, len);
+		lang = get_aspell_hits(handle, word, len, cur_lang);
 #endif
 
 	// If not found in dictionary, try to find in proto

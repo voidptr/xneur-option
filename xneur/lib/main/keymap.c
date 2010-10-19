@@ -165,7 +165,8 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 
 	int keysyms_per_keycode;
 	KeySym *keymap = XGetKeyboardMapping(display, min_keycode, max_keycode - min_keycode + 1, &keysyms_per_keycode);
-
+	KeySym *to_free = keymap;
+	
 	for (int i = min_keycode; i <= max_keycode; i++)
 	{
 		for (int j = 0; j < 2; j++)
@@ -179,6 +180,7 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 			*lower = keymap[0];
 			*upper = keymap[1];
 
+			XFree(to_free);
 			XCloseDisplay(display);
 			return;
 		}
@@ -186,6 +188,7 @@ void get_keysyms_by_string(char *keyname, KeySym *lower, KeySym *upper)
 		keymap += keysyms_per_keycode;
 	}
 
+	XFree(to_free);
 	XCloseDisplay(display);
 }
 
