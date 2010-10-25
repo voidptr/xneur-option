@@ -72,14 +72,17 @@ msgid "      %s regexp has %d records"
 msgstr "      %s regexp містить %d записів"
 
 #: src/xneur.c:144
+#, c-format
 msgid "      %s aspell dictionary loaded"
 msgstr ""
 
 #: src/xneur.c:148
+#, c-format
 msgid "      %s aspell dictionary not found"
 msgstr ""
 
 #: src/xneur.c:154
+#, c-format
 msgid "      %s enchant wrapper dictionary loaded"
 msgstr ""
 
@@ -336,6 +339,7 @@ msgid "   [-] This word has no hits for all aspell dictionaries"
 msgstr ""
 
 #: lib/ai/detection.c:138 lib/ai/detection.c:162
+#, c-format
 msgid "   [+] Found this word in %s enchant wrapper dictionary"
 msgstr ""
 
