@@ -834,36 +834,6 @@ static void free_structures(struct _xneur_config *p)
 			free(p->popups[notify].file);
 	}
 
-	for (int lang = 0; lang < p->handle->total_languages; lang++)
-	{
-		if (p->handle->languages[lang].temp_dict != NULL)
-			p->handle->languages[lang].temp_dict->uninit(p->handle->languages[lang].temp_dict);
-
-		if (p->handle->languages[lang].dict != NULL)
-			p->handle->languages[lang].dict->uninit(p->handle->languages[lang].dict);
-
-		if (p->handle->languages[lang].proto != NULL)
-			p->handle->languages[lang].proto->uninit(p->handle->languages[lang].proto);
-
-		if (p->handle->languages[lang].big_proto != NULL)
-			p->handle->languages[lang].big_proto->uninit(p->handle->languages[lang].big_proto);
-
-		if (p->handle->languages[lang].regexp != NULL)
-			p->handle->languages[lang].regexp->uninit(p->handle->languages[lang].regexp);
-
-		if (p->handle->languages[lang].pattern != NULL)
-			p->handle->languages[lang].pattern->uninit(p->handle->languages[lang].pattern);
-
-		free(p->handle->languages[lang].name);
-		free(p->handle->languages[lang].dir);
-
-#ifdef WITH_ASPELL
-		if (p->handle->has_spell_checker[lang])
-			delete_aspell_speller(p->handle->spell_checkers[lang]);
-#endif
-	}
-
-
 	for (int action = 0; action < p->actions_count; action++)
 	{
 		if (p->actions[action].hotkey.key != NULL)
@@ -879,7 +849,6 @@ static void free_structures(struct _xneur_config *p)
 	bzero(p->osds, MAX_NOTIFIES * sizeof(struct _xneur_notify));
 	bzero(p->popups, MAX_NOTIFIES * sizeof(struct _xneur_notify));
 
-	p->handle->total_languages = 0;
 	p->actions_count = 0;
 
 	if (p->version != NULL)
@@ -888,16 +857,8 @@ static void free_structures(struct _xneur_config *p)
 	if (p->osd_font != NULL)
 		free(p->osd_font);
 
-	if (p->handle->languages != NULL)
-		free(p->handle->languages);
-
 	if (p->actions != NULL)
 		free(p->actions);
-
-#ifdef WITH_ASPELL
-	free(p->handle->spell_checkers);
-	free(p->handle->has_spell_checker);
-#endif
 }
 
 static void xneur_config_reload(struct _xneur_config *p)
@@ -979,7 +940,6 @@ static void xneur_config_clear(struct _xneur_config *p)
 	
 	p->version	= NULL;
 	p->osd_font	= NULL;
-	p->handle->languages	= NULL;
 	p->actions	= NULL;
 }
 

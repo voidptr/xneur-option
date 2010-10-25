@@ -28,6 +28,10 @@
 #	include <aspell.h>
 #endif
 
+#ifdef WITH_ENCHANT
+#	include <enchant/enchant.h>
+#endif
+
 struct _window *main_window;
 
 struct _xneur_language
@@ -52,9 +56,17 @@ struct _xneur_handle
 
 #ifdef WITH_ASPELL
 	// global aspell dictionaries
+	AspellConfig *spell_config;
 	AspellSpeller **spell_checkers;
 	int *has_spell_checker;
 #endif
+
+#ifdef WITH_ENCHANT
+	// global enchant dictionaries
+	EnchantBroker *enchant_broker;
+	EnchantDict **enchant_dicts;
+	int *has_enchant_checker;
+#endif	
 };
 
 // Initialyze structure (must be installed proto, proto3, dict and regexp)

@@ -84,21 +84,34 @@ static int get_aspell_hits(struct _xneur_handle *handle, char **word, int len, i
 	if (len >= 2)
 	{
 		// check for current language first
-		if (!handle->languages[cur_lang].excluded && handle->has_spell_checker[cur_lang] &&
-				aspell_speller_check(handle->spell_checkers[cur_lang], word[cur_lang], strlen(word[cur_lang])))
+		if (handle->has_spell_checker[cur_lang])
 		{
-			log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[cur_lang].name);
-			return cur_lang;
+			if (!handle->languages[cur_lang].excluded && 
+				aspell_speller_check(handle->spell_checkers[cur_lang], word[cur_lang], strlen(word[cur_lang])))
+			{
+				log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[cur_lang].name);
+				return cur_lang;
+			}
 		}
+		else
+		{
+			log_message(DEBUG, _("   [!] Now we don't support aspell dictionary for %s layout"), handle->languages[cur_lang].name);
+		}
+		
 
 		// check for another languages
 		for (int lang = 0; lang < handle->total_languages; lang++)
 		{
 			if (handle->languages[lang].excluded || lang == cur_lang)
 				continue;
-
-			if (handle->has_spell_checker[lang] &&
-					aspell_speller_check(handle->spell_checkers[lang], word[lang], strlen(word[lang])))
+			
+			if (!handle->has_spell_checker[lang])
+			{
+				log_message(DEBUG, _("   [!] Now we don't support aspell dictionary for %s layout"), handle->languages[lang].name);
+				continue;
+			}
+			
+			if (aspell_speller_check(handle->spell_checkers[lang], word[lang], strlen(word[lang])))
 			{
 				log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[lang].name);
 				return lang;
@@ -110,6 +123,52 @@ static int get_aspell_hits(struct _xneur_handle *handle, char **word, int len, i
 	return NO_LANGUAGE;
 }
 #endif
+
+#ifdef WITH_ENCHANT
+static int get_enchant_hits(struct _xneur_handle *handle, char **word, int len, int cur_lang)
+{
+	if (len >= 2)
+	{
+		// check for current language first
+		if (handle->has_enchant_checker[cur_lang])
+		{
+			if (!handle->languages[cur_lang].excluded && 
+				!enchant_dict_check(handle->enchant_dicts[cur_lang], word[cur_lang], strlen(word[cur_lang])))
+			{
+				log_message(DEBUG, _("   [+] Found this word in %s enchant wrapper dictionary"), handle->languages[cur_lang].name);
+				return cur_lang;
+			}
+		}
+		else
+		{
+			log_message(DEBUG, _("   [!] Now we don't support enchant wrapper dictionary for %s layout"), handle->languages[cur_lang].name);
+		}
+		
+
+		// check for another languages
+		for (int lang = 0; lang < handle->total_languages; lang++)
+		{
+			if (handle->languages[lang].excluded || lang == cur_lang)
+				continue;
+			
+			if (!handle->has_enchant_checker[lang])
+			{
+				log_message(DEBUG, _("   [!] Now we don't support enchant wrapper dictionary for %s layout"), handle->languages[lang].name);
+				continue;
+			}
+			
+			if (!enchant_dict_check(handle->enchant_dicts[lang], word[lang], strlen(word[lang])))
+			{
+				log_message(DEBUG, _("   [+] Found this word in %s enchant wrapper dictionary"), handle->languages[lang].name);
+				return lang;
+			}
+		}
+	}
+
+	log_message(DEBUG, _("   [-] This word has no hits for all enchant wrapper dictionaries"));
+	return NO_LANGUAGE;
+}
+#endif				
 
 static int get_proto_hits(struct _xneur_handle *handle, char *word, int *sym_len, int len, int offset, int lang)
 {
@@ -234,12 +293,19 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 		lang = get_dict_lang(handle, word);
 
 	int len = strlen(get_last_word(p->content));
+
+#ifdef WITH_ENCHANT
+	// Check by enchant wrapper
+	if (lang == NO_LANGUAGE)
+		lang = get_enchant_hits(handle, word, len, cur_lang);
+#endif
+
 #ifdef WITH_ASPELL
 	// Check by aspell
 	if (lang == NO_LANGUAGE)
 		lang = get_aspell_hits(handle, word, len, cur_lang);
 #endif
-
+	
 	// If not found in dictionary, try to find in proto
 	len = strlen(p->content);
 	int offset = get_last_word_offset(p->content, len);

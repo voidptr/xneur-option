@@ -102,45 +102,64 @@ if test "x$with_keylogger" != "xno"; then
 	AC_DEFINE(WITH_KEYLOGGER, 1, [Define if you want keylogger function])
 fi
 
-AC_ARG_WITH(aspell, [  --without-aspell	  Compile without aspell support])
-if test "x$with_aspell" != "xno"; then
-	found_aspell_include_dir=""
-	found_aspell_lib_dir=""
-	for aspell_dir in /usr/local /usr $prefix
-	do
-		if test -f "$aspell_dir/include/aspell.h"; then
-			found_aspell_include_dir="$aspell_dir/include"
-		fi
 
-		if test -f "$aspell_dir/lib/libaspell.so"; then
-			found_aspell_lib_dir="$aspell_dir/lib"
-		fi
-		if test -f "$aspell_dir/lib64/libaspell.so"; then
-			found_aspell_lib_dir="$aspell_dir/lib64"
-		fi
-	done
-
-	AC_MSG_CHECKING([for aspell header])
-	if test "x$found_aspell_include_dir" != "x"; then
-		AC_MSG_RESULT([found at $found_aspell_include_dir])
-		ASPELL_CFLAGS="-I$found_aspell_include_dir"
-	else
-		AC_MSG_RESULT([no])
-		AC_MSG_ERROR([Can't locate your aspell headers])
+AC_ARG_WITH(spell, [  --with-spell[[=ARG]]	  Compile with sound support ARG=[[yes|no|enchant|aspell]] [[default=yes]]])
+if test "x$with_spell" != "xno"; then
+	if test "x$with_spell" = "x"; then
+		with_spell="enchant"
 	fi
 
-	AC_MSG_CHECKING([for aspell library])
-	if test "x$found_aspell_lib_dir" != "x"; then
-		AC_MSG_RESULT([found at $found_aspell_lib_dir])
-		ASPELL_LIBS="-L$found_aspell_lib_dir -laspell"
-	else
-		AC_MSG_RESULT([no])
-		AC_MSG_ERROR([Can't locate your aspell library])
-	fi
+	case $with_spell in
+		enchant|yes)
+			PKG_CHECK_MODULES(ENCHANT, [enchant >= 1.0])
+			AC_DEFINE(WITH_ENCHANT, 1, [Define if you want enchant support])
+			;;
+		aspell)
+			AC_ARG_WITH(aspell, [  --without-aspell	  Compile without aspell support])
+			if test "x$with_aspell" != "xno"; then
+				found_aspell_include_dir=""
+				found_aspell_lib_dir=""
+				for aspell_dir in /usr/local /usr $prefix
+				do
+					if test -f "$aspell_dir/include/aspell.h"; then
+						found_aspell_include_dir="$aspell_dir/include"
+					fi
 
-	AC_DEFINE(WITH_ASPELL, 1, [Define if you want aspell support])
-	AC_SUBST(ASPELL_CFLAGS)
-	AC_SUBST(ASPELL_LIBS)
+					if test -f "$aspell_dir/lib/libaspell.so"; then
+						found_aspell_lib_dir="$aspell_dir/lib"
+					fi
+					if test -f "$aspell_dir/lib64/libaspell.so"; then
+						found_aspell_lib_dir="$aspell_dir/lib64"
+					fi
+				done
+
+				AC_MSG_CHECKING([for aspell header])
+				if test "x$found_aspell_include_dir" != "x"; then
+					AC_MSG_RESULT([found at $found_aspell_include_dir])
+					ASPELL_CFLAGS="-I$found_aspell_include_dir"
+				else
+					AC_MSG_RESULT([no])
+					AC_MSG_ERROR([Can't locate your aspell headers])
+				fi
+
+				AC_MSG_CHECKING([for aspell library])
+				if test "x$found_aspell_lib_dir" != "x"; then
+					AC_MSG_RESULT([found at $found_aspell_lib_dir])
+					ASPELL_LIBS="-L$found_aspell_lib_dir -laspell"
+				else
+					AC_MSG_RESULT([no])
+					AC_MSG_ERROR([Can't locate your aspell library])
+				fi
+
+				AC_DEFINE(WITH_ASPELL, 1, [Define if you want aspell support])
+				AC_SUBST(ASPELL_CFLAGS)
+				AC_SUBST(ASPELL_LIBS)
+			fi
+			;;
+		*)
+			AC_MSG_ERROR([Unsupported spell system selected, --with-spell=[[yes|no|enchant|aspell]]])
+			;;
+	esac
 fi
 
 AC_ARG_WITH(xosd, [  --without-xosd	  Compile without xosd support])
@@ -264,13 +283,23 @@ EOF
 		;;
 esac
 
-if test "x$with_aspell" != "xno"; then
+case $with_spell in
+	enchant|yes)
+cat <<EOF
+	Enchant compiler flags:		$ENCHANT_CFLAGS
+	Enchant linker flags:		$ENCHANT_LIBS
+
+EOF
+	;;
+	aspell)
 cat <<EOF
 	Aspell compiler flags:		$ASPELL_CFLAGS
 	Aspell linker flags:		$ASPELL_LIBS
 
 EOF
-fi
+	;;
+esac
+
 
 if test "x$with_xosd" != "xno"; then
 cat <<EOF

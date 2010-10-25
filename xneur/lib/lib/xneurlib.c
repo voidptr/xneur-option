@@ -22,9 +22,14 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #ifdef WITH_ASPELL
 #	include <aspell.h>
+#endif
+
+#ifdef WITH_ENCHANT
+#	include <enchant/enchant.h>
 #endif
 
 #include "xneur.h"
@@ -42,14 +47,14 @@
 
 struct _xneur_config *xconfig				= NULL;
 
-#ifdef WITH_ASPELL
+#if  defined(WITH_ASPELL) || defined(WITH_ENCHANT)
 static char *layout_names[] =
 {
 	"am","bg","by","cz","de","gr","ee","en","es","fr","ge","gb","kz","lt","lv",
 	"pl","ro","ru","ua","us","uz"
 };
 
-static char *aspell_names[] =
+static char *spell_names[] =
 {
 	"hy","bg","be","cs","de","el","et","en","es","fr","ka","en","kk","lt","lv",
 	"pl","ro","ru","uk","en","uz"
@@ -212,46 +217,21 @@ struct _xneur_handle *xneur_handle_create (void)
 	// init aspell spellers
 	handle->spell_checkers = (AspellSpeller **) malloc(handle->total_languages * sizeof(AspellSpeller*));
 	handle->has_spell_checker = (int *) malloc(handle->total_languages * sizeof(int *));
-	AspellConfig *spell_config = new_aspell_config();
+	handle->spell_config = new_aspell_config();
 #endif
-		
+
+#ifdef WITH_ENCHANT
+	// init enchant brocker and dicts
+	handle->enchant_dicts = (EnchantDict **) malloc(handle->total_languages * sizeof(EnchantDict *));
+	handle->has_enchant_checker = (int *) malloc(handle->total_languages * sizeof(int *));
+	handle->enchant_broker = enchant_broker_init ();
+#endif
+	
 	for (int lang = 0; lang < handle->total_languages; lang++)
 	{
 		int path_len = strlen(LANGUAGEDIR) + strlen(handle->languages[lang].dir) + 2;
 		char *lang_dir = (char *) malloc(path_len * sizeof(char));
 		snprintf(lang_dir, path_len, "%s/%s", LANGUAGEDIR, handle->languages[lang].dir);
-
-#ifdef WITH_ASPELL
-		// initialize aspell checker for current language
-		int i = 0;
-		for (i = 0; i < names_len; i++)
-		{
-			if (strcmp(layout_names[i], handle->languages[lang].dir) == 0)
-				break;
-
-		}
-		if (i != names_len)
-		{
-			aspell_config_replace(spell_config, "lang", aspell_names[i]);
-			AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
-
-			int aspell_error = aspell_error_number(possible_err);
-
-			if (aspell_error != 0)
-			{
-				log_message(DEBUG, _("   [!] Error initialize %s aspell dictionary"), handle->languages[lang].name);
-				delete_aspell_can_have_error(possible_err);
-				handle->has_spell_checker[lang] = 0;
-			}
-			else
-			{
-				handle->spell_checkers[lang] = to_aspell_speller(possible_err);
-				handle->has_spell_checker[lang] = 1;
-			}
-		}
-		else
-			log_message(DEBUG, _("   [!] Now we don't support aspell dictionary for %s layout"), handle->languages[lang].dir);
-#endif
 
 		handle->languages[lang].dict = load_list(lang_dir, DICT_NAME, TRUE);		
 		if (handle->languages[lang].dict == NULL)
@@ -288,9 +268,91 @@ struct _xneur_handle *xneur_handle_create (void)
 	}
 
 #ifdef WITH_ASPELL
-	delete_aspell_config(spell_config);
+	for (int lang = 0; lang < handle->total_languages; lang++)
+	{
+		// initialize aspell checker for current language
+		int i = 0;
+		for (i = 0; i < names_len; i++)
+		{
+			if (strcmp(layout_names[i], handle->languages[lang].dir) == 0)
+				break;
+
+		}
+		if (i != names_len)
+		{
+			aspell_config_replace(handle->spell_config, "lang", spell_names[i]);
+			AspellCanHaveError *possible_err = new_aspell_speller(handle->spell_config);
+
+			int aspell_error = aspell_error_number(possible_err);
+
+			if (aspell_error != 0)
+			{
+				//printf("   [!] Error initialize %s aspell dictionary\n", handle->languages[lang].name);
+				delete_aspell_can_have_error(possible_err);
+				handle->has_spell_checker[lang] = 0;
+			}
+			else
+			{
+				//printf("   [!] Initialize %s aspell dictionary\n", handle->languages[lang].name);
+				handle->spell_checkers[lang] = to_aspell_speller(possible_err);
+				handle->has_spell_checker[lang] = 1;
+			}
+		}
+		else
+		{
+			//printf("   [!] Now we don't support aspell dictionary for %s layout\n", handle->languages[lang].dir);
+			handle->has_spell_checker[lang] = 0;
+		}
+	}
 #endif
-		
+
+#ifdef WITH_ENCHANT
+	for (int lang = 0; lang < handle->total_languages; lang++)
+	{
+		// initialize enchant checker for current language
+		int j = 0;
+		for (j = 0; j < names_len; j++)
+		{
+			if (strcmp(layout_names[j], handle->languages[lang].dir) == 0)
+				break;
+		}
+		if (j != names_len)
+		{
+			handle->enchant_dicts[lang] = NULL;
+			char *dict_name = NULL;
+			dict_name = malloc (2 * strlen(spell_names[j]) + 2);
+			dict_name[0] = NULLSYM;
+			strcat(dict_name, spell_names[j]);
+			strcat(dict_name, "_");
+			strcat(dict_name, handle->languages[lang].dir);
+			dict_name[3] = toupper(dict_name[3]);
+			dict_name[4] = toupper(dict_name[4]);
+			//printf("   [!] Try load dict %s\n", dict_name);
+			if (enchant_broker_dict_exists(handle->enchant_broker, dict_name) == FALSE)
+			{
+				dict_name[2] = NULLSYM;
+				//printf("   [!] Try load dict %s\n", dict_name);
+				if (enchant_broker_dict_exists(handle->enchant_broker, dict_name) == FALSE)
+				{
+					handle->has_enchant_checker[lang] = 0;
+					free(dict_name);
+					continue;
+				}
+			}
+
+			//printf("   [!] Loaded dict %s\n", dict_name);
+			handle->enchant_dicts[lang] = enchant_broker_request_dict (handle->enchant_broker, dict_name);
+			handle->has_enchant_checker[lang] = 1;
+
+			free(dict_name);
+		}
+		else
+		{
+			handle->has_enchant_checker[lang] = 0;
+		}
+	}
+#endif
+	
 	return handle;
 }
 
@@ -301,6 +363,16 @@ void xneur_handle_destroy (struct _xneur_handle *handle)
 	
 	for (int lang = 0; lang < handle->total_languages; lang++)
 	{
+#ifdef WITH_ASPELL
+		if (handle->has_spell_checker[lang])
+			delete_aspell_speller(handle->spell_checkers[lang]);
+#endif
+		
+#ifdef WITH_ENCHANT
+		if (handle->enchant_dicts[lang])
+			enchant_broker_free_dict (handle->enchant_broker, handle->enchant_dicts[lang]);
+#endif
+		
 		if (handle->languages[lang].temp_dict != NULL)
 			handle->languages[lang].temp_dict->uninit(handle->languages[lang].temp_dict);
 
@@ -323,6 +395,22 @@ void xneur_handle_destroy (struct _xneur_handle *handle)
 		free(handle->languages[lang].dir);
 	}
 	handle->total_languages = 0;
+	if (handle->languages != NULL)
+		free(handle->languages);
+		
+#ifdef WITH_ASPELL
+	delete_aspell_config(handle->spell_config);
+	free(handle->spell_checkers);
+	free(handle->has_spell_checker);
+#endif
+	
+#ifdef WITH_ENCHANT
+	if (handle->enchant_broker)
+		enchant_broker_free (handle->enchant_broker);
+	free(handle->enchant_dicts);
+	free(handle->has_enchant_checker);
+#endif
+	
 	free(handle);
 }
 

@@ -138,6 +138,26 @@ static void xneur_load_config(void)
 		log_message(DEBUG, _("      %s proto has %d records"), lang_name, xconfig->handle->languages[lang].proto->data_count);
 		log_message(DEBUG, _("      %s big proto has %d records"), lang_name, xconfig->handle->languages[lang].big_proto->data_count);
 		log_message(DEBUG, _("      %s regexp has %d records"), lang_name, xconfig->handle->languages[lang].regexp->data_count);
+#ifdef WITH_ASPELL		
+		if (xconfig->handle->has_spell_checker[lang])
+		{
+			log_message(DEBUG, _("      %s aspell dictionary loaded"), lang_name);
+		}
+		else
+		{
+			log_message(DEBUG, _("      %s aspell dictionary not found"), lang_name);
+		}
+#endif	
+#ifdef WITH_ENCHANT		
+		if (xconfig->handle->enchant_dicts[lang])
+		{
+			log_message(DEBUG, _("      %s enchant wrapper dictionary loaded"), lang_name);
+		}
+		else
+		{
+			log_message(DEBUG, _("      %s enchant wrapper dictionary not found"), lang_name);
+		}
+#endif	
 	}
 	log_message(LOG, _("Total %d keyboard layouts detected"), xconfig->handle->total_languages);
 

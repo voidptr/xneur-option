@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2008-11-26 18:33+0300\n"
 "Last-Translator: Andrew Kuznetsov\n"
 "Language-Team: Russian\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -68,311 +69,341 @@ msgstr "      Большой прото-язык %s содержит %d запи
 msgid "      %s regexp has %d records"
 msgstr "      Набор регулярных выражений %s содержит %d записи"
 
-#: src/xneur.c:142
+#: src/xneur.c:144
+msgid "      %s aspell dictionary loaded"
+msgstr "      Словарь aspell %s загружен"
+
+#: src/xneur.c:148
+msgid "      %s aspell dictionary not found"
+msgstr "      Словарь aspell %s не найден"
+
+#: src/xneur.c:154
+msgid "      %s enchant wrapper dictionary loaded"
+msgstr "      Обертка для словарей enchant %s загружена"
+
+#: src/xneur.c:158
+#, c-format
+msgid "      %s enchant wrapper dictionary not found"
+msgstr ""
+
+#: src/xneur.c:162
 #, c-format
 msgid "Total %d keyboard layouts detected"
 msgstr "Всего найдено %d раскладок клавиатуры"
 
-#: src/xneur.c:144
+#: src/xneur.c:164
 #, c-format
 msgid "Default keyboard group for all new windows set to %d"
 msgstr ""
-"Клавиатурная группа по умолчанию для всех новых окон установлена в значение %"
-"d"
+"Клавиатурная группа по умолчанию для всех новых окон установлена в значение "
+"%d"
 
-#: src/xneur.c:145
+#: src/xneur.c:165
 #, c-format
 msgid "Manual mode set to %s"
 msgstr "Ручной режим установлен в значение %s"
 
-#: src/xneur.c:146
+#: src/xneur.c:166
 #, c-format
 msgid "Education mode set to %s"
 msgstr "Режим самообучения установлен в значение %s"
 
-#: src/xneur.c:147
+#: src/xneur.c:167
 #, c-format
 msgid "Layout remember mode set to %s"
 msgstr "Режим запоминания раскладки установлен в значение %s"
 
-#: src/xneur.c:148
+#: src/xneur.c:168
 #, c-format
 msgid "Save selection mode set to %s"
 msgstr "Режим сохранения выделения установлен в значение %s"
 
-#: src/xneur.c:149
+#: src/xneur.c:169
 #, c-format
 msgid "Sound playing mode set to %s"
 msgstr "Режим проигрывания звука установлен в значение %s"
 
-#: src/xneur.c:150
+#: src/xneur.c:170
 #, c-format
 msgid "Sound playing volume percentage set to %d"
 msgstr "Уровень громкости звука установлен в значение %d процентов"
 
-#: src/xneur.c:151
+#: src/xneur.c:171
 #, c-format
 msgid "Logging keyboard mode set to %s"
 msgstr ""
 "Режим сохранения набираемого пользователем текста установлен в значение %s"
 
-#: src/xneur.c:152
+#: src/xneur.c:172
 #, c-format
 msgid "Max file size of keyboard log set to %d bytes"
 msgstr "Максимальный размер пользовательского журнала %d байт"
 
-#: src/xneur.c:153
+#: src/xneur.c:173
 #, c-format
 msgid "Keyboard log will send to %s via %s:%d host"
 msgstr "Пользовательский журнал будет отправлен на %s через хост %s:%d"
 
-#: src/xneur.c:154
+#: src/xneur.c:174
 #, c-format
 msgid "Ignore keyboard layout for abbreviations mode set to %s"
 msgstr "Режим игнорирования раскладки для сокращений установлен в значение %s"
 
-#: src/xneur.c:155
+#: src/xneur.c:175
 #, c-format
 msgid "Correct of iNCIDENTAL CapsLock mode set to %s"
 msgstr "Режим исправления сЛУЧАЙНОГО CapsLock установлен в значение %s"
 
-#: src/xneur.c:156
+#: src/xneur.c:176
 #, c-format
 msgid "Correct of two CApital letter mode set to %s"
 msgstr "Режим исправления двух ПРописных букв установлен в значение %s"
 
-#: src/xneur.c:157
+#: src/xneur.c:177
 #, c-format
 msgid "Correct of spaces with punctuation mode set to %s"
 msgstr ""
 "Режим исправления пробелов со знаками препинания установлен в значение %s"
 
-#: src/xneur.c:158
+#: src/xneur.c:178
 #, c-format
 msgid "Disable CapsLock use mode set to %s"
 msgstr "Режим отключения CapsLock установлен в значение %s"
 
-#: src/xneur.c:159
+#: src/xneur.c:179
 #, c-format
 msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
 msgstr ""
 "Режим сброса внутреннего буфера при нажатии Ввод или Таб установлен в "
 "значение %s"
 
-#: src/xneur.c:160
+#: src/xneur.c:180
 #, c-format
 msgid "Don't process word when pressed Enter or Tab mode set to %s"
 msgstr ""
 "Режим необрабатывания слов при нажатии Ввод или Таб установлен в значение %s"
 
-#: src/xneur.c:161
+#: src/xneur.c:181
 #, c-format
 msgid "Show OSD mode set to %s"
 msgstr "Режим показа OSD установлен в значение %s"
 
-#: src/xneur.c:162
+#: src/xneur.c:182
 #, c-format
 msgid "Show popup messages mode set to %s"
 msgstr "Режим показа всплывающих сообщений установлен в значение %s"
 
-#: src/xneur.c:163
+#: src/xneur.c:183
 #, c-format
 msgid "Check language on input process mode set to %s"
 msgstr "Режим проверки языка при вводе установлен в значение %s"
 
-#: src/xneur.c:164
+#: src/xneur.c:184
 #, c-format
 msgid "Pattern minig and recognition (autocomplementation) mode set to %s"
 msgstr "Режим автодополнения установлен в значение %s"
 
-#: src/xneur.c:165
+#: src/xneur.c:185
 #, c-format
 msgid "Add space after autocomplementation mode set to %s"
 msgstr "Режим вставки пробела после автодополнения установлен в значение %s"
 
-#: src/xneur.c:166
+#: src/xneur.c:186
 #, c-format
 msgid "Disable autoswitching if pressed backspace mode set to %s"
 msgstr ""
 "Отключение автопереключения, если нажат backspace, установлено в значение %s"
 
-#: src/xneur.c:167
+#: src/xneur.c:187
 #, c-format
 msgid "Disable autoswitching if pressed left arrow mode set to %s"
 msgstr ""
 "Отключение автопереключения, если нажата стрелка влево, установлено в "
 "значение %s"
 
-#: src/xneur.c:168
+#: src/xneur.c:188
 #, c-format
 msgid "Disable autoswitching if pressed right arrow mode set to %s"
 msgstr ""
 "Отключение автопереключения, если нажата стрелка вправо, установлено в "
 "значение %s"
 
-#: src/xneur.c:169
+#: src/xneur.c:189
 #, c-format
 msgid "Disable autoswitching if pressed up arrow mode set to %s"
 msgstr ""
 "Отключение автопереключения, если нажата стрелка вверх, установлено в "
 "значение %s"
 
-#: src/xneur.c:170
+#: src/xneur.c:190
 #, c-format
 msgid "Disable autoswitching if pressed down arrow mode set to %s"
 msgstr ""
 "Отключение автопереключения, если нажата стрелка вниз, установлено в "
 "значение %s"
 
-#: src/xneur.c:171
+#: src/xneur.c:191
 #, c-format
 msgid "Disable autoswitching if pressed delete mode set to %s"
 msgstr ""
 "Отключение автопереключения, если нажат delete, установлено в значение %s"
 
-#: src/xneur.c:172
+#: src/xneur.c:192
 #, c-format
 msgid "Disable autoswitching if layout switched mode set to %s"
 msgstr ""
 "Отключение автопереключения, если переключена раскладка, установлено в "
 "значение %s"
 
-#: src/xneur.c:173
+#: src/xneur.c:193
 #, c-format
 msgid "Disable send KeyRelease event mode set to %s"
 msgstr "Отключение отправки события KeyRelease установлено в значение %s"
 
-#: src/xneur.c:174
+#: src/xneur.c:194
 #, c-format
 msgid "Delay before sendind events to application set to (in milliseconds) %d"
 msgstr ""
-"Задержка перед отправкой событий приложению (в миллисекундах) установлена в %"
-"d"
+"Задержка перед отправкой событий приложению (в миллисекундах) установлена в "
+"%d"
 
-#: src/xneur.c:184
+#: src/xneur.c:204
 #, c-format
 msgid " already running with pid %d"
 msgstr " уже запущен с pid %d"
 
-#: src/xneur.c:197
+#: src/xneur.c:217
 #, c-format
 msgid " pid is %d with nice %d"
 msgstr " pid равен %d с приоритетом %d"
 
-#: src/xneur.c:203
+#: src/xneur.c:223
 msgid "Current sound data is freed"
 msgstr "Текущие данные звука очищены"
 
-#: src/xneur.c:206
+#: src/xneur.c:226
 msgid "Current user keybinds is freed"
 msgstr "Текущие данные пользовательских горячих клавиш очищены"
 
-#: src/xneur.c:211
+#: src/xneur.c:231
 msgid "Current program info is freed"
 msgstr "Текущие данные программной информации очищены"
 
-#: src/xneur.c:218
+#: src/xneur.c:238
 msgid "Current configuration data is freed"
 msgstr "Текущие данные конфигурации очищены"
 
-#: src/xneur.c:229
+#: src/xneur.c:249
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr "Получен сигнал SIGTERM/SIGINT, останов"
 
-#: src/xneur.c:245
+#: src/xneur.c:265
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr "Получен сигнал SIGHUP, перезагрузка конфигурационного файла"
 
-#: src/xneur.c:259 src/xneur.c:394
+#: src/xneur.c:279 src/xneur.c:414
 msgid "Can't init libxnconfig"
 msgstr "Невозможно инициировать библиотеку libxnconfig"
 
-#: src/xneur.c:374
+#: src/xneur.c:394
 msgid "Can't trap signal"
 msgstr "Невозможно поймать сигнал"
 
-#: src/xneur.c:404
+#: src/xneur.c:424
 msgid "Failed to init program structure"
 msgstr "Ошибка инициализации програмной структуры"
 
-#: src/xneur.c:413
+#: src/xneur.c:433
 msgid "Init program structure complete"
 msgstr "Инициализация програмной структуры выполнена"
 
-#: lib/ai/detection.c:74
+#: lib/ai/detection.c:54
 #, c-format
 msgid "   [+] Found this word in %s language dictionary"
 msgstr "   [+] Это слово найдено в словаре %s"
 
-#: lib/ai/detection.c:79
+#: lib/ai/detection.c:59
 msgid "   [-] This word not found in any dictionaries"
 msgstr "   [-] Это слово не найдено во всех словарях"
 
-#: lib/ai/detection.c:92
+#: lib/ai/detection.c:72
 #, c-format
 msgid "   [+] Found this word in %s language regular expressions file"
 msgstr "   [+] Это слово найдено в файле регулярных выражений %s"
 
-#: lib/ai/detection.c:97
+#: lib/ai/detection.c:77
 msgid "   [-] This word not found in any regular expressions files"
 msgstr "   [-] Это слово не найдено во всех файлах регулярных выражений"
 
-#: lib/ai/detection.c:130
-#, c-format
-msgid "   [!] Error aspell checking for %s aspell dictionary"
-msgstr "   [!] Ошибка проверки по словарю aspell языка %s"
-
-#: lib/ai/detection.c:140
+#: lib/ai/detection.c:92 lib/ai/detection.c:116
 #, c-format
 msgid "   [+] Found this word in %s aspell dictionary"
 msgstr "   [+] Это слово найдено в словаре aspell языка %s"
 
-#: lib/ai/detection.c:146
+#: lib/ai/detection.c:98 lib/ai/detection.c:110
+#, c-format
+msgid "   [!] Now we don't support aspell dictionary for %s layout"
+msgstr ""
+
+#: lib/ai/detection.c:122
 msgid "   [-] This word has no hits for all aspell dictionaries"
 msgstr ""
 "   [-] Это слово не имеет совпадений при проверке по всем словарям aspell"
 
-#: lib/ai/detection.c:217
+#: lib/ai/detection.c:138 lib/ai/detection.c:162
+msgid "   [+] Found this word in %s enchant wrapper dictionary"
+msgstr "   [+] Это слово найдено в обертке словарей enchant %s"
+
+#: lib/ai/detection.c:144 lib/ai/detection.c:156
+#, c-format
+msgid "   [!] Now we don't support enchant wrapper dictionary for %s layout"
+msgstr ""
+
+#: lib/ai/detection.c:168
+msgid "   [-] This word has no hits for all enchant wrapper dictionaries"
+msgstr "   [-] Это слово не имеет совпадений при проверке по всем оберткам словарей enchant"
+
+#: lib/ai/detection.c:238
 #, c-format
 msgid "   [-] Skip checking by language proto of size %d (word is very short)"
 msgstr ""
 "   [-] Пропуск проверки по прото-языку с размером %d (слово слишком короткое)"
 
-#: lib/ai/detection.c:224
+#: lib/ai/detection.c:245
 #, c-format
 msgid "   [-] This word is ok for %s proto of size %d"
 msgstr "   [-] Это слово в порядке для прото-языка %s с размером %d"
 
-#: lib/ai/detection.c:228
+#: lib/ai/detection.c:249
 #, c-format
 msgid "   [*] This word has hits for %s proto of size %d"
 msgstr "   [*] Это слово имеет совпадение для прото-языка %s с размером %d"
 
-#: lib/ai/detection.c:238
+#: lib/ai/detection.c:259
 #, c-format
 msgid "   [*] This word has hits for %s language proto of size %d"
 msgstr "   [*] Это слово имеет совпадение для прото-языка %s с размером %d"
 
-#: lib/ai/detection.c:242
+#: lib/ai/detection.c:263
 #, c-format
 msgid "   [+] This word has no hits for %s language proto of size %d"
 msgstr "   [+] Это слово не имеет совпадений для прото-языка %s с размером %d"
 
-#: lib/ai/detection.c:246
+#: lib/ai/detection.c:267
 #, c-format
 msgid "   [-] This word has hits in all languages proto of size %d"
 msgstr "   [-] Это слово имеет совпадение для всех прото-языков с размером %d"
 
-#: lib/ai/detection.c:260
+#: lib/ai/detection.c:281
 #, c-format
 msgid "Processing word '%s' on layout '%s'"
 msgstr "Обработка слова '%s' в раскладке '%s'"
 
-#: lib/ai/detection.c:265
+#: lib/ai/detection.c:286
 msgid "Start word processing..."
 msgstr "Начало обработки слова..."
 
-#: lib/ai/detection.c:290
+#: lib/ai/detection.c:318
 msgid "End word processing."
 msgstr "Конец обработки слова."
 
@@ -532,35 +563,35 @@ msgstr "Неправильное значение опции для режима
 msgid "Can't find config file %s"
 msgstr "Не найден конфигурационный файл %s"
 
-#: lib/config/xnconfig.c:950
+#: lib/config/xnconfig.c:921
 msgid "No languages specified in config file"
 msgstr "В конфигурационном файле не определены языки"
 
-#: lib/config/xnconfig.c:980
+#: lib/config/xnconfig.c:950
 #, c-format
 msgid "Saving main config to %s"
 msgstr "Сохранение основной конфигурации в %s"
 
-#: lib/config/xnconfig.c:985
+#: lib/config/xnconfig.c:955
 #, c-format
 msgid "Can't create file %s"
 msgstr "Невозможно создать файл %s"
 
-#: lib/config/xnconfig.c:1279
+#: lib/config/xnconfig.c:1250
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr "Перемещение конфигурационного файла из %s в %s"
 
-#: lib/config/xnconfig.c:1285
+#: lib/config/xnconfig.c:1256
 msgid "Can't move file!"
 msgstr "Невозможно переместить файл!"
 
-#: lib/config/xnconfig.c:1303
+#: lib/config/xnconfig.c:1274
 #, c-format
 msgid "Saving %s dictionary"
 msgstr "Сохранение словаря языка %s"
 
-#: lib/config/xnconfig.c:1316
+#: lib/config/xnconfig.c:1287
 #, c-format
 msgid "Saving %s pattern"
 msgstr "Сохранение паттернов языка %s"
@@ -703,40 +734,40 @@ msgstr "Проигрывается звуковой клип %s (использ�
 msgid "Can't execute command '%s'"
 msgstr "Невозможно выполнить команду '%s'"
 
-#: lib/main/bind_table.c:123 lib/main/bind_table.c:161
+#: lib/main/bind_table.c:124 lib/main/bind_table.c:162
 #, c-format
 msgid "   No key set for action \"%s\""
 msgstr "   Не заданы горячие клавиши для действия \"%s\""
 
-#: lib/main/bind_table.c:149 lib/main/bind_table.c:187
+#: lib/main/bind_table.c:150 lib/main/bind_table.c:188
 #, c-format
 msgid "   Action \"%s\" with key \"%s\""
 msgstr "   Действие \"%s\" с клавишей \"%s\""
 
-#: lib/main/bind_table.c:213
+#: lib/main/bind_table.c:214
 msgid "Binded hotkeys actions:"
 msgstr "Установлены горячие клавиши:"
 
-#: lib/main/bind_table.c:240
+#: lib/main/bind_table.c:241
 msgid "Binded hotkeys user actions:"
 msgstr "Установлены горячие клавиши пользовательских действий:"
 
-#: lib/main/buffer.c:122
+#: lib/main/buffer.c:123
 #, c-format
 msgid "Compressed old log file to %s"
 msgstr "Создан архив старого файла журнала %s"
 
-#: lib/main/buffer.c:126
+#: lib/main/buffer.c:127
 #, c-format
 msgid "Sended log to e-mail %s via %s:%d host"
 msgstr "Отправлен журнал на %s через %s:%d"
 
-#: lib/main/buffer.c:131
+#: lib/main/buffer.c:132
 #, c-format
 msgid "Error rename file \"%s\" to \"%s\""
 msgstr "Ошибка переименования файла \"%s\" в \"%s\""
 
-#: lib/main/buffer.c:487
+#: lib/main/buffer.c:517
 msgid "String is freed"
 msgstr "Текущие данные строки очищены"
 
@@ -789,7 +820,7 @@ msgstr ""
 "Попробуйте запустить программу командой \"env LC_ALL=<LOCALE> %s\", \n"
 "где LOCALE можно получить коммандой \"locale -a\""
 
-#: lib/main/keymap.c:203
+#: lib/main/keymap.c:206
 msgid "Unable to get keyboard mapping table"
 msgstr "Невозвожно получить таблицу раскладки клавиатуры"
 
@@ -900,75 +931,75 @@ msgstr "Получен выделенный текст '%s'"
 msgid "Execute user action \"%s\""
 msgstr "Выполнение пользовательского действия \"%s\""
 
-#: lib/main/program.c:910
+#: lib/main/program.c:916
 #, c-format
 msgid "Manual mode changed to %s"
 msgstr "Ручной режим изменен на %s"
 
-#: lib/main/program.c:1138
+#: lib/main/program.c:1150
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr "Найдено сокращение '%s' '%s'. Замена на '%s'."
 
-#: lib/main/program.c:1192 lib/main/program.c:1237
+#: lib/main/program.c:1204 lib/main/program.c:1249
 msgid "No language found to change to"
 msgstr "Не найдено языка для смены"
 
-#: lib/main/program.c:1339
+#: lib/main/program.c:1351
 msgid "Find spaces before punctuation, correction..."
 msgstr "Обнаружены пробелы перед знаком пунктуации, исправление..."
 
-#: lib/main/program.c:1388
+#: lib/main/program.c:1400
 msgid "Find no space before left bracket, correction..."
 msgstr "Не обнаружен пробел перед открывающей скобкой, исправление..."
 
-#: lib/main/program.c:1405
+#: lib/main/program.c:1417
 msgid "Find spaces before right bracket, correction..."
 msgstr "Обнаружены пробелы перед закрывающей скобкой, исправление..."
 
-#: lib/main/program.c:1435
+#: lib/main/program.c:1447
 msgid "Find no spaces after right bracket, correction..."
 msgstr "Не обнаружены пробелы после закрывающей скобки, исправление..."
 
-#: lib/main/program.c:1470
+#: lib/main/program.c:1482
 msgid "Find spaces after left bracket, correction..."
 msgstr "Обнаружены пробелы после открывающей скобки, исправление..."
 
-#: lib/main/program.c:1521
+#: lib/main/program.c:1533
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr "Распознано слово '%s' из текста '%s' (раскладка %d), автодополнение..."
 
-#: lib/main/program.c:1560
+#: lib/main/program.c:1572
 msgid "No string to change"
 msgstr "Нет строки для замены"
 
-#: lib/main/program.c:1564
+#: lib/main/program.c:1576
 #, c-format
 msgid "Processing string '%s'"
 msgstr "Обработка строки '%s'"
 
-#: lib/main/program.c:1909
+#: lib/main/program.c:1921
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr "Удалено слово '%s' из словаря %s"
 
-#: lib/main/program.c:1917
+#: lib/main/program.c:1929
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr "Добавлено слово '%s' в словарь %s"
 
-#: lib/main/program.c:1974
+#: lib/main/program.c:1986
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr "Удалено слово '%s' из паттерна %s"
 
-#: lib/main/program.c:2007
+#: lib/main/program.c:2019
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr "Добавлено слово '%s' в паттерн %s"
 
-#: lib/main/program.c:2028
+#: lib/main/program.c:2040
 msgid "Program is freed"
 msgstr "Текущие данные программы очищены"
 
@@ -1025,6 +1056,9 @@ msgstr "Создано основное окно с id %d"
 #: lib/main/window.c:135
 msgid "Window is freed"
 msgstr "Текущие данные окна очищены"
+
+#~ msgid "   [!] Error aspell checking for %s aspell dictionary"
+#~ msgstr "   [!] Ошибка проверки по словарю aspell языка %s"
 
 #~ msgid "Start delay must be more 0"
 #~ msgstr "Задержка запуска программы должна быть больше 0"
