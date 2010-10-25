@@ -20,6 +20,16 @@
 #ifndef _XNEUR_H_
 #define _XNEUR_H_
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
+#ifdef WITH_ASPELL
+#	include <aspell.h>
+#endif
+
+struct _window *main_window;
+
 struct _xneur_language
 {
 	char *dir;
@@ -39,6 +49,12 @@ struct _xneur_handle
 {
 	struct _xneur_language *languages;
 	int total_languages;
+
+#ifdef WITH_ASPELL
+	// global aspell dictionaries
+	AspellSpeller **spell_checkers;
+	int *has_spell_checker;
+#endif
 };
 
 // Initialyze structure (must be installed proto, proto3, dict and regexp)

@@ -20,10 +20,12 @@
 
 #include <X11/XKBlib.h>
 
-//#include <libxklavier/xklavier.h>
-
 #include <string.h>
 #include <stdlib.h>
+
+#ifdef WITH_ASPELL
+#	include <aspell.h>
+#endif
 
 #include "xneur.h"
 
@@ -36,93 +38,36 @@
 
 #include "detection.h"
 
+#include "log.h"
+
 struct _xneur_config *xconfig				= NULL;
+
+#ifdef WITH_ASPELL
+static char *layout_names[] =
+{
+	"am","bg","by","cz","de","gr","ee","en","es","fr","ge","gb","kz","lt","lv",
+	"pl","ro","ru","ua","us","uz"
+};
+
+static char *aspell_names[] =
+{
+	"hy","bg","be","cs","de","el","et","en","es","fr","ka","en","kk","lt","lv",
+	"pl","ro","ru","uk","en","uz"
+};
+
+static const int names_len = sizeof(layout_names) / sizeof(layout_names[0]);
+#endif
 
 static long get_next_property_value (unsigned char **pointer, long *length, int size, char **string)
 {
     if (size != 8)
 		return 0;
-	
+
     int len = 0; *string = (char *)*pointer;
     while ((len++, --*length, *((*pointer)++)) && *length>0);
 
     return len;
 }
-
-/* Using libxklavier
- 
-struct _xneur_handle *xneur_handle_create (void)
-{
-	struct _xneur_handle *handle = (struct _xneur_handle *) malloc(sizeof(struct _xneur_handle));;
-
-	Display *display = XOpenDisplay(NULL);
-
-	XklEngine *engine = xkl_engine_get_instance (GDK_DISPLAY());
-	const char **group_names = xkl_engine_get_groups_names (engine);
-	XklConfigRec *config = xkl_config_rec_new ();
-	xkl_config_rec_get_from_server(config, engine);
-
-	handle->languages = (struct _xneur_language *) malloc(sizeof(struct _xneur_language));
-	handle->total_languages = 0;	
-	for (unsigned int group = 0; group < (unsigned int)xkl_engine_get_num_groups(engine); group++)
-	{
-		handle->languages = (struct _xneur_language *) realloc(handle->languages, (handle->total_languages + 1) * sizeof(struct _xneur_language));
-		bzero(&(handle->languages[handle->total_languages]), sizeof(struct _xneur_language));
-
-		handle->languages[handle->total_languages].name	= strdup((char*)group_names[group]);
-		handle->languages[handle->total_languages].dir	= strdup((char*)config->layouts[group]);
-		handle->languages[handle->total_languages].group	= group;
-		handle->languages[handle->total_languages].excluded	= FALSE;
-		handle->total_languages++;
-	}
-
-	XCloseDisplay(display);
-	
-	if (handle->total_languages == 0)
-		return NULL;
-
-	for (int lang = 0; lang < handle->total_languages; lang++)
-	{
-		int path_len = strlen(LANGUAGEDIR) + strlen(handle->languages[lang].dir) + 2;
-		char *lang_dir = (char *) malloc(path_len * sizeof(char));
-		snprintf(lang_dir, path_len, "%s/%s", LANGUAGEDIR, handle->languages[lang].dir);
-
-		handle->languages[lang].dict = load_list(lang_dir, DICT_NAME, TRUE);		
-		if (handle->languages[lang].dict == NULL)
-			handle->languages[lang].dict->data_count = 0;
-
-		handle->languages[lang].proto = load_list(lang_dir, PROTO_NAME, TRUE);
-		if (handle->languages[lang].proto == NULL)
-			handle->languages[lang].proto->data_count = 0;
-
-		handle->languages[lang].big_proto = load_list(lang_dir, BIG_PROTO_NAME, TRUE);
-		if (handle->languages[lang].big_proto == NULL)
-			handle->languages[lang].big_proto->data_count = 0;
-
-		handle->languages[lang].regexp = load_list(lang_dir, REGEXP_NAME, TRUE);
-		if (handle->languages[lang].regexp == NULL)
-			handle->languages[lang].regexp->data_count = 0;
-
-		handle->languages[lang].pattern = load_list(lang_dir, PATTERN_NAME, TRUE);
-		if (handle->languages[lang].pattern == NULL)
-			handle->languages[lang].pattern->data_count = 0;
-		
-		handle->languages[lang].temp_dict = handle->languages[lang].dict->clone(handle->languages[lang].dict);
-
-		if (lang_dir != NULL)
-			free(lang_dir);
-
-		if ((handle->languages[lang].dict->data_count == 0 &&
-		    handle->languages[lang].proto->data_count == 0 &&
-		    handle->languages[lang].big_proto->data_count == 0 &&
-		    handle->languages[lang].regexp->data_count == 0))
-		{
-			handle->languages[lang].excluded	= TRUE;
-		}
-	}
-	return handle;
-}
-*/
 
 struct _xneur_handle *xneur_handle_create (void)
 {
@@ -263,11 +208,50 @@ struct _xneur_handle *xneur_handle_create (void)
 	if (handle->total_languages == 0)
 		return NULL;
 
+#ifdef WITH_ASPELL
+	// init aspell spellers
+	handle->spell_checkers = (AspellSpeller **) malloc(handle->total_languages * sizeof(AspellSpeller*));
+	handle->has_spell_checker = (int *) malloc(handle->total_languages * sizeof(int *));
+	AspellConfig *spell_config = new_aspell_config();
+#endif
+		
 	for (int lang = 0; lang < handle->total_languages; lang++)
 	{
 		int path_len = strlen(LANGUAGEDIR) + strlen(handle->languages[lang].dir) + 2;
 		char *lang_dir = (char *) malloc(path_len * sizeof(char));
 		snprintf(lang_dir, path_len, "%s/%s", LANGUAGEDIR, handle->languages[lang].dir);
+
+#ifdef WITH_ASPELL
+		// initialize aspell checker for current language
+		int i = 0;
+		for (i = 0; i < names_len; i++)
+		{
+			if (strcmp(layout_names[i], handle->languages[lang].dir) == 0)
+				break;
+
+		}
+		if (i != names_len)
+		{
+			aspell_config_replace(spell_config, "lang", aspell_names[i]);
+			AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
+
+			int aspell_error = aspell_error_number(possible_err);
+
+			if (aspell_error != 0)
+			{
+				log_message(DEBUG, _("   [!] Error initialize %s aspell dictionary"), handle->languages[lang].name);
+				delete_aspell_can_have_error(possible_err);
+				handle->has_spell_checker[lang] = 0;
+			}
+			else
+			{
+				handle->spell_checkers[lang] = to_aspell_speller(possible_err);
+				handle->has_spell_checker[lang] = 1;
+			}
+		}
+		else
+			log_message(DEBUG, _("   [!] Now we don't support aspell dictionary for %s layout"), handle->languages[lang].dir);
+#endif
 
 		handle->languages[lang].dict = load_list(lang_dir, DICT_NAME, TRUE);		
 		if (handle->languages[lang].dict == NULL)
@@ -302,6 +286,11 @@ struct _xneur_handle *xneur_handle_create (void)
 			handle->languages[lang].excluded	= TRUE;
 		}
 	}
+
+#ifdef WITH_ASPELL
+	delete_aspell_config(spell_config);
+#endif
+		
 	return handle;
 }
 

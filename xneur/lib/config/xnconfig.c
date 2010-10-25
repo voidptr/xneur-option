@@ -853,12 +853,17 @@ static void free_structures(struct _xneur_config *p)
 
 		if (p->handle->languages[lang].pattern != NULL)
 			p->handle->languages[lang].pattern->uninit(p->handle->languages[lang].pattern);
-		
+
 		free(p->handle->languages[lang].name);
 		free(p->handle->languages[lang].dir);
+
+#ifdef WITH_ASPELL
+		if (p->handle->has_spell_checker[lang])
+			delete_aspell_speller(p->handle->spell_checkers[lang]);
+#endif
 	}
 
-	
+
 	for (int action = 0; action < p->actions_count; action++)
 	{
 		if (p->actions[action].hotkey.key != NULL)
@@ -888,6 +893,11 @@ static void free_structures(struct _xneur_config *p)
 
 	if (p->actions != NULL)
 		free(p->actions);
+
+#ifdef WITH_ASPELL
+	free(p->handle->spell_checkers);
+	free(p->handle->has_spell_checker);
+#endif
 }
 
 static void xneur_config_reload(struct _xneur_config *p)

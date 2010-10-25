@@ -26,10 +26,6 @@
 #include <ctype.h>
 #include <stdio.h>
 
-#ifdef WITH_ASPELL
-#  include <aspell.h>
-#endif
-
 #include "switchlang.h"
 
 #include "keymap.h"
@@ -45,22 +41,6 @@
 
 #define PROTO_LEN	2
 #define BIG_PROTO_LEN	3
-
-#ifdef WITH_ASPELL
-static char *layout_names[] =
-{
-	"am","bg","by","cz","de","gr","ee","en","es","fr","ge","gb","kz","lt","lv",
-	"pl","ro","ru","ua","us","uz"
-};
-
-static char *aspell_names[] =
-{
-	"hy","bg","be","cs","de","el","et","en","es","fr","ka","en","kk","lt","lv",
-	"pl","ro","ru","uk","en","uz"
-};
-
-static const int names_len = sizeof(layout_names) / sizeof(layout_names[0]);
-#endif
 
 static int get_dict_lang(struct _xneur_handle *handle, char **word)
 {
@@ -101,94 +81,32 @@ static int get_regexp_lang(struct _xneur_handle *handle, char **word)
 #ifdef WITH_ASPELL
 static int get_aspell_hits(struct _xneur_handle *handle, char **word, int len, int cur_lang)
 {
-	AspellConfig *spell_config = new_aspell_config();
-
 	if (len >= 2)
 	{
 		// check for current language first
-		if (!handle->languages[cur_lang].excluded)
+		if (!handle->languages[cur_lang].excluded && handle->has_spell_checker[cur_lang] &&
+				aspell_speller_check(handle->spell_checkers[cur_lang], word[cur_lang], strlen(word[cur_lang])))
 		{
-			int i = 0;
-			for (i = 0; i < names_len; i++)
-			{
-				if (strcmp(layout_names[i], handle->languages[cur_lang].dir) == 0)
-					break;
-
-			}
-			if (i != names_len)
-			{
-				aspell_config_replace(spell_config, "lang", aspell_names[i]);
-				AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
-
-				int aspell_error = aspell_error_number(possible_err);
-
-				if (aspell_error != 0)
-					log_message(DEBUG, _("   [!] Error aspell checking for %s aspell dictionary"), handle->languages[cur_lang].name);
-				else
-				{
-					AspellSpeller *spell_checker = to_aspell_speller(possible_err);
-					int correct = aspell_speller_check(spell_checker, word[cur_lang], strlen(word[cur_lang]));
-
-					if (aspell_error != 0)
-						delete_aspell_speller(spell_checker);
-					else
-						delete_aspell_can_have_error(possible_err);
-
-					if (correct)
-					{
-						log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[cur_lang].name);
-						delete_aspell_config(spell_config);
-						return cur_lang;
-					}
-				}
-			}
+			log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[cur_lang].name);
+			return cur_lang;
 		}
 
+		// check for another languages
 		for (int lang = 0; lang < handle->total_languages; lang++)
 		{
 			if (handle->languages[lang].excluded || lang == cur_lang)
 				continue;
 
-			int i = 0;
-			for (i = 0; i < names_len; i++)
-			{
-				if (strcmp(layout_names[i], handle->languages[lang].dir) == 0)
-					break;
-
-			}
-			if (i == names_len)
-				continue;
-
-			aspell_config_replace(spell_config, "lang", aspell_names[i]);
-			AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
-
-			int aspell_error = aspell_error_number(possible_err);
-
-			if (aspell_error != 0)
-			{
-				log_message(DEBUG, _("   [!] Error aspell checking for %s aspell dictionary"), handle->languages[lang].name);
-				continue;
-			}
-
-			AspellSpeller *spell_checker = to_aspell_speller(possible_err);
-			int correct = aspell_speller_check(spell_checker, word[lang], strlen(word[lang]));
-
-			if (aspell_error != 0)
-				delete_aspell_speller(spell_checker);
-			else
-				delete_aspell_can_have_error(possible_err);
-
-			if (correct)
+			if (handle->has_spell_checker[lang] &&
+					aspell_speller_check(handle->spell_checkers[lang], word[lang], strlen(word[lang])))
 			{
 				log_message(DEBUG, _("   [+] Found this word in %s aspell dictionary"), handle->languages[lang].name);
-				delete_aspell_config(spell_config);
 				return lang;
 			}
 		}
 	}
 
 	log_message(DEBUG, _("   [-] This word has no hits for all aspell dictionaries"));
-	delete_aspell_config(spell_config);
 	return NO_LANGUAGE;
 }
 #endif
