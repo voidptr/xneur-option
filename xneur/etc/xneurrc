@@ -94,15 +94,15 @@ SoundVolumePercent 15
 AddSound XneurStart 
 AddSound XneurReload 
 AddSound XneurStop 
-AddSound PressKeyLayout1 Enable /usr/local/share/xneur/sounds/layout1type.wav
-AddSound PressKeyLayout2 Enable /usr/local/share/xneur/sounds/layout2type.wav
+AddSound PressKeyLayout1 Enable layout1type.wav
+AddSound PressKeyLayout2 Enable layout2type.wav
 AddSound PressKeyLayout3 
 AddSound PressKeyLayout4 
 AddSound EnableLayout1 
 AddSound EnableLayout2 
 AddSound EnableLayout3 
 AddSound EnableLayout4 
-AddSound AutomaticChangeWord Enable /usr/local/share/xneur/sounds/itemback.wav
+AddSound AutomaticChangeWord Enable itemback.wav
 AddSound ManualChangeWord 
 AddSound ChangeString 
 AddSound ChangeSelected 
@@ -111,10 +111,10 @@ AddSound ChangecaseSelected
 AddSound ChangeClipboard 
 AddSound TranslitClipboard 
 AddSound ChangecaseClipboard 
-AddSound ReplaceAbbreviation Enable /usr/local/share/xneur/sounds/switch.wav
+AddSound ReplaceAbbreviation Enable switch.wav
 AddSound CorrectIncidentalCaps 
 AddSound CorrectTwoCapitalLetter 
-AddSound ExecuteUserAction Enable /usr/local/share/xneur/sounds/switch.wav
+AddSound ExecuteUserAction Enable switch.wav
 
 # This option enable or disable self education of xneur
 # Example:

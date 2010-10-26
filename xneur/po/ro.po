@@ -71,14 +71,17 @@ msgid "      %s regexp has %d records"
 msgstr "      regexp %s are %d însemnări"
 
 #: src/xneur.c:144
+#, c-format
 msgid "      %s aspell dictionary loaded"
 msgstr ""
 
 #: src/xneur.c:148
+#, c-format
 msgid "      %s aspell dictionary not found"
 msgstr ""
 
 #: src/xneur.c:154
+#, c-format
 msgid "      %s enchant wrapper dictionary loaded"
 msgstr ""
 

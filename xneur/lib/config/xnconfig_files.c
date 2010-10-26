@@ -88,13 +88,8 @@ char* get_file_path_name(const char *dir_name, const char *file_name)
 
 	// Search by only full path
 	strcpy(path_file, file_name);
-
-	FILE *stream = fopen(path_file, "r");
-	if (stream != NULL)
-	{
-		fclose(stream);
+	if (strstr(path_file, "/") != NULL)
 		return path_file;
-	}
 
 	// Search conf in ~/.xneur
 	if (dir_name == NULL)
@@ -102,7 +97,7 @@ char* get_file_path_name(const char *dir_name, const char *file_name)
 	else
 		snprintf(path_file, max_path_len, "%s/%s/%s/%s", getenv("HOME"), HOME_CONF_DIR, dir_name, file_name);
 
-	stream = fopen(path_file, "r");
+	FILE *stream = fopen(path_file, "r");
 	if (stream != NULL)
 	{
 		fclose(stream);
