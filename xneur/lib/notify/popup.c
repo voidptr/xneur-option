@@ -49,14 +49,25 @@ static const int expire_timeout = NOTIFY_EXPIRES_DEFAULT;
 
 time_t timestamp = 0;
 
+void popup_init(void)
+{
+	if (!xconfig->show_popup)
+		return;
+
+	notify_init("xneur");
+	
+}
+
+void popup_uninit(void)
+{
+	if (!xconfig->show_popup)
+		return;
+
+	notify_uninit();
+}
+
 static void popup_show_thread(struct _popup_body *popup_body)
 {
-	if (!notify_init("xneur"))
-	{	
-		free(popup_body);
-		return;
-	}
-	
 	if (popup_body->header == NULL)
 	{
 		popup_body->header = popup_body->content;
@@ -81,7 +92,10 @@ static void popup_show_thread(struct _popup_body *popup_body)
 
 	GError *error = NULL;
 	notify_notification_close(notify, &error);
-	//notify_uninit();
+	if (error != NULL)
+		g_error_free(error);
+	
+	g_object_unref(G_OBJECT(notify));
 }
 
 void popup_show(int notify, char *command)

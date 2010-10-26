@@ -131,13 +131,14 @@ void *play_file_thread(void *param)
 	GstElement *source   = gst_element_factory_make("filesrc",  "file-source");
 	GstElement *parser   = gst_element_factory_make("wavparse", "wav-parcer");
 	GstElement *volume   = gst_element_factory_make("volume", "volume");
-	GstElement *conv     = gst_element_factory_make ("audioconvert",  "converter");
+	GstElement *conv     = gst_element_factory_make("audioconvert",  "converter");
 	GstElement *sink     = gst_element_factory_make("alsasink", "audio-output");
 	
 	if (!pipeline || !source || !parser || !conv || !volume || !sink)
 	{
 		free(path);
 		log_message(ERROR, _("Failed to create gstreamer context"));
+		g_main_loop_unref(loop);
 		return NULL;
   	}
 
@@ -162,7 +163,8 @@ void *play_file_thread(void *param)
 	// Clean up nicely
 	gst_element_set_state(pipeline, GST_STATE_NULL);
 	gst_object_unref(GST_OBJECT(pipeline));
-
+	g_main_loop_unref(loop);
+	
 	free(path);
 	
 	return NULL;

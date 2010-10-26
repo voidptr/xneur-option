@@ -26,6 +26,8 @@ struct _popup_body
 	char *content;
 };
 
+void popup_init(void);
 void popup_show(int notify, char *command);
+void popup_uninit(void);
 
 #endif /* _POPUP_H_ */

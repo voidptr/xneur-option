@@ -48,6 +48,7 @@
 #include "log.h"
 #include "colors.h"
 #include "sound.h"
+#include "popup.h"
 #include "notify.h"
 #include "plugin.h"
 
@@ -219,6 +220,7 @@ static void xneur_set_lock(void)
 
 static void xneur_cleanup(void)
 {
+	popup_uninit();
 	sound_uninit();
 	log_message(DEBUG, _("Current sound data is freed"));
 
@@ -253,8 +255,7 @@ static void xneur_terminate(int status)
 	program->plugin->xneur_stop(program->plugin);
 
 	xneur_cleanup();
-
-
+	
 	exit(EXIT_SUCCESS);
 }
 
@@ -283,6 +284,7 @@ static void xneur_reload(int status)
 	xneur_load_config();
 	xneur_init();
 	sound_init();
+	popup_init();
 
 	for (int i=0; i<xconfig->plugins->data_count; i++)
 	{
@@ -428,6 +430,7 @@ int main(int argc, char *argv[])
 	}
 
 	sound_init();
+	popup_init();
 	xneur_init();
 
 	log_message(DEBUG, _("Init program structure complete"));

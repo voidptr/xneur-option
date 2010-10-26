@@ -343,7 +343,7 @@ struct _xneur_handle *xneur_handle_create (void)
 			//printf("   [!] Loaded dict %s\n", dict_name);
 			handle->enchant_dicts[lang] = enchant_broker_request_dict (handle->enchant_broker, dict_name);
 			handle->has_enchant_checker[lang] = 1;
-
+			
 			free(dict_name);
 		}
 		else
@@ -405,8 +405,7 @@ void xneur_handle_destroy (struct _xneur_handle *handle)
 #endif
 	
 #ifdef WITH_ENCHANT
-	if (handle->enchant_broker)
-		enchant_broker_free (handle->enchant_broker);
+	enchant_broker_free (handle->enchant_broker);
 	free(handle->enchant_dicts);
 	free(handle->has_enchant_checker);
 #endif
