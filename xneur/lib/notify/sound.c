@@ -281,7 +281,7 @@ void play_file(int file_type)
 	char *path = get_file_path_name(SOUNDDIR, xconfig->sounds[file_type].file);
 	if (path == NULL)
 		return;
-
+	
 	pthread_attr_t sound_thread_attr;
 	pthread_attr_init(&sound_thread_attr);
 	pthread_attr_setdetachstate(&sound_thread_attr, PTHREAD_CREATE_DETACHED);
