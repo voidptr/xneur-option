@@ -30,16 +30,16 @@ msgid "Execute user action"
 msgstr "Виконати дію користувача"
 
 msgid "Keypress on layout 1"
-msgstr ""
+msgstr "Натискання клавіші при розкладці 1"
 
 msgid "Keypress on layout 2"
-msgstr ""
+msgstr "Натискання клавіші при розкладці 2"
 
 msgid "Keypress on layout 3"
-msgstr ""
+msgstr "Натискання клавіші при розкладці 3"
 
 msgid "Keypress on layout 4"
-msgstr ""
+msgstr "Натискання клавіші при розкладці 4"
 
 msgid "Correct word automatically"
 msgstr "Автоматично виправити слово"
