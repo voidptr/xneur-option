@@ -8,14 +8,13 @@ msgstr ""
 "Project-Id-Version: gxneur 0.9.4\n"
 "Report-Msgid-Bugs-To: web@softodrom.ru\n"
 "POT-Creation-Date: 2009-04-16 14:23+0400\n"
-"PO-Revision-Date: 2009-05-24 23:49+0000\n"
+"PO-Revision-Date: 2009-06-06 08:12+0000\n"
 "Last-Translator: Knedlyk <Unknown>\n"
 "Language-Team: \n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-27 09:52+0000\n"
+"X-Launchpad-Export-Date: 2010-10-28 19:16+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 msgid "Xneur started"
@@ -31,16 +30,16 @@ msgid "Execute user action"
 msgstr "Виконати дію користувача"
 
 msgid "Keypress on layout 1"
-msgstr "Натискання клавіші при розкладці 1"
+msgstr ""
 
 msgid "Keypress on layout 2"
-msgstr "Натискання клавіші при розкладці 2"
+msgstr ""
 
 msgid "Keypress on layout 3"
-msgstr "Натискання клавіші при розкладці 3"
+msgstr ""
 
 msgid "Keypress on layout 4"
-msgstr "Натискання клавіші при розкладці 4"
+msgstr ""
 
 msgid "Correct word automatically"
 msgstr "Автоматично виправити слово"
@@ -97,13 +96,13 @@ msgid "Preview correction of selected text"
 msgstr ""
 
 msgid "Correct clipboard text"
-msgstr ""
+msgstr "Виправити текст з буфера обміну"
 
 msgid "Transliterate clipboard text"
-msgstr ""
+msgstr "Транслітерувати текст з буфера обміну"
 
 msgid "Change case of clipboard text"
-msgstr ""
+msgstr "Змінити рігістр тексту з буфера обміну"
 
 msgid "Calculate formula on clipboard text"
 msgstr ""
@@ -112,7 +111,7 @@ msgid "Preview correction of clipboard text"
 msgstr ""
 
 msgid "Rotate layouts"
-msgstr ""
+msgstr "Розвернути розкладку"
 
 msgid "Rotate layouts back"
 msgstr ""
@@ -133,7 +132,7 @@ msgid "Expand abbreviations"
 msgstr "Розкрити скорочення"
 
 msgid "Autocomplementation confirmation"
-msgstr ""
+msgstr "Підтвердження автодоповнювання"
 
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
@@ -223,7 +222,7 @@ msgstr "Перевірити мову в процесі вводу"
 
 #: glade/config.glade:108
 msgid "Main"
-msgstr ""
+msgstr "Головне"
 
 #: glade/config.glade:120
 msgid "Correct aCCIDENTAL caps"
@@ -231,7 +230,7 @@ msgstr "Виправляти вИПАДКОВИЙ CapsLock"
 
 #: glade/config.glade:134
 msgid "Disable CapsLock use"
-msgstr ""
+msgstr "Не використовувати CapsLock"
 
 #: glade/config.glade:148
 msgid "Correct TWo INitial caps"
@@ -239,11 +238,11 @@ msgstr "Виправляти дві ПОчаткові літери"
 
 #: glade/config.glade:162
 msgid "Correct spaces with punctuation"
-msgstr ""
+msgstr "Виправляти пропуски в пунктуації"
 
 #: glade/config.glade:182
 msgid "Typographics"
-msgstr ""
+msgstr "Типографічні"
 
 #: glade/config.glade:205
 msgid "<b>General</b>"
@@ -291,19 +290,19 @@ msgstr "<b>Поєднання клавіш</b>"
 
 #: glade/config.glade:684
 msgid "Enable pattern mining and recognition (autocomplementation)"
-msgstr ""
+msgstr "Включити схему аналізу і розпізнавання (автодоповнення)"
 
 #: glade/config.glade:698
 msgid "Add space after autocomplementation"
-msgstr ""
+msgstr "Додати пропуск після автодоповнення"
 
 #: glade/config.glade:800
 msgid "Disable the autocomplementation for these applications"
-msgstr ""
+msgstr "Виключити автодоповнення для цих програм"
 
 #: glade/config.glade:836
 msgid "<b>Autocomplementation</b>"
-msgstr ""
+msgstr "<b>Автодоповнення</b>"
 
 #: glade/config.glade:936
 msgid "Ignore these applications"
@@ -343,23 +342,24 @@ msgstr "Екранні шрифти"
 
 #: glade/config.glade:1358
 msgid "Use command <b>xfontsel -print</b> to get new font."
-msgstr "Використайте команду <b>xfontsel -print</b> щоб отримати новий шрифт."
+msgstr ""
+"Використайте команду <b>xfontsel -print</b> щоб отримати новий шрифт."
 
 #: glade/config.glade:1407
 msgid "OSD"
-msgstr ""
+msgstr "Текст на екрані (OSD)"
 
 #: glade/config.glade:1424
 msgid "Show popup messages"
-msgstr ""
+msgstr "Показувати спливаючі повідомлення"
 
 #: glade/config.glade:1478
 msgid "Popup messages"
-msgstr ""
+msgstr "Спливаючі повідомлення"
 
 #: glade/config.glade:1504
 msgid "<b>Notifications</b>"
-msgstr ""
+msgstr "<b>Повідомлення</b>"
 
 #: glade/config.glade:1527
 msgid "Ignore keyboard layout for abbreviations"
@@ -468,12 +468,6 @@ msgid ""
 "Debug\n"
 "Trace"
 msgstr ""
-"Отсутствует\n"
-"Помилка\n"
-"Увага\n"
-"Лог\n"
-"Отладка\n"
-"Трассировка"
 
 #: glade/config.glade:2150
 msgid "Dont send KeyRelease event"
@@ -537,13 +531,11 @@ msgid ""
 "Wrong XNeur configuration library api version.\n"
 "Please, install libxnconfig version 0.%d.%d\n"
 msgstr ""
-"Неспівпадіння версії бібліотеки конфігурації XNeur.\n"
-"Будь ласка, встановіть libxnconfig версії 0.%d.%d\n"
 
 #: src/misc.c:348
 #, c-format
 msgid "Using libxnconfig API version 0.%d.%d (build with 0.%d.%d)\n"
-msgstr "Використовується libxnconfig API версії 0.%d.%d (зібрано з 0.%d.%d)\n"
+msgstr ""
 
 #: src/misc.c:352 src/misc.c:353
 #, c-format
@@ -560,8 +552,6 @@ msgid ""
 "Couldn't start %s\n"
 "Verify that it installed\n"
 msgstr ""
-"Не можу запустити %s\n"
-"Переконайтеся, що він інстальований\n"
 
 #: src/misc.c:416
 msgid "Current Version"
@@ -606,7 +596,7 @@ msgstr "Звук"
 
 #: src/misc.c:921 src/misc.c:1076 src/misc.c:1126 src/misc.c:1172
 msgid "Enabled"
-msgstr "Ввімкнути звуки"
+msgstr ""
 
 #: src/misc.c:1023 src/trayicon.c:153
 msgid "User action"
@@ -618,7 +608,7 @@ msgstr "Екранний текст"
 
 #: src/misc.c:1117
 msgid "Popup message text"
-msgstr ""
+msgstr "Текст спливаючих повідомлень"
 
 #: src/misc.c:1186
 msgid "File name"
@@ -673,11 +663,69 @@ msgstr "X Neural Switcher зупинений ("
 msgid "X Neural Switcher"
 msgstr "Перемикач X Neural"
 
-#~ msgid "Fixed"
-#~ msgstr "Фіксована"
-
 #~ msgid "Number\t"
 #~ msgstr "Номер\t"
+
+#~ msgid ""
+#~ "Error\n"
+#~ "Warning\n"
+#~ "Log\n"
+#~ "Debug\n"
+#~ "Trace"
+#~ msgstr ""
+#~ "Помилка\n"
+#~ "Увага\n"
+#~ "Log\n"
+#~ "Debug\n"
+#~ "Trace"
+
+#~ msgid "Keypress on Layout 1"
+#~ msgstr "Натискання клавіші при розкладці 1"
+
+#~ msgid "Keypress on Layout 2"
+#~ msgstr "Натискання клавіші при розкладці 2"
+
+#~ msgid "Keypress on Layout 3"
+#~ msgstr "Натискання клавіші при розкладці 3"
+
+#~ msgid "Keypress on Layout 4"
+#~ msgstr "Натискання клавіші при розкладці 4"
+
+#~ msgid "Correct word manually"
+#~ msgstr "Ручне виправлення слова"
+
+#~ msgid "Flag pixmap for Layout 1"
+#~ msgstr "Зображення прапора для розкладки 1"
+
+#~ msgid "Flag pixmap for Layout 2"
+#~ msgstr "Зображення прапора для розкладки 2"
+
+#~ msgid "Flag pixmap for Layout 3"
+#~ msgstr "Зображення прапора для розкладки 3"
+
+#~ msgid "Flag pixmap for Layout 4"
+#~ msgstr "Зображення прапора для розкладки 4"
+
+#, c-format
+#~ msgid ""
+#~ "Wrong XNeur configuration library api version.\n"
+#~ "Please, install libxnconfig version %d.0.%d\n"
+#~ msgstr ""
+#~ "Неспівпадіння версії бібліотеки конфігурації XNeur.\n"
+#~ "Будь ласка, встановіть libxnconfig версії %d.0.%d\n"
+
+#, c-format
+#~ msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
+#~ msgstr ""
+#~ "Використовується libxnconfig API версії %d.0.%d (зібрано з %d.0.%d)\n"
+
+#, c-format
+#~ msgid ""
+#~ "Couldn't start xneur\n"
+#~ "Verify that it installed\n"
+#~ msgstr ""
+#~ "Не можу запустити xneur\n"
+#~ "Переконайтеся, що він інстальований\n"
 
 #~ msgid ""
 #~ "\n"
@@ -720,14 +768,5 @@ msgstr "Перемикач X Neural"
 #~ "Українська\n"
 #~ "Узбецька"
 
-#~ msgid "Flag pixmap for Layout 4"
-#~ msgstr "Зображення прапора для розкладки 4"
-
-#~ msgid "Flag pixmap for Layout 3"
-#~ msgstr "Зображення прапора для розкладки 3"
-
-#~ msgid "Flag pixmap for Layout 2"
-#~ msgstr "Зображення прапора для розкладки 2"
-
-#~ msgid "Flag pixmap for Layout 1"
-#~ msgstr "Зображення прапора для розкладки 1"
+#~ msgid "Fixed"
+#~ msgstr "Фіксована"
