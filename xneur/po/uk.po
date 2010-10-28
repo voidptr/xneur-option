@@ -296,7 +296,7 @@ msgstr "Не можу ініціалізувати libxnconfig"
 
 #: src/xneur.c:394
 msgid "Can't trap signal"
-msgstr ""
+msgstr "Не можу зловити сигнал"
 
 #: src/xneur.c:424
 msgid "Failed to init program structure"
@@ -416,7 +416,7 @@ msgstr ""
 
 #: lib/config/xnconfig.c:208
 msgid "Invalid value for log level specified"
-msgstr ""
+msgstr "Неправильне значення  вказано для рівня ведення логів"
 
 #: lib/config/xnconfig.c:220
 msgid "Argument number mismatch for ExcludeLanguage option"
@@ -440,7 +440,7 @@ msgstr ""
 
 #: lib/config/xnconfig.c:305
 msgid "Invalid value for remember layout mode specified"
-msgstr ""
+msgstr "Неправильне значення вказано для пам’яті режиму розкладки"
 
 #: lib/config/xnconfig.c:317
 msgid "Invalid value for save selection mode specified"
@@ -487,7 +487,7 @@ msgstr ""
 
 #: lib/config/xnconfig.c:526
 msgid "Invalid value for show OSD mode specified"
-msgstr ""
+msgstr "Неправильне значення вказано для показу режиму OSD"
 
 #: lib/config/xnconfig.c:538 lib/config/xnconfig.c:594
 msgid "Invalid value for OSD action name specified"
@@ -532,11 +532,11 @@ msgstr ""
 #: lib/config/xnconfig.c:785
 #, c-format
 msgid "Can't find config file %s"
-msgstr ""
+msgstr "Не можу знайти файл конфігурації %s"
 
 #: lib/config/xnconfig.c:921
 msgid "No languages specified in config file"
-msgstr ""
+msgstr "Не вказано жодної мови у файлі конфігурації"
 
 #: lib/config/xnconfig.c:950
 #, c-format
