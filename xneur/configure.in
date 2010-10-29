@@ -205,7 +205,8 @@ fi
 DEFAULT_CFLAGS="-Wall -Wextra -Werror -g0 -std=gnu99 -fPIC"
 AC_SUBST(DEFAULT_CFLAGS)
 
-AC_OUTPUT([plugins/Makefile 
+AC_OUTPUT([
+plugins/Makefile 
 plugins/test/Makefile 
 plugins/statistic/Makefile 
 share/Makefile 

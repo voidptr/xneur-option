@@ -6,7 +6,7 @@ SUBDIRS =			\
 	share			\
 	etc			\
 	po			\
-	plugins
+	plugins			
 
 AUTOMAKE_OPTIONS =		\
 	1.9			\

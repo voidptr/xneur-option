@@ -361,7 +361,9 @@ msgstr "   [+] Это слово найдено в обертке словаре
 #: lib/ai/detection.c:144 lib/ai/detection.c:156
 #, c-format
 msgid "   [!] Now we don't support enchant wrapper dictionary for %s layout"
-msgstr "   [!] Словарь для обертки словарей enchant языка %s в данный момент не найден"
+msgstr ""
+"   [!] Словарь для обертки словарей enchant языка %s в данный момент не "
+"найден"
 
 #: lib/ai/detection.c:168
 msgid "   [-] This word has no hits for all enchant wrapper dictionaries"
