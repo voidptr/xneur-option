@@ -22,12 +22,9 @@ noinst_DATA =			\
 	ChangeLog
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = xnconfig.pc
+pkgconfig_DATA = xnconfig.pc xneur.pc
 
-pkgxneurdir = $(libdir)/pkgconfig
-pkgxneur_DATA = xneur.pc
-
-EXTRA_DIST = $(noinst_DATA) $(pkgconfig_DATA) xnconfig.pc.in $(pkgconfig_DATA) xneur.pc.in xneur.1 xneurrc.5
+EXTRA_DIST = $(noinst_DATA) $(pkgconfig_DATA) xnconfig.pc.in xneur.pc.in xneur.1 xneurrc.5
 man_MANS = xneur.1 xneurrc.5
 
 check-gettext:
