@@ -94,7 +94,7 @@ msgstr ""
 #: src/xneur.c:162
 #, c-format
 msgid "Total %d keyboard layouts detected"
-msgstr ""
+msgstr "Виявлено %d розкладок клавіатури"
 
 #: src/xneur.c:164
 #, c-format
@@ -1025,5 +1025,3 @@ msgstr ""
 msgid "Window is freed"
 msgstr ""
 
-#~ msgid "Total detected %d languages"
-#~ msgstr "Виявлено %d мов"
