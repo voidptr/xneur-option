@@ -87,7 +87,7 @@ msgstr "      Обертка для словарей enchant %s загружен
 #: src/xneur.c:158
 #, c-format
 msgid "      %s enchant wrapper dictionary not found"
-msgstr ""
+msgstr "      Словарь языка %s для обертки словарей enchant не найдена"
 
 #: src/xneur.c:162
 #, c-format
@@ -346,7 +346,7 @@ msgstr "   [+] Это слово найдено в словаре aspell язы�
 #: lib/ai/detection.c:98 lib/ai/detection.c:110
 #, c-format
 msgid "   [!] Now we don't support aspell dictionary for %s layout"
-msgstr ""
+msgstr "   [!] Словарь aspell для языка %s в данный момент не найден"
 
 #: lib/ai/detection.c:122
 msgid "   [-] This word has no hits for all aspell dictionaries"
@@ -361,7 +361,7 @@ msgstr "   [+] Это слово найдено в обертке словаре
 #: lib/ai/detection.c:144 lib/ai/detection.c:156
 #, c-format
 msgid "   [!] Now we don't support enchant wrapper dictionary for %s layout"
-msgstr ""
+msgstr "   [!] Словарь для обертки словарей enchant языка %s в данный момент не найден"
 
 #: lib/ai/detection.c:168
 msgid "   [-] This word has no hits for all enchant wrapper dictionaries"

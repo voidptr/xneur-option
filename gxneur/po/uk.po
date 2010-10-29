@@ -45,7 +45,7 @@ msgid "Correct word automatically"
 msgstr "Автоматично виправити слово"
 
 msgid "Correct last word manually"
-msgstr ""
+msgstr "Ручне виправлення слова"
 
 msgid "Transliterate last word manually"
 msgstr ""
@@ -468,6 +468,12 @@ msgid ""
 "Debug\n"
 "Trace"
 msgstr ""
+"Нет\n"
+"Помилка\n"
+"Увага\n"
+"Log\n"
+"Debug\n"
+"Trace"
 
 #: glade/config.glade:2150
 msgid "Dont send KeyRelease event"
@@ -531,11 +537,13 @@ msgid ""
 "Wrong XNeur configuration library api version.\n"
 "Please, install libxnconfig version 0.%d.%d\n"
 msgstr ""
+"Неспівпадіння версії бібліотеки конфігурації XNeur.\n"
+"Будь ласка, встановіть libxnconfig версії 0.%d.%d\n"
 
 #: src/misc.c:348
 #, c-format
 msgid "Using libxnconfig API version 0.%d.%d (build with 0.%d.%d)\n"
-msgstr ""
+msgstr "Використовується libxnconfig API версії 0.%d.%d (зібрано з 0.%d.%d)\n"
 
 #: src/misc.c:352 src/misc.c:353
 #, c-format
@@ -552,6 +560,8 @@ msgid ""
 "Couldn't start %s\n"
 "Verify that it installed\n"
 msgstr ""
+"Не можу запустити %s\n"
+"Переконайтеся, що він інстальований\n"
 
 #: src/misc.c:416
 msgid "Current Version"
@@ -663,110 +673,3 @@ msgstr "X Neural Switcher зупинений ("
 msgid "X Neural Switcher"
 msgstr "Перемикач X Neural"
 
-#~ msgid "Number\t"
-#~ msgstr "Номер\t"
-
-#~ msgid ""
-#~ "Error\n"
-#~ "Warning\n"
-#~ "Log\n"
-#~ "Debug\n"
-#~ "Trace"
-#~ msgstr ""
-#~ "Помилка\n"
-#~ "Увага\n"
-#~ "Log\n"
-#~ "Debug\n"
-#~ "Trace"
-
-#~ msgid "Keypress on Layout 1"
-#~ msgstr "Натискання клавіші при розкладці 1"
-
-#~ msgid "Keypress on Layout 2"
-#~ msgstr "Натискання клавіші при розкладці 2"
-
-#~ msgid "Keypress on Layout 3"
-#~ msgstr "Натискання клавіші при розкладці 3"
-
-#~ msgid "Keypress on Layout 4"
-#~ msgstr "Натискання клавіші при розкладці 4"
-
-#~ msgid "Correct word manually"
-#~ msgstr "Ручне виправлення слова"
-
-#~ msgid "Flag pixmap for Layout 1"
-#~ msgstr "Зображення прапора для розкладки 1"
-
-#~ msgid "Flag pixmap for Layout 2"
-#~ msgstr "Зображення прапора для розкладки 2"
-
-#~ msgid "Flag pixmap for Layout 3"
-#~ msgstr "Зображення прапора для розкладки 3"
-
-#~ msgid "Flag pixmap for Layout 4"
-#~ msgstr "Зображення прапора для розкладки 4"
-
-#, c-format
-#~ msgid ""
-#~ "Wrong XNeur configuration library api version.\n"
-#~ "Please, install libxnconfig version %d.0.%d\n"
-#~ msgstr ""
-#~ "Неспівпадіння версії бібліотеки конфігурації XNeur.\n"
-#~ "Будь ласка, встановіть libxnconfig версії %d.0.%d\n"
-
-#, c-format
-#~ msgid "Using libxnconfig API version %d.0.%d (build with %d.0.%d)\n"
-#~ msgstr ""
-#~ "Використовується libxnconfig API версії %d.0.%d (зібрано з %d.0.%d)\n"
-
-#, c-format
-#~ msgid ""
-#~ "Couldn't start xneur\n"
-#~ "Verify that it installed\n"
-#~ msgstr ""
-#~ "Не можу запустити xneur\n"
-#~ "Переконайтеся, що він інстальований\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Belarusian\n"
-#~ "Bulgarian\n"
-#~ "Czech\n"
-#~ "German\n"
-#~ "Greek\n"
-#~ "English\n"
-#~ "Spanish\n"
-#~ "Estonian\n"
-#~ "French\n"
-#~ "Armenian\n"
-#~ "Kazakh\n"
-#~ "Lithuanian\n"
-#~ "Latvian\n"
-#~ "Poland\n"
-#~ "Romanian\n"
-#~ "Russian\n"
-#~ "Ukrainian\n"
-#~ "Uzbek"
-#~ msgstr ""
-#~ "\n"
-#~ "Білоруська\n"
-#~ "Болгарська\n"
-#~ "Чеська\n"
-#~ "Німецька\n"
-#~ "Грецька\n"
-#~ "Англійська\n"
-#~ "Іспанська\n"
-#~ "Естонська\n"
-#~ "Французька\n"
-#~ "Вірменська\n"
-#~ "Казахський\n"
-#~ "Литовська\n"
-#~ "Латвійська\n"
-#~ "Польська\n"
-#~ "Румунська\n"
-#~ "Російська\n"
-#~ "Українська\n"
-#~ "Узбецька"
-
-#~ msgid "Fixed"
-#~ msgstr "Фіксована"
