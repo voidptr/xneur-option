@@ -27,7 +27,9 @@
 struct _buffer_content
 {
 	char *content;
+	char *content_unchanged;
 	int *symbol_len;
+	int *symbol_len_unchanged;
 };
 
 struct _buffer
@@ -35,7 +37,7 @@ struct _buffer
 	struct _xneur_handle *handle;
 	
 	struct _buffer_content *i18n_content;
-
+	
 	char *content;		// String itself
 	KeyCode *keycode;	// Array of string chars keycodes
 	int *keycode_modifiers;	// Array of string chars keycodes modifiers

@@ -279,6 +279,8 @@ static void buffer_clear(struct _buffer *p)
 	{
 		p->i18n_content[i].content = realloc(p->i18n_content[i].content, sizeof(char));
 		p->i18n_content[i].content[0] = NULLSYM;
+		p->i18n_content[i].content_unchanged = realloc(p->i18n_content[i].content_unchanged, sizeof(char));
+		p->i18n_content[i].content_unchanged[0] = NULLSYM;
 	}
 }
 
@@ -307,17 +309,29 @@ static void buffer_set_i18n_content(struct _buffer *p)
 			char *symbol = keycode_to_symbol(p->keycode[k], i, modifier & (~ShiftMask));
 			if (symbol == NULL)
 				continue;
-
+			
+			char *symbol_unchanged = keycode_to_symbol(p->keycode[k], i, modifier);
+			if (symbol == NULL)
+				continue;
+			
 			p->i18n_content[i].content = (char *) realloc(p->i18n_content[i].content, (strlen(p->i18n_content[i].content) + strlen(symbol) + 1) * sizeof(char));
 			p->i18n_content[i].content = strcat(p->i18n_content[i].content, symbol);
+
+			p->i18n_content[i].content_unchanged = (char *) realloc(p->i18n_content[i].content_unchanged, (strlen(p->i18n_content[i].content_unchanged) + strlen(symbol_unchanged) + 1) * sizeof(char));
+			p->i18n_content[i].content_unchanged = strcat(p->i18n_content[i].content_unchanged, symbol_unchanged);
 
 			p->i18n_content[i].symbol_len = (int *) realloc(p->i18n_content[i].symbol_len, (k + 1) * sizeof(int));
 			p->i18n_content[i].symbol_len[k] = strlen(symbol);
 
+			p->i18n_content[i].symbol_len_unchanged = (int *) realloc(p->i18n_content[i].symbol_len_unchanged, (k + 1) * sizeof(int));
+			p->i18n_content[i].symbol_len_unchanged[k] = strlen(symbol_unchanged);
+
 			free(symbol);
+			free(symbol_unchanged);
 		}
 	}
 }
+
 static void buffer_set_content(struct _buffer *p, const char *new_content)
 {
 	char *content = strdup(new_content);
@@ -412,13 +426,24 @@ static void buffer_add_symbol(struct _buffer *p, char sym, KeyCode keycode, int 
 		if (symbol == NULL)
 			continue;
 
+		char *symbol_unchanged = keycode_to_symbol(keycode, i, modifier);
+		if (symbol_unchanged == NULL)
+			continue;
+		
 		p->i18n_content[i].content = (char *) realloc(p->i18n_content[i].content, (strlen(p->i18n_content[i].content) + strlen(symbol) + 1) * sizeof(char));
 		p->i18n_content[i].content = strcat(p->i18n_content[i].content, symbol);
+
+		p->i18n_content[i].content_unchanged = (char *) realloc(p->i18n_content[i].content_unchanged, (strlen(p->i18n_content[i].content_unchanged) + strlen(symbol_unchanged) + 1) * sizeof(char));
+		p->i18n_content[i].content_unchanged = strcat(p->i18n_content[i].content_unchanged, symbol_unchanged);
 
 		p->i18n_content[i].symbol_len = (int *) realloc(p->i18n_content[i].symbol_len, (p->cur_pos + 1) * sizeof(int));
 		p->i18n_content[i].symbol_len[p->cur_pos] = strlen(symbol);
 
+		p->i18n_content[i].symbol_len_unchanged = (int *) realloc(p->i18n_content[i].symbol_len_unchanged, (p->cur_pos + 1) * sizeof(int));
+		p->i18n_content[i].symbol_len_unchanged[p->cur_pos] = strlen(symbol_unchanged);
+
 		free(symbol);
+		free(symbol_unchanged);
 	}
 
 	p->cur_pos++;
@@ -434,7 +459,10 @@ static void buffer_del_symbol(struct _buffer *p)
 	p->content[p->cur_pos] = NULLSYM;
 
 	for (int i = 0; i < p->handle->total_languages; i++)
+	{
 		p->i18n_content[i].content[strlen(p->i18n_content[i].content) - p->i18n_content[i].symbol_len[p->cur_pos]] = NULLSYM;
+		p->i18n_content[i].content_unchanged[strlen(p->i18n_content[i].content_unchanged) - p->i18n_content[i].symbol_len_unchanged[p->cur_pos]] = NULLSYM;
+	}
 }
 
 static char *buffer_get_utf_string(struct _buffer *p)
@@ -535,6 +563,8 @@ static void buffer_uninit(struct _buffer *p)
 	{
 		free(p->i18n_content[i].content);
 		free(p->i18n_content[i].symbol_len);
+		free(p->i18n_content[i].content_unchanged);
+		free(p->i18n_content[i].symbol_len_unchanged);
 	}
 
 	free(p->i18n_content);
@@ -566,6 +596,9 @@ struct _buffer* buffer_init(struct _xneur_handle *handle)
 		p->i18n_content[i].content = malloc(sizeof(char));
 		p->i18n_content[i].content[0] = NULLSYM;
 		p->i18n_content[i].symbol_len = malloc(sizeof(int));
+		p->i18n_content[i].content_unchanged = malloc(sizeof(char));
+		p->i18n_content[i].content_unchanged[0] = NULLSYM;
+		p->i18n_content[i].symbol_len_unchanged = malloc(sizeof(int));
 	}
 
 	// Functions mapping

@@ -279,7 +279,7 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 		word[i] = strdup(get_last_word(p->i18n_content[i].content));
 		del_final_numeric_char(word[i]);
 
-		word_unchanged[i] = strdup(get_last_word(p->get_utf_string_on_kbd_group(p, i)));
+		word_unchanged[i] = strdup(get_last_word(p->i18n_content[i].content_unchanged));
 		del_final_numeric_char(word_unchanged[i]);
 		
 		log_message(DEBUG, _("Processing word '%s' on layout '%s'"), word_unchanged[i], handle->languages[i].dir);
