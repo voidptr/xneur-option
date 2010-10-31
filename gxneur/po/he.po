@@ -30,44 +30,35 @@ msgstr "Xneur נעצר"
 msgid "Execute user action"
 msgstr "ביצוע פעולת משתמש"
 
-#, fuzzy
 msgid "Keypress on layout 1"
 msgstr "נא ללחוץ על מקש בפריסה 1"
 
-#, fuzzy
 msgid "Keypress on layout 2"
 msgstr "נא ללחוץ על מקש בפריסה 2"
 
-#, fuzzy
 msgid "Keypress on layout 3"
 msgstr "נא ללחוץ על מקש בפריסה 3"
 
-#, fuzzy
 msgid "Keypress on layout 4"
 msgstr "נא ללחוץ על מקש בפריסה 4"
 
 msgid "Correct word automatically"
-msgstr "תיקון מילה אוטומטית"
+msgstr ""
 
-#, fuzzy
 msgid "Correct last word manually"
-msgstr "תיקון מילה ידנית"
+msgstr ""
 
-#, fuzzy
 msgid "Transliterate last word manually"
-msgstr "תיקון מילה ידנית"
+msgstr ""
 
-#, fuzzy
 msgid "Change case of last word manually"
-msgstr "תיקון מילה ידנית"
+msgstr ""
 
-#, fuzzy
 msgid "Calculate formula on last word manually"
-msgstr "תיקון מילה ידנית"
+msgstr ""
 
-#, fuzzy
 msgid "Preview correction of last word manually"
-msgstr "תיקון מילה ידנית"
+msgstr ""
 
 msgid "Switch between processing modes"
 msgstr "החלפה בין מצבי העיבוד"
@@ -78,9 +69,8 @@ msgstr "תיקון השורה האחרונה"
 msgid "Correct/Undo correction"
 msgstr "החלפה / ביטול של התיקון"
 
-#, fuzzy
 msgid "Transliterate"
-msgstr "תעתוק של הטקסט הנבחר"
+msgstr ""
 
 msgid "Change case"
 msgstr ""
@@ -88,9 +78,8 @@ msgstr ""
 msgid "Calculate formula"
 msgstr ""
 
-#, fuzzy
 msgid "Preview correction"
-msgstr "החלפה / ביטול של התיקון"
+msgstr ""
 
 msgid "Correct selected text"
 msgstr "תיקון הטקסט הנבחר"
@@ -101,13 +90,11 @@ msgstr "תעתוק של הטקסט הנבחר"
 msgid "Change case of selected text"
 msgstr "שינוי הרישיות של הטקסט הנבחר"
 
-#, fuzzy
 msgid "Calculate formula on selected text"
-msgstr "שינוי הרישיות של הטקסט הנבחר"
+msgstr ""
 
-#, fuzzy
 msgid "Preview correction of selected text"
-msgstr "תיקון הטקסט הנבחר"
+msgstr ""
 
 msgid "Correct clipboard text"
 msgstr "תיקון טקסט בלוח הגזירים"
@@ -118,13 +105,11 @@ msgstr "תעתוק טקסט בלוח הגזירים"
 msgid "Change case of clipboard text"
 msgstr "שינוי רישיות לטקסט בלוח הגזירים"
 
-#, fuzzy
 msgid "Calculate formula on clipboard text"
-msgstr "שינוי רישיות לטקסט בלוח הגזירים"
+msgstr ""
 
-#, fuzzy
 msgid "Preview correction of clipboard text"
-msgstr "תיקון טקסט בלוח הגזירים"
+msgstr ""
 
 msgid "Rotate layouts"
 msgstr "החלפת פריסות"
@@ -150,7 +135,7 @@ msgstr "הרחבת ראשי תיבות"
 msgid "Autocomplementation confirmation"
 msgstr "אימות השלמה אוטומטית"
 
-#: glade/abbr_add.glade:7
+#: glade/abbr_add.glade:7 glade/rule_add.glade:7
 msgid "Add Abbreviation..."
 msgstr "הוספת ראשי תיבות..."
 
@@ -189,9 +174,8 @@ msgid "Add user action..."
 msgstr "הוספת פעולת משתמש..."
 
 #: glade/action_add.glade:25
-#, fuzzy
 msgid "Action name:"
-msgstr "פעולה"
+msgstr ""
 
 #: glade/action_add.glade:47
 msgid "Key bind:"
@@ -202,14 +186,12 @@ msgid "User action:"
 msgstr "פעולת משתמש:"
 
 #: glade/app_add.glade:7
-#, fuzzy
 msgid "Add application..."
-msgstr "יישום"
+msgstr ""
 
 #: glade/app_add.glade:26
-#, fuzzy
 msgid "Application name"
-msgstr "יישום"
+msgstr ""
 
 #: glade/app_add.glade:47
 msgid "Get application name..."
@@ -275,11 +257,15 @@ msgstr "מילון..."
 msgid "Regular Expressions..."
 msgstr "ביטויים רגולריים..."
 
-#: glade/config.glade:298
+#: glade/config.glade:283
+msgid "Add your rule change..."
+msgstr ""
+
+#: glade/config.glade:311
 msgid "Initial layout number:"
 msgstr "מספר הפריסה הראשוני:"
 
-#: glade/config.glade:308
+#: glade/config.glade:321
 msgid ""
 "0\n"
 "1\n"
@@ -291,197 +277,193 @@ msgstr ""
 "2\n"
 "3"
 
-#: glade/config.glade:338
+#: glade/config.glade:351
 msgid "Remember keyboard layout for each application instance"
 msgstr "שמירת פריסת המקלדת עבור כל עותק של יישום בנפרד"
 
-#: glade/config.glade:431
+#: glade/config.glade:444
 msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr "חריגות (פריסת מקלדת אחת לכל העותקים של היישומים)"
 
-#: glade/config.glade:461
+#: glade/config.glade:474
 msgid "<b>Layouts</b>"
 msgstr "<b>פריסות</b>"
 
-#: glade/config.glade:661
+#: glade/config.glade:674
 msgid "<b>Hotkeys</b>"
 msgstr "<b>צירופי מקשים</b>"
 
-#: glade/config.glade:684
+#: glade/config.glade:697
 msgid "Enable pattern mining and recognition (autocomplementation)"
 msgstr "הפעלת כרייה וזיהוי של תבניות (השלמה אוטומטית)"
 
-#: glade/config.glade:698
+#: glade/config.glade:711
 msgid "Add space after autocomplementation"
 msgstr "הוספת רווח לאחר השלמה אוטומטית"
 
-#: glade/config.glade:800
+#: glade/config.glade:813
 msgid "Disable the autocomplementation for these applications"
 msgstr "ביטול ההשלמה האוטומטית עבור יישומים אלה"
 
-#: glade/config.glade:836
+#: glade/config.glade:849
 msgid "<b>Autocomplementation</b>"
 msgstr "<b>השלמה אוטומטית</b>"
 
-#: glade/config.glade:936
+#: glade/config.glade:949
 msgid "Ignore these applications"
 msgstr "התעלמות מיישומים אלו"
 
-#: glade/config.glade:1027
+#: glade/config.glade:1040
 msgid "Force automatic mode for these applications"
 msgstr "אילוץ מצב אוטומטית עבור יישומים אלו"
 
-#: glade/config.glade:1118
+#: glade/config.glade:1131
 msgid "Force manual mode for these applications"
 msgstr "אילוץ מצב ידני עבור יישומים אלו"
 
-#: glade/config.glade:1148
+#: glade/config.glade:1161
 msgid "<b>Applications</b>"
 msgstr "<b>יישומים</b>"
 
-#: glade/config.glade:1179
+#: glade/config.glade:1192
 msgid "Enable sounds"
 msgstr "השמעת צלילים"
 
-#: glade/config.glade:1199
+#: glade/config.glade:1212
 msgid "Sound volume"
 msgstr ""
 
-#: glade/config.glade:1291
+#: glade/config.glade:1304
 msgid "Sounds"
 msgstr "צלילים"
 
-#: glade/config.glade:1307
+#: glade/config.glade:1320
 msgid "Show OSD"
 msgstr "הצגת תצוגה על המסך"
 
-#: glade/config.glade:1327
+#: glade/config.glade:1340
 msgid "OSD Font"
 msgstr "גופן התצוגה על המסך"
 
-#: glade/config.glade:1358
+#: glade/config.glade:1371
 msgid "Use command <b>xfontsel -print</b> to get new font."
 msgstr "ניתן להשתמש בפקודה <b>xfontsel -print</b> כדי לקבל גופן חדש."
 
-#: glade/config.glade:1407
+#: glade/config.glade:1420
 msgid "OSD"
 msgstr "תצוגה על המסך"
 
-#: glade/config.glade:1424
+#: glade/config.glade:1437
 msgid "Show popup messages"
 msgstr "הצגת הודעות קופצות"
 
-#: glade/config.glade:1478
+#: glade/config.glade:1491
 msgid "Popup messages"
 msgstr "הודעות קופצות"
 
-#: glade/config.glade:1504
+#: glade/config.glade:1517
 msgid "<b>Notifications</b>"
 msgstr "‏<b>התרעות</b>"
 
-#: glade/config.glade:1527
+#: glade/config.glade:1540
 msgid "Ignore keyboard layout for abbreviations"
 msgstr "התעלמות מפריסת המקלדת עבור ראשי תיבות"
 
-#: glade/config.glade:1615
+#: glade/config.glade:1628
 msgid "<b>Abbreviations</b>"
 msgstr "<b>ראשי תיבות</b>"
 
-#: glade/config.glade:1638
+#: glade/config.glade:1651
 msgid "Enable keyboard logging"
 msgstr "הפעלת מעקב אחר המקלדת"
 
-#: glade/config.glade:1677
+#: glade/config.glade:1690
 msgid "Send log via port"
 msgstr ""
 
-#: glade/config.glade:1703
+#: glade/config.glade:1718
 msgid "Send log via host (name or IP)"
 msgstr ""
 
-#: glade/config.glade:1729
+#: glade/config.glade:1746
 msgid "Send log to e-mail"
 msgstr ""
 
-#: glade/config.glade:1760
+#: glade/config.glade:1777
 msgid "Log file size in bytes"
 msgstr ""
 
-#: glade/config.glade:1771
+#: glade/config.glade:1788
 msgid "View log..."
 msgstr ""
 
-#: glade/config.glade:1808
-#, fuzzy
+#: glade/config.glade:1825
 msgid "<b>Log</b>"
-msgstr "<b>פריסות</b>"
+msgstr ""
 
-#: glade/config.glade:1843
+#: glade/config.glade:1860
 msgid "Backspace"
 msgstr ""
 
-#: glade/config.glade:1857
+#: glade/config.glade:1874
 msgid "Left arrow"
 msgstr ""
 
-#: glade/config.glade:1871
+#: glade/config.glade:1888
 msgid "Right arrow"
 msgstr ""
 
-#: glade/config.glade:1885
+#: glade/config.glade:1902
 msgid "Up arrow"
 msgstr ""
 
-#: glade/config.glade:1899
+#: glade/config.glade:1916
 msgid "Down arrow"
 msgstr ""
 
-#: glade/config.glade:1913
+#: glade/config.glade:1930
 msgid "Delete"
 msgstr ""
 
-#: glade/config.glade:1927
-#, fuzzy
+#: glade/config.glade:1944
 msgid "You changed layout"
-msgstr "החלפת פריסות"
+msgstr ""
 
-#: glade/config.glade:1953
+#: glade/config.glade:1970
 msgid ""
 "This will help avoid switching layout when editing parts previously "
 "introduced word."
 msgstr ""
 
-#: glade/config.glade:1978
+#: glade/config.glade:1995
 msgid "Don't switch layout if before input where pressed"
 msgstr ""
 
-#: glade/config.glade:2005
+#: glade/config.glade:2022
 msgid "Flush internal buffer on Enter or Tab"
 msgstr "ניקוי החוצץ הפנימי בעת לחיצה על Enter או על Tab"
 
-#: glade/config.glade:2019
+#: glade/config.glade:2036
 msgid "Don't process words on Enter or Tab"
 msgstr "אין לעבד מילים בעת לחיצה על Enter או Tab"
 
-#: glade/config.glade:2038
-#, fuzzy
+#: glade/config.glade:2055
 msgid "Additional"
-msgstr "פעולה"
+msgstr ""
 
-#: glade/config.glade:2063
+#: glade/config.glade:2080
 msgid "<b>Troubleshooting</b>"
 msgstr ""
 
-#: glade/config.glade:2107
+#: glade/config.glade:2124
 msgid "Delay before sending events (in milliseconds)"
 msgstr "השהייה לפני שליחת האירועים (במילישניות)"
 
-#: glade/config.glade:2118
+#: glade/config.glade:2135
 msgid "Log verbosity level"
 msgstr "רמת פירוט הרישום ביומן"
 
-#: glade/config.glade:2130
-#, fuzzy
+#: glade/config.glade:2147
 msgid ""
 "None\n"
 "Error\n"
@@ -490,81 +472,110 @@ msgid ""
 "Debug\n"
 "Trace"
 msgstr ""
-"שגיאה\n"
-"אזהרה\n"
-"יומן\n"
-"ניפוי שגיאות\n"
-"מעקב"
 
-#: glade/config.glade:2150
+#: glade/config.glade:2167
 msgid "Dont send KeyRelease event"
 msgstr ""
 
-#: glade/config.glade:2193
+#: glade/config.glade:2210
 msgid "<b>Advanced</b>"
 msgstr "<b>מתקדם</b>"
 
-#: glade/config.glade:2254
-#, fuzzy
+#: glade/config.glade:2271
 msgid "<b>Plugins</b>"
-msgstr "<b>יישומים</b>"
+msgstr ""
 
-#: glade/config.glade:2289
+#: glade/config.glade:2306
 msgid "Autostartup"
 msgstr ""
 
-#: glade/config.glade:2309
+#: glade/config.glade:2326
 msgid "Delay before startup"
 msgstr ""
 
-#: glade/config.glade:2343
+#: glade/config.glade:2360
 msgid "Startup"
 msgstr ""
 
-#: glade/config.glade:2370
+#: glade/config.glade:2387
 msgid "Show text on the tray"
 msgstr ""
 
-#: glade/config.glade:2388
+#: glade/config.glade:2405
 msgid "Pixmaps directory"
 msgstr ""
 
-#: glade/config.glade:2457
+#: glade/config.glade:2474
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2488
+#: glade/config.glade:2505
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:2560
+#: glade/config.glade:2577
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:2591
-#, fuzzy
+#: glade/config.glade:2608
 msgid "<b>Properties</b>"
-msgstr "<b>צירופי מקשים</b>"
+msgstr ""
 
 #: glade/list.glade:7
 msgid "File Editing"
 msgstr "עריכת קבצים"
+
+#: glade/rule_add.glade:22
+msgid ""
+"The new rule change to that language.\n"
+"Enter a combination of letters and set the condition for its treatment:"
+msgstr ""
+
+#: glade/rule_add.glade:55
+msgid "Typed on the keyboard word must:"
+msgstr ""
+
+#: glade/rule_add.glade:76
+msgid "contain that sequence of letters"
+msgstr ""
+
+#: glade/rule_add.glade:89
+msgid "start with these letters"
+msgstr ""
+
+#: glade/rule_add.glade:102
+msgid "to end these letters"
+msgstr ""
+
+#: glade/rule_add.glade:115
+msgid "coincide with the combination of letters"
+msgstr ""
+
+#: glade/rule_add.glade:145
+msgid "More:"
+msgstr ""
+
+#: glade/rule_add.glade:163
+msgid "Insensitive"
+msgstr ""
+
+#: glade/rule_add.glade:190
+msgid "Condition"
+msgstr ""
 
 #: src/callbacks.c:97 src/misc.c:2364
 msgid "Press any key"
 msgstr "נא ללחוץ על מקש כלשהו"
 
 #: src/misc.c:341 src/misc.c:342
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
 "Please, install libxnconfig version 0.%d.%d\n"
 msgstr ""
-"גרסת ספריית תצורת api שגויה עבור XNeur.\n"
-"נא להתקן את libxnconfig גרסה %d.0.%d\n"
 
 #: src/misc.c:348
-#, fuzzy, c-format
+#, c-format
 msgid "Using libxnconfig API version 0.%d.%d (build with 0.%d.%d)\n"
 msgstr "נעשה שימוש ב־API של libxnconfig גרסה %d.0.%d (נבנה באמצעות %d.0.%d)\n"
 
@@ -578,13 +589,11 @@ msgstr ""
 "נא להסיר את ‎~/.xneur/xneurrc ולהתקין מחדש את החבילה XNeur!\n"
 
 #: src/misc.c:365 src/misc.c:366 src/misc.c:534 src/misc.c:535
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Couldn't start %s\n"
 "Verify that it installed\n"
 msgstr ""
-"לא ניתן להפעיל את xneur\n"
-"נא לוודא שהוא מותקן\n"
 
 #: src/misc.c:416
 msgid "Current Version"
@@ -628,9 +637,8 @@ msgid "Sound"
 msgstr "צליל"
 
 #: src/misc.c:921 src/misc.c:1076 src/misc.c:1126 src/misc.c:1172
-#, fuzzy
 msgid "Enabled"
-msgstr "השמעת צלילים"
+msgstr ""
 
 #: src/misc.c:1023 src/trayicon.c:153
 msgid "User action"

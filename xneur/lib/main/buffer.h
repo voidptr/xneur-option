@@ -55,6 +55,7 @@ struct _buffer
 	void (*add_symbol) (struct _buffer *p, char sym, KeyCode keycode, int modifier);
 	void (*del_symbol) (struct _buffer *p);
 	char*(*get_utf_string) (struct _buffer *p);
+	char*(*get_utf_string_on_kbd_group) (struct _buffer *p, int group);
 	void (*set_offset) (struct _buffer *p, int offset);
 	void (*unset_offset) (struct _buffer *p, int offset);
 	void (*uninit) (struct _buffer *p);

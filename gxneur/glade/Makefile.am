@@ -4,6 +4,7 @@ glade_DATA = 	config.glade 		\
 		list.glade		\
 		abbr_add.glade		\
 		app_add.glade		\
+		rule_add.glade		\
 		action_add.glade	\
 		choose_file.glade
 

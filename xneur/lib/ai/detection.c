@@ -271,6 +271,7 @@ static int get_proto_lang(struct _xneur_handle *handle, char **word, int **sym_l
 int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 {
 	char **word = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
+	char **word_unchanged = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	int **sym_len = (int **) malloc((handle->total_languages + 1) * sizeof(int *));
 
 	for (int i = 0; i < handle->total_languages; i++)
@@ -278,7 +279,10 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 		word[i] = strdup(get_last_word(p->i18n_content[i].content));
 		del_final_numeric_char(word[i]);
 
-		log_message(DEBUG, _("Processing word '%s' on layout '%s'"), word[i], handle->languages[i].dir);
+		word_unchanged[i] = strdup(get_last_word(p->get_utf_string_on_kbd_group(p, i)));
+		del_final_numeric_char(word_unchanged[i]);
+		
+		log_message(DEBUG, _("Processing word '%s' on layout '%s'"), word_unchanged[i], handle->languages[i].dir);
 
 		sym_len[i] = p->i18n_content[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
 	}
@@ -286,7 +290,7 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 	log_message(DEBUG, _("Start word processing..."));
 
 	// Check by regexp
-	int lang = get_regexp_lang(handle, word);
+	int lang = get_regexp_lang(handle, word_unchanged);
 
 	// Check by dictionary
 	if (lang == NO_LANGUAGE)

@@ -52,6 +52,8 @@
 
 #define INIT_STRING_LENGTH 64
 
+static const int keyboard_groups[]	= {0x00000000, 0x00002000, 0x00004000, 0x00006000};
+
 extern struct _xneur_config *xconfig;
 
 Window last_log_window = 0;
@@ -475,6 +477,30 @@ static char *buffer_get_utf_string(struct _buffer *p)
 	return utf_string;
 }
 
+static char *buffer_get_utf_string_on_kbd_group(struct _buffer *p, int group)
+{
+	char *utf_string = (char *) malloc(1 * sizeof(char));
+	utf_string[0] = NULLSYM;
+	
+	for (int i = 0; i < p->cur_pos; i++)
+	{
+		int state = p->keycode_modifiers[i];
+		for (int j = 0; j < p->handle->total_languages; j++)
+		{
+			state = state & (~keyboard_groups[j]);
+		}
+		char *symbol = keycode_to_symbol(p->keycode[i], group, state);
+		if (symbol)
+		{
+			utf_string = (char *) realloc(utf_string, strlen(utf_string) * sizeof(char) + strlen(symbol) + 1);
+			strcat(utf_string, symbol);	
+			free(symbol);
+		}
+	}
+	
+	return utf_string;
+}		
+
 static void buffer_save_and_clear(struct _buffer *p, Window window)
 {
 	p->save(p, LOG_NAME, window);
@@ -555,6 +581,7 @@ struct _buffer* buffer_init(struct _xneur_handle *handle)
 	p->add_symbol		= buffer_add_symbol;
 	p->del_symbol		= buffer_del_symbol;
 	p->get_utf_string	= buffer_get_utf_string;
+	p->get_utf_string_on_kbd_group	= buffer_get_utf_string_on_kbd_group;
 	p->set_offset		= buffer_set_offset;
 	p->unset_offset		= buffer_unset_offset;
 	p->uninit		= buffer_uninit;

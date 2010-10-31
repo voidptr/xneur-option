@@ -30,6 +30,72 @@
 
 #include <glade/glade.h>
 
+// Save new regexp rule
+void on_okbutton1_regexp_clicked(GtkButton *button, gpointer user_data)
+{
+	if (button){};
+
+	GladeXML *gxml = user_data;
+	// Remove leader and last space
+	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, "entry1");
+	char *letters = (char *) gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound));
+	//
+	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "textview1");
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgetPtrToBefound));
+
+	GtkTextIter begin, end;
+	gtk_text_buffer_get_bounds(buffer, &begin, &end);
+
+	char *text = gtk_text_buffer_get_text(buffer, &begin, &end, FALSE);
+	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry2");
+
+	char *path = g_strdup_printf("%s", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
+	FILE *stream = fopen(path, "w");
+	if (stream != NULL)
+	{
+		// write prevoise text
+		fputs(text, stream);
+		// write new rule
+		widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton1");
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
+		{
+			fputs("(?i)", stream);
+		}
+		
+		widgetPtrToBefound = glade_xml_get_widget (gxml, "radiobutton1");
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
+		{
+			fputs(letters, stream);
+		}
+		widgetPtrToBefound = glade_xml_get_widget (gxml, "radiobutton2");
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
+		{
+			fputs("^", stream);
+			fputs(letters, stream);
+		}
+		widgetPtrToBefound = glade_xml_get_widget (gxml, "radiobutton3");
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
+		{
+			fputs(letters, stream);
+			fputs("$", stream);
+		}
+		widgetPtrToBefound = glade_xml_get_widget (gxml, "radiobutton4");
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
+		{
+			fputs("^", stream);
+			fputs(letters, stream);
+			fputs("$", stream);
+		}
+		// end write
+		fclose(stream);
+	}
+
+	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+	gtk_widget_destroy(window);
+}	
+
 // Save dictionary
 void on_okbutton1_clicked(GtkButton *button, gpointer user_data)
 {
@@ -43,7 +109,7 @@ void on_okbutton1_clicked(GtkButton *button, gpointer user_data)
 	gtk_text_buffer_get_bounds(buffer, &begin, &end);
 
 	char *text = gtk_text_buffer_get_text(buffer, &begin, &end, FALSE);
-
+	text[strlen(text)-1] = '\0';
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry10");
 
 	char *path = g_strdup_printf("%s", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));

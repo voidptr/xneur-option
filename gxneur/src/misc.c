@@ -44,6 +44,7 @@
 #define GLADE_FILE_CHOOSE PACKAGE_GLADE_FILE_DIR"/choose_file.glade"
 #define GLADE_FILE_ACTION_ADD PACKAGE_GLADE_FILE_DIR"/action_add.glade"
 #define GLADE_FILE_APP_ADD PACKAGE_GLADE_FILE_DIR"/app_add.glade"
+#define GLADE_FILE_RULE_ADD PACKAGE_GLADE_FILE_DIR"/rule_add.glade"
 #define GLADE_FILE_LIST PACKAGE_GLADE_FILE_DIR"/list.glade"
 
 #define LANGUAGES_DIR "languages"
@@ -61,6 +62,7 @@
 #include "misc.h"
 
 void xneur_edit_regexp(GtkWidget *treeview);
+void xneur_edit_rule(GtkWidget *treeview);
 void xneur_edit_dictionary(GtkWidget *treeview);
 
 #define MAX_LANGUAGES			4
@@ -737,6 +739,9 @@ void xneur_preference(void)
 		    									2, xconfig->handle->languages[lang].excluded,
 												-1);
 	}
+
+	widget = glade_xml_get_widget (gxml, "button17");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_rule), G_OBJECT(treeview));
 
 	widget = glade_xml_get_widget (gxml, "button7");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_regexp), G_OBJECT(treeview));
@@ -1793,6 +1798,64 @@ void xneur_edit_regexp(GtkWidget *treeview)
 		free(text);
 		free(text_home_path);
 		free(text_path);
+	}
+}	
+
+void xneur_edit_rule(GtkWidget *treeview)
+{
+	tmp_widget = GTK_WIDGET(treeview);
+	GtkTreeModel *model = GTK_TREE_MODEL(store_language);
+	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+
+	GtkTreeIter iter;
+	if (gtk_tree_selection_get_selected(select, &model, &iter))
+	{
+		char *dir;
+		gtk_tree_model_get(GTK_TREE_MODEL(store_language), &iter, 1, &dir, -1);
+		
+		GladeXML *gxml = glade_xml_new (GLADE_FILE_RULE_ADD, NULL, NULL);
+
+		int dir_len = strlen(LANGUAGES_DIR) + strlen(DIR_SEPARATOR) + strlen(dir) + 1;
+		char *dir_name = (char *) malloc(dir_len * sizeof(char));
+		snprintf(dir_name, dir_len, "%s%s%s", LANGUAGES_DIR, DIR_SEPARATOR, dir);
+		
+		char *text_path		= xconfig->get_global_dict_path(dir_name, "regexp");
+		char *text_home_path	= xconfig->get_home_dict_path(dir_name, "regexp");
+		char *text		= xneur_get_file_content(text_path);
+
+		if (text == NULL)
+		{
+			free(text_path);
+			free(text_home_path);
+			return;
+		}
+	
+		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
+		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
+		if (window_icon_pixbuf)
+		{
+			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
+			gdk_pixbuf_unref (window_icon_pixbuf);
+		}
+		gtk_widget_show(window);
+
+		GtkWidget *widget = glade_xml_get_widget (gxml, "textview1");
+		GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widget));
+		gtk_text_buffer_set_text(buffer, text, strlen(text));
+
+		widget = glade_xml_get_widget (gxml, "entry2");
+		gtk_entry_set_text(GTK_ENTRY(widget), text_home_path);
+	
+		widget= glade_xml_get_widget (gxml, "button1");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_okbutton1_regexp_clicked), gxml);
+		widget = glade_xml_get_widget (gxml, "button2");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_cancelbutton1_clicked), gxml);
+	
+		free(text);
+		free(text_path);
+		free(text_home_path);
 	}
 }
 

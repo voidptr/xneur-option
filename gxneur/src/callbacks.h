@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 
 void on_button_regexp_clicked(GtkButton *button, gpointer user_data);
+void on_okbutton1_regexp_clicked(GtkButton *button, gpointer user_data);
 void on_button_dictionary_clicked(GtkButton *button, gpointer user_data);
 
 void on_okbutton1_clicked(GtkButton *button, gpointer user_data);
