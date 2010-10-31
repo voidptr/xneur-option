@@ -322,8 +322,12 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 	log_message(DEBUG, _("End word processing."));
 
 	for (int i = 0; i < handle->total_languages; i++)
+	{
 		free(word[i]);
+		free(word_unchanged[i]);
+	}
 	free(word);
+	free(word_unchanged);
 	free(sym_len);
 	return lang;
 }
