@@ -38,7 +38,12 @@ void on_okbutton1_regexp_clicked(GtkButton *button, gpointer user_data)
 	GladeXML *gxml = user_data;
 	// Remove leader and last space
 	GtkWidget *widgetPtrToBefound = glade_xml_get_widget (gxml, "entry1");
-	char *letters = (char *) gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound));
+	char *letters = strtok((char *) gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)), " ");
+	if (letters == NULL)
+	{
+		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");		gtk_widget_destroy(window);	
+		return;
+	}
 	//
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "textview1");
