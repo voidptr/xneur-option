@@ -1,8 +1,7 @@
 esdir = @datarootdir@/xneur/languages/es
 es_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3
 
 EXTRA_DIST = $(es_DATA)

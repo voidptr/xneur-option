@@ -1,8 +1,7 @@
 rodir = @datarootdir@/xneur/languages/ro
 ro_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3
 
 EXTRA_DIST = $(ro_DATA)

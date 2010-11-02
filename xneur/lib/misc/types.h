@@ -32,10 +32,9 @@
 
 #define NULLSYM		0
 
-#define DICT_NAME			"dict"
+#define DICT_NAME			"dictionary"
 #define PROTO_NAME			"proto"
-#define BIG_PROTO_NAME			"proto3"
-#define REGEXP_NAME			"regexp"
+#define BIG_PROTO_NAME		"proto3"
 #define PATTERN_NAME		"pattern"
 
 #define LANGUAGEDIR			"languages"

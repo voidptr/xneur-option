@@ -42,14 +42,14 @@
 #define PROTO_LEN	2
 #define BIG_PROTO_LEN	3
 
-static int get_dict_lang(struct _xneur_handle *handle, char **word)
+static int get_dictionary_lang(struct _xneur_handle *handle, char **word)
 {
 	for (int lang = 0; lang < handle->total_languages; lang++)
 	{
 		if (handle->languages[lang].excluded)
 			continue;
 
-		if (handle->languages[lang].dict->exist(handle->languages[lang].dict, word[lang], BY_PLAIN))
+		if (handle->languages[lang].dictionary->exist(handle->languages[lang].dictionary, word[lang], BY_REGEXP))
 		{
 			log_message(DEBUG, _("   [+] Found this word in %s language dictionary"), handle->languages[lang].name);
 			return lang;
@@ -57,24 +57,6 @@ static int get_dict_lang(struct _xneur_handle *handle, char **word)
 	}
 
 	log_message(DEBUG, _("   [-] This word not found in any dictionaries"));
-	return NO_LANGUAGE;
-}
-
-static int get_regexp_lang(struct _xneur_handle *handle, char **word)
-{
-	for (int lang = 0; lang < handle->total_languages; lang++)
-	{
-		if (handle->languages[lang].excluded)
-			continue;
-
-		if (handle->languages[lang].regexp->exist(handle->languages[lang].regexp, word[lang], BY_REGEXP))
-		{
-			log_message(DEBUG, _("   [+] Found this word in %s language regular expressions file"), handle->languages[lang].name);
-			return lang;
-		}
-	}
-
-	log_message(DEBUG, _("   [-] This word not found in any regular expressions files"));
 	return NO_LANGUAGE;
 }
 
@@ -289,12 +271,9 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 
 	log_message(DEBUG, _("Start word processing..."));
 
-	// Check by regexp
-	int lang = get_regexp_lang(handle, word_unchanged);
-
+	
 	// Check by dictionary
-	if (lang == NO_LANGUAGE)
-		lang = get_dict_lang(handle, word);
+	int lang = get_dictionary_lang(handle, word);
 
 	int len = strlen(get_last_word(p->content));
 

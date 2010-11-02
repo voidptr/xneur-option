@@ -38,15 +38,6 @@
 #include <xneur/list_char.h>
 #include <xneur/xneur.h>
 
-#define GLADE_FILE_ABOUT PACKAGE_GLADE_FILE_DIR"/about.glade"
-#define GLADE_FILE_CONFIG PACKAGE_GLADE_FILE_DIR"/config.glade"
-#define GLADE_FILE_ABBREVIATION_ADD PACKAGE_GLADE_FILE_DIR"/abbr_add.glade"
-#define GLADE_FILE_CHOOSE PACKAGE_GLADE_FILE_DIR"/choose_file.glade"
-#define GLADE_FILE_ACTION_ADD PACKAGE_GLADE_FILE_DIR"/action_add.glade"
-#define GLADE_FILE_APP_ADD PACKAGE_GLADE_FILE_DIR"/app_add.glade"
-#define GLADE_FILE_RULE_ADD PACKAGE_GLADE_FILE_DIR"/rule_add.glade"
-#define GLADE_FILE_LIST PACKAGE_GLADE_FILE_DIR"/list.glade"
-
 #define LANGUAGES_DIR "languages"
 #define DIR_SEPARATOR		"/"
 
@@ -87,6 +78,8 @@ static GtkListStore *store_plugin			= NULL;
 static GtkListStore *store_language			= NULL;
 
 static GtkWidget *tmp_widget	= NULL;
+
+const char *conditions_names[]				= {"contains", "begins", "ends", "coincides"};
 
 static const char *modifier_names[]			= {"Shift", "Control", "Alt", "Super"};
 static const char *all_modifiers[]			= {"Control", "Shift", "Alt", "Super", "Control_R", "Shift_R", "Alt_R", "Super_R", "Control_L", "Shift_L", "Alt_L", "Super_L"};
@@ -739,12 +732,6 @@ void xneur_preference(void)
 		    									2, xconfig->handle->languages[lang].excluded,
 												-1);
 	}
-
-	widget = glade_xml_get_widget (gxml, "button17");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_rule), G_OBJECT(treeview));
-
-	widget = glade_xml_get_widget (gxml, "button7");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_regexp), G_OBJECT(treeview));
 
 	widget = glade_xml_get_widget (gxml, "button6");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_dictionary), G_OBJECT(treeview));
@@ -1743,122 +1730,6 @@ void xneur_edit_sound(GtkWidget *treeview)
 	}
 }
 
-void xneur_edit_regexp(GtkWidget *treeview)
-{
-	tmp_widget = GTK_WIDGET(treeview);
-	GtkTreeModel *model = GTK_TREE_MODEL(store_language);
-	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-
-	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
-
-	GtkTreeIter iter;
-	if (gtk_tree_selection_get_selected(select, &model, &iter))
-	{
-		char *dir;
-		gtk_tree_model_get(GTK_TREE_MODEL(store_language), &iter, 1, &dir, -1);
-		
-		GladeXML *gxml = glade_xml_new (GLADE_FILE_LIST, NULL, NULL);
-
-		int dir_len = strlen(LANGUAGES_DIR) + strlen(DIR_SEPARATOR) + strlen(dir) + 1;
-		char *dir_name = (char *) malloc(dir_len * sizeof(char));
-		snprintf(dir_name, dir_len, "%s%s%s", LANGUAGES_DIR, DIR_SEPARATOR, dir);
-		
-		char *text_path		= xconfig->get_global_dict_path(dir_name, "regexp");
-		char *text_home_path	= xconfig->get_home_dict_path(dir_name, "regexp");
-		char *text		= xneur_get_file_content(text_path);
-
-		if (text == NULL)
-		{
-			free(text_home_path);
-			free(text_path);
-			return;
-		}
-	
-		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
-		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-		if (window_icon_pixbuf)
-		{
-			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-			gdk_pixbuf_unref (window_icon_pixbuf);
-		}
-		gtk_widget_show(window);
-
-		GtkWidget *widget = glade_xml_get_widget (gxml, "textview1");
-		GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widget));
-		gtk_text_buffer_set_text(buffer, text, strlen(text));
-
-		widget = glade_xml_get_widget (gxml, "entry10");
-		gtk_entry_set_text(GTK_ENTRY(widget), text_home_path);
-
-		widget= glade_xml_get_widget (gxml, "okbutton1");
-		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_okbutton1_clicked), gxml);
-		widget = glade_xml_get_widget (gxml, "cancelbutton1");
-		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_cancelbutton1_clicked), gxml);
-	
-		free(text);
-		free(text_home_path);
-		free(text_path);
-	}
-}	
-
-void xneur_edit_rule(GtkWidget *treeview)
-{
-	tmp_widget = GTK_WIDGET(treeview);
-	GtkTreeModel *model = GTK_TREE_MODEL(store_language);
-	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-
-	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
-
-	GtkTreeIter iter;
-	if (gtk_tree_selection_get_selected(select, &model, &iter))
-	{
-		char *dir;
-		gtk_tree_model_get(GTK_TREE_MODEL(store_language), &iter, 1, &dir, -1);
-		
-		GladeXML *gxml = glade_xml_new (GLADE_FILE_RULE_ADD, NULL, NULL);
-
-		int dir_len = strlen(LANGUAGES_DIR) + strlen(DIR_SEPARATOR) + strlen(dir) + 1;
-		char *dir_name = (char *) malloc(dir_len * sizeof(char));
-		snprintf(dir_name, dir_len, "%s%s%s", LANGUAGES_DIR, DIR_SEPARATOR, dir);
-		
-		char *text_path		= xconfig->get_global_dict_path(dir_name, "regexp");
-		char *text_home_path	= xconfig->get_home_dict_path(dir_name, "regexp");
-		char *text		= xneur_get_file_content(text_path);
-
-		if (text == NULL)
-		{
-			free(text_path);
-			free(text_home_path);
-			return;
-		}
-	
-		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
-		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-		if (window_icon_pixbuf)
-		{
-			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-			gdk_pixbuf_unref (window_icon_pixbuf);
-		}
-		gtk_widget_show(window);
-
-		GtkWidget *widget = glade_xml_get_widget (gxml, "textview1");
-		GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widget));
-		gtk_text_buffer_set_text(buffer, text, strlen(text));
-
-		widget = glade_xml_get_widget (gxml, "entry2");
-		gtk_entry_set_text(GTK_ENTRY(widget), text_home_path);
-	
-		widget= glade_xml_get_widget (gxml, "button1");
-		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_okbutton1_regexp_clicked), gxml);
-		widget = glade_xml_get_widget (gxml, "button2");
-		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_cancelbutton1_clicked), gxml);
-	
-		free(text);
-		free(text_path);
-		free(text_home_path);
-	}
-}
-
 void xneur_edit_dictionary(GtkWidget *treeview)
 {
 	tmp_widget = GTK_WIDGET(treeview);
@@ -1878,12 +1749,11 @@ void xneur_edit_dictionary(GtkWidget *treeview)
 		int dir_len = strlen(LANGUAGES_DIR) + strlen(DIR_SEPARATOR) + strlen(dir) + 1;
 		char *dir_name = (char *) malloc(dir_len * sizeof(char));
 		snprintf(dir_name, dir_len, "%s%s%s", LANGUAGES_DIR, DIR_SEPARATOR, dir);
-
-		char *text_path		= xconfig->get_global_dict_path(dir_name, "dict");
-		char *text_home_path	= xconfig->get_home_dict_path(dir_name, "dict");
+		
+		char *text_path		= xconfig->get_global_dict_path(dir_name, "dictionary");
+		char *text_home_path	= xconfig->get_home_dict_path(dir_name, "dictionary");
 		char *text		= xneur_get_file_content(text_path);
 
-		printf("%s %s\n", text_path, text_home_path);
 		if (text == NULL)
 		{
 			free(text_home_path);
@@ -1900,23 +1770,95 @@ void xneur_edit_dictionary(GtkWidget *treeview)
 		}
 		gtk_widget_show(window);
 
-		GtkWidget *widget = glade_xml_get_widget (gxml, "textview1");
-		GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widget));
-		gtk_text_buffer_set_text(buffer, text, strlen(text));
+		GtkWidget *widget = glade_xml_get_widget (gxml, "treeview1");
+		GtkListStore *store_dict = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
+		gtk_tree_view_set_model(GTK_TREE_VIEW(widget), GTK_TREE_MODEL(store_dict));
+
+		GtkCellRenderer *cell = gtk_cell_renderer_text_new();
+		GtkTreeViewColumn *column = gtk_tree_view_column_new_with_attributes(_("Combination of letters"), cell, "text", 0, NULL);
+		//gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+		gtk_tree_view_append_column(GTK_TREE_VIEW(widget), GTK_TREE_VIEW_COLUMN(column));
+
+		cell = gtk_cell_renderer_text_new();
+		column = gtk_tree_view_column_new_with_attributes(_("Condition"), cell, "text", 1, NULL);
+		gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+		gtk_tree_view_append_column(GTK_TREE_VIEW(widget), GTK_TREE_VIEW_COLUMN(column));
+
+		cell = gtk_cell_renderer_toggle_new();
+		column = gtk_tree_view_column_new_with_attributes(_("Insensitive"), cell, "active", 2, NULL);
+		gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), True);
+		gtk_tree_view_append_column(GTK_TREE_VIEW(widget), GTK_TREE_VIEW_COLUMN(column));
+
+		while (1)
+		{
+			char *line = strsep(&text, "\n");
+			if (line == NULL)
+				break;
+
+			if (line[0] == '\0')
+				continue;
+
+			const char *condition = conditions_names[0];
+			gboolean insensitive = FALSE;
+			if (strncmp(line, "(?i)", 4 * sizeof(char)) == 0)
+			{
+				insensitive = TRUE;
+				memmove(line, line + 4 * sizeof(char), (strlen(line)-3) * sizeof(char)); 
+			}
+
+			if ((line[0] == '^') && (line[strlen(line)-1] == '$'))
+			{
+				condition = conditions_names[3];
+				memmove(line, line + 1 * sizeof(char), strlen(line));
+				line[strlen(line) - 1] = '\0';
+			}
+			else if (line[0] == '^')
+			{
+				condition = conditions_names[1];
+				memmove(line, line + 1 * sizeof(char), strlen(line));
+			}
+			else if (line[strlen(line)] == '$')
+			{
+				condition = conditions_names[2];
+				line[strlen(line) - 1] = '\0';
+			}
+			
+			GtkTreeIter iter;
+			gtk_list_store_append(GTK_LIST_STORE(store_dict), &iter);
+			gtk_list_store_set(GTK_LIST_STORE(store_dict), &iter, 
+												0, line,
+			                   					1, _(condition),
+			                   					2, insensitive,
+												-1);
+		}
 
 		widget = glade_xml_get_widget (gxml, "entry10");
 		gtk_entry_set_text(GTK_ENTRY(widget), text_home_path);
 
-		widget= glade_xml_get_widget (gxml, "okbutton1");
-		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_okbutton1_clicked), gxml);
-		widget = glade_xml_get_widget (gxml, "cancelbutton1");
-		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_cancelbutton1_clicked), gxml);
+		xyz_t *ud = malloc(sizeof(xyz_t));
+		ud->x = gxml;
+		ud->y = store_dict;
+
+		widget= glade_xml_get_widget (gxml, "addbutton");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK(on_addbutton_clicked), ud);
+
+		widget= glade_xml_get_widget (gxml, "editbutton");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK(on_editbutton_clicked), ud);
+
+		widget= glade_xml_get_widget (gxml, "deletebutton");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK(on_deletebutton_clicked), ud);
+	
+		widget= glade_xml_get_widget (gxml, "okbutton");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_okbutton_clicked), ud);
+
+		widget = glade_xml_get_widget (gxml, "cancelbutton");
+		g_signal_connect ((gpointer) widget, "clicked", G_CALLBACK (on_cancelbutton_clicked), ud);
 	
 		free(text);
 		free(text_home_path);
 		free(text_path);
 	}
-}
+}	
 
 void xneur_rem_exclude_app(GtkWidget *widget)
 {

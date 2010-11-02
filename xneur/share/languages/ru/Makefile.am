@@ -1,8 +1,7 @@
 rudir = @datarootdir@/xneur/languages/ru
 ru_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3			
 
 EXTRA_DIST = $(ru_DATA)

@@ -122,10 +122,9 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Keyboard layouts present in system:"));
 	for (int lang = 0; lang < xconfig->handle->total_languages; lang++)
 	{
-		if ((xconfig->handle->languages[lang].dict->data_count == 0 &&
+		if ((xconfig->handle->languages[lang].dictionary->data_count == 0 &&
 		    xconfig->handle->languages[lang].proto->data_count == 0 &&
-		    xconfig->handle->languages[lang].big_proto->data_count == 0 &&
-		    xconfig->handle->languages[lang].regexp->data_count == 0) || 
+		    xconfig->handle->languages[lang].big_proto->data_count == 0) || 
 			(xconfig->handle->languages[lang].excluded))
 		{
 			log_message(LOG, _("   Excluded XKB Group '%s', layout '%s', group '%d'"), xconfig->handle->languages[lang].name, xconfig->handle->languages[lang].dir, lang);
@@ -135,10 +134,9 @@ static void xneur_load_config(void)
 
 		char *lang_name = xconfig->handle->languages[lang].name;
 
-		log_message(DEBUG, _("      %s dictionary has %d records"), lang_name, xconfig->handle->languages[lang].dict->data_count);
+		log_message(DEBUG, _("      %s dictionary has %d records"), lang_name, xconfig->handle->languages[lang].dictionary->data_count);
 		log_message(DEBUG, _("      %s proto has %d records"), lang_name, xconfig->handle->languages[lang].proto->data_count);
 		log_message(DEBUG, _("      %s big proto has %d records"), lang_name, xconfig->handle->languages[lang].big_proto->data_count);
-		log_message(DEBUG, _("      %s regexp has %d records"), lang_name, xconfig->handle->languages[lang].regexp->data_count);
 #ifdef WITH_ASPELL		
 		if (xconfig->handle->has_spell_checker[lang])
 		{

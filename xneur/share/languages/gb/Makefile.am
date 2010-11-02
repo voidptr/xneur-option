@@ -1,8 +1,7 @@
 gbdir = @datarootdir@/xneur/languages/gb
 gb_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3
 
 EXTRA_DIST = $(gb_DATA)

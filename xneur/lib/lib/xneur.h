@@ -41,11 +41,10 @@ struct _xneur_language
 	int  group;
 	int  excluded;
 
-	struct _list_char *temp_dict;
-	struct _list_char *dict;
+	struct _list_char *temp_dictionary;
+	struct _list_char *dictionary;
 	struct _list_char *proto;
 	struct _list_char *big_proto;
-	struct _list_char *regexp;
 	struct _list_char *pattern;
 };
 

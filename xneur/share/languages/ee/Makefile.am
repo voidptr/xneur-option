@@ -1,8 +1,7 @@
 eedir = @datarootdir@/xneur/languages/ee
 ee_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3
 
 EXTRA_DIST = $(ee_DATA)

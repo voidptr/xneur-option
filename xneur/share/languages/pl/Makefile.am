@@ -1,8 +1,7 @@
 pldir = @datarootdir@/xneur/languages/pl
 pl_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3
 
 EXTRA_DIST = $(pl_DATA)

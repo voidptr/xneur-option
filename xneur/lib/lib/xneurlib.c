@@ -233,9 +233,9 @@ struct _xneur_handle *xneur_handle_create (void)
 		char *lang_dir = (char *) malloc(path_len * sizeof(char));
 		snprintf(lang_dir, path_len, "%s/%s", LANGUAGEDIR, handle->languages[lang].dir);
 
-		handle->languages[lang].dict = load_list(lang_dir, DICT_NAME, TRUE);		
-		if (handle->languages[lang].dict == NULL)
-			handle->languages[lang].dict->data_count = 0;
+		handle->languages[lang].dictionary = load_list(lang_dir, DICT_NAME, TRUE);		
+		if (handle->languages[lang].dictionary == NULL)
+			handle->languages[lang].dictionary->data_count = 0;
 
 		handle->languages[lang].proto = load_list(lang_dir, PROTO_NAME, TRUE);
 		if (handle->languages[lang].proto == NULL)
@@ -245,23 +245,18 @@ struct _xneur_handle *xneur_handle_create (void)
 		if (handle->languages[lang].big_proto == NULL)
 			handle->languages[lang].big_proto->data_count = 0;
 
-		handle->languages[lang].regexp = load_list(lang_dir, REGEXP_NAME, TRUE);
-		if (handle->languages[lang].regexp == NULL)
-			handle->languages[lang].regexp->data_count = 0;
-
 		handle->languages[lang].pattern = load_list(lang_dir, PATTERN_NAME, TRUE);
 		if (handle->languages[lang].pattern == NULL)
 			handle->languages[lang].pattern->data_count = 0;
 		
-		handle->languages[lang].temp_dict = handle->languages[lang].dict->clone(handle->languages[lang].dict);
+		handle->languages[lang].temp_dictionary = handle->languages[lang].dictionary->clone(handle->languages[lang].dictionary);
 
 		if (lang_dir != NULL)
 			free(lang_dir);
 
-		if ((handle->languages[lang].dict->data_count == 0 &&
+		if (handle->languages[lang].dictionary->data_count == 0 &&
 		    handle->languages[lang].proto->data_count == 0 &&
-		    handle->languages[lang].big_proto->data_count == 0 &&
-		    handle->languages[lang].regexp->data_count == 0))
+		    handle->languages[lang].big_proto->data_count == 0)
 		{
 			handle->languages[lang].excluded	= TRUE;
 		}
@@ -373,20 +368,17 @@ void xneur_handle_destroy (struct _xneur_handle *handle)
 			enchant_broker_free_dict (handle->enchant_broker, handle->enchant_dicts[lang]);
 #endif
 		
-		if (handle->languages[lang].temp_dict != NULL)
-			handle->languages[lang].temp_dict->uninit(handle->languages[lang].temp_dict);
+		if (handle->languages[lang].temp_dictionary != NULL)
+			handle->languages[lang].temp_dictionary->uninit(handle->languages[lang].temp_dictionary);
 
-		if (handle->languages[lang].dict != NULL)
-			handle->languages[lang].dict->uninit(handle->languages[lang].dict);
+		if (handle->languages[lang].dictionary != NULL)
+			handle->languages[lang].dictionary->uninit(handle->languages[lang].dictionary);
 
 		if (handle->languages[lang].proto != NULL)
 			handle->languages[lang].proto->uninit(handle->languages[lang].proto);
 
 		if (handle->languages[lang].big_proto != NULL)
 			handle->languages[lang].big_proto->uninit(handle->languages[lang].big_proto);
-
-		if (handle->languages[lang].regexp != NULL)
-			handle->languages[lang].regexp->uninit(handle->languages[lang].regexp);
 
 		if (handle->languages[lang].pattern != NULL)
 			handle->languages[lang].pattern->uninit(handle->languages[lang].pattern);

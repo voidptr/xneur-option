@@ -1,8 +1,7 @@
 czdir = @datarootdir@/xneur/languages/cz
 cz_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3
 
 EXTRA_DIST = $(cz_DATA)

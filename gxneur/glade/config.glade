@@ -254,7 +254,7 @@
                                 <property name="visible">True</property>
                                 <child>
                                   <widget class="GtkButton" id="button6">
-                                    <property name="label" translatable="yes">Dictionary...</property>
+                                    <property name="label" translatable="yes">Rules change...</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -262,34 +262,15 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
+                                    <property name="padding">3</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button7">
-                                    <property name="label" translatable="yes">Regular Expressions...</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
+                                  <placeholder/>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button17">
-                                    <property name="label" translatable="yes">Add your rule change...</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">2</property>
-                                  </packing>
+                                  <placeholder/>
                                 </child>
                               </widget>
                               <packing>

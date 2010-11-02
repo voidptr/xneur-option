@@ -1889,11 +1889,16 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 		return;
 	}
 
-	struct _list_char *curr_temp_dict = xconfig->handle->languages[curr_lang].temp_dict;
-	if (curr_temp_dict->exist(curr_temp_dict, curr_word, BY_PLAIN))
-		curr_temp_dict->rem(curr_temp_dict, curr_word);
-
-	struct _list_char *new_temp_dict = xconfig->handle->languages[new_lang].temp_dict;
+	struct _list_char *curr_temp_dictionary = xconfig->handle->languages[curr_lang].temp_dictionary;
+	if (curr_temp_dictionary->exist(curr_temp_dictionary, curr_word, BY_REGEXP))
+	{
+		char *word_to_dict = malloc((strlen(curr_word) + 7) * sizeof(char));
+		sprintf(word_to_dict, "%s%s%s", "(?i)^", curr_word, "$");
+		curr_temp_dictionary->rem(curr_temp_dictionary, word_to_dict);
+		free(word_to_dict);
+	}
+	
+	struct _list_char *new_temp_dictionary = xconfig->handle->languages[new_lang].temp_dictionary;
 
 	tmp = get_last_word(p->buffer->i18n_content[new_lang].content);
 
@@ -1907,28 +1912,37 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 		return;
 	}
 
-	if (!new_temp_dict->exist(new_temp_dict, new_word, BY_PLAIN))
+	if (!new_temp_dictionary->exist(new_temp_dictionary, new_word, BY_REGEXP))
 	{
-		new_temp_dict->add(new_temp_dict, new_word);
+		char *word_to_dict = malloc((strlen(new_word) + 7) * sizeof(char));
+		sprintf(word_to_dict, "%s%s%s", "(?i)^", new_word, "$");
+		new_temp_dictionary->add(new_temp_dictionary, word_to_dict);
+		free(word_to_dict);
 		free(curr_word);
 		free(new_word);
 		return;
 	}
 
-	struct _list_char *curr_dict = xconfig->handle->languages[curr_lang].dict;
-	if (curr_dict->exist(curr_dict, curr_word, BY_PLAIN))
+	struct _list_char *curr_dictionary = xconfig->handle->languages[curr_lang].dictionary;
+	if (curr_dictionary->exist(curr_dictionary, curr_word, BY_REGEXP))
 	{
 		log_message(DEBUG, _("Remove word '%s' from %s dictionary"), curr_word, xconfig->handle->languages[curr_lang].name);
-		curr_dict->rem(curr_dict, curr_word);
+		char *word_to_dict = malloc((strlen(curr_word) + 7) * sizeof(char));
+		sprintf(word_to_dict, "%s%s%s", "(?i)^", curr_word, "$");
+		curr_dictionary->rem(curr_dictionary, word_to_dict);
 		xconfig->save_dict(xconfig, curr_lang);
+		free(word_to_dict);
 	}
 
-	struct _list_char *new_dict = xconfig->handle->languages[new_lang].dict;
-	if (!new_dict->exist(new_dict, new_word, BY_PLAIN))
+	struct _list_char *new_dictionary = xconfig->handle->languages[new_lang].dictionary;
+	if (!new_dictionary->exist(new_dictionary, new_word, BY_REGEXP))
 	{
 		log_message(DEBUG, _("Add word '%s' in %s dictionary"), new_word, xconfig->handle->languages[new_lang].name);
-		new_dict->add(new_dict, new_word);
+		char *word_to_dict = malloc((strlen(new_word) + 7) * sizeof(char));
+		sprintf(word_to_dict, "%s%s%s", "(?i)^", new_word, "$");
+		new_dictionary->add(new_dictionary, word_to_dict);
 		xconfig->save_dict(xconfig, new_lang);
+		free(word_to_dict);
 	}
 
 	p->add_word_to_pattern(p, new_lang);

@@ -22,16 +22,19 @@
 
 #include <gtk/gtk.h>
 
-void on_button_regexp_clicked(GtkButton *button, gpointer user_data);
-void on_okbutton1_regexp_clicked(GtkButton *button, gpointer user_data);
-void on_button_dictionary_clicked(GtkButton *button, gpointer user_data);
+typedef struct { 
+	void *x;
+	void *y; 
+	void *z;
+} xyz_t;
 
-void on_okbutton1_clicked(GtkButton *button, gpointer user_data);
-void on_cancelbutton1_clicked(GtkButton *button, gpointer user_data);
+void on_addbutton_clicked(GtkButton *button, gpointer user_data);
+void on_editbutton_clicked(GtkButton *button, gpointer user_data);
+void on_deletebutton_clicked(GtkButton *button, gpointer user_data);
+void on_okbutton_clicked(GtkButton *button, gpointer user_data);
+void on_cancelbutton_clicked(GtkButton *button, gpointer user_data);
 
 gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 gboolean on_key_release_event (GtkWidget *widget, GdkEventKey *event, gpointer user_data);
-
-void on_window2_delete_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 
 #endif /* _CALLBACKS_H_ */

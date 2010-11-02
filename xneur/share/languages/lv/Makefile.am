@@ -1,8 +1,7 @@
 lvdir = @datarootdir@/xneur/languages/lv
 lv_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3
 
 EXTRA_DIST = $(lv_DATA)

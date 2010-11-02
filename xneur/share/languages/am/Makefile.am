@@ -1,8 +1,7 @@
 amdir = @datarootdir@/xneur/languages/am
 am_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3			
 
 EXTRA_DIST = $(am_DATA)

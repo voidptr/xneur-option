@@ -1,8 +1,7 @@
 uadir = @datarootdir@/xneur/languages/ua
 ua_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3
 
 EXTRA_DIST = $(ua_DATA)

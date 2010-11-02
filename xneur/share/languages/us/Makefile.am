@@ -1,8 +1,7 @@
 usdir = @datarootdir@/xneur/languages/us
 us_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3
 
 EXTRA_DIST = $(us_DATA)

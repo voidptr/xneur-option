@@ -22,6 +22,15 @@
 
 #include <glade/glade.h>
 
+#define GLADE_FILE_ABOUT PACKAGE_GLADE_FILE_DIR"/about.glade"
+#define GLADE_FILE_CONFIG PACKAGE_GLADE_FILE_DIR"/config.glade"
+#define GLADE_FILE_ABBREVIATION_ADD PACKAGE_GLADE_FILE_DIR"/abbr_add.glade"
+#define GLADE_FILE_CHOOSE PACKAGE_GLADE_FILE_DIR"/choose_file.glade"
+#define GLADE_FILE_ACTION_ADD PACKAGE_GLADE_FILE_DIR"/action_add.glade"
+#define GLADE_FILE_APP_ADD PACKAGE_GLADE_FILE_DIR"/app_add.glade"
+#define GLADE_FILE_RULE_ADD PACKAGE_GLADE_FILE_DIR"/rule_add.glade"
+#define GLADE_FILE_LIST PACKAGE_GLADE_FILE_DIR"/list.glade"
+
 struct _tray_icon;
 
 char* xneur_get_file_content(const char *path);

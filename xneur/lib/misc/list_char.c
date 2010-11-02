@@ -107,7 +107,7 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 
 			if (check_regexp_match(string, data->string) != NULL)
 				return i;
-		}
+		} 
 	}
 
 	return -1;

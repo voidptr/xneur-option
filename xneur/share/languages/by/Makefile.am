@@ -1,8 +1,7 @@
 bydir = @datarootdir@/xneur/languages/by
 by_DATA =			\
-	dict			\
+	dictionary		\
 	proto			\
-	proto3			\
-	regexp
+	proto3
 
 EXTRA_DIST = $(by_DATA)
