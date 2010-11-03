@@ -342,8 +342,8 @@ static void init_libxnconfig(void)
 
 	if (!xconfig->load(xconfig))
 	{
-		error_msg(_("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"));
-		printf(_("XNeur config broken!\nPlease, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"));
+		error_msg(_("XNeur's config broken or was created with old version!\nPlease, remove ~/.xneur/. It should solve the problem!\nIf you don't want to loose your configuration, back it up\nand manually patch new configuration which will be created after first run.\n"));
+		printf(_("XNeur's config broken or was created with old version!\nPlease, remove ~/.xneur/. It should solve the problem!\nIf you don't want to loose your configuration, back it up\nand manually patch new configuration which will be created after first run.\n"));
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
 	}

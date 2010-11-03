@@ -567,8 +567,10 @@ msgstr ""
 #: src/misc.c:345 src/misc.c:346
 #, c-format
 msgid ""
-"XNeur config broken!\n"
-"Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+"XNeur's config broken or was created with old version!\n"
+"Please, remove ~/.xneur/. It should solve the problem!\n"
+"If you don't want to loose your configuration, back it up\n"
+"and manually patch new configuration which will be created after first run.\n"
 msgstr ""
 
 #: src/misc.c:358 src/misc.c:359 src/misc.c:566 src/misc.c:567

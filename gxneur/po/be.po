@@ -589,11 +589,11 @@ msgstr "Выкарыстоўваецца вэрсія API libxnconfig 0.%d.%d (�
 #: src/misc.c:345 src/misc.c:346
 #, c-format
 msgid ""
-"XNeur config broken!\n"
-"Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+"XNeur's config broken or was created with old version!\n"
+"Please, remove ~/.xneur/. It should solve the problem!\n"
+"If you don't want to loose your configuration, back it up\n"
+"and manually patch new configuration which will be created after first run.\n"
 msgstr ""
-"Канфігурацыйны файл XNeur пашкоджаны!\n"
-"Трэба выдаліць ~/.xneur/xneurrc і і пераўсталяваць праграму!\n"
 
 #: src/misc.c:358 src/misc.c:359 src/misc.c:566 src/misc.c:567
 #, c-format
@@ -723,6 +723,13 @@ msgstr "X Neural Switcher спынены ("
 #: src/trayicon.c:280
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher запушчаны"
+
+#~ msgid ""
+#~ "XNeur config broken!\n"
+#~ "Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+#~ msgstr ""
+#~ "Канфігурацыйны файл XNeur пашкоджаны!\n"
+#~ "Трэба выдаліць ~/.xneur/xneurrc і і пераўсталяваць праграму!\n"
 
 #~ msgid "Dictionary..."
 #~ msgstr "Слоўнік…"

@@ -588,11 +588,11 @@ msgstr "Використовується libxnconfig API версії 0.%d.%d (�
 #: src/misc.c:345 src/misc.c:346
 #, c-format
 msgid ""
-"XNeur config broken!\n"
-"Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+"XNeur's config broken or was created with old version!\n"
+"Please, remove ~/.xneur/. It should solve the problem!\n"
+"If you don't want to loose your configuration, back it up\n"
+"and manually patch new configuration which will be created after first run.\n"
 msgstr ""
-"Конфігураційний файл XNeur зіпсований!\n"
-"Будь ласка, видаліть файл ~/.xneur/xneurrc та перевстановіть пакет XNeur!\n"
 
 #: src/misc.c:358 src/misc.c:359 src/misc.c:566 src/misc.c:567
 #, c-format
@@ -724,6 +724,14 @@ msgstr "X Neural Switcher зупинений ("
 #: src/trayicon.c:280
 msgid "X Neural Switcher"
 msgstr "Перемикач X Neural"
+
+#~ msgid ""
+#~ "XNeur config broken!\n"
+#~ "Please, remove ~/.xneur/xneurrc and reinstall XNeur package!\n"
+#~ msgstr ""
+#~ "Конфігураційний файл XNeur зіпсований!\n"
+#~ "Будь ласка, видаліть файл ~/.xneur/xneurrc та перевстановіть пакет "
+#~ "XNeur!\n"
 
 #~ msgid "Dictionary..."
 #~ msgstr "Словник..."
