@@ -807,14 +807,14 @@ static void program_perform_auto_action(struct _program *p, int action)
 		{
 			if (action == KLB_ENTER && xconfig->dont_process_when_press_enter)
 				action = KLB_ADD_SYM;
+
+			if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
+					p->changed_manual = MANUAL_FLAG_UNSET;
 			
 			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
 
 			if (action == KLB_ADD_SYM)
 			{
-				if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
-					p->changed_manual = MANUAL_FLAG_UNSET;
-				
 				// Add symbol to internal bufer
 				int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 				p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
@@ -2005,25 +2005,24 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 	}
 
 #ifdef WITH_ASPELL
-	AspellConfig *spell_config = new_aspell_config();
-	aspell_config_replace(spell_config, "lang", xconfig->handle->languages[new_lang].dir);
-	AspellCanHaveError *possible_err = new_aspell_speller(spell_config);
-
-	if (aspell_error_number(possible_err) != 0)
+	if (xconfig->handle->has_spell_checker[new_lang])
 	{
-		free(new_word);
-		delete_aspell_config(spell_config);
-		return;
+		if (!aspell_speller_check(xconfig->handle->spell_checkers[new_lang], new_word, strlen(new_word)))
+		{
+			free(new_word);
+			return;
+		}
 	}
-	
-	AspellSpeller *spell_checker = to_aspell_speller(possible_err);
-	int correct = aspell_speller_check(spell_checker, new_word, strlen(new_word));
-	delete_aspell_speller(spell_checker);
-	delete_aspell_config(spell_config);
-	if (!correct)
+#endif
+
+#ifdef WITH_ENCHANT
+	if (xconfig->handle->has_enchant_checker[new_lang])
 	{
-		free(new_word);
-		return;
+		if (enchant_dict_check(xconfig->handle->enchant_dicts[new_lang], new_word, strlen(new_word)))
+		{
+			free(new_word);
+			return;
+		}
 	}
 #endif
 	

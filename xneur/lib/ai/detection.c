@@ -256,6 +256,7 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 	char **word_unchanged = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	int **sym_len = (int **) malloc((handle->total_languages + 1) * sizeof(int *));
 
+	log_message(DEBUG, _("Processing word:"));
 	for (int i = 0; i < handle->total_languages; i++)
 	{
 		word[i] = strdup(get_last_word(p->i18n_content[i].content));
@@ -264,7 +265,7 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 		word_unchanged[i] = strdup(get_last_word(p->i18n_content[i].content_unchanged));
 		del_final_numeric_char(word_unchanged[i]);
 		
-		log_message(DEBUG, _("Processing word '%s' on layout '%s'"), word_unchanged[i], handle->languages[i].dir);
+		log_message(DEBUG, _("   '%s' on layout '%s'"), word_unchanged[i], handle->languages[i].dir);
 
 		sym_len[i] = p->i18n_content[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
 	}

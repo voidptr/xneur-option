@@ -73,7 +73,7 @@ char* check_regexp_match(const char *str, const char *pattern)
 	
 	pcre_free_substring(pcre_string);
 
-	log_message(TRACE, _("Match word '%s' and PERL pattern '%s'"), str, pattern);
+	//log_message(TRACE, _("Match word '%s' and PERL pattern '%s'"), str, pattern);
 		
 	return return_string;
 }

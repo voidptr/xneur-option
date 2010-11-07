@@ -271,47 +271,47 @@ msgid " already running with pid %d"
 msgstr " уже запущен с pid %d"
 
 #: src/xneur.c:216
-#, c-format
-msgid " pid is %d with nice %d"
-msgstr " pid равен %d с приоритетом %d"
-
-#: src/xneur.c:223
 msgid "Current sound data is freed"
 msgstr "Текущие данные звука очищены"
 
-#: src/xneur.c:226
+#: src/xneur.c:219
 msgid "Current user keybinds is freed"
 msgstr "Текущие данные пользовательских горячих клавиш очищены"
 
-#: src/xneur.c:231
+#: src/xneur.c:224
 msgid "Current program info is freed"
 msgstr "Текущие данные программной информации очищены"
 
-#: src/xneur.c:238
+#: src/xneur.c:231
 msgid "Current configuration data is freed"
 msgstr "Текущие данные конфигурации очищены"
 
-#: src/xneur.c:249
+#: src/xneur.c:242
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr "Получен сигнал SIGTERM/SIGINT, останов"
 
-#: src/xneur.c:264
+#: src/xneur.c:257
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr "Получен сигнал SIGHUP, перезагрузка конфигурационного файла"
 
-#: src/xneur.c:278 src/xneur.c:414
+#: src/xneur.c:271 src/xneur.c:407
 msgid "Can't init libxnconfig"
 msgstr "Невозможно инициировать библиотеку libxnconfig"
 
-#: src/xneur.c:394
+#: src/xneur.c:387
 msgid "Can't trap signal"
 msgstr "Невозможно поймать сигнал"
 
-#: src/xneur.c:424
+#: src/xneur.c:420
+#, c-format
+msgid "Xneur process identificator is %d with nice %d"
+msgstr " Идентефикатор процесса Xneur равен %d с приоритетом %d"
+
+#: src/xneur.c:425
 msgid "Failed to init program structure"
 msgstr "Ошибка инициализации програмной структуры"
 
-#: src/xneur.c:434
+#: src/xneur.c:435
 msgid "Init program structure complete"
 msgstr "Инициализация програмной структуры выполнена"
 
@@ -388,16 +388,20 @@ msgstr "   [+] Это слово не имеет совпадений для п�
 msgid "   [-] This word has hits in all languages proto of size %d"
 msgstr "   [-] Это слово имеет совпадение для всех прото-языков с размером %d"
 
-#: lib/ai/detection.c:267
-#, c-format
-msgid "Processing word '%s' on layout '%s'"
-msgstr "Обработка слова '%s' в раскладке '%s'"
+#: lib/ai/detection.c:259
+msgid "Processing word:"
+msgstr "Обработка слова:"
 
-#: lib/ai/detection.c:272
+#: lib/ai/detection.c:268
+#, c-format
+msgid "   '%s' on layout '%s'"
+msgstr "   '%s' в раскладке '%s'"
+
+#: lib/ai/detection.c:273
 msgid "Start word processing..."
 msgstr "Начало обработки слова..."
 
-#: lib/ai/detection.c:301
+#: lib/ai/detection.c:302
 msgid "End word processing."
 msgstr "Конец обработки слова."
 
@@ -641,7 +645,7 @@ msgstr "Всего неосвобождено %d указателей на об�
 msgid "Unfreed memory pointer %s (allocated at file %s:%d)"
 msgstr "Неосвобожден указатель на область памяти %s (получено в файле %s:%d)"
 
-#: lib/misc/list_char.c:293
+#: lib/misc/list_char.c:341
 #, c-format
 msgid "Sorting error: %s > %s"
 msgstr "Ошибка сортировки: %s > %s"
@@ -684,11 +688,6 @@ msgstr "Невозможно откомпилировать регулярное
 #, c-format
 msgid "Can't exec regular expression '%s', eror code %d"
 msgstr "Невозможно выполнить регулярное выражение '%s', код ошибки %d"
-
-#: lib/misc/regexp.c:76
-#, c-format
-msgid "Match word '%s' and PERL pattern '%s'"
-msgstr "Совпадение слова '%s' с PERL паттерном %s"
 
 #: lib/notify/osd.c:89
 #, c-format
@@ -993,12 +992,12 @@ msgstr "Добавлено слово '%s' в словарь %s"
 msgid "Remove word '%s' from %s pattern"
 msgstr "Удалено слово '%s' из паттерна %s"
 
-#: lib/main/program.c:2033
+#: lib/main/program.c:2032
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr "Добавлено слово '%s' в паттерн %s"
 
-#: lib/main/program.c:2054
+#: lib/main/program.c:2053
 msgid "Program is freed"
 msgstr "Текущие данные программы очищены"
 
@@ -1055,3 +1054,6 @@ msgstr "Создано основное окно с id %d"
 #: lib/main/window.c:135
 msgid "Window is freed"
 msgstr "Текущие данные окна очищены"
+
+#~ msgid "Match word '%s' and PERL pattern '%s'"
+#~ msgstr "Совпадение слова '%s' с PERL паттерном %s"

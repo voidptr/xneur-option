@@ -167,11 +167,11 @@ static void focus_update_events(struct _focus *p, int mode)
 		// Event unmasking
 		grab_button(rw, FALSE);
 		//grab_mouse_button(p->parent_window, FALSE);
-		
-		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
 
 		// Ungrabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, FALSE);
+		
+		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
 	}
 	else
 	{
@@ -179,10 +179,10 @@ static void focus_update_events(struct _focus *p, int mode)
 		grab_button(rw, TRUE);
 		//grab_mouse_button(p->parent_window, TRUE);
 		
-		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-
 		// Grabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, TRUE);
+		
+		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 	}
 
 	p->last_parent_window = p->parent_window;

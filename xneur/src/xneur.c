@@ -207,13 +207,6 @@ static void xneur_set_lock(void)
 
 	int process_id = getpid();
 	xconfig->set_pid(xconfig, process_id);
-
-	int priority = getpriority(PRIO_PROCESS, process_id);
-
-	setpriority(PRIO_PROCESS, process_id, -19);
-	priority = getpriority(PRIO_PROCESS, process_id);
-	
-	log_message(DEBUG, _(PACKAGE" pid is %d with nice %d"), process_id, priority);
 }
 
 static void xneur_cleanup(void)
@@ -418,10 +411,18 @@ int main(int argc, char *argv[])
 	xneur_set_lock();
 	xneur_load_config();
 
+	int process_id = xconfig->get_pid(xconfig);
+	int priority = getpriority(PRIO_PROCESS, process_id);
+
+	setpriority(PRIO_PROCESS, process_id, -19);
+	priority = getpriority(PRIO_PROCESS, process_id);
+	
+	log_message(ERROR, _("Xneur process identificator is %d with nice %d"), process_id, priority);
+	
 	program = program_init();
 	if (program == NULL)
 	{
-		log_message(ERROR, _("Failed to init program structure"));
+		log_message(DEBUG, _("Failed to init program structure"));
 		xconfig->set_pid(xconfig, 0);
 		xconfig->uninit(xconfig);
 		exit(EXIT_FAILURE);
