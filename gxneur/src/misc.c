@@ -360,13 +360,13 @@ void xneur_start(void)
 	}
 }
 
-void xneur_exit(void)
+/*void xneur_exit(void)
 {
 	xconfig->kill(xconfig);
 	gtk_main_quit();
-}
+}*/
 
-void xneur_start_stop(GtkWidget *widget, struct _tray_icon *tray)
+/*void xneur_start_stop(GtkWidget *widget, struct _tray_icon *tray)
 {
 	if (widget){};
 
@@ -378,7 +378,7 @@ void xneur_start_stop(GtkWidget *widget, struct _tray_icon *tray)
 
 	xneur_start();
 	create_tray_icon(tray, TRUE);
-}
+}*/
 
 void xneur_auto_manual(GtkWidget *widget, struct _tray_icon *tray)
 {

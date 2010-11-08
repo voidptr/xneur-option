@@ -417,7 +417,7 @@ int main(int argc, char *argv[])
 	setpriority(PRIO_PROCESS, process_id, -19);
 	priority = getpriority(PRIO_PROCESS, process_id);
 	
-	log_message(ERROR, _("Xneur process identificator is %d with nice %d"), process_id, priority);
+	log_message(TRACE, _("Xneur process identificator is %d with nice %d"), process_id, priority);
 	
 	program = program_init();
 	if (program == NULL)

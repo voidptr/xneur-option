@@ -20,19 +20,20 @@
 #ifndef _TRAYICON_H_
 #define _TRAYICON_H_
 
-#include "tray_widget.h"
+#define MAX_LAYOUTS 4
 
 struct _tray_icon
 {
-	GtkTrayIcon   *widget;
-
-	GtkTooltips *tooltip;
-	GtkWidget *image;
-	GtkWidget *popup_menu;
+	GtkStatusIcon *tray_icon;
+	
+	GdkPixbuf  *images[MAX_LAYOUTS];
+	
+	GtkWidget *tray_menu;
 	GtkWidget *evbox;
-	GtkWidget *clock;
 };
 
-void create_tray_icon(struct _tray_icon *tray, gboolean runned);
+void create_tray_icon(void);
+void xneur_start_stop(void);
+void xneur_exit(void);
 
 #endif /* _TRAYICON_H_ */

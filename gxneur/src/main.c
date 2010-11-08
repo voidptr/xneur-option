@@ -110,14 +110,11 @@ int main(int argc, char *argv[])
 	
 	sleep (value);
 
-
 	xneur_start();
 
-	create_tray_icon(NULL, TRUE);
+	create_tray_icon();
 
 	gtk_main();
-	
-
 
 	return EXIT_SUCCESS;
 }

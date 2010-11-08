@@ -38,7 +38,7 @@ char* xneur_get_dict_path(GladeXML *gxml, int layout_no, const char *file_name);
 char* xneur_get_home_dict_path(GladeXML *gxml, int layout_no, const char *file_name);
 char* xneur_modifiers_to_string(unsigned int modifier);
 
-void xneur_exit(void);
+//void xneur_exit(void);
 void xneur_start(void);
 void xneur_preference(void);
 void xneur_kb_preference(void);
@@ -77,7 +77,7 @@ void xneur_dontsave_preference(GladeXML *gxml);
 
 void xneur_edit_sound(GtkWidget *treeview);
 
-void xneur_start_stop(GtkWidget *widget, struct _tray_icon *tray);
+//void xneur_start_stop(GtkWidget *widget, struct _tray_icon *tray);
 void xneur_auto_manual(GtkWidget *widget, struct _tray_icon *tray);
 
 int is_correct_hotkey(gchar **key_stat);
