@@ -47,6 +47,78 @@ static int xneur_old_pid = -1;
 static int xneur_old_state = -1;
 static int xneur_old_group = -1;
 
+void set_text_to_tray_icon(const gint size, const gchar *markup )
+{
+    cairo_surface_t *surface;
+    cairo_t         *cr;
+    //GdkPixbuf       *pixbuf;
+    PangoLayout     *layout;
+    gint             i_width,
+                     i_height,
+                     l_width,
+                     l_height,
+                     dx,
+                     dy;
+                     
+    PangoFontDescription *desc;
+
+	surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, size, size);
+    i_width  = cairo_image_surface_get_width( surface );
+    i_height = cairo_image_surface_get_height( surface );
+    cr = gdk_cairo_create(GDK_DRAWABLE(tray->tray_icon));
+
+    layout = pango_cairo_create_layout( cr );
+    pango_layout_set_text( layout, markup, -1 );
+    desc = pango_font_description_from_string( "Ubuntu 14" );
+    pango_layout_set_font_description( layout, desc );
+    pango_font_description_free( desc );
+
+    // Center text 
+    pango_layout_get_size( layout, &l_width, &l_height );
+    l_width  /= PANGO_SCALE;
+    l_height /= PANGO_SCALE;
+
+    dx = ( i_width - l_width ) * .5;
+    dy = ( i_height - l_height ) * .5;
+
+    cairo_move_to( cr, dx, dy );
+    pango_cairo_show_layout( cr, layout );
+    cairo_fill( cr );
+	
+    g_object_unref( layout );
+    cairo_destroy( cr );
+
+    // Convert cairo surface to pixbuf
+    /*pixbuf = gdk_pixbuf_new( GDK_COLORSPACE_RGB, TRUE, 8, i_width, i_height );
+ 
+    s_stride = cairo_image_surface_get_stride( surface );
+    p_stride = gdk_pixbuf_get_rowstride( pixbuf );
+    s_data = cairo_image_surface_get_data( surface );
+    p_data = gdk_pixbuf_get_pixels( pixbuf );
+
+    for( i = 0; i < i_height; i++ )
+    {
+        for( j = 0; j < i_width; j++ )
+        {
+            gint    s_index = i * s_stride + j * 4,
+                    p_index = i * p_stride + j * 4;
+            gdouble alpha;
+
+            alpha = s_data[s_index + 3] ?
+                        (gdouble)s_data[s_index + 3] / 0xff : 1.0;
+
+            p_data[p_index    ] = s_data[s_index + 2] / alpha;
+            p_data[p_index + 1] = s_data[s_index + 1] / alpha;
+            p_data[p_index + 2] = s_data[s_index    ] / alpha;
+            p_data[p_index + 3] = s_data[s_index + 3];
+        }
+    }*/
+
+    cairo_surface_destroy( surface );
+
+    return;
+} 
+
 static gboolean tray_icon_release(GtkWidget *widget, GdkEventButton *event, struct _tray_icon *tray)
 {	
 	if (widget){};
@@ -96,13 +168,15 @@ static void tray_icon_handle_notify (GtkWidget *widget, GParamSpec *arg1, struct
 		{
 			saturation = 0.25;
 		}
-		
-        gint size = gtk_status_icon_get_size(tray->tray_icon);
-		GdkPixbuf *pb = gdk_pixbuf_copy (tray->images[get_active_kbd_group()]);
-		gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
-		pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
-		gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
-		gdk_pixbuf_unref(pb);    
+		if (tray->images[get_active_kbd_group()])
+		{
+        	gint size = gtk_status_icon_get_size(tray->tray_icon);
+			GdkPixbuf *pb = gdk_pixbuf_copy (tray->images[get_active_kbd_group()]);
+			gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
+			pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
+			gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
+			gdk_pixbuf_unref(pb); 
+		}
 	}
 	/*if (g_str_equal(arg1->name,"embedded"))
 	{
@@ -285,19 +359,22 @@ gboolean clock_check(gpointer data)
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher stopped ("), xconfig->handle->languages[lang].dir, ")");
 	}
 
-	gint size = gtk_status_icon_get_size(tray->tray_icon);
-	GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[get_active_kbd_group()]);
-	gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
-	pb = gdk_pixbuf_scale_simple(pb, size, size * 15/22, GDK_INTERP_BILINEAR);
-	gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
-	gdk_pixbuf_unref(pb);
-	
+	if (tray->images[get_active_kbd_group()])
+	{
+		gint size = gtk_status_icon_get_size(tray->tray_icon);
+		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[get_active_kbd_group()]);
+		gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
+		pb = gdk_pixbuf_scale_simple(pb, size, size * 15/22, GDK_INTERP_BILINEAR);
+		gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
+		gdk_pixbuf_unref(pb);
+	}
+
 	gtk_status_icon_set_tooltip(tray->tray_icon, hint);
 	g_free (hint);
 
 	gtk_widget_destroy(GTK_WIDGET(tray->tray_menu));
 	tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
-
+	
 	return TRUE;
 }
 
@@ -347,16 +424,20 @@ void create_tray_icon(void)
 	{
 		char *layout_name = strdup(xconfig->handle->languages[i].dir);
 		char *image_file = g_strdup_printf("%s%s", layout_name, ".png");
-
 		tray->images[i] = create_pixbuf(image_file);
-			
+		for (unsigned int i=0; i < strlen(layout_name); i++)
+			layout_name[i] = toupper(layout_name[i]); 
+
+		//gint size = gtk_status_icon_get_size(tray->tray_icon);
+		//set_text_to_tray_icon(size, layout_name);	
 		free(image_file);
 		free(layout_name);
 	}
 
-	gtk_status_icon_set_from_pixbuf(tray->tray_icon, tray->images[get_active_kbd_group()]);
+	if (tray->images[get_active_kbd_group()])
+		gtk_status_icon_set_from_pixbuf(tray->tray_icon, tray->images[get_active_kbd_group()]);
 	
 	tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
-
+	
 	g_timeout_add(TIMER_PERIOD, clock_check, (gpointer) tray);
 }

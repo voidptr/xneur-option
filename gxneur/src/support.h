@@ -50,10 +50,7 @@
 /* Use this function to set the directory containing installed pixmaps. */
 void        add_pixmap_directory       (const gchar     *directory);
 
-
-/*
- * Private Functions.
- */
+gchar*		find_pixmap_file           (const gchar     *filename);
 
 /* This is used to create the pixmaps used in the interface. */
 GtkWidget*  create_pixmap              (GtkWidget       *widget,
