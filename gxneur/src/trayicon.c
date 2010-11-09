@@ -119,77 +119,6 @@ void set_text_to_tray_icon(const gint size, const gchar *markup )
     return;
 } 
 
-static gboolean tray_icon_release(GtkWidget *widget, GdkEventButton *event, struct _tray_icon *tray)
-{	
-	if (widget){};
-		
-	if (event->button == 1 || event->button == 2)
-		return TRUE;
-
-	gtk_menu_popdown(GTK_MENU(tray->tray_menu));
-
-	return FALSE;
-}
-
-gboolean tray_icon_press(GtkWidget *widget, GdkEventButton *event, struct _tray_icon *tray)
-{
-	if (widget){};
-	
-	if (event->button == 2)
-	{
-		xneur_start_stop();
-		return FALSE;
-	}
-	
-	if (event->button == 1)
-	{
-		set_next_kbd_group();
-		return FALSE;
-	}
-	
-	gtk_menu_popup(GTK_MENU(tray->tray_menu), NULL, NULL, NULL, NULL, event->button, event->time);
-	return FALSE;
-}
-
-static void tray_icon_handle_notify (GtkWidget *widget, GParamSpec *arg1, struct _tray_icon *tray)
-{
-	if (widget){};
-	
-    if ( g_str_equal(arg1->name,"size") )
-    {
-		int xneur_pid = xconfig->get_pid(xconfig);
-
-		float saturation;
-		if (xneur_pid != -1)
-		{
-			saturation = 1.0;
-		}
-		else
-		{
-			saturation = 0.25;
-		}
-		if (tray->images[get_active_kbd_group()])
-		{
-        	gint size = gtk_status_icon_get_size(tray->tray_icon);
-			GdkPixbuf *pb = gdk_pixbuf_copy (tray->images[get_active_kbd_group()]);
-			gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
-			pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
-			gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
-			gdk_pixbuf_unref(pb); 
-		}
-	}
-	/*if (g_str_equal(arg1->name,"embedded"))
-	{
-		b_value = gtk_status_icon_is_embedded(pgsi->tray_icon);
-	}
-	if ( g_str_equal(arg1->name,"visible") )
-	{
-		b_value = gtk_status_icon_get_vis  ble(pgsi->tray_icon);
-	}*/
-   
-	return;
-}
-
 static void exec_user_action(char *cmd)
 {
 	char *command = malloc ((strlen(cmd) + strlen(" 2> /dev/stdout") + 1) * sizeof(char));
@@ -308,6 +237,86 @@ GtkWidget* create_tray_menu(struct _tray_icon *tray, int state)
 
 	gtk_widget_show (menu);
  	return menu;
+}	
+
+static gboolean tray_icon_release(GtkWidget *widget, GdkEventButton *event, struct _tray_icon *tray)
+{	
+	if (widget){};
+		
+	if (event->button == 1 || event->button == 2)
+		return TRUE;
+
+	gtk_menu_popdown(GTK_MENU(tray->tray_menu));
+
+	return FALSE;
+}
+
+gboolean tray_icon_press(GtkWidget *widget, GdkEventButton *event, struct _tray_icon *tray)
+{
+	if (widget){};
+	
+	if (event->button == 2)
+	{
+		xneur_start_stop();
+		return FALSE;
+	}
+	
+	if (event->button == 1)
+	{
+		set_next_kbd_group();
+		return FALSE;
+	}
+
+	if (GTK_IS_WIDGET(tray->tray_menu))
+		gtk_widget_destroy(GTK_WIDGET(tray->tray_menu));
+	
+	tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
+
+	gtk_menu_popup(GTK_MENU(tray->tray_menu), NULL, NULL, NULL, NULL, event->button, event->time);
+	
+	return FALSE;
+}
+
+static void tray_icon_handle_notify (GtkWidget *widget, GParamSpec *arg1, struct _tray_icon *tray)
+{
+	if (widget){};
+	
+    if ( g_str_equal(arg1->name,"size") )
+    {
+		int xneur_pid = xconfig->get_pid(xconfig);
+
+		float saturation;
+		if (xneur_pid != -1)
+		{
+			saturation = 1.0;
+		}
+		else
+		{
+			saturation = 0.25;
+		}
+		if (tray->images[get_active_kbd_group()])
+		{
+			if (gtk_status_icon_is_embedded(tray->tray_icon))
+			{
+        		gint size = gtk_status_icon_get_size(tray->tray_icon);
+				GdkPixbuf *pb = gdk_pixbuf_copy (tray->images[get_active_kbd_group()]);
+				gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
+				pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
+				gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
+				gdk_pixbuf_unref(pb); 
+			}
+		}
+	}
+	/*if (g_str_equal(arg1->name,"embedded"))
+	{
+		b_value = gtk_status_icon_is_embedded(pgsi->tray_icon);
+	}
+	if ( g_str_equal(arg1->name,"visible") )
+	{
+		b_value = gtk_status_icon_get_vis  ble(pgsi->tray_icon);
+	}*/
+   
+	return;
 }
 
 gboolean clock_check(gpointer data)
@@ -361,20 +370,20 @@ gboolean clock_check(gpointer data)
 
 	if (tray->images[get_active_kbd_group()])
 	{
-		gint size = gtk_status_icon_get_size(tray->tray_icon);
-		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[get_active_kbd_group()]);
-		gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
-		pb = gdk_pixbuf_scale_simple(pb, size, size * 15/22, GDK_INTERP_BILINEAR);
-		gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
-		gdk_pixbuf_unref(pb);
+		if (gtk_status_icon_is_embedded(tray->tray_icon))
+		{
+			gint size = gtk_status_icon_get_size(tray->tray_icon);
+			GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[get_active_kbd_group()]);
+			gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
+			pb = gdk_pixbuf_scale_simple(pb, size, size * 15/22, GDK_INTERP_BILINEAR);
+			gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
+			gdk_pixbuf_unref(pb);
+		}
 	}
 
 	gtk_status_icon_set_tooltip(tray->tray_icon, hint);
 	g_free (hint);
 
-	gtk_widget_destroy(GTK_WIDGET(tray->tray_menu));
-	tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
-	
 	return TRUE;
 }
 
@@ -437,7 +446,7 @@ void create_tray_icon(void)
 	if (tray->images[get_active_kbd_group()])
 		gtk_status_icon_set_from_pixbuf(tray->tray_icon, tray->images[get_active_kbd_group()]);
 	
-	tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
+	//tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
 	
 	g_timeout_add(TIMER_PERIOD, clock_check, (gpointer) tray);
 }
