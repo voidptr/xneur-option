@@ -306,6 +306,8 @@ static void tray_icon_handle_notify (GtkWidget *widget, GParamSpec *arg1, struct
 				gdk_pixbuf_unref(pb); 
 			}
 		}
+		else
+		gtk_status_icon_set_from_icon_name(tray->tray_icon, "keyboard");
 	}
 	/*if (g_str_equal(arg1->name,"embedded"))
 	{
@@ -380,7 +382,9 @@ gboolean clock_check(gpointer data)
 			gdk_pixbuf_unref(pb);
 		}
 	}
-
+	else
+		gtk_status_icon_set_from_icon_name(tray->tray_icon, "keyboard");
+	
 	gtk_status_icon_set_tooltip(tray->tray_icon, hint);
 	g_free (hint);
 
@@ -423,16 +427,18 @@ void create_tray_icon(void)
 	g_signal_connect(G_OBJECT(tray->tray_icon), "button_press_event", G_CALLBACK(tray_icon_press), tray);
 	g_signal_connect(G_OBJECT(tray->tray_icon), "button_release_event", G_CALLBACK(tray_icon_release), tray);
 	g_signal_connect(G_OBJECT(tray->tray_icon), "notify::size", G_CALLBACK (tray_icon_handle_notify), tray);
-	// Init pixbuf array
-	for (int i = 0; i < MAX_LAYOUTS; i++)
-	{
-		tray->images[i] = NULL;
-	}
+
 	// Load images to pixbufs
 	for (int i = 0; i < xconfig->handle->total_languages; i++)
 	{
 		char *layout_name = strdup(xconfig->handle->languages[i].dir);
 		char *image_file = g_strdup_printf("%s%s", layout_name, ".png");
+		if (find_pixmap_file(image_file) == NULL)
+		{
+			tray->images[i] = NULL;
+			continue;
+		}
+		
 		tray->images[i] = create_pixbuf(image_file);
 		for (unsigned int i=0; i < strlen(layout_name); i++)
 			layout_name[i] = toupper(layout_name[i]); 
@@ -445,8 +451,8 @@ void create_tray_icon(void)
 
 	if (tray->images[get_active_kbd_group()])
 		gtk_status_icon_set_from_pixbuf(tray->tray_icon, tray->images[get_active_kbd_group()]);
-	
-	//tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
+	else
+		gtk_status_icon_set_from_icon_name(tray->tray_icon, "keyboard");
 	
 	g_timeout_add(TIMER_PERIOD, clock_check, (gpointer) tray);
 }
