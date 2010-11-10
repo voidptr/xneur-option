@@ -280,6 +280,8 @@ gboolean tray_icon_press(GtkWidget *widget, GdkEventButton *event, struct _tray_
 static void tray_icon_handle_notify (GtkWidget *widget, GParamSpec *arg1, struct _tray_icon *tray)
 {
 	if (widget){};
+
+			printf("Resize Notify\n");
 	
     if ( g_str_equal(arg1->name,"size") )
     {
@@ -296,18 +298,19 @@ static void tray_icon_handle_notify (GtkWidget *widget, GParamSpec *arg1, struct
 		}
 		if (tray->images[get_active_kbd_group()])
 		{
-			if (gtk_status_icon_is_embedded(tray->tray_icon))
+			GdkPixbuf *pb = gdk_pixbuf_copy (tray->images[get_active_kbd_group()]);
+			gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
+			//pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
+			if (tray->image != NULL)
 			{
-        		gint size = gtk_status_icon_get_size(tray->tray_icon);
-				GdkPixbuf *pb = gdk_pixbuf_copy (tray->images[get_active_kbd_group()]);
-				gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
-				pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
-				gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
-				gdk_pixbuf_unref(pb); 
+				gtk_widget_destroy(GTK_WIDGET(tray->image));
+				tray->image = NULL;
 			}
+			tray->image = gtk_image_new_from_pixbuf(pb);
+			//gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
+			gtk_widget_show(GTK_WIDGET(tray->image));
+			gdk_pixbuf_unref(pb); 
 		}
-		else
-		gtk_status_icon_set_from_icon_name(tray->tray_icon, "keyboard");
 	}
 	/*if (g_str_equal(arg1->name,"embedded"))
 	{
@@ -370,22 +373,41 @@ gboolean clock_check(gpointer data)
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher stopped ("), xconfig->handle->languages[lang].dir, ")");
 	}
 
-	if (tray->images[get_active_kbd_group()])
+	gint kbd_gr = get_active_kbd_group();
+	if (tray->images[kbd_gr])
 	{
-		if (gtk_status_icon_is_embedded(tray->tray_icon))
-		{
-			gint size = gtk_status_icon_get_size(tray->tray_icon);
-			GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[get_active_kbd_group()]);
-			gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
-			pb = gdk_pixbuf_scale_simple(pb, size, size * 15/22, GDK_INTERP_BILINEAR);
-			gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
-			gdk_pixbuf_unref(pb);
-		}
+		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
+		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
+		//pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
+		//gtk_container_remove(GTK_CONTAINER(tray->evbox), tray->image);
+		gtk_widget_destroy(GTK_WIDGET(tray->image));
+		tray->image = gtk_image_new_from_pixbuf(pb);
+		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
+		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
+		gdk_pixbuf_unref(pb);
 	}
 	else
-		gtk_status_icon_set_from_icon_name(tray->tray_icon, "keyboard");
+	{
+		gtk_widget_destroy(GTK_WIDGET(tray->image));
+		
+		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
+		for (unsigned int i=0; i < strlen(layout_name); i++)
+			layout_name[i] = toupper(layout_name[i]); 
+		tray->image = gtk_label_new ((const gchar *)layout_name);
+		gtk_label_set_justify (GTK_LABEL(tray->image), GTK_JUSTIFY_CENTER);
+		free(layout_name);
+		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
+		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
+	}
+
+	if (tray->tooltip != NULL)
+	{
+		gtk_object_destroy(GTK_OBJECT(tray->tooltip));
+		tray->tooltip = NULL;
+	}
+	tray->tooltip = gtk_tooltips_new();
+	gtk_tooltips_set_tip(tray->tooltip, GTK_WIDGET(tray->tray_icon), hint, NULL);
 	
-	gtk_status_icon_set_tooltip(tray->tray_icon, hint);
 	g_free (hint);
 
 	return TRUE;
@@ -422,37 +444,62 @@ void create_tray_icon(void)
 {
 	tray = g_new0(struct _tray_icon, 1);	
 
-	tray->tray_icon = gtk_status_icon_new();
+	tray->tray_icon = _gtk_tray_icon_new(_("X Neural Switcher"));
 
 	g_signal_connect(G_OBJECT(tray->tray_icon), "button_press_event", G_CALLBACK(tray_icon_press), tray);
 	g_signal_connect(G_OBJECT(tray->tray_icon), "button_release_event", G_CALLBACK(tray_icon_release), tray);
-	g_signal_connect(G_OBJECT(tray->tray_icon), "notify::size", G_CALLBACK (tray_icon_handle_notify), tray);
+	
+	// Init pixbuf array
+	for (int i = 0; i < MAX_LAYOUTS; i++)
+	{
+		tray->images[i] = NULL;
+	}
 
+	gint kbd_gr = get_active_kbd_group();
 	// Load images to pixbufs
 	for (int i = 0; i < xconfig->handle->total_languages; i++)
 	{
 		char *layout_name = strdup(xconfig->handle->languages[i].dir);
 		char *image_file = g_strdup_printf("%s%s", layout_name, ".png");
-		if (find_pixmap_file(image_file) == NULL)
-		{
-			tray->images[i] = NULL;
-			continue;
-		}
-		
 		tray->images[i] = create_pixbuf(image_file);
-		for (unsigned int i=0; i < strlen(layout_name); i++)
-			layout_name[i] = toupper(layout_name[i]); 
-
-		//gint size = gtk_status_icon_get_size(tray->tray_icon);
-		//set_text_to_tray_icon(size, layout_name);	
 		free(image_file);
 		free(layout_name);
 	}
 
-	if (tray->images[get_active_kbd_group()])
-		gtk_status_icon_set_from_pixbuf(tray->tray_icon, tray->images[get_active_kbd_group()]);
+	tray->evbox		= gtk_event_box_new();
+	gtk_event_box_set_visible_window(GTK_EVENT_BOX(tray->evbox), 0);
+	g_signal_connect(G_OBJECT(tray->evbox), "notify::size", G_CALLBACK (tray_icon_handle_notify), tray);
+
+	if (tray->images[kbd_gr])
+	{
+		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
+		gdk_pixbuf_saturate_and_pixelate(pb, pb, .25, FALSE);
+		//pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
+		tray->image = gtk_image_new_from_pixbuf(pb);
+		gdk_pixbuf_unref(pb);
+	}
 	else
-		gtk_status_icon_set_from_icon_name(tray->tray_icon, "keyboard");
+	{
+		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
+		for (unsigned int i=0; i < strlen(layout_name); i++)
+			layout_name[i] = toupper(layout_name[i]); 
+		tray->image = gtk_label_new ((const gchar *)layout_name);
+		gtk_label_set_justify (GTK_LABEL(tray->image), GTK_JUSTIFY_CENTER);
+		free(layout_name);
+	}
+	
+	gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
+	gtk_container_add(GTK_CONTAINER(tray->tray_icon), tray->evbox);
+	gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
+
+	GtkSettings *settings;
+	gint height = -1;
+	settings = gtk_settings_get_for_screen(gtk_widget_get_screen(tray->image));
+	if(gtk_icon_size_lookup_for_settings(settings, GTK_ICON_SIZE_MENU,
+										 NULL, &height))
+	{
+		printf("------ Size %d\n", height);
+	}
 	
 	g_timeout_add(TIMER_PERIOD, clock_check, (gpointer) tray);
 }

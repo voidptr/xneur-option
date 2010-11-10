@@ -22,12 +22,16 @@
 
 #define MAX_LAYOUTS 4
 
+#include "tray_widget.h"
+
 struct _tray_icon
 {
-	GtkStatusIcon *tray_icon;
+	GtkTrayIcon *tray_icon;
 	
 	GdkPixbuf  *images[MAX_LAYOUTS];
-	
+
+	GtkTooltips *tooltip;
+	GtkWidget *image;
 	GtkWidget *tray_menu;
 	GtkWidget *evbox;
 };
