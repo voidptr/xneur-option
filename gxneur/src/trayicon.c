@@ -47,78 +47,6 @@ static int xneur_old_pid = -1;
 static int xneur_old_state = -1;
 static int xneur_old_group = -1;
 
-void set_text_to_tray_icon(const gint size, const gchar *markup )
-{
-    cairo_surface_t *surface;
-    cairo_t         *cr;
-    //GdkPixbuf       *pixbuf;
-    PangoLayout     *layout;
-    gint             i_width,
-                     i_height,
-                     l_width,
-                     l_height,
-                     dx,
-                     dy;
-                     
-    PangoFontDescription *desc;
-
-	surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, size, size);
-    i_width  = cairo_image_surface_get_width( surface );
-    i_height = cairo_image_surface_get_height( surface );
-    cr = gdk_cairo_create(GDK_DRAWABLE(tray->tray_icon));
-
-    layout = pango_cairo_create_layout( cr );
-    pango_layout_set_text( layout, markup, -1 );
-    desc = pango_font_description_from_string( "Ubuntu 14" );
-    pango_layout_set_font_description( layout, desc );
-    pango_font_description_free( desc );
-
-    // Center text 
-    pango_layout_get_size( layout, &l_width, &l_height );
-    l_width  /= PANGO_SCALE;
-    l_height /= PANGO_SCALE;
-
-    dx = ( i_width - l_width ) * .5;
-    dy = ( i_height - l_height ) * .5;
-
-    cairo_move_to( cr, dx, dy );
-    pango_cairo_show_layout( cr, layout );
-    cairo_fill( cr );
-	
-    g_object_unref( layout );
-    cairo_destroy( cr );
-
-    // Convert cairo surface to pixbuf
-    /*pixbuf = gdk_pixbuf_new( GDK_COLORSPACE_RGB, TRUE, 8, i_width, i_height );
- 
-    s_stride = cairo_image_surface_get_stride( surface );
-    p_stride = gdk_pixbuf_get_rowstride( pixbuf );
-    s_data = cairo_image_surface_get_data( surface );
-    p_data = gdk_pixbuf_get_pixels( pixbuf );
-
-    for( i = 0; i < i_height; i++ )
-    {
-        for( j = 0; j < i_width; j++ )
-        {
-            gint    s_index = i * s_stride + j * 4,
-                    p_index = i * p_stride + j * 4;
-            gdouble alpha;
-
-            alpha = s_data[s_index + 3] ?
-                        (gdouble)s_data[s_index + 3] / 0xff : 1.0;
-
-            p_data[p_index    ] = s_data[s_index + 2] / alpha;
-            p_data[p_index + 1] = s_data[s_index + 1] / alpha;
-            p_data[p_index + 2] = s_data[s_index    ] / alpha;
-            p_data[p_index + 3] = s_data[s_index + 3];
-        }
-    }*/
-
-    cairo_surface_destroy( surface );
-
-    return;
-} 
-
 static void exec_user_action(char *cmd)
 {
 	char *command = malloc ((strlen(cmd) + strlen(" 2> /dev/stdout") + 1) * sizeof(char));
@@ -379,7 +307,6 @@ gboolean clock_check(gpointer data)
 		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
 		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
 		//pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
-		//gtk_container_remove(GTK_CONTAINER(tray->evbox), tray->image);
 		gtk_widget_destroy(GTK_WIDGET(tray->image));
 		tray->image = gtk_image_new_from_pixbuf(pb);
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
@@ -492,14 +419,7 @@ void create_tray_icon(void)
 	gtk_container_add(GTK_CONTAINER(tray->tray_icon), tray->evbox);
 	gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 
-	GtkSettings *settings;
-	gint height = -1;
-	settings = gtk_settings_get_for_screen(gtk_widget_get_screen(tray->image));
-	if(gtk_icon_size_lookup_for_settings(settings, GTK_ICON_SIZE_MENU,
-										 NULL, &height))
-	{
-		printf("------ Size %d\n", height);
-	}
+	//printf("------ Min Size %d\n", gtk_status_icon_get_size(GTK_STATUS_ICON(tray->tray_icon)));
 	
 	g_timeout_add(TIMER_PERIOD, clock_check, (gpointer) tray);
 }

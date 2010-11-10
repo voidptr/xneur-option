@@ -29,7 +29,7 @@ struct _tray_icon
 	GtkTrayIcon *tray_icon;
 	
 	GdkPixbuf  *images[MAX_LAYOUTS];
-
+		
 	GtkTooltips *tooltip;
 	GtkWidget *image;
 	GtkWidget *tray_menu;
