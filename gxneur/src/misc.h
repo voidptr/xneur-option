@@ -31,8 +31,6 @@
 #define GLADE_FILE_RULE_ADD PACKAGE_GLADE_FILE_DIR"/rule_add.glade"
 #define GLADE_FILE_LIST PACKAGE_GLADE_FILE_DIR"/list.glade"
 
-struct _tray_icon;
-
 char* xneur_get_file_content(const char *path);
 char* xneur_get_dict_path(GladeXML *gxml, int layout_no, const char *file_name);
 char* xneur_get_home_dict_path(GladeXML *gxml, int layout_no, const char *file_name);
@@ -76,9 +74,6 @@ void xneur_save_preference(GladeXML *gxml);
 void xneur_dontsave_preference(GladeXML *gxml);
 
 void xneur_edit_sound(GtkWidget *treeview);
-
-//void xneur_start_stop(GtkWidget *widget, struct _tray_icon *tray);
-void xneur_auto_manual(GtkWidget *widget, struct _tray_icon *tray);
 
 int is_correct_hotkey(gchar **key_stat);
 

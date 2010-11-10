@@ -360,33 +360,6 @@ void xneur_start(void)
 	}
 }
 
-/*void xneur_exit(void)
-{
-	xconfig->kill(xconfig);
-	gtk_main_quit();
-}*/
-
-/*void xneur_start_stop(GtkWidget *widget, struct _tray_icon *tray)
-{
-	if (widget){};
-
-	if (xconfig->kill(xconfig) == TRUE)
-	{
-		create_tray_icon(tray, FALSE);
-		return;
-	}
-
-	xneur_start();
-	create_tray_icon(tray, TRUE);
-}*/
-
-void xneur_auto_manual(GtkWidget *widget, struct _tray_icon *tray)
-{
-	if (widget || tray){};
-
-	xconfig->set_manual_mode(xconfig, !xconfig->is_manual_mode(xconfig));
-}
-
 void xneur_about(void)
 { 
 	GladeXML *gxml = glade_xml_new (GLADE_FILE_ABOUT, NULL, NULL);
@@ -2320,6 +2293,7 @@ void xneur_save_preference(GladeXML *gxml)
 	{
 	    g_warning("Failed to set %s (%d)\n", PACKAGE_GCONF_DIR "systray_text", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
 	}
+	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "systray_text");
 
 	// Path to pixmap dir
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry1");
@@ -2328,7 +2302,7 @@ void xneur_save_preference(GladeXML *gxml)
 	{
 	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "pixmap_dir", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
 	}
-	add_pixmap_directory(gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
+	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir");
 
 	// Keyboard properties
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry5");

@@ -41,6 +41,9 @@ extern struct _xneur_config *xconfig;
 
 struct _tray_icon *tray;
 
+GConfClient* gconfClient = NULL;
+gboolean text_on_tray = FALSE;
+
 #define TIMER_PERIOD		250
 
 static int xneur_old_pid = -1;
@@ -300,9 +303,22 @@ gboolean clock_check(gpointer data)
 		saturation = 0.25;
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher stopped ("), xconfig->handle->languages[lang].dir, ")");
 	}
-
+	
 	gint kbd_gr = get_active_kbd_group();
-	if (tray->images[kbd_gr])
+	if ((!tray->images[kbd_gr]) || (text_on_tray))
+	{
+		gtk_widget_destroy(GTK_WIDGET(tray->image));
+		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
+		for (unsigned int i=0; i < strlen(layout_name); i++)
+			layout_name[i] = toupper(layout_name[i]); 
+		tray->image = gtk_label_new ((const gchar *)layout_name);
+		gtk_label_set_justify (GTK_LABEL(tray->image), GTK_JUSTIFY_CENTER);
+		free(layout_name);
+		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
+		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
+
+	}
+	else
 	{
 		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
 		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
@@ -312,19 +328,6 @@ gboolean clock_check(gpointer data)
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 		gdk_pixbuf_unref(pb);
-	}
-	else
-	{
-		gtk_widget_destroy(GTK_WIDGET(tray->image));
-		
-		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
-		for (unsigned int i=0; i < strlen(layout_name); i++)
-			layout_name[i] = toupper(layout_name[i]); 
-		tray->image = gtk_label_new ((const gchar *)layout_name);
-		gtk_label_set_justify (GTK_LABEL(tray->image), GTK_JUSTIFY_CENTER);
-		free(layout_name);
-		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
-		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 	}
 
 	if (tray->tooltip != NULL)
@@ -352,6 +355,11 @@ void xneur_start_stop(void)
 	clock_check(tray);
 }
 
+void xneur_auto_manual(void)
+{
+	xconfig->set_manual_mode(xconfig, !xconfig->is_manual_mode(xconfig));
+}
+
 void xneur_exit(void)
 {
 	for (int i = 0; i < MAX_LAYOUTS; i++)
@@ -365,6 +373,38 @@ void xneur_exit(void)
 	
 	xconfig->kill(xconfig);
 	gtk_main_quit();
+}
+
+void gconf_key_systray_text_callback(GConfClient* client,
+                            guint cnxn_id,
+                            GConfEntry* entry,
+                            gpointer user_data)
+{
+	if (client || cnxn_id || user_data) {};
+	
+	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_BOOL)
+		text_on_tray = gconf_value_get_bool (gconf_entry_get_value (entry));
+}
+
+void gconf_key_pixmap_dir_callback(GConfClient* client,
+                            guint cnxn_id,
+                            GConfEntry* entry,
+                            gpointer user_data)
+{
+	printf("gconf_key_pixmap_dir_callback\n");
+	if (client || cnxn_id || user_data) {};
+	
+	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
+		add_pixmap_directory(gconf_value_get_string (gconf_entry_get_value (entry)));
+	for (int i = 0; i < xconfig->handle->total_languages; i++)
+	{
+		char *layout_name = strdup(xconfig->handle->languages[i].dir);
+		char *image_file = g_strdup_printf("%s%s", layout_name, ".png");
+		tray->images[i] = create_pixbuf(image_file);
+		free(image_file);
+		free(layout_name);
+	}
+
 }
 
 void create_tray_icon(void)
@@ -420,6 +460,32 @@ void create_tray_icon(void)
 	gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 
 	//printf("------ Min Size %d\n", gtk_status_icon_get_size(GTK_STATUS_ICON(tray->tray_icon)));
+
+	GConfClient* gconfClient = gconf_client_get_default();
+
+	GConfValue* gcValue = NULL;
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "systray_text", NULL);
+
+	if(gcValue != NULL) 
+	{
+		if(gcValue->type == GCONF_VALUE_BOOL) 
+			text_on_tray = gconf_value_get_bool(gcValue);
+
+		gconf_value_free(gcValue);
+	}
+	
+	gconf_client_notify_add(gconfClient,
+                          PACKAGE_GCONF_DIR "systray_text",
+                          gconf_key_systray_text_callback,
+                          NULL,
+                          NULL,
+                          NULL);
+	gconf_client_notify_add(gconfClient,
+                          PACKAGE_GCONF_DIR "pixmap_dir",
+                          gconf_key_pixmap_dir_callback,
+                          NULL,
+                          NULL,
+                          NULL);
 	
 	g_timeout_add(TIMER_PERIOD, clock_check, (gpointer) tray);
 }

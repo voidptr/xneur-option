@@ -38,6 +38,7 @@ struct _tray_icon
 
 void create_tray_icon(void);
 void xneur_start_stop(void);
+void xneur_auto_manual(void);
 void xneur_exit(void);
 
 #endif /* _TRAYICON_H_ */
