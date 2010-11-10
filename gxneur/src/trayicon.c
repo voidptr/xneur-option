@@ -49,6 +49,7 @@ gboolean text_on_tray = FALSE;
 static int xneur_old_pid = -1;
 static int xneur_old_state = -1;
 static int xneur_old_group = -1;
+static int force_update = FALSE;
 
 static void exec_user_action(char *cmd)
 {
@@ -282,9 +283,14 @@ gboolean clock_check(gpointer data)
 		gtk_main_quit();
 	}
 	
-	if (xneur_pid == xneur_old_pid && xneur_state == xneur_old_state && xneur_group == xneur_old_group)
+	if (xneur_pid == xneur_old_pid && 
+	    xneur_state == xneur_old_state && 
+	    xneur_group == xneur_old_group &&
+	    force_update == FALSE)
 		return TRUE;
 
+	force_update = FALSE;
+	
 	xneur_old_pid = xneur_pid;
 	xneur_old_state = xneur_state;
 	xneur_old_group = xneur_group;
@@ -384,6 +390,8 @@ void gconf_key_systray_text_callback(GConfClient* client,
 	
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_BOOL)
 		text_on_tray = gconf_value_get_bool (gconf_entry_get_value (entry));
+
+	force_update = TRUE;
 }
 
 void gconf_key_pixmap_dir_callback(GConfClient* client,
@@ -404,7 +412,8 @@ void gconf_key_pixmap_dir_callback(GConfClient* client,
 		free(image_file);
 		free(layout_name);
 	}
-
+	
+	force_update = TRUE;
 }
 
 void create_tray_icon(void)
