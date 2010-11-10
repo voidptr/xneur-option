@@ -514,23 +514,27 @@ msgstr "Параметры запуска"
 msgid "Show text on the tray"
 msgstr "Показывать текст в системном лотке"
 
-#: glade/config.glade:2386
+#: glade/config.glade:2382
+msgid "Do not change the icon size when resizing the tray"
+msgstr "Не менять размер значка при изменении размера трея"
+
+#: glade/config.glade:2400
 msgid "Pixmaps directory"
 msgstr "Расположение значков"
 
-#: glade/config.glade:2455
+#: glade/config.glade:2469
 msgid "UI"
 msgstr "Внешний вид"
 
-#: glade/config.glade:2486
+#: glade/config.glade:2500
 msgid "Keyboard properties command"
 msgstr "Команда запуска параметров клавиатуры"
 
-#: glade/config.glade:2558
+#: glade/config.glade:2572
 msgid "System"
 msgstr "Системное"
 
-#: glade/config.glade:2589
+#: glade/config.glade:2603
 msgid "<b>Properties</b>"
 msgstr "<b>Параметры</b>"
 
@@ -554,27 +558,27 @@ msgstr ""
 "ЗАМЕЧАНИЕ: Специальные символы [ ] \\ ^ $ . | ? * + ( ) { } должны "
 "предваряться символом \\ (обратная косая черта)."
 
-#: glade/rule_add.glade:58
+#: glade/rule_add.glade:71
 msgid "Typed on the keyboard word must:"
 msgstr "Набираемое на клавиатуре слово должно:"
 
-#: glade/rule_add.glade:79
+#: glade/rule_add.glade:92
 msgid "contain that sequence of letters"
 msgstr "содержать данное сочетание букв"
 
-#: glade/rule_add.glade:92
+#: glade/rule_add.glade:105
 msgid "start with these letters"
 msgstr "начинаться с данных букв"
 
-#: glade/rule_add.glade:105
+#: glade/rule_add.glade:118
 msgid "to end these letters"
 msgstr "заканчиваться данными буквами"
 
-#: glade/rule_add.glade:118
+#: glade/rule_add.glade:131
 msgid "coincide with the combination of letters"
 msgstr "совпадать с данным сочетанием букв"
 
-#: glade/rule_add.glade:151
+#: glade/rule_add.glade:164
 msgid "More:"
 msgstr "Дополнительно:"
 
@@ -600,10 +604,12 @@ msgid ""
 "If you don't want to loose your configuration, back it up\n"
 "and manually patch new configuration which will be created after first run.\n"
 msgstr ""
-"Конфигурационный файл XNeur испорчен или был создан устаревшей версией программы!\n"
+"Конфигурационный файл XNeur испорчен или был создан устаревшей версией "
+"программы!\n"
 "Пожалуйста, удалите ~/.xneur/. Это должно помочь устранить проблему!\n"
 "Если вы не хотите потерять свои настройки, сделайте резервную копию\n"
-"и вручную измените новый конфигурационный файл, который будет создан после первого запуска.\n"
+"и вручную измените новый конфигурационный файл, который будет создан после "
+"первого запуска.\n"
 
 #: src/misc.c:358 src/misc.c:359 src/misc.c:566 src/misc.c:567
 #, c-format
@@ -735,4 +741,3 @@ msgstr "X Neural Switcher остановлен ("
 #: src/trayicon.c:280
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
-

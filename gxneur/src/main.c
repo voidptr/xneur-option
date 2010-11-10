@@ -54,7 +54,6 @@ int main(int argc, char *argv[])
 	// Get pixmap directory
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", NULL);
 
-	/* if value pointer remains NULL, the key was not found */
 	if(gcValue == NULL) 
 	{
 		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", PACKAGE_PIXMAPS_DIR, NULL)) 
@@ -72,14 +71,12 @@ int main(int argc, char *argv[])
 			string_value = gconf_value_get_string(gcValue);
 			add_pixmap_directory(string_value);
 		}
-		/* Release resources */
 		gconf_value_free(gcValue);
 	}
 
 	// Get keyboard properties command
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
 
-	/* if value pointer remains NULL, the key was not found */
 	if(gcValue == NULL) 
 	{
 		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", KB_PROP_COMMAND, NULL)) 
@@ -93,19 +90,15 @@ int main(int argc, char *argv[])
 	// Get delay from gconf
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "delay", NULL);
 
-	/* if value pointer remains NULL, the key was not found */
 	int value = 0;
 	if(gcValue != NULL) 
 	{
-		/* Check if value type is integer */
 		if(gcValue->type == GCONF_VALUE_INT) 
 			value = gconf_value_get_int(gcValue);
 
-		/* Release resources */
 		gconf_value_free(gcValue);
 	}
 	
-	/* release GConf client */
 	g_object_unref(gconfClient);
 	
 	sleep (value);

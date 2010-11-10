@@ -43,6 +43,7 @@ struct _tray_icon *tray;
 
 GConfClient* gconfClient = NULL;
 gboolean text_on_tray = FALSE;
+gboolean dont_resize_tray_icon = FALSE;
 
 #define TIMER_PERIOD		250
 
@@ -281,8 +282,8 @@ gboolean clock_check(gpointer data)
 	{
 		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
 		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
-		printf("Resize %d %d\n",tray->height, tray->height * 15/22);
-		if (tray->height > 0)
+		//printf("Resize %d %d\n",tray->height, tray->height * 15/22);
+		if ((tray->height * 15/22 > 0) && (!dont_resize_tray_icon))
 			pb = gdk_pixbuf_scale_simple (pb, tray->height, tray->height * 15/22, GDK_INTERP_BILINEAR);
 		gtk_widget_destroy(GTK_WIDGET(tray->image));
 		tray->image = gtk_image_new_from_pixbuf(pb);
@@ -336,7 +337,20 @@ void xneur_exit(void)
 	gtk_main_quit();
 }
 
-void gconf_key_systray_text_callback(GConfClient* client,
+void gconf_key_dont_resize_tray_icon_callback(GConfClient* client,
+                            guint cnxn_id,
+                            GConfEntry* entry,
+                            gpointer user_data)
+{
+	if (client || cnxn_id || user_data) {};
+	
+	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_BOOL)
+		dont_resize_tray_icon = gconf_value_get_bool (gconf_entry_get_value (entry));
+
+	force_update = TRUE;
+}
+
+void gconf_key_text_on_tray_callback(GConfClient* client,
                             guint cnxn_id,
                             GConfEntry* entry,
                             gpointer user_data)
@@ -354,7 +368,6 @@ void gconf_key_pixmap_dir_callback(GConfClient* client,
                             GConfEntry* entry,
                             gpointer user_data)
 {
-	printf("gconf_key_pixmap_dir_callback\n");
 	if (client || cnxn_id || user_data) {};
 	
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
@@ -377,7 +390,6 @@ gboolean tray_expose_event (GtkWidget      *widget,
 {
 	if (widget || tray) {};
 
-	printf("Expose %d %d\n",event->area.height, event->area.height);
 	if (tray->height != event->area.height)
 	{
 		tray->height = event->area.height;
@@ -441,8 +453,8 @@ void create_tray_icon(void)
 	GConfClient* gconfClient = gconf_client_get_default();
 
 	GConfValue* gcValue = NULL;
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "systray_text", NULL);
-
+	
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "text_on_tray", NULL);
 	if(gcValue != NULL) 
 	{
 		if(gcValue->type == GCONF_VALUE_BOOL) 
@@ -450,10 +462,25 @@ void create_tray_icon(void)
 
 		gconf_value_free(gcValue);
 	}
-	
+
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "dont_resize_tray_icon", NULL);
+	if(gcValue != NULL) 
+	{
+		if(gcValue->type == GCONF_VALUE_BOOL) 
+			dont_resize_tray_icon = gconf_value_get_bool(gcValue);
+
+		gconf_value_free(gcValue);
+	}
+
 	gconf_client_notify_add(gconfClient,
-                          PACKAGE_GCONF_DIR "systray_text",
-                          gconf_key_systray_text_callback,
+                          PACKAGE_GCONF_DIR "dont_resize_tray_icon",
+                          gconf_key_dont_resize_tray_icon_callback,
+                          NULL,
+                          NULL,
+                          NULL);
+	gconf_client_notify_add(gconfClient,
+                          PACKAGE_GCONF_DIR "text_on_tray",
+                          gconf_key_text_on_tray_callback,
                           NULL,
                           NULL,
                           NULL);

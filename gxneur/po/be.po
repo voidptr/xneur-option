@@ -512,23 +512,27 @@ msgstr ""
 msgid "Show text on the tray"
 msgstr ""
 
-#: glade/config.glade:2386
+#: glade/config.glade:2382
+msgid "Do not change the icon size when resizing the tray"
+msgstr ""
+
+#: glade/config.glade:2400
 msgid "Pixmaps directory"
 msgstr ""
 
-#: glade/config.glade:2455
+#: glade/config.glade:2469
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2486
+#: glade/config.glade:2500
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:2558
+#: glade/config.glade:2572
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:2589
+#: glade/config.glade:2603
 msgid "<b>Properties</b>"
 msgstr ""
 
@@ -548,27 +552,27 @@ msgid ""
 "(backslash)."
 msgstr ""
 
-#: glade/rule_add.glade:58
+#: glade/rule_add.glade:71
 msgid "Typed on the keyboard word must:"
 msgstr ""
 
-#: glade/rule_add.glade:79
+#: glade/rule_add.glade:92
 msgid "contain that sequence of letters"
 msgstr ""
 
-#: glade/rule_add.glade:92
+#: glade/rule_add.glade:105
 msgid "start with these letters"
 msgstr ""
 
-#: glade/rule_add.glade:105
+#: glade/rule_add.glade:118
 msgid "to end these letters"
 msgstr ""
 
-#: glade/rule_add.glade:118
+#: glade/rule_add.glade:131
 msgid "coincide with the combination of letters"
 msgstr ""
 
-#: glade/rule_add.glade:151
+#: glade/rule_add.glade:164
 msgid "More:"
 msgstr ""
 
