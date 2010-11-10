@@ -34,6 +34,8 @@ struct _tray_icon
 	GtkWidget *image;
 	GtkWidget *tray_menu;
 	GtkWidget *evbox;
+
+	gint height;
 };
 
 void create_tray_icon(void);

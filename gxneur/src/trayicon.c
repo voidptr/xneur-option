@@ -209,53 +209,6 @@ gboolean tray_icon_press(GtkWidget *widget, GdkEventButton *event, struct _tray_
 	return FALSE;
 }
 
-static void tray_icon_handle_notify (GtkWidget *widget, GParamSpec *arg1, struct _tray_icon *tray)
-{
-	if (widget){};
-
-			printf("Resize Notify\n");
-	
-    if ( g_str_equal(arg1->name,"size") )
-    {
-		int xneur_pid = xconfig->get_pid(xconfig);
-
-		float saturation;
-		if (xneur_pid != -1)
-		{
-			saturation = 1.0;
-		}
-		else
-		{
-			saturation = 0.25;
-		}
-		if (tray->images[get_active_kbd_group()])
-		{
-			GdkPixbuf *pb = gdk_pixbuf_copy (tray->images[get_active_kbd_group()]);
-			gdk_pixbuf_saturate_and_pixelate(tray->images[get_active_kbd_group()], pb, saturation, FALSE);
-			//pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
-			if (tray->image != NULL)
-			{
-				gtk_widget_destroy(GTK_WIDGET(tray->image));
-				tray->image = NULL;
-			}
-			tray->image = gtk_image_new_from_pixbuf(pb);
-			//gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
-			gtk_widget_show(GTK_WIDGET(tray->image));
-			gdk_pixbuf_unref(pb); 
-		}
-	}
-	/*if (g_str_equal(arg1->name,"embedded"))
-	{
-		b_value = gtk_status_icon_is_embedded(pgsi->tray_icon);
-	}
-	if ( g_str_equal(arg1->name,"visible") )
-	{
-		b_value = gtk_status_icon_get_vis  ble(pgsi->tray_icon);
-	}*/
-   
-	return;
-}
-
 gboolean clock_check(gpointer data)
 {
 	struct _tray_icon *tray = (struct _tray_icon *)data;
@@ -328,7 +281,9 @@ gboolean clock_check(gpointer data)
 	{
 		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
 		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
-		//pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
+		printf("Resize %d %d\n",tray->height, tray->height * 15/22);
+		if (tray->height > 0)
+			pb = gdk_pixbuf_scale_simple (pb, tray->height, tray->height * 15/22, GDK_INTERP_BILINEAR);
 		gtk_widget_destroy(GTK_WIDGET(tray->image));
 		tray->image = gtk_image_new_from_pixbuf(pb);
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
@@ -416,6 +371,21 @@ void gconf_key_pixmap_dir_callback(GConfClient* client,
 	force_update = TRUE;
 }
 
+gboolean tray_expose_event (GtkWidget      *widget,
+                            GdkEventExpose *event,
+			  struct _tray_icon *tray)
+{
+	if (widget || tray) {};
+
+	printf("Expose %d %d\n",event->area.height, event->area.height);
+	if (tray->height != event->area.height)
+	{
+		tray->height = event->area.height;
+		force_update = TRUE;
+	}
+	return FALSE;
+}
+
 void create_tray_icon(void)
 {
 	tray = g_new0(struct _tray_icon, 1);	
@@ -444,13 +414,11 @@ void create_tray_icon(void)
 
 	tray->evbox		= gtk_event_box_new();
 	gtk_event_box_set_visible_window(GTK_EVENT_BOX(tray->evbox), 0);
-	g_signal_connect(G_OBJECT(tray->evbox), "notify::size", G_CALLBACK (tray_icon_handle_notify), tray);
 
 	if (tray->images[kbd_gr])
 	{
 		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
 		gdk_pixbuf_saturate_and_pixelate(pb, pb, .25, FALSE);
-		//pb = gdk_pixbuf_scale_simple (pb, size, size * 15/22, GDK_INTERP_BILINEAR);
 		tray->image = gtk_image_new_from_pixbuf(pb);
 		gdk_pixbuf_unref(pb);
 	}
@@ -463,12 +431,12 @@ void create_tray_icon(void)
 		gtk_label_set_justify (GTK_LABEL(tray->image), GTK_JUSTIFY_CENTER);
 		free(layout_name);
 	}
+	g_signal_connect (tray->tray_icon, "expose-event",
+			  G_CALLBACK (tray_expose_event), tray);
 	
 	gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 	gtk_container_add(GTK_CONTAINER(tray->tray_icon), tray->evbox);
 	gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
-
-	//printf("------ Min Size %d\n", gtk_status_icon_get_size(GTK_STATUS_ICON(tray->tray_icon)));
 
 	GConfClient* gconfClient = gconf_client_get_default();
 
