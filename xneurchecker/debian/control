@@ -2,13 +2,13 @@ Source: xneurchecker
 Section: x11
 Priority: optional
 Maintainer: Andrew Crew Kuznetsov <andrewcrew@rambler.ru>
-Build-Depends: debhelper (>= 5), cdbs, autotools-dev, pkg-config, libxneur-dev (>= 0.9.9), libtool, docbook-to-man
+Build-Depends: debhelper (>= 5), cdbs, autotools-dev, pkg-config, libxneur-dev (>= 0.10.0), libtool, docbook-to-man
 Standards-Version: 3.9.1
 Homepage: http://xneur.ru
 
 Package: xneurchecker
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xneur (>= 0.10.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Simple tool to check the affiliation of the sequence of letters a certain layout.
 
  .
