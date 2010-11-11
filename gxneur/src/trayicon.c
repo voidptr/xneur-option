@@ -226,9 +226,10 @@ gboolean tray_expose_event (GtkWidget      *widget,
 	return FALSE;
 }
 
-gboolean clock_check(gpointer data)
+gboolean clock_check(gpointer dummy)
 {
-	struct _tray_icon *tray = (struct _tray_icon *)data;
+	if (dummy) {};
+	//struct _tray_icon *tray = (struct _tray_icon *)data;
 	
 	int xneur_pid = xconfig->get_pid(xconfig);
 	int xneur_state = xconfig->is_manual_mode(xconfig);
@@ -298,22 +299,17 @@ gboolean clock_check(gpointer data)
 	{
 		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
 		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
-		
+
 		if (resize_tray_icon)
 		{
-			if (!g_signal_handler_is_connected(tray->tray_icon, expose_handler))
-				g_signal_handler_unblock(tray->tray_icon, expose_handler);
-
 			float proportion = 1;
-			GtkRequisition requisition;
-			gtk_widget_size_request(tray->evbox, &requisition);
-			proportion = (requisition.width > requisition.height) ? (float)tray->height / (float)requisition.width : (float)tray->height / (float)requisition.height;
-			pb = gdk_pixbuf_scale_simple (pb, requisition.width * proportion, requisition.height * proportion, GDK_INTERP_BILINEAR);
-		}
-		else
-		{
-			if (g_signal_handler_is_connected(tray->tray_icon, expose_handler))
-				g_signal_handler_block(tray->tray_icon, expose_handler);
+			int width = gdk_pixbuf_get_width(pb) ;
+			int height = gdk_pixbuf_get_height(pb) ;
+			proportion = (width > height) ? (float)tray->height / (float)width : (float)tray->height / (float)height;
+			width *= proportion;
+			height *= proportion;
+			if ((width > 0) && (height > 0)) 
+				pb = gdk_pixbuf_scale_simple (pb, width, height, GDK_INTERP_BILINEAR);
 		}
 		
 		gtk_widget_destroy(GTK_WIDGET(tray->image));
@@ -321,6 +317,7 @@ gboolean clock_check(gpointer data)
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 		gdk_pixbuf_unref(pb);
+		
 	}
 
 	if (tray->tooltip != NULL)
@@ -340,12 +337,12 @@ void xneur_start_stop(void)
 {
 	if (xconfig->kill(xconfig) == TRUE)
 	{
-		clock_check(tray);
+		clock_check(0);
 		return;
 	}
 
 	xneur_start();
-	clock_check(tray);
+	clock_check(0);
 }
 
 void xneur_auto_manual(void)
@@ -378,6 +375,15 @@ void gconf_key_resize_tray_icon_callback(GConfClient* client,
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_BOOL)
 		resize_tray_icon = gconf_value_get_bool (gconf_entry_get_value (entry));
 
+	if (resize_tray_icon)
+	{
+		g_signal_handler_unblock(tray->tray_icon, expose_handler);
+	}
+	else
+	{
+		g_signal_handler_block(tray->tray_icon, expose_handler);
+	}
+	
 	force_update = TRUE;
 }
 
@@ -399,6 +405,7 @@ void gconf_key_pixmap_dir_callback(GConfClient* client,
                             GConfEntry* entry,
                             gpointer user_data)
 {
+	printf ("gconf_key_pixmap_dir_callback\n") ;
 	if (client || cnxn_id || user_data) {};
 	
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
@@ -461,9 +468,6 @@ void create_tray_icon(void)
 		free(layout_name);
 	}
 	
-	expose_handler = g_signal_connect (tray->tray_icon, "expose-event", G_CALLBACK (tray_expose_event), tray);
-	printf("++++ %d\n", expose_handler);
-	
 	gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 	gtk_container_add(GTK_CONTAINER(tray->tray_icon), tray->evbox);
 	gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
@@ -489,7 +493,25 @@ void create_tray_icon(void)
 
 		gconf_value_free(gcValue);
 	}
-
+	expose_handler = g_signal_connect (tray->tray_icon, "expose-event", G_CALLBACK (tray_expose_event), tray);
+	
+	if (resize_tray_icon)
+	{
+		if (!g_signal_handler_is_connected(tray->tray_icon, expose_handler))
+			g_signal_handler_unblock(tray->tray_icon, expose_handler);
+	}
+	else
+	{
+		if (g_signal_handler_is_connected(tray->tray_icon, expose_handler))
+			g_signal_handler_block(tray->tray_icon, expose_handler);
+	}
+	
+	gconf_client_notify_add(gconfClient,
+                          PACKAGE_GCONF_DIR "pixmap_dir",
+                          gconf_key_pixmap_dir_callback,
+                          NULL,
+                          NULL,
+                          NULL);		                        
 	gconf_client_notify_add(gconfClient,
                           PACKAGE_GCONF_DIR "resize_tray_icon",
                           gconf_key_resize_tray_icon_callback,
@@ -502,12 +524,6 @@ void create_tray_icon(void)
                           NULL,
                           NULL,
                           NULL);
-	gconf_client_notify_add(gconfClient,
-                          PACKAGE_GCONF_DIR "pixmap_dir",
-                          gconf_key_pixmap_dir_callback,
-                          NULL,
-                          NULL,
-                          NULL);
 	
-	g_timeout_add(TIMER_PERIOD, clock_check, (gpointer) tray);
+	g_timeout_add(TIMER_PERIOD, clock_check, 0);
 }
