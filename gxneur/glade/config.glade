@@ -2379,7 +2379,7 @@ Trace</property>
                                     </child>
                                     <child>
                                       <widget class="GtkCheckButton" id="checkbutton29">
-                                        <property name="label" translatable="yes">Do not change the icon size when resizing the tray</property>
+                                        <property name="label" translatable="yes">Change the icon size when resizing the tray</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>

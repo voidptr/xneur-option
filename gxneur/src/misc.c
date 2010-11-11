@@ -1300,8 +1300,8 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton28");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), value);
 
-	// Dont resize icon on tray
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "dont_resize_tray_icon", NULL);
+	// Resize icon on tray
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "resize_tray_icon", NULL);
 
 	value = FALSE;
 	if(gcValue != NULL) 
@@ -2307,14 +2307,14 @@ void xneur_save_preference(GladeXML *gxml)
 	}
 	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "text_on_tray");
 
-	// Dont resize icon on tray
+	// Resize icon on tray
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton29");
 	 
-	if(!gconf_client_set_bool(gconfClient, PACKAGE_GCONF_DIR "dont_resize_tray_icon", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)), NULL)) 
+	if(!gconf_client_set_bool(gconfClient, PACKAGE_GCONF_DIR "resize_tray_icon", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)), NULL)) 
 	{
-	    g_warning("Failed to set %s (%d)\n", PACKAGE_GCONF_DIR "dont_resize_tray_icon", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
+	    g_warning("Failed to set %s (%d)\n", PACKAGE_GCONF_DIR "resize_tray_icon", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
 	}
-	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "dont_resize_tray_icon");
+	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "resize_tray_icon");
 
 	// Path to pixmap dir
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry1");

@@ -506,7 +506,7 @@ msgid "Show text on the tray"
 msgstr ""
 
 #: glade/config.glade:2382
-msgid "Do not change the icon size when resizing the tray"
+msgid "Change the icon size when resizing the tray"
 msgstr ""
 
 #: glade/config.glade:2400

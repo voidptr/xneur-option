@@ -43,7 +43,7 @@ struct _tray_icon *tray;
 
 GConfClient* gconfClient = NULL;
 gboolean text_on_tray = FALSE;
-gboolean dont_resize_tray_icon = FALSE;
+gboolean resize_tray_icon = FALSE;
 
 #define TIMER_PERIOD		250
 
@@ -282,9 +282,15 @@ gboolean clock_check(gpointer data)
 	{
 		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
 		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
-		//printf("Resize %d %d\n",tray->height, tray->height * 15/22);
-		if ((tray->height * 15/22 > 0) && (!dont_resize_tray_icon))
-			pb = gdk_pixbuf_scale_simple (pb, tray->height, tray->height * 15/22, GDK_INTERP_BILINEAR);
+		
+		if (resize_tray_icon)
+		{
+			float proportion = 1;
+			GtkRequisition requisition;
+			gtk_widget_size_request(tray->evbox, &requisition);
+			proportion = (requisition.width > requisition.height) ? (float)tray->height / (float)requisition.width : (float)tray->height / (float)requisition.height;
+			pb = gdk_pixbuf_scale_simple (pb, requisition.width * proportion, requisition.height * proportion, GDK_INTERP_BILINEAR);
+		}
 		gtk_widget_destroy(GTK_WIDGET(tray->image));
 		tray->image = gtk_image_new_from_pixbuf(pb);
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
@@ -337,7 +343,7 @@ void xneur_exit(void)
 	gtk_main_quit();
 }
 
-void gconf_key_dont_resize_tray_icon_callback(GConfClient* client,
+void gconf_key_resize_tray_icon_callback(GConfClient* client,
                             guint cnxn_id,
                             GConfEntry* entry,
                             gpointer user_data)
@@ -345,7 +351,7 @@ void gconf_key_dont_resize_tray_icon_callback(GConfClient* client,
 	if (client || cnxn_id || user_data) {};
 	
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_BOOL)
-		dont_resize_tray_icon = gconf_value_get_bool (gconf_entry_get_value (entry));
+		resize_tray_icon = gconf_value_get_bool (gconf_entry_get_value (entry));
 
 	force_update = TRUE;
 }
@@ -463,18 +469,18 @@ void create_tray_icon(void)
 		gconf_value_free(gcValue);
 	}
 
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "dont_resize_tray_icon", NULL);
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "resize_tray_icon", NULL);
 	if(gcValue != NULL) 
 	{
 		if(gcValue->type == GCONF_VALUE_BOOL) 
-			dont_resize_tray_icon = gconf_value_get_bool(gcValue);
+			resize_tray_icon = gconf_value_get_bool(gcValue);
 
 		gconf_value_free(gcValue);
 	}
 
 	gconf_client_notify_add(gconfClient,
-                          PACKAGE_GCONF_DIR "dont_resize_tray_icon",
-                          gconf_key_dont_resize_tray_icon_callback,
+                          PACKAGE_GCONF_DIR "resize_tray_icon",
+                          gconf_key_resize_tray_icon_callback,
                           NULL,
                           NULL,
                           NULL);

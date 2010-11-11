@@ -515,8 +515,8 @@ msgid "Show text on the tray"
 msgstr "Показывать текст в системном лотке"
 
 #: glade/config.glade:2382
-msgid "Do not change the icon size when resizing the tray"
-msgstr "Не менять размер значка при изменении размера трея"
+msgid "Change the icon size when resizing the tray"
+msgstr "Менять размер значка при изменении размера трея"
 
 #: glade/config.glade:2400
 msgid "Pixmaps directory"
