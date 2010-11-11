@@ -8,7 +8,7 @@ Homepage: http://xneur.ru
 
 Package: gxneur
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xneur (>= 0.9.9)
+Depends: ${shlibs:Depends}, ${misc:Depends}, xneur (>= 0.10.0)
 Description: GTK+ frontend for xneur keyboard layout switcher
  gXNeur runs in system tray and shows XNeur's state. It also allows to configure
  XNeur via GUI dialog.
