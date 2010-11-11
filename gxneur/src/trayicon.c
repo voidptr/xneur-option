@@ -45,6 +45,8 @@ GConfClient* gconfClient = NULL;
 gboolean text_on_tray = FALSE;
 gboolean resize_tray_icon = FALSE;
 
+gint expose_handler = 0;
+
 #define TIMER_PERIOD		250
 
 static int xneur_old_pid = -1;
@@ -210,6 +212,20 @@ gboolean tray_icon_press(GtkWidget *widget, GdkEventButton *event, struct _tray_
 	return FALSE;
 }
 
+gboolean tray_expose_event (GtkWidget      *widget,
+                            GdkEventExpose *event,
+			  struct _tray_icon *tray)
+{
+	if (widget || tray) {};
+
+	if (tray->height != event->area.height)
+	{
+		tray->height = event->area.height;
+		force_update = TRUE;
+	}
+	return FALSE;
+}
+
 gboolean clock_check(gpointer data)
 {
 	struct _tray_icon *tray = (struct _tray_icon *)data;
@@ -285,12 +301,21 @@ gboolean clock_check(gpointer data)
 		
 		if (resize_tray_icon)
 		{
+			if (!g_signal_handler_is_connected(tray->tray_icon, expose_handler))
+				g_signal_handler_unblock(tray->tray_icon, expose_handler);
+
 			float proportion = 1;
 			GtkRequisition requisition;
 			gtk_widget_size_request(tray->evbox, &requisition);
 			proportion = (requisition.width > requisition.height) ? (float)tray->height / (float)requisition.width : (float)tray->height / (float)requisition.height;
 			pb = gdk_pixbuf_scale_simple (pb, requisition.width * proportion, requisition.height * proportion, GDK_INTERP_BILINEAR);
 		}
+		else
+		{
+			if (g_signal_handler_is_connected(tray->tray_icon, expose_handler))
+				g_signal_handler_block(tray->tray_icon, expose_handler);
+		}
+		
 		gtk_widget_destroy(GTK_WIDGET(tray->image));
 		tray->image = gtk_image_new_from_pixbuf(pb);
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
@@ -390,20 +415,6 @@ void gconf_key_pixmap_dir_callback(GConfClient* client,
 	force_update = TRUE;
 }
 
-gboolean tray_expose_event (GtkWidget      *widget,
-                            GdkEventExpose *event,
-			  struct _tray_icon *tray)
-{
-	if (widget || tray) {};
-
-	if (tray->height != event->area.height)
-	{
-		tray->height = event->area.height;
-		force_update = TRUE;
-	}
-	return FALSE;
-}
-
 void create_tray_icon(void)
 {
 	tray = g_new0(struct _tray_icon, 1);	
@@ -449,8 +460,9 @@ void create_tray_icon(void)
 		gtk_label_set_justify (GTK_LABEL(tray->image), GTK_JUSTIFY_CENTER);
 		free(layout_name);
 	}
-	g_signal_connect (tray->tray_icon, "expose-event",
-			  G_CALLBACK (tray_expose_event), tray);
+	
+	expose_handler = g_signal_connect (tray->tray_icon, "expose-event", G_CALLBACK (tray_expose_event), tray);
+	printf("++++ %d\n", expose_handler);
 	
 	gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 	gtk_container_add(GTK_CONTAINER(tray->tray_icon), tray->evbox);
