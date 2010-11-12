@@ -108,6 +108,7 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 		//clock_gettime(CLOCK_REALTIME, &before); 
 		
 		int len = 0;
+				printf("paralles 1\n");
 		#ifdef _OPENMP
 		#pragma omp parallel for reduction(+: len)
 		#endif
@@ -120,6 +121,7 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 		char *full_str = malloc(len * sizeof(char));
 		full_str[0] = '\0';
 
+				printf("paralles 1 END\n");
 		#ifdef _OPENMP
 		#pragma omp parallel for shared(full_str) ordered
 		#endif		

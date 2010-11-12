@@ -54,6 +54,7 @@ static int get_dictionary_lang(struct _xneur_handle *handle, char **word)
 			log_message(DEBUG, _("   [+] Found this word in %s language dictionary"), handle->languages[lang].name);
 			return lang;
 		}
+					printf("get_dictionary_lang %s\n",  word[lang]);
 	}
 
 	log_message(DEBUG, _("   [-] This word not found in any dictionaries"));
@@ -272,12 +273,12 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 
 	log_message(DEBUG, _("Start word processing..."));
 
-	
+	printf("Check by dictionary\n");
 	// Check by dictionary
 	int lang = get_dictionary_lang(handle, word);
 
 	int len = strlen(get_last_word(p->content));
-
+	printf("Check by dictionary END\n");
 #ifdef WITH_ENCHANT
 	// Check by enchant wrapper
 	if (lang == NO_LANGUAGE)
