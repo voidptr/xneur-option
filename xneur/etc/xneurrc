@@ -2,7 +2,7 @@
 # All values writted XNeur
 
 # Config version
-Version 0.9.8
+Version 0.10.0
 
 # Work in manual mode
 ManualMode No
@@ -143,7 +143,7 @@ SendDelay 0
 # This option enable or disable logging keyboard
 # Example:
 #LogSave No
-LogSave Yes
+LogSave No
 
 # This option set max size of log file (bytes).
 # Example:
