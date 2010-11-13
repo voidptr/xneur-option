@@ -742,11 +742,13 @@ void xneur_preference(void)
 
 	// Log send to e-mail
 	widget = glade_xml_get_widget (gxml, "entry3");
-	gtk_entry_set_text(GTK_ENTRY(widget), xconfig->mail_keyboard_log);
+	if (xconfig->mail_keyboard_log != NULL)
+		gtk_entry_set_text(GTK_ENTRY(widget), xconfig->mail_keyboard_log);
 	
 	// Log send via host
 	widget = glade_xml_get_widget (gxml, "entry4");
-	gtk_entry_set_text(GTK_ENTRY(widget), xconfig->host_keyboard_log);
+	if (xconfig->host_keyboard_log != NULL)
+		gtk_entry_set_text(GTK_ENTRY(widget), xconfig->host_keyboard_log);
 
 	// Log port
 	widget = glade_xml_get_widget (gxml, "spinbutton4");

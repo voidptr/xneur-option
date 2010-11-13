@@ -1117,13 +1117,15 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option define e-mail for send log file, if it's size greater then max size.\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#LogMail your.mail@your.server.com\n");
-	fprintf(stream, "LogMail %s\n\n", p->mail_keyboard_log);
+	if (p->mail_keyboard_log != NULL)
+		fprintf(stream, "LogMail %s\n\n", p->mail_keyboard_log);
 
 	fprintf(stream, "# This option define host to send e-mail without login and password.\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#LogHostIP 127.0.0.1\n");
 	fprintf(stream, "#LogHostIP mail.example.com\n");
-	fprintf(stream, "LogHostIP %s\n\n", p->host_keyboard_log);
+	if (p->host_keyboard_log != NULL)
+		fprintf(stream, "LogHostIP %s\n\n", p->host_keyboard_log);
 
 	fprintf(stream, "# This option define port to send e-mail without login and password.\n");
 	fprintf(stream, "# Example:\n");
