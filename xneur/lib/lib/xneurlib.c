@@ -415,8 +415,9 @@ int xneur_get_layout (struct _xneur_handle *handle, char *word)
 	int cur_lang = get_curr_keyboard_group();
 	int new_lang = check_lang(handle, buffer, cur_lang);
 	buffer->uninit(buffer);
+	// The word is suitable for all languages, return -1
 	if (new_lang == NO_LANGUAGE)
-		new_lang = cur_lang;
+		new_lang = -1;
 
 	return new_lang;
 }

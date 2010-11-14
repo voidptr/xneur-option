@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 			case 'h':
 			{
 			    printf("\nxneurchecker - manual text checker based on xneur library (version %s) \n", VERSION);
-				printf("usage: xneurchecker [options] <word_1> <...word_n>\n");
+				printf("usage: xneurchecker [options] \"<word_1> <...word_n>\"\n");
 				printf("  where options are:\n");
 				printf("\n");
 				printf("  -h, --help		This help!\n");

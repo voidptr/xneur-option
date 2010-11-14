@@ -48,6 +48,7 @@ struct _xneur_language
 	struct _list_char *pattern;
 };
 
+// Main xneur structure 
 struct _xneur_handle
 {
 	struct _xneur_language *languages;
