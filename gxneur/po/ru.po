@@ -84,6 +84,9 @@ msgstr "Предпросмотр коррекции"
 msgid "Correct selected text"
 msgstr "Коррекция выделеного текста"
 
+msgid "Correct selected text and rotate layouts"
+msgstr "Коррекция выделеного текста и смена раскладки"
+
 msgid "Transliterate selected text"
 msgstr "Транслитерация выделеного текста"
 

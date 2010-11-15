@@ -84,6 +84,9 @@ msgstr ""
 msgid "Correct selected text"
 msgstr "Corecta textul selecționat"
 
+msgid "Correct selected text and rotate layouts"
+msgstr ""
+
 msgid "Transliterate selected text"
 msgstr ""
 

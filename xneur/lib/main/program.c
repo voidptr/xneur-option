@@ -492,7 +492,7 @@ static void program_change_two_capital_letter(struct _program *p)
 static void program_process_selection_notify(struct _program *p)
 {
 	char *event_text = NULL;
-	if (p->action_mode == ACTION_CHANGE_SELECTED || p->action_mode == ACTION_CHANGECASE_SELECTED || p->action_mode == ACTION_TRANSLIT_SELECTED || p->action_mode == ACTION_PREVIEW_CHANGE_SELECTED)
+	if (p->action_mode == ACTION_CHANGE_SELECTED || p->action_mode == ACTION_CHANGE_SELECTED_AND_ROTATE_LAYOUT || p->action_mode == ACTION_CHANGECASE_SELECTED || p->action_mode == ACTION_TRANSLIT_SELECTED || p->action_mode == ACTION_PREVIEW_CHANGE_SELECTED)
 		event_text = (char *)get_selection_text(SELECTION_PRIMARY);
 	else if (p->action_mode == ACTION_CHANGE_CLIPBOARD || p->action_mode == ACTION_CHANGECASE_CLIPBOARD || p->action_mode == ACTION_TRANSLIT_CLIPBOARD || p->action_mode == ACTION_PREVIEW_CHANGE_CLIPBOARD)
 		event_text = (char *)get_selection_text(SELECTION_CLIPBOARD);
@@ -519,6 +519,14 @@ static void program_process_selection_notify(struct _program *p)
 			p->buffer->rotate_layout(p->buffer);
 
 			show_notify(NOTIFY_CHANGE_SELECTED, NULL);
+			break;
+		}
+		case ACTION_CHANGE_SELECTED_AND_ROTATE_LAYOUT:
+		{
+			p->buffer->rotate_layout(p->buffer);
+			set_next_keyboard_group(xconfig->handle);
+			
+			show_notify(NOTIFY_CHANGE_SELECTED_AND_ROTATE_LAYOUT, NULL);
 			break;
 		}
 		case ACTION_CHANGE_CLIPBOARD:
@@ -585,7 +593,7 @@ static void program_process_selection_notify(struct _program *p)
 	if ((p->action_mode != ACTION_PREVIEW_CHANGE_SELECTED) && (p->action_mode != ACTION_PREVIEW_CHANGE_CLIPBOARD))
 		p->change_word(p, CHANGE_SELECTION);
 
-	if (p->action_mode == ACTION_CHANGE_SELECTED || p->action_mode == ACTION_CHANGECASE_SELECTED || p->action_mode == ACTION_TRANSLIT_SELECTED)
+	if (p->action_mode == ACTION_CHANGE_SELECTED || p->action_mode == ACTION_CHANGE_SELECTED_AND_ROTATE_LAYOUT || p->action_mode == ACTION_CHANGECASE_SELECTED || p->action_mode == ACTION_TRANSLIT_SELECTED)
 	{
 		if (xconfig->save_selection)
 			p->event->send_selection(p->event, p->buffer->cur_pos);
@@ -923,6 +931,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			return TRUE;
 		}
 		case ACTION_CHANGE_SELECTED:
+		case ACTION_CHANGE_SELECTED_AND_ROTATE_LAYOUT:
 		case ACTION_TRANSLIT_SELECTED:
 		case ACTION_CHANGECASE_SELECTED:
 		case ACTION_PREVIEW_CHANGE_SELECTED:
@@ -1700,7 +1709,6 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		}
 		case CHANGE_WORD_TRANSLIT:
 		{
-			log_message (DEBUG, "Translit Request Processed...");
 			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 			p->buffer->set_offset(p->buffer, offset);
 			int curr_lang = get_curr_keyboard_group();
@@ -1724,7 +1732,6 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		}
 		case CHANGE_WORD_CHANGECASE:
 		{
-			log_message (DEBUG, "Change Case Request Processed...");
 			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 
 			// Shift fields to point to begin of word
@@ -1833,7 +1840,6 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		}
 		case CHANGE_SELECTION:
 		{
-			log_message (DEBUG, "Change Selection Request Processed...");
 			p->send_string_silent(p, 0);
 			break;
 		}

@@ -69,7 +69,7 @@ static const char *option_names[] = 	{
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
 						"ChangeString", "ChangeMode",
-						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
+						"ChangeSelected", "ChangeSelectedAndRotateLayout", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "PreviewChangeClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"RotateLayout","RotateLayoutBack","ReplaceAbbreviation", "AutocomplementationConfirmation"
@@ -80,7 +80,7 @@ static const char *notify_names[] =	{
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"AutomaticChangeWord", "ManualChangeWord", "ManualTranslitWord", "ManualChangecaseWord", "ManualPreviewChangeWord",
 						"ChangeString",
-						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
+						"ChangeSelected", "ChangeSelectedAndRotateLayout", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",  "PreviewChangeClipboard",
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"ExecuteUserAction"
