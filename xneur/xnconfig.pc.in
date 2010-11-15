@@ -7,5 +7,5 @@ Name: xnconfig
 Description: XNeur config library
 Requires: libpcre
 Version: @VERSION@
-Libs: -L@libdir@ -lxnconfig @PCRE_LIBS@ @LDFLAGS@
+Libs: -L@libdir@ -lxnconfig @PCRE_LIBS@ @LDFLAGS@ @ADDITIONAL_LIBS@
 Cflags: -I@includedir@

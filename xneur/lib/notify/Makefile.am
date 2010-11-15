@@ -16,7 +16,7 @@ libxnnotify_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc -I@top
 										@GSTREAMER_CFLAGS@ 		\
 										@XOSD_CFLAGS@ 			\
 										@LIBNOTIFY_CFLAGS@
-libxnnotify_la_LDFLAGS = -static @X11_LIBS@ 			\
+libxnnotify_la_LDFLAGS = -static @X11_LIBS@ @ADDITIONAL_LIBS@	\
 					@FREEALUT_LIBS@ 	\
 					@GSTREAMER_LIBS@ 	\
 					@XOSD_LIBS@ 		\
