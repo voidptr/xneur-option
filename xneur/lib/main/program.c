@@ -593,6 +593,10 @@ static void program_process_selection_notify(struct _program *p)
 
 	p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
+	// Unblock keyboard
+	set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+	grab_spec_keys(p->focus->owner_window, TRUE);
+	
 	p->update(p);
 	p->action_mode = ACTION_NONE;
 }
@@ -720,6 +724,7 @@ static void program_on_key_action(struct _program *p, int type)
 
 		p->modifiers_stack->rem(p->modifiers_stack, XKeysymToString(XK_Shift_R));
 		p->modifiers_stack->rem(p->modifiers_stack, XKeysymToString(XK_Shift_L));
+		p->modifiers_stack->rem(p->modifiers_stack, XKeysymToString(XK_ISO_Level3_Shift));
 		if (get_key_state(XK_Shift_R) != 0)
 			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_Shift_R));
 		if (get_key_state(XK_Shift_L) != 0)
@@ -1695,6 +1700,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		}
 		case CHANGE_WORD_TRANSLIT:
 		{
+			log_message (DEBUG, "Translit Request Processed...");
 			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 			p->buffer->set_offset(p->buffer, offset);
 			int curr_lang = get_curr_keyboard_group();
@@ -1718,6 +1724,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		}
 		case CHANGE_WORD_CHANGECASE:
 		{
+			log_message (DEBUG, "Change Case Request Processed...");
 			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 
 			// Shift fields to point to begin of word
@@ -1826,6 +1833,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		}
 		case CHANGE_SELECTION:
 		{
+			log_message (DEBUG, "Change Selection Request Processed...");
 			p->send_string_silent(p, 0);
 			break;
 		}
