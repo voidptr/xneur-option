@@ -164,7 +164,8 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Manual mode set to %s"), xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
 	log_message(LOG, _("Education mode set to %s"), xconfig->get_bool_name(xconfig->educate));
 	log_message(LOG, _("Layout remember mode set to %s"), xconfig->get_bool_name(xconfig->remember_layout));
-	log_message(LOG, _("Save selection mode set to %s"), xconfig->get_bool_name(xconfig->save_selection));
+	log_message(LOG, _("Save selection mode set to %s"), xconfig->get_bool_name(xconfig->save_selection_after_convert));
+	log_message(LOG, _("Rotate layout after convert selected text mode set to %s"), xconfig->get_bool_name(xconfig->rotate_layout_after_convert));
 	log_message(LOG, _("Sound playing mode set to %s"), xconfig->get_bool_name(xconfig->play_sounds));
 	log_message(LOG, _("Sound playing volume percentage set to %d"), xconfig->volume_percent);
 	log_message(LOG, _("Logging keyboard mode set to %s"), xconfig->get_bool_name(xconfig->save_keyboard_log));

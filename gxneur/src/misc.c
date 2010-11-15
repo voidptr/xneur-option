@@ -91,7 +91,7 @@ static const char *notify_names[]			=   {
 										"Switch to layout 3", "Switch to layout 4", "Correct word automatically",
 										"Correct last word manually", "Transliterate last word manually", "Change case of last word manually", "Preview correction of last word manually", 
 										"Correct last line", 
-										"Correct selected text", "Correct selected text and rotate layouts", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
+										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
 										"Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 	                                    "Expand abbreviations",
 										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Execute user action"
@@ -100,7 +100,7 @@ static const char *notify_names[]			=   {
 static const char *hotkey_names[]			=   {
 										"Correct/Undo correction","Transliterate", "Change case", "Preview correction", 
 										"Correct last line", "Switch between processing modes", 
-										"Correct selected text", "Correct selected text and rotate layouts", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
+										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
 	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
 		                                "Rotate layouts", "Rotate layouts back", "Expand abbreviations", "Autocomplementation confirmation"
@@ -723,7 +723,11 @@ void xneur_preference(void)
 	
 	// Saving Selection Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton4");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->save_selection);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->save_selection_after_convert);
+
+	// Rotate Layout after correction selected text Mode
+	widget = glade_xml_get_widget (gxml, "checkbutton30");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->rotate_layout_after_convert);
 	
 	// Sound Playing Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton5");
@@ -2158,7 +2162,10 @@ void xneur_save_preference(GladeXML *gxml)
 	xconfig->remember_layout = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton4");
-	xconfig->save_selection = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	xconfig->save_selection_after_convert = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton30");
+	xconfig->rotate_layout_after_convert = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton5");
 	xconfig->play_sounds = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

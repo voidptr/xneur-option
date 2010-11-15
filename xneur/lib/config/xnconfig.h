@@ -26,8 +26,8 @@
 
 #define SOUNDDIR			"sounds"
 
-#define MAX_NOTIFIES		30
-#define MAX_HOTKEYS			23
+#define MAX_NOTIFIES		29
+#define MAX_HOTKEYS			22
 
 #include "xneur.h"
 
@@ -59,7 +59,6 @@ enum _notify_action
 	NOTIFY_MANUAL_PREVIEW_CHANGE_WORD,
 	NOTIFY_CHANGE_STRING,
 	NOTIFY_CHANGE_SELECTED,
-	NOTIFY_CHANGE_SELECTED_AND_ROTATE_LAYOUT,
 	NOTIFY_TRANSLIT_SELECTED,
 	NOTIFY_CHANGECASE_SELECTED,
 	NOTIFY_PREVIEW_CHANGE_SELECTED,
@@ -83,7 +82,6 @@ enum _hotkey_action
 	ACTION_CHANGE_STRING,
 	ACTION_CHANGE_MODE,
 	ACTION_CHANGE_SELECTED,
-	ACTION_CHANGE_SELECTED_AND_ROTATE_LAYOUT,
 	ACTION_TRANSLIT_SELECTED,
 	ACTION_CHANGECASE_SELECTED,
 	ACTION_PREVIEW_CHANGE_SELECTED,
@@ -185,7 +183,8 @@ struct _xneur_config
 
 	int   educate;					// Education xneur
 	int   remember_layout;				// Remember layout for each of window
-	int   save_selection;				// Save selection after convert
+	int   save_selection_after_convert;	// Save selection after convert selected text
+	int   rotate_layout_after_convert;	// Rotate layout after convert selected text
 
 	int   correct_incidental_caps;			// Change iNCIDENTAL CapsLock
 	int   correct_two_capital_letter;		// Change two CApital letter

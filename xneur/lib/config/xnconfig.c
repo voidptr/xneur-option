@@ -64,12 +64,12 @@ static const char *option_names[] = 	{
 						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent",
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
-						"DontSendKeyRelease", "LogPort"
+						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
 						"ChangeString", "ChangeMode",
-						"ChangeSelected", "ChangeSelectedAndRotateLayout", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
+						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "PreviewChangeClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"RotateLayout","RotateLayoutBack","ReplaceAbbreviation", "AutocomplementationConfirmation"
@@ -80,7 +80,7 @@ static const char *notify_names[] =	{
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"AutomaticChangeWord", "ManualChangeWord", "ManualTranslitWord", "ManualChangecaseWord", "ManualPreviewChangeWord",
 						"ChangeString",
-						"ChangeSelected", "ChangeSelectedAndRotateLayout", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
+						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",  "PreviewChangeClipboard",
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"ExecuteUserAction"
@@ -318,7 +318,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->save_selection = index;
+			p->save_selection_after_convert = index;
 			break;
 		}
 		case 15: // Get Initial Xkb Group for all new windows
@@ -773,6 +773,18 @@ static void parse_line(struct _xneur_config *p, char *line)
 				p->port_keyboard_log = 25;
 			break;
 		}
+		case 49: // Rotate layout after convert selected text
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for rotate layout after correction selected text mode specified"));
+				break;
+			}
+
+			p->rotate_layout_after_convert = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1099,8 +1111,13 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option enable or disable saving selection text\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#SaveSelectionMode No\n");
-	fprintf(stream, "SaveSelectionMode %s\n\n", p->get_bool_name(p->save_selection));
+	fprintf(stream, "SaveSelectionMode %s\n\n", p->get_bool_name(p->save_selection_after_convert));
 
+	fprintf(stream, "# This option enable or disable rotating layout after convert selected text\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#RotateLayoutAfterChangeSelectedMode No\n");
+	fprintf(stream, "RotateLayoutAfterChangeSelectedMode %s\n\n", p->get_bool_name(p->rotate_layout_after_convert));
+	
 	fprintf(stream, "# This option define delay before sendind events to application (in milliseconds between 0 to 50).\n");
 	fprintf(stream, "SendDelay %d\n\n", p->send_delay);
 	
