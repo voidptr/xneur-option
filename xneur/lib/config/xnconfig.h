@@ -26,8 +26,8 @@
 
 #define SOUNDDIR			"sounds"
 
-#define MAX_NOTIFIES		29
-#define MAX_HOTKEYS			22
+#define MAX_NOTIFIES		30
+#define MAX_HOTKEYS			23
 
 #include "xneur.h"
 
@@ -70,6 +70,7 @@ enum _notify_action
 	NOTIFY_CORR_INCIDENTAL_CAPS,
 	NOTIFY_CORR_TWO_CAPITAL_LETTER,
 	NOTIFY_EXEC_USER_ACTION,
+	NOTIFY_BLOCK_EVENTS,
 	NOTIFY_NONE,
 };
 
@@ -97,6 +98,7 @@ enum _hotkey_action
 	ACTION_ROTATE_LAYOUT_BACK,
 	ACTION_REPLACE_ABBREVIATION,
 	ACTION_AUTOCOMPLEMENTATION,
+	ACTION_BLOCK_EVENTS,
 	ACTION_NONE,
 };
 
@@ -193,6 +195,8 @@ struct _xneur_config
 	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter
 	int   check_lang_on_process;			// Check lang on input process
 	int   disable_capslock;				// Disable CapsLock use
+
+	int   block_events;					// Block all events (keyboard and mouse)
 	
 	int   autocomplementation;			// Save pattern and mining
 	int   add_space_after_autocomplementation;

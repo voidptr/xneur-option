@@ -314,6 +314,11 @@ static void program_process_input(struct _program *p)
 			}
 			case KeyPress:
 			{
+				if (xconfig->block_events)
+				{
+					XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
+				}
+				
 				log_message(TRACE, _("Received KeyPress '%s' (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), type);
 
 				// Save received event
@@ -322,7 +327,7 @@ static void program_process_input(struct _program *p)
 				// Processing received event
 				p->on_key_action(p, type);
 				
-				// Restore event
+				// Resend special key back to window
 				if (p->event->default_event.xkey.keycode != 0)
 				{
 					set_event_mask(p->focus->owner_window, None);
@@ -334,6 +339,11 @@ static void program_process_input(struct _program *p)
 			}
 			case KeyRelease:
 			{
+				if (xconfig->block_events)
+				{
+					XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
+				}
+				
 				log_message(TRACE, _("Received KeyRelease '%s' (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), type);
 
 				// Save received event
@@ -391,32 +401,42 @@ static void program_process_input(struct _program *p)
 			}
 			case ButtonPress:
 			{
-				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
-				log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
+				// Clear buffer only when clicked left button
+				if (p->event->event.xbutton.button == Button1)
+				{
+					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+					log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
+				}
 
+				if (xconfig->block_events)
+				{
+					XAllowEvents(main_window->display, AsyncPointer, CurrentTime);
+					break;
+				}
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
-				//XAllowEvents(main_window->display, SyncPointer, CurrentTime);
-				
-				/*p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
-				XTestFakeButtonEvent (main_window->display, 1, TRUE, CurrentTime);
-				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);*/
 
 				break;
 			}
 			case ButtonRelease:
 			{
-				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
-				log_message(TRACE, _("Received ButtonRelease on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
+				// Clear buffer only when clicked left button
+				if (p->event->event.xbutton.button == Button1)
+				{
+					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+					log_message(TRACE, _("Received ButtonRelease on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
+				}
 
+				if (xconfig->block_events)
+				{
+					XAllowEvents(main_window->display, SyncPointer, CurrentTime);
+					break;
+				}
+				
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 				//XAllowEvents(main_window->display, SyncPointer, CurrentTime);
-				
-				/*p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
-				XTestFakeButtonEvent (main_window->display, 1, FALSE, CurrentTime);
-				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);*/
-				
+			
 				break;
 			}
 			case PropertyNotify:
@@ -651,6 +671,13 @@ static void program_on_key_action(struct _program *p, int type)
 			p->modifiers_stack->add(p->modifiers_stack, keysym_str);
 		}
 		p->prev_key_mod |= p->event->get_cur_modifiers_by_keysym(p->event);
+
+		// If blocked events then processing stop 
+		if (xconfig->block_events)
+		{
+			p->event->default_event.xkey.keycode = 0;
+			return;
+		}
 		
 		int user_action = get_user_action(key, p->prev_key_mod);
 		enum _hotkey_action manual_action = get_manual_action(key, p->prev_key_mod);
@@ -663,6 +690,7 @@ static void program_on_key_action(struct _program *p, int type)
 		p->plugin->key_press(p->plugin, key, p->prev_key_mod);
 		
 		int auto_action = get_auto_action(p, key, p->prev_key_mod);
+	
 		if ((auto_action != KLB_NO_ACTION) && (auto_action != KLB_CLEAR))
 		{
 			int lang = get_curr_keyboard_group();
@@ -691,6 +719,7 @@ static void program_on_key_action(struct _program *p, int type)
 				}
 			}
 		}
+		
 		p->perform_auto_action(p, auto_action);
 	}
 
@@ -735,8 +764,18 @@ static void program_on_key_action(struct _program *p, int type)
 		if (get_key_state(XK_ISO_Level3_Shift) != 0)
 			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_ISO_Level3_Shift));
 
-		
 		p->update_modifiers_stack(p);
+
+		// If blocked events then processing stop 
+		if (xconfig->block_events)
+		{
+			p->event->default_event.xkey.keycode = 0;
+			enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
+			if (manual_action == ACTION_BLOCK_EVENTS)
+				p->perform_manual_action(p, manual_action);
+
+			return;
+		}
 
 		p->plugin->key_release(p->plugin, key, p->prev_key_mod);
 		
@@ -1107,6 +1146,20 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 
 			break;
 		}
+		case ACTION_BLOCK_EVENTS:
+		{
+			p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+			p->event->default_event.xkey.keycode = 0;
+			xconfig->block_events = !xconfig->block_events;
+			if (xconfig->block_events)
+				grab_keyboard(p->focus->owner_window, TRUE);
+			else
+				grab_spec_keys(p->focus->owner_window, TRUE);
+			
+			log_message (DEBUG, _("Now keyboard and mouse block status is %s"), xconfig->get_bool_name(xconfig->block_events));
+			show_notify(NOTIFY_BLOCK_EVENTS, NULL);
+			break;
+		}			
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
 		{
 			//MOVE this code to new function in new module
