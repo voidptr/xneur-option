@@ -592,7 +592,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			int popup = get_option_index(notify_names, param);
 			if (popup == -1)
 			{
-				log_message(WARNING, _("Invalid value for OSD action name specified"));
+				log_message(WARNING, _("Invalid value for popup message action name specified"));
 				break;
 			}
 

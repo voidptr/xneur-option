@@ -477,12 +477,16 @@ msgstr ""
 msgid "Invalid value for show OSD mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:539 lib/config/xnconfig.c:595
+#: lib/config/xnconfig.c:539
 msgid "Invalid value for OSD action name specified"
 msgstr ""
 
 #: lib/config/xnconfig.c:583
 msgid "Invalid value for show popup message mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:595
+msgid "Invalid value for popup message action name specified"
 msgstr ""
 
 #: lib/config/xnconfig.c:679

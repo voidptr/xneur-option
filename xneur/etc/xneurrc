@@ -57,6 +57,7 @@ AddBind EnableLayout4
 AddBind RotateLayout 
 AddBind ReplaceAbbreviation Control Tab
 AddBind AutocomplementationConfirmation Tab
+AddBind BlockKeyboardAndMouseEvents 
 
 # This option add user action when pressed key bind
 # Example:
@@ -115,6 +116,7 @@ AddSound ReplaceAbbreviation Enable switch.wav
 AddSound CorrectIncidentalCaps 
 AddSound CorrectTwoCapitalLetter 
 AddSound ExecuteUserAction Enable switch.wav
+AddSound BlockKeyboardAndMouseEvents
 
 # This option enable or disable self education of xneur
 # Example:
@@ -136,6 +138,11 @@ LayoutRememberModeForApp Wine
 # Example:
 #SaveSelectionMode No
 SaveSelectionMode Yes
+
+# This option enable or disable rotating layout after convert selected text
+# Example:
+#RotateLayoutAfterChangeSelectedMode No
+RotateLayoutAfterChangeSelectedMode No
 
 # This option define delay before sendind events to application (in milliseconds between 0 to 50).
 SendDelay 0
@@ -213,6 +220,7 @@ AddOSD ReplaceAbbreviation
 AddOSD CorrectIncidentalCaps
 AddOSD CorrectTwoCapitalLetter
 AddOSD ExecuteUserAction Enable Выполняется команда
+AddOSD BlockKeyboardAndMouseEvents
 
 # This option disable or enable show popup messages
 # Example:
@@ -246,6 +254,7 @@ AddPopup ReplaceAbbreviation
 AddPopup CorrectIncidentalCaps
 AddPopup CorrectTwoCapitalLetter
 AddPopup ExecuteUserAction Enable Выполняется команда
+AddPopup BlockKeyboardAndMouseEvents
 
 # This option disable or enable checking language on input process
 # Example:

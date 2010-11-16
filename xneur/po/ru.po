@@ -510,13 +510,17 @@ msgstr ""
 msgid "Invalid value for show OSD mode specified"
 msgstr "Неправильное значение опции для режима показа OSD"
 
-#: lib/config/xnconfig.c:539 lib/config/xnconfig.c:595
+#: lib/config/xnconfig.c:539
 msgid "Invalid value for OSD action name specified"
 msgstr "Неправильное значение опции для названия действия показа OSD"
 
 #: lib/config/xnconfig.c:583
 msgid "Invalid value for show popup message mode specified"
 msgstr "Неправильное значение опции для режима показа всплывающих сообщений"
+
+#: lib/config/xnconfig.c:595
+msgid "Invalid value for popup message action name specified"
+msgstr "Неправильное значение имени для названия действия показа всплывающих сообщений"
 
 #: lib/config/xnconfig.c:679
 msgid "Invalid value for troubleshooting mode for backspace specified"

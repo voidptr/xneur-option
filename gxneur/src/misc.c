@@ -94,16 +94,18 @@ static const char *notify_names[]			=   {
 										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
 										"Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 	                                    "Expand abbreviations",
-										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Execute user action"
+										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Execute user action", 
+										"Block/Unblock keyboard and mouse events"
 										};
 
 static const char *hotkey_names[]			=   {
-										"Correct/Undo correction","Transliterate", "Change case", "Preview correction", 
+										"Correct/Undo correction", "Transliterate", "Change case", "Preview correction", 
 										"Correct last line", "Switch between processing modes", 
 										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
 	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
-		                                "Rotate layouts", "Rotate layouts back", "Expand abbreviations", "Autocomplementation confirmation"
+		                                "Rotate layouts", "Rotate layouts back", "Expand abbreviations", "Autocomplementation confirmation", 
+										"Block/Unblock keyboard and mouse events"
                                         };
 
 static const int total_notify_names = sizeof(notify_names) / sizeof(notify_names[0]);

@@ -138,6 +138,9 @@ msgstr "הרחבת ראשי תיבות"
 msgid "Autocomplementation confirmation"
 msgstr "אימות השלמה אוטומטית"
 
+msgid "Block/Unblock keyboard and mouse events"
+msgstr ""
+
 msgid "contains"
 msgstr ""
 
