@@ -185,6 +185,7 @@ void del_final_numeric_char(char *word)
 			case '8':
 			case '9':
 			case '0':
+			case ' ':
 			{
 				offset++;
 				break;

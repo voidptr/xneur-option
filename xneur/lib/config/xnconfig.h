@@ -201,11 +201,10 @@ struct _xneur_config
 	int   autocomplementation;			// Save pattern and mining
 	int   add_space_after_autocomplementation;
 	struct _list_char *autocomplementation_excluded_apps;
-	
-	int   show_osd;					// Show OSD
-	char  *osd_font;
 
 	int   show_popup;				// Show popups
+	int   show_osd;					// Show OSD
+	char  *osd_font;
 
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
 

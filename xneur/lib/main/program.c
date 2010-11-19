@@ -1236,9 +1236,11 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 	}
 
 	// When CHANGE_STRING or CHANGE_WORD actions occured
-	if (xconfig->troubleshoot_switch)
-		p->changed_manual = MANUAL_FLAG_SET;
-
+	if ((xconfig->troubleshoot_switch) && (p->buffer->cur_pos > 0))
+	{
+		if (p->buffer->content[p->buffer->cur_pos-1] != ' ')
+			p->changed_manual = MANUAL_FLAG_SET;
+	}
 	return TRUE;
 }
 
@@ -1635,7 +1637,7 @@ static void program_send_string_silent(struct _program *p, int send_backspaces)
 	}
 
 	log_message(DEBUG, _("Processing string '%s'"), p->buffer->content);
-
+	
 	p->event->send_backspaces(p->event, send_backspaces);		// Delete old string
 	p->event->send_string(p->event, p->buffer);		// Send new string
 }
