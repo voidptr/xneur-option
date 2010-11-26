@@ -9,8 +9,8 @@ Homepage: http://xneur.ru
 Package: xneur
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: gxneur (>=0.9.9)
-Suggests: aspell-en | aspell-dictionary
+Recommends: gxneur (>=0.11.0)
+Suggests: myspell-en-us | myspell-en-gb | aspell-en | aspell-dictionary
 Description: in-place conversion of text typed in with a wrong keyboard layout
  When users work in multilingual environment (e.g. Russian+English), they
  sometimes type in text with wrong keyboard layout. In auto mode XNeur can

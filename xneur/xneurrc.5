@@ -59,7 +59,7 @@ Here, <action> stands for an action of XNeur, <key> stands for a special key.
 "ChangeString" (replace last string), "ChangeMode" (switch between the auto and the manual program modes), 
 "ChangeSelected" (convert selected text to another layout), "TranslitSelected" (convert selected Cyrillic test to translit),
 "ChangecaseSelected" (change lettercase of selected text), "EnableLayout1" (enable of first layout),
-"EnableLayout2" (enable of second layout), "EnableLayout3" (enable of third layout), "EnableLayout4" (enable of fourth layout) or "ReplaceAbbreviation" (replace abbreviation to full text).
+"EnableLayout2" (enable of second layout), "EnableLayout3" (enable of third layout), "EnableLayout4" (enable of fourth layout), "ReplaceAbbreviation" (replace abbreviation to full text) or "BlockKeyboardAndMouseEvents" (blocking all events of keyboard and mouse).
 
 [key] takes the values defined in your latin keyboard. Skip this value if hot key undefined.
 .TP 8
@@ -91,7 +91,7 @@ Binds sounds for some actions.
 
 Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurStop", "PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 "EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-"AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
+"AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected", "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction" and "BlockKeyboardAndMouseEvents".
 
 <sound> is .wav file placed in ~/.xneur/sounds or in basic place ({prefix}/share/xneur/sounds/).
 
@@ -112,8 +112,19 @@ This option enable or disable layout remember for each window
 
 Here, <param> takes the values "Yes", "No". 
 .TP 8
+.B LayoutRememberModeForApp <app_name>
+This option force enable layout remember for each application, not window.
+
+Here, <app_name> is an identifier of the program window, input in which is processed by xneur.
+app_name can be obtained with the xprop utility.
+.TP 8
 .B SaveSelectionMode <param>
 Define, if a selection will stay after changes, made by user actions, defined by the AddBind parameter.
+
+Here, <param> takes the values "Yes", "No". 
+.TP 8
+.B RotateLayoutAfterChangeSelectedMode <param>
+This option enable or disable rotating layout after convert selected text.
 
 Here, <param> takes the values "Yes", "No". 
 .TP 8
@@ -174,7 +185,7 @@ Binds OSD for some actions.
 
 Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurStop", "PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 "EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-"AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
+"AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected", "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction" and "BlockKeyboardAndMouseEvents".
 
 <text> is text will be displayed.
 
@@ -190,7 +201,7 @@ Binds popup messages for some actions.
 
 Here, <action> takes the following values: "XneurStart", "XneurReload", "XneurStop", "PressKeyLayout1", "PressKeyLayout2", "PressKeyLayout3", "PressKeyLayout4",
 "EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-"AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected" and "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction".
+"AutomaticChangeWord", "ManualChangeWord", "ChangeString", "ChangeSelected", "TranslitSelected", "ChangecaseSelected", "ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction" and "BlockKeyboardAndMouseEvents".
 
 <text> is text will be displayed.
 

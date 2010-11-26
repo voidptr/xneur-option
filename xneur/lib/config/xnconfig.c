@@ -39,7 +39,7 @@
 
 #include "xnconfig.h"
 
-#define LIBRARY_VERSION_MAJOR		10
+#define LIBRARY_VERSION_MAJOR		11
 #define LIBRARY_VERSION_MINOR		0
 #define OPTIONS_DELIMETER		" "
 

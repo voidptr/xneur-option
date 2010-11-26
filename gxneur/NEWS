@@ -1,3 +1,10 @@
+November 26 2010:
+Version 0.11.0 released.
+New UI for creating user dictionaries.
+Icon resize to tray size (optional).
+Add personal settings for gxneur (autostart, icon theme, keyboard properties and others). 
+Lot of bugfixes
+
 October 07 2010:
 Version 0.10.0 released.
 View log-file over gxneur

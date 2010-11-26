@@ -1,3 +1,11 @@
+November 26 2010:
+Version 0.11.0 released.
+Using Enchant Library.
+New file format for user dictionaries.
+Add OpenMP for cicles.
+Add new keyboard binds - block keyboard, rotate layout after cwith selected text, back rotate layouts.
+Lot of bugfixes.
+
 October 07 2010:
 Version 0.10.0 released.
 Bugfix for locales (bug in XLookupString)

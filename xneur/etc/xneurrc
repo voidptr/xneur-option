@@ -2,7 +2,7 @@
 # All values writted XNeur
 
 # Config version
-Version 0.10.0
+Version 0.11.0
 
 # Work in manual mode
 ManualMode No
@@ -12,6 +12,7 @@ ManualMode No
 #LogLevel Warning
 #LogLevel Log
 #LogLevel Debug
+#LogLevel Trace
 LogLevel Debug
 
 # Define unused languages
@@ -25,6 +26,11 @@ DefaultXkbGroup 0
 # Xneur will not process the input for this applications
 # Example:
 #ExcludeApp Gaim
+ExcludeApp Krdc
+ExcludeApp Palimpsest
+ExcludeApp Remmina
+ExcludeApp VirtualBox
+ExcludeApp Wine
 ExcludeApp rdesktop
 
 # Use this parameter to force set work mode in current application to Auto.
