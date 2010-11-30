@@ -137,10 +137,19 @@ void popup_show(int notify, char *command)
 
 #else /* WITH_LIBNOTIFY */
 
+void popup_init(void)
+{
+	return;
+}
+
 void popup_show(int notify, char *command)
 {
 	if (notify || command) {};
 	return;
 }
 
+void popup_uninit(void)
+{
+	return;
+}
 #endif /* WITH_LIBNOTIFY */
