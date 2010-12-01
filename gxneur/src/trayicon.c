@@ -229,7 +229,6 @@ gboolean tray_expose_event (GtkWidget      *widget,
 gboolean clock_check(gpointer dummy)
 {
 	if (dummy) {};
-	//struct _tray_icon *tray = (struct _tray_icon *)data;
 	
 	int xneur_pid = xconfig->get_pid(xconfig);
 	int xneur_state = xconfig->is_manual_mode(xconfig);
@@ -405,7 +404,6 @@ void gconf_key_pixmap_dir_callback(GConfClient* client,
                             GConfEntry* entry,
                             gpointer user_data)
 {
-	printf ("gconf_key_pixmap_dir_callback\n") ;
 	if (client || cnxn_id || user_data) {};
 	
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)

@@ -41,7 +41,9 @@
 #define LANGUAGES_DIR "languages"
 #define DIR_SEPARATOR		"/"
 
-#define AUTOSTART_PATH "/.config/autostart/"  PACKAGE ".desktop"
+#define AUTOSTART_PATH ".config/autostart"  
+#define AUTOSTART_FILE PACKAGE ".desktop"
+
 #define GXNEUR_DESKTOP "[Desktop Entry]\nType=Application\nExec="  PACKAGE "\nHidden=false\nX-GNOME-Autostart-enabled=true\nName=GTK UI for X Neural Switcher\n"
 
 #define DEFAULT_MAX_PATH	4096
@@ -132,14 +134,6 @@ void error_msg(const char *msg, ...)
 	
 	free(buffer);
 	va_end(ap);
-}
-
-static int get_max_path_len(void)
-{
-	int max_path_len = pathconf(PACKAGE_PIXMAPS_DIR, _PC_PATH_MAX);
-	if (max_path_len <= 0)
-		return DEFAULT_MAX_PATH;
-	return max_path_len;
 }
 
 static char* concat_bind(int action)
@@ -1258,12 +1252,9 @@ void xneur_preference(void)
 	// Gxneur Properties
 
 	// Autostart
-	char *path_file = (char *) malloc((get_max_path_len() + 1) * sizeof(char));
-	path_file[0] = '\0';
-	path_file = strcat(path_file, getenv("HOME"));
-	path_file = strcat(path_file, AUTOSTART_PATH);
+	gchar *path_file = g_build_filename(getenv("HOME"), AUTOSTART_PATH, AUTOSTART_FILE, NULL);
 	FILE *stream = fopen(path_file, "r");
-	free(path_file);
+	g_free(path_file);
 	if (stream != NULL)
 	{
 		fclose(stream);
@@ -2266,12 +2257,14 @@ void xneur_save_preference(GladeXML *gxml)
 
 	// Autostart
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton27");
-	char *path_file = (char *) malloc((get_max_path_len() + 1) * sizeof(char));
-	path_file[0] = '\0';
-	path_file = strcat(path_file, getenv("HOME"));
-	path_file = strcat(path_file, AUTOSTART_PATH);
-	FILE *stream = fopen(path_file, "r");
 
+	gchar *path_file = g_build_filename(getenv("HOME"), AUTOSTART_PATH, NULL);
+	if (!g_file_test(path_file, G_FILE_TEST_IS_DIR))
+		g_mkdir_with_parents(path_file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+	g_free(path_file);
+	
+	path_file = g_build_filename(getenv("HOME"), AUTOSTART_PATH, AUTOSTART_FILE, NULL);
+	FILE *stream = fopen(path_file, "r");
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
 	{
 		if (stream != NULL)
@@ -2296,7 +2289,7 @@ void xneur_save_preference(GladeXML *gxml)
 			remove(path_file);
 		}
 	}
-	free(path_file);
+	g_free(path_file);
 
 	
 	GConfClient* gconfClient = gconf_client_get_default();
