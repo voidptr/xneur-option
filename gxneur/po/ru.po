@@ -141,6 +141,9 @@ msgstr "Подтверждение автодополнения"
 msgid "Block/Unblock keyboard and mouse events"
 msgstr "Блокировка/Разблокировка клавиатуры и мыши"
 
+msgid "Insert date"
+msgstr "Вставка даты"
+
 msgid "contains"
 msgstr "содержит"
 

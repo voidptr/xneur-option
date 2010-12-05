@@ -141,6 +141,9 @@ msgstr ""
 msgid "Block/Unblock keyboard and mouse events"
 msgstr ""
 
+msgid "Insert date"
+msgstr ""
+
 msgid "contains"
 msgstr ""
 

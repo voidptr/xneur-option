@@ -31,6 +31,7 @@
 #include <signal.h>
 #include <pthread.h>
 #include <ctype.h>
+#include <time.h>
 
 #ifdef WITH_ASPELL
 #  include <aspell.h>
@@ -1159,7 +1160,36 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			log_message (DEBUG, _("Now keyboard and mouse block status is %s"), xconfig->get_bool_name(xconfig->block_events));
 			show_notify(NOTIFY_BLOCK_EVENTS, NULL);
 			break;
-		}			
+		}	
+		case ACTION_INSERT_DATE:
+		{
+			time_t curtime = time(NULL);
+			struct tm *loctime = localtime(&curtime);
+			if (loctime == NULL)
+				break;
+	
+			char *date = malloc(256 * sizeof(char));
+			strftime(date, 256, "%x", loctime);
+			
+			set_event_mask(p->focus->owner_window, None);
+			grab_spec_keys(p->focus->owner_window, FALSE);
+
+			// Insert Date 
+			log_message(DEBUG, _("Insert date '%s'."), date);
+
+			p->buffer->set_content(p->buffer, date);
+
+			p->change_word(p, CHANGE_INS_DATE);
+
+			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+			grab_spec_keys(p->focus->owner_window, TRUE);
+
+			p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+
+			p->event->default_event.xkey.keycode = 0;
+			free (date);
+			break;
+		}
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
 		{
 			//MOVE this code to new function in new module
@@ -1925,6 +1955,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			break;
 		}
 		case CHANGE_ABBREVIATION:
+		case CHANGE_INS_DATE:
 		{
 			p->send_string_silent(p, 0);
 			break;

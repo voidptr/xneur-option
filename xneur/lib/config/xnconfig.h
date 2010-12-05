@@ -27,7 +27,7 @@
 #define SOUNDDIR			"sounds"
 
 #define MAX_NOTIFIES		30
-#define MAX_HOTKEYS			23
+#define MAX_HOTKEYS			24
 
 #include "xneur.h"
 
@@ -99,6 +99,7 @@ enum _hotkey_action
 	ACTION_REPLACE_ABBREVIATION,
 	ACTION_AUTOCOMPLEMENTATION,
 	ACTION_BLOCK_EVENTS,
+	ACTION_INSERT_DATE,
 	ACTION_NONE,
 };
 
@@ -123,6 +124,7 @@ enum _change_action
 	CHANGE_STRING_TO_LAYOUT_2,
 	CHANGE_STRING_TO_LAYOUT_3,
 	CHANGE_ABBREVIATION,
+	CHANGE_INS_DATE,
 };
 
 struct _xneur_hotkey

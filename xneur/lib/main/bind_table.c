@@ -59,6 +59,7 @@ static struct _bind_table btable[MAX_HOTKEYS] =	{
 							{0, 0, 0},
 							{0, 0, 0},
 	                        {0, 0, 0},
+							{0, 0, 0},
 							{0, 0, 0}
 						};
 static const char *normal_action_names[] =	{
@@ -68,7 +69,7 @@ static const char *normal_action_names[] =	{
 							"Change Clipboard", "Translit Clipboard", "Changecase Clipboard", "Preview Change Clipboard",
 							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4",
 							"Rotate Layouts", "Rotate Layouts Back", "Replace Abbreviation", "Autocomplementation Confirmation",
-							"Block Keyboard And Mouse Events"
+							"Block Keyboard And Mouse Events", "Insert Date"
 						};
 
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
