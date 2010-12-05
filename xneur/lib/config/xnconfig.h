@@ -26,7 +26,7 @@
 
 #define SOUNDDIR			"sounds"
 
-#define MAX_NOTIFIES		30
+#define MAX_NOTIFIES		31
 #define MAX_HOTKEYS			24
 
 #include "xneur.h"
@@ -71,6 +71,7 @@ enum _notify_action
 	NOTIFY_CORR_TWO_CAPITAL_LETTER,
 	NOTIFY_EXEC_USER_ACTION,
 	NOTIFY_BLOCK_EVENTS,
+	NOTIFY_UNBLOCK_EVENTS,
 	NOTIFY_NONE,
 };
 

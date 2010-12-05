@@ -1153,12 +1153,17 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			p->event->default_event.xkey.keycode = 0;
 			xconfig->block_events = !xconfig->block_events;
 			if (xconfig->block_events)
+			{
 				grab_keyboard(p->focus->owner_window, TRUE);
+				show_notify(NOTIFY_BLOCK_EVENTS, NULL);
+			}
 			else
+			{
 				grab_spec_keys(p->focus->owner_window, TRUE);
-			
+				show_notify(NOTIFY_UNBLOCK_EVENTS, NULL);
+			}
 			log_message (DEBUG, _("Now keyboard and mouse block status is %s"), xconfig->get_bool_name(xconfig->block_events));
-			show_notify(NOTIFY_BLOCK_EVENTS, NULL);
+			
 			break;
 		}	
 		case ACTION_INSERT_DATE:

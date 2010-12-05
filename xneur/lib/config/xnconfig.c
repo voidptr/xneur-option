@@ -84,7 +84,7 @@ static const char *notify_names[] =	{
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",  "PreviewChangeClipboard",
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
-						"ExecuteUserAction", "BlockKeyboardAndMouseEvents"
+						"ExecuteUserAction", "BlockKeyboardAndMouseEvents", "UnblockKeyboardAndMouseEvents"
 					};
 
 pid_t getsid(pid_t pid);

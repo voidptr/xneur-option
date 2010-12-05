@@ -141,6 +141,12 @@ msgstr "אימות השלמה אוטומטית"
 msgid "Block/Unblock keyboard and mouse events"
 msgstr ""
 
+msgid "Block keyboard and mouse events"
+msgstr ""
+
+msgid "Unblock keyboard and mouse events"
+msgstr ""
+
 msgid "Insert date"
 msgstr ""
 

@@ -97,7 +97,7 @@ static const char *notify_names[]			=   {
 										"Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 	                                    "Expand abbreviations",
 										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Execute user action", 
-										"Block/Unblock keyboard and mouse events"
+										"Block keyboard and mouse events", "Unblock keyboard and mouse events"
 										};
 
 static const char *hotkey_names[]			=   {
