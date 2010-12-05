@@ -21,17 +21,13 @@
 #  include "config.h"
 #endif
 
-#ifdef WITH_PCRE
-#  include <pcre.h>
-#endif
+#include <pcre.h>
 
 #include <string.h>
 #include <stdio.h>
 
 #include "types.h"
 #include "log.h"
-
-#ifdef WITH_PCRE
 
 char* check_regexp_match(const char *str, const char *pattern)
 {
@@ -77,13 +73,3 @@ char* check_regexp_match(const char *str, const char *pattern)
 		
 	return return_string;
 }
-
-#else
-
-char* check_regexp_match(const char *str, const char *pattern)
-{
-	if (str || pattern){}
-	return NULL;
-}
-
-#endif

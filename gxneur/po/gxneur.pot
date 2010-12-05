@@ -145,6 +145,15 @@ msgstr ""
 msgid "Unblock keyboard and mouse events"
 msgstr ""
 
+msgid "Rec/Unrec keyboard and mouse events"
+msgstr ""
+
+msgid "Rec keyboard and mouse events"
+msgstr ""
+
+msgid "Unrec keyboard and mouse events"
+msgstr ""
+
 msgid "Insert date"
 msgstr ""
 

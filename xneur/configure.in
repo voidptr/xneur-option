@@ -97,17 +97,14 @@ if test "x$with_debug" == "xyes"; then
 	AC_DEFINE(WITH_DEBUG, 1, [Define if you want debug support])
 fi
 
-AC_ARG_WITH(pcre, [  --without-pcre	  Compile without pcre support])
-if test "x$with_pcre" != "xno"; then
-	PKG_CHECK_MODULES(PCRE, [libpcre >= 5.0])
-	AC_DEFINE(WITH_PCRE, 1, [Define if you want pcre support])
-fi
+PKG_CHECK_MODULES(PCRE, [libpcre >= 5.0])
+
+PKG_CHECK_MODULES(XTST, [xtst])
 
 AC_ARG_WITH(keylogger, [  --without-keylogger	  Compile without keylogger function])
 if test "x$with_keylogger" != "xno"; then
 	AC_DEFINE(WITH_KEYLOGGER, 1, [Define if you want keylogger function])
 fi
-
 
 AC_ARG_WITH(spell, [  --with-spell[[=ARG]]	  Compile with sound support ARG=[[yes|no|enchant|aspell]] [[default=yes]]])
 if test "x$with_spell" != "xno"; then
@@ -244,6 +241,7 @@ lib/config/Makefile
 lib/misc/Makefile 
 lib/notify/Makefile 
 lib/main/Makefile 
+lib/rec/Makefile 
 src/Makefile 
 po/Makefile.in 
 Makefile 
@@ -261,6 +259,9 @@ $PACKAGE $VERSION configured successfully:
 
 	X11 compiler flags:		$X11_CFLAGS
 	X11 linker flags:		$X11_LIBS
+
+	Xtst compiler flags:		$XTST_CFLAGS
+	Xtst linker flags:		$XTST_LIBS
 
 	Pcre compiler flags:		$PCRE_CFLAGS
 	Pcre linker flags:		$PCRE_LIBS

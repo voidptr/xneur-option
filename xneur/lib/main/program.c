@@ -23,6 +23,7 @@
 
 #include <X11/keysym.h>
 #include <X11/XKBlib.h>
+#include <X11/extensions/XTest.h>
 
 #include <stdlib.h>
 #include <strings.h>
@@ -61,7 +62,7 @@
 
 #include "notify.h"
 
-#include "math.h"
+#include "rec.h"
 
 #include "program.h"
 
@@ -300,6 +301,9 @@ static void program_process_input(struct _program *p)
 	{
 		int type = p->event->get_next_event(p->event);
 
+		if (xconfig->recording)
+			rec(&p->event->event);
+		
 		switch (type)
 		{
 			case ClientMessage:
@@ -321,7 +325,7 @@ static void program_process_input(struct _program *p)
 				}
 				
 				log_message(TRACE, _("Received KeyPress '%s' (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), type);
-
+				
 				// Save received event
 				p->event->default_event = p->event->event;
 
@@ -414,6 +418,7 @@ static void program_process_input(struct _program *p)
 					XAllowEvents(main_window->display, AsyncPointer, CurrentTime);
 					break;
 				}
+
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 
@@ -430,14 +435,13 @@ static void program_process_input(struct _program *p)
 
 				if (xconfig->block_events)
 				{
-					XAllowEvents(main_window->display, SyncPointer, CurrentTime);
+					XAllowEvents(main_window->display, AsyncPointer, CurrentTime);
 					break;
 				}
-				
+
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
-				//XAllowEvents(main_window->display, SyncPointer, CurrentTime);
-			
+
 				break;
 			}
 			case PropertyNotify:
@@ -1193,6 +1197,27 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 
 			p->event->default_event.xkey.keycode = 0;
 			free (date);
+			break;
+		}
+		case ACTION_REC_EVENTS:
+		{
+			p->event->default_event.xkey.keycode = 0;
+			xconfig->recording = !xconfig->recording;
+			log_message (DEBUG, _("Now keyboard and mouse recordind status is %s"), xconfig->get_bool_name(xconfig->recording));
+			
+			if (xconfig->recording)
+			{
+				char *rec_file_path_name = get_home_file_path_name(NULL, REC_NAME);
+				rec_init(rec_file_path_name);
+				free(rec_file_path_name);
+				show_notify(NOTIFY_REC_EVENTS, NULL);
+			}
+			else
+			{
+				rec_uninit();
+				show_notify(NOTIFY_UNREC_EVENTS, NULL);
+			}
+			
 			break;
 		}
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym
@@ -2138,6 +2163,8 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 
 static void program_uninit(struct _program *p)
 {
+	rec_uninit ();
+	
 	p->focus->uninit(p->focus);
 	p->event->uninit(p->event);
 	p->buffer->uninit(p->buffer);

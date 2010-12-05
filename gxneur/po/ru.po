@@ -147,6 +147,15 @@ msgstr "Блокировка клавиатуры и мыши"
 msgid "Unblock keyboard and mouse events"
 msgstr "Разблокировка клавиатуры и мыши"
 
+msgid "Rec/Unrec keyboard and mouse events"
+msgstr "Запуск/Останов записи клавиатуры и мыши"
+
+msgid "Rec keyboard and mouse events"
+msgstr "Запуск записи клавиатуры и мыши"
+
+msgid "Unrec keyboard and mouse events"
+msgstr "Останов записи клавиатуры и мыши"
+
 msgid "Insert date"
 msgstr "Вставка даты"
 

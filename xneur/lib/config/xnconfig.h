@@ -23,11 +23,12 @@
 #define CONFIG_NAME			"xneurrc"
 #define CONFIG_BCK_NAME			"xneurrc~"
 #define LOG_NAME			"xneurlog.html"
+#define REC_NAME  			"xneurrec"
 
 #define SOUNDDIR			"sounds"
 
-#define MAX_NOTIFIES		31
-#define MAX_HOTKEYS			24
+#define MAX_NOTIFIES		33
+#define MAX_HOTKEYS			25
 
 #include "xneur.h"
 
@@ -72,6 +73,8 @@ enum _notify_action
 	NOTIFY_EXEC_USER_ACTION,
 	NOTIFY_BLOCK_EVENTS,
 	NOTIFY_UNBLOCK_EVENTS,
+	NOTIFY_REC_EVENTS,
+	NOTIFY_UNREC_EVENTS,
 	NOTIFY_NONE,
 };
 
@@ -101,6 +104,7 @@ enum _hotkey_action
 	ACTION_AUTOCOMPLEMENTATION,
 	ACTION_BLOCK_EVENTS,
 	ACTION_INSERT_DATE,
+	ACTION_REC_EVENTS,
 	ACTION_NONE,
 };
 
@@ -200,6 +204,8 @@ struct _xneur_config
 	int   disable_capslock;				// Disable CapsLock use
 
 	int   block_events;					// Block all events (keyboard and mouse)
+
+	int   recording;
 	
 	int   autocomplementation;			// Save pattern and mining
 	int   add_space_after_autocomplementation;

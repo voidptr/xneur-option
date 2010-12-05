@@ -391,182 +391,182 @@ msgstr ""
 msgid "End word processing."
 msgstr "Обробку слова закінчено."
 
-#: lib/config/xnconfig.c:142
+#: lib/config/xnconfig.c:143
 #, c-format
 msgid "Unrecognized option \"%s\" detected"
 msgstr "Виявлено нерозпізнану опцію \"%s\""
 
-#: lib/config/xnconfig.c:152
+#: lib/config/xnconfig.c:153
 #, c-format
 msgid "Param mismatch for option %s"
 msgstr "Параметри не співпадають для опції %s"
 
-#: lib/config/xnconfig.c:163
+#: lib/config/xnconfig.c:164
 msgid "Invalid value for manual mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:181
+#: lib/config/xnconfig.c:182
 msgid "Invalid value for action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:209
+#: lib/config/xnconfig.c:210
 msgid "Invalid value for log level specified"
 msgstr "Неправильне значення  вказано для рівня ведення логів"
 
-#: lib/config/xnconfig.c:221
+#: lib/config/xnconfig.c:222
 msgid "Argument number mismatch for ExcludeLanguage option"
 msgstr ""
 
-#: lib/config/xnconfig.c:238
+#: lib/config/xnconfig.c:239
 msgid "Invalid value for pattern minig and recognition mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:250
+#: lib/config/xnconfig.c:251
 msgid "Invalid value for disable CapsLock using mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:262
+#: lib/config/xnconfig.c:263
 msgid "Invalid value for check language on input process mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:289
+#: lib/config/xnconfig.c:290
 msgid "Invalid value for education mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:306
+#: lib/config/xnconfig.c:307
 msgid "Invalid value for remember layout mode specified"
 msgstr "Неправильне значення вказано для пам’яті режиму розкладки"
 
-#: lib/config/xnconfig.c:318
+#: lib/config/xnconfig.c:319
 msgid "Invalid value for save selection mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:335
+#: lib/config/xnconfig.c:336
 msgid "Invalid value for sound action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:367
+#: lib/config/xnconfig.c:368
 msgid "Invalid value for play sounds mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:379
+#: lib/config/xnconfig.c:380
 msgid "Send delay must be between 0 and 50"
 msgstr ""
 
-#: lib/config/xnconfig.c:394
+#: lib/config/xnconfig.c:395
 msgid "Invalid value for save keyboard log mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:411
+#: lib/config/xnconfig.c:412
 msgid ""
 "Invalid value for ignore keyboard layout for abbreviations mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:423
+#: lib/config/xnconfig.c:424
 msgid "Invalid value for change iNCIDENTAL CapsLock mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:435
+#: lib/config/xnconfig.c:436
 msgid "Invalid value for change two CApital letter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:447
+#: lib/config/xnconfig.c:448
 msgid ""
 "Invalid value for flush internal buffer when pressed Enter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:459
+#: lib/config/xnconfig.c:460
 msgid ""
 "Invalid value for don't processing word when pressed Enter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:527
+#: lib/config/xnconfig.c:528
 msgid "Invalid value for show OSD mode specified"
 msgstr "Неправильне значення вказано для показу режиму OSD"
 
-#: lib/config/xnconfig.c:539
+#: lib/config/xnconfig.c:540
 msgid "Invalid value for OSD action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:583
+#: lib/config/xnconfig.c:584
 msgid "Invalid value for show popup message mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:595
+#: lib/config/xnconfig.c:596
 msgid "Invalid value for popup message action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:679
+#: lib/config/xnconfig.c:680
 msgid "Invalid value for troubleshooting mode for backspace specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:691
+#: lib/config/xnconfig.c:692
 msgid "Invalid value for troubleshooting mode for left arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:703
+#: lib/config/xnconfig.c:704
 msgid "Invalid value for troubleshooting mode for right arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:715
+#: lib/config/xnconfig.c:716
 msgid "Invalid value for troubleshooting mode for up arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:727
+#: lib/config/xnconfig.c:728
 msgid "Invalid value for troubleshooting mode for down arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:739
+#: lib/config/xnconfig.c:740
 msgid "Invalid value for troubleshooting mode for delete specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:751
+#: lib/config/xnconfig.c:752
 msgid "Invalid value for troubleshooting mode for keyboard switch specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:763
+#: lib/config/xnconfig.c:764
 msgid "Invalid value for dont send KeyRelease event mode"
 msgstr ""
 
-#: lib/config/xnconfig.c:782
+#: lib/config/xnconfig.c:783
 msgid ""
 "Invalid value for rotate layout after correction selected text mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:798
+#: lib/config/xnconfig.c:799
 #, c-format
 msgid "Can't find config file %s"
 msgstr "Не можу знайти файл конфігурації %s"
 
-#: lib/config/xnconfig.c:934
+#: lib/config/xnconfig.c:935
 msgid "No languages specified in config file"
 msgstr "Не вказано жодної мови у файлі конфігурації"
 
-#: lib/config/xnconfig.c:963
+#: lib/config/xnconfig.c:964
 #, c-format
 msgid "Saving main config to %s"
 msgstr "Зберігаю головні налаштування для %s"
 
-#: lib/config/xnconfig.c:968
+#: lib/config/xnconfig.c:969
 #, c-format
 msgid "Can't create file %s"
 msgstr "Не можу створити файл %s"
 
-#: lib/config/xnconfig.c:1270
+#: lib/config/xnconfig.c:1271
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr "Переміщаю файл налаштувань з %s до %s"
 
-#: lib/config/xnconfig.c:1276
+#: lib/config/xnconfig.c:1277
 msgid "Can't move file!"
 msgstr "Не можу перемістити файл!"
 
-#: lib/config/xnconfig.c:1294
+#: lib/config/xnconfig.c:1295
 #, c-format
 msgid "Saving %s dictionary"
 msgstr "Зберігаю словник %s"
 
-#: lib/config/xnconfig.c:1307
+#: lib/config/xnconfig.c:1308
 #, c-format
 msgid "Saving %s pattern"
 msgstr ""
@@ -656,12 +656,12 @@ msgstr ""
 msgid "Mail server return Error %d"
 msgstr ""
 
-#: lib/misc/regexp.c:46
+#: lib/misc/regexp.c:42
 #, c-format
 msgid "Can't compile regular expression '%s'"
 msgstr ""
 
-#: lib/misc/regexp.c:56
+#: lib/misc/regexp.c:52
 #, c-format
 msgid "Can't exec regular expression '%s', eror code %d"
 msgstr ""
@@ -709,21 +709,21 @@ msgstr ""
 msgid "Can't execute command '%s'"
 msgstr ""
 
-#: lib/main/bind_table.c:127 lib/main/bind_table.c:165
+#: lib/main/bind_table.c:128 lib/main/bind_table.c:166
 #, c-format
 msgid "   No key set for action \"%s\""
 msgstr ""
 
-#: lib/main/bind_table.c:153 lib/main/bind_table.c:191
+#: lib/main/bind_table.c:154 lib/main/bind_table.c:192
 #, c-format
 msgid "   Action \"%s\" with key \"%s\""
 msgstr ""
 
-#: lib/main/bind_table.c:217
+#: lib/main/bind_table.c:218
 msgid "Binded hotkeys actions:"
 msgstr ""
 
-#: lib/main/bind_table.c:244
+#: lib/main/bind_table.c:245
 msgid "Binded hotkeys user actions:"
 msgstr ""
 
@@ -908,80 +908,85 @@ msgstr ""
 msgid "Manual mode changed to %s"
 msgstr ""
 
-#: lib/main/program.c:1160
+#: lib/main/program.c:1165
 #, c-format
 msgid "Now keyboard and mouse block status is %s"
 msgstr ""
 
-#: lib/main/program.c:1178
+#: lib/main/program.c:1183
 #, c-format
 msgid "Insert date '%s'."
 msgstr ""
 
-#: lib/main/program.c:1241
+#: lib/main/program.c:1202
+#, c-format
+msgid "Now keyboard and mouse recordind status is %s"
+msgstr ""
+
+#: lib/main/program.c:1267
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr ""
 
-#: lib/main/program.c:1297 lib/main/program.c:1342
+#: lib/main/program.c:1323 lib/main/program.c:1368
 msgid "No language found to change to"
 msgstr ""
 
-#: lib/main/program.c:1444
+#: lib/main/program.c:1470
 msgid "Find spaces before punctuation, correction..."
 msgstr ""
 
-#: lib/main/program.c:1493
+#: lib/main/program.c:1519
 msgid "Find no space before left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1510
+#: lib/main/program.c:1536
 msgid "Find spaces before right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1540
+#: lib/main/program.c:1566
 msgid "Find no spaces after right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1575
+#: lib/main/program.c:1601
 msgid "Find spaces after left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1626
+#: lib/main/program.c:1652
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr ""
 
-#: lib/main/program.c:1665
+#: lib/main/program.c:1691
 msgid "No string to change"
 msgstr ""
 
-#: lib/main/program.c:1669
+#: lib/main/program.c:1695
 #, c-format
 msgid "Processing string '%s'"
 msgstr ""
 
-#: lib/main/program.c:2023
+#: lib/main/program.c:2049
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2034
+#: lib/main/program.c:2060
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2094
+#: lib/main/program.c:2120
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2126
+#: lib/main/program.c:2152
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2147
+#: lib/main/program.c:2173
 msgid "Program is freed"
 msgstr ""
 
@@ -1039,8 +1044,13 @@ msgstr ""
 msgid "Window is freed"
 msgstr ""
 
-#~ msgid "      %s regexp has %d records"
-#~ msgstr "      %s regexp містить %d записів"
+#: lib/rec/rec.c:36
+#, c-format
+msgid "Recording keyboard and mouse events to %s"
+msgstr ""
 
-#~ msgid "   [+] Found this word in %s language regular expressions file"
-#~ msgstr "   [+] Це слово знайдено файлі простих виразів мови %s"
+#: lib/rec/rec.c:40
+#, c-format
+msgid "Can't create recording file %s"
+msgstr "Не можу створити файл %s"
+

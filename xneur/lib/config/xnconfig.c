@@ -73,7 +73,7 @@ static const char *action_names[] =	{
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "PreviewChangeClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"RotateLayout","RotateLayoutBack","ReplaceAbbreviation", "AutocomplementationConfirmation",
-						"BlockKeyboardAndMouseEvents", "InsertDate"
+						"BlockKeyboardAndMouseEvents", "InsertDate", "RecKeyboardAndMouseEvents"
 					};
 static const char *notify_names[] =	{
 						"XneurStart", "XneurReload", "XneurStop",
@@ -83,8 +83,9 @@ static const char *notify_names[] =	{
 						"ChangeString",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",  "PreviewChangeClipboard",
-						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
-						"ExecuteUserAction", "BlockKeyboardAndMouseEvents", "UnblockKeyboardAndMouseEvents"
+						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction", 
+						"BlockKeyboardAndMouseEvents", "UnblockKeyboardAndMouseEvents",
+						"RecKeyboardAndMouseEvents", "UnrecKeyboardAndMouseEvents"
 					};
 
 pid_t getsid(pid_t pid);
