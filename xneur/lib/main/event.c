@@ -204,6 +204,7 @@ static void event_send_next_event(struct _event *p)
 		event_mask = KeyPressMask;
 	else if (p->event.type == KeyRelease)
 		event_mask = KeyReleaseMask;
+
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, event_mask, &p->event);
 }
 

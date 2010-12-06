@@ -77,7 +77,7 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "natty" -v "${NEW_VER}-0natty1" \
+dch -b --force-distribution --distribution "natty" -v "${NEW_VER}-0natty" \
   "Minor update."
 debuild -S -sa
 # end update for basic releases
@@ -88,24 +88,24 @@ debuild -S -sa
 cp debian/changelog ../changelog # copy basic changelog
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "maverick" -v "${NEW_VER}-0maverick1" \
+dch -b --force-distribution --distribution "maverick" -v "${NEW_VER}-0maverick" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-0lucid1" \
+dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-0lucid" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "karmic" -v "${NEW_VER}-0karmic1" \
+dch -b --force-distribution --distribution "karmic" -v "${NEW_VER}-0karmic" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
 mv debian/source ../ # make dirty hack
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "jaunty" -v "${NEW_VER}-0jaunty1" \
+dch -b --force-distribution --distribution "jaunty" -v "${NEW_VER}-0jaunty" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
@@ -116,15 +116,15 @@ mv ../changelog debian/changelog # rollback basic changelog
 
 cd ..
 echo "Download to Launchpad Natty..."
-dput ppa gxneur_${NEW_VER}-0natty1_source.changes | cat
+dput ppa gxneur_${NEW_VER}-0natty_source.changes | cat
 echo "Download to Launchpad Maverick..."
-dput ppa gxneur_${NEW_VER}-0maverick1_source.changes | cat
+dput ppa gxneur_${NEW_VER}-0maverick_source.changes | cat
 echo "Download to Launchpad Lucid..."
-dput ppa gxneur_${NEW_VER}-0lucid1_source.changes | cat
+dput ppa gxneur_${NEW_VER}-0lucid_source.changes | cat
 echo "Download to Launchpad Karmic..."
-dput ppa gxneur_${NEW_VER}-0karmic1_source.changes | cat
+dput ppa gxneur_${NEW_VER}-0karmic_source.changes | cat
 echo "Download to Launchpad Jaunty..."
-dput ppa gxneur_${NEW_VER}-0jaunty1_source.changes | cat
+dput ppa gxneur_${NEW_VER}-0jaunty_source.changes | cat
 
 rm -R "gxneur-${CUR_VER}"
 

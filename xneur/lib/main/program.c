@@ -421,7 +421,7 @@ static void program_process_input(struct _program *p)
 
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
-
+				
 				break;
 			}
 			case ButtonRelease:
@@ -441,7 +441,7 @@ static void program_process_input(struct _program *p)
 
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
-
+				
 				break;
 			}
 			case PropertyNotify:
