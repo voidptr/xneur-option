@@ -319,6 +319,12 @@ static void program_process_input(struct _program *p)
 			}
 			case KeyPress:
 			{
+				//Window rw = RootWindow(main_window->display, DefaultScreen(main_window->display));
+				//grab_button(rw, FALSE);
+				//XTestFakeButtonEvent(main_window->display, Button1, TRUE, CurrentTime);
+				//XTestFakeButtonEvent(main_window->display, Button1, FALSE, CurrentTime);
+				//grab_button(rw, TRUE);
+				
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
@@ -410,9 +416,10 @@ static void program_process_input(struct _program *p)
 				if (p->event->event.xbutton.button == Button1)
 				{
 					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
-					log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
 				}
-
+				
+				log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
+				
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncPointer, CurrentTime);
@@ -421,6 +428,15 @@ static void program_process_input(struct _program *p)
 
 				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
+
+				/*XUngrabButton(main_window->display, AnyButton, AnyModifier, 
+				              RootWindow(main_window->display, DefaultScreen(main_window->display)));
+				
+				XTestFakeButtonEvent(main_window->display, p->event->event.xbutton.button, TRUE, CurrentTime);
+				
+				XGrabButton(main_window->display, AnyButton, AnyModifier, 
+				            RootWindow(main_window->display, DefaultScreen(main_window->display)), 
+				            TRUE, ButtonReleaseMask, GrabModeAsync, GrabModeAsync, None, None);*/
 				
 				break;
 			}
@@ -430,17 +446,27 @@ static void program_process_input(struct _program *p)
 				if (p->event->event.xbutton.button == Button1)
 				{
 					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
-					log_message(TRACE, _("Received ButtonRelease on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
 				}
 
+				log_message(TRACE, _("Received ButtonRelease on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
+				
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncPointer, CurrentTime);
 					break;
 				}
-
-				// Unfreeze and resend grabbed event
+				
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
+
+				/*XUngrabButton(main_window->display, AnyButton, AnyModifier, 
+				              RootWindow(main_window->display, DefaultScreen(main_window->display)));
+				
+				XTestFakeButtonEvent(main_window->display, p->event->event.xbutton.button, FALSE, CurrentTime);
+				
+				XGrabButton(main_window->display, AnyButton, AnyModifier, 
+				            RootWindow(main_window->display, DefaultScreen(main_window->display)), 
+				            TRUE, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None);
+				*/				
 				
 				break;
 			}
