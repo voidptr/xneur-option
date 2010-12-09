@@ -123,7 +123,6 @@ static unsigned char *get_selection (Atom selection, Atom request_target)
 	// Get a timestamp 
 	XSelectInput (display, window, PropertyChangeMask);
 
-	//log_message(ERROR, "Selection owner %s, current window %s", window, 
 	Atom prop = XInternAtom (display, "XSEL_DATA", FALSE);
 	Time timestamp = get_timestamp ();
 	
