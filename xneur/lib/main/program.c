@@ -309,21 +309,18 @@ static void program_process_input(struct _program *p)
 			case ClientMessage:
 			{
 				// Exit from main cycle by message to main window
-				XClientMessageEvent *cme = (XClientMessageEvent *) &(p->event->event);
-				if (cme->message_type == main_window->close_atom)
-				{
-					log_message(LOG, _("Exitting from main cycle"));
-					return;
-				}
+				//XClientMessageEvent *cme = (XClientMessageEvent *) &(p->event->event);
+				log_message(LOG, _("Exitting from main cycle"));
+				return;
 				break;
 			}
 			case KeyPress:
 			{
-				//Window rw = RootWindow(main_window->display, DefaultScreen(main_window->display));
-				//grab_button(rw, FALSE);
-				//XTestFakeButtonEvent(main_window->display, Button1, TRUE, CurrentTime);
-				//XTestFakeButtonEvent(main_window->display, Button1, FALSE, CurrentTime);
-				//grab_button(rw, TRUE);
+				/*Window rw = RootWindow(main_window->display, DefaultScreen(main_window->display));
+				grab_button(rw, FALSE);
+				XTestFakeButtonEvent(main_window->display, Button1, TRUE, CurrentTime);
+				XTestFakeButtonEvent(main_window->display, Button1, TRUE, 10);
+				grab_button(rw, TRUE);*/
 				
 				if (xconfig->block_events)
 				{
@@ -350,6 +347,11 @@ static void program_process_input(struct _program *p)
 			}
 			case KeyRelease:
 			{
+				/*Window rw = RootWindow(main_window->display, DefaultScreen(main_window->display));
+				grab_button(rw, FALSE);
+				XTestFakeButtonEvent(main_window->display, Button1, FALSE, CurrentTime);
+				grab_button(rw, TRUE);*/
+				
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
@@ -379,7 +381,8 @@ static void program_process_input(struct _program *p)
 			{
 				if (type == FocusIn)
 				{
-					log_message(TRACE, _("Received FocusIn (event type %d)"), type);
+					if (p->focus->owner_window != p->event->event.xfocus.window)
+						log_message(TRACE, _("Received FocusIn on window %d (event type %d)"), p->event->event.xfocus.window, type);
 
 					p->last_layout = get_curr_keyboard_group();
 
@@ -394,7 +397,8 @@ static void program_process_input(struct _program *p)
 			}
 			case FocusOut:
 			{
-				log_message(TRACE, _("Received FocusOut (event type %d)"), type);
+				if (p->focus->owner_window != p->event->event.xfocus.window)
+					log_message(TRACE, _("Received FocusOut on window %d (event type %d)"), p->event->event.xfocus.window, type);
 
 				p->last_layout = get_curr_keyboard_group();
 				p->update(p);
@@ -418,56 +422,34 @@ static void program_process_input(struct _program *p)
 					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				}
 				
-				log_message(TRACE, _("Received ButtonPress on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
-				
+				log_message(TRACE, _("Received Button%dPress on window %d with subwindow %d (event type %d)"), p->event->event.xbutton.button, p->event->event.xbutton.window, p->event->event.xbutton.subwindow, type);
+				//log_message(TRACE, _("(Root coordinate %d %d)"), p->event->event.xbutton.x_root, p->event->event.xbutton.x_root);
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncPointer, CurrentTime);
 					break;
 				}
 
-				// Unfreeze and resend grabbed event
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
-
-				/*XUngrabButton(main_window->display, AnyButton, AnyModifier, 
-				              RootWindow(main_window->display, DefaultScreen(main_window->display)));
-				
-				XTestFakeButtonEvent(main_window->display, p->event->event.xbutton.button, TRUE, CurrentTime);
-				
-				XGrabButton(main_window->display, AnyButton, AnyModifier, 
-				            RootWindow(main_window->display, DefaultScreen(main_window->display)), 
-				            TRUE, ButtonReleaseMask, GrabModeAsync, GrabModeAsync, None, None);*/
-				
 				break;
 			}
 			case ButtonRelease:
-			{
+			{	
 				// Clear buffer only when clicked left button
 				if (p->event->event.xbutton.button == Button1)
 				{
 					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				}
 
-				log_message(TRACE, _("Received ButtonRelease on window %d (event type %d)"), p->event->event.xbutton.subwindow, type);
+				log_message(TRACE, _("Received Button%dRelease on window %d with subwindow %d (event type %d)"), p->event->event.xbutton.button, p->event->event.xbutton.window, type);
 				
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncPointer, CurrentTime);
 					break;
 				}
-				
-				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 
-				/*XUngrabButton(main_window->display, AnyButton, AnyModifier, 
-				              RootWindow(main_window->display, DefaultScreen(main_window->display)));
-				
-				XTestFakeButtonEvent(main_window->display, p->event->event.xbutton.button, FALSE, CurrentTime);
-				
-				XGrabButton(main_window->display, AnyButton, AnyModifier, 
-				            RootWindow(main_window->display, DefaultScreen(main_window->display)), 
-				            TRUE, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None);
-				*/				
-				
+				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 				break;
 			}
 			case PropertyNotify:
@@ -496,6 +478,11 @@ static void program_process_input(struct _program *p)
 				
 				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
 				p->update(p);
+				break;
+			}
+			case MotionNotify:
+			{
+				//log_message(TRACE, _("Received MotionNotify (event type %d)"), type);
 				break;
 			}
 			default:

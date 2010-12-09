@@ -73,9 +73,28 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	int show_message = TRUE;
 	while (TRUE)
 	{
-		int revert_to;
-		XGetInputFocus(main_window->display, &new_window, &revert_to);
+		/*if (main_window->_NET_SUPPORTED)
+		{
+			Atom type;
+			int size;
+			long nitems;
 
+			Atom request = XInternAtom(main_window->display, "_NET_ACTIVE_WINDOW", False);
+			Window root = XDefaultRootWindow(main_window->display);
+			unsigned char *data = get_win_prop(root, request, &nitems, &type, &size);
+
+			if (nitems > 0) 
+				new_window = *((Window*)data);
+			else 
+				new_window = None;
+
+			free(data);
+		}
+		else
+		{*/
+			int revert_to;
+			XGetInputFocus(main_window->display, &new_window, &revert_to);
+		//}
 		// Catch not empty and not system window
 		if (new_window != None/* && new_window > 1000*/)
 			break;
@@ -166,23 +185,24 @@ static void focus_update_events(struct _focus *p, int mode)
 	{
 		// Event unmasking
 		grab_button(rw, FALSE);
-		//grab_mouse_button(p->parent_window, FALSE);
-
+		
 		// Ungrabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, FALSE);
-		
+
+		//set_mask_to_window(rw, FOCUS_CHANGE_MASK);
 		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
+		set_event_mask(rw, None);
 	}
 	else
 	{
 		// Event masking
 		grab_button(rw, TRUE);
-		//grab_mouse_button(p->parent_window, TRUE);
 		
 		// Grabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, TRUE);
-		
+
 		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+		set_event_mask(rw, BUTTON_HANDLE_MASK);
 	}
 
 	p->last_parent_window = p->parent_window;

@@ -33,9 +33,10 @@ struct _window
 	Display *display;
 	Window window;
 
-	Atom close_atom;
-	Atom protocols_atom;
+	Atom internal_atom;
 
+	int _NET_SUPPORTED;
+	
 	int  (*create) (struct _window *p);
 	void (*destroy) (struct _window *p);
 	void (*move_window) (struct _window *p, int x, int y);

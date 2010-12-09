@@ -99,7 +99,33 @@ static int window_create(struct _window *p)
 
 	p->display 	= display;
 	p->window  	= window;
+	
+	p->internal_atom = XInternAtom(p->display, "XNEUR_INTERNAL_MSG", 0);
 
+	// Check "_NET_SUPPORTED" atom support
+	Atom type = 0;
+	long nitems = 0L;
+	int size = 0;
+	Atom *results = NULL;
+	long i = 0;
+
+	Window root;
+	Atom request;
+	Atom feature_atom;
+
+	request = XInternAtom(p->display, "_NET_SUPPORTED", False);
+	feature_atom = XInternAtom(p->display, "_NET_ACTIVE_WINDOW", False);
+	root = XDefaultRootWindow(p->display);
+
+	p->_NET_SUPPORTED = FALSE;
+	results = (Atom *) get_win_prop(root, request, &nitems, &type, &size);
+	for (i = 0L; i < nitems; i++) 
+	{
+		if (results[i] == feature_atom)
+			p->_NET_SUPPORTED = TRUE;
+	}
+	free(results);
+	
 	log_message(LOG, _("Main window with id %d created"), window);
 
 	XSynchronize(display, TRUE);
@@ -141,7 +167,7 @@ struct _window* window_init(struct _xneur_handle *handle)
 	bzero(p, sizeof(struct _window));
 
 	p->handle = handle;
-	
+
 	// Function mapping
 	p->create		= window_create;
 	p->destroy		= window_destroy;

@@ -739,25 +739,25 @@ msgstr ""
 msgid "String is freed"
 msgstr ""
 
-#: lib/main/event.c:214
+#: lib/main/event.c:215
 msgid "Event is freed"
 msgstr ""
 
-#: lib/main/focus.c:85
+#: lib/main/focus.c:104
 msgid "New window empty"
 msgstr ""
 
-#: lib/main/focus.c:116
+#: lib/main/focus.c:135
 #, c-format
 msgid "Focused window %d"
 msgstr ""
 
-#: lib/main/focus.c:139
+#: lib/main/focus.c:158
 #, c-format
 msgid "Process new window (ID %d) with name '%s' (status %s, mode %s)"
 msgstr ""
 
-#: lib/main/focus.c:195
+#: lib/main/focus.c:215
 msgid "Focus is freed"
 msgstr ""
 
@@ -794,192 +794,192 @@ msgstr ""
 msgid "Plugins is freed"
 msgstr ""
 
-#: lib/main/program.c:256
+#: lib/main/program.c:257
 #, c-format
 msgid "Restore layout group to %d"
 msgstr ""
 
-#: lib/main/program.c:263
+#: lib/main/program.c:264
 #, c-format
 msgid "Store default layout group to %d"
 msgstr ""
 
-#: lib/main/program.c:311
+#: lib/main/program.c:313
 msgid "Exitting from main cycle"
 msgstr ""
 
-#: lib/main/program.c:323
+#: lib/main/program.c:329
 #, c-format
 msgid "Received KeyPress '%s' (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:348
+#: lib/main/program.c:359
 #, c-format
 msgid "Received KeyRelease '%s' (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:372
+#: lib/main/program.c:386
 #, c-format
-msgid "Received FocusIn (event type %d)"
+msgid "Received FocusIn on window %d (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:387
+#: lib/main/program.c:404
 #, c-format
-msgid "Received FocusOut (event type %d)"
+msgid "Received FocusOut on window %d (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:395
+#: lib/main/program.c:412
 #, c-format
 msgid "Received SelectionNotify (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:400
+#: lib/main/program.c:417
 #, c-format
 msgid "Received SelectionRequest (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:409
-#, c-format
-msgid "Received ButtonPress on window %d (event type %d)"
-msgstr ""
-
 #: lib/main/program.c:428
 #, c-format
-msgid "Received ButtonRelease on window %d (event type %d)"
+msgid "Received Button%dPress on window %d with subwindow %d (event type %d)"
 msgstr ""
 
 #: lib/main/program.c:447
 #, c-format
+msgid "Received Button%dRelease on window %d (event type %d)"
+msgstr ""
+
+#: lib/main/program.c:461
+#, c-format
 msgid "Received Property Notify (layout switch event) (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:456
+#: lib/main/program.c:470
 #, c-format
 msgid "Received MappingNotify (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:467
+#: lib/main/program.c:481
 #, c-format
 msgid "Now layouts count %d"
 msgstr ""
 
-#: lib/main/program.c:473
+#: lib/main/program.c:492
 #, c-format
 msgid "Uncatched event with type %d (see X11/X.h for details)"
 msgstr ""
 
-#: lib/main/program.c:482
+#: lib/main/program.c:501
 #, c-format
 msgid "Changing language from %s to %s"
 msgstr ""
 
-#: lib/main/program.c:489
+#: lib/main/program.c:508
 msgid "Correcting iNCIDENTAL CapsLock"
 msgstr ""
 
-#: lib/main/program.c:507
+#: lib/main/program.c:526
 msgid "Correcting two CApital letter"
 msgstr ""
 
-#: lib/main/program.c:524
+#: lib/main/program.c:543
 #, c-format
 msgid "Received selected text is '%s'"
 msgstr ""
 
-#: lib/main/program.c:528
+#: lib/main/program.c:547
 #, c-format
 msgid "Received selected text '%s'"
 msgstr ""
 
-#: lib/main/program.c:808
+#: lib/main/program.c:827
 #, c-format
 msgid "Execute user action \"%s\""
 msgstr ""
 
-#: lib/main/program.c:964
+#: lib/main/program.c:983
 #, c-format
 msgid "Manual mode changed to %s"
 msgstr ""
 
-#: lib/main/program.c:1165
+#: lib/main/program.c:1184
 #, c-format
 msgid "Now keyboard and mouse block status is %s"
 msgstr ""
 
-#: lib/main/program.c:1183
+#: lib/main/program.c:1202
 #, c-format
 msgid "Insert date '%s'."
 msgstr ""
 
-#: lib/main/program.c:1202
+#: lib/main/program.c:1221
 #, c-format
 msgid "Now keyboard and mouse recordind status is %s"
 msgstr ""
 
-#: lib/main/program.c:1267
+#: lib/main/program.c:1286
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr ""
 
-#: lib/main/program.c:1323 lib/main/program.c:1368
+#: lib/main/program.c:1342 lib/main/program.c:1387
 msgid "No language found to change to"
 msgstr ""
 
-#: lib/main/program.c:1470
+#: lib/main/program.c:1489
 msgid "Find spaces before punctuation, correction..."
 msgstr ""
 
-#: lib/main/program.c:1519
+#: lib/main/program.c:1538
 msgid "Find no space before left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1536
+#: lib/main/program.c:1555
 msgid "Find spaces before right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1566
+#: lib/main/program.c:1585
 msgid "Find no spaces after right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1601
+#: lib/main/program.c:1620
 msgid "Find spaces after left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1652
+#: lib/main/program.c:1671
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr ""
 
-#: lib/main/program.c:1691
+#: lib/main/program.c:1710
 msgid "No string to change"
 msgstr ""
 
-#: lib/main/program.c:1695
+#: lib/main/program.c:1714
 #, c-format
 msgid "Processing string '%s'"
 msgstr ""
 
-#: lib/main/program.c:2049
+#: lib/main/program.c:2068
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2060
+#: lib/main/program.c:2079
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2120
+#: lib/main/program.c:2139
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2152
+#: lib/main/program.c:2171
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2173
+#: lib/main/program.c:2194
 msgid "Program is freed"
 msgstr ""
 
@@ -991,27 +991,27 @@ msgstr ""
 msgid "Selection is not a string"
 msgstr ""
 
-#: lib/main/utils.c:112
+#: lib/main/utils.c:137
 #, c-format
 msgid "Failed to %s mouse with error BadCursor"
 msgstr ""
 
-#: lib/main/utils.c:114
+#: lib/main/utils.c:139
 #, c-format
 msgid "Failed to %s mouse with error BadValue"
 msgstr ""
 
-#: lib/main/utils.c:116
+#: lib/main/utils.c:141
 #, c-format
 msgid "Failed to %s mouse with error BadWindow"
 msgstr ""
 
-#: lib/main/utils.c:128 lib/main/utils.c:153 lib/main/utils.c:167
+#: lib/main/utils.c:153 lib/main/utils.c:178 lib/main/utils.c:192
 #, c-format
 msgid "Failed to %s keyboard with error BadValue"
 msgstr ""
 
-#: lib/main/utils.c:130 lib/main/utils.c:155 lib/main/utils.c:169
+#: lib/main/utils.c:155 lib/main/utils.c:180 lib/main/utils.c:194
 #, c-format
 msgid "Failed to %s keyboard with error BadWindow"
 msgstr ""
@@ -1028,21 +1028,21 @@ msgstr ""
 msgid "Can't create flag window"
 msgstr ""
 
-#: lib/main/window.c:103
+#: lib/main/window.c:129
 #, c-format
 msgid "Main window with id %d created"
 msgstr ""
 
-#: lib/main/window.c:135
+#: lib/main/window.c:161
 msgid "Window is freed"
 msgstr ""
 
-#: lib/rec/rec.c:36
+#: lib/rec/rec.c:40
 #, c-format
 msgid "Recording keyboard and mouse events to %s"
 msgstr ""
 
-#: lib/rec/rec.c:40
+#: lib/rec/rec.c:45
 #, c-format
 msgid "Can't create recording file %s"
 msgstr ""

@@ -100,14 +100,39 @@ void set_event_mask(Window window, int event_mask)
 	XSelectInput(main_window->display, window, event_mask);
 }
 
+void set_mask_to_window(Window window, int event_mask)
+{
+	if (window == None)
+		return;
+	
+	set_event_mask(window, event_mask);
+	
+	unsigned int children_count;
+	Window root, parent;
+	Window *children;
+	
+	int is_same_screen = XQueryTree(main_window->display, window, &root, &parent, &children, &children_count);
+	if (!is_same_screen)
+		return;
+	
+	unsigned int i;
+	for (i = 0; i < children_count; i++)
+		set_mask_to_window(children[i], event_mask);
+	
+	XFree(children);
+}
+
 void grab_button(Window window, int is_grab)
 {
 	int status;
 	if (is_grab)
+	{
 		status = XGrabButton(main_window->display, AnyButton, AnyModifier, window, TRUE, ButtonPressMask|ButtonReleaseMask, GrabModeSync, GrabModeAsync, None, None);
+		XSync (main_window->display, FALSE);
+	}
 	else
 		status = XUngrabButton(main_window->display, AnyButton, AnyModifier, window);
-
+		
 	if (status == BadCursor)
 		log_message(ERROR, _("Failed to %s mouse with error BadCursor"), grab_ungrab[is_grab]);
 	else if (status == BadValue)
@@ -193,4 +218,36 @@ char* get_wm_class_name(Window window)
 	XFree(wm_class);
 
 	return string;
+}
+
+unsigned char *get_win_prop(Window window, Atom atom, long *nitems, Atom *type, int *size) 
+{
+	Atom actual_type;
+	int actual_format;
+	unsigned long _nitems;
+	unsigned long nbytes;
+	unsigned long bytes_after; /* unused */
+	unsigned char *prop;
+	int status;
+
+	status = XGetWindowProperty(main_window->display, window, atom, 0, (~0L),
+                              FALSE, AnyPropertyType, &actual_type,
+                              &actual_format, &_nitems, &bytes_after,
+                              &prop);
+	if ((status == BadWindow) || (status != Success)) 
+		return NULL;
+
+	if (actual_format == 32)
+		nbytes = sizeof(long);
+	else if (actual_format == 16)
+		nbytes = sizeof(short);
+	else if (actual_format == 8)
+		nbytes = 1;
+	else if (actual_format == 0)
+		nbytes = 0;
+
+	*nitems = _nitems;
+	*type = actual_type;
+	*size = actual_format;
+	return prop;
 }
