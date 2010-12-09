@@ -310,8 +310,8 @@ static void program_process_input(struct _program *p)
 			{
 				// Exit from main cycle by message to main window
 				//XClientMessageEvent *cme = (XClientMessageEvent *) &(p->event->event);
-				log_message(LOG, _("Exitting from main cycle"));
-				return;
+				//log_message(LOG, _("Exitting from main cycle"));
+				//return;
 				break;
 			}
 			case KeyPress:
