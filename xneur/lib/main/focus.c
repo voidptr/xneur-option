@@ -73,7 +73,9 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	int show_message = TRUE;
 	while (TRUE)
 	{
-		if (main_window->_NET_SUPPORTED)
+		// This code commented be cause function XGrabKey for _NET_ACTIVE_WINDOW 
+		// dont process modifier keys (see utils.h)
+		/*if (main_window->_NET_SUPPORTED)
 		{
 			Atom type;
 			int size;
@@ -91,10 +93,11 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 			free(data);
 		}
 		else
-		{
+		{*/
 			int revert_to;
 			XGetInputFocus(main_window->display, &new_window, &revert_to);
-		}
+		//}
+
 		// Catch not empty and not system window
 		if (new_window != None/* && new_window > 1000*/)
 			break;
