@@ -122,16 +122,17 @@ void set_mask_to_window(Window window, int event_mask)
 	XFree(children);
 }
 
-void grab_button(Window window, int is_grab)
+void grab_button(int is_grab)
 {
+	Window rw = RootWindow(main_window->display, DefaultScreen(main_window->display));
 	int status;
 	if (is_grab)
 	{
-		status = XGrabButton(main_window->display, AnyButton, AnyModifier, window, TRUE, ButtonPressMask|ButtonReleaseMask, GrabModeSync, GrabModeAsync, None, None);
+		status = XGrabButton(main_window->display, AnyButton, AnyModifier, rw, TRUE, ButtonPressMask|ButtonReleaseMask, GrabModeSync, GrabModeAsync, None, None);
 		XSync (main_window->display, FALSE);
 	}
 	else
-		status = XUngrabButton(main_window->display, AnyButton, AnyModifier, window);
+		status = XUngrabButton(main_window->display, AnyButton, AnyModifier, rw);
 		
 	if (status == BadCursor)
 		log_message(ERROR, _("Failed to %s mouse with error BadCursor"), grab_ungrab[is_grab]);

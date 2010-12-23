@@ -39,7 +39,7 @@ struct _program
 
 	int  last_layout;
 	int  last_window;
-
+	
 	KeySym prev_key;
 	int prev_key_mod;
 	struct _list_char *modifiers_stack;

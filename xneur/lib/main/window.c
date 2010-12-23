@@ -58,7 +58,7 @@ static int window_create(struct _window *p)
 	}
 
 	// Create Main Window
-	Window window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 1, 1, 0, 0, 0);
+	Window window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 100, 100, 0, 0, 0);
 	if (!window)
 	{
 		log_message(ERROR, _("Can't create program window"));

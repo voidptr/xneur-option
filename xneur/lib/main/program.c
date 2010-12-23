@@ -33,6 +33,8 @@
 #include <pthread.h>
 #include <ctype.h>
 #include <time.h>
+#include <unistd.h> 
+
 
 #ifdef WITH_ASPELL
 #  include <aspell.h>
@@ -420,17 +422,17 @@ static void program_process_input(struct _program *p)
 				if (p->event->event.xbutton.button == Button1)
 				{
 					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+					log_message(TRACE, _("Received Button%dPress on window %d with subwindow %d (event type %d)"), p->event->event.xbutton.button, p->event->event.xbutton.window, p->event->event.xbutton.subwindow, type);
 				}
 				
-				log_message(TRACE, _("Received Button%dPress on window %d with subwindow %d (event type %d)"), p->event->event.xbutton.button, p->event->event.xbutton.window, p->event->event.xbutton.subwindow, type);
-				//log_message(TRACE, _("(Root coordinate %d %d)"), p->event->event.xbutton.x_root, p->event->event.xbutton.x_root);
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncPointer, CurrentTime);
 					break;
 				}
-
+				
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
+
 				break;
 			}
 			case ButtonRelease:
@@ -448,9 +450,8 @@ static void program_process_input(struct _program *p)
 					XAllowEvents(main_window->display, AsyncPointer, CurrentTime);
 					break;
 				}
-
+				
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
-				break;
 			}
 			case PropertyNotify:
 			{
@@ -482,7 +483,7 @@ static void program_process_input(struct _program *p)
 			}
 			case MotionNotify:
 			{
-				//log_message(TRACE, _("Received MotionNotify (event type %d)"), type);
+				log_message(TRACE, _("Received MotionNotify (event type %d)"), type);
 				break;
 			}
 			default:
@@ -1210,27 +1211,6 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 
 			p->event->default_event.xkey.keycode = 0;
 			free (date);
-			break;
-		}
-		case ACTION_REC_EVENTS:
-		{
-			p->event->default_event.xkey.keycode = 0;
-			xconfig->recording = !xconfig->recording;
-			log_message (DEBUG, _("Now keyboard and mouse recordind status is %s"), xconfig->get_bool_name(xconfig->recording));
-			
-			if (xconfig->recording)
-			{
-				char *rec_file_path_name = get_home_file_path_name(NULL, REC_NAME);
-				rec_init(rec_file_path_name);
-				free(rec_file_path_name);
-				show_notify(NOTIFY_REC_EVENTS, NULL);
-			}
-			else
-			{
-				rec_uninit();
-				show_notify(NOTIFY_UNREC_EVENTS, NULL);
-			}
-			
 			break;
 		}
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym

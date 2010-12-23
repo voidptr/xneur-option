@@ -136,6 +136,7 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	}
 
 	log_message(DEBUG, _("Focused window %d"), new_window);
+
 	// Up to heighted window
 	p->parent_window = new_window;
 	while (TRUE)
@@ -182,30 +183,26 @@ static int focus_get_focus_status(struct _focus *p, int *forced_mode, int *focus
 
 static void focus_update_events(struct _focus *p, int mode)
 {
-	Window rw = RootWindow(main_window->display, DefaultScreen(main_window->display));
-
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
 		// Event unmasking
-		grab_button(rw, FALSE);
+		grab_button(FALSE);
 		
 		// Ungrabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, FALSE);
 
 		//set_mask_to_window(rw, FOCUS_CHANGE_MASK);
 		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
-		set_event_mask(rw, None);
 	}
 	else
 	{
 		// Event masking
-		grab_button(rw, TRUE);
+		grab_button(TRUE);
 		
 		// Grabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, TRUE);
 
 		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-		set_event_mask(rw, BUTTON_HANDLE_MASK);
 	}
 
 	p->last_parent_window = p->parent_window;

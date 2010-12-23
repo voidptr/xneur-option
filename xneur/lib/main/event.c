@@ -208,6 +208,47 @@ static void event_send_next_event(struct _event *p)
 	XSendEvent(main_window->display, p->event.xany.window, TRUE, event_mask, &p->event);
 }
 
+static void event_send_button_event (struct _event *p)
+{
+	log_message (TRACE, _("Resend Button Envent"));
+	/* Send to specific window */
+	XButtonEvent xbpe;
+	Display *dpy = XOpenDisplay(NULL);
+    xbpe.window = p->event.xbutton.window;
+    xbpe.button = p->event.xbutton.button;
+    xbpe.display = dpy;
+    xbpe.root = p->event.xbutton.root;
+    xbpe.same_screen = True; /* Should we detect if window is on the same
+                                 screen as cursor? */
+    xbpe.state = p->event.xbutton.state;
+
+    xbpe.subwindow = None;
+    xbpe.time = CurrentTime;
+    xbpe.type = p->event.xbutton.type;
+
+    /* Get the coordinates of the cursor relative to xbpe.window and also find what
+     * subwindow it might be on */
+    XTranslateCoordinates(dpy, xbpe.root, xbpe.window, 
+                          p->event.xbutton.x_root, p->event.xbutton.y_root, &xbpe.x, &xbpe.y, &xbpe.subwindow);
+
+	log_message (ERROR, "%d %d", xbpe.x, xbpe.y);
+    /* Normal behavior of 'mouse up' is that the modifier mask includes
+     * 'ButtonNMotionMask' where N is the button being released. This works the same
+     * way with keys, too. */
+    if (xbpe.type == ButtonRelease) { /* is mouse up */
+      switch(xbpe.button) {
+        case 1: xbpe.state |= Button1MotionMask; break;
+        case 2: xbpe.state |= Button2MotionMask; break;
+        case 3: xbpe.state |= Button3MotionMask; break;
+        case 4: xbpe.state |= Button4MotionMask; break;
+        case 5: xbpe.state |= Button5MotionMask; break;
+      }
+    }
+	XSendEvent(dpy, xbpe.window, True, ButtonPressMask, (XEvent *)&xbpe);
+    XFlush(dpy);
+	XCloseDisplay(dpy);
+}
+
 static void event_uninit(struct _event *p)
 {
 	free(p);
@@ -227,6 +268,7 @@ struct _event* event_init(void)
 	// Functions mapping
 	p->get_next_event	= event_get_next_event;
 	p->send_next_event	= event_send_next_event;
+	p->send_button_event	= event_send_button_event;
 	p->set_owner_window	= event_set_owner_window;
 	p->send_xkey		= event_send_xkey;
 	p->send_string		= event_send_string;
