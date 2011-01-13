@@ -293,6 +293,8 @@ static void program_update(struct _program *p)
 	p->update_modifiers_stack(p);
 	
 	p->focus->update_events(p->focus, listen_mode);
+	// Сброс признака "ручное переключение" после смены фокуса.
+	p->changed_manual = MANUAL_FLAG_UNSET;
 }
 
 static void program_process_input(struct _program *p)
