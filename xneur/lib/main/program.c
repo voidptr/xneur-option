@@ -1314,6 +1314,11 @@ static int program_check_lang_last_word(struct _program *p)
 	if (!word)
 		return FALSE;
 
+	if ((p->buffer->content[p->buffer->cur_pos-1] == ' ') ||
+		(p->buffer->content[p->buffer->cur_pos-1] == 13) || // Enter
+	    (p->buffer->content[p->buffer->cur_pos-1] == 11))   // Tab
+			return FALSE;
+	
 	int cur_lang = get_curr_keyboard_group();
 	int new_lang = check_lang(xconfig->handle, p->buffer, cur_lang);
 
