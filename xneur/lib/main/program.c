@@ -1422,10 +1422,13 @@ static void program_check_tcl_last_word(struct _program *p)
 
 	if (!isalpha(p->buffer->content[offset]))
 		return;
-
+	
 	if (p->buffer->cur_pos - offset <= 2)
 		return;
 
+	if (!isalpha(p->buffer->content[offset+1]))
+		return;
+	
 	if (isblank(p->buffer->content[offset+2]))
 		return;
 
