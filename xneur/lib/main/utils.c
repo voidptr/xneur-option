@@ -128,7 +128,7 @@ void grab_button(int is_grab)
 	int status;
 	if (is_grab)
 	{
-		status = XGrabButton(main_window->display, AnyButton, AnyModifier, rw, TRUE, ButtonPressMask|ButtonReleaseMask, GrabModeSync, GrabModeAsync, None, None);
+		status = XGrabButton(main_window->display, Button1, AnyModifier, rw, TRUE, ButtonPressMask|ButtonReleaseMask, GrabModeSync, GrabModeAsync, None, None);
 		XSync (main_window->display, FALSE);
 	}
 	else
