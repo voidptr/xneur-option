@@ -1,9 +1,8 @@
 SUBDIRS =		\
-	rec				\
 	notify			\
 	misc			\
 	main			\
-	ai				\
-	lib				\
+	ai			\
+	lib			\
 	config			
 

@@ -200,8 +200,6 @@ struct _xneur_config
 	int   disable_capslock;				// Disable CapsLock use
 
 	int   block_events;					// Block all events (keyboard and mouse)
-
-	int   recording;
 	
 	int   autocomplementation;			// Save pattern and mining
 	int   add_space_after_autocomplementation;

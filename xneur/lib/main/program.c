@@ -64,8 +64,6 @@
 
 #include "notify.h"
 
-#include "rec.h"
-
 #include "program.h"
 
 #define KLB_NO_ACTION           0	// Modifier, function etc
@@ -304,9 +302,6 @@ static void program_process_input(struct _program *p)
 	while (1)
 	{
 		int type = p->event->get_next_event(p->event);
-
-		if (xconfig->recording)
-			rec(&p->event->event);
 		
 		switch (type)
 		{
@@ -2166,8 +2161,6 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 
 static void program_uninit(struct _program *p)
 {
-	rec_uninit ();
-	
 	p->focus->uninit(p->focus);
 	p->event->uninit(p->event);
 	p->buffer->uninit(p->buffer);

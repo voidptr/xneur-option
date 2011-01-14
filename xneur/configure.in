@@ -240,7 +240,6 @@ lib/config/Makefile
 lib/misc/Makefile 
 lib/notify/Makefile 
 lib/main/Makefile 
-lib/rec/Makefile 
 src/Makefile 
 po/Makefile.in 
 Makefile 
