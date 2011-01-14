@@ -99,8 +99,6 @@ fi
 
 PKG_CHECK_MODULES(PCRE, [libpcre >= 5.0])
 
-PKG_CHECK_MODULES(XTST, [xtst])
-
 AC_ARG_WITH(keylogger, [  --without-keylogger	  Compile without keylogger function])
 if test "x$with_keylogger" != "xno"; then
 	AC_DEFINE(WITH_KEYLOGGER, 1, [Define if you want keylogger function])
@@ -260,9 +258,6 @@ $PACKAGE $VERSION configured successfully:
 
 	X11 compiler flags:		$X11_CFLAGS
 	X11 linker flags:		$X11_LIBS
-
-	Xtst compiler flags:		$XTST_CFLAGS
-	Xtst linker flags:		$XTST_LIBS
 
 	Pcre compiler flags:		$PCRE_CFLAGS
 	Pcre linker flags:		$PCRE_LIBS
