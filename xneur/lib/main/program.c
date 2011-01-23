@@ -867,9 +867,12 @@ static void program_perform_auto_action(struct _program *p, int action)
 		case KLB_SPACE:
 		case KLB_ADD_SYM:
 		{
-			if (action == KLB_ENTER && xconfig->dont_process_when_press_enter)
+			if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
+				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+			
+			if (action == KLB_ENTER && xconfig->dont_process_when_press_enter && !xconfig->flush_buffer_when_press_enter)
 				action = KLB_ADD_SYM;
-
+			
 			if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
 					p->changed_manual = MANUAL_FLAG_UNSET;
 			
@@ -890,6 +893,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 			    // Correct spaces with brackets
 			    p->check_space_with_bracket(p);
 				
+
 				p->check_brackets_with_symbols(p);
 				
 				if (!xconfig->check_lang_on_process)
@@ -950,8 +954,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 			// Unblock keyboard
 			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 
-			if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
-				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+			//if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
+			//	p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 			p->last_action = ACTION_NONE;
 
@@ -1309,6 +1313,7 @@ static int program_check_lang_last_word(struct _program *p)
 		return FALSE;
 
 	if ((p->buffer->content[p->buffer->cur_pos-1] == ' ') ||
+	    (p->buffer->content[p->buffer->cur_pos-1] == 0) || // Nothing word
 		(p->buffer->content[p->buffer->cur_pos-1] == 13) || // Enter
 	    (p->buffer->content[p->buffer->cur_pos-1] == 11))   // Tab
 			return FALSE;
