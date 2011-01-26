@@ -120,19 +120,6 @@ static int get_enchant_hits(struct _xneur_handle *handle, char **word, int len, 
 				log_message(DEBUG, _("   [+] Found this word in %s enchant wrapper dictionary"), handle->languages[cur_lang].name);
 				return cur_lang;
 			}
-			/*else
-			{
-				size_t n_suggs = 0;
-				char **suggs = enchant_dict_suggest(handle->enchant_dicts[cur_lang], word[cur_lang], strlen(word[cur_lang]), &n_suggs);
-				if (n_suggs > 0)
-				{
-					log_message(DEBUG, _("   [:] Found %d suggestions."), n_suggs);
-					for (unsigned int i = 0; i < n_suggs; i++)
-					{
-						log_message(DEBUG, _("      [%d] %s"), i, suggs[i]);
-					}
-				}
-			}*/
 		}
 		else
 		{

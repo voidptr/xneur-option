@@ -89,7 +89,7 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 
 	int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
 	XCloseDisplay(display);
-	
+		
 	if (nbytes <= 0)
 	{
 		struct _list_char *locales = list_char_init();
@@ -107,7 +107,9 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 			}
 			pclose(fp);
 		}
-			
+
+		//log_message(ERROR, _("Not find symbol for keycode %d and modifier 0x%x!"), event.xkey.keycode, event.xkey.state);
+		
 		for (int i = 0; i < locales->data_count; i++)
 		{
 			if (setlocale(LC_ALL, locales->data[i].string) != NULL)

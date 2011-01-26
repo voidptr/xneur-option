@@ -25,9 +25,6 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "time.h"
-#include <omp.h> 
-
 #include "log.h"
 #include "regexp.h"
 
@@ -107,14 +104,8 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 
 	if (mode == BY_REGEXP)
 	{
-		//struct timespec before, past;
-		//clock_gettime(CLOCK_REALTIME, &before); 
-		
 		int len = 0;
 
-		#ifdef _OPENMP
-		#pragma omp parallel for reduction(+: len)
-		#endif
 		for (int i = 0; i < list->data_count; i++)
 		{
 			struct _list_char_data *data = &list->data[i];
@@ -124,42 +115,27 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 		char *full_str = malloc(len * sizeof(char));
 		full_str[0] = '\0';
 
-		#ifdef _OPENMP
-		#pragma omp parallel for shared(full_str) ordered
-		#endif		
 		for (int i = 0; i < list->data_count - 1; i++)
 		{
 			struct _list_char_data *data = &list->data[0];
 			data = &list->data[i];
-			#ifdef _OPENMP
-			#pragma omp ordered
-			{
-			#endif
 			strcat(full_str, data->string);
 			strcat(full_str, "|");
-			#ifdef _OPENMP
-			}
-			#endif				
 		} 
 
 		struct _list_char_data *data;
 		data = &list->data[list->data_count - 1];
 		strcat(full_str, data->string);			
 
-		//log_message (ERROR, "Regexp %s", full_str);
 		if (check_regexp_match(string, full_str) != NULL)
 		{
 			if (full_str != NULL)
 				free(full_str);
-			//clock_gettime(CLOCK_REALTIME, &past); 
-			//log_message (ERROR, "REgexp processing time %li", past.tv_nsec - before.tv_nsec);
 			return 1;
 		}
 
 		if (full_str != NULL)
 			free(full_str);
-		//clock_gettime(CLOCK_REALTIME, &past); 
-		//log_message (ERROR, "REgexp processing time %li", past.tv_nsec - before.tv_nsec);
 	}
 
 	return -1;

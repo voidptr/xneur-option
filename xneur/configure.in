@@ -45,7 +45,7 @@ else
 	AC_SUBST(X11_LIBS)
 fi
 
-ADDITIONAL_LIBS="-lpthread -ldl -lgomp"
+ADDITIONAL_LIBS="-lpthread -ldl"
 AC_SUBST(ADDITIONAL_LIBS)
 
 AC_ARG_WITH(sound, [  --with-sound[[=ARG]]	  Compile with sound support ARG=[[yes|no|gstreamer|openal|aplay]] [[default=yes]]])
@@ -200,8 +200,7 @@ if test "x$with_plugins" != "xno"; then
 	AC_DEFINE(WITH_PLUGINS, 1, [Define if you want plugins support])
 fi
 
-AC_OPENMP([C])
-DEFAULT_CFLAGS="-Wall -Wextra -Werror -g0 -std=gnu99 -fPIC $OPENMP_CFLAGS"
+DEFAULT_CFLAGS="-Wall -Wextra -Werror -g0 -std=gnu99 -fPIC"
 AC_SUBST(DEFAULT_CFLAGS)
 
 AC_OUTPUT([
