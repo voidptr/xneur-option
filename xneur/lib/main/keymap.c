@@ -93,8 +93,11 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 	if (nbytes <= 0)
 	{
 		struct _list_char *locales = list_char_init();
+		locales->add(locales, "C");
+		locales->add(locales, "POSIX");
+
 		
-		FILE *fp = popen("locale -a", "r");
+		/*FILE *fp = popen("locale -a", "r");
 		if (fp != NULL)
 		{
 			char buffer[1024];
@@ -106,7 +109,7 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 				locales->add(locales, buffer);
 			}
 			pclose(fp);
-		}
+		}*/
 
 		//log_message(ERROR, _("Not find symbol for keycode %d and modifier 0x%x!"), event.xkey.keycode, event.xkey.state);
 		
@@ -137,6 +140,7 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 		strcat(symbol, " ");
 
 		locales->uninit(locales);
+		
 	}
 	else
 		symbol[nbytes] = NULLSYM;

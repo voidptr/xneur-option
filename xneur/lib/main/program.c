@@ -1639,7 +1639,6 @@ static void program_check_capital_letter_after_dot(struct _program *p)
 	if (symbol == NULL)
 		return;
 
-	log_message (ERROR, "%s", symbol);
 	switch (symbol[0])
 	{
 		case '`':
@@ -1672,11 +1671,15 @@ static void program_check_capital_letter_after_dot(struct _program *p)
 	char *text = p->buffer->get_utf_string_on_kbd_group(p->buffer, get_curr_keyboard_group());
 	if (text == NULL)
 		return;
-	
-	int text_len = strlen(text);
 
-	if (((text[text_len - 2] == '.') || (text[text_len - 2] == '!') || (text[text_len - 2] == '?'))&& 
-	    ((text[text_len - 1] == ' ') || (text[text_len - 1] == 13) || (text[text_len - 1] == 9)))
+	int offset = 0;
+	for (offset = strlen(text) - 1; offset > 1; offset--)
+	{
+		if ((text[offset] != ' ') && (text[offset] != 13) && (text[offset] != 9))
+			break;
+	}
+	
+	if ((text[offset] == '.') || (text[offset] == '!') || (text[offset] == '?'))
 	{
 		log_message(DEBUG, _("Find small letter after dot, correction..."));
 		p->event->event.xkey.state = p->event->event.xkey.state | ShiftMask;
