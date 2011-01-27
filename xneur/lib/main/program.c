@@ -880,6 +880,9 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 			if (action == KLB_ADD_SYM)
 			{
+				// Correct small letter to capital letter after dot
+				p->check_capital_letter_after_dot(p);
+				
 				// Add symbol to internal bufer
 				int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 				p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
@@ -893,7 +896,6 @@ static void program_perform_auto_action(struct _program *p, int action)
 			    // Correct spaces with brackets
 			    p->check_space_with_bracket(p);
 				
-
 				p->check_brackets_with_symbols(p);
 				
 				if (!xconfig->check_lang_on_process)
@@ -1620,6 +1622,35 @@ static void program_check_brackets_with_symbols(struct _program *p)
 	free(text);
 }
 
+static void program_check_capital_letter_after_dot(struct _program *p)
+{
+	// TODO:
+	// Add option to config.
+	if (!xconfig->correct_capital_letter_after_dot)
+		return;
+
+	char *text = p->buffer->get_utf_string_on_kbd_group(p->buffer, get_curr_keyboard_group());
+	if (text == NULL)
+		return;
+
+	int text_len = strlen(text);
+	if (text_len < 3)
+	{
+		free(text);
+		return;
+	}
+
+	if ((text[text_len - 2] == '.') && 
+	    ((text[text_len - 1] == ' ') || (text[text_len - 1] == 13) || (text[text_len - 1] == 9)))
+	{
+		log_message(DEBUG, _("Find small letter after dot, correction..."));
+		p->event->event.xkey.state = p->event->event.xkey.state | ShiftMask;
+		p->event->default_event.xkey.state = p->event->default_event.xkey.state | ShiftMask;
+	}
+	
+	free(text);
+}
+
 static void program_check_pattern(struct _program *p, int selection)
 {
 	if (!xconfig->autocomplementation)
@@ -2221,6 +2252,7 @@ struct _program* program_init(void)
 	p->check_space_before_punctuation	= program_check_space_before_punctuation;
 	p->check_space_with_bracket	= program_check_space_with_bracket;
 	p->check_brackets_with_symbols = program_check_brackets_with_symbols;
+	p->check_capital_letter_after_dot = program_check_capital_letter_after_dot;
 	p->check_pattern	= program_check_pattern;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;

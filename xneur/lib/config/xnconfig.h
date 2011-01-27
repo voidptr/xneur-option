@@ -198,7 +198,7 @@ struct _xneur_config
 	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter
 	int   check_lang_on_process;			// Check lang on input process
 	int   disable_capslock;				// Disable CapsLock use
-
+	int   correct_capital_letter_after_dot;
 	int   block_events;					// Block all events (keyboard and mouse)
 	
 	int   autocomplementation;			// Save pattern and mining

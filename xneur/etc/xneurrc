@@ -181,6 +181,11 @@ CorrectIncidentalCaps Yes
 #CorrectTwoCapitalLetter Yes
 CorrectTwoCapitalLetter Yes
 
+# This option enable or disable correction of small letter to capital letter after dot
+# Example:
+#CorrectCapitalLetterAfterDot Yes
+CorrectCapitalLetterAfterDot No
+
 # This option enable or disable flushing internal buffer when pressed Enter or Tab
 # Example:
 #FlushBufferWhenPressEnter Yes

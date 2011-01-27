@@ -64,7 +64,7 @@ static const char *option_names[] = 	{
 						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent",
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
-						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode"
+						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -786,6 +786,18 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->rotate_layout_after_convert = index;
 			break;
 		}
+		case 50: // Correct small letter to capital letter after dot
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for change small letter to capital letter after dot mode specified"));
+				break;
+			}
+
+			p->correct_capital_letter_after_dot = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1159,6 +1171,11 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CorrectTwoCapitalLetter Yes\n");
 	fprintf(stream, "CorrectTwoCapitalLetter %s\n\n", p->get_bool_name(p->correct_two_capital_letter));
+
+	fprintf(stream, "# This option enable or disable correction of small letter to capital letter after dot\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectCapitalLetterAfterDot Yes\n");
+	fprintf(stream, "CorrectCapitalLetterAfterDot %s\n\n", p->get_bool_name(p->correct_capital_letter_after_dot));
 
 	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Enter or Tab\n");
 	fprintf(stream, "# Example:\n");
