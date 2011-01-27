@@ -942,6 +942,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 			int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 			p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
+			//p->check_space_with_punctuation_mark(p);
+			
 			// Correct space before punctuation
 			p->check_space_before_punctuation(p);
 
