@@ -1624,23 +1624,56 @@ static void program_check_brackets_with_symbols(struct _program *p)
 
 static void program_check_capital_letter_after_dot(struct _program *p)
 {
-	// TODO:
-	// Add option to config.
 	if (!xconfig->correct_capital_letter_after_dot)
 		return;
 
+	if (p->buffer->cur_pos < 3)
+		return;
+
+	if (p->event->event.xkey.state & ShiftMask)
+		return;
+
+	char *symbol = keycode_to_symbol(p->event->event.xkey.keycode, get_curr_keyboard_group(), p->event->event.xkey.state);
+	if (symbol == NULL)
+		return;
+
+	log_message (ERROR, "%s", symbol);
+	switch (symbol[0])
+	{
+		case '`':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+		case '0':
+		case '-':
+		case '=':
+		case '[':
+		case ']':
+		case '\\':
+		case '/':
+		case ';':
+		case '\'':
+		case ',':
+		case '.':
+		{
+			free (symbol);
+			return;
+		}
+	}
+	
 	char *text = p->buffer->get_utf_string_on_kbd_group(p->buffer, get_curr_keyboard_group());
 	if (text == NULL)
 		return;
-
+	
 	int text_len = strlen(text);
-	if (text_len < 3)
-	{
-		free(text);
-		return;
-	}
 
-	if ((text[text_len - 2] == '.') && 
+	if (((text[text_len - 2] == '.') || (text[text_len - 2] == '!') || (text[text_len - 2] == '?'))&& 
 	    ((text[text_len - 1] == ' ') || (text[text_len - 1] == 13) || (text[text_len - 1] == 9)))
 	{
 		log_message(DEBUG, _("Find small letter after dot, correction..."));
