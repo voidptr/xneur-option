@@ -978,6 +978,10 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton11");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->flush_buffer_when_press_enter);
 
+	// Compatibility with completion
+	widget = glade_xml_get_widget (gxml, "checkbutton33");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->compatibility_with_completion);
+	
 	// Don't process word when pressed Enter mode
 	widget = glade_xml_get_widget (gxml, "checkbutton12");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->dont_process_when_press_enter);
@@ -2218,7 +2222,10 @@ void xneur_save_preference(GladeXML *gxml)
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton12");
 	xconfig->dont_process_when_press_enter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
-	
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton33");
+	xconfig->compatibility_with_completion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton13");
 	xconfig->show_osd = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 

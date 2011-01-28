@@ -227,6 +227,8 @@ struct _xneur_config
 	int troubleshoot_delete;
 	int troubleshoot_switch;
 
+	int compatibility_with_completion;
+		
 	int dont_send_key_release;
 	
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);

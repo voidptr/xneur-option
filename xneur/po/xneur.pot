@@ -250,61 +250,66 @@ msgstr ""
 
 #: src/xneur.c:195
 #, c-format
-msgid "Disable send KeyRelease event mode set to %s"
+msgid "Compatibility with the completion mode set to %s"
 msgstr ""
 
 #: src/xneur.c:196
 #, c-format
+msgid "Disable send KeyRelease event mode set to %s"
+msgstr ""
+
+#: src/xneur.c:197
+#, c-format
 msgid "Delay before sendind events to application set to (in milliseconds) %d"
 msgstr ""
 
-#: src/xneur.c:206
+#: src/xneur.c:207
 #, c-format
 msgid " already running with pid %d"
 msgstr ""
 
-#: src/xneur.c:219
+#: src/xneur.c:220
 msgid "Current sound data is freed"
 msgstr ""
 
-#: src/xneur.c:222
+#: src/xneur.c:223
 msgid "Current user keybinds is freed"
 msgstr ""
 
-#: src/xneur.c:227
+#: src/xneur.c:228
 msgid "Current program info is freed"
 msgstr ""
 
-#: src/xneur.c:234
+#: src/xneur.c:235
 msgid "Current configuration data is freed"
 msgstr ""
 
-#: src/xneur.c:245
+#: src/xneur.c:246
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr ""
 
-#: src/xneur.c:260
+#: src/xneur.c:261
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr ""
 
-#: src/xneur.c:274 src/xneur.c:410
+#: src/xneur.c:275 src/xneur.c:411
 msgid "Can't init libxnconfig"
 msgstr ""
 
-#: src/xneur.c:390
+#: src/xneur.c:391
 msgid "Can't trap signal"
 msgstr ""
 
-#: src/xneur.c:423
+#: src/xneur.c:424
 #, c-format
 msgid "Xneur process identificator is %d with nice %d"
 msgstr ""
 
-#: src/xneur.c:428
+#: src/xneur.c:429
 msgid "Failed to init program structure"
 msgstr ""
 
-#: src/xneur.c:438
+#: src/xneur.c:439
 msgid "Init program structure complete"
 msgstr ""
 
@@ -545,40 +550,44 @@ msgid ""
 "Invalid value for flush internal buffer when pressed Escape mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:823
+#: lib/config/xnconfig.c:819
+msgid "Invalid value for compatibility with the completion mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:835
 #, c-format
 msgid "Can't find config file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:959
+#: lib/config/xnconfig.c:971
 msgid "No languages specified in config file"
 msgstr ""
 
-#: lib/config/xnconfig.c:988
+#: lib/config/xnconfig.c:1000
 #, c-format
 msgid "Saving main config to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:993
+#: lib/config/xnconfig.c:1005
 #, c-format
 msgid "Can't create file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1305
+#: lib/config/xnconfig.c:1319
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1311
+#: lib/config/xnconfig.c:1325
 msgid "Can't move file!"
 msgstr ""
 
-#: lib/config/xnconfig.c:1329
+#: lib/config/xnconfig.c:1343
 #, c-format
 msgid "Saving %s dictionary"
 msgstr ""
 
-#: lib/config/xnconfig.c:1342
+#: lib/config/xnconfig.c:1356
 #, c-format
 msgid "Saving %s pattern"
 msgstr ""
@@ -920,89 +929,89 @@ msgstr ""
 msgid "Execute user action \"%s\""
 msgstr ""
 
-#: lib/main/program.c:991
+#: lib/main/program.c:1000
 #, c-format
 msgid "Manual mode changed to %s"
 msgstr ""
 
-#: lib/main/program.c:1192
+#: lib/main/program.c:1201
 #, c-format
 msgid "Now keyboard and mouse block status is %s"
 msgstr ""
 
-#: lib/main/program.c:1210
+#: lib/main/program.c:1219
 #, c-format
 msgid "Insert date '%s'."
 msgstr ""
 
-#: lib/main/program.c:1273
+#: lib/main/program.c:1282
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr ""
 
-#: lib/main/program.c:1335 lib/main/program.c:1380
+#: lib/main/program.c:1344 lib/main/program.c:1389
 msgid "No language found to change to"
 msgstr ""
 
-#: lib/main/program.c:1485
+#: lib/main/program.c:1494
 msgid "Find spaces before punctuation, correction..."
 msgstr ""
 
-#: lib/main/program.c:1534
+#: lib/main/program.c:1543
 msgid "Find no space before left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1551
+#: lib/main/program.c:1560
 msgid "Find spaces before right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1581
+#: lib/main/program.c:1590
 msgid "Find no spaces after right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1616
+#: lib/main/program.c:1625
 msgid "Find spaces after left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1695
+#: lib/main/program.c:1704
 msgid "Find small letter after dot, correction..."
 msgstr ""
 
-#: lib/main/program.c:1738
+#: lib/main/program.c:1747
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr ""
 
-#: lib/main/program.c:1777
+#: lib/main/program.c:1786
 msgid "No string to change"
 msgstr ""
 
-#: lib/main/program.c:1781
+#: lib/main/program.c:1790
 #, c-format
 msgid "Processing string '%s'"
 msgstr ""
 
-#: lib/main/program.c:2135
+#: lib/main/program.c:2152
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2146
+#: lib/main/program.c:2163
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2206
+#: lib/main/program.c:2223
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2238
+#: lib/main/program.c:2255
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2259
+#: lib/main/program.c:2276
 msgid "Program is freed"
 msgstr ""
 

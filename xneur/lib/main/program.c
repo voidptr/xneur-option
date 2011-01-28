@@ -865,6 +865,15 @@ static void program_perform_auto_action(struct _program *p, int action)
 		}
 		case KLB_DEL_SYM:
 		{
+			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			{
+				// Block events of keyboard (push to event queue)
+				set_event_mask(p->focus->owner_window, None);
+				p->event->send_backspaces(p->event, 1);
+				// Restore events mask
+				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+			}
+			
 			string->del_symbol(string);
 			return;
 		}
@@ -1779,6 +1788,14 @@ static void program_send_string_silent(struct _program *p, int send_backspaces)
 	}
 
 	log_message(DEBUG, _("Processing string '%s'"), p->buffer->content);
+
+	// Work-arround
+	if (xconfig->compatibility_with_completion)
+	{
+		p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_bar), 0);
+		p->event->send_backspaces(p->event, 1);
+	}
+	// end workarrounr
 	
 	p->event->send_backspaces(p->event, send_backspaces);		// Delete old string
 	p->event->send_string(p->event, p->buffer);		// Send new string

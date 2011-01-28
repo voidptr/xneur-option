@@ -65,7 +65,7 @@ static const char *option_names[] = 	{
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
 						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
-						"FlushBufferWhenPressEscape"
+						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -811,6 +811,18 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->flush_buffer_when_press_escape = index;
 			break;
 		}
+		case 52: // Compatibility with the completion
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for compatibility with the completion mode specified"));
+				break;
+			}
+
+			p->compatibility_with_completion = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1280,6 +1292,8 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Disable autoswitching if pressed down arrow\nTroubleshootDownArrow %s\n", p->get_bool_name(p->troubleshoot_down_arrow));
 	fprintf(stream, "# Disable autoswitching if pressed delete\nTroubleshootDelete %s\n", p->get_bool_name(p->troubleshoot_delete));
 	fprintf(stream, "# Disable autoswitching if layout switched\nTroubleshootSwitch %s\n\n", p->get_bool_name(p->troubleshoot_switch));
+
+	fprintf(stream, "# Work-arround for compatibility with the completion\nCompatibilityWithCompletion %s\n\n", p->get_bool_name(p->compatibility_with_completion));
 
 	fprintf(stream, "# Disable send KeyRelease event\nDontSendKeyRelease %s\n\n", p->get_bool_name(p->dont_send_key_release));
 	

@@ -192,6 +192,7 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Disable autoswitching if pressed down arrow mode set to %s"), xconfig->get_bool_name(xconfig->troubleshoot_down_arrow));
 	log_message(LOG, _("Disable autoswitching if pressed delete mode set to %s"), xconfig->get_bool_name(xconfig->troubleshoot_delete));
 	log_message(LOG, _("Disable autoswitching if layout switched mode set to %s"), xconfig->get_bool_name(xconfig->troubleshoot_switch));
+	log_message(LOG, _("Compatibility with the completion mode set to %s"), xconfig->get_bool_name(xconfig->compatibility_with_completion));
 	log_message(LOG, _("Disable send KeyRelease event mode set to %s"), xconfig->get_bool_name(xconfig->dont_send_key_release));
 	log_message(LOG, _("Delay before sendind events to application set to (in milliseconds) %d"), xconfig->send_delay);
 }

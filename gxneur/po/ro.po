@@ -487,23 +487,27 @@ msgstr ""
 msgid "Don't process words on Enter or Tab"
 msgstr ""
 
-#: glade/config.glade:2075
+#: glade/config.glade:2070
+msgid "Compatibility with the completion"
+msgstr ""
+
+#: glade/config.glade:2089
 msgid "Additional"
 msgstr ""
 
-#: glade/config.glade:2100
+#: glade/config.glade:2114
 msgid "<b>Troubleshooting</b>"
 msgstr ""
 
-#: glade/config.glade:2144
+#: glade/config.glade:2158
 msgid "Delay before sending events (in milliseconds)"
 msgstr ""
 
-#: glade/config.glade:2155
+#: glade/config.glade:2169
 msgid "Log verbosity level"
 msgstr ""
 
-#: glade/config.glade:2167
+#: glade/config.glade:2181
 msgid ""
 "None\n"
 "Error\n"
@@ -519,55 +523,55 @@ msgstr ""
 "Debug\n"
 "Trace"
 
-#: glade/config.glade:2187
+#: glade/config.glade:2201
 msgid "Dont send KeyRelease event"
 msgstr ""
 
-#: glade/config.glade:2230
+#: glade/config.glade:2244
 msgid "<b>Advanced</b>"
 msgstr "<b>Avansat</b>"
 
-#: glade/config.glade:2291
+#: glade/config.glade:2305
 msgid "<b>Plugins</b>"
 msgstr ""
 
-#: glade/config.glade:2326
+#: glade/config.glade:2340
 msgid "Autostartup"
 msgstr ""
 
-#: glade/config.glade:2346
+#: glade/config.glade:2360
 msgid "Delay before startup"
 msgstr ""
 
-#: glade/config.glade:2380
+#: glade/config.glade:2394
 msgid "Startup"
 msgstr ""
 
-#: glade/config.glade:2407
+#: glade/config.glade:2421
 msgid "Show text on the tray"
 msgstr ""
 
-#: glade/config.glade:2421
+#: glade/config.glade:2435
 msgid "Change the icon size when resizing the tray"
 msgstr ""
 
-#: glade/config.glade:2439
+#: glade/config.glade:2453
 msgid "Pixmaps directory"
 msgstr ""
 
-#: glade/config.glade:2508
+#: glade/config.glade:2522
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2539
+#: glade/config.glade:2553
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:2611
+#: glade/config.glade:2625
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:2642
+#: glade/config.glade:2656
 msgid "<b>Properties</b>"
 msgstr ""
 
