@@ -64,7 +64,8 @@ static const char *option_names[] = 	{
 						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent",
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
-						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot"
+						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
+						"FlushBufferWhenPressEscape"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -798,6 +799,18 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->correct_capital_letter_after_dot = index;
 			break;
 		}
+		case 51: // Flush internal buffer when pressed Escape Mode
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for flush internal buffer when pressed Escape mode specified"));
+				break;
+			}
+
+			p->flush_buffer_when_press_escape = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1177,6 +1190,11 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#CorrectCapitalLetterAfterDot Yes\n");
 	fprintf(stream, "CorrectCapitalLetterAfterDot %s\n\n", p->get_bool_name(p->correct_capital_letter_after_dot));
 
+	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Escape\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#FlushBufferWhenPressEscape Yes\n");
+	fprintf(stream, "FlushBufferWhenPressEscape %s\n\n", p->get_bool_name(p->flush_buffer_when_press_escape));
+	
 	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Enter or Tab\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#FlushBufferWhenPressEnter Yes\n");

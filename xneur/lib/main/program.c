@@ -840,18 +840,23 @@ static void program_perform_auto_action(struct _program *p, int action)
 	{
 		case KLB_NO_ACTION:
 		{
-			if (!get_key_state(XK_Caps_Lock))
-				return;
+			if (xconfig->flush_buffer_when_press_escape)
+				if (p->event->get_cur_keysym(p->event) == XK_Escape)
+					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);;
 
-			if (!xconfig->disable_capslock)
+			if (xconfig->disable_capslock)
+			{
+				if (!get_key_state(XK_Caps_Lock))
+					return;
+				
+				int xkb_opcode, xkb_event, xkb_error;
+				int xkb_lmaj = XkbMajorVersion;
+				int xkb_lmin = XkbMinorVersion;
+				if (XkbLibraryVersion(&xkb_lmaj, &xkb_lmin) && XkbQueryExtension(main_window->display, &xkb_opcode, &xkb_event, &xkb_error, &xkb_lmaj, &xkb_lmin))
+					XkbLockModifiers (main_window->display, XkbUseCoreKbd, LockMask, 0);
+				
 				return;
-
-			int xkb_opcode, xkb_event, xkb_error;
-			int xkb_lmaj = XkbMajorVersion;
-			int xkb_lmin = XkbMinorVersion;
-			if (XkbLibraryVersion(&xkb_lmaj, &xkb_lmin) && XkbQueryExtension(main_window->display, &xkb_opcode, &xkb_event, &xkb_error, &xkb_lmaj, &xkb_lmin))
-				XkbLockModifiers (main_window->display, XkbUseCoreKbd, LockMask, 0);
-			return;
+			}
 		}
 		case KLB_CLEAR:
 		{
@@ -1672,8 +1677,14 @@ static void program_check_capital_letter_after_dot(struct _program *p)
 	if (text == NULL)
 		return;
 
-	int offset = 0;
-	for (offset = strlen(text) - 1; offset > 1; offset--)
+	int offset = strlen(text) - 1;
+	if ((text[offset] != ' ') && (text[offset] != 13) && (text[offset] != 9))
+	{
+		free(text);
+		return;
+	}
+
+	for (offset = strlen(text) - 2; offset > 1; offset--)
 	{
 		if ((text[offset] != ' ') && (text[offset] != 13) && (text[offset] != 9))
 			break;

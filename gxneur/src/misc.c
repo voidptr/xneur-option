@@ -970,6 +970,10 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton9");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_incidental_caps);
 
+	// Flush internal buffer when pressed Escape mode
+	widget = glade_xml_get_widget (gxml, "checkbutton32");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->flush_buffer_when_press_escape);
+
 	// Flush internal buffer when pressed Enter mode
 	widget = glade_xml_get_widget (gxml, "checkbutton11");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->flush_buffer_when_press_enter);
@@ -2206,6 +2210,9 @@ void xneur_save_preference(GladeXML *gxml)
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton9");
 	xconfig->correct_incidental_caps = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton32");
+	xconfig->flush_buffer_when_press_escape = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton11");
 	xconfig->flush_buffer_when_press_enter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	

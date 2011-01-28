@@ -479,30 +479,34 @@ msgid "Don't switch layout if before input where pressed"
 msgstr "Не переключать раскладку, если перед вводом были нажаты"
 
 #: glade/config.glade:2028
+msgid "Flush internal buffer on Escape"
+msgstr "Сбрасывать внутренний буфер при нажатии Escape"
+
+#: glade/config.glade:2042
 msgid "Flush internal buffer on Enter or Tab"
 msgstr "Сбрасывать внутренний буфер при нажатии Enter или Tab"
 
-#: glade/config.glade:2042
+#: glade/config.glade:2056
 msgid "Don't process words on Enter or Tab"
 msgstr "Не проверять слово при нажатии Enter или Tab"
 
-#: glade/config.glade:2061
+#: glade/config.glade:2075
 msgid "Additional"
 msgstr "Дополнительно"
 
-#: glade/config.glade:2086
+#: glade/config.glade:2100
 msgid "<b>Troubleshooting</b>"
 msgstr "<b>Устранение проблем</b>"
 
-#: glade/config.glade:2130
+#: glade/config.glade:2144
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Задержка перед отправкой событий (в миллисекундах)"
 
-#: glade/config.glade:2141
+#: glade/config.glade:2155
 msgid "Log verbosity level"
 msgstr "Уровень подробности выводимых сообщений"
 
-#: glade/config.glade:2153
+#: glade/config.glade:2167
 msgid ""
 "None\n"
 "Error\n"
@@ -518,55 +522,55 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2173
+#: glade/config.glade:2187
 msgid "Dont send KeyRelease event"
 msgstr "Не отправлять событие KeyRelease"
 
-#: glade/config.glade:2216
+#: glade/config.glade:2230
 msgid "<b>Advanced</b>"
 msgstr "<b>Специальное</b>"
 
-#: glade/config.glade:2277
+#: glade/config.glade:2291
 msgid "<b>Plugins</b>"
 msgstr "<b>Модули</b>"
 
-#: glade/config.glade:2312
+#: glade/config.glade:2326
 msgid "Autostartup"
 msgstr "Запускать автоматически при старте системы"
 
-#: glade/config.glade:2332
+#: glade/config.glade:2346
 msgid "Delay before startup"
 msgstr "Задержка перед запуском"
 
-#: glade/config.glade:2366
+#: glade/config.glade:2380
 msgid "Startup"
 msgstr "Параметры запуска"
 
-#: glade/config.glade:2393
+#: glade/config.glade:2407
 msgid "Show text on the tray"
 msgstr "Показывать текст в системном лотке"
 
-#: glade/config.glade:2407
+#: glade/config.glade:2421
 msgid "Change the icon size when resizing the tray"
 msgstr "Менять размер значка при изменении размера трея"
 
-#: glade/config.glade:2425
+#: glade/config.glade:2439
 msgid "Pixmaps directory"
 msgstr "Расположение значков"
 
-#: glade/config.glade:2494
+#: glade/config.glade:2508
 msgid "UI"
 msgstr "Внешний вид"
 
-#: glade/config.glade:2525
+#: glade/config.glade:2539
 msgid "Keyboard properties command"
 msgstr "Команда запуска параметров клавиатуры"
 
-#: glade/config.glade:2597
+#: glade/config.glade:2611
 msgid "System"
 msgstr "Системное"
 
-#: glade/config.glade:2628
+#: glade/config.glade:2642
 msgid "<b>Properties</b>"
 msgstr "<b>Параметры</b>"
 

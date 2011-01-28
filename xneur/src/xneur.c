@@ -177,6 +177,7 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Correct of spaces with punctuation mode set to %s"), xconfig->get_bool_name(xconfig->correct_space_with_punctuation));
 	log_message(LOG, _("Correct of small letter to capital letter after dot mode set to %s"), xconfig->get_bool_name(xconfig->correct_capital_letter_after_dot));
 	log_message(LOG, _("Disable CapsLock use mode set to %s"), xconfig->get_bool_name(xconfig->disable_capslock));
+	log_message(LOG, _("Flush internal buffer when pressed Escape mode set to %s"), xconfig->get_bool_name(xconfig->flush_buffer_when_press_escape));
 	log_message(LOG, _("Flush internal buffer when pressed Enter or Tab mode set to %s"), xconfig->get_bool_name(xconfig->flush_buffer_when_press_enter));
 	log_message(LOG, _("Don't process word when pressed Enter or Tab mode set to %s"), xconfig->get_bool_name(xconfig->dont_process_when_press_enter));
 	log_message(LOG, _("Show OSD mode set to %s"), xconfig->get_bool_name(xconfig->show_osd));

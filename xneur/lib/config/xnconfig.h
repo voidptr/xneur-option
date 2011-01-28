@@ -194,7 +194,8 @@ struct _xneur_config
 	int   correct_incidental_caps;			// Change iNCIDENTAL CapsLock
 	int   correct_two_capital_letter;		// Change two CApital letter
 	int   correct_space_with_punctuation;	// Correct spaces before punctuation
-	int   flush_buffer_when_press_enter;		// Flush internal buffer when pressed Enter
+	int   flush_buffer_when_press_escape;		// Flush internal buffer when pressed Escape
+	int   flush_buffer_when_press_enter;		// Flush internal buffer when pressed Enter or Tab
 	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter
 	int   check_lang_on_process;			// Check lang on input process
 	int   disable_capslock;				// Disable CapsLock use
