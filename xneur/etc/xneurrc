@@ -186,6 +186,11 @@ CorrectTwoCapitalLetter Yes
 #CorrectCapitalLetterAfterDot Yes
 CorrectCapitalLetterAfterDot No
 
+# This option enable or disable flushing internal buffer when pressed Escape
+# Example:
+#FlushBufferWhenPressEscape Yes
+FlushBufferWhenPressEscape No
+
 # This option enable or disable flushing internal buffer when pressed Enter or Tab
 # Example:
 #FlushBufferWhenPressEnter Yes
@@ -313,6 +318,12 @@ TroubleshootDownArrow No
 TroubleshootDelete No
 # Disable autoswitching if layout switched
 TroubleshootSwitch Yes
+
+# Work-arround for compatibility with the completion
+CompatibilityWithCompletion Yes
+
+# Disable send KeyRelease event
+DontSendKeyRelease No
 
 # Modules list
 # Example:
