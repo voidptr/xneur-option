@@ -840,10 +840,10 @@ static void program_perform_auto_action(struct _program *p, int action)
 	{
 		case KLB_NO_ACTION:
 		{
-			if (xconfig->flush_buffer_when_press_escape)
+			if (xconfig->flush_buffer_when_press_escape) 
 				if (p->event->get_cur_keysym(p->event) == XK_Escape)
-					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);;
-
+					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+			
 			if (xconfig->disable_capslock)
 			{
 				if (!get_key_state(XK_Caps_Lock))
@@ -854,9 +854,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 				int xkb_lmin = XkbMinorVersion;
 				if (XkbLibraryVersion(&xkb_lmaj, &xkb_lmin) && XkbQueryExtension(main_window->display, &xkb_opcode, &xkb_event, &xkb_error, &xkb_lmaj, &xkb_lmin))
 					XkbLockModifiers (main_window->display, XkbUseCoreKbd, LockMask, 0);
-				
-				return;
 			}
+			return;
 		}
 		case KLB_CLEAR:
 		{
@@ -1794,8 +1793,8 @@ static void program_send_string_silent(struct _program *p, int send_backspaces)
 	{
 		p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_bar), 0);
 		p->event->send_backspaces(p->event, 1);
+		// end workarrounr
 	}
-	// end workarrounr
 	
 	p->event->send_backspaces(p->event, send_backspaces);		// Delete old string
 	p->event->send_string(p->event, p->buffer);		// Send new string
