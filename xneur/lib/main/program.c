@@ -868,7 +868,10 @@ static void program_perform_auto_action(struct _program *p, int action)
 			{
 				// Block events of keyboard (push to event queue)
 				set_event_mask(p->focus->owner_window, None);
+				
 				p->event->send_backspaces(p->event, 1);
+				p->last_action = ACTION_NONE;
+				
 				// Restore events mask
 				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 			}
