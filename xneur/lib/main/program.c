@@ -301,6 +301,17 @@ static void program_process_input(struct _program *p)
 	while (1)
 	{
 		int type = p->event->get_next_event(p->event);
+
+		int curr_layout = get_curr_keyboard_group();
+		if (p->last_layout != curr_layout) 
+		{
+			p->last_layout = curr_layout;
+			if (xconfig->troubleshoot_switch)
+			{
+				//log_message (ERROR, "KBD_SWITCH") ;
+				p->changed_manual = MANUAL_FLAG_SET;
+			}		
+		}
 		
 		switch (type)
 		{
@@ -314,12 +325,6 @@ static void program_process_input(struct _program *p)
 			}
 			case KeyPress:
 			{
-				/*Window rw = RootWindow(main_window->display, DefaultScreen(main_window->display));
-				grab_button(rw, FALSE);
-				XTestFakeButtonEvent(main_window->display, Button1, TRUE, CurrentTime);
-				XTestFakeButtonEvent(main_window->display, Button1, TRUE, 10);
-				grab_button(rw, TRUE);*/
-				
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
@@ -345,11 +350,6 @@ static void program_process_input(struct _program *p)
 			}
 			case KeyRelease:
 			{
-				/*Window rw = RootWindow(main_window->display, DefaultScreen(main_window->display));
-				grab_button(rw, FALSE);
-				XTestFakeButtonEvent(main_window->display, Button1, FALSE, CurrentTime);
-				grab_button(rw, TRUE);*/
-				
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
@@ -496,6 +496,7 @@ static void program_change_lang(struct _program *p, int new_lang)
 	log_message(DEBUG, _("Changing language from %s to %s"), xconfig->handle->languages[get_curr_keyboard_group()].name, xconfig->handle->languages[new_lang].name);
 	p->buffer->set_lang_mask(p->buffer, new_lang);
 	XkbLockGroup(main_window->display, XkbUseCoreKbd, new_lang);
+	p->last_layout = new_lang;
 }
 
 static void program_change_incidental_caps(struct _program *p)
@@ -1362,6 +1363,9 @@ static int program_check_lang_last_word(struct _program *p)
 
 	p->change_word(p, change_action);
 	show_notify(NOTIFY_AUTOMATIC_CHANGE_WORD, NULL);
+
+	p->last_layout = new_lang;
+	
 	return TRUE;
 }
 
@@ -1407,6 +1411,9 @@ static int program_check_lang_last_syllable(struct _program *p)
 
 	p->change_word(p, change_action);
 	show_notify(NOTIFY_AUTOMATIC_CHANGE_WORD, NULL);
+
+	p->last_layout = new_lang;
+	
 	return TRUE;
 }
 
