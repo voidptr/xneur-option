@@ -477,9 +477,8 @@ msgid "Don't switch layout if before input where pressed"
 msgstr ""
 
 #: glade/config.glade:2028
-#, fuzzy
 msgid "Flush internal buffer on Escape"
-msgstr "Ачышаць унутраны буфэр праз Enter альбо Tab"
+msgstr "Ачышаць унутраны буфэр праз Escape"
 
 #: glade/config.glade:2042
 msgid "Flush internal buffer on Enter or Tab"

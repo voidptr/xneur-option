@@ -1789,12 +1789,12 @@ static void program_send_string_silent(struct _program *p, int send_backspaces)
 	log_message(DEBUG, _("Processing string '%s'"), p->buffer->content);
 
 	// Work-arround
-	if (xconfig->compatibility_with_completion)
+	if ((xconfig->compatibility_with_completion) && (p->last_action != ACTION_AUTOCOMPLEMENTATION))
 	{
 		p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_bar), 1);
 		p->event->send_backspaces(p->event, 1);
-		// end workarrounr
-	}
+		
+	} // end workarround
 	
 	p->event->send_backspaces(p->event, send_backspaces);		// Delete old string
 	p->event->send_string(p->event, p->buffer);		// Send new string
