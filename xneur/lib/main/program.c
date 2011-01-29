@@ -1791,7 +1791,7 @@ static void program_send_string_silent(struct _program *p, int send_backspaces)
 	// Work-arround
 	if (xconfig->compatibility_with_completion)
 	{
-		p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_bar), 0);
+		p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_bar), 1);
 		p->event->send_backspaces(p->event, 1);
 		// end workarrounr
 	}
