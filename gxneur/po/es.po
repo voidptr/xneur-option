@@ -1,49 +1,48 @@
-# Copyright (C) 2008 XNeur Team
-# This file is distributed under the same license as the GXNEUR package.
-# ANDREW KUZNETSOV <andrewcrew@rambler.ru>, 2008.
-#
+# Spanish translation for xneur
+# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
+# This file is distributed under the same license as the xneur package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gxneur 0.9.4\n"
-"Report-Msgid-Bugs-To: web@softodrom.ru\n"
-"POT-Creation-Date: 2011-01-29 10:05+0400\n"
-"PO-Revision-Date: 201-01-29 10:33+0300\n"
-"Last-Translator: Photon <michael.kogan@gmx.net>\n"
-"Language-Team: German\n"
-"Language: \n"
+"Project-Id-Version: xneur\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-04-16 14:23+0400\n"
+"PO-Revision-Date: 2011-01-29 21:27+0000\n"
+"Last-Translator: Crew <Unknown>\n"
+"Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-02-27 19:32+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-01-29 21:28+0000\n"
+"X-Generator: Launchpad (build 12274)\n"
 
 msgid "Xneur started"
-msgstr "Xneur gestartet"
+msgstr "Xneur se ha iniciado"
 
 msgid "Xneur reloaded"
-msgstr "Xneur neugestartet"
+msgstr "Xneur esta recargado"
 
 msgid "Xneur stopped"
-msgstr "Xneur gestoppt"
+msgstr "Xneur se ha detenido"
 
 msgid "Execute user action"
-msgstr "Benutzerdefinierte Aktion ausführen"
+msgstr "Ejecutar accion del usuario"
 
 msgid "Keypress on layout 1"
-msgstr "Tastendruck bei der Belegung 1"
+msgstr ""
 
 msgid "Keypress on layout 2"
-msgstr "Tastendruck bei der Belegung 2"
+msgstr ""
 
 msgid "Keypress on layout 3"
-msgstr "Tastendruck bei der Belegung 3"
+msgstr ""
 
 msgid "Keypress on layout 4"
-msgstr "Tastendruck bei der Belegung 4"
+msgstr ""
 
 msgid "Correct word automatically"
-msgstr "Automatische Wortkorrektur"
+msgstr "Corregir palabra automáticamente"
 
 msgid "Correct last word manually"
 msgstr ""
@@ -61,13 +60,13 @@ msgid "Preview correction of last word manually"
 msgstr ""
 
 msgid "Switch between processing modes"
-msgstr "Verarbeitungsmodi wechseln"
+msgstr "Seleccionar entre los modos de procesamiento"
 
 msgid "Correct last line"
-msgstr "Letzte Zeile korrigieren"
+msgstr "Corregir la ultima linea"
 
 msgid "Correct/Undo correction"
-msgstr "Korrigieren/Korrektur rückgängig machen"
+msgstr "Corregir/Deshacer corrección"
 
 msgid "Transliterate"
 msgstr ""
@@ -82,16 +81,16 @@ msgid "Preview correction"
 msgstr ""
 
 msgid "Correct selected text"
-msgstr "Ausgewählten Text korrigieren"
+msgstr "Corregir el texto seleccionado"
 
 msgid "Correct selected text and rotate layouts"
 msgstr ""
 
 msgid "Transliterate selected text"
-msgstr "Markierten Text transliterieren"
+msgstr "Transcribir el texto seleccionado"
 
 msgid "Change case of selected text"
-msgstr "Groß- bzw. Kleinschreibung des markierten Textes wechseln"
+msgstr ""
 
 msgid "Calculate formula on selected text"
 msgstr ""
@@ -100,10 +99,10 @@ msgid "Preview correction of selected text"
 msgstr ""
 
 msgid "Correct clipboard text"
-msgstr ""
+msgstr "Corregir texto del portapapeles"
 
 msgid "Transliterate clipboard text"
-msgstr ""
+msgstr "Transcribir el texto del portapapeles"
 
 msgid "Change case of clipboard text"
 msgstr ""
@@ -115,28 +114,28 @@ msgid "Preview correction of clipboard text"
 msgstr ""
 
 msgid "Rotate layouts"
-msgstr ""
+msgstr "Rotar diseños"
 
 msgid "Rotate layouts back"
 msgstr ""
 
 msgid "Switch to layout 1"
-msgstr "Zu Belegung 1 wechseln"
+msgstr "Cambiar al diseño 1"
 
 msgid "Switch to layout 2"
-msgstr "Zu Belegung 2 wechseln"
+msgstr "Cambiar al diseño 2"
 
 msgid "Switch to layout 3"
-msgstr "Zu Belegung 3 wechseln"
+msgstr "Cambiar al diseño 3"
 
 msgid "Switch to layout 4"
-msgstr "Zu Belegung 4 wechseln"
+msgstr "Cambiar al diseño 4"
 
 msgid "Expand abbreviations"
-msgstr "Abkürzungen ersetzen"
+msgstr "Expandir abreviaciones"
 
 msgid "Autocomplementation confirmation"
-msgstr ""
+msgstr "Confirmación de autocomplementación"
 
 msgid "Block/Unblock keyboard and mouse events"
 msgstr ""
@@ -173,19 +172,19 @@ msgstr ""
 
 #: glade/abbr_add.glade:7
 msgid "Add Abbreviation..."
-msgstr "Abkürzung hinzufügen..."
+msgstr "Añadir abreviación..."
 
 #: glade/abbr_add.glade:24
 msgid "Abbreviation:"
-msgstr "Abkürzung:"
+msgstr "Abreviación:"
 
 #: glade/abbr_add.glade:45
 msgid "Expansion text:"
-msgstr "Volltext:"
+msgstr "Expansión del texto:"
 
 #: glade/about.glade:7
 msgid "gXNeur About..."
-msgstr "Über gXNeur..."
+msgstr "Acerca de gXNeur"
 
 #: glade/about.glade:15
 msgid ""
@@ -197,17 +196,10 @@ msgid ""
 "Andrew Crew Kuznetsov\n"
 "Nikolay Yankin"
 msgstr ""
-"\n"
-"\t\t<b>X Neural Switcher für Gnome</b>\t\t\n"
-"\t\tGTK2 frontend für XNeur\t\t\n"
-"\n"
-"AUTOREN:\n"
-"Andrew Crew Kuznetsov\n"
-"Nikolay Yankin"
 
 #: glade/action_add.glade:7
 msgid "Add user action..."
-msgstr "Benutzerdefinierte Aktion hinzufügen..."
+msgstr "Añadir acción del usuario..."
 
 #: glade/action_add.glade:25
 msgid "Action name:"
@@ -215,11 +207,11 @@ msgstr ""
 
 #: glade/action_add.glade:47
 msgid "Key bind:"
-msgstr "Tastenkombination:"
+msgstr ""
 
 #: glade/action_add.glade:70
 msgid "User action:"
-msgstr "Benutzerdefinierte Aktion:"
+msgstr "Accion del usuario:"
 
 #: glade/app_add.glade:7
 msgid "Add application..."
@@ -235,23 +227,23 @@ msgstr ""
 
 #: glade/choose_file.glade:7
 msgid "Choose File..."
-msgstr "Dateiauswahl..."
+msgstr "Seleccionar archivo..."
 
 #: glade/config.glade:7
 msgid "XNeur Settings"
-msgstr "XNeur-Einstellungen"
+msgstr "Configuraciones de XNeur"
 
 #: glade/config.glade:37
 msgid "Use manual switching mode"
-msgstr "Manuellen Umschaltmodus benutzen"
+msgstr ""
 
 #: glade/config.glade:51
 msgid "Enable auto-learning mode"
-msgstr "Auto-Lernmodus aktivieren"
+msgstr "Habilitar modo de autoaprendizaje"
 
 #: glade/config.glade:65
 msgid "Keep selection after changing selected text"
-msgstr "Markierung nach einer Änderung des markierten Textes beibehalten"
+msgstr ""
 
 #: glade/config.glade:79
 msgid "Rotate layout after changing selected text"
@@ -267,7 +259,7 @@ msgstr ""
 
 #: glade/config.glade:131
 msgid "Correct aCCIDENTAL caps"
-msgstr "vERSEHENTLICHE Caps korrigieren"
+msgstr ""
 
 #: glade/config.glade:145
 msgid "Disable CapsLock use"
@@ -275,7 +267,7 @@ msgstr ""
 
 #: glade/config.glade:159
 msgid "Correct TWo INitial caps"
-msgstr "ZWei GRoßbuchstaben am WOrtanfang korrigieren"
+msgstr ""
 
 #: glade/config.glade:173
 msgid "Correct spaces with punctuation"
@@ -291,7 +283,7 @@ msgstr ""
 
 #: glade/config.glade:230
 msgid "<b>General</b>"
-msgstr "<b>Allgemein</b>"
+msgstr ""
 
 #: glade/config.glade:282 glade/list.glade:7
 msgid "Rules change..."
@@ -299,7 +291,7 @@ msgstr ""
 
 #: glade/config.glade:317
 msgid "Initial layout number:"
-msgstr "Nummer der Ausgangsbelegung:"
+msgstr ""
 
 #: glade/config.glade:327
 msgid ""
@@ -308,26 +300,22 @@ msgid ""
 "2\n"
 "3"
 msgstr ""
-"0\n"
-"1\n"
-"2\n"
-"3"
 
 #: glade/config.glade:357
 msgid "Remember keyboard layout for each application instance"
-msgstr "Tastaturbelegung für jede Instanz eines Programms einzeln merken"
+msgstr ""
 
 #: glade/config.glade:450
 msgid "Exceptions (One keyboard layout for all application instances)"
-msgstr "Ausnahmen (eine Tastaturbelegung für alle Instanzen des Programms)"
+msgstr ""
 
 #: glade/config.glade:480
 msgid "<b>Layouts</b>"
-msgstr "<b>Belegungen</b>"
+msgstr ""
 
 #: glade/config.glade:680
 msgid "<b>Hotkeys</b>"
-msgstr "<b>Tastenkombinationen</b>"
+msgstr ""
 
 #: glade/config.glade:703
 msgid "Enable pattern mining and recognition (autocomplementation)"
@@ -347,23 +335,23 @@ msgstr ""
 
 #: glade/config.glade:955
 msgid "Ignore these applications"
-msgstr "Diese Anwendungen ignorieren"
+msgstr ""
 
 #: glade/config.glade:1046
 msgid "Force automatic mode for these applications"
-msgstr "Automatischen Modus für diese Anwendungen erzwingen"
+msgstr ""
 
 #: glade/config.glade:1137
 msgid "Force manual mode for these applications"
-msgstr "Manuellen Modus für diese Anwendungen erzwingen"
+msgstr ""
 
 #: glade/config.glade:1167
 msgid "<b>Applications</b>"
-msgstr "<b>Anwendungen</b>"
+msgstr ""
 
 #: glade/config.glade:1198
 msgid "Enable sounds"
-msgstr "Klänge aktivieren"
+msgstr ""
 
 #: glade/config.glade:1218
 msgid "Sound volume"
@@ -371,21 +359,19 @@ msgstr ""
 
 #: glade/config.glade:1310
 msgid "Sounds"
-msgstr "Klange"
+msgstr ""
 
 #: glade/config.glade:1326
 msgid "Show OSD"
-msgstr "OSD einblenden"
+msgstr ""
 
 #: glade/config.glade:1346
 msgid "OSD Font"
-msgstr "OSD-Font"
+msgstr ""
 
 #: glade/config.glade:1377
 msgid "Use command <b>xfontsel -print</b> to get new font."
 msgstr ""
-"Benutzen Sie den Befehl <b>xfontsel -print</b>, um eine neue Schrift zu "
-"erhalten."
 
 #: glade/config.glade:1426
 msgid "OSD"
@@ -405,15 +391,15 @@ msgstr ""
 
 #: glade/config.glade:1546
 msgid "Ignore keyboard layout for abbreviations"
-msgstr "Belegung für Abkürzungen ignorieren"
+msgstr ""
 
 #: glade/config.glade:1634
 msgid "<b>Abbreviations</b>"
-msgstr "<b>Abkürzungen</b>"
+msgstr ""
 
 #: glade/config.glade:1657
 msgid "Enable keyboard logging"
-msgstr "Getippten Text in einer Log-Datei speichern"
+msgstr ""
 
 #: glade/config.glade:1696
 msgid "Send log via port"
@@ -479,15 +465,15 @@ msgstr ""
 
 #: glade/config.glade:2028
 msgid "Flush internal buffer on Escape"
-msgstr "Internen Zwischenspeicher beim Druck von Escape leeren"
+msgstr ""
 
 #: glade/config.glade:2042
 msgid "Flush internal buffer on Enter or Tab"
-msgstr "Internen Zwischenspeicher beim Druck von Enter oder Tab leeren"
+msgstr ""
 
 #: glade/config.glade:2056
 msgid "Don't process words on Enter or Tab"
-msgstr "Keine Wörter beim Druck von Enter oder Tab verarbeiten"
+msgstr ""
 
 #: glade/config.glade:2070
 msgid "Compatibility with the completion"
@@ -503,11 +489,11 @@ msgstr ""
 
 #: glade/config.glade:2158
 msgid "Delay before sending events (in milliseconds)"
-msgstr "Verzögerung beim Senden von Ereignissen (in Millisekunden)"
+msgstr ""
 
 #: glade/config.glade:2169
 msgid "Log verbosity level"
-msgstr "Genauigkeitsstufe des Logs"
+msgstr ""
 
 #: glade/config.glade:2181
 msgid ""
@@ -518,12 +504,6 @@ msgid ""
 "Debug\n"
 "Trace"
 msgstr ""
-"Nicht\n"
-"Fehler\n"
-"Warnungen\n"
-"Log\n"
-"Debug\n"
-"Trace"
 
 #: glade/config.glade:2201
 msgid "Dont send KeyRelease event"
@@ -531,7 +511,7 @@ msgstr ""
 
 #: glade/config.glade:2244
 msgid "<b>Advanced</b>"
-msgstr "<b>Erweitert</b>"
+msgstr ""
 
 #: glade/config.glade:2305
 msgid "<b>Plugins</b>"
@@ -623,13 +603,11 @@ msgid ""
 "Wrong XNeur configuration library api version.\n"
 "Please, install libxnconfig version 0.%d.%d\n"
 msgstr ""
-"Falsche Version der Konfigurationsbibliothek von XNeur\n"
-"Bitte installieren Sie libxnconfig der Version 0.%d.%d\n"
 
 #: src/misc.c:341
 #, c-format
 msgid "Using libxnconfig API version 0.%d.%d (build with 0.%d.%d)\n"
-msgstr "Die libxnconfig API der Version 0.%d.%d (kompiliert mit 0.%d.%d)\n"
+msgstr ""
 
 #: src/misc.c:345 src/misc.c:346
 #, c-format
@@ -646,16 +624,14 @@ msgid ""
 "Couldn't start %s\n"
 "Verify that it installed\n"
 msgstr ""
-"%s konnte nicht gestartet werden\n"
-"Überprüfen Sie, ob es installiert ist\n"
 
 #: src/misc.c:409
 msgid "Current Version"
-msgstr "Aktuelle Version"
+msgstr ""
 
 #: src/misc.c:610 src/misc.c:636 src/misc.c:663 src/misc.c:689 src/misc.c:826
 msgid "Application"
-msgstr "Anwendung"
+msgstr ""
 
 #: src/misc.c:707 src/misc.c:1210
 msgid "Description"
@@ -663,7 +639,7 @@ msgstr ""
 
 #: src/misc.c:712
 msgid "Layout"
-msgstr "Belegung"
+msgstr ""
 
 #: src/misc.c:717
 msgid "Excluded"
@@ -672,23 +648,23 @@ msgstr ""
 #: src/misc.c:860 src/misc.c:936 src/misc.c:1037 src/misc.c:1091
 #: src/misc.c:1141
 msgid "Action"
-msgstr "Aktion"
+msgstr ""
 
 #: src/misc.c:867 src/misc.c:1048
 msgid "Key bind"
-msgstr "Tastenkombination"
+msgstr ""
 
 #: src/misc.c:903
 msgid "Abbreviation"
-msgstr "Abkürzung"
+msgstr ""
 
 #: src/misc.c:912
 msgid "Expansion text"
-msgstr "Volltext"
+msgstr ""
 
 #: src/misc.c:941
 msgid "Sound"
-msgstr "Klang"
+msgstr ""
 
 #: src/misc.c:950 src/misc.c:1105 src/misc.c:1155 src/misc.c:1201
 msgid "Enabled"
@@ -696,11 +672,11 @@ msgstr ""
 
 #: src/misc.c:1052 src/trayicon.c:158
 msgid "User action"
-msgstr "Benutzerdefinierte Aktion"
+msgstr ""
 
 #: src/misc.c:1096
 msgid "OSD text"
-msgstr "OSD-Text"
+msgstr ""
 
 #: src/misc.c:1146
 msgid "Popup message text"
@@ -712,19 +688,19 @@ msgstr ""
 
 #: src/misc.c:1422
 msgid "Abbreviation field is empty!"
-msgstr "Abkürzung ist leer!"
+msgstr ""
 
 #: src/misc.c:1427
 msgid "Expansion text field is empty!"
-msgstr "Volltext ist leer!"
+msgstr ""
 
 #: src/misc.c:1472
 msgid "Key bind field is empty!"
-msgstr "Tastenkombination ist leer!"
+msgstr ""
 
 #: src/misc.c:1477
 msgid "User action field is empty!"
-msgstr "Benutzeraktion ist leer!"
+msgstr ""
 
 #: src/misc.c:1778
 msgid "Combination of letters"
@@ -741,15 +717,15 @@ msgstr ""
 #: src/support.c:80 src/support.c:104
 #, c-format
 msgid "Couldn't find pixmap file: %s"
-msgstr "Bilddatei konnte nicht gefunden werden: %s"
+msgstr ""
 
 #: src/trayicon.c:115
 msgid "Stop daemon"
-msgstr "Daemon stoppen"
+msgstr ""
 
 #: src/trayicon.c:120
 msgid "Start daemon"
-msgstr "Daemon starten"
+msgstr ""
 
 #: src/trayicon.c:134
 msgid "Auto-correction"
@@ -761,12 +737,27 @@ msgstr ""
 
 #: src/trayicon.c:253
 msgid "X Neural Switcher running ("
-msgstr "X Neural Switcher läuft ("
+msgstr ""
 
 #: src/trayicon.c:258
 msgid "X Neural Switcher stopped ("
-msgstr "X Neural Switcher gestoppt ("
+msgstr ""
 
 #: src/trayicon.c:280
 msgid "X Neural Switcher"
-msgstr "X Neural Switcher"
+msgstr ""
+
+#~ msgid "Keypress on Layout 1"
+#~ msgstr "Pulsación en el diseño 1"
+
+#~ msgid "Keypress on Layout 2"
+#~ msgstr "Pulsación en el diseño 2"
+
+#~ msgid "Correct word manually"
+#~ msgstr "Corregir palabra manualmente"
+
+#~ msgid "Keypress on Layout 4"
+#~ msgstr "Pulsación en el diseño 4"
+
+#~ msgid "Keypress on Layout 3"
+#~ msgstr "Pulsación en el diseño 3"

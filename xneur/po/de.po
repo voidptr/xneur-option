@@ -14,8 +14,8 @@ msgstr ""
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bitX-Launchpad-Export-Date: 2009-02-21 "
-"18:28+0000\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2009-02-27 19:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/xneur.c:107
