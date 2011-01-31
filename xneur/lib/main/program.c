@@ -1318,6 +1318,38 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 	return TRUE;
 }
 
+/* 
+static void get_suggest(struct _program *p, int lang)
+{
+	char *word = strdup(get_last_word(p->buffer->i18n_content[lang].content));
+	del_final_numeric_char(word);
+	
+	if (!enchant_dict_check(xconfig->handle->enchant_dicts[lang], word, strlen(word)))
+	{
+		free (word);
+		return;
+	}
+	
+	unsigned int count = 0;
+	char **suggs = enchant_dict_suggest (xconfig->handle->enchant_dicts[lang], word, strlen(word), &count); 
+	
+	log_message (ERROR, "Probably word \"%s\" is (count %d):", word, count);
+
+	for (unsigned int i = 0; i < count; i++)
+	{
+		log_message (ERROR, "    %d. %s", i+1, suggs[i]);
+	}
+	
+	free (word);
+
+	for (unsigned int i = 0; i < count; i++)
+	{
+		free (suggs[i]);
+	}
+	free (suggs);
+}
+*/
+
 static int program_check_lang_last_word(struct _program *p)
 {
 	if (xconfig->handle->languages[get_curr_keyboard_group()].excluded)
@@ -1345,12 +1377,16 @@ static int program_check_lang_last_word(struct _program *p)
 	if (new_lang == NO_LANGUAGE)
 	{
 		log_message(DEBUG, _("No language found to change to"));
+		//get_suggest(p, cur_lang); 
 		return FALSE;
 	}
 
 	if (new_lang == cur_lang)
+	{
+		//get_suggest(p, cur_lang);
 		return FALSE;
-
+	}
+	
 	int change_action = CHANGE_WORD_TO_LAYOUT_0;
 	if (new_lang == 0)
 		change_action = CHANGE_WORD_TO_LAYOUT_0;
@@ -1365,7 +1401,8 @@ static int program_check_lang_last_word(struct _program *p)
 	show_notify(NOTIFY_AUTOMATIC_CHANGE_WORD, NULL);
 
 	p->last_layout = new_lang;
-	
+
+	//get_suggest(p, new_lang);
 	return TRUE;
 }
 
@@ -2099,6 +2136,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			break;
 		}
 	}
+
 	p->plugin->change_action(p->plugin, action);
 }
 
