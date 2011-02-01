@@ -2,7 +2,7 @@
 # All values writted XNeur
 
 # Config version
-Version 0.11.0
+Version 0.12
 
 # Work in manual mode
 ManualMode No
@@ -13,7 +13,7 @@ ManualMode No
 #LogLevel Log
 #LogLevel Debug
 #LogLevel Trace
-LogLevel Debug
+LogLevel Trace
 
 # Define unused languages
 # Example:
@@ -62,8 +62,10 @@ AddBind EnableLayout3
 AddBind EnableLayout4 
 AddBind RotateLayout 
 AddBind ReplaceAbbreviation Control Tab
+AddBind RotateLayoutBack 
 AddBind AutocomplementationConfirmation Tab
 AddBind BlockKeyboardAndMouseEvents 
+AddBind InsertDate Super d
 
 # This option add user action when pressed key bind
 # Example:
@@ -75,7 +77,7 @@ AddAction Super f Открыть ссылку в Firefox <cmd>xsel -o | xargs fi
 AddAction Super g Google - Искать <cmd>xsel -o | sed -r '2~1d;s/(^\s+|\s+$)//g;s/%/%25/g;s/#/%23/g;s/\$/%24/g;s/&/%26/g;s/\+/%2B/;s/,/%2C/g;s/:/%3A/g;s/;/%3B/g;s/=/%3D/g;s/\?/%3F/g;s/@/%40/g;s/\s/+/g' | awk '{print "http://www.google.ru/search?hl=ru&q=" $1}' | xargs firefox -new-tab</cmd>
 AddAction Super r Google - Перевести на русский <cmd>xsel -o | sed -r '2~1d;s/(^\s+|\s+$)//g;s/%/%25/g;s/#/%23/g;s/\$/%24/g;s/&/%26/g;s/\+/%2B/;s/,/%2C/g;s/:/%3A/g;s/;/%3B/g;s/=/%3D/g;s/\?/%3F/g;s/@/%40/g;s/\s/+/g' | awk '{print "translate.google.com/translate_t?hl=ru#auto|ru|" $1}' | xargs firefox -new-tab</cmd>
 AddAction Super a Google - Перевести на английский <cmd>xsel -o | sed -r '2~1d;s/(^\s+|\s+$)//g;s/%/%25/g;s/#/%23/g;s/\$/%24/g;s/&/%26/g;s/\+/%2B/;s/,/%2C/g;s/:/%3A/g;s/;/%3B/g;s/=/%3D/g;s/\?/%3F/g;s/@/%40/g;s/\s/+/g' | awk '{print "translate.google.com/translate_t?hl=ru#auto|en|" $1}' | xargs firefox -new-tab</cmd>
-
+AddAction Super y Яndex - Поиск <cmd>xsel -o | sed -r '2~1d;s/(^\s+|\s+$)//g;s/%/%25/g;s/#/%23/g;s/\$/%24/g;s/&/%26/g;s/\+/%2B/;s/,/%2C/g;s/:/%3A/g;s/;/%3B/g;s/=/%3D/g;s/\?/%3F/g;s/@/%40/g;s/\s/+/g' | awk '{print "http://yandex.ru/yandsearch?text=" $1 }' | xargs firefox -new-tab</cmd>
 
 # Word Replacing
 # Ignore keyboard layout for abbreviations list
@@ -111,18 +113,24 @@ AddSound EnableLayout3
 AddSound EnableLayout4 
 AddSound AutomaticChangeWord Enable itemback.wav
 AddSound ManualChangeWord 
+AddSound ManualTranslitWord 
+AddSound ManualChangecaseWord 
+AddSound ManualPreviewChangeWord 
 AddSound ChangeString 
 AddSound ChangeSelected 
 AddSound TranslitSelected 
 AddSound ChangecaseSelected 
+AddSound PreviewChangeSelected 
 AddSound ChangeClipboard 
 AddSound TranslitClipboard 
 AddSound ChangecaseClipboard 
+AddSound PreviewChangeClipboard 
 AddSound ReplaceAbbreviation Enable switch.wav
 AddSound CorrectIncidentalCaps 
 AddSound CorrectTwoCapitalLetter 
 AddSound ExecuteUserAction Enable switch.wav
-AddSound BlockKeyboardAndMouseEvents
+AddSound BlockKeyboardAndMouseEvents 
+AddSound UnblockKeyboardAndMouseEvents 
 
 # This option enable or disable self education of xneur
 # Example:
@@ -170,6 +178,11 @@ LogSize 1048576
 # This option define host to send e-mail without login and password.
 # Example:
 #LogHostIP 127.0.0.1
+#LogHostIP mail.example.com
+
+# This option define port to send e-mail without login and password.
+# Example:
+#LogPort 25
 
 # This option enable or disable correction of iNCIDENTAL CapsLock
 # Example:
@@ -184,7 +197,7 @@ CorrectTwoCapitalLetter Yes
 # This option enable or disable correction of small letter to capital letter after dot
 # Example:
 #CorrectCapitalLetterAfterDot Yes
-CorrectCapitalLetterAfterDot No
+CorrectCapitalLetterAfterDot Yes
 
 # This option enable or disable flushing internal buffer when pressed Escape
 # Example:
@@ -225,18 +238,24 @@ AddOSD EnableLayout3
 AddOSD EnableLayout4
 AddOSD AutomaticChangeWord
 AddOSD ManualChangeWord
+AddOSD ManualTranslitWord
+AddOSD ManualChangecaseWord
+AddOSD ManualPreviewChangeWord
 AddOSD ChangeString
 AddOSD ChangeSelected
 AddOSD TranslitSelected
 AddOSD ChangecaseSelected
+AddOSD PreviewChangeSelected
 AddOSD ChangeClipboard
 AddOSD TranslitClipboard
 AddOSD ChangecaseClipboard
+AddOSD PreviewChangeClipboard
 AddOSD ReplaceAbbreviation
 AddOSD CorrectIncidentalCaps
 AddOSD CorrectTwoCapitalLetter
 AddOSD ExecuteUserAction Enable Выполняется команда
 AddOSD BlockKeyboardAndMouseEvents
+AddOSD UnblockKeyboardAndMouseEvents
 
 # This option disable or enable show popup messages
 # Example:
@@ -257,6 +276,9 @@ AddPopup EnableLayout3
 AddPopup EnableLayout4
 AddPopup AutomaticChangeWord
 AddPopup ManualChangeWord
+AddPopup ManualTranslitWord
+AddPopup ManualChangecaseWord
+AddPopup ManualPreviewChangeWord
 AddPopup ChangeString
 AddPopup ChangeSelected
 AddPopup TranslitSelected
@@ -270,7 +292,8 @@ AddPopup ReplaceAbbreviation
 AddPopup CorrectIncidentalCaps
 AddPopup CorrectTwoCapitalLetter
 AddPopup ExecuteUserAction Enable Выполняется команда
-AddPopup BlockKeyboardAndMouseEvents
+AddPopup BlockKeyboardAndMouseEvents 
+AddPopup UnblockKeyboardAndMouseEvents 
 
 # This option disable or enable checking language on input process
 # Example:
