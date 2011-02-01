@@ -80,7 +80,7 @@ else
 
 # begin update for basic releases
 dch -b --force-distribution --distribution "natty" -v "${NEW_VER}-0natty" \
-  "New Upstream version 0.2"
+  "New Upstream version 0.4"
 debuild -S -sa
 # end update for basic releases
 
@@ -91,24 +91,24 @@ cp debian/changelog ../changelog # copy basic changelog
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "maverick" -v "${NEW_VER}-0maverick" \
-  "New Upstream version 0.2"
+  "New Upstream version 0.4"
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-0lucid" \
-  "New Upstream version 0.2"
+  "New Upstream version 0.4"
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "karmic" -v "${NEW_VER}-0karmic" \
-  "New Upstream version 0.2"
+  "New Upstream version 0.4"
 debuild -S -sd
 
 mv debian/source ../ # make dirty hack
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "jaunty" -v "${NEW_VER}-0jaunty" \
-  "New Upstream version 0.2"
+  "New Upstream version 0.4"
 debuild -S -sd
 
 mv ../source debian/ # rollback dirty hack
