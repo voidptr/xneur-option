@@ -476,7 +476,6 @@ msgid "Don't switch layout if before input where pressed"
 msgstr ""
 
 #: glade/config.glade:2028
-
 msgid "Flush internal buffer on Escape"
 msgstr "ניקוי החוצץ הפנימי בעת לחיצה על Escape"
 
