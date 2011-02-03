@@ -226,7 +226,6 @@ unsigned char *get_win_prop(Window window, Atom atom, long *nitems, Atom *type, 
 	Atom actual_type;
 	int actual_format;
 	unsigned long _nitems;
-	unsigned long nbytes;
 	unsigned long bytes_after; /* unused */
 	unsigned char *prop;
 	int status;
@@ -237,15 +236,6 @@ unsigned char *get_win_prop(Window window, Atom atom, long *nitems, Atom *type, 
                               &prop);
 	if ((status == BadWindow) || (status != Success)) 
 		return NULL;
-
-	if (actual_format == 32)
-		nbytes = sizeof(long);
-	else if (actual_format == 16)
-		nbytes = sizeof(short);
-	else if (actual_format == 8)
-		nbytes = 1;
-	else if (actual_format == 0)
-		nbytes = 0;
 
 	*nitems = _nitems;
 	*type = actual_type;

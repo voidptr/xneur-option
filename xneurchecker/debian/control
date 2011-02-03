@@ -2,7 +2,7 @@ Source: xneurchecker
 Section: x11
 Priority: optional
 Maintainer: Andrew Crew Kuznetsov <andrewcrew@rambler.ru>
-Build-Depends: debhelper (>= 5), cdbs, autotools-dev, pkg-config, libxneur-dev (>= 0.12.0), libtool, docbook-to-man
+Build-Depends: debhelper (>= 5), cdbs, autotools-dev, pkg-config, libxneur-dev (>= 0.12.0), libtool, docbook-to-man, libglib2.0-dev
 Standards-Version: 3.8.4
 Homepage: http://xneur.ru
 
