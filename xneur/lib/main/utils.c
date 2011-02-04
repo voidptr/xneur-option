@@ -237,6 +237,7 @@ unsigned char *get_win_prop(Window window, Atom atom, long *nitems, Atom *type, 
 	if ((status == BadWindow) || (status != Success)) 
 		return NULL;
 
+	
 	*nitems = _nitems;
 	*type = actual_type;
 	*size = actual_format;
