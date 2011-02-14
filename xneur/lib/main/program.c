@@ -1492,7 +1492,7 @@ static void program_check_tcl_last_word(struct _program *p)
 	if (!isalpha(p->buffer->content[offset+1]))
 		return;
 	
-	if (isblank(p->buffer->content[offset+2]))
+	if (isblank(p->buffer->content[offset+2]) || ispunct(p->buffer->content[offset+2]))
 		return;
 
 	if (!(p->buffer->keycode_modifiers[offset] & ShiftMask) || !(p->buffer->keycode_modifiers[offset + 1] & ShiftMask))

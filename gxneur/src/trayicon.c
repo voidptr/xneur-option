@@ -139,6 +139,8 @@ GtkWidget* create_tray_menu(struct _tray_icon *tray, int state)
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), action_submenu);
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	if (xconfig->actions_count < 1)
+		gtk_widget_set_sensitive(menuitem, FALSE);
 	
 	// Separator
 	menuitem = gtk_separator_menu_item_new();
