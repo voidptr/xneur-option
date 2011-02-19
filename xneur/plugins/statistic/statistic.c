@@ -79,7 +79,7 @@ struct _xneur_statistic
 	int action_enable_layout_3;
 	int action_rotate_layout;
 	int action_replace_abbreviation;
-	int action_autocomplementation;
+	int action_autocompletion;
 } statistic;
 
 int on_init(void)
@@ -120,7 +120,7 @@ int on_init(void)
 	statistic.action_enable_layout_3 = 0;
 	statistic.action_rotate_layout = 0;
 	statistic.action_replace_abbreviation = 0;
-	statistic.action_autocomplementation = 0;
+	statistic.action_autocompletion = 0;
 	
 	printf("[PLG] Plugin for keyboard statistic initialized\n");
 	return (0);
@@ -314,9 +314,9 @@ int on_xneur_stop(void)
 	{
 		fprintf(stream, "	Manual replace abbreviation count = %d\n", statistic.action_replace_abbreviation);
 	}
-	if (statistic.action_autocomplementation != 0)
+	if (statistic.action_autocompletion != 0)
 	{
-		fprintf(stream, "	Autocomplementation count = %d\n", statistic.action_autocomplementation);
+		fprintf(stream, "	Autocompletion count = %d\n", statistic.action_autocompletion);
 	}
 	fprintf(stream, "\n");
 	
@@ -429,9 +429,9 @@ int on_hotkey_action(enum _hotkey_action ha)
 			statistic.action_rotate_layout++;
 			break;
 		}
-		case ACTION_AUTOCOMPLEMENTATION:
+		case ACTION_AUTOCOMPLETION:
 		{
-			statistic.action_autocomplementation++;
+			statistic.action_autocompletion++;
 			break;
 		}
 		case ACTION_REPLACE_ABBREVIATION: // User needs to replace acronym

@@ -63,7 +63,7 @@ AddBind EnableLayout4
 AddBind RotateLayout 
 AddBind ReplaceAbbreviation Control Tab
 AddBind RotateLayoutBack 
-AddBind AutocomplementationConfirmation Tab
+AddBind AutocompletionConfirmation Tab
 AddBind BlockKeyboardAndMouseEvents 
 AddBind InsertDate Super d
 
@@ -310,21 +310,21 @@ DisableCapsLock No
 #CorrectSpaceWithPunctuation No
 CorrectSpaceWithPunctuation No
 
-# This option disable or enable pattern mining and recognition (autocomplementation)
+# This option disable or enable pattern mining and recognition (autocompletion)
 # Example:
-#Autocomplementation No
-Autocomplementation Yes
+#Autocompletion No
+Autocompletion Yes
 
-# This option disable or enable adding space after autocomplementation
+# This option disable or enable adding space after autocompletion
 # Example:
-#AddSpaceAfterAutocomplementation No
-AddSpaceAfterAutocomplementation No
+#AddSpaceAfterAutocompletion No
+AddSpaceAfterAutocompletion No
 
-# Add Applications names to exclude it from autocomplementation process
-# Xneur will not process the autocomplementation for this applications
+# Add Applications names to exclude it from autocompletion process
+# Xneur will not process the autocompletion for this applications
 # Example:
-#AutocomplementationExcludeApp Gnome-terminal
-AutocomplementationExcludeApp Gnome-terminal
+#AutocompletionExcludeApp Gnome-terminal
+AutocompletionExcludeApp Gnome-terminal
 
 # Use next options for troubleshoot on autoswitching
 # Disable autoswitching if pressed backspace

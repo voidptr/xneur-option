@@ -135,7 +135,7 @@ msgstr "החלפה לפריסה 4"
 msgid "Expand abbreviations"
 msgstr "הרחבת ראשי תיבות"
 
-msgid "Autocomplementation confirmation"
+msgid "Autocompletion confirmation"
 msgstr "אימות השלמה אוטומטית"
 
 msgid "Block/Unblock keyboard and mouse events"
@@ -330,19 +330,19 @@ msgid "<b>Hotkeys</b>"
 msgstr "<b>צירופי מקשים</b>"
 
 #: glade/config.glade:703
-msgid "Enable pattern mining and recognition (autocomplementation)"
+msgid "Enable pattern mining and recognition (autocompletion)"
 msgstr "הפעלת כרייה וזיהוי של תבניות (השלמה אוטומטית)"
 
 #: glade/config.glade:717
-msgid "Add space after autocomplementation"
+msgid "Add space after autocompletion"
 msgstr "הוספת רווח לאחר השלמה אוטומטית"
 
 #: glade/config.glade:819
-msgid "Disable the autocomplementation for these applications"
+msgid "Disable the autocompletion for these applications"
 msgstr "ביטול ההשלמה האוטומטית עבור יישומים אלה"
 
 #: glade/config.glade:855
-msgid "<b>Autocomplementation</b>"
+msgid "<b>Autocompletion</b>"
 msgstr "<b>השלמה אוטומטית</b>"
 
 #: glade/config.glade:955

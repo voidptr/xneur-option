@@ -135,7 +135,7 @@ msgstr ""
 msgid "Expand abbreviations"
 msgstr ""
 
-msgid "Autocomplementation confirmation"
+msgid "Autocompletion confirmation"
 msgstr ""
 
 msgid "Block/Unblock keyboard and mouse events"
@@ -330,19 +330,19 @@ msgid "<b>Hotkeys</b>"
 msgstr ""
 
 #: glade/config.glade:703
-msgid "Enable pattern mining and recognition (autocomplementation)"
+msgid "Enable pattern mining and recognition (autocompletion)"
 msgstr ""
 
 #: glade/config.glade:717
-msgid "Add space after autocomplementation"
+msgid "Add space after autocompletion"
 msgstr ""
 
 #: glade/config.glade:819
-msgid "Disable the autocomplementation for these applications"
+msgid "Disable the autocompletion for these applications"
 msgstr ""
 
 #: glade/config.glade:855
-msgid "<b>Autocomplementation</b>"
+msgid "<b>Autocompletion</b>"
 msgstr ""
 
 #: glade/config.glade:955

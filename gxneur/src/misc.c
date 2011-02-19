@@ -75,7 +75,7 @@ static GtkListStore *store_osd				= NULL;
 static GtkListStore *store_popup			= NULL;
 static GtkListStore *store_action			= NULL;
 static GtkListStore *store_hotkey			= NULL;
-static GtkListStore *store_autocomplementation_exclude_app		= NULL;
+static GtkListStore *store_autocompletion_exclude_app		= NULL;
 static GtkListStore *store_plugin			= NULL;
 static GtkListStore *store_language			= NULL;
 
@@ -106,7 +106,7 @@ static const char *hotkey_names[]			=   {
 										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
 	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
-		                                "Rotate layouts", "Rotate layouts back", "Expand abbreviations", "Autocomplementation confirmation", 
+		                                "Rotate layouts", "Rotate layouts back", "Expand abbreviations", "Autocompletion confirmation", 
 										"Block/Unblock keyboard and mouse events", "Insert date"
                                         };
 
@@ -778,26 +778,26 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton31");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_capital_letter_after_dot);
 
-	// Autocomplementation
+	// Autocompletion
 	widget = glade_xml_get_widget (gxml, "checkbutton21");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->autocomplementation);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->autocompletion);
 
-	// Space after autocomplementation
+	// Space after autocompletion
 	widget = glade_xml_get_widget (gxml, "checkbutton1");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->add_space_after_autocomplementation);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->add_space_after_autocompletion);
 
-	// Exclude autocomplementation App set
+	// Exclude autocompletion App set
 	treeview = glade_xml_get_widget (gxml, "treeview8");
 
-	store_autocomplementation_exclude_app = gtk_list_store_new(1, G_TYPE_STRING);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_autocomplementation_exclude_app));
+	store_autocompletion_exclude_app = gtk_list_store_new(1, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_autocompletion_exclude_app));
 	gtk_widget_show(treeview);
 
-	for (int i = 0; i < xconfig->autocomplementation_excluded_apps->data_count; i++)
+	for (int i = 0; i < xconfig->autocompletion_excluded_apps->data_count; i++)
 	{
 		GtkTreeIter iter;
-		gtk_list_store_append(GTK_LIST_STORE(store_autocomplementation_exclude_app), &iter);
-		gtk_list_store_set(GTK_LIST_STORE(store_autocomplementation_exclude_app), &iter, 0, xconfig->autocomplementation_excluded_apps->data[i].string, -1);
+		gtk_list_store_append(GTK_LIST_STORE(store_autocompletion_exclude_app), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_autocompletion_exclude_app), &iter, 0, xconfig->autocompletion_excluded_apps->data[i].string, -1);
 	}
 
 	cell = gtk_cell_renderer_text_new();
@@ -807,10 +807,10 @@ void xneur_preference(void)
 
 	// Adding/Removing Exclude App
 	widget = glade_xml_get_widget (gxml, "button11");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_autocomplementation_exclude_app), G_OBJECT(window));
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_autocompletion_exclude_app), G_OBJECT(window));
 
 	widget = glade_xml_get_widget (gxml, "button13");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_autocomplementation_exclude_app), G_OBJECT(treeview));
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_autocompletion_exclude_app), G_OBJECT(treeview));
 
 	// Hotkeys List set
 	treeview = glade_xml_get_widget (gxml, "treeview5");
@@ -1387,9 +1387,9 @@ void xneur_add_exclude_app(void)
 	xneur_add_application(store_exclude_app);
 }
 
-void xneur_add_autocomplementation_exclude_app(void)
+void xneur_add_autocompletion_exclude_app(void)
 {
-	xneur_add_application(store_autocomplementation_exclude_app);
+	xneur_add_application(store_autocompletion_exclude_app);
 }
 
 void xneur_add_auto_app(void)
@@ -1861,9 +1861,9 @@ void xneur_rem_exclude_app(GtkWidget *widget)
 	remove_item(widget, store_exclude_app);
 }
 
-void xneur_rem_autocomplementation_exclude_app(GtkWidget *widget)
+void xneur_rem_autocompletion_exclude_app(GtkWidget *widget)
 {
-	remove_item(widget, store_autocomplementation_exclude_app);
+	remove_item(widget, store_autocompletion_exclude_app);
 }
 
 void xneur_rem_auto_app(GtkWidget *widget)
@@ -1905,11 +1905,11 @@ gboolean save_exclude_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *i
 	return FALSE;
 }
 
-gboolean save_autocomplementation_exclude_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+gboolean save_autocompletion_exclude_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
 {
 	if (model || path || user_data){};
 
-	save_list(store_autocomplementation_exclude_app, xconfig->autocomplementation_excluded_apps, iter);
+	save_list(store_autocompletion_exclude_app, xconfig->autocompletion_excluded_apps, iter);
 
 	return FALSE;
 }
@@ -2154,7 +2154,7 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_osd), save_osd, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_popup), save_popup, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_hotkey), save_action, NULL);
-	gtk_tree_model_foreach(GTK_TREE_MODEL(store_autocomplementation_exclude_app), save_autocomplementation_exclude_app, NULL);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_autocompletion_exclude_app), save_autocompletion_exclude_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_plugin), save_plugin, NULL);
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton7");
@@ -2242,10 +2242,10 @@ void xneur_save_preference(GladeXML *gxml)
 	xconfig->correct_capital_letter_after_dot = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton21");
-	xconfig->autocomplementation = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	xconfig->autocompletion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton1");
-	xconfig->add_space_after_autocomplementation = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	xconfig->add_space_after_autocompletion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	// Show popup
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton22");

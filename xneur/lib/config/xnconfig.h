@@ -98,7 +98,7 @@ enum _hotkey_action
 	ACTION_ROTATE_LAYOUT,
 	ACTION_ROTATE_LAYOUT_BACK,
 	ACTION_REPLACE_ABBREVIATION,
-	ACTION_AUTOCOMPLEMENTATION,
+	ACTION_AUTOCOMPLETION,
 	ACTION_BLOCK_EVENTS,
 	ACTION_INSERT_DATE,
 	ACTION_NONE,
@@ -202,9 +202,9 @@ struct _xneur_config
 	int   correct_capital_letter_after_dot;
 	int   block_events;					// Block all events (keyboard and mouse)
 	
-	int   autocomplementation;			// Save pattern and mining
-	int   add_space_after_autocomplementation;
-	struct _list_char *autocomplementation_excluded_apps;
+	int   autocompletion;			// Save pattern and mining
+	int   add_space_after_autocompletion;
+	struct _list_char *autocompletion_excluded_apps;
 
 	int   show_popup;				// Show popups
 	int   show_osd;					// Show OSD

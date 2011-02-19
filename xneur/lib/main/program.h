@@ -33,7 +33,7 @@ struct _program
 	int  changed_manual;
 	int  app_forced_mode;
 	int  app_focus_mode;
-	int  app_autocomplementation_mode;
+	int  app_autocompletion_mode;
 	
 	int  action_mode;
 

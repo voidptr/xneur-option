@@ -215,12 +215,12 @@ msgstr ""
 
 #: src/xneur.c:186
 #, c-format
-msgid "Pattern minig and recognition (autocomplementation) mode set to %s"
+msgid "Pattern minig and recognition (autocompletion) mode set to %s"
 msgstr ""
 
 #: src/xneur.c:187
 #, c-format
-msgid "Add space after autocomplementation mode set to %s"
+msgid "Add space after autocompletion mode set to %s"
 msgstr ""
 
 #: src/xneur.c:188

@@ -183,8 +183,8 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Show OSD mode set to %s"), xconfig->get_bool_name(xconfig->show_osd));
 	log_message(LOG, _("Show popup messages mode set to %s"), xconfig->get_bool_name(xconfig->show_popup));
 	log_message(LOG, _("Check language on input process mode set to %s"), xconfig->get_bool_name(xconfig->check_lang_on_process));
-	log_message(LOG, _("Pattern minig and recognition (autocomplementation) mode set to %s"), xconfig->get_bool_name(xconfig->autocomplementation));
-	log_message(LOG, _("Add space after autocomplementation mode set to %s"), xconfig->get_bool_name(xconfig->add_space_after_autocomplementation));
+	log_message(LOG, _("Pattern minig and recognition (autocompletion) mode set to %s"), xconfig->get_bool_name(xconfig->autocompletion));
+	log_message(LOG, _("Add space after autocompletion mode set to %s"), xconfig->get_bool_name(xconfig->add_space_after_autocompletion));
 	log_message(LOG, _("Disable autoswitching if pressed backspace mode set to %s"), xconfig->get_bool_name(xconfig->troubleshoot_backspace));
 	log_message(LOG, _("Disable autoswitching if pressed left arrow mode set to %s"), xconfig->get_bool_name(xconfig->troubleshoot_left_arrow));
 	log_message(LOG, _("Disable autoswitching if pressed right arrow mode set to %s"), xconfig->get_bool_name(xconfig->troubleshoot_right_arrow));

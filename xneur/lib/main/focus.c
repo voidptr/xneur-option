@@ -63,11 +63,11 @@ const char *verbose_focus_status[]	= {"Processed", "Changed Focus", "Unchanged F
 }*/
 
 // Private
-static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int *autocomplementation_mode)
+static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int *autocompletion_mode)
 {
 	*forced_mode	= FORCE_MODE_NORMAL;
 	*focus_status	= FOCUS_NONE;
-	*autocomplementation_mode	= AUTOCOMPLEMENTATION_INCLUDED;
+	*autocompletion_mode	= AUTOCOMPLETION_INCLUDED;
 	
 	Window new_window;
 	int show_message = TRUE;
@@ -121,8 +121,8 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 		else if (xconfig->manual_apps->exist(xconfig->manual_apps, new_app_name, BY_PLAIN))
 			*forced_mode = FORCE_MODE_MANUAL;
 
-		if (xconfig->autocomplementation_excluded_apps->exist(xconfig->autocomplementation_excluded_apps, new_app_name, BY_PLAIN))
-			*autocomplementation_mode	= AUTOCOMPLEMENTATION_EXCLUDED;
+		if (xconfig->autocompletion_excluded_apps->exist(xconfig->autocompletion_excluded_apps, new_app_name, BY_PLAIN))
+			*autocompletion_mode	= AUTOCOMPLETION_EXCLUDED;
 	}
 	else
 		*focus_status = FOCUS_EXCLUDED;
@@ -166,9 +166,9 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	return FOCUS_CHANGED;
 }
 
-static int focus_get_focus_status(struct _focus *p, int *forced_mode, int *focus_status, int *autocomplementation_mode)
+static int focus_get_focus_status(struct _focus *p, int *forced_mode, int *focus_status, int *autocompletion_mode)
 {
-	int focus = get_focus(p, forced_mode, focus_status, autocomplementation_mode);
+	int focus = get_focus(p, forced_mode, focus_status, autocompletion_mode);
 
 	if (focus == FOCUS_UNCHANGED)
 		return p->last_focus;

@@ -268,7 +268,7 @@ static void program_update(struct _program *p)
 {
 	p->last_window = p->focus->owner_window;
 
-	int status = p->focus->get_focus_status(p->focus, &p->app_forced_mode, &p->app_focus_mode, &p->app_autocomplementation_mode);
+	int status = p->focus->get_focus_status(p->focus, &p->app_forced_mode, &p->app_focus_mode, &p->app_autocompletion_mode);
 	p->event->set_owner_window(p->event, p->focus->owner_window);
 
 	if (status == FOCUS_UNCHANGED)
@@ -865,7 +865,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 		}
 		case KLB_DEL_SYM:
 		{
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 			{
 				// Block events of keyboard (push to event queue)
 				set_event_mask(p->focus->owner_window, None);
@@ -1152,15 +1152,15 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			p->event->default_event.xkey.keycode = 0;
 			break;
 		}
-		case ACTION_AUTOCOMPLEMENTATION:
+		case ACTION_AUTOCOMPLETION:
 		{
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 			{	
 				p->check_pattern(p, FALSE);
 
 				// Block events of keyboard (push to event queue)
 				set_event_mask(p->focus->owner_window, None);
-				if (xconfig->add_space_after_autocomplementation)
+				if (xconfig->add_space_after_autocompletion)
 					p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_space), p->event->event.xkey.state);
 				p->last_action = ACTION_NONE;
 
@@ -1757,10 +1757,10 @@ static void program_check_capital_letter_after_dot(struct _program *p)
 
 static void program_check_pattern(struct _program *p, int selection)
 {
-	if (!xconfig->autocomplementation)
+	if (!xconfig->autocompletion)
 		return;
 
-	if (p->app_autocomplementation_mode == AUTOCOMPLEMENTATION_EXCLUDED)
+	if (p->app_autocompletion_mode == AUTOCOMPLETION_EXCLUDED)
 		return;
 	
 	char *tmp = get_last_word(p->buffer->content);
@@ -1821,7 +1821,7 @@ static void program_check_pattern(struct _program *p, int selection)
 	set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 	grab_spec_keys(p->focus->owner_window, TRUE);
 
-	p->last_action = ACTION_AUTOCOMPLEMENTATION;
+	p->last_action = ACTION_AUTOCOMPLETION;
 	free (word);
 }
 
@@ -1836,7 +1836,7 @@ static void program_send_string_silent(struct _program *p, int send_backspaces)
 	log_message(DEBUG, _("Processing string '%s'"), p->buffer->content);
 
 	// Work-arround
-	if ((xconfig->compatibility_with_completion) && (p->last_action != ACTION_AUTOCOMPLEMENTATION))
+	if ((xconfig->compatibility_with_completion) && (p->last_action != ACTION_AUTOCOMPLETION))
 	{
 		p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_bar), 1);
 		p->event->send_backspaces(p->event, 1);
@@ -1891,7 +1891,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->change_lang(p, 0);
 
 			int len = p->buffer->cur_pos;
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
@@ -1911,7 +1911,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->change_lang(p, 1);
 
 			int len = p->buffer->cur_pos;
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
@@ -1931,7 +1931,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->change_lang(p, 2);
 
 			int len = p->buffer->cur_pos;
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
@@ -1951,7 +1951,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->change_lang(p, 3);
 
 			int len = p->buffer->cur_pos;
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
@@ -1975,7 +1975,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			free(text);
 
 			int len = p->buffer->cur_pos;
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
@@ -1994,7 +1994,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->buffer->change_case(p->buffer);
 
 			int len = p->buffer->cur_pos;
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
@@ -2030,7 +2030,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->change_lang(p, 0);
 
 			int len = p->buffer->cur_pos - 1;
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 				len = p->buffer->cur_pos;
 			p->send_string_silent(p, len);
 
@@ -2048,7 +2048,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->change_lang(p, 1);
 
 			int len = p->buffer->cur_pos - 1;
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 				len = p->buffer->cur_pos;
 			p->send_string_silent(p, len);
 
@@ -2066,7 +2066,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->change_lang(p, 2);
 
 			int len = p->buffer->cur_pos - 1;
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 				len = p->buffer->cur_pos;
 			p->send_string_silent(p, len);
 
@@ -2084,7 +2084,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->change_lang(p, 3);
 
 			int len = p->buffer->cur_pos - 1;
-			if (p->last_action == ACTION_AUTOCOMPLEMENTATION)
+			if (p->last_action == ACTION_AUTOCOMPLETION)
 				len = p->buffer->cur_pos;
 			p->send_string_silent(p, len);
 
@@ -2223,7 +2223,7 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 
 static void program_add_word_to_pattern(struct _program *p, int new_lang)
 {
-	if (!xconfig->autocomplementation)
+	if (!xconfig->autocompletion)
 		return;
 	
 	char *tmp = get_last_word(p->buffer->content);

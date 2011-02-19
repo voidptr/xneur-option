@@ -135,7 +135,7 @@ msgstr "Включение четвертой раскладки"
 msgid "Expand abbreviations"
 msgstr "Замена сокращений"
 
-msgid "Autocomplementation confirmation"
+msgid "Autocompletion confirmation"
 msgstr "Подтверждение автодополнения"
 
 msgid "Block/Unblock keyboard and mouse events"
@@ -330,19 +330,19 @@ msgid "<b>Hotkeys</b>"
 msgstr "<b>Комбинации клавиш</b>"
 
 #: glade/config.glade:703
-msgid "Enable pattern mining and recognition (autocomplementation)"
+msgid "Enable pattern mining and recognition (autocompletion)"
 msgstr "Включить запоминание паттернов и автодополнение"
 
 #: glade/config.glade:717
-msgid "Add space after autocomplementation"
+msgid "Add space after autocompletion"
 msgstr "Добавлять пробел после автодополнения"
 
 #: glade/config.glade:819
-msgid "Disable the autocomplementation for these applications"
+msgid "Disable the autocompletion for these applications"
 msgstr "Отключить автодополнение для этих приложений"
 
 #: glade/config.glade:855
-msgid "<b>Autocomplementation</b>"
+msgid "<b>Autocompletion</b>"
 msgstr "<b>Автодополнение</b>"
 
 #: glade/config.glade:955

@@ -67,7 +67,7 @@ static const char *normal_action_names[] =	{
 							"Change Selected", "Translit Selected", "Changecase Selected", "Preview Change Selected",
 							"Change Clipboard", "Translit Clipboard", "Changecase Clipboard", "Preview Change Clipboard",
 							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4",
-							"Rotate Layouts", "Rotate Layouts Back", "Replace Abbreviation", "Autocomplementation Confirmation",
+							"Rotate Layouts", "Rotate Layouts Back", "Replace Abbreviation", "Autocompletion Confirmation",
 							"Block Keyboard And Mouse Events", "Insert Date"
 						};
 

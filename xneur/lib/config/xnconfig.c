@@ -52,15 +52,15 @@ static const char *status_names[] =	{"Disable", "Enable"};
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 static const char *option_names[] = 	{
-						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "ExcludeLanguage", "Autocomplementation",
-						"DisableCapsLock", "CheckOnProcess", "SetAutoApp", "SetManualApp", "AutocomplementationExcludeApp",
+						"ManualMode", "ExcludeApp", "AddBind", "LogLevel", "ExcludeLanguage", "Autocompletion",
+						"DisableCapsLock", "CheckOnProcess", "SetAutoApp", "SetManualApp", "AutocompletionExcludeApp",
 						"EducationMode", "Version", "LayoutRememberMode", "SaveSelectionMode",
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"LogSave", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
 						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
 						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup", 
-	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocomplementation", "LoadModule",
+	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocompletion", "LoadModule",
 						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent",
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
@@ -73,7 +73,7 @@ static const char *action_names[] =	{
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "PreviewChangeClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
-						"RotateLayout","RotateLayoutBack","ReplaceAbbreviation", "AutocomplementationConfirmation",
+						"RotateLayout","RotateLayoutBack","ReplaceAbbreviation", "AutocompletionConfirmation",
 						"BlockKeyboardAndMouseEvents", "InsertDate"
 					};
 static const char *notify_names[] =	{
@@ -240,7 +240,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->autocomplementation = index;
+			p->autocompletion = index;
 			break;
 		}
 		case 6: // Disable CapsLock use
@@ -277,9 +277,9 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->manual_apps->add(p->manual_apps, full_string);
 			break;
 		}
-		case 10: // Autocomplementation Exclude App
+		case 10: // Autocompletion Exclude App
 		{
-			p->autocomplementation_excluded_apps->add(p->autocomplementation_excluded_apps, full_string);
+			p->autocompletion_excluded_apps->add(p->autocompletion_excluded_apps, full_string);
 			break;
 		}
 		case 11: // Get Education Mode
@@ -642,7 +642,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			if (index == -1)
 				break;
 
-			p->add_space_after_autocomplementation = index;
+			p->add_space_after_autocompletion = index;
 			break;
 		}
 		case 35: // Add plugin 
@@ -862,7 +862,7 @@ static void free_structures(struct _xneur_config *p)
 	p->auto_apps->uninit(p->auto_apps);
 	p->layout_remember_apps->uninit(p->layout_remember_apps);
 	p->excluded_apps->uninit(p->excluded_apps);
-	p->autocomplementation_excluded_apps->uninit(p->autocomplementation_excluded_apps);
+	p->autocompletion_excluded_apps->uninit(p->autocompletion_excluded_apps);
 	p->abbreviations->uninit(p->abbreviations);
 	p->plugins->uninit(p->plugins);
 	
@@ -984,7 +984,7 @@ static void xneur_config_clear(struct _xneur_config *p)
 	p->auto_apps			= list_char_init();
 	p->layout_remember_apps		= list_char_init();
 	p->excluded_apps		= list_char_init();
-	p->autocomplementation_excluded_apps	= list_char_init();
+	p->autocompletion_excluded_apps	= list_char_init();
 	p->abbreviations		= list_char_init();
 	p->plugins				= list_char_init();
 	
@@ -1265,23 +1265,23 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#CorrectSpaceWithPunctuation No\n");
 	fprintf(stream, "CorrectSpaceWithPunctuation %s\n", p->get_bool_name(p->correct_space_with_punctuation));
 
-	fprintf(stream, "\n# This option disable or enable pattern mining and recognition (autocomplementation)\n");
+	fprintf(stream, "\n# This option disable or enable pattern mining and recognition (autocompletion)\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#Autocomplementation No\n");
-	fprintf(stream, "Autocomplementation %s\n", p->get_bool_name(p->autocomplementation));
+	fprintf(stream, "#Autocompletion No\n");
+	fprintf(stream, "Autocompletion %s\n", p->get_bool_name(p->autocompletion));
 
-	fprintf(stream, "\n# This option disable or enable adding space after autocomplementation\n");
+	fprintf(stream, "\n# This option disable or enable adding space after autocompletion\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#AddSpaceAfterAutocomplementation No\n");
-	fprintf(stream, "AddSpaceAfterAutocomplementation %s\n", p->get_bool_name(p->add_space_after_autocomplementation));
+	fprintf(stream, "#AddSpaceAfterAutocompletion No\n");
+	fprintf(stream, "AddSpaceAfterAutocompletion %s\n", p->get_bool_name(p->add_space_after_autocompletion));
 	fprintf(stream, "\n");
 
-	fprintf(stream, "# Add Applications names to exclude it from autocomplementation process\n");
-	fprintf(stream, "# Xneur will not process the autocomplementation for this applications\n");
+	fprintf(stream, "# Add Applications names to exclude it from autocompletion process\n");
+	fprintf(stream, "# Xneur will not process the autocompletion for this applications\n");
 	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#AutocomplementationExcludeApp Gnome-terminal\n");
-	for (int i = 0; i < p->autocomplementation_excluded_apps->data_count; i++)
-		fprintf(stream, "AutocomplementationExcludeApp %s\n", p->autocomplementation_excluded_apps->data[i].string);
+	fprintf(stream, "#AutocompletionExcludeApp Gnome-terminal\n");
+	for (int i = 0; i < p->autocompletion_excluded_apps->data_count; i++)
+		fprintf(stream, "AutocompletionExcludeApp %s\n", p->autocompletion_excluded_apps->data[i].string);
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# Use next options for troubleshoot on autoswitching\n");
@@ -1432,7 +1432,7 @@ struct _xneur_config* xneur_config_init(void)
 	p->layout_remember_apps		= list_char_init();
 	p->window_layouts		= list_char_init();
 	p->abbreviations		= list_char_init();
-	p->autocomplementation_excluded_apps	= list_char_init();
+	p->autocompletion_excluded_apps	= list_char_init();
 	p->plugins		= list_char_init();
 
 	p->troubleshoot_backspace = FALSE; 
