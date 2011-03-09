@@ -332,7 +332,7 @@ msgstr "Невозможно поймать сигнал"
 #: src/xneur.c:424
 #, c-format
 msgid "Xneur process identificator is %d with nice %d"
-msgstr " Идентефикатор процесса Xneur равен %d с приоритетом %d"
+msgstr "Идентификатор процесса Xneur равен %d с приоритетом %d"
 
 #: src/xneur.c:429
 msgid "Failed to init program structure"
@@ -658,7 +658,7 @@ msgstr "Невозможно сгенерировать ключ общей об
 
 #: lib/config/xnconfig_memory.c:58
 msgid "Can't get exist shared memory segment id"
-msgstr "Невозможно проверить наличие идентефикатора общей области памяти"
+msgstr "Невозможно проверить наличие идентификатора общей области памяти"
 
 #: lib/config/xnconfig_memory.c:64
 msgid "Can't remove an old shared memory segment"

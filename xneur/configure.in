@@ -191,6 +191,10 @@ fi
 
 AC_ARG_WITH(libnotify, [  --without-libnotify	  Compile without libnotify message support])
 if test "x$with_libnotify" != "xno"; then
+	PKG_CHECK_MODULES(GTK3, [gtk+-3.0], found_gtk="yes", found_gtk="no")
+	if test "x$found_gtk" = "xno"; then
+		PKG_CHECK_MODULES(GTK2, [gtk+-2.0])
+	fi 
 	PKG_CHECK_MODULES(LIBNOTIFY, [libnotify >= 0.4.0])
 	AC_DEFINE(WITH_LIBNOTIFY, 1, [Define if you want libnotify message support])
 fi
@@ -315,9 +319,12 @@ fi
 
 if test "x$with_popup" != "xno"; then
 cat <<EOF
-	Libnotify compiler flags:	$LIBNOTIFY_CFLAGS $GDK $GTK
+	Libnotify compiler flags:	$LIBNOTIFY_CFLAGS
 	Libnotify linker flags:		$LIBNOTIFY_LIBS
-
+	GTK3 compiler flags:		$GTK3_CFLAGS
+	GTK3 linker flags:		$GTK3_LIBS
+	GTK2 compiler flags:		$GTK2_CFLAGS
+	GTK2 linker flags:		$GTK2_LIBS
 EOF
 fi
 
