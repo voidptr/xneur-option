@@ -1727,8 +1727,9 @@ static void program_check_capital_letter_after_dot(struct _program *p)
 			return;
 		}
 	}
+	free (symbol);
 	
-	char *text = p->buffer->get_utf_string_on_kbd_group(p->buffer, get_curr_keyboard_group());
+	char *text = strdup(p->buffer->content);//p->buffer->get_utf_string_on_kbd_group(p->buffer, get_curr_keyboard_group());
 	if (text == NULL)
 		return;
 
@@ -1739,12 +1740,16 @@ static void program_check_capital_letter_after_dot(struct _program *p)
 		return;
 	}
 
+	
 	for (offset = strlen(text) - 2; offset > 1; offset--)
 	{
 		if ((text[offset] != ' ') && (text[offset] != 13) && (text[offset] != 9))
 			break;
 	}
-	
+
+	free (text);
+
+	text = p->buffer->get_utf_string_on_kbd_group(p->buffer, get_curr_keyboard_group());
 	if ((text[offset] == '.') || (text[offset] == '!') || (text[offset] == '?'))
 	{
 		log_message(DEBUG, _("Find small letter after dot, correction..."));
