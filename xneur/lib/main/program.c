@@ -2151,7 +2151,8 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 	tmp = get_last_word(p->buffer->i18n_content[curr_lang].content);
 
 	char *curr_word = strdup(tmp);
-
+	
+	// Del final spaces
 	int len = trim_word(curr_word, strlen(tmp));
 	if (len == 0)
 	{
@@ -2159,6 +2160,13 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 		return;
 	}
 
+	del_final_numeric_char(curr_word);
+	if (strlen(curr_word) == 0)
+	{
+		free(curr_word);
+		return;
+	}
+	
 	struct _list_char *curr_temp_dictionary = xconfig->handle->languages[curr_lang].temp_dictionary;
 	if (curr_temp_dictionary->exist(curr_temp_dictionary, curr_word, BY_REGEXP))
 	{
@@ -2182,6 +2190,14 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 		return;
 	}
 
+	del_final_numeric_char(new_word);
+	if (strlen(new_word) == 0)
+	{
+		free(curr_word);
+		free(new_word);
+		return;
+	}
+	
 	if (!new_temp_dictionary->exist(new_temp_dictionary, new_word, BY_REGEXP))
 	{
 		char *word_to_dict = malloc((strlen(new_word) + 7) * sizeof(char));

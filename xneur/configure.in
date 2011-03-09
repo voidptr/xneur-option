@@ -315,7 +315,7 @@ fi
 
 if test "x$with_popup" != "xno"; then
 cat <<EOF
-	Libnotify compiler flags:	$LIBNOTIFY_CFLAGS
+	Libnotify compiler flags:	$LIBNOTIFY_CFLAGS $GDK $GTK
 	Libnotify linker flags:		$LIBNOTIFY_LIBS
 
 EOF
