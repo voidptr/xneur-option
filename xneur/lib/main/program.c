@@ -1729,7 +1729,7 @@ static void program_check_capital_letter_after_dot(struct _program *p)
 	}
 	free (symbol);
 	
-	char *text = strdup(p->buffer->content);//p->buffer->get_utf_string_on_kbd_group(p->buffer, get_curr_keyboard_group());
+	char *text = strdup(p->buffer->content);
 	if (text == NULL)
 		return;
 

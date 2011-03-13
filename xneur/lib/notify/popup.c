@@ -27,6 +27,10 @@
 
 #include <libnotify/notify.h>
 
+#ifndef NOTIFY_CHECK_VERSION /* macro did not exist before libnotify-0.5.2 */
+#  define NOTIFY_CHECK_VERSION(x,y,z) 0
+#endif
+
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
@@ -74,8 +78,12 @@ static void popup_show_thread(struct _popup_body *popup_body)
 		popup_body->content = NULL;
 	}
 	
-	NotifyNotification *notify = notify_notification_new(popup_body->header, popup_body->content, icon, NULL);
-
+#if NOTIFY_CHECK_VERSION(0,7,0)
+	NotifyNotification *notify = notify_notification_new(popup_body->header, popup_body->content, icon);
+#else
+ 	NotifyNotification *notify = notify_notification_new(popup_body->header, popup_body->content, icon, NULL);
+#endif
+		
 	notify_notification_set_category(notify, type);
 	notify_notification_set_urgency(notify, urgency);
 	notify_notification_set_timeout(notify, expire_timeout);
