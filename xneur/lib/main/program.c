@@ -488,7 +488,14 @@ static void program_process_input(struct _program *p)
 				main_window->keymap = keymap_init(xconfig->handle);
 				
 				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
+				
+				set_event_mask(p->focus->owner_window, FOCUS_CHANGE_MASK);
+				grab_spec_keys(p->focus->owner_window, FALSE);
+				
 				p->update(p);
+				
+				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+				grab_spec_keys(p->focus->owner_window, TRUE);
 				break;
 			}
 			case MotionNotify:
