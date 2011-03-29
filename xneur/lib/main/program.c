@@ -384,7 +384,13 @@ static void program_process_input(struct _program *p)
 
 					p->last_layout = get_curr_keyboard_group();
 
+					set_event_mask(p->focus->owner_window, FOCUS_CHANGE_MASK);
+					grab_spec_keys(p->focus->owner_window, FALSE);
+				
 					p->update(p);
+				
+					set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+					grab_spec_keys(p->focus->owner_window, TRUE);
 				}
 				//else if (type == LeaveNotify)
 				//	log_message(TRACE, _("Received LeaveNotify (event type %d)"), type);
@@ -399,7 +405,15 @@ static void program_process_input(struct _program *p)
 					log_message(TRACE, _("Received FocusOut on window %d (event type %d)"), p->event->event.xfocus.window, type);
 
 				p->last_layout = get_curr_keyboard_group();
+				
+				set_event_mask(p->focus->owner_window, FOCUS_CHANGE_MASK);
+				grab_spec_keys(p->focus->owner_window, FALSE);
+				
 				p->update(p);
+				
+				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+				grab_spec_keys(p->focus->owner_window, TRUE);
+				
 				break;
 			}
 			case SelectionNotify:
