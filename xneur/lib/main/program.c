@@ -781,7 +781,7 @@ static void program_on_key_action(struct _program *p, int type)
 			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_Shift_L));
 		if (get_key_state(XK_ISO_Level3_Shift) != 0)
 			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_ISO_Level3_Shift));
-
+		
 		p->update_modifiers_stack(p);
 
 		// If blocked events then processing stop 
@@ -1280,7 +1280,10 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				// Replace Abbreviation
 				log_message(DEBUG, _("Found Abbreviation '%s' '%s'. Replacing to '%s'."), replacement, word, string);
 
-				p->event->send_backspaces(p->event, strlen(get_last_word(p->buffer->content)));
+				int backspaces_count = strlen(get_last_word(p->buffer->content));
+				if (p->last_action == ACTION_AUTOCOMPLETION)
+					backspaces_count++; 
+				p->event->send_backspaces(p->event, backspaces_count);
 				p->buffer->set_content(p->buffer, string);
 
 				p->change_word(p, CHANGE_ABBREVIATION);
