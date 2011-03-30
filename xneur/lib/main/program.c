@@ -341,10 +341,10 @@ static void program_process_input(struct _program *p)
 				// Resend special key back to window
 				if (p->event->default_event.xkey.keycode != 0)
 				{
-					set_event_mask(p->focus->owner_window, None);
+					p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 					p->event->event = p->event->default_event;
 					p->event->send_next_event(p->event);
-					set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+					p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 				}
 				break;
 			}
@@ -366,10 +366,10 @@ static void program_process_input(struct _program *p)
 				// Resend special key back to window
 				if (p->event->default_event.xkey.keycode != 0)
 				{		
-					set_event_mask(p->focus->owner_window, None);
+					p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 					p->event->event = p->event->default_event;
 					p->event->send_next_event(p->event);
-					set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+					p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 				}
 				break;
 			}
@@ -384,13 +384,8 @@ static void program_process_input(struct _program *p)
 
 					p->last_layout = get_curr_keyboard_group();
 
-					set_event_mask(p->focus->owner_window, FOCUS_CHANGE_MASK);
-					grab_spec_keys(p->focus->owner_window, FALSE);
-				
+					p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 					p->update(p);
-				
-					set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-					grab_spec_keys(p->focus->owner_window, TRUE);
 				}
 				//else if (type == LeaveNotify)
 				//	log_message(TRACE, _("Received LeaveNotify (event type %d)"), type);
@@ -406,13 +401,8 @@ static void program_process_input(struct _program *p)
 
 				p->last_layout = get_curr_keyboard_group();
 				
-				set_event_mask(p->focus->owner_window, FOCUS_CHANGE_MASK);
-				grab_spec_keys(p->focus->owner_window, FALSE);
-				
+				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 				p->update(p);
-				
-				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-				grab_spec_keys(p->focus->owner_window, TRUE);
 				
 				break;
 			}
@@ -489,13 +479,9 @@ static void program_process_input(struct _program *p)
 				
 				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
 				
-				set_event_mask(p->focus->owner_window, FOCUS_CHANGE_MASK);
-				grab_spec_keys(p->focus->owner_window, FALSE);
-				
+				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 				p->update(p);
-				
-				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-				grab_spec_keys(p->focus->owner_window, TRUE);
+
 				break;
 			}
 			case MotionNotify:
@@ -636,11 +622,7 @@ static void program_process_selection_notify(struct _program *p)
 
 	// Disable receiving events
 	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
-
-	// Block events of keyboard
-	set_event_mask(p->focus->owner_window, None);
-	grab_spec_keys(p->focus->owner_window, FALSE);
-
+	
 	// Selection
 	if ((p->action_mode != ACTION_PREVIEW_CHANGE_SELECTED) && (p->action_mode != ACTION_PREVIEW_CHANGE_CLIPBOARD))
 		p->change_word(p, CHANGE_SELECTION);
@@ -654,8 +636,7 @@ static void program_process_selection_notify(struct _program *p)
 	p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 	// Unblock keyboard
-	set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-	grab_spec_keys(p->focus->owner_window, TRUE);
+	p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 	
 	p->update(p);
 	p->action_mode = ACTION_NONE;
@@ -723,7 +704,7 @@ static void program_on_key_action(struct _program *p, int type)
 			p->event->default_event.xkey.keycode = 0;
 			return;
 		}
-
+		
 		p->plugin->key_press(p->plugin, key, p->prev_key_mod);
 		
 		int auto_action = get_auto_action(p, key, p->prev_key_mod);
@@ -830,9 +811,9 @@ static void program_on_key_action(struct _program *p, int type)
 			if (p->perform_manual_action(p, manual_action))
 				return;
 
-			set_event_mask(p->focus->owner_window, None);
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
-			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 		}
 	}
 }
@@ -889,13 +870,13 @@ static void program_perform_auto_action(struct _program *p, int action)
 			if (p->last_action == ACTION_AUTOCOMPLETION)
 			{
 				// Block events of keyboard (push to event queue)
-				set_event_mask(p->focus->owner_window, None);
+				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 				
 				p->event->send_backspaces(p->event, 1);
 				p->last_action = ACTION_NONE;
 				
 				// Restore events mask
-				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 			}
 			
 			string->del_symbol(string);
@@ -926,7 +907,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 				p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
 				// Block events of keyboard (push to event queue)
-				set_event_mask(p->focus->owner_window, None);
+				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 
 				// Correct space before punctuation
 			    p->check_space_before_punctuation(p);
@@ -941,7 +922,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 					p->check_pattern(p, TRUE);
 					
 					// Unblock keyboard
-					set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+					p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 					return;
 				}
 				
@@ -955,13 +936,13 @@ static void program_perform_auto_action(struct _program *p, int action)
 				p->check_pattern(p, TRUE);
 				
 				// Unblock keyboard
-				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
 				return;
 			}
 			
 			// Block events of keyboard (push to event queue)
-			set_event_mask(p->focus->owner_window, None);
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 
 			// Check two capital letter
 			p->check_tcl_last_word(p);
@@ -994,8 +975,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 			p->event->default_event.xkey.keycode = 0;
 
 			// Unblock keyboard
-			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-
+			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
+			
 			//if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
 			//	p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
@@ -1097,8 +1078,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			if ((xconfig->educate) && (action == ACTION_CHANGE_WORD))
 				p->add_word_to_dict(p, next_lang);
 
-			set_event_mask(p->focus->owner_window, None);
-			grab_spec_keys(p->focus->owner_window, FALSE);
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 
 			int change_action = ACTION_NONE;
 			
@@ -1128,8 +1108,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			show_notify(NOTIFY_MANUAL_CHANGE_WORD, NULL);
 			p->event->default_event.xkey.keycode = 0;
 			
-			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-			grab_spec_keys(p->focus->owner_window, TRUE);
+			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
 			break;
 		}
@@ -1180,7 +1159,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				p->check_pattern(p, FALSE);
 
 				// Block events of keyboard (push to event queue)
-				set_event_mask(p->focus->owner_window, None);
+				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 				if (xconfig->add_space_after_autocompletion)
 					p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_space), p->event->event.xkey.state);
 				p->last_action = ACTION_NONE;
@@ -1188,17 +1167,16 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				
 				// Unblock keyboard
-				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 				break;
 			}
 			
 			// Block events of keyboard (push to event queue)
-			set_event_mask(p->focus->owner_window, None);
-			grab_spec_keys(p->focus->owner_window, FALSE);
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+			
 			p->event->send_xkey(p->event, p->event->event.xkey.keycode, p->event->event.xkey.state);
 			// Unblock keyboard
-			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-			grab_spec_keys(p->focus->owner_window, TRUE);
+			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 			
 			p->event->event = p->event->default_event;
 			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
@@ -1219,7 +1197,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			}
 			else
 			{
-				grab_spec_keys(p->focus->owner_window, TRUE);
+				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 				show_notify(NOTIFY_UNBLOCK_EVENTS, NULL);
 			}
 			log_message (DEBUG, _("Now keyboard and mouse block status is %s"), xconfig->get_bool_name(xconfig->block_events));
@@ -1236,8 +1214,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			char *date = malloc(256 * sizeof(char));
 			strftime(date, 256, "%x", loctime);
 			
-			set_event_mask(p->focus->owner_window, None);
-			grab_spec_keys(p->focus->owner_window, FALSE);
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 
 			// Insert Date 
 			log_message(DEBUG, _("Insert date '%s'."), date);
@@ -1246,8 +1223,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 
 			p->change_word(p, CHANGE_INS_DATE);
 
-			set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-			grab_spec_keys(p->focus->owner_window, TRUE);
+			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
 			p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
@@ -1299,9 +1275,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 					continue;
 				}
 
-				set_event_mask(p->focus->owner_window, None);
-				grab_spec_keys(p->focus->owner_window, FALSE);
-
+				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+				
 				// Replace Abbreviation
 				log_message(DEBUG, _("Found Abbreviation '%s' '%s'. Replacing to '%s'."), replacement, word, string);
 
@@ -1310,8 +1285,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 
 				p->change_word(p, CHANGE_ABBREVIATION);
 
-				set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-				grab_spec_keys(p->focus->owner_window, TRUE);
+				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
 				show_notify(NOTIFY_REPLACE_ABBREVIATION, NULL);
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
@@ -1818,8 +1792,7 @@ static void program_check_pattern(struct _program *p, int selection)
 	
 	log_message (DEBUG, _("Recognition word '%s' from text '%s' (layout %d), autocompletation..."), pattern_data->string, word, get_curr_keyboard_group());
 	
-	set_event_mask(p->focus->owner_window, None);
-	grab_spec_keys(p->focus->owner_window, FALSE);
+	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 
 	struct _buffer *tmp_buffer = buffer_init(xconfig->handle);
 	
@@ -1844,8 +1817,7 @@ static void program_check_pattern(struct _program *p, int selection)
 	
 	tmp_buffer->uninit(tmp_buffer);
 
-	set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
-	grab_spec_keys(p->focus->owner_window, TRUE);
+	p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
 	p->last_action = ACTION_AUTOCOMPLETION;
 	free (word);
