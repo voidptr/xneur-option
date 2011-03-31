@@ -230,7 +230,8 @@ struct _xneur_config
 	int compatibility_with_completion;
 		
 	int dont_send_key_release;
-	
+	int tracking_input;
+		
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);
 	const char* (*get_bool_name) (int option);

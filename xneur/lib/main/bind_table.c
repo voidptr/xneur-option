@@ -30,6 +30,7 @@
 #include "log.h"
 #include "list_char.h"
 
+#include "window.h"
 #include "keymap.h"
 
 #include "bind_table.h"
@@ -74,6 +75,7 @@ static const char *normal_action_names[] =	{
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
 
 extern struct _xneur_config *xconfig;
+extern struct _window *main_window;
 
 static char* hotkeys_concat_bind(int action)
 {
@@ -250,4 +252,26 @@ void bind_user_actions(void)
 void unbind_user_actions(void)
 {
 	free(ubtable);
+}
+
+void grab_manual_action(Window window)
+{
+	for (enum _hotkey_action action = 0; action < MAX_HOTKEYS; action++)
+	{
+		XGrabKey(main_window->display, 
+						XKeysymToKeycode(main_window->display, btable[action].key_sym), 
+						btable[action].modifier_mask, 
+						window, TRUE, GrabModeAsync, GrabModeAsync);
+	}
+}
+
+void grab_user_action(Window window)
+{
+	for (int action = 0; action < xconfig->actions_count; action++)
+	{
+		XGrabKey(main_window->display, 
+						XKeysymToKeycode(main_window->display, ubtable[action].key_sym), 
+						ubtable[action].modifier_mask, 
+						window, TRUE, GrabModeAsync, GrabModeAsync);
+	}		
 }

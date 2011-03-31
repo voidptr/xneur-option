@@ -65,7 +65,7 @@ static const char *option_names[] = 	{
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
 						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
-						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion"
+						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -823,6 +823,18 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->compatibility_with_completion = index;
 			break;
 		}
+		case 53: // Tracking input
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for tracking input mode specified"));
+				break;
+			}
+
+			p->tracking_input = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1295,6 +1307,8 @@ static int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "# Work-arround for compatibility with the completion\nCompatibilityWithCompletion %s\n\n", p->get_bool_name(p->compatibility_with_completion));
 
+	fprintf(stream, "# Disabling this option will add any application to the list of excluded applications.\nTrackingInput %s\n\n", p->get_bool_name(p->tracking_input));
+
 	fprintf(stream, "# Disable send KeyRelease event\nDontSendKeyRelease %s\n\n", p->get_bool_name(p->dont_send_key_release));
 	
 	fprintf(stream, "# Modules list\n");
@@ -1444,7 +1458,8 @@ struct _xneur_config* xneur_config_init(void)
 	p->troubleshoot_switch = TRUE;
 
 	p->dont_send_key_release = FALSE;
-
+	p->tracking_input = TRUE;
+	
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;
 	p->get_global_dict_path		= get_file_path_name;

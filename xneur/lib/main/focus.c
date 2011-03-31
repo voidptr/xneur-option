@@ -115,7 +115,7 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	{
 		if (xconfig->excluded_apps->exist(xconfig->excluded_apps, new_app_name, BY_PLAIN))
 			*focus_status = FOCUS_EXCLUDED;
-
+		
 		if (xconfig->auto_apps->exist(xconfig->auto_apps, new_app_name, BY_PLAIN))
 			*forced_mode = FORCE_MODE_AUTO;
 		else if (xconfig->manual_apps->exist(xconfig->manual_apps, new_app_name, BY_PLAIN))
@@ -160,7 +160,7 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	p->owner_window = new_window;
 
 	log_message(DEBUG, _("Process new window (ID %d) with name '%s' (status %s, mode %s)"), new_window, new_app_name, verbose_focus_status[*focus_status], verbose_forced_mode[*forced_mode]);
-
+	
 	if (new_app_name != NULL)
 		free(new_app_name);
 	return FOCUS_CHANGED;
@@ -169,19 +169,15 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 static int focus_get_focus_status(struct _focus *p, int *forced_mode, int *focus_status, int *autocompletion_mode)
 {
 	int focus = get_focus(p, forced_mode, focus_status, autocompletion_mode);
-
-	if (focus == FOCUS_UNCHANGED)
-		return p->last_focus;
-
-	if (focus == FOCUS_CHANGED)
-		p->last_focus = FOCUS_UNCHANGED;
-	else
-		p->last_focus = focus;
-
+	
+	p->last_focus = *focus_status;
+	if (!xconfig->tracking_input)
+		p->last_focus = FOCUS_EXCLUDED;
+	
 	return focus;
 }
 
-static void focus_update_events(struct _focus *p, int mode)
+static void focus_update_grab_events(struct _focus *p, int mode)
 {
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
@@ -197,11 +193,34 @@ static void focus_update_events(struct _focus *p, int mode)
 	else
 	{
 		// Event masking
-		grab_button(TRUE);
 		
 		// Grabbing special key (Enter, Tab and other)
-		grab_spec_keys(p->owner_window, TRUE);
+		if (p->last_focus != FOCUS_EXCLUDED)
+		{
+			grab_button(TRUE);
+			grab_spec_keys(p->owner_window, TRUE);
+			set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+		}
+		else
+		{
+			grab_button(FALSE);
+			grab_spec_keys(p->owner_window, FALSE);
+			set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK);
+		}
+	}
 
+	p->last_parent_window = p->parent_window;
+}
+
+static void focus_update_events(struct _focus *p, int mode)
+{
+	
+	if (mode == LISTEN_DONTGRAB_INPUT)
+	{
+		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
+	}
+	else
+	{
 		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 	}
 
@@ -222,6 +241,7 @@ struct _focus* focus_init(void)
 
 	// Functions mapping
 	p->get_focus_status	= focus_get_focus_status;
+	p->update_grab_events	= focus_update_grab_events;
 	p->update_events	= focus_update_events;
 	p->uninit		= focus_uninit;
 

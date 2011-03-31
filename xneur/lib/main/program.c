@@ -266,6 +266,8 @@ static void program_layout_update(struct _program *p)
 
 static void program_update(struct _program *p)
 {
+	p->focus->update_grab_events(p->focus, LISTEN_DONTGRAB_INPUT);
+	
 	p->last_window = p->focus->owner_window;
 
 	int status = p->focus->get_focus_status(p->focus, &p->app_forced_mode, &p->app_focus_mode, &p->app_autocompletion_mode);
@@ -284,12 +286,13 @@ static void program_update(struct _program *p)
 	int listen_mode = LISTEN_GRAB_INPUT;
 	if (p->app_focus_mode == FOCUS_EXCLUDED)
 		listen_mode = LISTEN_DONTGRAB_INPUT;
-
+	
 	p->modifiers_stack->uninit(p->modifiers_stack);
 	p->modifiers_stack	= list_char_init();
 	p->update_modifiers_stack(p);
 	
 	p->focus->update_events(p->focus, listen_mode);
+	p->focus->update_grab_events(p->focus, LISTEN_GRAB_INPUT);
 	// Сброс признака "ручное переключение" после смены фокуса.
 	p->changed_manual = MANUAL_FLAG_UNSET;
 }
@@ -384,7 +387,7 @@ static void program_process_input(struct _program *p)
 
 					p->last_layout = get_curr_keyboard_group();
 
-					p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+					//p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 					p->update(p);
 				}
 				//else if (type == LeaveNotify)
@@ -401,7 +404,7 @@ static void program_process_input(struct _program *p)
 
 				p->last_layout = get_curr_keyboard_group();
 				
-				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+				//p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 				p->update(p);
 				
 				break;
@@ -811,8 +814,10 @@ static void program_on_key_action(struct _program *p, int type)
 			if (p->perform_manual_action(p, manual_action))
 				return;
 
+			//set_event_mask(p->focus->owner_window, None);
 			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
+			//set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 		}
 	}

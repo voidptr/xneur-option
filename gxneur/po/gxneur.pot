@@ -482,19 +482,33 @@ msgstr ""
 msgid "Additional"
 msgstr ""
 
-#: glade/config.glade:2114
+#: glade/config.glade:2116
+msgid "Monitor the input"
+msgstr ""
+
+#: glade/config.glade:2142
+msgid ""
+"Disabling this option will add any application to the list of excluded "
+"applications."
+msgstr ""
+
+#: glade/config.glade:2167
+msgid "Tracking input"
+msgstr ""
+
+#: glade/config.glade:2192
 msgid "<b>Troubleshooting</b>"
 msgstr ""
 
-#: glade/config.glade:2158
+#: glade/config.glade:2236
 msgid "Delay before sending events (in milliseconds)"
 msgstr ""
 
-#: glade/config.glade:2169
+#: glade/config.glade:2247
 msgid "Log verbosity level"
 msgstr ""
 
-#: glade/config.glade:2181
+#: glade/config.glade:2259
 msgid ""
 "None\n"
 "Error\n"
@@ -504,55 +518,55 @@ msgid ""
 "Trace"
 msgstr ""
 
-#: glade/config.glade:2201
+#: glade/config.glade:2279
 msgid "Dont send KeyRelease event"
 msgstr ""
 
-#: glade/config.glade:2244
+#: glade/config.glade:2322
 msgid "<b>Advanced</b>"
 msgstr ""
 
-#: glade/config.glade:2305
+#: glade/config.glade:2383
 msgid "<b>Plugins</b>"
 msgstr ""
 
-#: glade/config.glade:2340
+#: glade/config.glade:2418
 msgid "Autostartup"
 msgstr ""
 
-#: glade/config.glade:2360
+#: glade/config.glade:2438
 msgid "Delay before startup"
 msgstr ""
 
-#: glade/config.glade:2394
+#: glade/config.glade:2472
 msgid "Startup"
 msgstr ""
 
-#: glade/config.glade:2421
+#: glade/config.glade:2499
 msgid "Show text on the tray"
 msgstr ""
 
-#: glade/config.glade:2435
+#: glade/config.glade:2513
 msgid "Change the icon size when resizing the tray"
 msgstr ""
 
-#: glade/config.glade:2453
+#: glade/config.glade:2531
 msgid "Pixmaps directory"
 msgstr ""
 
-#: glade/config.glade:2522
+#: glade/config.glade:2600
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2553
+#: glade/config.glade:2631
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:2625
+#: glade/config.glade:2703
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:2656
+#: glade/config.glade:2734
 msgid "<b>Properties</b>"
 msgstr ""
 

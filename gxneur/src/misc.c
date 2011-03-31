@@ -1177,7 +1177,11 @@ void xneur_preference(void)
 	// Dont Send KeyRelease Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton26");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->dont_send_key_release);
-	
+
+	// Tracking input mode set
+	widget = glade_xml_get_widget (gxml, "checkbutton34");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->tracking_input);
+
 	// Plugins
 	treeview = glade_xml_get_widget (gxml, "treeview11");
 	store_plugin = gtk_list_store_new(3, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
@@ -2276,6 +2280,10 @@ void xneur_save_preference(GladeXML *gxml)
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton26");
 	xconfig->dont_send_key_release = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
+	// Tracking input mode
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton34");
+	xconfig->tracking_input = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	
 	// Autostart
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton27");
 

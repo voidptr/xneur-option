@@ -22,6 +22,7 @@
 
 #include "window.h"
 #include "defines.h"
+#include "bind_table.h"
 #include "xnconfig.h"
 
 #include "types.h"
@@ -173,8 +174,14 @@ void grab_spec_keys(Window window, int is_grab)
 		}
 	}
 	else
+	{
 		status = XUngrabKeyboard(main_window->display, CurrentTime);
-
+		
+		// Grab only hotkeys
+		grab_manual_action(window);
+		grab_user_action(window);
+	}
+	
 	if (status == BadValue)
 		log_message(ERROR, _("Failed to %s keyboard with error BadValue"), grab_ungrab[is_grab]);
 	else if (status == BadWindow)
