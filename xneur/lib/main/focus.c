@@ -183,6 +183,7 @@ static void focus_update_grab_events(struct _focus *p, int mode)
 {
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
+		//log_message (ERROR, "LISTEN_DONTGRAB_INPUT");
 		// Event unmasking
 		grab_button(FALSE);
 		
@@ -190,10 +191,11 @@ static void focus_update_grab_events(struct _focus *p, int mode)
 		grab_spec_keys(p->owner_window, FALSE);
 
 		//set_mask_to_window(rw, FOCUS_CHANGE_MASK);
-		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
+		set_event_mask(p->owner_window, None);
 	}
 	else
 	{
+		//log_message (ERROR, "LISTEN_GRAB_INPUT");
 		// Event masking
 		
 		// Grabbing special key (Enter, Tab and other)
@@ -219,11 +221,18 @@ static void focus_update_events(struct _focus *p, int mode)
 	
 	if (mode == LISTEN_DONTGRAB_INPUT)
 	{
-		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
+		set_event_mask(p->owner_window, None);
 	}
 	else
 	{
-		set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+		if (p->last_focus != FOCUS_EXCLUDED)
+		{
+			set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
+		}
+		else
+		{
+			set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK);
+		}
 	}
 
 	p->last_parent_window = p->parent_window;

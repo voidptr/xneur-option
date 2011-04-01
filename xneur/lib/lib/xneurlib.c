@@ -364,7 +364,7 @@ void xneur_handle_destroy (struct _xneur_handle *handle)
 #endif
 		
 #ifdef WITH_ENCHANT
-		if (handle->enchant_dicts[lang])
+		if ((handle->enchant_dicts[lang] != NULL) && (handle->has_enchant_checker[lang]))
 			enchant_broker_free_dict (handle->enchant_broker, handle->enchant_dicts[lang]);
 #endif
 		
@@ -382,9 +382,11 @@ void xneur_handle_destroy (struct _xneur_handle *handle)
 
 		if (handle->languages[lang].pattern != NULL)
 			handle->languages[lang].pattern->uninit(handle->languages[lang].pattern);
-		
-		free(handle->languages[lang].name);
-		free(handle->languages[lang].dir);
+
+		if (handle->languages[lang].name != NULL)
+			free(handle->languages[lang].name);
+		if (handle->languages[lang].dir != NULL)
+			free(handle->languages[lang].dir);
 	}
 	handle->total_languages = 0;
 	if (handle->languages != NULL)

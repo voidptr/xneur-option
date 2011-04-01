@@ -385,9 +385,6 @@ static void program_process_input(struct _program *p)
 						log_message(TRACE, _("Received FocusIn on window %d (event type %d)"), p->event->event.xfocus.window, type);
 
 					p->last_layout = get_curr_keyboard_group();
-
-					//p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
-					p->update(p);
 				}
 				//else if (type == LeaveNotify)
 				//	log_message(TRACE, _("Received LeaveNotify (event type %d)"), type);
@@ -403,7 +400,6 @@ static void program_process_input(struct _program *p)
 
 				p->last_layout = get_curr_keyboard_group();
 				
-				//p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 				p->update(p);
 				
 				break;
@@ -480,9 +476,6 @@ static void program_process_input(struct _program *p)
 				main_window->keymap = keymap_init(xconfig->handle);
 				
 				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
-				
-				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
-				p->update(p);
 
 				break;
 			}
@@ -639,8 +632,7 @@ static void program_process_selection_notify(struct _program *p)
 
 	// Unblock keyboard
 	p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
-	
-	p->update(p);
+
 	p->action_mode = ACTION_NONE;
 }
 
@@ -813,10 +805,8 @@ static void program_on_key_action(struct _program *p, int type)
 			if (p->perform_manual_action(p, manual_action))
 				return;
 
-			//set_event_mask(p->focus->owner_window, None);
 			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
-			//set_event_mask(p->focus->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 		}
 	}
@@ -1056,8 +1046,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				break;
 
 			p->change_word(p, action);
-			p->update(p);
-
+			
 			show_notify(NOTIFY_CHANGE_STRING, NULL);
 			break;
 		}
