@@ -68,6 +68,10 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	*forced_mode	= FORCE_MODE_NORMAL;
 	*focus_status	= FOCUS_NONE;
 	*autocompletion_mode	= AUTOCOMPLETION_INCLUDED;
+
+	// Clear masking on unfocused window
+	p->update_events(p, LISTEN_DONTGRAB_INPUT);
+	p->update_grab_events(p, LISTEN_DONTGRAB_INPUT);
 	
 	Window new_window;
 	int show_message = TRUE;
@@ -154,8 +158,6 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 		p->parent_window = parent_window;
 	}
 
-	// Clear masking on unfocused window
-	p->update_events(p, LISTEN_DONTGRAB_INPUT);
 	// Replace unfocused window to focused window
 	p->owner_window = new_window;
 

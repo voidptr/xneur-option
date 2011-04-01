@@ -266,13 +266,18 @@ static void program_layout_update(struct _program *p)
 
 static void program_update(struct _program *p)
 {
-	p->focus->update_grab_events(p->focus, LISTEN_DONTGRAB_INPUT);
-	
 	p->last_window = p->focus->owner_window;
 
 	int status = p->focus->get_focus_status(p->focus, &p->app_forced_mode, &p->app_focus_mode, &p->app_autocompletion_mode);
 	p->event->set_owner_window(p->event, p->focus->owner_window);
 
+	int listen_mode = LISTEN_GRAB_INPUT;
+	if (p->app_focus_mode == FOCUS_EXCLUDED)
+		listen_mode = LISTEN_DONTGRAB_INPUT;
+
+	p->focus->update_events(p->focus, listen_mode);
+	p->focus->update_grab_events(p->focus, LISTEN_GRAB_INPUT);
+	
 	if (status == FOCUS_UNCHANGED)
 		return;
 
@@ -282,17 +287,11 @@ static void program_update(struct _program *p)
 
 	if (status == FOCUS_NONE)
 		return;
-
-	int listen_mode = LISTEN_GRAB_INPUT;
-	if (p->app_focus_mode == FOCUS_EXCLUDED)
-		listen_mode = LISTEN_DONTGRAB_INPUT;
 	
 	p->modifiers_stack->uninit(p->modifiers_stack);
 	p->modifiers_stack	= list_char_init();
 	p->update_modifiers_stack(p);
 	
-	p->focus->update_events(p->focus, listen_mode);
-	p->focus->update_grab_events(p->focus, LISTEN_GRAB_INPUT);
 	// Сброс признака "ручное переключение" после смены фокуса.
 	p->changed_manual = MANUAL_FLAG_UNSET;
 }
