@@ -62,14 +62,15 @@ static struct _bind_table btable[MAX_HOTKEYS] =	{
 	                        {0, 0, 0},
 							{0, 0, 0}
 						};
+
 static const char *normal_action_names[] =	{
-							"Change Last Word", "Translit Last Word", "Changecase Last Word", "Preview Change Last Word",
-							"Change Last String", "Change Mode",
-							"Change Selected", "Translit Selected", "Changecase Selected", "Preview Change Selected",
-							"Change Clipboard", "Translit Clipboard", "Changecase Clipboard", "Preview Change Clipboard",
-							"Enable Layout 1", "Enable Layout 2", "Enable Layout 3", "Enable Layout 4",
-							"Rotate Layouts", "Rotate Layouts Back", "Replace Abbreviation", "Autocompletion Confirmation",
-							"Block Keyboard And Mouse Events", "Insert Date"
+										"Correct/Undo correction", "Transliterate", "Change case", "Preview correction", 
+										"Correct last line", "Switch between processing modes", 
+										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
+	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
+										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
+		                                "Rotate layouts", "Rotate layouts back", "Expand abbreviations", "Autocompletion confirmation", 
+										"Block/Unblock keyboard and mouse events", "Insert date"
 						};
 
 static const char *modifier_names[] =	{"Shift", "Control", "Alt", "Super"};
@@ -125,7 +126,7 @@ static void bind_action(enum _hotkey_action action)
 
 	if (xconfig->hotkeys[action].key == NULL)
 	{
-		log_message(DEBUG, _("   No key set for action \"%s\""), normal_action_names[action]);
+		log_message(DEBUG, _("   No key set for action \"%s\""), _(normal_action_names[action]));
 		return;
 	}
 
@@ -151,7 +152,7 @@ static void bind_action(enum _hotkey_action action)
 	btable[action].key_sym_shift = key_sym_shift;
 
 	char *key = hotkeys_concat_bind (action);
-	log_message(DEBUG, _("   Action \"%s\" with key \"%s\""), normal_action_names[action], key);
+	log_message(DEBUG, _("   Action \"%s\" with key \"%s\""), _(normal_action_names[action]), key);
 	free(key);
 }
 
@@ -208,7 +209,9 @@ enum _hotkey_action get_manual_action(KeySym key_sym, int mask)
 			continue;
 
 		if (btable[action].modifier_mask == mask)
+		{
 			return action;
+		}
 	}
 	return ACTION_NONE;
 }
@@ -235,7 +238,9 @@ int get_user_action(KeySym key_sym, int mask)
 			continue;
 
 		if (ubtable[action].modifier_mask == mask)
+		{
 			return action;
+		}
 	}
 	return -1;
 }

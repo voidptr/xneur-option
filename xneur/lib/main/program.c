@@ -80,6 +80,16 @@
 
 #define MIN_PATTERN_LEN		4
 
+static const char *normal_action_names[] =	{
+										"Correct/Undo correction", "Transliterate", "Change case", "Preview correction", 
+										"Correct last line", "Switch between processing modes", 
+										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
+	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
+										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
+		                                "Rotate layouts", "Rotate layouts back", "Expand abbreviations", "Autocompletion confirmation", 
+										"Block/Unblock keyboard and mouse events", "Insert date"
+						};
+
 extern struct _xneur_config *xconfig;
 
 struct _window *main_window;
@@ -288,9 +298,9 @@ static void program_update(struct _program *p)
 	if (status == FOCUS_NONE)
 		return;
 	
-	p->modifiers_stack->uninit(p->modifiers_stack);
-	p->modifiers_stack	= list_char_init();
-	p->update_modifiers_stack(p);
+	//p->modifiers_stack->uninit(p->modifiers_stack);
+	//p->modifiers_stack	= list_char_init();
+	//p->update_modifiers_stack(p);
 	
 	// Сброс признака "ручное переключение" после смены фокуса.
 	p->changed_manual = MANUAL_FLAG_UNSET;
@@ -330,7 +340,9 @@ static void program_process_input(struct _program *p)
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
+					break;
 				}
+				//XAllowEvents(main_window->display, ReplayKeyboard, CurrentTime);
 				
 				log_message(TRACE, _("Received KeyPress '%s' (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), type);
 				
@@ -355,7 +367,9 @@ static void program_process_input(struct _program *p)
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
+					break;
 				}
+				//XAllowEvents(main_window->display, ReplayKeyboard, CurrentTime);
 				
 				log_message(TRACE, _("Received KeyRelease '%s' (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), type);
 
@@ -636,36 +650,6 @@ static void program_process_selection_notify(struct _program *p)
 	p->action_mode = ACTION_NONE;
 }
 
-static void program_update_modifiers_stack(struct _program *p)
-{
-	// Update mask
-	p->prev_key_mod = 0;
-	
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Shift_L", BY_PLAIN) || 
-	    p->modifiers_stack->exist(p->modifiers_stack, "Shift_R", BY_PLAIN))
-			p->prev_key_mod += (1 << 0);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Caps_Lock", BY_PLAIN))
-			p->prev_key_mod += (1 << 1);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Control_L", BY_PLAIN) || 
-	    p->modifiers_stack->exist(p->modifiers_stack, "Control_R", BY_PLAIN)
-	 	/* || p->modifiers_stack->exist(p->modifiers_stack, "ISO_Prev_Group", BY_PLAIN) || p->modifiers_stack->exist(p->modifiers_stack, "ISO_Next_Group", BY_PLAIN)*/)
-			p->prev_key_mod += (1 << 2);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Alt_L", BY_PLAIN) || 
-	    p->modifiers_stack->exist(p->modifiers_stack, "Alt_R", BY_PLAIN))
-			p->prev_key_mod += (1 << 3);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Meta_L", BY_PLAIN) || 
-	    p->modifiers_stack->exist(p->modifiers_stack, "Meta_R", BY_PLAIN))
-			p->prev_key_mod += (1 << 4);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Num_Lock", BY_PLAIN))
-		p->prev_key_mod += (1 << 5);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "Super_L", BY_PLAIN) || 
-	    p->modifiers_stack->exist(p->modifiers_stack, "Super_R", BY_PLAIN) ||
-	    p->modifiers_stack->exist(p->modifiers_stack, "Hyper_L", BY_PLAIN) || 
-	    p->modifiers_stack->exist(p->modifiers_stack, "Hyper_R", BY_PLAIN))
-			p->prev_key_mod += (1 << 6);
-	if (p->modifiers_stack->exist(p->modifiers_stack, "ISO_Level3_Shift", BY_PLAIN))
-			p->prev_key_mod += (1 << 7);
-}
 
 static void program_on_key_action(struct _program *p, int type)
 {
@@ -676,14 +660,6 @@ static void program_on_key_action(struct _program *p, int type)
 
 	if (type == KeyPress)
 	{
-		p->prev_key = key;
-		if (IsModifierKey(key))
-		{
-			char *keysym_str = XKeysymToString(p->event->get_cur_keysym(p->event));
-			p->modifiers_stack->add(p->modifiers_stack, keysym_str);
-		}
-		p->prev_key_mod |= p->event->get_cur_modifiers_by_keysym(p->event);
-
 		// If blocked events then processing stop 
 		if (xconfig->block_events)
 		{
@@ -691,17 +667,17 @@ static void program_on_key_action(struct _program *p, int type)
 			return;
 		}
 		
-		int user_action = get_user_action(key, p->prev_key_mod);
-		enum _hotkey_action manual_action = get_manual_action(key, p->prev_key_mod);
-		if ((user_action >= 0) || (manual_action != ACTION_NONE))
+		p->user_action = get_user_action(key, modifier_mask);
+		p->manual_action = get_manual_action(key, modifier_mask);
+		if ((p->user_action >= 0) || (p->manual_action != ACTION_NONE))
 		{
 			p->event->default_event.xkey.keycode = 0;
 			return;
 		}
 		
-		p->plugin->key_press(p->plugin, key, p->prev_key_mod);
+		p->plugin->key_press(p->plugin, key, modifier_mask);
 		
-		int auto_action = get_auto_action(p, key, p->prev_key_mod);
+		int auto_action = get_auto_action(p, key, modifier_mask);
 	
 		if ((auto_action != KLB_NO_ACTION) && (auto_action != KLB_CLEAR))
 		{
@@ -737,74 +713,39 @@ static void program_on_key_action(struct _program *p, int type)
 
 	if (type == KeyRelease)
 	{	
-		// Del from stack
-		if (IsModifierKey(key))
-		{
-			char *keysym_str = XKeysymToString(p->event->get_cur_keysym(p->event));
-			if (p->modifiers_stack->exist(p->modifiers_stack, keysym_str, BY_PLAIN))
-			{
-				p->modifiers_stack->rem(p->modifiers_stack, keysym_str);
-			}
-			else
-			{
-				p->event->default_event.xkey.keycode = 0;
-			}
-		}
-
-		if (p->prev_key == None)
-		{
-			p->update_modifiers_stack(p);
-			return;
-		}
-		
-		if (p->prev_key != key)
-			return;
-		
-		p->prev_key = None;
-		
-		modifier_mask = p->prev_key_mod;
-		if (IsModifierKey(key))
-			modifier_mask &= ~p->event->get_cur_modifiers_by_keysym(p->event);
-
-		p->modifiers_stack->rem(p->modifiers_stack, XKeysymToString(XK_Shift_R));
-		p->modifiers_stack->rem(p->modifiers_stack, XKeysymToString(XK_Shift_L));
-		p->modifiers_stack->rem(p->modifiers_stack, XKeysymToString(XK_ISO_Level3_Shift));
-		if (get_key_state(XK_Shift_R) != 0)
-			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_Shift_R));
-		if (get_key_state(XK_Shift_L) != 0)
-			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_Shift_L));
-		if (get_key_state(XK_ISO_Level3_Shift) != 0)
-			p->modifiers_stack->add(p->modifiers_stack, XKeysymToString(XK_ISO_Level3_Shift));
-		
-		p->update_modifiers_stack(p);
-
+		int modifier_mask = p->event->get_cur_modifiers(p->event);
+			
 		// If blocked events then processing stop 
 		if (xconfig->block_events)
 		{
 			p->event->default_event.xkey.keycode = 0;
-			enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
-			if (manual_action == ACTION_BLOCK_EVENTS)
-				p->perform_manual_action(p, manual_action);
+			p->manual_action = get_manual_action(key, modifier_mask);
+			if (p->manual_action == ACTION_BLOCK_EVENTS)
+				p->perform_manual_action(p, p->manual_action);
 
 			return;
 		}
 
-		p->plugin->key_release(p->plugin, key, p->prev_key_mod);
-		
-		int user_action = get_user_action(key, modifier_mask);
-		if (user_action >= 0)
+		p->plugin->key_release(p->plugin, key, modifier_mask);
+
+		if (p->user_action >= 0)
 		{
-			p->perform_user_action(p, user_action);
+			log_message(LOG, _("Execute user action \"%s\""), xconfig->actions[p->user_action].name);
+			p->perform_user_action(p, p->user_action);
 			p->event->default_event.xkey.keycode = 0;
+			p->user_action = -1;
 			return;
 		}
 
-		enum _hotkey_action manual_action = get_manual_action(key, modifier_mask);
-		if (manual_action != ACTION_NONE)
+		if (p->manual_action != ACTION_NONE)
 		{
-			if (p->perform_manual_action(p, manual_action))
+			log_message (LOG, _("Execute manual action \"%s\""), _(normal_action_names[p->manual_action]));
+			if (p->perform_manual_action(p, p->manual_action))
+			{
+				p->manual_action = ACTION_NONE;
 				return;
-
+			}
+			
 			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 			p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, key), modifier_mask);
 			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
@@ -815,8 +756,6 @@ static void program_on_key_action(struct _program *p, int type)
 static void program_perform_user_action(struct _program *p, int action)
 {
 	if (p) {};
-
-	log_message(DEBUG, _("Execute user action \"%s\""), xconfig->actions[action].command);
 
 	pthread_attr_t action_thread_attr;
 	pthread_attr_init(&action_thread_attr);
@@ -967,7 +906,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 			p->event->event = p->event->default_event;
 			p->event->send_next_event(p->event);
 			p->event->default_event.xkey.keycode = 0;
-
+				
 			// Unblock keyboard
 			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 			
@@ -2324,8 +2263,6 @@ static void program_uninit(struct _program *p)
 	p->plugin->uninit(p->plugin);
 	
 	main_window->uninit(main_window);
-
-	p->modifiers_stack->uninit(p->modifiers_stack);
 	
 	free(p);
 
@@ -2355,13 +2292,13 @@ struct _program* program_init(void)
 		p->plugin->add(p->plugin, xconfig->plugins->data[i].string);
 	}
 	
-	p->modifiers_stack	= list_char_init();
+	p->user_action = -1;
+	p->manual_action = ACTION_NONE;
 	
 	// Function mapping
 	p->uninit			= program_uninit;
 	p->layout_update		= program_layout_update;
 	p->update			= program_update;
-	p->update_modifiers_stack	= program_update_modifiers_stack;
 	p->on_key_action		= program_on_key_action;
 	p->process_input		= program_process_input;
 	p->perform_auto_action		= program_perform_auto_action;

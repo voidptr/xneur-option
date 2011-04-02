@@ -172,12 +172,16 @@ void grab_spec_keys(Window window, int is_grab)
 				continue;
 			grab_key(window, kc, FALSE);
 		}
+		// ... and with hotkeys
+		grab_manual_action(window);
+		grab_user_action(window);
 	}
 	else
 	{
-		status = XUngrabKeyboard(main_window->display, CurrentTime);
+		// Ungrab all keys...
+		status = XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
 		
-		// Grab only hotkeys
+		// ... and grab only hotkeys
 		grab_manual_action(window);
 		grab_user_action(window);
 	}

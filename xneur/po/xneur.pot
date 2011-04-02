@@ -16,6 +16,78 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Correct/Undo correction"
+msgstr ""
+
+msgid "Transliterate"
+msgstr ""
+
+msgid "Change case"
+msgstr ""
+
+msgid "Preview correction"
+msgstr ""
+
+msgid "Correct last line"
+msgstr ""
+
+msgid "Switch between processing modes"
+msgstr ""
+
+msgid "Correct selected text"
+msgstr ""
+
+msgid "Transliterate selected text"
+msgstr ""
+
+msgid "Change case of selected text"
+msgstr ""
+
+msgid "Preview correction of selected text"
+msgstr ""
+
+msgid "Correct clipboard text"
+msgstr ""
+
+msgid "Transliterate clipboard text"
+msgstr ""
+
+msgid "Change case of clipboard text"
+msgstr ""
+
+msgid "Preview correction of clipboard text"
+msgstr ""
+
+msgid "Rotate layouts"
+msgstr ""
+
+msgid "Rotate layouts back"
+msgstr ""
+
+msgid "Switch to layout 1"
+msgstr ""
+
+msgid "Switch to layout 2"
+msgstr ""
+
+msgid "Switch to layout 3"
+msgstr ""
+
+msgid "Switch to layout 4"
+msgstr ""
+
+msgid "Expand abbreviations"
+msgstr ""
+
+msgid "Autocompletion confirmation"
+msgstr ""
+
+msgid "Block/Unblock keyboard and mouse events"
+msgstr ""
+
+msgid "Insert date"
+msgstr ""
+
 #: src/xneur.c:107
 msgid "Loading configuration"
 msgstr ""
@@ -739,21 +811,31 @@ msgstr ""
 msgid "Can't execute command '%s'"
 msgstr ""
 
-#: lib/main/bind_table.c:128 lib/main/bind_table.c:166
+#: lib/main/bind_table.c:137 lib/main/bind_table.c:175
 #, c-format
 msgid "   No key set for action \"%s\""
 msgstr ""
 
-#: lib/main/bind_table.c:154 lib/main/bind_table.c:192
+#: lib/main/bind_table.c:163 lib/main/bind_table.c:201
 #, c-format
 msgid "   Action \"%s\" with key \"%s\""
 msgstr ""
 
-#: lib/main/bind_table.c:218
+#: lib/main/bind_table.c:221
+#, c-format
+msgid "Execute manual action \"%s\""
+msgstr ""
+
+#: lib/main/bind_table.c:230
 msgid "Binded hotkeys actions:"
 msgstr ""
 
-#: lib/main/bind_table.c:245
+#: lib/main/bind_table.c:252
+#, c-format
+msgid "Execute user action \"%s\""
+msgstr ""
+
+#: lib/main/bind_table.c:261
 msgid "Binded hotkeys user actions:"
 msgstr ""
 
@@ -784,21 +866,31 @@ msgstr ""
 msgid "Event is freed"
 msgstr ""
 
-#: lib/main/focus.c:107
+#: lib/main/focus.c:111
 msgid "New window empty"
 msgstr ""
 
-#: lib/main/focus.c:138
+#: lib/main/focus.c:142
 #, c-format
 msgid "Focused window %d"
 msgstr ""
 
-#: lib/main/focus.c:162
+#: lib/main/focus.c:164
 #, c-format
 msgid "Process new window (ID %d) with name '%s' (status %s, mode %s)"
 msgstr ""
 
-#: lib/main/focus.c:234
+#: lib/main/focus.c:187
+#, c-format
+msgid "Interception of events in the window (ID %d) with name '%s' OFF"
+msgstr ""
+
+#: lib/main/focus.c:200
+#, c-format
+msgid "Interception of events in the window (ID %d) with name '%s' ON"
+msgstr ""
+
+#: lib/main/focus.c:251
 msgid "Focus is freed"
 msgstr ""
 
@@ -845,182 +937,177 @@ msgstr ""
 msgid "Store default layout group to %d"
 msgstr ""
 
-#: lib/main/program.c:336
+#: lib/main/program.c:335
 #, c-format
 msgid "Received KeyPress '%s' (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:361
+#: lib/main/program.c:360
 #, c-format
 msgid "Received KeyRelease '%s' (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:386
+#: lib/main/program.c:385
 #, c-format
 msgid "Received FocusIn on window %d (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:403
+#: lib/main/program.c:399
 #, c-format
 msgid "Received FocusOut on window %d (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:414
+#: lib/main/program.c:409
 #, c-format
 msgid "Received SelectionNotify (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:419
+#: lib/main/program.c:414
 #, c-format
 msgid "Received SelectionRequest (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:428
+#: lib/main/program.c:423
 #, c-format
 msgid "Received Button%dPress on window %d with subwindow %d (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:449
+#: lib/main/program.c:444
 #, c-format
 msgid "Received Button%dRelease on window %d with subwindow %d (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:463
+#: lib/main/program.c:458
 #, c-format
 msgid "Received Property Notify (layout switch event) (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:472
+#: lib/main/program.c:467
 #, c-format
 msgid "Received MappingNotify (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:483
+#: lib/main/program.c:478
 #, c-format
 msgid "Now layouts count %d"
 msgstr ""
 
-#: lib/main/program.c:492
+#: lib/main/program.c:484
 #, c-format
 msgid "Received MotionNotify (event type %d)"
 msgstr ""
 
-#: lib/main/program.c:497
+#: lib/main/program.c:489
 #, c-format
 msgid "Uncatched event with type %d (see X11/X.h for details)"
 msgstr ""
 
-#: lib/main/program.c:506
+#: lib/main/program.c:498
 #, c-format
 msgid "Changing language from %s to %s"
 msgstr ""
 
-#: lib/main/program.c:514
+#: lib/main/program.c:506
 msgid "Correcting iNCIDENTAL CapsLock"
 msgstr ""
 
-#: lib/main/program.c:532
+#: lib/main/program.c:524
 msgid "Correcting two CApital letter"
 msgstr ""
 
-#: lib/main/program.c:549
+#: lib/main/program.c:541
 #, c-format
 msgid "Received selected text is '%s'"
 msgstr ""
 
-#: lib/main/program.c:553
+#: lib/main/program.c:545
 #, c-format
 msgid "Received selected text '%s'"
 msgstr ""
 
-#: lib/main/program.c:830
-#, c-format
-msgid "Execute user action \"%s\""
-msgstr ""
-
-#: lib/main/program.c:1010
+#: lib/main/program.c:997
 #, c-format
 msgid "Manual mode changed to %s"
 msgstr ""
 
-#: lib/main/program.c:1208
+#: lib/main/program.c:1194
 #, c-format
 msgid "Now keyboard and mouse block status is %s"
 msgstr ""
 
-#: lib/main/program.c:1225
+#: lib/main/program.c:1211
 #, c-format
 msgid "Insert date '%s'."
 msgstr ""
 
-#: lib/main/program.c:1286
+#: lib/main/program.c:1272
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr ""
 
-#: lib/main/program.c:1382 lib/main/program.c:1435
+#: lib/main/program.c:1368 lib/main/program.c:1421
 msgid "No language found to change to"
 msgstr ""
 
-#: lib/main/program.c:1543
+#: lib/main/program.c:1529
 msgid "Find spaces before punctuation, correction..."
 msgstr ""
 
-#: lib/main/program.c:1592
+#: lib/main/program.c:1578
 msgid "Find no space before left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1609
+#: lib/main/program.c:1595
 msgid "Find spaces before right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1639
+#: lib/main/program.c:1625
 msgid "Find no spaces after right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1674
+#: lib/main/program.c:1660
 msgid "Find spaces after left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1757
+#: lib/main/program.c:1743
 msgid "Find small letter after dot, correction..."
 msgstr ""
 
-#: lib/main/program.c:1800
+#: lib/main/program.c:1786
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr ""
 
-#: lib/main/program.c:1837
+#: lib/main/program.c:1823
 msgid "No string to change"
 msgstr ""
 
-#: lib/main/program.c:1841
+#: lib/main/program.c:1827
 #, c-format
 msgid "Processing string '%s'"
 msgstr ""
 
-#: lib/main/program.c:2220
+#: lib/main/program.c:2206
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2231
+#: lib/main/program.c:2217
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2291
+#: lib/main/program.c:2277
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2323
+#: lib/main/program.c:2309
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2344
+#: lib/main/program.c:2330
 msgid "Program is freed"
 msgstr ""
 

@@ -39,14 +39,12 @@ struct _program
 
 	int  last_layout;
 	int  last_window;
-	
-	KeySym prev_key;
-	int prev_key_mod;
-	struct _list_char *modifiers_stack;
+
+	int user_action;
+	enum _hotkey_action manual_action;
 	
 	void (*layout_update) (struct _program *p);
 	void (*update) (struct _program *p);
-	void (*update_modifiers_stack) (struct _program *p);
 	void (*on_key_action) (struct _program *p, int type);
 	void (*process_input) (struct _program *p);
 	int  (*perform_manual_action) (struct _program *p, enum _hotkey_action action);

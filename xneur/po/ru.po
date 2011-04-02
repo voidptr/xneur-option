@@ -17,6 +17,78 @@ msgstr ""
 "X-Launchpad-Export-Date: 2009-02-27 19:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
+msgid "Correct/Undo correction"
+msgstr "Коррекция/Отмена коррекции"
+
+msgid "Transliterate"
+msgstr "Транслитерация"
+
+msgid "Change case"
+msgstr "Смена регистра"
+
+msgid "Preview correction"
+msgstr "Предпросмотр коррекции"
+
+msgid "Correct last line"
+msgstr "Коррекция последней строки"
+
+msgid "Switch between processing modes"
+msgstr "Смена режима работы"
+
+msgid "Correct selected text"
+msgstr "Коррекция выделенного текста"
+
+msgid "Transliterate selected text"
+msgstr "Транслитерация выделенного текста"
+
+msgid "Change case of selected text"
+msgstr "Смена регистра выделенного текста"
+
+msgid "Preview correction of selected text"
+msgstr "Предпросмотр коррекции выделенного текста"
+
+msgid "Correct clipboard text"
+msgstr "Коррекция буфера обмена"
+
+msgid "Transliterate clipboard text"
+msgstr "Транслитерация буфера обмена"
+
+msgid "Change case of clipboard text"
+msgstr "Смена регистра буфера обмена"
+
+msgid "Preview correction of clipboard text"
+msgstr "Предпросмотр коррекции буфера обмена"
+
+msgid "Rotate layouts"
+msgstr "Переключение раскладки"
+
+msgid "Rotate layouts back"
+msgstr "Переключение раскладки назад"
+
+msgid "Switch to layout 1"
+msgstr "Включение первой раскладки"
+
+msgid "Switch to layout 2"
+msgstr "Включение второй раскладки"
+
+msgid "Switch to layout 3"
+msgstr "Включение третьей раскладки"
+
+msgid "Switch to layout 4"
+msgstr "Включение четвертой раскладки"
+
+msgid "Expand abbreviations"
+msgstr "Замена сокращений"
+
+msgid "Autocompletion confirmation"
+msgstr "Подтверждение автодополнения"
+
+msgid "Block/Unblock keyboard and mouse events"
+msgstr "Блокировка/Разблокировка клавиатуры и мыши"
+
+msgid "Insert date"
+msgstr "Вставка даты"
+
 #: src/xneur.c:107
 msgid "Loading configuration"
 msgstr "Загрузка конфигурации"
@@ -799,21 +871,31 @@ msgstr "Проигрывается звуковой клип %s (использ�
 msgid "Can't execute command '%s'"
 msgstr "Невозможно выполнить команду '%s'"
 
-#: lib/main/bind_table.c:128 lib/main/bind_table.c:166
+#: lib/main/bind_table.c:137 lib/main/bind_table.c:175
 #, c-format
 msgid "   No key set for action \"%s\""
 msgstr "   Не заданы горячие клавиши для действия \"%s\""
 
-#: lib/main/bind_table.c:154 lib/main/bind_table.c:192
+#: lib/main/bind_table.c:163 lib/main/bind_table.c:201
 #, c-format
 msgid "   Action \"%s\" with key \"%s\""
 msgstr "   Действие \"%s\" с клавишей \"%s\""
 
-#: lib/main/bind_table.c:218
+#: lib/main/bind_table.c:221
+#, c-format
+msgid "Execute manual action \"%s\""
+msgstr "Выполнение действия \"%s\""
+
+#: lib/main/bind_table.c:230
 msgid "Binded hotkeys actions:"
 msgstr "Установлены горячие клавиши:"
 
-#: lib/main/bind_table.c:245
+#: lib/main/bind_table.c:252
+#, c-format
+msgid "Execute user action \"%s\""
+msgstr "Выполнение пользовательского действия \"%s\""
+
+#: lib/main/bind_table.c:261
 msgid "Binded hotkeys user actions:"
 msgstr "Установлены горячие клавиши пользовательских действий:"
 
@@ -844,21 +926,31 @@ msgstr "Отправка события Button"
 msgid "Event is freed"
 msgstr "Текущие данные события очищены"
 
-#: lib/main/focus.c:107
+#: lib/main/focus.c:111
 msgid "New window empty"
 msgstr "Новое окно пусто"
 
-#: lib/main/focus.c:138
+#: lib/main/focus.c:142
 #, c-format
 msgid "Focused window %d"
 msgstr "Сфокусировано окно %d"
 
-#: lib/main/focus.c:162
+#: lib/main/focus.c:164
 #, c-format
 msgid "Process new window (ID %d) with name '%s' (status %s, mode %s)"
 msgstr "Обрабатывается новое окно (ID %d) с именем '%s' (статус %s, режим %s)"
 
-#: lib/main/focus.c:234
+#: lib/main/focus.c:187
+#, c-format
+msgid "Interception of events in the window (ID %d) with name '%s' OFF"
+msgstr "Перехват событий в окне (ID %d) с именем '%s' выключен"
+
+#: lib/main/focus.c:200
+#, c-format
+msgid "Interception of events in the window (ID %d) with name '%s' ON"
+msgstr "Перехват событий в окне (ID %d) с именем '%s' включен"
+
+#: lib/main/focus.c:251
 msgid "Focus is freed"
 msgstr "Текущие данные фокуса очищены"
 
@@ -907,183 +999,178 @@ msgstr "Восстановлена группа раскладки %d"
 msgid "Store default layout group to %d"
 msgstr "Установлена группа раскладки по умолчанию %d"
 
-#: lib/main/program.c:336
+#: lib/main/program.c:335
 #, c-format
 msgid "Received KeyPress '%s' (event type %d)"
 msgstr "Получено KeyPress '%s' (тип события %d)"
 
-#: lib/main/program.c:361
+#: lib/main/program.c:360
 #, c-format
 msgid "Received KeyRelease '%s' (event type %d)"
 msgstr "Получено KeyRelease '%s' (тип события %d)"
 
-#: lib/main/program.c:386
+#: lib/main/program.c:385
 #, c-format
 msgid "Received FocusIn on window %d (event type %d)"
 msgstr "Получено FocusIn в окне %d  (тип события %d)"
 
-#: lib/main/program.c:403
+#: lib/main/program.c:399
 #, c-format
 msgid "Received FocusOut on window %d (event type %d)"
 msgstr "Получено FocusOut в окне %d  (тип события %d)"
 
-#: lib/main/program.c:414
+#: lib/main/program.c:409
 #, c-format
 msgid "Received SelectionNotify (event type %d)"
 msgstr "Получено SelectionNotify (тип события %d)"
 
-#: lib/main/program.c:419
+#: lib/main/program.c:414
 #, c-format
 msgid "Received SelectionRequest (event type %d)"
 msgstr "Получено SelectionRequest (тип события %d)"
 
-#: lib/main/program.c:428
+#: lib/main/program.c:423
 #, c-format
 msgid "Received Button%dPress on window %d with subwindow %d (event type %d)"
 msgstr "Получено Button%dPress в окне %d с подокном %d (тип события %d)"
 
-#: lib/main/program.c:449
+#: lib/main/program.c:444
 #, c-format
 msgid "Received Button%dRelease on window %d with subwindow %d (event type %d)"
 msgstr "Получено Button%dRelease в окне %d с подокном %d (тип события %d)"
 
-#: lib/main/program.c:463
+#: lib/main/program.c:458
 #, c-format
 msgid "Received Property Notify (layout switch event) (event type %d)"
 msgstr ""
 "Получено Property Notify (событие переключения раскладки) (тип события %d)"
 
-#: lib/main/program.c:472
+#: lib/main/program.c:467
 #, c-format
 msgid "Received MappingNotify (event type %d)"
 msgstr "Получено MappingNotify (тип события %d)"
 
-#: lib/main/program.c:483
+#: lib/main/program.c:478
 #, c-format
 msgid "Now layouts count %d"
 msgstr "Теперь раскладок %d"
 
-#: lib/main/program.c:492
+#: lib/main/program.c:484
 #, c-format
 msgid "Received MotionNotify (event type %d)"
 msgstr "Получено MotionNotify (тип события %d)"
 
-#: lib/main/program.c:497
+#: lib/main/program.c:489
 #, c-format
 msgid "Uncatched event with type %d (see X11/X.h for details)"
 msgstr "Непойманое событие с типом %d (см. X11/X.h для подробностей)"
 
-#: lib/main/program.c:506
+#: lib/main/program.c:498
 #, c-format
 msgid "Changing language from %s to %s"
 msgstr "Смена языка с %s на %s"
 
-#: lib/main/program.c:514
+#: lib/main/program.c:506
 msgid "Correcting iNCIDENTAL CapsLock"
 msgstr "Исправление сЛУЧАЙНОГО КапсЛока"
 
-#: lib/main/program.c:532
+#: lib/main/program.c:524
 msgid "Correcting two CApital letter"
 msgstr "Исправление двух ПРописных букв"
 
-#: lib/main/program.c:549
+#: lib/main/program.c:541
 #, c-format
 msgid "Received selected text is '%s'"
 msgstr "Получен выделенный текст '%s'"
 
-#: lib/main/program.c:553
+#: lib/main/program.c:545
 #, c-format
 msgid "Received selected text '%s'"
 msgstr "Получен выделенный текст '%s'"
 
-#: lib/main/program.c:830
-#, c-format
-msgid "Execute user action \"%s\""
-msgstr "Выполнение пользовательского действия \"%s\""
-
-#: lib/main/program.c:1010
+#: lib/main/program.c:997
 #, c-format
 msgid "Manual mode changed to %s"
 msgstr "Ручной режим изменен на %s"
 
-#: lib/main/program.c:1208
+#: lib/main/program.c:1194
 #, c-format
 msgid "Now keyboard and mouse block status is %s"
 msgstr "Теперь статус блокировки клавиатуры и мыши установлен в значение %s"
 
-#: lib/main/program.c:1225
+#: lib/main/program.c:1211
 #, c-format
 msgid "Insert date '%s'."
 msgstr "Вставка даты '%s'."
 
-#: lib/main/program.c:1286
+#: lib/main/program.c:1272
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr "Найдено сокращение '%s' '%s'. Замена на '%s'."
 
-#: lib/main/program.c:1382 lib/main/program.c:1435
+#: lib/main/program.c:1368 lib/main/program.c:1421
 msgid "No language found to change to"
 msgstr "Не найдено языка для смены"
 
-#: lib/main/program.c:1543
+#: lib/main/program.c:1529
 msgid "Find spaces before punctuation, correction..."
 msgstr "Обнаружены пробелы перед знаком пунктуации, исправление..."
 
-#: lib/main/program.c:1592
+#: lib/main/program.c:1578
 msgid "Find no space before left bracket, correction..."
 msgstr "Не обнаружен пробел перед открывающей скобкой, исправление..."
 
-#: lib/main/program.c:1609
+#: lib/main/program.c:1595
 msgid "Find spaces before right bracket, correction..."
 msgstr "Обнаружены пробелы перед закрывающей скобкой, исправление..."
 
-#: lib/main/program.c:1639
+#: lib/main/program.c:1625
 msgid "Find no spaces after right bracket, correction..."
 msgstr "Не обнаружены пробелы после закрывающей скобки, исправление..."
 
-#: lib/main/program.c:1674
+#: lib/main/program.c:1660
 msgid "Find spaces after left bracket, correction..."
 msgstr "Обнаружены пробелы после открывающей скобки, исправление..."
 
-#: lib/main/program.c:1757
+#: lib/main/program.c:1743
 msgid "Find small letter after dot, correction..."
 msgstr "Обнаружена строчная буква после точки, исправление..."
 
-#: lib/main/program.c:1800
+#: lib/main/program.c:1786
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr "Распознано слово '%s' из текста '%s' (раскладка %d), автодополнение..."
 
-#: lib/main/program.c:1837
+#: lib/main/program.c:1823
 msgid "No string to change"
 msgstr "Нет строки для замены"
 
-#: lib/main/program.c:1841
+#: lib/main/program.c:1827
 #, c-format
 msgid "Processing string '%s'"
 msgstr "Обработка строки '%s'"
 
-#: lib/main/program.c:2220
+#: lib/main/program.c:2206
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr "Удалено слово '%s' из словаря %s"
 
-#: lib/main/program.c:2231
+#: lib/main/program.c:2217
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr "Добавлено слово '%s' в словарь %s"
 
-#: lib/main/program.c:2291
+#: lib/main/program.c:2277
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr "Удалено слово '%s' из паттерна %s"
 
-#: lib/main/program.c:2323
+#: lib/main/program.c:2309
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr "Добавлено слово '%s' в паттерн %s"
 
-#: lib/main/program.c:2344
+#: lib/main/program.c:2330
 msgid "Program is freed"
 msgstr "Текущие данные программы очищены"
 
