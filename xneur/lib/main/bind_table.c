@@ -265,7 +265,7 @@ void grab_manual_action(Window win)
 	{
 		if (btable[action].key_sym == 0)
 			continue;
-		
+
 		XGrabKey(main_window->display, 
 					XKeysymToKeycode(main_window->display, btable[action].key_sym), 
 					btable[action].modifier_mask, 

@@ -474,7 +474,6 @@ static void program_process_input(struct _program *p)
 					// Flush string
 					//p->buffer->clear(p->buffer);
 				}
-				log_message (ERROR, "Received Property Notify");
 				break;
 			}
 			case MappingNotify:
