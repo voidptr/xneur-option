@@ -41,6 +41,10 @@ struct _keymap
 	int max_keycode;
 	int keysyms_per_keycode;
 
+	unsigned int numlock_mask;
+	unsigned int scrolllock_mask;
+	unsigned int capslock_mask;
+	
 	char  (*get_ascii)(struct _keymap *p, const char *sym, KeyCode *kc, int *modifier);
 	char  (*get_cur_ascii_char) (struct _keymap *p, XEvent e);
 	void  (*convert_text_to_ascii)(struct _keymap *p, char *text, KeyCode *kc, int *kc_mod);

@@ -504,6 +504,49 @@ static void keymap_uninit(struct _keymap *p)
 	free(p);
 }
 
+static void get_offending_modifiers (struct _keymap *p)
+{
+	Display *display = XOpenDisplay(NULL);
+
+	p->numlock_mask = 0;
+	p->scrolllock_mask = 0;
+	p->capslock_mask = 0;
+	
+	int i;
+	XModifierKeymap *modmap;
+	KeyCode nlock, slock;
+	static int mask_table[8] = {
+								ShiftMask, LockMask, ControlMask, Mod1Mask,
+								Mod2Mask, Mod3Mask, Mod4Mask, Mod5Mask
+								};
+
+	nlock = XKeysymToKeycode (display, XK_Num_Lock);
+	slock = XKeysymToKeycode (display, XK_Scroll_Lock);
+
+	/*
+	* Find out the masks for the NumLock and ScrollLock modifiers,
+	* so that we can bind the grabs for when they are enabled too.
+	*/
+	modmap = XGetModifierMapping (display);
+
+	if (modmap != NULL && modmap->max_keypermod > 0)
+	{
+		for (i = 0; i < 8 * modmap->max_keypermod; i++)
+		{
+			if (modmap->modifiermap[i] == nlock && nlock != 0)
+				p->numlock_mask = mask_table[i / modmap->max_keypermod];
+			else if (modmap->modifiermap[i] == slock && slock != 0)
+				p->scrolllock_mask = mask_table[i / modmap->max_keypermod];
+		}
+	}
+
+	p->capslock_mask = LockMask;
+
+	if (modmap)
+		XFreeModifiermap (modmap);
+	XCloseDisplay(display);
+}
+
 struct _keymap* keymap_init(struct _xneur_handle *handle)
 {
 	struct _keymap *p = (struct _keymap *) malloc(sizeof(struct _keymap));
@@ -517,6 +560,8 @@ struct _keymap* keymap_init(struct _xneur_handle *handle)
 		return NULL;
 	}
 
+	get_offending_modifiers(p);
+	
 	p->get_ascii			= keymap_get_ascii;
 	p->get_cur_ascii_char		= keymap_get_cur_ascii_char;
 	p->convert_text_to_ascii	= keymap_convert_text_to_ascii;

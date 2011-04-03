@@ -129,7 +129,7 @@ void grab_button(int is_grab)
 	int status;
 	if (is_grab)
 	{
-		status = XGrabButton(main_window->display, Button1, AnyModifier, rw, TRUE, ButtonPressMask|ButtonReleaseMask, GrabModeSync, GrabModeAsync, None, None);
+		status = XGrabButton(main_window->display, Button1, AnyModifier, rw, FALSE, ButtonPressMask|ButtonReleaseMask, GrabModeSync, GrabModeAsync, None, None);
 		XSync (main_window->display, FALSE);
 	}
 	else
@@ -157,21 +157,48 @@ void grab_key(Window window, KeyCode kc, int is_grab)
 		log_message(ERROR, _("Failed to %s keyboard with error BadWindow"), grab_ungrab[is_grab]);
 }
 
+void grab_modifier_keys(Window window, int is_grab)
+{
+	int i, k = 0;
+	int min_keycode, max_keycode, keysyms_per_keycode = 0;
+
+	XDisplayKeycodes (main_window->display, &min_keycode, &max_keycode);
+	XGetKeyboardMapping (main_window->display, min_keycode, (max_keycode - min_keycode + 1), &keysyms_per_keycode);
+
+	XModifierKeymap *modmap = XGetModifierMapping (main_window->display);
+		
+	for (i = 0; i < 8; i++) 
+	{
+		int j;
+
+		for (j = 0; j < modmap->max_keypermod; j++) 
+		{
+			if (modmap->modifiermap[k]) 
+			{
+				if (is_grab)
+					XGrabKey(main_window->display, modmap->modifiermap[k], AnyModifier, window, FALSE, GrabModeAsync, GrabModeAsync);
+				else
+					XUngrabKey(main_window->display, modmap->modifiermap[k], AnyModifier, window);	
+			}
+			k++;
+		}
+	}
+
+	if (modmap)
+		XFreeModifiermap (modmap);
+	
+	return;
+}
+	
 void grab_spec_keys(Window window, int is_grab)
 {
 	int status;
 	if (is_grab)
 	{
 		// Grab all keys...
-		status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, TRUE, GrabModeAsync, GrabModeAsync);
+		status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, FALSE, GrabModeAsync, GrabModeAsync);
 		// ...without ModKeys.
-		for (int i = 0; i < total_mod_keys; i++)
-		{
-			KeyCode kc = XKeysymToKeycode(main_window->display, mod_keys[i]);
-			if (kc == 0)
-				continue;
-			grab_key(window, kc, FALSE);
-		}
+		grab_modifier_keys(window, FALSE);
 		// ... and with hotkeys
 		grab_manual_action(window);
 		grab_user_action(window);
@@ -196,7 +223,7 @@ void grab_keyboard(Window window, int is_grab)
 {
 	int status;
 	if (is_grab)
-		status = XGrabKeyboard(main_window->display, window, TRUE, GrabModeAsync, GrabModeAsync, CurrentTime);
+		status = XGrabKeyboard(main_window->display, window, FALSE, GrabModeAsync, GrabModeAsync, CurrentTime);
 	else
 		status = XUngrabKeyboard(main_window->display, CurrentTime);
 
