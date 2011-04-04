@@ -989,6 +989,10 @@ static int xneur_config_load(struct _xneur_config *p)
 
 static void xneur_config_clear(struct _xneur_config *p)
 {
+	Display *dpy = XOpenDisplay(NULL);
+	XUngrabKey(dpy, AnyKey, AnyModifier, DefaultRootWindow (dpy));
+	XCloseDisplay(dpy);
+	
 	free_structures(p);
 
 	p->window_layouts		= list_char_init();
