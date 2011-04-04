@@ -261,7 +261,7 @@ static void xneur_reload(int status)
 
 	log_message(LOG, _("Caught SIGHUP, reloading configuration file"));
 	show_notify(NOTIFY_XNEUR_RELOAD, NULL);
-
+	
 	sound_uninit();
 	unbind_user_actions();
 	program->plugin->xneur_reload(program->plugin);

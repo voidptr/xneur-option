@@ -192,11 +192,10 @@ void grab_modifier_keys(Window window, int is_grab)
 	
 void grab_spec_keys(Window window, int is_grab)
 {
-	int status;
 	if (is_grab)
 	{
 		// Grab all keys...
-		status = XGrabKey(main_window->display, AnyKey, AnyModifier, window, FALSE, GrabModeAsync, GrabModeAsync);
+		XGrabKey(main_window->display, AnyKey, AnyModifier, window, FALSE, GrabModeAsync, GrabModeAsync);
 		// ...without ModKeys.
 		grab_modifier_keys(window, FALSE);
 		
@@ -204,17 +203,13 @@ void grab_spec_keys(Window window, int is_grab)
 	else
 	{
 		// Ungrab all keys...
-		status = XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
+		XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
 	}
 	
 	// ... and with hotkeys
-	//grab_manual_action();
-	//grab_user_action();
-	
-	if (status == BadValue)
-		log_message(ERROR, _("Failed to %s keyboard with error BadValue"), grab_ungrab[is_grab]);
-	else if (status == BadWindow)
-		log_message(ERROR, _("Failed to %s keyboard with error BadWindow"), grab_ungrab[is_grab]);
+	XUngrabKey(main_window->display, AnyKey, AnyModifier, DefaultRootWindow (main_window->display));
+	grab_manual_action();
+	grab_user_action();
 }
 
 void grab_keyboard(Window window, int is_grab)
