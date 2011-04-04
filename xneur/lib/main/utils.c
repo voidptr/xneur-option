@@ -200,8 +200,8 @@ void grab_spec_keys(Window window, int is_grab)
 		// ...without ModKeys.
 		grab_modifier_keys(window, FALSE);
 		// ... and with hotkeys
-		grab_manual_action(window);
-		grab_user_action(window);
+		grab_manual_action();
+		grab_user_action();
 	}
 	else
 	{
@@ -209,8 +209,8 @@ void grab_spec_keys(Window window, int is_grab)
 		status = XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
 		
 		// ... and grab only hotkeys
-		grab_manual_action(window);
-		grab_user_action(window);
+		grab_manual_action();
+		grab_user_action();
 	}
 	
 	if (status == BadValue)
