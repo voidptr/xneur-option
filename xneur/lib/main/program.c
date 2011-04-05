@@ -371,7 +371,7 @@ static void program_process_input(struct _program *p)
 				}
 				//XAllowEvents(main_window->display, ReplayKeyboard, CurrentTime);
 				
-				log_message(TRACE, _("Received KeyRelease '%s' (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), type);
+				log_message(TRACE, _("Received KeyRelease '%s' %d (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), p->event->get_cur_modifiers(p->event), type);
 
 				// Save received event
 				p->event->default_event = p->event->event;
@@ -674,7 +674,7 @@ static void program_on_key_action(struct _program *p, int type)
 			p->event->default_event.xkey.keycode = 0;
 			return;
 		}
-		
+			
 		p->plugin->key_press(p->plugin, key, modifier_mask);
 		
 		int auto_action = get_auto_action(p, key, modifier_mask);

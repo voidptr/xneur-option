@@ -194,22 +194,24 @@ void grab_spec_keys(Window window, int is_grab)
 {
 	if (is_grab)
 	{
+		// Ungrab hotkeys in root window
+		XUngrabKey(main_window->display, AnyKey, AnyModifier, DefaultRootWindow (main_window->display));
 		// Grab all keys...
 		XGrabKey(main_window->display, AnyKey, AnyModifier, window, FALSE, GrabModeAsync, GrabModeAsync);
 		// ...without ModKeys.
 		grab_modifier_keys(window, FALSE);
-		
 	}
 	else
 	{
-		// Ungrab all keys...
+		// Ungrab all keys in app window...
 		XUngrabKey(main_window->display, AnyKey, AnyModifier, window);
+		// ... and with hotkeys
+		XUngrabKey(main_window->display, AnyKey, AnyModifier, DefaultRootWindow (main_window->display));
+		grab_manual_action();
+		grab_user_action();
+		// ...without ModKeys.
+		//grab_modifier_keys(DefaultRootWindow (main_window->display), FALSE);
 	}
-	
-	// ... and with hotkeys
-	XUngrabKey(main_window->display, AnyKey, AnyModifier, DefaultRootWindow (main_window->display));
-	grab_manual_action();
-	grab_user_action();
 }
 
 void grab_keyboard(Window window, int is_grab)
