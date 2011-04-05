@@ -315,7 +315,7 @@ static void program_process_input(struct _program *p)
 		int type = p->event->get_next_event(p->event);
 
 		int curr_layout = get_curr_keyboard_group();
-		if (p->last_layout != curr_layout) 
+		if ((p->last_layout != curr_layout) && (p->last_window == p->focus->owner_window))
 		{
 			p->last_layout = curr_layout;
 			if (xconfig->troubleshoot_switch)
