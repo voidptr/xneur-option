@@ -17,6 +17,12 @@ msgstr ""
 "X-Launchpad-Export-Date: 2009-02-27 19:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
+msgid "Yes"
+msgstr "Да"
+
+msgid "No"
+msgstr "Нет"
+
 msgid "Correct/Undo correction"
 msgstr "Коррекция/Отмена коррекции"
 

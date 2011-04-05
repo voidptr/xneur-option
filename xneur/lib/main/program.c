@@ -340,10 +340,8 @@ static void program_process_input(struct _program *p)
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
-					break;
 				}
-				//XAllowEvents(main_window->display, ReplayKeyboard, CurrentTime);
-				
+
 				log_message(TRACE, _("Received KeyPress '%s' (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), type);
 				
 				// Save received event
@@ -367,11 +365,9 @@ static void program_process_input(struct _program *p)
 				if (xconfig->block_events)
 				{
 					XAllowEvents(main_window->display, AsyncKeyboard, CurrentTime);
-					break;
 				}
-				//XAllowEvents(main_window->display, ReplayKeyboard, CurrentTime);
 				
-				log_message(TRACE, _("Received KeyRelease '%s' %d (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), p->event->get_cur_modifiers(p->event), type);
+				log_message(TRACE, _("Received KeyRelease '%s' (event type %d)"), XKeysymToString(p->event->get_cur_keysym(p->event)), type);
 
 				// Save received event
 				p->event->default_event = p->event->event;
@@ -659,22 +655,17 @@ static void program_on_key_action(struct _program *p, int type)
 	int modifier_mask = p->event->get_cur_modifiers(p->event);
 
 	if (type == KeyPress)
-	{
+	{	
+		
+		p->user_action = get_user_action(key, modifier_mask);
+		p->manual_action = get_manual_action(key, modifier_mask);
 		// If blocked events then processing stop 
-		if (xconfig->block_events)
+		if ((p->user_action >= 0) || (p->manual_action != ACTION_NONE) || (xconfig->block_events)) 
 		{
 			p->event->default_event.xkey.keycode = 0;
 			return;
 		}
 		
-		p->user_action = get_user_action(key, modifier_mask);
-		p->manual_action = get_manual_action(key, modifier_mask);
-		if ((p->user_action >= 0) || (p->manual_action != ACTION_NONE))
-		{
-			p->event->default_event.xkey.keycode = 0;
-			return;
-		}
-			
 		p->plugin->key_press(p->plugin, key, modifier_mask);
 		
 		int auto_action = get_auto_action(p, key, modifier_mask);
@@ -713,16 +704,19 @@ static void program_on_key_action(struct _program *p, int type)
 
 	if (type == KeyRelease)
 	{	
+		
 		int modifier_mask = p->event->get_cur_modifiers(p->event);
 			
 		// If blocked events then processing stop 
 		if (xconfig->block_events)
 		{
 			p->event->default_event.xkey.keycode = 0;
-			p->manual_action = get_manual_action(key, modifier_mask);
 			if (p->manual_action == ACTION_BLOCK_EVENTS)
+			{
 				p->perform_manual_action(p, p->manual_action);
 
+				p->manual_action = ACTION_NONE;
+			}
 			return;
 		}
 
@@ -935,7 +929,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		{
 			xconfig->set_manual_mode(xconfig, !xconfig->is_manual_mode(xconfig));
 
-			log_message(DEBUG, _("Manual mode changed to %s"), xconfig->get_bool_name(xconfig->is_manual_mode(xconfig)));
+			log_message(DEBUG, _("Manual mode changed to %s"), _(xconfig->get_bool_name(xconfig->is_manual_mode(xconfig))));
 			p->event->default_event.xkey.keycode = 0;
 			return TRUE;
 		}
@@ -1124,15 +1118,15 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			xconfig->block_events = !xconfig->block_events;
 			if (xconfig->block_events)
 			{
-				grab_keyboard(p->focus->owner_window, TRUE);
+				//grab_keyboard(p->focus->owner_window, TRUE);
 				show_notify(NOTIFY_BLOCK_EVENTS, NULL);
 			}
 			else
 			{
-				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
+				//p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 				show_notify(NOTIFY_UNBLOCK_EVENTS, NULL);
 			}
-			log_message (DEBUG, _("Now keyboard and mouse block status is %s"), xconfig->get_bool_name(xconfig->block_events));
+			log_message (DEBUG, _("Now keyboard and mouse block status is %s"), _(xconfig->get_bool_name(xconfig->block_events)));
 			
 			break;
 		}	
