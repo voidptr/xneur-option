@@ -311,7 +311,7 @@ static void buffer_set_i18n_content(struct _buffer *p)
 				continue;
 			
 			char *symbol_unchanged = keycode_to_symbol(p->keycode[k], i, modifier);
-			if (symbol == NULL)
+			if (symbol_unchanged == NULL)
 				continue;
 			
 			p->i18n_content[i].content = (char *) realloc(p->i18n_content[i].content, (strlen(p->i18n_content[i].content) + strlen(symbol) + 1) * sizeof(char));

@@ -28,6 +28,7 @@ int   get_keycode_mod(int keyboard_group);
 int   get_languages_mask(void);
 void  get_keysyms_by_string(char *keyname, KeySym *Lower, KeySym *Upper);
 char* keycode_to_symbol(KeyCode kc, int group, int state);
+void  purge_keymap_caches(void);
 
 struct _keymap
 {

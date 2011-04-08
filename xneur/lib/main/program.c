@@ -487,6 +487,8 @@ static void program_process_input(struct _program *p)
 				
 				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
 
+				purge_keymap_caches();
+				
 				break;
 			}
 			case MotionNotify:

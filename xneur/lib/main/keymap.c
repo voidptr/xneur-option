@@ -67,7 +67,7 @@ int get_languages_mask(void)
 	return languages_mask;
 }
 
-char* keycode_to_symbol(KeyCode kc, int group, int state)
+static char* keycode_to_symbol_real(KeyCode kc, int group, int state)
 {
 	Display *display = XOpenDisplay(NULL);
 	XEvent event;
@@ -146,6 +146,64 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 		symbol[nbytes] = NULLSYM;
 
 	return symbol;
+}
+
+#define keycode_to_symbol_cache_size 64
+static struct keycode_to_symbol_pair 
+{
+	KeyCode kc; int group; int state;
+	char* symbol; size_t symbol_size;
+} keycode_to_symbol_cache[keycode_to_symbol_cache_size];
+size_t keycode_to_symbol_cache_pos = 0;
+
+char* keycode_to_symbol(KeyCode kc, int group, int state)
+{
+	char *symbol;
+	struct keycode_to_symbol_pair *p = NULL;
+
+	/* Look up cache. */
+	for (int i = 0; i < keycode_to_symbol_cache_size; i++) {
+		p = keycode_to_symbol_cache + i;
+		if (p->symbol && p->kc == kc && p->group == group && p->state == state)
+			goto ret;
+	}
+
+	/* Miss. */
+
+	symbol = keycode_to_symbol_real(kc, group, state);
+	if (!symbol)
+		return symbol;
+
+	/* Just use next cache entry. LRU makes no sense here. */
+	keycode_to_symbol_cache_pos = (keycode_to_symbol_cache_pos + 1) % keycode_to_symbol_cache_size;
+
+	p = keycode_to_symbol_cache + keycode_to_symbol_cache_pos;
+
+	p->symbol_size = (strlen(symbol) + 1) * sizeof(char);
+	if (p->symbol)
+		free(p->symbol);
+	p->symbol = symbol;
+	p->kc     = kc;
+	p->group  = group;
+	p->state  = state;
+
+	ret:
+
+	symbol = (char *) malloc(p->symbol_size);
+	memcpy(symbol, p->symbol, p->symbol_size);
+	return symbol;
+}
+
+void purge_keymap_caches(void)
+{
+	for (int i = 0; i < keycode_to_symbol_cache_size; i++) 
+	{
+		struct keycode_to_symbol_pair* p = keycode_to_symbol_cache + i;
+		if (p->symbol)
+			free(p->symbol),
+			p->symbol = NULL,
+			p->symbol_size = 0;
+	}
 }
 
 int get_keycode_mod(int group)
