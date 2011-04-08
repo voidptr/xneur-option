@@ -273,57 +273,20 @@ static int init_keymaps(struct _keymap *p)
 	return TRUE;
 }
 
-static void keymap_char_to_keycode(struct _keymap *p, char ch, KeyCode *kc, int *modifier)
+static char keymap_get_ascii(struct _keymap *p, const char *sym, int* preferred_lang, KeyCode *kc, int *modifier, size_t* symbol_len)
 {
 	Display *display = XOpenDisplay(NULL);
-	
-	if (ch == 10 || ch == 13)
+
+	if (*sym == 10 || *sym == 13)
 	{
 		*kc		= XKeysymToKeycode(display, XK_Return);
 		*modifier	= 0;
+		if (symbol_len)
+			*symbol_len = 1;
 		XCloseDisplay(display);
-		return;
+		return *sym;
 	}
 
-	XEvent event;
-	event.type		= KeyPress;
-	event.xkey.type		= KeyPress;
-	event.xkey.root		= RootWindow(display, DefaultScreen(display));
-	event.xkey.subwindow	= None;
-	event.xkey.same_screen	= True;
-	event.xkey.display	= display;
-	event.xkey.state	= 0;
-	event.xkey.keycode	= XKeysymToKeycode(display, XK_space);
-	event.xkey.time		= CurrentTime;
-
-	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
-
-	for (int i = p->min_keycode + 1; i <= p->max_keycode; i++)
-	{
-		event.xkey.keycode	= i;
-		event.xkey.state	= 0;
-
-		int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
-		if ((nbytes > 0) && (symbol[0] == ch))
-			break;
-
-		event.xkey.state	= ShiftMask;
-
-		nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
-		if ((nbytes > 0) && (symbol[0] == ch))
-			break;
-	}
-
-	*kc		= event.xkey.keycode;
-	*modifier	= (event.xkey.state == ShiftMask) ? 1 : 0;
-	free(symbol);
-	
-	XCloseDisplay(display);
-}
-
-static char keymap_get_ascii(struct _keymap *p, const char *sym, KeyCode *kc, int *modifier)
-{
-	Display *display = XOpenDisplay(NULL);
 	XEvent event;
 	event.type		= KeyPress;
 	event.xkey.type		= KeyPress;
@@ -338,10 +301,17 @@ static char keymap_get_ascii(struct _keymap *p, const char *sym, KeyCode *kc, in
 	char *symbol		= (char *) malloc((256 + 1) * sizeof(char));
 	char *prev_symbols	= (char *) malloc((256 + 1) * sizeof(char));
 
-	for (int lang = 0; lang < p->handle->total_languages; lang++)
+	int _preferred_lang = 0;
+	if (preferred_lang)
+		_preferred_lang = *preferred_lang;
+
+	for (int _lang = 0; _lang < p->handle->total_languages; _lang++)
 	{
-		if (lang == p->latin_group)
-			continue;
+		int lang = _lang;
+		if (lang == 0)
+			lang = _preferred_lang;
+		else if (lang <= _preferred_lang)
+			lang--;
 
 		KeySym *keymap = p->keymap;
 		for (int i = p->min_keycode; i <= p->max_keycode; i++)
@@ -379,6 +349,8 @@ static char keymap_get_ascii(struct _keymap *p, const char *sym, KeyCode *kc, in
 						if (strncmp(sym, symbol, strlen(symbol)) != 0)
 							continue;
 
+						size_t _symbol_len = strlen(symbol);
+
 						event.xkey.state = 0;
 						event.xkey.state |= state_masks[m];
 						event.xkey.state |= state_masks[n];
@@ -393,6 +365,10 @@ static char keymap_get_ascii(struct _keymap *p, const char *sym, KeyCode *kc, in
 						free(symbol);
 						*kc		= event.xkey.keycode;
 						*modifier	= get_keycode_mod(lang) | event.xkey.state;
+						if (symbol_len)
+							*symbol_len = _symbol_len;
+						if (preferred_lang)
+							*preferred_lang = lang;
 						XCloseDisplay(display);
 						return sym;
 					}
@@ -441,27 +417,16 @@ static void keymap_convert_text_to_ascii(struct _keymap *p, char *text, KeyCode 
 	int text_len = strlen(text);
 
 	int j = 0;
-	for (int i = 0; i < text_len; i++)
+	size_t symbol_len = 0;
+	int preferred_lang = 0;
+	for (int i = 0; i < text_len; i += symbol_len)
 	{
-		if (isascii(text[i]) || isspace(text[i]))
-		{
-			p->char_to_keycode(p, text[i], &kc[j], &kc_mod[j]);
-			text[j++] = text[i];
-			continue;
-		}
+		char new_symbol = p->get_ascii(p, &text[i], &preferred_lang, &kc[j], &kc_mod[j], &symbol_len);
 
-		char new_symbol = p->get_ascii(p, &text[i], &kc[j], &kc_mod[j]);
-
-		for(; i < text_len - 1; i++)
-		{
-			if (isascii(text[i + 1]) || isspace(text[i + 1]))
-				break;
-
-			if (p->get_ascii(p, &text[i + 1], &kc[i + 1], &kc_mod[i + 1]) != NULLSYM)
-				break;
-		}
-
-		text[j++] = new_symbol;
+		if (new_symbol != NULLSYM && symbol_len > 0)
+			text[j++] = new_symbol;
+		else
+			symbol_len = 1;
 	}
 
 	text[j] = NULLSYM;
@@ -623,7 +588,6 @@ struct _keymap* keymap_init(struct _xneur_handle *handle)
 	p->get_ascii			= keymap_get_ascii;
 	p->get_cur_ascii_char		= keymap_get_cur_ascii_char;
 	p->convert_text_to_ascii	= keymap_convert_text_to_ascii;
-	p->char_to_keycode		= keymap_char_to_keycode;
 	p->lower_by_keymaps		= keymap_lower_by_keymaps;
 	p->uninit			= keymap_uninit;
 

@@ -46,10 +46,9 @@ struct _keymap
 	unsigned int scrolllock_mask;
 	unsigned int capslock_mask;
 	
-	char  (*get_ascii)(struct _keymap *p, const char *sym, KeyCode *kc, int *modifier);
+	char  (*get_ascii)(struct _keymap *p, const char *sym, int* preferred_lang, KeyCode *kc, int *modifier, size_t* symbol_len);
 	char  (*get_cur_ascii_char) (struct _keymap *p, XEvent e);
 	void  (*convert_text_to_ascii)(struct _keymap *p, char *text, KeyCode *kc, int *kc_mod);
-	void  (*char_to_keycode)(struct _keymap *p, char ch, KeyCode *kc, int *modifier);
 	void  (*print_keymaps)(struct _keymap *p);
 	char* (*lower_by_keymaps)(struct _keymap *p, int gr, char *text);
 	void  (*uninit) (struct _keymap *p);
