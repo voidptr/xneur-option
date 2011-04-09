@@ -576,6 +576,8 @@ static char* keymap_lower_by_keymaps(struct _keymap *p, int gr, char *text)
 
 static void keymap_uninit(struct _keymap *p)
 {
+	purge_keymap_caches();
+	
 	if (p->keymap != NULL)
 		XFree(p->keymap);
 	free(p);
