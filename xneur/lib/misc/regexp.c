@@ -29,7 +29,7 @@
 #include "types.h"
 #include "log.h"
 
-char* check_regexp_match(const char *str, const char *pattern)
+int check_regexp_match(const char *str, const char *pattern)
 {
 	int options = PCRE_UTF8;
 	const char *error;
@@ -40,7 +40,7 @@ char* check_regexp_match(const char *str, const char *pattern)
 	if (!re)
 	{
 		log_message(ERROR, _("Can't compile regular expression '%s'"), pattern);
-		return NULL;
+		return FALSE;
 	}
 
 	int str_len = strlen(str);
@@ -59,17 +59,17 @@ char* check_regexp_match(const char *str, const char *pattern)
 	pcre_free((void*)tables);
 	
 	if (count == PCRE_ERROR_NOMATCH)
-		return NULL;
+		return FALSE;
 	
 	const char *pcre_string = NULL;
 	if(pcre_get_substring(str, ovector, count, 0, &pcre_string) < 0)
-		return NULL;
+		return FALSE;
 
-	char *return_string = strdup(pcre_string);
+	//char *return_string = strdup(pcre_string);
+	//log_message(TRACE, _("Match word '%s' and PERL pattern '%s'"), str, pattern);
+	//free (return_string);
 	
 	pcre_free_substring(pcre_string);
-
-	//log_message(TRACE, _("Match word '%s' and PERL pattern '%s'"), str, pattern);
 		
-	return return_string;
+	return TRUE;
 }

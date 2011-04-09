@@ -2251,8 +2251,6 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 
 static void program_uninit(struct _program *p)
 {
-	purge_keymap_caches();
-	
 	p->focus->uninit(p->focus);
 	p->event->uninit(p->event);
 	p->buffer->uninit(p->buffer);

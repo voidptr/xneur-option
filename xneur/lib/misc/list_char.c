@@ -127,7 +127,7 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 		data = &list->data[list->data_count - 1];
 		strcat(full_str, data->string);			
 
-		if (check_regexp_match(string, full_str) != NULL)
+		if (check_regexp_match(string, full_str))
 		{
 			if (full_str != NULL)
 				free(full_str);
