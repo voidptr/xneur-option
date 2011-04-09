@@ -127,8 +127,8 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 		if (xconfig->autocompletion_excluded_apps->exist(xconfig->autocompletion_excluded_apps, new_app_name, BY_PLAIN))
 			*autocompletion_mode	= AUTOCOMPLETION_EXCLUDED;
 	}
-	//else
-		//*focus_status = FOCUS_EXCLUDED;
+	else
+		*focus_status = FOCUS_EXCLUDED;
 
 	Window old_window = p->owner_window;
 	if (new_window == old_window)
