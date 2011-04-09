@@ -65,9 +65,7 @@ int check_regexp_match(const char *str, const char *pattern)
 	if(pcre_get_substring(str, ovector, count, 0, &pcre_string) < 0)
 		return FALSE;
 
-	//char *return_string = strdup(pcre_string);
 	//log_message(TRACE, _("Match word '%s' and PERL pattern '%s'"), str, pattern);
-	//free (return_string);
 	
 	pcre_free_substring(pcre_string);
 		
