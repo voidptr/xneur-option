@@ -134,8 +134,8 @@ static char* keycode_to_symbol_real(KeyCode kc, int group, int state)
 			}
 		}
 
-		log_message(ERROR, _("Not find symbol for keycode %d and modifier 0x%x!"), event.xkey.keycode, event.xkey.state);
-		log_message(ERROR, _("Try run the programm with command \"env LC_ALL=<LOCALE> %s\", \nwhere LOCALE available over command \"locale -a\""), PACKAGE);
+		log_message(ERROR, _("Failed to look up symbol for keycode %d and modifier 0x%x!"), event.xkey.keycode, event.xkey.state);
+		log_message(ERROR, _("Try run the program with command \"env LC_ALL=<LOCALE> %s\", \nwhere LOCALE available over command \"locale -a\""), PACKAGE);
 		symbol[0] = NULLSYM;
 		strcat(symbol, " ");
 
@@ -149,11 +149,13 @@ static char* keycode_to_symbol_real(KeyCode kc, int group, int state)
 }
 
 #define keycode_to_symbol_cache_size 64
+
 static struct keycode_to_symbol_pair 
 {
 	KeyCode kc; int group; int state;
 	char* symbol; size_t symbol_size;
 } keycode_to_symbol_cache[keycode_to_symbol_cache_size];
+
 size_t keycode_to_symbol_cache_pos = 0;
 
 char* keycode_to_symbol(KeyCode kc, int group, int state)
@@ -192,18 +194,6 @@ char* keycode_to_symbol(KeyCode kc, int group, int state)
 	symbol = (char *) malloc(p->symbol_size);
 	memcpy(symbol, p->symbol, p->symbol_size);
 	return symbol;
-}
-
-void purge_keymap_caches(void)
-{
-	for (int i = 0; i < keycode_to_symbol_cache_size; i++) 
-	{
-		struct keycode_to_symbol_pair* p = keycode_to_symbol_cache + i;
-		if (p->symbol)
-			free(p->symbol),
-			p->symbol = NULL,
-			p->symbol_size = 0;
-	}
 }
 
 int get_keycode_mod(int group)
@@ -273,7 +263,7 @@ static int init_keymaps(struct _keymap *p)
 	return TRUE;
 }
 
-static char keymap_get_ascii(struct _keymap *p, const char *sym, int* preferred_lang, KeyCode *kc, int *modifier, size_t* symbol_len)
+static char keymap_get_ascii_real(struct _keymap *p, const char *sym, int* preferred_lang, KeyCode *kc, int *modifier, size_t* symbol_len)
 {
 	Display *display = XOpenDisplay(NULL);
 
@@ -383,6 +373,70 @@ static char keymap_get_ascii(struct _keymap *p, const char *sym, int* preferred_
 	free(prev_symbols);
 	free(symbol);
 	return NULLSYM;
+}
+
+#define symbol_to_keycode_cache_size 64
+
+static struct symbol_to_keycode_pair 
+{
+	char* symbol; size_t symbol_size; int preferred_lang;
+	KeyCode kc; int modifier; char ascii; int preferred_lang_result;
+} symbol_to_keycode_cache[symbol_to_keycode_cache_size];
+
+size_t symbol_to_keycode_cache_pos = 0;
+
+
+static char keymap_get_ascii(struct _keymap *p, const char *sym, int* preferred_lang, KeyCode *kc, int *modifier, size_t* symbol_len)
+{
+	struct symbol_to_keycode_pair *pr = NULL;
+
+	int _preferred_lang = 0;
+	if (preferred_lang)
+		_preferred_lang = *preferred_lang;
+
+	size_t sym_size = strlen(sym);
+
+	/* Look up cache */
+
+	for (int i = 0; i < symbol_to_keycode_cache_size; i++) {
+		pr = symbol_to_keycode_cache + i;
+		if (pr->symbol &&
+		    pr->symbol_size <= sym_size &&
+		    pr->preferred_lang == _preferred_lang &&
+		    memcmp(pr->symbol, sym, pr->symbol_size) == 0)
+			goto ret;
+	}
+
+	/* Miss */
+
+	int preferred_lang_result = _preferred_lang;
+	char ascii = keymap_get_ascii_real(p, sym, &preferred_lang_result, kc, modifier, &sym_size);
+	if (!ascii)
+		return ascii;
+
+	symbol_to_keycode_cache_pos = (symbol_to_keycode_cache_pos + 1) % symbol_to_keycode_cache_size;
+
+	pr = symbol_to_keycode_cache + symbol_to_keycode_cache_pos;
+
+	pr->symbol = realloc(pr->symbol, sym_size + 1);
+	memcpy(pr->symbol, sym, sym_size);
+	pr->symbol[sym_size] = 0;
+	pr->symbol_size = sym_size;
+	pr->preferred_lang = _preferred_lang;
+	pr->kc = *kc;
+	pr->modifier = *modifier;
+	pr->preferred_lang_result = preferred_lang_result;
+	pr->ascii = ascii;
+
+	ret:
+
+	if (preferred_lang)
+		*preferred_lang = pr->preferred_lang_result;
+	if (symbol_len)
+		*symbol_len = pr->symbol_size;
+	*kc = pr->kc;
+	*modifier = pr->modifier;
+	return pr->ascii;
 }
 
 static char keymap_get_cur_ascii_char(struct _keymap *p, XEvent e)
@@ -593,3 +647,27 @@ struct _keymap* keymap_init(struct _xneur_handle *handle)
 
 	return p;
 }
+
+void purge_keymap_caches(void)
+{
+	for (int i = 0; i < keycode_to_symbol_cache_size; i++) 
+	{
+		struct keycode_to_symbol_pair* p = keycode_to_symbol_cache + i;
+		if (p->symbol)
+			free(p->symbol),
+			p->symbol = NULL,
+			p->symbol_size = 0;
+	}
+
+	for (int i = 0; i < symbol_to_keycode_cache_size; i++) 
+	{
+		struct symbol_to_keycode_pair* p = symbol_to_keycode_cache + i;
+		if (p->symbol)
+			free(p->symbol),
+			p->symbol = NULL,
+			p->symbol_size = 0;
+	}
+
+}
+
+
