@@ -102,7 +102,7 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 		//}
 
 		// Catch not empty and not system window
-		if (new_window != None /*&& new_window > 1000*/)
+		if (new_window != None && new_window > 1)
 			break;
 
 		if (show_message)
