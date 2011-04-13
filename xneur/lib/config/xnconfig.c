@@ -1360,6 +1360,7 @@ static void xneur_config_save_dict(struct _xneur_config *p, int lang)
 	char *lang_dir = (char *) malloc(path_len * sizeof(char));
 	snprintf(lang_dir, path_len, "%s/%s", LANGUAGEDIR, p->handle->languages[lang].dir);
 	save_list(p->handle->languages[lang].dictionary, lang_dir, DICT_NAME);
+	free (lang_dir);
 }
 
 static void xneur_config_save_pattern(struct _xneur_config *p, int lang)
