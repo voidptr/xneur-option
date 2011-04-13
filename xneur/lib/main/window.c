@@ -124,7 +124,8 @@ static int window_create(struct _window *p)
 		if (results[i] == feature_atom)
 			p->_NET_SUPPORTED = TRUE;
 	}
-	free(results);
+	//if (results != NULL)
+		//free(results);
 	
 	log_message(LOG, _("Main window with id %d created"), window);
 

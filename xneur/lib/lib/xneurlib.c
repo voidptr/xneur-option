@@ -188,8 +188,10 @@ struct _xneur_handle *xneur_handle_create (void)
 			continue;
 
 		char *group_name = XGetAtomName(display, group_atom);
+		//log_message (ERROR, "%s", group_name);
 		char *short_name = strsep(&prop_value, ",");
-
+		//log_message (ERROR, "%s", short_name);
+		
 		handle->languages = (struct _xneur_language *) realloc(handle->languages, (handle->total_languages + 1) * sizeof(struct _xneur_language));
 		bzero(&(handle->languages[handle->total_languages]), sizeof(struct _xneur_language));
 
@@ -201,7 +203,8 @@ struct _xneur_handle *xneur_handle_create (void)
 		handle->languages[handle->total_languages].excluded	= FALSE;
 		handle->total_languages++;
 
-		free(group_name);
+		//if (group_name != NULL)
+			//free(group_name);
 		
 		if (prop_value == NULL)
 			break;
