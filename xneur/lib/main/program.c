@@ -613,14 +613,20 @@ static void program_process_selection_notify(struct _program *p)
 		{
 			p->buffer->rotate_layout(p->buffer);
 
-			show_notify(NOTIFY_PREVIEW_CHANGE_SELECTED, p->buffer->get_utf_string(p->buffer));
+			char *string = p->buffer->get_utf_string(p->buffer);
+			show_notify(NOTIFY_PREVIEW_CHANGE_SELECTED, string);
+			if (string)
+				free (string);
 			break;
 		}
 		case ACTION_PREVIEW_CHANGE_CLIPBOARD:
 		{
 			p->buffer->rotate_layout(p->buffer);
 
-			show_notify(NOTIFY_PREVIEW_CHANGE_CLIPBOARD, p->buffer->get_utf_string(p->buffer));
+			char *string = p->buffer->get_utf_string(p->buffer);
+			show_notify(NOTIFY_PREVIEW_CHANGE_CLIPBOARD, string);
+			if (string)
+				free (string);
 			break;
 		}
 	}

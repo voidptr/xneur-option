@@ -437,7 +437,7 @@ char *xneur_get_word (struct _xneur_handle *handle, char *word)
 		return strdup(word);
 
 	buffer->set_lang_mask(buffer, new_lang);
-	char *new_word = strdup(buffer->get_utf_string(buffer));
+	char *new_word = buffer->get_utf_string(buffer);
 	buffer->uninit(buffer);
 
 	return new_word;

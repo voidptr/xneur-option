@@ -127,8 +127,8 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 		if (xconfig->autocompletion_excluded_apps->exist(xconfig->autocompletion_excluded_apps, new_app_name, BY_PLAIN))
 			*autocompletion_mode	= AUTOCOMPLETION_EXCLUDED;
 	}
-	//else
-		//*focus_status = FOCUS_EXCLUDED;
+	else
+		*focus_status = FOCUS_EXCLUDED;
 
 	Window old_window = p->owner_window;
 	if (new_window == old_window)
@@ -211,7 +211,7 @@ static void focus_update_grab_events(struct _focus *p, int mode)
 		{
 			grab_button(FALSE);
 			grab_spec_keys(p->owner_window, FALSE);
-			set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK);
+			set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
 		}
 	}
 
@@ -236,7 +236,7 @@ static void focus_update_events(struct _focus *p, int mode)
 		}
 		else
 		{
-			set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK);
+			set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
 		}
 	}
 
