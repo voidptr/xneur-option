@@ -298,10 +298,6 @@ static void program_update(struct _program *p)
 	if (status == FOCUS_NONE)
 		return;
 	
-	//p->modifiers_stack->uninit(p->modifiers_stack);
-	//p->modifiers_stack	= list_char_init();
-	//p->update_modifiers_stack(p);
-	
 	// Сброс признака "ручное переключение" после смены фокуса.
 	p->changed_manual = MANUAL_FLAG_UNSET;
 }

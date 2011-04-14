@@ -221,10 +221,8 @@ static void get_xprop_name(GladeXML *gxml)
 	gtk_entry_set_text(GTK_ENTRY(entry1), p);
 }
 
-static void get_logfile(GladeXML *gxml)
+void xneur_get_logfile()
 {
-	if (gxml) {};
-	
 	char *log_home_path	= xconfig->get_home_dict_path(NULL, "xneurlog.html");
 	char *command = malloc ((strlen("xdg-open ") + strlen(log_home_path) + strlen(" 2> /dev/stdout") + 1) * sizeof(char));
 	command[0] = '\0';
@@ -756,7 +754,7 @@ void xneur_preference(void)
 
 	// View log
 	widget = glade_xml_get_widget (gxml, "button8");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(get_logfile), gxml);
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_get_logfile), NULL);
 	
 	// Ignore Keyboard Layout Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton8");

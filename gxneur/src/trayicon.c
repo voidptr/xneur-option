@@ -147,6 +147,19 @@ GtkWidget* create_tray_menu(struct _tray_icon *tray, int state)
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
 	gtk_widget_set_sensitive(menuitem, FALSE);
+
+	// View log
+	menuitem = gtk_menu_item_new_with_mnemonic(_("View log..."));
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_get_logfile), tray);
+	
+	
+	// Separator
+	menuitem = gtk_separator_menu_item_new();
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	gtk_widget_set_sensitive(menuitem, FALSE);
 	
 	// Preference
 	menuitem = gtk_image_menu_item_new_from_stock("gtk-preferences", NULL);
