@@ -542,7 +542,7 @@ void create_tray_icon(void)
                                APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
 	
 	app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
-	app_indicator_set_attention_icon (tray->app_indicator, "gxneur");
+	//app_indicator_set_attention_icon (tray->app_indicator, "gxneur");
 
 	tray->app_indicator_menu = create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
 	app_indicator_set_menu (tray->app_indicator, tray->app_indicator_menu);
