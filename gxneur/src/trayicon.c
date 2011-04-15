@@ -286,11 +286,13 @@ gboolean clock_check(gpointer dummy)
 	float saturation;
 	if (xneur_pid != -1)
 	{
+		app_indicator_set_status (tray->tray_indicator, APP_INDICATOR_STATUS_ACTIVE);
 		saturation = 1.0;
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher running ("), xconfig->handle->languages[lang].dir, ")");
 	}
 	else
 	{
+		app_indicator_set_status (tray->tray_indicator, APP_INDICATOR_STATUS_ATTENTION);
 		saturation = 0.25;
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher stopped ("), xconfig->handle->languages[lang].dir, ")");
 	}
@@ -537,6 +539,7 @@ void create_tray_icon(void)
 	tray->tray_indicator = app_indicator_new ("X Neural Switcher",
                                "gxneur",
                                APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+	
 	app_indicator_set_status (tray->tray_indicator, APP_INDICATOR_STATUS_ACTIVE);
 	app_indicator_set_attention_icon (tray->tray_indicator, "gxneur");
 	
