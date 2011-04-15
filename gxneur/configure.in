@@ -42,6 +42,11 @@ else
 	AC_DEFINE(WITH_GTK, 1, [Define if you use GTK+2.0 >= 2.18.0 support])
 fi
 
+PKG_CHECK_MODULES(APPINDICATOR, [appindicator-0.1], found_appindicator="yes", found_appindicator="no")
+if test "x$found_appindicator" = "xyes"; then
+	AC_DEFINE(WITH_APPINDICATOR, 1, [Define if your system support application indicator])
+fi
+
 AC_DEFINE(PACKAGE_GCONF_DIR, "/apps/" PACKAGE "/", [Define GConf directory for settings])
 
 AC_DEFINE(KB_PROP_COMMAND, "/usr/bin/gnome-keyboard-properties", [Define keyboard properties command])
