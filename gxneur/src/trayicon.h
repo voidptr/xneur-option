@@ -22,31 +22,23 @@
 
 #define MAX_LAYOUTS 4
 
-//#ifdef WITH_APPINDICATOR
-
+#ifdef WITH_APPINDICATOR
 #include <libappindicator/app-indicator.h>
-
-//#else
+#endif
 
 #include "tray_widget.h"
 
-//#endif
-
 struct _tray_icon
 {
-//	#ifdef WITH_APPINDICATOR
-
-	AppIndicator *tray_indicator; 
-
-//	#else
+#ifdef WITH_APPINDICATOR
+	// App Indicator part
+	AppIndicator *app_indicator; 
+	GtkMenu *app_indicator_menu;
+#endif
 	
+	// Tray part
 	GtkTrayIcon *tray_icon;
-
-//	#endif
-
-	
 	GdkPixbuf  *images[MAX_LAYOUTS];
-		
 	GtkTooltips *tooltip;
 	GtkWidget *image;
 	GtkMenu *tray_menu;

@@ -286,19 +286,14 @@ gboolean clock_check(gpointer dummy)
 	float saturation;
 	if (xneur_pid != -1)
 	{
-		app_indicator_set_status (tray->tray_indicator, APP_INDICATOR_STATUS_ACTIVE);
 		saturation = 1.0;
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher running ("), xconfig->handle->languages[lang].dir, ")");
 	}
 	else
 	{
-		app_indicator_set_status (tray->tray_indicator, APP_INDICATOR_STATUS_ATTENTION);
 		saturation = 0.25;
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher stopped ("), xconfig->handle->languages[lang].dir, ")");
 	}
-
-	GtkMenu *m = create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
-	app_indicator_set_menu (tray->tray_indicator, m);
 	
 	gint kbd_gr = get_active_kbd_group();
 	if ((!tray->images[kbd_gr]) || (text_on_tray))
@@ -309,9 +304,6 @@ gboolean clock_check(gpointer dummy)
 			layout_name[i] = toupper(layout_name[i]); 
 		tray->image = gtk_label_new ((const gchar *)layout_name);
 		gtk_label_set_justify (GTK_LABEL(tray->image), GTK_JUSTIFY_CENTER);
-		
-		app_indicator_set_label (tray->tray_indicator,layout_name, layout_name);
-		app_indicator_set_icon (tray->tray_indicator, "");
 		
 		free(layout_name);
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
@@ -339,38 +331,6 @@ gboolean clock_check(gpointer dummy)
 		tray->image = gtk_image_new_from_pixbuf(pb);
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
-
-
-		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
-		app_indicator_set_icon (tray->tray_indicator, PACKAGE);
-		char *image_file = NULL;
-		GConfClient* gconfClient = gconf_client_get_default();
-		GConfValue* gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", NULL);
-		if(gcValue != NULL) 
-		{
-			const char *string_value = NULL;
-			if(gcValue->type == GCONF_VALUE_STRING) 
-			{
-				string_value = gconf_value_get_string(gcValue);
-				image_file = g_strdup_printf("%s/%s%s", string_value, layout_name, ".png");
-			}
-			gconf_value_free(gcValue);
-		}
-
-		if (image_file)
-		{
-			app_indicator_set_icon (tray->tray_indicator, image_file);
-			app_indicator_set_label (tray->tray_indicator,"", "");
-		}
-		else
-		{
-			for (unsigned int i=0; i < strlen(layout_name); i++)
-				layout_name[i] = toupper(layout_name[i]);
-			app_indicator_set_label (tray->tray_indicator, layout_name, layout_name);
-		}
-		
-		free(image_file);
-		free(layout_name);
 		
 		gdk_pixbuf_unref(pb);
 		
@@ -386,6 +346,54 @@ gboolean clock_check(gpointer dummy)
 
 	g_free (hint);
 
+#ifdef WITH_APPINDICATOR	
+	// App indicator part
+	if (xneur_pid != -1)
+	{
+		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
+	}
+	else
+	{
+		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ATTENTION);
+	}
+
+	gtk_widget_destroy(GTK_WIDGET(tray->app_indicator_menu));
+	tray->app_indicator_menu = create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
+	app_indicator_set_menu (tray->app_indicator, tray->app_indicator_menu);
+
+	char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
+
+	char *image_file = NULL;
+	GConfClient* gconfClient = gconf_client_get_default();
+	GConfValue* gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", NULL);
+	if(gcValue != NULL) 
+	{
+		const char *string_value = NULL;
+		if(gcValue->type == GCONF_VALUE_STRING) 
+		{
+			string_value = gconf_value_get_string(gcValue);
+			image_file = g_strdup_printf("%s/%s%s", string_value, layout_name, ".png");
+		}
+		gconf_value_free(gcValue);
+	}
+
+	if (!g_file_test (image_file, G_FILE_TEST_EXISTS) || (text_on_tray))
+	{
+		for (unsigned int i=0; i < strlen(layout_name); i++)
+			layout_name[i] = toupper(layout_name[i]);
+		app_indicator_set_label (tray->app_indicator, layout_name, layout_name);
+		app_indicator_set_icon (tray->app_indicator, "");
+	}
+	else
+	{
+		app_indicator_set_icon (tray->app_indicator, image_file);
+		app_indicator_set_label (tray->app_indicator,"", "");
+	}
+		
+	free(image_file);
+	free(layout_name);
+#endif
+	
 	return TRUE;
 }
 
@@ -481,20 +489,7 @@ void create_tray_icon(void)
 {
 	tray = g_new0(struct _tray_icon, 1);	
 
-	//#ifdef WITH_APPINDICATOR
-
-	//tray->tray_indicator = app_indicator_new ("X Neural Switcher",
-    //                           "simple-client-icon",
-    //                           APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
-	//app_indicator_set_status (tray->tray_indicator, APP_INDICATOR_STATUS_ACTIVE);
-	//app_indicator_set_attention_icon (tray->tray_indicator, "simple-client-att-icon");
-	
-	//#else
-
 	tray->tray_icon = _gtk_tray_icon_new(_("X Neural Switcher"));
-
-	//#endif
-
 
 	g_signal_connect(G_OBJECT(tray->tray_icon), "button_press_event", G_CALLBACK(tray_icon_press), tray);
 	g_signal_connect(G_OBJECT(tray->tray_icon), "button_release_event", G_CALLBACK(tray_icon_release), tray);
@@ -536,17 +531,23 @@ void create_tray_icon(void)
 		free(layout_name);
 	}
 
-	tray->tray_indicator = app_indicator_new ("X Neural Switcher",
-                               "gxneur",
-                               APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
-	
-	app_indicator_set_status (tray->tray_indicator, APP_INDICATOR_STATUS_ACTIVE);
-	app_indicator_set_attention_icon (tray->tray_indicator, "gxneur");
-	
 	gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 	gtk_container_add(GTK_CONTAINER(tray->tray_icon), tray->evbox);
 	gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 
+#ifdef WITH_APPINDICATOR
+	// App indicator
+	tray->app_indicator = app_indicator_new ("X Neural Switcher",
+                               "gxneur",
+                               APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+	
+	app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
+	app_indicator_set_attention_icon (tray->app_indicator, "gxneur");
+
+	tray->app_indicator_menu = create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
+	app_indicator_set_menu (tray->app_indicator, tray->app_indicator_menu);
+#endif
+	
 	GConfClient* gconfClient = gconf_client_get_default();
 
 	GConfValue* gcValue = NULL;
