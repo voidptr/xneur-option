@@ -44,6 +44,7 @@ struct _tray_icon *tray;
 GConfClient* gconfClient = NULL;
 gboolean text_on_tray = FALSE;
 gboolean resize_tray_icon = FALSE;
+gboolean show_icon_on_panel_indicators = FALSE;
 
 gint expose_handler = 0;
 
@@ -80,10 +81,13 @@ static void exec_user_action(char *cmd)
 
 GtkMenu* create_tray_menu(struct _tray_icon *tray, int state)
 {
+	if (state) {};
 	GtkMenu *menu = GTK_MENU(gtk_menu_new());
+	GtkWidget *menuitem;
+	GtkWidget *image;
 	
 	// Start/stop
-	gchar *menu_text;
+	/*gchar *menu_text;
 	gchar *menu_icon;
 	int xneur_pid = xconfig->get_pid(xconfig);
 	if (xneur_pid != -1)
@@ -99,7 +103,7 @@ GtkMenu* create_tray_menu(struct _tray_icon *tray, int state)
 
 	GtkWidget *menuitem = gtk_image_menu_item_new_with_mnemonic(menu_text);
 	GtkWidget *image = gtk_image_new_from_stock(menu_icon, GTK_ICON_SIZE_MENU);
-
+	
 	gtk_widget_set_name(image, "image");
 	gtk_widget_show(image);
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
@@ -119,7 +123,7 @@ GtkMenu* create_tray_menu(struct _tray_icon *tray, int state)
 	menuitem = gtk_separator_menu_item_new();
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
-	gtk_widget_set_sensitive(menuitem, FALSE);
+	gtk_widget_set_sensitive(menuitem, FALSE);*/
 
 	// User Actions Submenu
 	GtkWidget *action_submenu = gtk_menu_new();
@@ -132,6 +136,7 @@ GtkMenu* create_tray_menu(struct _tray_icon *tray, int state)
 		gtk_container_add(GTK_CONTAINER(action_submenu), menuitem);
 	}
 	menuitem = gtk_image_menu_item_new_with_mnemonic(_("User action"));
+	
 	image = gtk_image_new_from_stock("gtk-execute", GTK_ICON_SIZE_MENU);
 	gtk_widget_set_name(image, "image");
 	gtk_widget_show(image);
@@ -153,7 +158,6 @@ GtkMenu* create_tray_menu(struct _tray_icon *tray, int state)
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_get_logfile), tray);
-	
 	
 	// Separator
 	menuitem = gtk_separator_menu_item_new();
@@ -346,7 +350,7 @@ gboolean clock_check(gpointer dummy)
 
 	g_free (hint);
 
-#ifdef WITH_APPINDICATOR	
+#ifdef WITH_APPINDICATOR
 	// App indicator part
 	if (xneur_pid != -1)
 	{
@@ -357,9 +361,12 @@ gboolean clock_check(gpointer dummy)
 		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ATTENTION);
 	}
 
-	gtk_widget_destroy(GTK_WIDGET(tray->app_indicator_menu));
-	tray->app_indicator_menu = create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
-	app_indicator_set_menu (tray->app_indicator, tray->app_indicator_menu);
+	if (!show_icon_on_panel_indicators)
+		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_PASSIVE);
+	
+	//gtk_widget_destroy(GTK_WIDGET(tray->app_indicator_menu));
+	//tray->app_indicator_menu = create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
+	//app_indicator_set_menu (tray->app_indicator, tray->app_indicator_menu);
 
 	char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
 
@@ -376,17 +383,18 @@ gboolean clock_check(gpointer dummy)
 		}
 		gconf_value_free(gcValue);
 	}
-
+	g_object_unref(gconfClient);
+	
 	if (!g_file_test (image_file, G_FILE_TEST_EXISTS) || (text_on_tray))
 	{
 		for (unsigned int i=0; i < strlen(layout_name); i++)
 			layout_name[i] = toupper(layout_name[i]);
 		app_indicator_set_label (tray->app_indicator, layout_name, layout_name);
-		app_indicator_set_icon (tray->app_indicator, "");
+		app_indicator_set_icon_full (tray->app_indicator, "", "");
 	}
 	else
 	{
-		app_indicator_set_icon (tray->app_indicator, image_file);
+		app_indicator_set_icon_full (tray->app_indicator, image_file, layout_name);
 		app_indicator_set_label (tray->app_indicator,"", "");
 	}
 		
@@ -448,6 +456,19 @@ void gconf_key_resize_tray_icon_callback(GConfClient* client,
 		g_signal_handler_block(tray->tray_icon, expose_handler);
 	}
 	
+	force_update = TRUE;
+}
+
+void gconf_key_show_icon_on_panel_indicator_callback(GConfClient* client,
+                            guint cnxn_id,
+                            GConfEntry* entry,
+                            gpointer user_data)
+{
+	if (client || cnxn_id || user_data) {};
+	
+	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_BOOL)
+		show_icon_on_panel_indicators = gconf_value_get_bool (gconf_entry_get_value (entry));
+
 	force_update = TRUE;
 }
 
@@ -535,6 +556,8 @@ void create_tray_icon(void)
 	gtk_container_add(GTK_CONTAINER(tray->tray_icon), tray->evbox);
 	gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 
+	//tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
+	
 #ifdef WITH_APPINDICATOR
 	// App indicator
 	tray->app_indicator = app_indicator_new ("X Neural Switcher",
@@ -542,8 +565,7 @@ void create_tray_icon(void)
                                APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
 	
 	app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
-	//app_indicator_set_attention_icon (tray->app_indicator, "gxneur");
-
+	                                    
 	tray->app_indicator_menu = create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
 	app_indicator_set_menu (tray->app_indicator, tray->app_indicator_menu);
 #endif
@@ -561,6 +583,15 @@ void create_tray_icon(void)
 		gconf_value_free(gcValue);
 	}
 
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", NULL);
+	if(gcValue != NULL) 
+	{
+		if(gcValue->type == GCONF_VALUE_BOOL) 
+			show_icon_on_panel_indicators = gconf_value_get_bool(gcValue);
+
+		gconf_value_free(gcValue);
+	}
+	
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "resize_tray_icon", NULL);
 	if(gcValue != NULL) 
 	{
@@ -595,11 +626,18 @@ void create_tray_icon(void)
                           NULL,
                           NULL);
 	gconf_client_notify_add(gconfClient,
+                          PACKAGE_GCONF_DIR "show_icon_on_panel_indicators",
+                          gconf_key_show_icon_on_panel_indicator_callback,
+                          NULL,
+                          NULL,
+                          NULL);
+	gconf_client_notify_add(gconfClient,
                           PACKAGE_GCONF_DIR "text_on_tray",
                           gconf_key_text_on_tray_callback,
                           NULL,
                           NULL,
                           NULL);
+	g_object_unref(gconfClient);
 	
 	g_timeout_add(TIMER_PERIOD, clock_check, 0);
 }

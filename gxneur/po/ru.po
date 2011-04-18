@@ -506,7 +506,8 @@ msgstr "Следить за вводом"
 msgid ""
 "Disabling this option will add any application to the list of excluded "
 "applications."
-msgstr "Выключение этой опции добавит ВСЕ приложения в список исключенных приложений."
+msgstr ""
+"Выключение этой опции добавит ВСЕ приложения в список исключенных приложений."
 
 #: glade/config.glade:2167
 msgid "Tracking input"
@@ -570,7 +571,11 @@ msgstr "Показывать текст в системном лотке"
 
 #: glade/config.glade:2513
 msgid "Change the icon size when resizing the tray"
-msgstr "Менять размер значка при изменении размера трея"
+msgstr "Менять размер значка при изменении размера системного лотка"
+
+#: glade/config.glade:2862
+msgid "Show icon on the panel indicators"
+msgstr "Показывать значек в панели индикаторов"
 
 #: glade/config.glade:2531
 msgid "Pixmaps directory"

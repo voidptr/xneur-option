@@ -570,6 +570,10 @@ msgstr ""
 msgid "Change the icon size when resizing the tray"
 msgstr ""
 
+#: glade/config.glade:2862
+msgid "Show icon on the panel indicators"
+msgstr ""
+
 #: glade/config.glade:2531
 msgid "Pixmaps directory"
 msgstr ""

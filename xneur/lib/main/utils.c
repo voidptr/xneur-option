@@ -163,8 +163,8 @@ void grab_modifier_keys(Window window, int is_grab)
 	int min_keycode, max_keycode, keysyms_per_keycode = 0;
 
 	XDisplayKeycodes (main_window->display, &min_keycode, &max_keycode);
-	XGetKeyboardMapping (main_window->display, min_keycode, (max_keycode - min_keycode + 1), &keysyms_per_keycode);
-
+	KeySym *dummy = XGetKeyboardMapping (main_window->display, min_keycode, (max_keycode - min_keycode + 1), &keysyms_per_keycode);
+	XFree(dummy);
 	XModifierKeymap *modmap = XGetModifierMapping (main_window->display);
 		
 	for (i = 0; i < 8; i++) 
