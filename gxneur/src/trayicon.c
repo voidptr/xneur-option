@@ -350,7 +350,7 @@ gboolean clock_check(gpointer dummy)
 
 	g_free (hint);
 
-#ifdef WITH_APPINDICATOR
+#ifdef HAVE_APP_INDICATOR
 	// App indicator part
 	if (xneur_pid != -1)
 	{
@@ -389,13 +389,21 @@ gboolean clock_check(gpointer dummy)
 	{
 		for (unsigned int i=0; i < strlen(layout_name); i++)
 			layout_name[i] = toupper(layout_name[i]);
+#ifdef HAVE_DEPREC_APP_INDICATOR	
+		app_indicator_set_icon (tray->app_indicator, image_file);
+#else
 		app_indicator_set_label (tray->app_indicator, layout_name, layout_name);
-		app_indicator_set_icon_full (tray->app_indicator, "", "");
+		app_indicator_set_icon (tray->app_indicator, "");
+#endif
 	}
 	else
 	{
-		app_indicator_set_icon_full (tray->app_indicator, image_file, layout_name);
+#ifdef HAVE_DEPREC_APP_INDICATOR
+		app_indicator_set_icon (tray->app_indicator, image_file);
+#else
+		app_indicator_set_icon (tray->app_indicator, image_file);
 		app_indicator_set_label (tray->app_indicator,"", "");
+#endif
 	}
 		
 	free(image_file);
@@ -558,7 +566,7 @@ void create_tray_icon(void)
 
 	//tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
 	
-#ifdef WITH_APPINDICATOR
+#ifdef HAVE_APP_INDICATOR
 	// App indicator
 	tray->app_indicator = app_indicator_new ("X Neural Switcher",
                                "gxneur",

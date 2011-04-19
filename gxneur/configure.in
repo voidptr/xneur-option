@@ -42,10 +42,23 @@ else
 	AC_DEFINE(WITH_GTK, 1, [Define if you use GTK+2.0 >= 2.18.0 support])
 fi
 
-PKG_CHECK_MODULES(APPINDICATOR, [appindicator-0.1], found_appindicator="yes", found_appindicator="no")
-if test "x$found_appindicator" = "xyes"; then
-	AC_DEFINE(WITH_APPINDICATOR, 1, [Define if your system support application indicator])
+
+APPINDICATOR_REQUIRED=0.2.9
+
+PKG_CHECK_MODULES(APP_INDICATOR, [appindicator-0.1 >= $APPINDICATOR_REQUIRED], found_appindicator="yes", found_appindicator="no")
+if test "x$found_appindicator" = "xno"; then
+	PKG_CHECK_MODULES(APP_INDICATOR, [appindicator-0.1 < APPINDICATOR_REQUIRED], found_deprec_appindicator="yes", found_deprec_appindicator="no")
+
+	if test "x$found_deprec_appindicator" = "xyes"; then
+		AC_DEFINE(HAVE_APP_INDICATOR, 1, [Have AppIndicator])
+		AC_DEFINE(HAVE_DEPREC_APP_INDICATOR, 1, [Have Deprecated AppIndicator])
+	else
+		PKG_CHECK_MODULES(APP_INDICATOR, [appindicator-0.1 < APPINDICATOR_REQUIRED]);
+	fi 
+else
+	AC_DEFINE(HAVE_APP_INDICATOR, 1, [Have AppIndicator])
 fi
+
 
 AC_DEFINE(PACKAGE_GCONF_DIR, "/apps/" PACKAGE "/", [Define GConf directory for settings])
 
@@ -92,4 +105,18 @@ cat <<EOF
 	Use GTK+2.0 >= 2.18.0 support
 
 EOF
+fi
+
+if test "x$found_appindicator" != "xno"; then
+cat <<EOF
+	Use App Indicator 0.1 >= $APPINDICATOR_REQUIRED support
+
+EOF
+else
+  if test "x$found_deprec_appindicator" != "xno"; then
+  cat <<EOF
+	Use App Indicator 0.1 < $APPINDICATOR_REQUIRED support
+
+EOF
+  fi
 fi

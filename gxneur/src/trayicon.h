@@ -22,7 +22,7 @@
 
 #define MAX_LAYOUTS 4
 
-#ifdef WITH_APPINDICATOR
+#ifdef HAVE_APP_INDICATOR
 #include <libappindicator/app-indicator.h>
 #endif
 
@@ -30,7 +30,7 @@
 
 struct _tray_icon
 {
-#ifdef WITH_APPINDICATOR
+#ifdef HAVE_APP_INDICATOR
 	// App Indicator part
 	AppIndicator *app_indicator; 
 	GtkMenu *app_indicator_menu;
