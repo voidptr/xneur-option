@@ -47,13 +47,13 @@ APPINDICATOR_REQUIRED=0.2.9
 
 PKG_CHECK_MODULES(APP_INDICATOR, [appindicator-0.1 >= $APPINDICATOR_REQUIRED], found_appindicator="yes", found_appindicator="no")
 if test "x$found_appindicator" = "xno"; then
-	PKG_CHECK_MODULES(APP_INDICATOR, [appindicator-0.1 < APPINDICATOR_REQUIRED], found_deprec_appindicator="yes", found_deprec_appindicator="no")
+	PKG_CHECK_MODULES(APP_INDICATOR, [appindicator-0.1 < $APPINDICATOR_REQUIRED], found_deprec_appindicator="yes", found_deprec_appindicator="no")
 
 	if test "x$found_deprec_appindicator" = "xyes"; then
 		AC_DEFINE(HAVE_APP_INDICATOR, 1, [Have AppIndicator])
 		AC_DEFINE(HAVE_DEPREC_APP_INDICATOR, 1, [Have Deprecated AppIndicator])
-	else
-		PKG_CHECK_MODULES(APP_INDICATOR, [appindicator-0.1 < APPINDICATOR_REQUIRED]);
+#	else
+#		PKG_CHECK_MODULES(APP_INDICATOR, [appindicator-0.1 < $APPINDICATOR_REQUIRED]);
 	fi 
 else
 	AC_DEFINE(HAVE_APP_INDICATOR, 1, [Have AppIndicator])

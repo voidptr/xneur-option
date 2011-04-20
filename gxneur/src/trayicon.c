@@ -109,6 +109,7 @@ GtkMenu* create_tray_menu(struct _tray_icon *tray, int state)
 	{
 		gtk_menu_item_set_label(GTK_MENU_ITEM(tray->status), status_text);
 	}
+
 	g_free(status_text);
 	
 	//gtk_widget_show(tray->app_indicator_status);
@@ -197,6 +198,115 @@ GtkMenu* create_tray_menu(struct _tray_icon *tray, int state)
  	return menu;
 }	
 
+#ifdef HAVE_APP_INDICATOR
+GtkMenu* create_app_indicator_menu(struct _tray_icon *tray, int state)
+{
+	if (state) {};
+	GtkMenu *menu = GTK_MENU(gtk_menu_new());
+	GtkWidget *menuitem;
+	GtkWidget *image;
+	
+	// Start/stop
+	gchar *status_text;
+	int xneur_pid = xconfig->get_pid(xconfig);
+	if (xneur_pid != -1)
+	{
+		status_text = g_strdup_printf("%s", _("Stop daemon"));
+	}
+	else
+	{
+		status_text = g_strdup_printf("%s", _("Start daemon"));
+	}
+
+	if (tray->app_indicator_status == NULL)
+	{
+		tray->app_indicator_status = gtk_menu_item_new_with_mnemonic(status_text);
+		gtk_widget_show(tray->app_indicator_status);
+		gtk_container_add(GTK_CONTAINER(menu), tray->app_indicator_status);
+		g_signal_connect(G_OBJECT(tray->app_indicator_status), "activate", G_CALLBACK(xneur_start_stop), tray);
+	}
+	else
+	{
+		gtk_menu_item_set_label(GTK_MENU_ITEM(tray->app_indicator_status), status_text);
+	}
+
+	g_free(status_text);
+	
+	// Separator
+	menuitem = gtk_separator_menu_item_new();
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	gtk_widget_set_sensitive(menuitem, FALSE);
+
+	// User Actions Submenu
+	GtkWidget *action_submenu = gtk_menu_new();
+
+	for (int action = 0; action < xconfig->actions_count; action++)
+	{
+		menuitem = gtk_menu_item_new_with_mnemonic(xconfig->actions[action].name);
+		gtk_widget_show(menuitem);
+		g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(exec_user_action), xconfig->actions[action].command);
+		gtk_container_add(GTK_CONTAINER(action_submenu), menuitem);
+	}
+	menuitem = gtk_image_menu_item_new_with_mnemonic(_("User action"));
+	
+	image = gtk_image_new_from_stock("gtk-execute", GTK_ICON_SIZE_MENU);
+	gtk_widget_set_name(image, "image");
+	gtk_widget_show(image);
+	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), action_submenu);
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	if (xconfig->actions_count < 1)
+		gtk_widget_set_sensitive(menuitem, FALSE);
+	
+	// Separator
+	/*menuitem = gtk_separator_menu_item_new();
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	gtk_widget_set_sensitive(menuitem, FALSE);*/
+
+	// View log
+	menuitem = gtk_menu_item_new_with_mnemonic(_("View log..."));
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_get_logfile), tray);
+	
+	// Separator
+	menuitem = gtk_separator_menu_item_new();
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	gtk_widget_set_sensitive(menuitem, FALSE);
+	
+	// Preference
+	menuitem = gtk_image_menu_item_new_from_stock("gtk-preferences", NULL);
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_preference), tray);
+
+	// Keyboard Preference
+	menuitem = gtk_menu_item_new_with_mnemonic(_("Keyboard Properties"));
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_kb_preference), tray);
+	
+	// About
+	menuitem = gtk_image_menu_item_new_from_stock("gtk-about", NULL);
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_about), tray);	
+
+	// Exit
+	menuitem = gtk_image_menu_item_new_from_stock("gtk-quit", NULL);
+	gtk_widget_show(menuitem);
+	gtk_container_add(GTK_CONTAINER(menu), menuitem);
+	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_exit), tray);
+
+	gtk_widget_show (GTK_WIDGET(menu));
+ 	return menu;
+}		
+#endif
+
 static gboolean tray_icon_release(GtkWidget *widget, GdkEventButton *event, struct _tray_icon *tray)
 {	
 	if (widget){};
@@ -224,11 +334,6 @@ gboolean tray_icon_press(GtkWidget *widget, GdkEventButton *event, struct _tray_
 		set_next_kbd_group();
 		return FALSE;
 	}
-
-	//if (GTK_IS_WIDGET(tray->tray_menu))
-		//gtk_widget_destroy(GTK_WIDGET(tray->tray_menu));
-	
-	//tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
 
 	gtk_menu_popup(GTK_MENU(tray->tray_menu), NULL, NULL, NULL, NULL, event->button, event->time);
 	
@@ -307,6 +412,10 @@ gboolean clock_check(gpointer dummy)
 	}
 
 	gtk_menu_item_set_label(GTK_MENU_ITEM(tray->status), status_text);
+
+#ifdef HAVE_APP_INDICATOR
+	gtk_menu_item_set_label(GTK_MENU_ITEM(tray->app_indicator_status), status_text);
+#endif
 	
 	gint kbd_gr = get_active_kbd_group();
 	if ((!tray->images[kbd_gr]) || (text_on_tray))
@@ -580,7 +689,7 @@ void create_tray_icon(void)
 	
 	app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
 	                                    
-	tray->app_indicator_menu = create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
+	tray->app_indicator_menu = create_app_indicator_menu(tray, xconfig->is_manual_mode(xconfig));
 	app_indicator_set_menu (tray->app_indicator, tray->app_indicator_menu);
 #endif
 	

@@ -34,6 +34,7 @@ struct _tray_icon
 	// App Indicator part
 	AppIndicator *app_indicator; 
 	GtkMenu *app_indicator_menu;
+	GtkWidget *app_indicator_status;
 #endif
 	
 	// Tray part
@@ -43,7 +44,6 @@ struct _tray_icon
 	GtkWidget *image;
 	GtkMenu *tray_menu;
 	GtkWidget *evbox;
-
 	GtkWidget *status;
 	
 	gint height;
