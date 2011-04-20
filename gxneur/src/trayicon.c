@@ -87,27 +87,34 @@ GtkMenu* create_tray_menu(struct _tray_icon *tray, int state)
 	GtkWidget *image;
 	
 	// Start/stop
-	//gchar *menu_text;
-	//gchar *menu_icon;
-	/*int xneur_pid = xconfig->get_pid(xconfig);
+	gchar *status_text;
+	int xneur_pid = xconfig->get_pid(xconfig);
 	if (xneur_pid != -1)
 	{
-		menu_text = _("Stop daemon");
-		//menu_icon = "gtk-stop";
+		status_text = g_strdup_printf("%s", _("Stop daemon"));
 	}
 	else
 	{
-		menu_text = _("Start daemon");
-		//menu_icon = "gtk-execute";
-	}*/
+		status_text = g_strdup_printf("%s", _("Start daemon"));
+	}
 
-	//if (tray->status == NULL)
-		tray->status = gtk_menu_item_new_with_mnemonic("йцукен");
-
-	gtk_widget_show(tray->status);
-	gtk_container_add(GTK_CONTAINER(menu), tray->status);
-	g_signal_connect(G_OBJECT(tray->status), "activate", G_CALLBACK(xneur_start_stop), tray);
-
+	if (tray->status == NULL)
+	{
+		tray->status = gtk_menu_item_new_with_mnemonic(status_text);
+		gtk_widget_show(tray->status);
+		gtk_container_add(GTK_CONTAINER(menu), tray->status);
+		g_signal_connect(G_OBJECT(tray->status), "activate", G_CALLBACK(xneur_start_stop), tray);
+	}
+	else
+	{
+		gtk_menu_item_set_label(GTK_MENU_ITEM(tray->status), status_text);
+	}
+	g_free(status_text);
+	
+	//gtk_widget_show(tray->app_indicator_status);
+	//gtk_container_add(GTK_CONTAINER(menu), tray->status);
+	//g_signal_connect(G_OBJECT(tray->status), "activate", G_CALLBACK(xneur_start_stop), tray);
+	
 	/*menuitem = gtk_check_menu_item_new_with_mnemonic(_("Auto-correction"));
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem), !state);
 	gtk_widget_show(menuitem);
@@ -218,10 +225,10 @@ gboolean tray_icon_press(GtkWidget *widget, GdkEventButton *event, struct _tray_
 		return FALSE;
 	}
 
-	if (GTK_IS_WIDGET(tray->tray_menu))
-		gtk_widget_destroy(GTK_WIDGET(tray->tray_menu));
+	//if (GTK_IS_WIDGET(tray->tray_menu))
+		//gtk_widget_destroy(GTK_WIDGET(tray->tray_menu));
 	
-	tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
+	//tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
 
 	gtk_menu_popup(GTK_MENU(tray->tray_menu), NULL, NULL, NULL, NULL, event->button, event->time);
 	
@@ -563,7 +570,7 @@ void create_tray_icon(void)
 	gtk_container_add(GTK_CONTAINER(tray->tray_icon), tray->evbox);
 	gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 
-	//tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
+	tray->tray_menu	= create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
 	
 #ifdef HAVE_APP_INDICATOR
 	// App indicator
