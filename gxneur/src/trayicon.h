@@ -44,6 +44,8 @@ struct _tray_icon
 	GtkMenu *tray_menu;
 	GtkWidget *evbox;
 
+	GtkWidget *status;
+	
 	gint height;
 };
 

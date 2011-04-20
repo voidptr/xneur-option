@@ -87,43 +87,40 @@ GtkMenu* create_tray_menu(struct _tray_icon *tray, int state)
 	GtkWidget *image;
 	
 	// Start/stop
-	/*gchar *menu_text;
-	gchar *menu_icon;
-	int xneur_pid = xconfig->get_pid(xconfig);
+	//gchar *menu_text;
+	//gchar *menu_icon;
+	/*int xneur_pid = xconfig->get_pid(xconfig);
 	if (xneur_pid != -1)
 	{
 		menu_text = _("Stop daemon");
-		menu_icon = "gtk-stop";
+		//menu_icon = "gtk-stop";
 	}
 	else
 	{
 		menu_text = _("Start daemon");
-		menu_icon = "gtk-execute";
-	}
+		//menu_icon = "gtk-execute";
+	}*/
 
-	GtkWidget *menuitem = gtk_image_menu_item_new_with_mnemonic(menu_text);
-	GtkWidget *image = gtk_image_new_from_stock(menu_icon, GTK_ICON_SIZE_MENU);
-	
-	gtk_widget_set_name(image, "image");
-	gtk_widget_show(image);
-	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
-	gtk_widget_show(menuitem);
-	gtk_container_add(GTK_CONTAINER(menu), menuitem);
-	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_start_stop), tray);
+	//if (tray->status == NULL)
+		tray->status = gtk_menu_item_new_with_mnemonic("йцукен");
 
-	menuitem = gtk_check_menu_item_new_with_mnemonic(_("Auto-correction"));
+	gtk_widget_show(tray->status);
+	gtk_container_add(GTK_CONTAINER(menu), tray->status);
+	g_signal_connect(G_OBJECT(tray->status), "activate", G_CALLBACK(xneur_start_stop), tray);
+
+	/*menuitem = gtk_check_menu_item_new_with_mnemonic(_("Auto-correction"));
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem), !state);
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_auto_manual), tray);
 	if (xneur_pid == -1)
-		gtk_widget_set_sensitive(menuitem, FALSE);
+		gtk_widget_set_sensitive(menuitem, FALSE);*/
 	
 	// Separator
 	menuitem = gtk_separator_menu_item_new();
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
-	gtk_widget_set_sensitive(menuitem, FALSE);*/
+	gtk_widget_set_sensitive(menuitem, FALSE);
 
 	// User Actions Submenu
 	GtkWidget *action_submenu = gtk_menu_new();
@@ -148,10 +145,10 @@ GtkMenu* create_tray_menu(struct _tray_icon *tray, int state)
 		gtk_widget_set_sensitive(menuitem, FALSE);
 	
 	// Separator
-	menuitem = gtk_separator_menu_item_new();
+	/*menuitem = gtk_separator_menu_item_new();
 	gtk_widget_show(menuitem);
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
-	gtk_widget_set_sensitive(menuitem, FALSE);
+	gtk_widget_set_sensitive(menuitem, FALSE);*/
 
 	// View log
 	menuitem = gtk_menu_item_new_with_mnemonic(_("View log..."));
@@ -279,7 +276,7 @@ gboolean clock_check(gpointer dummy)
 		return TRUE;
 
 	force_update = FALSE;
-	
+
 	xneur_old_pid = xneur_pid;
 	xneur_old_state = xneur_state;
 	xneur_old_group = xneur_group;
@@ -287,17 +284,22 @@ gboolean clock_check(gpointer dummy)
 	int lang = get_active_kbd_group();
 	
 	gchar *hint;
+	gchar *status_text;
 	float saturation;
 	if (xneur_pid != -1)
 	{
 		saturation = 1.0;
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher running ("), xconfig->handle->languages[lang].dir, ")");
+		status_text = g_strdup_printf("%s", _("Stop daemon"));
 	}
 	else
 	{
 		saturation = 0.25;
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher stopped ("), xconfig->handle->languages[lang].dir, ")");
+		status_text = g_strdup_printf("%s", _("Start daemon"));
 	}
+
+	gtk_menu_item_set_label(GTK_MENU_ITEM(tray->status), status_text);
 	
 	gint kbd_gr = get_active_kbd_group();
 	if ((!tray->images[kbd_gr]) || (text_on_tray))
@@ -349,7 +351,8 @@ gboolean clock_check(gpointer dummy)
 	gtk_tooltips_set_tip(tray->tooltip, GTK_WIDGET(tray->tray_icon), hint, NULL);
 
 	g_free (hint);
-
+	g_free (status_text);
+	
 #ifdef HAVE_APP_INDICATOR
 	// App indicator part
 	if (xneur_pid != -1)
@@ -363,10 +366,6 @@ gboolean clock_check(gpointer dummy)
 
 	if (!show_icon_on_panel_indicators)
 		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_PASSIVE);
-	
-	//gtk_widget_destroy(GTK_WIDGET(tray->app_indicator_menu));
-	//tray->app_indicator_menu = create_tray_menu(tray, xconfig->is_manual_mode(xconfig));
-	//app_indicator_set_menu (tray->app_indicator, tray->app_indicator_menu);
 
 	char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
 

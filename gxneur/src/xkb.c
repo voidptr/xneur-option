@@ -98,16 +98,12 @@ int get_kbd_group_count(void)
 	}
 	
 	XkbGetControls(dpy, XkbAllControlsMask, kbd_desc_ptr);
-	XkbGetNames(dpy, XkbSymbolsNameMask, kbd_desc_ptr);
-	XkbGetNames(dpy, XkbGroupNamesMask, kbd_desc_ptr);
 	XCloseDisplay(dpy);
 	
-	if (kbd_desc_ptr->names == NULL)
-		return 0;
-
 	if (kbd_desc_ptr->ctrls != NULL)
 	{
 		int num_groups = kbd_desc_ptr->ctrls->num_groups;
+		XkbFreeControls(kbd_desc_ptr, XkbAllControlsMask, True);
 		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 		return num_groups;
 	}
