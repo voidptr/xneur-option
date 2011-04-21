@@ -353,7 +353,23 @@ struct _xneur_handle *xneur_handle_create (void)
 		}
 	}
 #endif
-	
+
+	for (int lang = 0; lang < handle->total_languages; lang++)
+	{
+		if (handle->languages[lang].dictionary->data_count == 0 &&
+		    handle->languages[lang].proto->data_count == 0 &&
+		    handle->languages[lang].big_proto->data_count == 0
+#ifdef WITH_ASPELL
+			&& handle->has_spell_checker[lang] == 0
+#endif
+#ifdef WITH_ENCHANT
+			&& handle->has_enchant_checker[lang] == 0
+#endif
+		   )
+		{
+			handle->languages[lang].excluded	= TRUE;
+		}
+	}
 	return handle;
 }
 
