@@ -192,8 +192,7 @@ static void focus_update_grab_events(struct _focus *p, int mode)
 		grab_spec_keys(p->owner_window, FALSE);
 
 		//set_mask_to_window(rw, FOCUS_CHANGE_MASK);
-		//set_event_mask(p->owner_window, None);
-		set_event_mask(p->owner_window, FOCUS_CHANGE_MASK);
+		set_event_mask(p->owner_window, None);
 	}
 	else
 	{
