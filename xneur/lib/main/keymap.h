@@ -26,15 +26,23 @@
 
 int   get_keycode_mod(int keyboard_group);
 int   get_languages_mask(void);
-void  get_keysyms_by_string(char *keyname, KeySym *Lower, KeySym *Upper);
-char* keycode_to_symbol(KeyCode kc, int group, int state);
 void  purge_keymap_caches(void);
+
+struct keycode_to_symbol_pair;
+struct symbol_to_keycode_pair;
 
 struct _keymap
 {
 	struct _xneur_handle *handle;
+
+	Display *display;
 	
 	KeySym *keymap;
+
+	struct keycode_to_symbol_pair *keycode_to_symbol_cache;
+	struct symbol_to_keycode_pair *symbol_to_keycode_cache;
+	size_t keycode_to_symbol_cache_pos;
+	size_t symbol_to_keycode_cache_pos;
 
 	int latin_group;
 	int latin_group_mask;
@@ -45,7 +53,10 @@ struct _keymap
 	unsigned int numlock_mask;
 	unsigned int scrolllock_mask;
 	unsigned int capslock_mask;
-	
+
+	void  (*purge_caches)(struct _keymap *p);
+	void  (*get_keysyms_by_string)(struct _keymap *p, char *keyname, KeySym *Lower, KeySym *Upper);
+	char* (*keycode_to_symbol)(struct _keymap *p, KeyCode kc, int group, int state);
 	char  (*get_ascii)(struct _keymap *p, const char *sym, int* preferred_lang, KeyCode *kc, int *modifier, size_t* symbol_len);
 	char  (*get_cur_ascii_char) (struct _keymap *p, XEvent e);
 	void  (*convert_text_to_ascii)(struct _keymap *p, char *text, KeyCode *kc, int *kc_mod);
@@ -54,6 +65,6 @@ struct _keymap
 	void  (*uninit) (struct _keymap *p);
 };
 
-struct _keymap *keymap_init(struct _xneur_handle *handle);
+struct _keymap *keymap_init(struct _xneur_handle *handle, Display *display);
 
 #endif /* _KEYMAP_H_ */

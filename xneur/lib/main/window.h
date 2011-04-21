@@ -41,6 +41,7 @@ struct _window
 	void (*destroy) (struct _window *p);
 	void (*move_window) (struct _window *p, int x, int y);
 	int  (*init_keymap) (struct _window *p);
+	void (*uninit_keymap) (struct _window *p);
 	void (*uninit) (struct _window *p);
 };
 

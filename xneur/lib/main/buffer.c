@@ -245,7 +245,7 @@ static void buffer_save(struct _buffer *p, char *file_name, Window window)
 			continue;
 		}
 
-		char *symbol = keycode_to_symbol(p->keycode[i], -1, p->keycode_modifiers[i]);
+		char *symbol = p->keymap->keycode_to_symbol(p->keymap, p->keycode[i], -1, p->keycode_modifiers[i]);
 		if (symbol == NULL)
 		{
 			fprintf(stream, "<?>");
@@ -306,11 +306,11 @@ static void buffer_set_i18n_content(struct _buffer *p)
 		for (int i = 0; i < p->handle->total_languages; i++)
 		{
 		
-			char *symbol = keycode_to_symbol(p->keycode[k], i, modifier & (~ShiftMask));
+			char *symbol = p->keymap->keycode_to_symbol(p->keymap, p->keycode[k], i, modifier & (~ShiftMask));
 			if (symbol == NULL)
 				continue;
 			
-			char *symbol_unchanged = keycode_to_symbol(p->keycode[k], i, modifier);
+			char *symbol_unchanged = p->keymap->keycode_to_symbol(p->keymap, p->keycode[k], i, modifier);
 			if (symbol_unchanged == NULL)
 				continue;
 			
@@ -356,9 +356,7 @@ static void buffer_set_content(struct _buffer *p, const char *new_content)
 	memcpy(p->content, content, p->cur_pos);
 	free(content);
 
-	struct _keymap *keymap = keymap_init(p->handle);
-	keymap->convert_text_to_ascii(keymap, p->content, p->keycode, p->keycode_modifiers);
-	keymap->uninit(keymap);
+	p->keymap->convert_text_to_ascii(p->keymap, p->content, p->keycode, p->keycode_modifiers);
 
 	p->cur_pos = strlen(p->content);
 	set_new_size(p, p->cur_pos + 1);
@@ -422,11 +420,11 @@ static void buffer_add_symbol(struct _buffer *p, char sym, KeyCode keycode, int 
 
 	for (int i = 0; i < p->handle->total_languages; i++)
 	{
-		char *symbol = keycode_to_symbol(keycode, i, modifier & (~ShiftMask));
+		char *symbol = p->keymap->keycode_to_symbol(p->keymap, keycode, i, modifier & (~ShiftMask));
 		if (symbol == NULL)
 			continue;
 
-		char *symbol_unchanged = keycode_to_symbol(keycode, i, modifier);
+		char *symbol_unchanged = p->keymap->keycode_to_symbol(p->keymap, keycode, i, modifier);
 		if (symbol_unchanged == NULL)
 			continue;
 		
@@ -517,7 +515,7 @@ static char *buffer_get_utf_string_on_kbd_group(struct _buffer *p, int group)
 		{
 			state = state & (~keyboard_groups[j]);
 		}
-		char *symbol = keycode_to_symbol(p->keycode[i], group, state);
+		char *symbol = p->keymap->keycode_to_symbol(p->keymap, p->keycode[i], group, state);
 		if (symbol)
 		{
 			utf_string = (char *) realloc(utf_string, strlen(utf_string) * sizeof(char) + strlen(symbol) + 1);
@@ -573,12 +571,14 @@ static void buffer_uninit(struct _buffer *p)
 	log_message(DEBUG, _("String is freed"));
 }
 
-struct _buffer* buffer_init(struct _xneur_handle *handle)
+struct _buffer* buffer_init(struct _xneur_handle *handle, struct _keymap *keymap)
 {
 	struct _buffer *p = (struct _buffer *) malloc(sizeof(struct _buffer));
 	bzero(p, sizeof(struct _buffer));
 
 	p->handle = handle;
+
+	p->keymap = keymap;
 	
 	p->cur_size		= INIT_STRING_LENGTH;
 

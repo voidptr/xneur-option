@@ -23,6 +23,7 @@
 #include <X11/Xutil.h>
 
 #include "xneur.h"
+#include "keymap.h"
 
 struct _buffer_content
 {
@@ -37,6 +38,8 @@ struct _buffer
 	struct _xneur_handle *handle;
 	
 	struct _buffer_content *i18n_content;
+
+	struct _keymap *keymap;
 	
 	char *content;		// String itself
 	KeyCode *keycode;	// Array of string chars keycodes
@@ -63,6 +66,6 @@ struct _buffer
 	void (*uninit) (struct _buffer *p);
 };
 
-struct _buffer* buffer_init(struct _xneur_handle *handle);
+struct _buffer* buffer_init(struct _xneur_handle *handle, struct _keymap *keymap);
 
 #endif /* _BUFFER_H_ */

@@ -62,6 +62,26 @@ void* xndebug_malloc(int len, char *file, int line)
 	return mem;
 }
 
+void* xndebug_calloc(int n, int size, char *file, int line)
+{
+	xndebug_init();
+
+	void *mem = calloc(n, size);
+
+	char *pointer = (char *) malloc(pointer_len * sizeof(char));
+	sprintf(pointer, "%p", mem);
+
+	//log_message(TRACE, _("Callocating memory pointer %p (at %s:%d)"), mem, file, line);
+
+	struct _list_char_data *data = allocates->add(allocates, pointer);
+	data->debug_value = line;
+	data->debug_string = file;
+
+	free(pointer);
+
+	return mem;
+}	
+
 void xndebug_free(void *mem, char *file, int line)
 {
 	xndebug_init();

@@ -472,14 +472,14 @@ static void program_process_input(struct _program *p)
 			{
 				log_message(TRACE, _("Received MappingNotify (event type %d)"), type);
 
-				main_window->keymap->uninit(main_window->keymap);
 				p->buffer->uninit(p->buffer);
+				main_window->uninit_keymap(main_window);
 				
 				xneur_handle_destroy(xconfig->handle);
 				xconfig->handle = xneur_handle_create();
 				
-				p->buffer = buffer_init(xconfig->handle);
-				main_window->keymap = keymap_init(xconfig->handle);
+				main_window->init_keymap(main_window);
+				p->buffer = buffer_init(xconfig->handle, main_window->keymap);
 				
 				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
 				
@@ -1621,7 +1621,7 @@ static void program_check_capital_letter_after_dot(struct _program *p)
 	if (p->event->event.xkey.state & ShiftMask)
 		return;
 
-	char *symbol = keycode_to_symbol(p->event->event.xkey.keycode, get_curr_keyboard_group(), p->event->event.xkey.state);
+	char *symbol = main_window->keymap->keycode_to_symbol(main_window->keymap, p->event->event.xkey.keycode, get_curr_keyboard_group(), p->event->event.xkey.state);
 	if (symbol == NULL)
 		return;
 
@@ -1724,7 +1724,7 @@ static void program_check_pattern(struct _program *p, int selection)
 	
 	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 
-	struct _buffer *tmp_buffer = buffer_init(xconfig->handle);
+	struct _buffer *tmp_buffer = buffer_init(xconfig->handle, main_window->keymap);
 	
 	tmp_buffer->set_content(tmp_buffer, pattern_data->string + strlen(word)*sizeof(char));
 
@@ -2280,7 +2280,7 @@ struct _program* program_init(void)
 	
 	p->event			= event_init();			// X Event processor
 	p->focus			= focus_init();			// X Input Focus and Pointer processor
-	p->buffer			= buffer_init(xconfig->handle);		// Input string buffer
+	p->buffer			= buffer_init(xconfig->handle, main_window->keymap);	// Input string buffer
 	
 	p->plugin			= plugin_init();
 	for (int i=0; i<xconfig->plugins->data_count; i++)

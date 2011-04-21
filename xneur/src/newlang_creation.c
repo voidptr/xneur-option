@@ -43,6 +43,8 @@ void generate_protos(void)
 	printf("\nPlease, define new language group and press Enter to continue...\n");
 	printf("(see above keyboard layouts groups presented in system): \n");
 
+	struct _keymap *keymap = main_window->keymap;
+
 	int new_lang_group;
 	if (!scanf("%d", &new_lang_group))
 		exit(EXIT_SUCCESS);
@@ -71,14 +73,14 @@ void generate_protos(void)
 	{
 		printf("%d\n", i);
 
-		char *sym_i = keycode_to_symbol(i, new_lang_group, 0);
+		char *sym_i = keymap->keycode_to_symbol(keymap, i, new_lang_group, 0);
 		if (sym_i == NULL)
 			continue;
 		if (isblank(sym_i[0]) || iscntrl(sym_i[0]) || isspace(sym_i[0]) || ispunct(sym_i[0]) || isdigit(sym_i[0]))
 			continue;
 		for (int j = 0; j < 100; j++)
 		{
-			char *sym_j = keycode_to_symbol(j, new_lang_group, 0);
+			char *sym_j = keymap->keycode_to_symbol(keymap, j, new_lang_group, 0);
 			if (sym_j == NULL)
 				continue;
 			if (isblank(sym_j[0]) || iscntrl(sym_j[0]) || isspace(sym_j[0]) || ispunct(sym_j[0]) || isdigit(sym_j[0]))
@@ -98,7 +100,7 @@ void generate_protos(void)
 
 			for (int k = 0; k < 100; k++)
 			{
-				char *sym_k = keycode_to_symbol(k, new_lang_group, 0);
+				char *sym_k = keymap->keycode_to_symbol(keymap, k, new_lang_group, 0);
 				if (sym_k == NULL)
 					continue;
 				if (isblank(sym_k[0]) || iscntrl(sym_k[0]) || isspace(sym_k[0]) || ispunct(sym_k[0]) || isdigit(sym_k[0]))
@@ -121,14 +123,14 @@ void generate_protos(void)
 
 	for (int i = 0; i < 100; i++)
 	{
-		char *sym_i = keycode_to_symbol(i, new_lang_group, 1 << 7);
+		char *sym_i = keymap->keycode_to_symbol(keymap, i, new_lang_group, 1 << 7);
 		if (sym_i == NULL)
 			continue;
 		if (isblank(sym_i[0]) || iscntrl(sym_i[0]) || isspace(sym_i[0]) || ispunct(sym_i[0]) || isdigit(sym_i[0]))
 			continue;
 		for (int j = 0; j < 100; j++)
 		{
-			char *sym_j = keycode_to_symbol(j, new_lang_group, 1 << 7);
+			char *sym_j = keymap->keycode_to_symbol(keymap, j, new_lang_group, 1 << 7);
 			if (sym_j == NULL)
 				continue;
 			if (isblank(sym_j[0]) || iscntrl(sym_j[0]) || isspace(sym_j[0]) || ispunct(sym_j[0]) || isdigit(sym_j[0]))
@@ -148,7 +150,7 @@ void generate_protos(void)
 
 			for (int k = 0; k < 100; k++)
 			{
-				char *sym_k = keycode_to_symbol(k, new_lang_group, 1 << 7);
+				char *sym_k = keymap->keycode_to_symbol(keymap, k, new_lang_group, 1 << 7);
 				if (sym_k == NULL)
 					continue;
 				if (isblank(sym_k[0]) || iscntrl(sym_k[0]) || isspace(sym_k[0]) || ispunct(sym_k[0]) || isdigit(sym_k[0]))

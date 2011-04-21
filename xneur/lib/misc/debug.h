@@ -27,17 +27,20 @@
 #define _DEBUG_H_
 
 #undef malloc
+#undef calloc
 #undef free
 #undef strdup
 #undef realloc
 
 #define malloc(len)		xndebug_malloc((len), __FILE__, __LINE__)
+#define calloc(n, size)		xndebug_calloc((n), (size), __FILE__, __LINE__)
 #define free(mem)		xndebug_free((mem), __FILE__, __LINE__)
 #define strdup(str)		xndebug_strdup((str), __FILE__, __LINE__)
 #define realloc(mem, len)	xndebug_realloc((mem), (len), __FILE__, __LINE__)
 
 void  xndebug_init(void);
 void* xndebug_malloc(int len, char *file, int line);
+char* xndebug_calloc(int n, int size, char *file, int line);
 void  xndebug_free(void *mem, char *file, int line);
 char* xndebug_strdup(const char *str, char *file, int line);
 void* xndebug_realloc(void *mem, int len, char *file, int line);

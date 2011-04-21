@@ -145,10 +145,17 @@ static void window_destroy(struct _window *p)
 
 static int window_init_keymap(struct _window *p)
 {
-	p->keymap = keymap_init(p->handle);
+	p->keymap = keymap_init(p->handle, p->display);
 	if (p->keymap == NULL)
 		return FALSE;
 	return TRUE;
+}
+
+static void window_uninit_keymap(struct _window *p)
+{
+	if (p->keymap != NULL)
+		p->keymap->uninit(p->keymap),
+		p->keymap = NULL;
 }
 
 static void window_uninit(struct _window *p)
@@ -173,6 +180,7 @@ struct _window* window_init(struct _xneur_handle *handle)
 	p->create		= window_create;
 	p->destroy		= window_destroy;
 	p->init_keymap		= window_init_keymap;
+	p->uninit_keymap	= window_uninit_keymap;
 	p->uninit		= window_uninit;
 
 	return p;

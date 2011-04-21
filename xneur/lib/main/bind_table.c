@@ -142,7 +142,7 @@ static void bind_action(enum _hotkey_action action)
 
 	
 	KeySym key_sym, key_sym_shift;
-	get_keysyms_by_string(xconfig->hotkeys[action].key, &key_sym, &key_sym_shift);
+	main_window->keymap->get_keysyms_by_string(main_window->keymap, xconfig->hotkeys[action].key, &key_sym, &key_sym_shift);
 	if (key_sym == NoSymbol)
 		key_sym = None;
 	if (key_sym_shift == NoSymbol)
@@ -180,7 +180,7 @@ static void bind_user_action(int action)
 		ubtable[action].modifier_mask = ubtable[action].modifier_mask + 64;	// Win
 
 	KeySym key_sym, key_sym_shift;
-	get_keysyms_by_string(xconfig->actions[action].hotkey.key, &key_sym, &key_sym_shift);
+	main_window->keymap->get_keysyms_by_string(main_window->keymap, xconfig->actions[action].hotkey.key, &key_sym, &key_sym_shift);
 	if (key_sym == NoSymbol)
 		key_sym = None;
 	if (key_sym_shift == NoSymbol)

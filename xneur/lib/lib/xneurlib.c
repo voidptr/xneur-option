@@ -33,6 +33,7 @@
 #endif
 
 #include "xneur.h"
+#include "window.h"
 
 #include "xnconfig_files.h"
 
@@ -44,6 +45,8 @@
 #include "detection.h"
 
 #include "log.h"
+
+extern struct _window *main_window;
 
 struct _xneur_config *xconfig				= NULL;
 
@@ -414,12 +417,15 @@ int xneur_get_layout (struct _xneur_handle *handle, char *word)
 {
 	if (!word || handle == NULL)
 		return -1;
-	
-	struct _buffer *buffer = buffer_init(handle);
+
+	struct _buffer *buffer = buffer_init(handle, main_window->keymap);
+
 	buffer->set_content(buffer, word);
 	int cur_lang = get_curr_keyboard_group();
 	int new_lang = check_lang(handle, buffer, cur_lang);
+
 	buffer->uninit(buffer);
+
 	// The word is suitable for all languages, return -1
 	if (new_lang == NO_LANGUAGE)
 		new_lang = -1;
@@ -431,18 +437,23 @@ char *xneur_get_word (struct _xneur_handle *handle, char *word)
 {
 	if (!word || handle == NULL)
 		return NULL;
-	
-	struct _buffer *buffer = buffer_init(handle);
+
+	char *result = NULL;
+
+	struct _buffer *buffer = buffer_init(handle, main_window->keymap);
+
 	buffer->set_content(buffer, word);
 	int cur_lang = get_curr_keyboard_group();
 	int new_lang = check_lang(handle, buffer, cur_lang);
 	if (new_lang == NO_LANGUAGE)
-		return strdup(word);
+		result = strdup(word);
+	else
+		buffer->set_lang_mask(buffer, new_lang),
+		result = buffer->get_utf_string(buffer);
 
-	buffer->set_lang_mask(buffer, new_lang);
-	char *new_word = buffer->get_utf_string(buffer);
 	buffer->uninit(buffer);
 
-	return new_word;
+	return result;
 }
+
 
