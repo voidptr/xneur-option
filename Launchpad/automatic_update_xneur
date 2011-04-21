@@ -86,7 +86,6 @@ debuild -S -sa
 # Full list: hardy intrepid jaunty karmic lucid maverick natty
 # But not all of them are available, see: https://launchpad.net/ubuntu/+ppas
 # begin update for other releases
-cp debian/changelog ../changelog # copy basic changelog
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "maverick" -v "${NEW_VER}-0maverick" \
