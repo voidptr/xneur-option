@@ -214,34 +214,29 @@ static void keymap_get_keysyms_by_string(struct _keymap *p, char *keyname, KeySy
 
 	KeySym inbound_key = XStringToKeysym(keyname);
 
-	int min_keycode, max_keycode;
-	XDisplayKeycodes(p->display, &min_keycode, &max_keycode);
+	KeySym *keymap = p->keymap;
 
-	int keysyms_per_keycode;
-	KeySym *keymap = XGetKeyboardMapping(p->display, min_keycode, max_keycode - min_keycode + 1, &keysyms_per_keycode);
-	KeySym *to_free = keymap;
-	
-	for (int i = min_keycode; i <= max_keycode; i++)
+	for (int i = p->min_keycode; i <= p->max_keycode; i++)
 	{
 		for (int j = 0; j < 2; j++)
 		{
-			if (keymap[j] == NoSymbol)
+			if (p->keymap[j] == NoSymbol)
 				continue;
 
-			if (keymap[j] != inbound_key)
+			if (p->keymap[j] != inbound_key)
 				continue;
 
-			*lower = keymap[0];
-			*upper = keymap[1];
+			*lower = p->keymap[0];
+			*upper = p->keymap[1];
 
-			XFree(to_free);
+			p->keymap = keymap;
 			return;
 		}
 
-		keymap += keysyms_per_keycode;
+		p->keymap += p->keysyms_per_keycode;
 	}
 
-	XFree(to_free);
+	p->keymap = keymap;
 }
 
 // Private
