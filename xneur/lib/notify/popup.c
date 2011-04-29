@@ -49,7 +49,6 @@ extern struct _xneur_config *xconfig;
 static const char *icon = "distributor-logo";
 static const char *type = NULL;
 static const NotifyUrgency urgency = NOTIFY_URGENCY_CRITICAL;
-static const int expire_timeout = NOTIFY_EXPIRES_DEFAULT;
 
 time_t timestamp = 0;
 
@@ -86,7 +85,7 @@ static void popup_show_thread(struct _popup_body *popup_body)
 		
 	notify_notification_set_category(notify, type);
 	notify_notification_set_urgency(notify, urgency);
-	notify_notification_set_timeout(notify, expire_timeout);
+	notify_notification_set_timeout(notify, xconfig->popup_expire_timeout);
 
 	notify_notification_show(notify, NULL);
 
@@ -98,11 +97,6 @@ static void popup_show_thread(struct _popup_body *popup_body)
 
 	notify_notification_clear_actions(notify);
 
-	GError *error = NULL;
-	notify_notification_close(notify, &error);
-	if (error != NULL)
-		g_error_free(error);
-	
 	g_object_unref(G_OBJECT(notify));
 }
 

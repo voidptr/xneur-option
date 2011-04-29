@@ -65,7 +65,8 @@ static const char *option_names[] = 	{
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
 						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
-						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput"
+						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput",
+						"PopupExpireTimeout"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -835,6 +836,17 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->tracking_input = index;
 			break;
 		}
+		case 54: // PopupExpireTimeout
+		{
+
+			p->popup_expire_timeout = atoi(param);
+			if (p->popup_expire_timeout < 0 || p->popup_expire_timeout > 30000)
+			{
+				log_message(WARNING, _("Popup expire timeout must be between 0 and 30000"));
+				p->popup_expire_timeout = 0;
+			}
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1253,6 +1265,11 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#ShowPopup Yes\n");
 	fprintf(stream, "ShowPopup %s\n\n", p->get_bool_name(p->show_popup));
 
+	fprintf(stream, "# This option defines popup expiration interval in milliseconds\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#PopupExpireTimeout 1000\n");
+	fprintf(stream, "PopupExpireTimeout %d\n\n", p->popup_expire_timeout);
+
 	fprintf(stream, "# Binds popup messages for some actions\n");
 	for (int notify = 0; notify < MAX_NOTIFIES; notify++)
 	{
@@ -1460,7 +1477,9 @@ struct _xneur_config* xneur_config_init(void)
 
 	p->dont_send_key_release = FALSE;
 	p->tracking_input = TRUE;
-	
+
+	p->popup_expire_timeout = 1000;
+
 	// Function mapping
 	p->get_home_dict_path		= get_home_file_path_name;
 	p->get_global_dict_path		= get_file_path_name;

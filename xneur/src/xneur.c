@@ -177,6 +177,7 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Don't process word when pressed Enter or Tab mode set to %s"), _(xconfig->get_bool_name(xconfig->dont_process_when_press_enter)));
 	log_message(LOG, _("Show OSD mode set to %s"), _(xconfig->get_bool_name(xconfig->show_osd)));
 	log_message(LOG, _("Show popup messages mode set to %s"), _(xconfig->get_bool_name(xconfig->show_popup)));
+	log_message(LOG, _("Popup expire timeout set to %d"), xconfig->popup_expire_timeout);
 	log_message(LOG, _("Check language on input process mode set to %s"), _(xconfig->get_bool_name(xconfig->check_lang_on_process)));
 	log_message(LOG, _("Pattern minig and recognition (autocompletion) mode set to %s"), _(xconfig->get_bool_name(xconfig->autocompletion)));
 	log_message(LOG, _("Add space after autocompletion mode set to %s"), _(xconfig->get_bool_name(xconfig->add_space_after_autocompletion)));

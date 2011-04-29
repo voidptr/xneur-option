@@ -209,6 +209,7 @@ struct _xneur_config
 	int   show_popup;				// Show popups
 	int   show_osd;					// Show OSD
 	char  *osd_font;
+	int   popup_expire_timeout;                     // Popup expire timeout in milliseconds
 
 	int   abbr_ignore_layout;			// Ignore keyboard layout for abbreviations
 
