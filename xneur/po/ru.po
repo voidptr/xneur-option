@@ -126,7 +126,7 @@ msgstr "   Неиспользуется группа XKB '%s', раскладк�
 
 #: src/xneur.c:133
 #, c-format
-msgid "   Encluded XKB Group '%s', layout '%s', group '%d'"
+msgid "   Included XKB Group '%s', layout '%s', group '%d'"
 msgstr "   Используется группа XKB '%s', раскладка '%s', группа '%d'"
 
 #: src/xneur.c:137
@@ -966,7 +966,8 @@ msgstr "Используется локаль %s"
 #: lib/main/keymap.c:137
 #, c-format
 msgid "Failed to look up symbol for keycode %d and modifier 0x%x!"
-msgstr "Ошибка определения символа для клавиши с кодом %d и модификатором 0x%x!"
+msgstr ""
+"Ошибка определения символа для клавиши с кодом %d и модификатором 0x%x!"
 
 #: lib/main/keymap.c:138
 #, c-format

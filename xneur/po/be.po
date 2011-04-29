@@ -87,9 +87,8 @@ msgstr ""
 msgid "Expand abbreviations"
 msgstr ""
 
-#, fuzzy
 msgid "Autocompletion confirmation"
-msgstr "Чытаюцца наладжваньні..."
+msgstr ""
 
 msgid "Block/Unblock keyboard and mouse events"
 msgstr ""
@@ -128,7 +127,7 @@ msgstr ""
 
 #: src/xneur.c:133
 #, c-format
-msgid "   Encluded XKB Group '%s', layout '%s', group '%d'"
+msgid "   Included XKB Group '%s', layout '%s', group '%d'"
 msgstr ""
 
 #: src/xneur.c:137
