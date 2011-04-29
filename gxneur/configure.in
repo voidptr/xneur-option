@@ -34,12 +34,16 @@ else
 	AC_SUBST(X11_LIBS)
 fi
 
-PKG_CHECK_MODULES(GDK, [gdk-2.0])
-PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.18.0], found_gtk="yes", found_gtk="no")
-if test "x$found_gtk" = "xno"; then
-	PKG_CHECK_MODULES(GTK, [gtk+-2.0 < 2.18.0])
+PKG_CHECK_MODULES(GTK3, [gtk+-3.0], found_gtk3="yes", found_gtk3="no")
+if test "x$found_gtk3" = "xno"; then
+	PKG_CHECK_MODULES(GTK2, [gtk+-2.0 >= 2.20.0], found_gtk2="yes", found_gtk2="no")
+	if test "x$found_gtk2" = "xno"; then
+		PKG_CHECK_MODULES(GTK2, [gtk+-2.0 < 2.20.0])
+	else
+		AC_DEFINE(WITH_GTK_NEW, 1, [Define if you use GTK+ >= 2.20.0 support])
+	fi
 else
-	AC_DEFINE(WITH_GTK, 1, [Define if you use GTK+2.0 >= 2.18.0 support])
+	AC_DEFINE(WITH_GTK_NEW, 1, [Define if you use GTK+ >= 2.20.0 support])
 fi
 
 
@@ -100,9 +104,9 @@ $PACKAGE $VERSION configured successfully:
 
 EOF
 
-if test "x$found_gtk" != "xno"; then
+if (test "x$found_gtk2" != "xno") || (test "x$found_gtk3" != "xno"); then
 cat <<EOF
-	Use GTK+2.0 >= 2.18.0 support
+	Use GTK+ >= 2.20.0 support
 
 EOF
 fi

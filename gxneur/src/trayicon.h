@@ -26,24 +26,19 @@
 #include <libappindicator/app-indicator.h>
 #endif
 
-#include "tray_widget.h"
+//#include "tray_widget.h"
 
 struct _tray_icon
 {
 #ifdef HAVE_APP_INDICATOR
 	// App Indicator part
-	AppIndicator *app_indicator; 
-	GtkMenu *app_indicator_menu;
-	GtkWidget *app_indicator_status;
-#endif
-	
+	AppIndicator *app_indicator;
+#else
 	// Tray part
-	GtkTrayIcon *tray_icon;
+	GtkStatusIcon *tray_icon;
+#endif
 	GdkPixbuf  *images[MAX_LAYOUTS];
-	GtkTooltips *tooltip;
-	GtkWidget *image;
-	GtkMenu *tray_menu;
-	GtkWidget *evbox;
+	GtkMenu *menu;
 	GtkWidget *status;
 	
 	gint height;
