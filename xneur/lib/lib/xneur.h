@@ -40,6 +40,7 @@ struct _xneur_language
 	char *name;
 	int  group;
 	int  excluded;
+	int  disable_auto_detection;
 
 	struct _list_char *temp_dictionary;
 	struct _list_char *dictionary;

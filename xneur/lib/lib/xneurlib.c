@@ -204,6 +204,7 @@ struct _xneur_handle *xneur_handle_create (void)
 		handle->languages[handle->total_languages].dir[2] = NULLSYM;
 		handle->languages[handle->total_languages].group	= group;
 		handle->languages[handle->total_languages].excluded	= FALSE;
+		handle->languages[handle->total_languages].disable_auto_detection	= FALSE;
 		handle->total_languages++;
 
 		//if (group_name != NULL)
@@ -260,12 +261,6 @@ struct _xneur_handle *xneur_handle_create (void)
 		if (lang_dir != NULL)
 			free(lang_dir);
 
-		if (handle->languages[lang].dictionary->data_count == 0 &&
-		    handle->languages[lang].proto->data_count == 0 &&
-		    handle->languages[lang].big_proto->data_count == 0)
-		{
-			handle->languages[lang].excluded	= TRUE;
-		}
 	}
 
 #ifdef WITH_ASPELL
@@ -356,19 +351,18 @@ struct _xneur_handle *xneur_handle_create (void)
 
 	for (int lang = 0; lang < handle->total_languages; lang++)
 	{
-		if (handle->languages[lang].dictionary->data_count == 0 &&
-		    handle->languages[lang].proto->data_count == 0 &&
-		    handle->languages[lang].big_proto->data_count == 0
+		handle->languages[lang].disable_auto_detection |=
+			handle->languages[lang].excluded || (
+				handle->languages[lang].dictionary->data_count == 0 &&
+				handle->languages[lang].proto->data_count == 0 &&
+				handle->languages[lang].big_proto->data_count == 0
 #ifdef WITH_ASPELL
-			&& handle->has_spell_checker[lang] == 0
+				&& handle->has_spell_checker[lang] == 0
 #endif
 #ifdef WITH_ENCHANT
-			&& handle->has_enchant_checker[lang] == 0
+				&& handle->has_enchant_checker[lang] == 0
 #endif
-		   )
-		{
-			handle->languages[lang].excluded	= TRUE;
-		}
+			);
 	}
 	return handle;
 }

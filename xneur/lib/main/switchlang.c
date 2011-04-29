@@ -38,9 +38,7 @@ extern struct _window *main_window;
 int get_curr_keyboard_group(void)
 {
 	XkbStateRec xkbState;
-	Display *display = XOpenDisplay(NULL);
-	XkbGetState(display, XkbUseCoreKbd, &xkbState);
-	XCloseDisplay(display);
+	XkbGetState(main_window->display, XkbUseCoreKbd, &xkbState);
 	int group = xkbState.group;
 	//XFree(xkbState);
 	return group;

@@ -957,17 +957,18 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_CHANGE_STRING:	// User needs to change current string
 		{
-			int next_lang = get_curr_keyboard_group();
+			int curr_lang = get_curr_keyboard_group();
+			int next_lang = curr_lang;
 			do
 			{
 				next_lang++;
 				if (next_lang >= xconfig->handle->total_languages)
 					next_lang = 0;
-			} while (xconfig->handle->languages[next_lang].excluded && (next_lang != get_curr_keyboard_group()));
+			} while (xconfig->handle->languages[next_lang].excluded && (next_lang != curr_lang));
 			
-			if (next_lang == get_curr_keyboard_group())
+			if (next_lang == curr_lang)
 				break;
-				
+
 			int action;
 			if (next_lang == 0)
 				action = CHANGE_STRING_TO_LAYOUT_0;
@@ -992,15 +993,16 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		{
 			p->action_mode = action;
 
-			int next_lang = get_curr_keyboard_group();
+			int curr_lang = get_curr_keyboard_group();
+			int next_lang = curr_lang;
 			do
 			{
 				next_lang++;
 				if (next_lang >= xconfig->handle->total_languages)
 					next_lang = 0;
-			} while (xconfig->handle->languages[next_lang].excluded && (next_lang != get_curr_keyboard_group()));
+			} while (xconfig->handle->languages[next_lang].excluded && (next_lang != curr_lang));
 			
-			if (next_lang == get_curr_keyboard_group())
+			if (next_lang == curr_lang)
 				break;
 
 			if ((xconfig->educate) && (action == ACTION_CHANGE_WORD))
