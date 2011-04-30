@@ -213,7 +213,7 @@ GdkPixbuf *DrawOverlay (GdkPixbuf *pb, int w, int h, gchar *text)
 	pango_layout_set_markup (layout, markup, -1); 
 	g_free (markup);
 
-	gdk_draw_layout (pm, gc, 3, 3, layout); 
+	gdk_draw_layout (pm, gc, 4,0, layout); 
 	g_object_unref (layout);
 
 	GdkPixbuf *ret = gdk_pixbuf_get_from_drawable (NULL, pm, NULL, 0, 0, 0, 0, w, h);
@@ -340,7 +340,7 @@ gboolean clock_check(gpointer dummy)
 			layout_name[i] = toupper(layout_name[i]);
 		//tray->images[kbd_gr]
 		//GdkPixbuf *trasparent_pb = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 24, 24);
-		GdkPixbuf *pb = DrawOverlay(tray->images[kbd_gr], 24, 24, layout_name);
+		GdkPixbuf *pb = DrawOverlay(tray->images[kbd_gr], gdk_pixbuf_get_width(tray->images[kbd_gr]), gdk_pixbuf_get_height(tray->images[kbd_gr]), layout_name);
 		free(layout_name);
 		//gtk_status_icon_set_from_icon_name (tray->tray_icon, "gxneur");
 		gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
