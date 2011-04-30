@@ -1113,6 +1113,10 @@ void xneur_preference(void)
 	// Show popup
 	widget = glade_xml_get_widget (gxml, "checkbutton22");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->show_popup);
+
+	// Popup expiration delay
+	widget = glade_xml_get_widget (gxml, "spinbutton6");
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->popup_expire_timeout);
 	
 	// Popup Text Preference
 	// Popup List set
@@ -2237,6 +2241,9 @@ void xneur_save_preference(GladeXML *gxml)
 	// Show popup
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton22");
 	xconfig->show_popup = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton6");
+	xconfig->popup_expire_timeout = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry2");
 	if (xconfig->osd_font != NULL)

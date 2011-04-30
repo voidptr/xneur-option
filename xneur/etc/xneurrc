@@ -262,6 +262,11 @@ AddOSD UnblockKeyboardAndMouseEvents
 #ShowPopup Yes
 ShowPopup Yes
 
+# This option defines popup expiration interval in milliseconds
+# Example:
+#PopupExpireTimeout 1000
+PopupExpireTimeout 1000
+
 # Binds popup messages for some actions
 AddPopup XneurStart Enable X Neural Switcher запущен
 AddPopup XneurReload Enable X Neural Switcher перезагружен

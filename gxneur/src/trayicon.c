@@ -176,6 +176,13 @@ GtkMenu* create_menu(struct _tray_icon *tray, int state)
  	return menu;
 }		
 
+void tray_icon_on_expose(GtkWidget *widget, GdkEventExpose *event, struct _tray_icon *tray)
+{
+	if (widget || tray) {};
+
+	printf ("---> %d\n", event->area.height);
+}
+
 void tray_icon_on_click(GtkStatusIcon *status_icon, 
                         gpointer user_data)
 {
@@ -189,6 +196,30 @@ void tray_icon_on_menu(GtkStatusIcon *status_icon, guint button,
 	if (status_icon || user_data){};
     gtk_menu_popup(GTK_MENU(tray->menu), NULL, NULL, NULL, NULL, button, activate_time);
 }
+
+GdkPixbuf *DrawOverlay (GdkPixbuf *pb, int w, int h, gchar *text) 
+{ 
+	GdkPixmap *pm = gdk_pixmap_new (NULL, w, h, 24);
+
+	GdkGC *gc = gdk_gc_new (pm); 
+	gdk_draw_pixbuf (pm, gc, pb, 0, 0, 0, 0, w, h, GDK_RGB_DITHER_NONE, 0, 0);
+
+	GtkWidget *scratch = gtk_window_new (GTK_WINDOW_TOPLEVEL); 
+	gtk_widget_realize (scratch); 
+	PangoLayout *layout = gtk_widget_create_pango_layout (scratch, NULL); 
+	gtk_widget_destroy (scratch);
+
+	gchar *markup = g_strdup_printf ( "<b>%s</b>", text); 
+	pango_layout_set_markup (layout, markup, -1); 
+	g_free (markup);
+
+	gdk_draw_layout (pm, gc, 3, 3, layout); 
+	g_object_unref (layout);
+
+	GdkPixbuf *ret = gdk_pixbuf_get_from_drawable (NULL, pm, NULL, 0, 0, 0, 0, w, h);
+
+	return ret; 
+} 
 
 gboolean clock_check(gpointer dummy)
 {
@@ -304,7 +335,17 @@ gboolean clock_check(gpointer dummy)
 	// Tray part
 	if ((!tray->images[kbd_gr]) || (text_on_tray))
 	{
-		gtk_status_icon_set_from_icon_name (tray->tray_icon, "gxneur");
+		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
+		for (unsigned int i=0; i < strlen(layout_name); i++)
+			layout_name[i] = toupper(layout_name[i]);
+		//tray->images[kbd_gr]
+		//GdkPixbuf *trasparent_pb = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 24, 24);
+		GdkPixbuf *pb = DrawOverlay(tray->images[kbd_gr], 24, 24, layout_name);
+		free(layout_name);
+		//gtk_status_icon_set_from_icon_name (tray->tray_icon, "gxneur");
+		gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
+		gdk_pixbuf_unref(pb);
+		//gdk_pixbuf_unref(trasparent_pb);
 	}
 	else
 	{
@@ -412,6 +453,8 @@ void create_tray_icon(void)
 	}
 
 	tray->menu	= create_menu(tray, xconfig->is_manual_mode(xconfig));
+
+	//g_signal_connect (GTK_WIDGET(tray->menu), "expose-event", G_CALLBACK (tray_icon_on_expose), tray);
 	
 #ifdef HAVE_APP_INDICATOR
 	// App indicator
