@@ -362,7 +362,7 @@ gboolean clock_check(gpointer dummy)
 		
 	g_free (hint);
 	g_free (status_text);
-	
+
 	return TRUE;
 }
 
