@@ -26,8 +26,6 @@
 #include <libappindicator/app-indicator.h>
 #endif
 
-//#include "tray_widget.h"
-
 struct _tray_icon
 {
 #ifdef HAVE_APP_INDICATOR

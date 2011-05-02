@@ -44,6 +44,8 @@ struct _tray_icon *tray;
 GConfClient* gconfClient = NULL;
 gboolean text_on_tray = FALSE;
 
+Display *dpy = NULL;
+
 static int xneur_old_pid = -1;
 static int xneur_old_state = -1;
 static int xneur_old_group = -1;
@@ -185,7 +187,7 @@ void tray_icon_on_click(GtkStatusIcon *status_icon,
                         gpointer user_data)
 {
 	if (status_icon || user_data){};
-    set_next_kbd_group();
+    set_next_kbd_group(dpy);
 }
 
 void tray_icon_on_menu(GtkStatusIcon *status_icon, guint button, 
@@ -225,9 +227,9 @@ gboolean clock_check(gpointer dummy)
 
 	int xneur_pid = xconfig->get_pid(xconfig);
 	int xneur_state = xconfig->is_manual_mode(xconfig);
-	int xneur_group = get_active_kbd_group();
+	int xneur_group = get_active_kbd_group(dpy);
 
-	if (get_kbd_group_count() != xconfig->handle->total_languages)
+	if (get_kbd_group_count(dpy) != xconfig->handle->total_languages)
 	{
 		for (int i = 0; i < MAX_LAYOUTS; i++)
 		{
@@ -256,7 +258,7 @@ gboolean clock_check(gpointer dummy)
 	xneur_old_state = xneur_state;
 	xneur_old_group = xneur_group;
 	
-	int lang = get_active_kbd_group();
+	int lang = get_active_kbd_group(dpy);
 	
 	gchar *hint;
 	gchar *status_text;
@@ -276,7 +278,7 @@ gboolean clock_check(gpointer dummy)
 
 	gtk_menu_item_set_label(GTK_MENU_ITEM(tray->status), status_text);
 
-	gint kbd_gr = get_active_kbd_group();
+	gint kbd_gr = get_active_kbd_group(dpy);
 	
 #ifdef HAVE_APP_INDICATOR
 	// App indicator part
@@ -393,6 +395,7 @@ void xneur_exit(void)
 	tray->menu = NULL;
 	
 	xconfig->kill(xconfig);
+	XCloseDisplay(dpy);
 	gtk_main_quit();
 }
 
@@ -432,6 +435,8 @@ void gconf_key_pixmap_dir_callback(GConfClient* client,
 
 void create_tray_icon(void)
 {
+	dpy = XOpenDisplay(NULL);
+	
 	GConfClient* gconfClient = gconf_client_get_default();
 
 	GConfValue* gcValue = NULL;
@@ -497,7 +502,7 @@ void create_tray_icon(void)
 	gtk_status_icon_set_tooltip_text(tray->tray_icon, "Gxneur");
 	gtk_status_icon_set_visible(tray->tray_icon, TRUE);
 
-	gint kbd_gr = get_active_kbd_group();
+	gint kbd_gr = get_active_kbd_group(dpy);
 	if ((!tray->images[kbd_gr]) || (text_on_tray))
 	{
 		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
@@ -521,6 +526,6 @@ void create_tray_icon(void)
 		gdk_pixbuf_unref(pb);	
 	}
 #endif
-	
-	g_timeout_add(G_PRIORITY_HIGH_IDLE, clock_check, 0);
+
+	g_timeout_add(G_PRIORITY_DEFAULT_IDLE, clock_check, 0);
 }

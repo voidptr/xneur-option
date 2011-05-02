@@ -17,26 +17,25 @@
  *
  */
  
-#include <X11/XKBlib.h>
 
 #include "xkb.h"
 #include <string.h>
 
-int get_active_kbd_group(void)
+int get_active_kbd_group(Display *dpy)
 {
-	Display *dpy = XOpenDisplay(NULL);
-
+	if (dpy == NULL)
+		return -1;
 	XkbStateRec xkbState;
 	XkbGetState(dpy, XkbUseCoreKbd, &xkbState);
-	XCloseDisplay(dpy);
 
-	int group = xkbState.group;
-	return group;
+	return xkbState.group;
 }
 
-int get_kbd_group_count(void) 
+int get_kbd_group_count(Display *dpy) 
 {
-	Display *dpy = XOpenDisplay(NULL);
+	if (dpy == NULL)
+		return -1;
+
     XkbDescRec desc[1];
     int gc;
     memset(desc, 0, sizeof(desc));
@@ -46,21 +45,22 @@ int get_kbd_group_count(void)
 	gc = desc->ctrls->num_groups;
     XkbFreeControls(desc, XkbGroupsWrapMask, True);
     XkbFreeNames(desc, XkbGroupNamesMask, True);
-	XCloseDisplay(dpy);
+
     return gc;
 }
 
-int set_next_kbd_group(void)
+int set_next_kbd_group(Display *dpy)
 {
-	Display *dpy = XOpenDisplay(NULL);
+	if (dpy == NULL)
+		return -1;
 
-	int active_layout_group = get_active_kbd_group();
+	int active_layout_group = get_active_kbd_group(dpy);
 	
 	int new_layout_group = active_layout_group + 1;
-	if (new_layout_group == get_kbd_group_count())
+	if (new_layout_group == get_kbd_group_count(dpy))
 		new_layout_group = 0;
 
 	XkbLockGroup(dpy, XkbUseCoreKbd, new_layout_group);
-	XCloseDisplay(dpy);
+
 	return 1;
 }

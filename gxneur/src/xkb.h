@@ -17,11 +17,13 @@
  *
  */
 
-#ifndef _XKB_H_
-#define _XKB_H_
+#ifndef _XKBGXNEUR_H_
+#define _XKBGGXNEUR_H_
 
-int get_active_kbd_group(void);
-int get_kbd_group_count(void);
-int set_next_kbd_group(void);
+#include <X11/XKBlib.h>
+
+int get_active_kbd_group(Display *dpy);
+int get_kbd_group_count(Display *dpy);
+int set_next_kbd_group(Display *dpy);
 
 #endif /* _XKB_H_ */
