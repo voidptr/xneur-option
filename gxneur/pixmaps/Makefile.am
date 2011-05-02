@@ -108,7 +108,7 @@ pixmaps_DATA =			\
 	ua.png			\
 	us.png			\
 	uz.png			\
-	x3.png
+	x3.png			
 
 EXTRA_DIST = \
 	$(public_icons)		\
