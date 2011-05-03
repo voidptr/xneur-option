@@ -69,6 +69,8 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	*focus_status	= FOCUS_NONE;
 	*autocompletion_mode	= AUTOCOMPLETION_INCLUDED;
 
+	char *new_app_name = NULL;
+		
 	// Clear masking on unfocused window
 	p->update_events(p, LISTEN_DONTGRAB_INPUT);
 	p->update_grab_events(p, LISTEN_DONTGRAB_INPUT);
@@ -78,7 +80,7 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	{
 		// This code commented be cause function XGrabKey for _NET_ACTIVE_WINDOW 
 		// dont process modifier keys (see utils.h)
-		/*if (main_window->_NET_SUPPORTED)
+		if (main_window->_NET_SUPPORTED)
 		{
 			Atom type;
 			int size;
@@ -96,15 +98,19 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 			free(data);
 		}
 		else
-		{*/
+		{
 			int revert_to;
 			XGetInputFocus(main_window->display, &new_window, &revert_to);
-		//}
+		}
 
 		// Catch not empty and not system window
 		if (new_window != None && new_window > 1000)
-			break;
-
+		{
+			new_app_name = get_wm_class_name(new_window);
+			if (new_app_name != NULL)
+				break;
+		}
+		
 		if (show_message)
 		{
 			log_message(DEBUG, _("New window empty"));
@@ -113,9 +119,9 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 		usleep(1000);
 	}
 
-	char *new_app_name = get_wm_class_name(new_window);
-	if (new_app_name != NULL)
-	{
+	//char *new_app_name = get_wm_class_name(new_window);
+	//if (new_app_name != NULL)
+	//{
 		if (xconfig->excluded_apps->exist(xconfig->excluded_apps, new_app_name, BY_PLAIN))
 			*focus_status = FOCUS_EXCLUDED;
 		
@@ -126,9 +132,9 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 
 		if (xconfig->autocompletion_excluded_apps->exist(xconfig->autocompletion_excluded_apps, new_app_name, BY_PLAIN))
 			*autocompletion_mode	= AUTOCOMPLETION_EXCLUDED;
-	}
-	else
-		*focus_status = FOCUS_EXCLUDED;
+	//}
+	//else
+	//	*focus_status = FOCUS_EXCLUDED;
 
 	Window old_window = p->owner_window;
 	if (new_window == old_window)

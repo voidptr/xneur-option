@@ -396,7 +396,7 @@ static void program_process_input(struct _program *p)
 				//	log_message(TRACE, _("Received LeaveNotify (event type %d)"), type);
 				//else if (type == EnterNotify)
 				//	log_message(TRACE, _("Received EnterNotify (event type %d)"), type);
-
+				
 				break;
 			}
 			case FocusOut:
