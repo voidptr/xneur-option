@@ -79,7 +79,7 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	int show_message = TRUE;
 	while (TRUE)
 	{
-		//usleep(500000);
+		usleep(500000);
 		// This code commented be cause function XGrabKey for _NET_ACTIVE_WINDOW 
 		// dont process modifier keys (see utils.h)
 		/*if (main_window->_NET_SUPPORTED)
@@ -199,8 +199,8 @@ static void focus_update_grab_events(struct _focus *p, int mode)
 		// Ungrabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, FALSE);
 
-		//set_mask_to_window(p->owner_window, FOCUS_CHANGE_MASK);
-		set_event_mask(p->owner_window, None);
+		set_mask_to_window(p->owner_window, FOCUS_CHANGE_MASK);
+		//set_event_mask(p->owner_window, None);
 	}
 	else
 	{
