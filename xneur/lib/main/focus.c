@@ -72,15 +72,17 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	char *new_app_name = NULL;
 		
 	// Clear masking on unfocused window
-	p->update_events(p, LISTEN_DONTGRAB_INPUT);
 	p->update_grab_events(p, LISTEN_DONTGRAB_INPUT);
+	p->update_events(p, LISTEN_DONTGRAB_INPUT);
+
 	Window new_window;
 	int show_message = TRUE;
 	while (TRUE)
 	{
+		//usleep(500000);
 		// This code commented be cause function XGrabKey for _NET_ACTIVE_WINDOW 
 		// dont process modifier keys (see utils.h)
-		if (main_window->_NET_SUPPORTED)
+		/*if (main_window->_NET_SUPPORTED)
 		{
 			Atom type;
 			int size;
@@ -98,10 +100,10 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 			free(data);
 		}
 		else
-		{
+		{*/
 			int revert_to;
 			XGetInputFocus(main_window->display, &new_window, &revert_to);
-		}
+		//}
 
 		// Catch not empty and not system window
 		if (new_window != None && new_window > 1000)
@@ -197,7 +199,7 @@ static void focus_update_grab_events(struct _focus *p, int mode)
 		// Ungrabbing special key (Enter, Tab and other)
 		grab_spec_keys(p->owner_window, FALSE);
 
-		//set_mask_to_window(rw, FOCUS_CHANGE_MASK);
+		//set_mask_to_window(p->owner_window, FOCUS_CHANGE_MASK);
 		set_event_mask(p->owner_window, None);
 	}
 	else
