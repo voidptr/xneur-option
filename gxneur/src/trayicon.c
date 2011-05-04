@@ -202,15 +202,22 @@ GdkPixbuf *text_to_gtk_pixbuf (GdkPixbuf *pb, int w, int h, gchar *text)
 	GdkPixmap *pm = gdk_pixmap_new (NULL, w, h, 24);
 	GdkGC *gc = gdk_gc_new (pm); 
 	gdk_draw_pixbuf (pm, gc, pb, 0, 0, 0, 0, w, h, GDK_RGB_DITHER_NONE, 0, 0);
+
 	GtkWidget *scratch = gtk_window_new (GTK_WINDOW_TOPLEVEL); 
 	gtk_widget_realize (scratch); 
+	GtkStyle *style = gtk_widget_get_style(scratch);
+	gchar *bgcolor = gdk_color_to_string(&style->bg[0]);
+	gchar *textcolor = gdk_color_to_string(&style->text[0]);
 	PangoLayout *layout = gtk_widget_create_pango_layout (scratch, NULL); 
+	g_object_unref(style);
 	gtk_widget_destroy (scratch);
 
 	//gchar *markup = g_strdup_printf ("<b>%s</b>", text);
-	gchar *markup = g_strdup_printf ("%s", text); 
+	gchar *markup = g_strdup_printf ("<span bgcolor='%s' color='%s'>%s</span>", bgcolor, textcolor, text); 
 	pango_layout_set_markup (layout, markup, -1); 
 	g_free (markup);
+	g_free (bgcolor);
+	g_free (textcolor);
 
 	gdk_draw_layout (pm, gc, 4,4, layout);
 
