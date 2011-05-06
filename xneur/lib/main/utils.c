@@ -206,7 +206,7 @@ void grab_spec_keys(Window window, int is_grab)
 		grab_manual_action();
 		grab_user_action();
 		// ...without ModKeys.
-		//grab_modifier_keys(DefaultRootWindow (main_window->display), FALSE);
+		grab_modifier_keys(DefaultRootWindow (main_window->display), FALSE);
 	}
 }
 
