@@ -437,6 +437,11 @@ static void program_process_input(struct _program *p)
 				
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 
+				if ((Window)p->focus->get_focused_window(p->focus) != (Window)p->focus->owner_window)
+				{
+					p->update(p);
+				}
+				
 				break;
 			}
 			case ButtonRelease:
@@ -454,6 +459,8 @@ static void program_process_input(struct _program *p)
 					XAllowEvents(main_window->display, AsyncPointer, CurrentTime);
 					break;
 				}
+
+				//p->update(p);
 				
 				XAllowEvents(main_window->display, ReplayPointer, CurrentTime);
 			}
