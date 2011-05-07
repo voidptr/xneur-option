@@ -51,6 +51,8 @@ static int xneur_old_state = -1;
 static int xneur_old_group = -1;
 static int force_update = FALSE;
 
+#define ICON_SIZE 24
+
 static void exec_user_action(char *cmd)
 {
 	char *command = malloc ((strlen(cmd) + strlen(" 2> /dev/stdout") + 1) * sizeof(char));
@@ -176,11 +178,12 @@ GtkMenu* create_menu(struct _tray_icon *tray, int state)
  	return menu;
 }		
 
-void tray_icon_on_expose(GtkWidget *widget, GdkEventExpose *event, struct _tray_icon *tray)
+void tray_icon_on_size_changed(GtkStatusIcon *status_icon, 
+                        gpointer user_data)
 {
-	if (widget || tray) {};
+	if (status_icon || user_data){};
 
-	printf ("---> %d\n", event->area.height);
+	force_update = TRUE;
 }
 
 void tray_icon_on_click(GtkStatusIcon *status_icon, 
@@ -213,13 +216,20 @@ GdkPixbuf *text_to_gtk_pixbuf (GdkPixbuf *pb, int w, int h, gchar *text)
 	gtk_widget_destroy (scratch);
 
 	//gchar *markup = g_strdup_printf ("<b>%s</b>", text);
-	gchar *markup = g_strdup_printf ("<span bgcolor='%s' color='%s'>%s</span>", bgcolor, textcolor, text); 
+	//gchar *markup = g_strdup_printf ("<span bgcolor='%s' color='%s'>%s</span>", bgcolor, textcolor, text); 
+	gchar *markup = g_strdup_printf ("<span color='%s'>%s</span>", textcolor, text); 
 	pango_layout_set_markup (layout, markup, -1); 
 	g_free (markup);
 	g_free (bgcolor);
 	g_free (textcolor);
 
-	gdk_draw_layout (pm, gc, 4,4, layout);
+	int width = 0;
+	int heigth = 0;
+	pango_layout_get_size (layout, &width, &heigth);
+	width = width/PANGO_SCALE;
+	heigth = heigth/PANGO_SCALE;
+
+	gdk_draw_layout (pm, gc, (w - width)/2,(h - heigth)/2, layout);
 
 	g_object_unref(layout);
 	gdk_gc_unref(gc);
@@ -252,13 +262,39 @@ gboolean clock_check(gpointer dummy)
 		gtk_main_quit();
 	}
 
+	if (gtk_status_icon_is_embedded(tray->tray_icon))
+	{
+		if ((tray->height != gtk_status_icon_get_size(tray->tray_icon)) || (force_update))
+		{
+			tray->height =gtk_status_icon_get_size(tray->tray_icon);
+			for (int i = 0; i < xconfig->handle->total_languages; i++)
+			{	
+				g_object_unref(tray->images[i]);
+				char *layout_name = strdup(xconfig->handle->languages[i].dir);
+				char *image_file = g_strdup_printf("%s%s", layout_name, ".png");
+				tray->images[i] = create_pixbuf(image_file);
+				free(image_file);
+				free(layout_name);
+				
+				// Resize images to 24x24 (ICON_SIZExICON_SIZE)
+				float proportion = 1;
+				int width = gdk_pixbuf_get_width(tray->images[i]) ;
+				int height = gdk_pixbuf_get_height(tray->images[i]) ;
+				proportion = (width > height) ? (float)tray->height / (float)width : (float)tray->height / (float)height;
+				width *= proportion;
+					height *= proportion;
+				if ((width > 0) && (height > 0)) 
+					tray->images[i] = gdk_pixbuf_scale_simple (tray->images[i], width, height, GDK_INTERP_BILINEAR);
+			}	
+		}
+	}	
+	
 	if (xneur_pid == xneur_old_pid && 
 	    xneur_state == xneur_old_state && 
 	    xneur_group == xneur_old_group &&
 	    force_update == FALSE)
 		return TRUE;
-
-	//printf("Tray %d\n", gtk_status_icon_is_embedded (tray->tray_icon));
+	
 	force_update = FALSE;
 
 	xneur_old_pid = xneur_pid;
@@ -286,87 +322,95 @@ gboolean clock_check(gpointer dummy)
 	gtk_menu_item_set_label(GTK_MENU_ITEM(tray->status), status_text);
 
 	gint kbd_gr = get_active_kbd_group(dpy);
-	
+
+	if (gtk_status_icon_is_embedded(tray->tray_icon))
+	{
 #ifdef HAVE_APP_INDICATOR
-	// App indicator part
-	if (xneur_pid != -1)
-	{
-		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
-	}
-	else
-	{
-		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ATTENTION);
-	}
-
-	char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
-
-	char *image_file = NULL;
-	GConfClient* gconfClient = gconf_client_get_default();
-	GConfValue* gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", NULL);
-	if(gcValue != NULL) 
-	{
-		const char *string_value = NULL;
-		if(gcValue->type == GCONF_VALUE_STRING) 
+		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_PASSIVE);
+#endif
+		// Tray part
+		if ((!tray->images[kbd_gr]) || (text_on_tray))
 		{
-			string_value = gconf_value_get_string(gcValue);
-			image_file = g_strdup_printf("%s/%s%s", string_value, layout_name, ".png");
+			char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
+			for (unsigned int i=0; i < strlen(layout_name); i++)
+				layout_name[i] = toupper(layout_name[i]);
+
+			GdkPixbuf *trasparent_pb = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, tray->height, tray->height);
+			gdk_pixbuf_fill(trasparent_pb, 0xffffffff);
+			GdkPixbuf *pb = text_to_gtk_pixbuf (trasparent_pb, gdk_pixbuf_get_width(trasparent_pb), gdk_pixbuf_get_height(trasparent_pb), layout_name);
+			free(layout_name);
+			pb = gdk_pixbuf_add_alpha(pb, TRUE, 255, 255, 255);
+			gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
+			gdk_pixbuf_unref(pb);
+			gdk_pixbuf_unref(trasparent_pb);
 		}
-		gconf_value_free(gcValue);
-	}
-	g_object_unref(gconfClient);
-	
-	if (!g_file_test (image_file, G_FILE_TEST_EXISTS) || (text_on_tray))
-	{
-		for (unsigned int i=0; i < strlen(layout_name); i++)
-			layout_name[i] = toupper(layout_name[i]);
-#ifdef HAVE_DEPREC_APP_INDICATOR	
-		app_indicator_set_icon (tray->app_indicator, image_file);
-#else
-		app_indicator_set_label (tray->app_indicator, layout_name, layout_name);
-		app_indicator_set_icon (tray->app_indicator, "");
-#endif
+		else
+		{
+			GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
+			gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
+			gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
+			gdk_pixbuf_unref(pb);	
+		}
+
+		gtk_status_icon_set_tooltip(tray->tray_icon, hint);
 	}
 	else
 	{
-#ifdef HAVE_DEPREC_APP_INDICATOR
-		app_indicator_set_icon (tray->app_indicator, image_file);
-#else
-		app_indicator_set_icon (tray->app_indicator, image_file);
-		app_indicator_set_label (tray->app_indicator,"", "");
-#endif
-	}
-		
-	free(image_file);
-	free(layout_name);
-#else
-	// Tray part
-	if ((!tray->images[kbd_gr]) || (text_on_tray))
-	{
+#ifdef HAVE_APP_INDICATOR
+		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
+		// App indicator part
+		if (xneur_pid != -1)
+		{
+			app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
+		}
+		else
+		{
+			app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ATTENTION);
+		}
+
 		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
-		for (unsigned int i=0; i < strlen(layout_name); i++)
-			layout_name[i] = toupper(layout_name[i]);
 
-		GdkPixbuf *trasparent_pb = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, 24, 24);
-		gdk_pixbuf_fill(trasparent_pb, 0xffffffff);
-		GdkPixbuf *pb = text_to_gtk_pixbuf (trasparent_pb, gdk_pixbuf_get_width(trasparent_pb), gdk_pixbuf_get_height(trasparent_pb), layout_name);
-		free(layout_name);
-		pb = gdk_pixbuf_add_alpha(pb, TRUE, 255, 255, 255);
-		gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
-		gdk_pixbuf_unref(pb);
-		gdk_pixbuf_unref(trasparent_pb);
-	}
-	else
-	{
-		GdkPixbuf *pb = gdk_pixbuf_copy(tray->images[kbd_gr]);
-		gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
-		gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
-		gdk_pixbuf_unref(pb);	
-	}
-
-	gtk_status_icon_set_tooltip(tray->tray_icon, hint);
-
+		char *image_file = NULL;
+		GConfClient* gconfClient = gconf_client_get_default();
+		GConfValue* gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", NULL);
+		if(gcValue != NULL) 
+		{
+			const char *string_value = NULL;
+			if(gcValue->type == GCONF_VALUE_STRING) 
+			{
+				string_value = gconf_value_get_string(gcValue);
+				image_file = g_strdup_printf("%s/%s%s", string_value, layout_name, ".png");
+			}
+			gconf_value_free(gcValue);
+		}
+		g_object_unref(gconfClient);
+	
+		if (!g_file_test (image_file, G_FILE_TEST_EXISTS) || (text_on_tray))
+		{
+			for (unsigned int i=0; i < strlen(layout_name); i++)
+				layout_name[i] = toupper(layout_name[i]);
+#ifdef HAVE_DEPREC_APP_INDICATOR	
+			app_indicator_set_icon (tray->app_indicator, image_file);
+#else
+			app_indicator_set_label (tray->app_indicator, layout_name, layout_name);
+			app_indicator_set_icon (tray->app_indicator, "");
 #endif
+		}
+		else
+		{
+#ifdef HAVE_DEPREC_APP_INDICATOR
+			app_indicator_set_icon (tray->app_indicator, image_file);
+#else
+			app_indicator_set_icon (tray->app_indicator, image_file);
+			app_indicator_set_label (tray->app_indicator,"", "");
+#endif
+		}
 		
+		free(image_file);
+		free(layout_name);
+#endif
+	}
+	
 	g_free (hint);
 	g_free (status_text);
 
@@ -487,8 +531,19 @@ void create_tray_icon(void)
 		tray->images[i] = create_pixbuf(image_file);
 		free(image_file);
 		free(layout_name);
+		
+		// Resize images to 24x24 (ICON_SIZExICON_SIZE)
+		float proportion = 1;
+		int width = gdk_pixbuf_get_width(tray->images[i]) ;
+		int height = gdk_pixbuf_get_height(tray->images[i]) ;
+		proportion = (width > height) ? (float)ICON_SIZE / (float)width : (float)ICON_SIZE / (float)height;
+		width *= proportion;
+		height *= proportion;
+		if ((width > 0) && (height > 0)) 
+			tray->images[i] = gdk_pixbuf_scale_simple (tray->images[i], width, height, GDK_INTERP_BILINEAR);
 	}
 
+	
 	tray->menu	= create_menu(tray, xconfig->is_manual_mode(xconfig));
 
 #ifdef HAVE_APP_INDICATOR
@@ -497,14 +552,15 @@ void create_tray_icon(void)
                                "gxneur",
                                APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
 	
-	app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
+	app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_PASSIVE);
 	                                    
 	app_indicator_set_menu (tray->app_indicator, tray->menu);
-#else
+#endif
 	// Tray
 	tray->tray_icon = gtk_status_icon_new();
 	g_signal_connect(G_OBJECT(tray->tray_icon), "activate", G_CALLBACK(tray_icon_on_click), NULL);
 	g_signal_connect(G_OBJECT(tray->tray_icon), "popup-menu", G_CALLBACK(tray_icon_on_menu), NULL);
+	g_signal_connect(G_OBJECT(tray->tray_icon), "size-changed", G_CALLBACK(tray_icon_on_size_changed), NULL);
 	gtk_status_icon_set_from_icon_name(tray->tray_icon,  "gxneur");
 	gtk_status_icon_set_tooltip_text(tray->tray_icon, "Gxneur");
 	gtk_status_icon_set_visible(tray->tray_icon, TRUE);
@@ -516,7 +572,7 @@ void create_tray_icon(void)
 		for (unsigned int i=0; i < strlen(layout_name); i++)
 			layout_name[i] = toupper(layout_name[i]);
 
-		GdkPixbuf *trasparent_pb = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, 24, 24);
+		GdkPixbuf *trasparent_pb = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, ICON_SIZE, ICON_SIZE);
 		gdk_pixbuf_fill(trasparent_pb, 0xffffffff);
 		GdkPixbuf *pb = text_to_gtk_pixbuf (trasparent_pb, gdk_pixbuf_get_width(trasparent_pb), gdk_pixbuf_get_height(trasparent_pb), layout_name);
 		free(layout_name);
@@ -532,7 +588,5 @@ void create_tray_icon(void)
 		gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
 		gdk_pixbuf_unref(pb);	
 	}
-#endif
-
 	g_timeout_add(G_PRIORITY_DEFAULT_IDLE, clock_check, 0);
 }

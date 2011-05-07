@@ -31,10 +31,10 @@ struct _tray_icon
 #ifdef HAVE_APP_INDICATOR
 	// App Indicator part
 	AppIndicator *app_indicator;
-#else
+#endif
 	// Tray part
 	GtkStatusIcon *tray_icon;
-#endif
+
 	GdkPixbuf  *images[MAX_LAYOUTS];
 	GtkMenu *menu;
 	GtkWidget *status;
