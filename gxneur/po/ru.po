@@ -573,6 +573,10 @@ msgstr "Параметры запуска"
 msgid "Show text on the tray"
 msgstr "Показывать текст в системном лотке"
 
+#: glade/config.glade:2887
+msgid "Change the icon size when resizing the tray"
+msgstr "Менять размер значка при изменении размера системного лотка"
+
 #: glade/config.glade:2902
 msgid "Pixmaps directory"
 msgstr "Расположение значков"
@@ -796,9 +800,6 @@ msgstr "X Neural Switcher остановлен ("
 #: src/trayicon.c:280
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
-
-#~ msgid "Change the icon size when resizing the tray"
-#~ msgstr "Менять размер значка при изменении размера системного лотка"
 
 #~ msgid "Show icon on the panel indicators"
 #~ msgstr "Показывать значек в панели индикаторов"

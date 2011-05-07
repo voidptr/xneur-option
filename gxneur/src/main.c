@@ -51,29 +51,6 @@ int main(int argc, char *argv[])
 
 	GConfValue* gcValue = NULL;
 
-	// Get pixmap directory
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", NULL);
-
-	if(gcValue == NULL) 
-	{
-		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", PACKAGE_PIXMAPS_DIR, NULL)) 
-		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "pixmap_dir", PACKAGE_PIXMAPS_DIR);
-	
-		add_pixmap_directory(PACKAGE_PIXMAPS_DIR);
-	}
-
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", NULL);
-	if(gcValue != NULL) 
-	{
-		const char *string_value = NULL;
-		if(gcValue->type == GCONF_VALUE_STRING) 
-		{
-			string_value = gconf_value_get_string(gcValue);
-			add_pixmap_directory(string_value);
-		}
-		gconf_value_free(gcValue);
-	}
-
 	// Get keyboard properties command
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
 
@@ -118,9 +95,9 @@ int main(int argc, char *argv[])
 
 	xneur_start();
 
-	create_tray_icon();
+	create_tray_icon();	
 
 	gtk_main();
-
+	
 	return EXIT_SUCCESS;
 }

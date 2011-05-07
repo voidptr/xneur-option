@@ -435,47 +435,6 @@ static void notify_enable (GtkCellRendererToggle *renderer, gchar *path, GtkTree
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 2, value, -1);
 }
 
-static void xneur_replace_pixmap_dir(GladeXML *gxml)
-{
-	GtkWidget *window = glade_xml_get_widget (gxml, "filechooserdialog1");
-
-	gtk_entry_set_text(GTK_ENTRY(tmp_widget), gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (window)));
-	
-	gtk_widget_destroy(window);
-}
-
-static void xneur_restore_pixmap_dir(GladeXML *gxml)
-{
-	GtkWidget *widget = glade_xml_get_widget (gxml, "entry1");
-
-	gtk_entry_set_text(GTK_ENTRY(widget), PACKAGE_PIXMAPS_DIR);
-}
-
-static void xneur_edit_pixmap_dir(GladeXML *parent_gxml)
-{
-	GladeXML *gxml = glade_xml_new (GLADE_FILE_CHOOSE, NULL, NULL);
-	
-	glade_xml_signal_autoconnect (gxml);
-	GtkWidget *window = glade_xml_get_widget (gxml, "filechooserdialog1");
-
-	tmp_widget = glade_xml_get_widget (parent_gxml, "entry1");
-	
-	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(window), gtk_entry_get_text(GTK_ENTRY(tmp_widget)));
-	gtk_file_chooser_set_action(GTK_FILE_CHOOSER(window), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);	
-	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-	if (window_icon_pixbuf)
-	{
-		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-		gdk_pixbuf_unref (window_icon_pixbuf);
-	}
-	
-	gtk_widget_show(window);
-		
-	// Button OK
-	GtkWidget *widget = glade_xml_get_widget (gxml, "button5");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_replace_pixmap_dir), gxml);
-}
-
 static void xneur_restore_keyboard_properties(GladeXML *gxml)
 {
 	GtkWidget *widget = glade_xml_get_widget (gxml, "entry5");
@@ -1317,30 +1276,8 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton28");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), value);
 
-	//
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", NULL);
-
-	/* if value pointer remains NULL, the key was not found */
-	const char *string_value = NULL;
-	if(gcValue != NULL) 
-	{
-		if(gcValue->type == GCONF_VALUE_STRING) 
-		{
-			string_value = gconf_value_get_string(gcValue);
-			widget = glade_xml_get_widget (gxml, "entry1");
-			gtk_entry_set_text(GTK_ENTRY(widget), string_value);
-		}
-	}
-	
-	// Button Pixmap Directory Edit
-	widget = glade_xml_get_widget (gxml, "button9");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_pixmap_dir), gxml);
-	// Button Pixmap Directory Edit
-	widget = glade_xml_get_widget (gxml, "button14");
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_restore_pixmap_dir), gxml);
-
-	
 	// Keyboard properties
+	const gchar *string_value = NULL;
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
 
 	if(gcValue != NULL) 
@@ -1353,10 +1290,10 @@ void xneur_preference(void)
 		}
 	}
 	
-	// Button Pixmap Directory Edit
+	// Button Keyboard properties Edit
 	widget = glade_xml_get_widget (gxml, "button15");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_keyboard_properties), gxml);
-	// Button Pixmap Directory Edit
+	// Button Keyboard properties Edit
 	widget = glade_xml_get_widget (gxml, "button16");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_restore_keyboard_properties), gxml);
 
@@ -2329,15 +2266,6 @@ void xneur_save_preference(GladeXML *gxml)
 	    g_warning("Failed to set %s (%d)\n", PACKAGE_GCONF_DIR "text_on_tray", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
 	}
 	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "text_on_tray");
-
-	// Path to pixmap dir
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry1");
-	
-	if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)), NULL)) 
-	{
-	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "pixmap_dir", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
-	}
-	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "pixmap_dir");
 
 	// Keyboard properties
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry5");
