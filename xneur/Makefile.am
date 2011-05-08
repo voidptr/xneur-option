@@ -6,6 +6,7 @@ SUBDIRS =			\
 	share			\
 	etc			\
 	po			\
+	pixmaps			\
 	plugins			
 
 AUTOMAKE_OPTIONS =		\

@@ -46,7 +46,7 @@
 
 extern struct _xneur_config *xconfig;
 
-static const char *icon = "distributor-logo";
+static const char *icon = "xneur";
 static const char *type = NULL;
 static const NotifyUrgency urgency = NOTIFY_URGENCY_CRITICAL;
 
