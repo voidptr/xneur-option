@@ -204,7 +204,7 @@ GdkPixbuf *text_to_gtk_pixbuf (GdkPixbuf *pb, int w, int h, gchar *text)
 	//gchar *bgcolor = gdk_color_to_string(&style->bg[GTK_STATE_NORMAL]);
 	//gchar *textcolor = gdk_color_to_string(&style->text[GTK_STATE_NORMAL]);
 	PangoLayout *layout = gtk_widget_create_pango_layout (scratch, NULL); 
-	g_object_unref(style);
+	//g_object_unref(style);
 	gtk_widget_destroy (scratch);
 
 	//gchar *markup = g_strdup_printf ("<span bgcolor='%s' color='%s'>%s</span>", bgcolor, textcolor, text); 
