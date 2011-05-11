@@ -171,23 +171,23 @@ msgstr "заканчивается"
 msgid "coincides"
 msgstr "совпадает"
 
-#: glade/abbr_add.glade:7
+#: glade/abbr_add.glade:8
 msgid "Add Abbreviation..."
 msgstr "Добавить Сокращение..."
 
-#: glade/abbr_add.glade:24
+#: glade/abbr_add.glade:72
 msgid "Abbreviation:"
 msgstr "Сокращение:"
 
-#: glade/abbr_add.glade:45
+#: glade/abbr_add.glade:101
 msgid "Expansion text:"
 msgstr "Полный Текст:"
 
-#: glade/about.glade:7
+#: glade/about.glade:8
 msgid "gXNeur About..."
 msgstr "О gXNeur..."
 
-#: glade/about.glade:15
+#: glade/about.glade:19
 msgid ""
 "\n"
 "\t\t<b>X Neural Switcher for Gnome</b>\t\t\n"
@@ -205,35 +205,35 @@ msgstr ""
 "Андрей Crew Кузнецов\n"
 "Николай Янкин"
 
-#: glade/action_add.glade:7
+#: glade/action_add.glade:8
 msgid "Add user action..."
 msgstr "Добавить пользовательское действие..."
 
-#: glade/action_add.glade:25
+#: glade/action_add.glade:73
 msgid "Action name:"
 msgstr "Название действия:"
 
-#: glade/action_add.glade:47
+#: glade/action_add.glade:102
 msgid "Key bind:"
 msgstr "Комбинация клавиш:"
 
-#: glade/action_add.glade:70
+#: glade/action_add.glade:132
 msgid "User action:"
 msgstr "Пользовательское действие:"
 
-#: glade/app_add.glade:7
+#: glade/app_add.glade:8
 msgid "Add application..."
 msgstr "Добавить приложение..."
 
-#: glade/app_add.glade:26
+#: glade/app_add.glade:72
 msgid "Application name"
 msgstr "Имя приложения"
 
-#: glade/app_add.glade:47
+#: glade/app_add.glade:98
 msgid "Get application name..."
 msgstr "Получить имя приложения..."
 
-#: glade/choose_file.glade:7
+#: glade/choose_file.glade:8
 msgid "Choose File..."
 msgstr "Выбор Файла..."
 
@@ -293,7 +293,7 @@ msgstr "Типографика"
 msgid "<b>General</b>"
 msgstr "<b>Общее</b>"
 
-#: glade/config.glade:318 glade/list.glade:7
+#: glade/config.glade:318 glade/list.glade:8
 msgid "Rules change..."
 msgstr "Правила переключения..."
 
@@ -569,35 +569,41 @@ msgstr "Задержка перед запуском"
 msgid "Startup"
 msgstr "Параметры запуска"
 
-#: glade/config.glade:2873
-msgid "Show text on the tray"
-msgstr "Показывать текст в системном лотке"
+#: glade/config.glade:2875
+msgid ""
+"Show flag\n"
+"Show text\n"
+"Show icon"
+msgstr ""
+"Показывать флаг\n"
+"Показывать текст\n"
+"Показывать значёк"
 
-#: glade/config.glade:2890
+#: glade/config.glade:2887
 msgid "Show icon on the panel indicators"
 msgstr "Показывать значек в панели индикаторов"
 
-#: glade/config.glade:2920
+#: glade/config.glade:2917
 msgid "UI"
 msgstr "Внешний вид"
 
-#: glade/config.glade:2957
+#: glade/config.glade:2954
 msgid "Keyboard properties command"
 msgstr "Команда запуска параметров клавиатуры"
 
-#: glade/config.glade:3046
+#: glade/config.glade:3043
 msgid "System"
 msgstr "Системное"
 
-#: glade/config.glade:3079
+#: glade/config.glade:3076
 msgid "<b>Properties</b>"
 msgstr "<b>Параметры</b>"
 
-#: glade/rule_add.glade:7
+#: glade/rule_add.glade:8
 msgid "Add your rule change..."
 msgstr "Добавить свое правило переключения..."
 
-#: glade/rule_add.glade:24
+#: glade/rule_add.glade:73
 msgid ""
 "The new rule change to that language.\n"
 "Enter a combination of letters and set the condition for its treatment:"
@@ -605,7 +611,7 @@ msgstr ""
 "Новое правило переключения для данного языка.\n"
 "Введите буквосочетание и задайте условие его обработки:"
 
-#: glade/rule_add.glade:46
+#: glade/rule_add.glade:104
 msgid ""
 "NOTE: Special characters [] \\ ^ $. |? * + () {} must be preceded by a \\ "
 "(backslash)."
@@ -613,27 +619,27 @@ msgstr ""
 "ЗАМЕЧАНИЕ: Специальные символы [ ] \\ ^ $ . | ? * + ( ) { } должны "
 "предваряться символом \\ (обратная косая черта)."
 
-#: glade/rule_add.glade:71
+#: glade/rule_add.glade:134
 msgid "Typed on the keyboard word must:"
 msgstr "Набираемое на клавиатуре слово должно:"
 
-#: glade/rule_add.glade:92
+#: glade/rule_add.glade:160
 msgid "contain that sequence of letters"
 msgstr "содержать данное сочетание букв"
 
-#: glade/rule_add.glade:105
+#: glade/rule_add.glade:176
 msgid "start with these letters"
 msgstr "начинаться с данных букв"
 
-#: glade/rule_add.glade:118
+#: glade/rule_add.glade:192
 msgid "to end these letters"
 msgstr "заканчиваться данными буквами"
 
-#: glade/rule_add.glade:131
+#: glade/rule_add.glade:208
 msgid "coincide with the combination of letters"
 msgstr "совпадать с данным сочетанием букв"
 
-#: glade/rule_add.glade:164
+#: glade/rule_add.glade:247
 msgid "More:"
 msgstr "Дополнительно:"
 
@@ -796,6 +802,9 @@ msgstr "X Neural Switcher остановлен ("
 #: src/trayicon.c:280
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
+
+#~ msgid "Show text on the tray"
+#~ msgstr "Показывать текст в системном лотке"
 
 #~ msgid "Change the icon size when resizing the tray"
 #~ msgstr "Менять размер значка при изменении размера системного лотка"

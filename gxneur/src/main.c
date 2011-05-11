@@ -64,6 +64,19 @@ int main(int argc, char *argv[])
 		gconf_value_free(gcValue);
 	}
 
+	// Get what to show in the tray
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", NULL);
+
+	if(gcValue == NULL) 
+	{
+		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", "Flag", NULL)) 
+		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "show_in_the_tray", "Flag");
+	}
+	else
+	{
+		gconf_value_free(gcValue);
+	}
+	
 	// Get show on panel status
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", NULL);
 

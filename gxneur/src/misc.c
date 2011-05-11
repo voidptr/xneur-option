@@ -1230,20 +1230,28 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "spinbutton5");
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), value);
 
-	// Text on tray
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "text_on_tray", NULL);
+	// Show on tray
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", NULL);
 
-	value = FALSE;
+	const gchar *string_value = NULL;
+	int show_in_the_tray = 0;
 	if(gcValue != NULL) 
 	{
-		if(gcValue->type == GCONF_VALUE_BOOL) 
-			value = gconf_value_get_bool(gcValue);
+		if(gcValue->type == GCONF_VALUE_STRING) 
+			string_value = gconf_value_get_string(gcValue);
 
+		if (strcmp(string_value, "Flag") == 0)
+			show_in_the_tray = 0;
+		else if (strcmp(string_value, "Text") == 0)
+			show_in_the_tray = 1;
+		else
+			show_in_the_tray = 2;
+		
 		gconf_value_free(gcValue);
 	}		
-
-	widget = glade_xml_get_widget (gxml, "checkbutton28");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), value);
+	
+	widget = glade_xml_get_widget (gxml, "combobox2");
+	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), show_in_the_tray);
 
 	// Icon on app indicators panel
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", NULL);
@@ -1261,7 +1269,7 @@ void xneur_preference(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), value);
 	
 	// Keyboard properties
-	const gchar *string_value = NULL;
+	string_value = NULL;
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
 
 	if(gcValue != NULL) 
@@ -2203,14 +2211,29 @@ void xneur_save_preference(GladeXML *gxml)
 	}
 
 	// Text on tray
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton28");
+	/*widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton28");
 	 
 	if(!gconf_client_set_bool(gconfClient, PACKAGE_GCONF_DIR "text_on_tray", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)), NULL)) 
 	{
 	    g_warning("Failed to set %s (%d)\n", PACKAGE_GCONF_DIR "text_on_tray", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
 	}
-	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "text_on_tray");
+	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "text_on_tray");*/
 
+	// Show on the tray
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox2");
+	int show_in_the_tray = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound));
+	const char *string_value = "Flag";
+	if (show_in_the_tray == 1)
+		string_value = "Text";
+	else if (show_in_the_tray == 2)
+		string_value = "Icon";
+	
+	if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", string_value, NULL)) 
+	{
+	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "show_in_the_tray", string_value);
+	}
+	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray");
+	
 	// Icon on app indicators panel
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton29");
 	 

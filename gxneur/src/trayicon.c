@@ -42,7 +42,8 @@ extern struct _xneur_config *xconfig;
 struct _tray_icon *tray;
 
 GConfClient* gconfClient = NULL;
-gboolean text_on_tray = FALSE;
+//gboolean text_on_tray = FALSE;
+gchar *show_in_the_tray = NULL;
 gboolean force_app_indicator = FALSE;
 
 Display *dpy = NULL;
@@ -231,25 +232,32 @@ GdkPixbuf *text_to_gtk_pixbuf (GdkPixbuf *pb, int w, int h, gchar *text)
 	return ret; 
 } 
 
-/*static const char *getIconName( void )
+static const char *get_tray_icon_name (char *name)
 {
     const char * icon_name;
 
+	if (strcmp(show_in_the_tray, "Icon") == 0)
+	{
+		icon_name = PACKAGE;
+		return icon_name;
+	}
+	
     GtkIconTheme * theme = gtk_icon_theme_get_default( );
 
     // if the tray's icon is a 48x48 file, use it;
     // otherwise, use the fallback builtin icon 
-    if( !gtk_icon_theme_has_icon( theme, TRAY_ICON ) )
-        icon_name = ICON_NAME;
-    else {
-        GtkIconInfo * icon_info = gtk_icon_theme_lookup_icon( theme, TRAY_ICON, 48, GTK_ICON_LOOKUP_USE_BUILTIN );
-        const gboolean icon_is_builtin = gtk_icon_info_get_filename ( icon_info ) == NULL;
-        gtk_icon_info_free ( icon_info );
-        icon_name = icon_is_builtin ? ICON_NAME : TRAY_ICON;
+    if (!gtk_icon_theme_has_icon (theme, name))
+        icon_name = PACKAGE;
+    else 
+	{
+        GtkIconInfo * icon_info = gtk_icon_theme_lookup_icon (theme, name, 48, GTK_ICON_LOOKUP_USE_BUILTIN);
+        const gboolean icon_is_builtin = gtk_icon_info_get_filename (icon_info) == NULL;
+        gtk_icon_info_free (icon_info);
+        icon_name = icon_is_builtin ? PACKAGE : name;
     }
 
     return icon_name;
-}*/
+}
 
 gboolean clock_check(gpointer dummy)
 {
@@ -329,11 +337,13 @@ gboolean clock_check(gpointer dummy)
 #ifdef HAVE_APP_INDICATOR
 	app_indicator_set_status (tray->app_indicator, app_indicator_status);
 #endif
+
+	const char *icon_name = get_tray_icon_name(tray->images[kbd_gr]);
 	
 	if (gtk_status_icon_is_embedded(tray->tray_icon))
 	{	
 		// Tray part
-		if (text_on_tray)
+		if (strcmp(show_in_the_tray, "Text") == 0)
 		{
 			char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
 			for (unsigned int i=0; i < strlen(layout_name); i++)
@@ -350,7 +360,7 @@ gboolean clock_check(gpointer dummy)
 		}
 		else
 		{
-			gtk_status_icon_set_from_icon_name(tray->tray_icon, tray->images[kbd_gr]);
+			gtk_status_icon_set_from_icon_name(tray->tray_icon, icon_name);
 			/*GdkPixbuf *pb = gtk_status_icon_get_pixbuf(tray->tray_icon);
 			gdk_pixbuf_saturate_and_pixelate(pb, pb, saturation, FALSE);
 			gtk_status_icon_set_from_pixbuf(tray->tray_icon, pb);
@@ -365,12 +375,12 @@ gboolean clock_check(gpointer dummy)
 		app_indicator_set_status (tray->app_indicator, app_indicator_status);
 
 		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
-		if (text_on_tray)
+		if (strcmp(show_in_the_tray, "Text") == 0)
 		{
 			for (unsigned int i=0; i < strlen(layout_name); i++)
 				layout_name[i] = toupper(layout_name[i]);
 #ifdef HAVE_DEPREC_APP_INDICATOR	
-			app_indicator_set_icon (tray->app_indicator, tray->images[kbd_gr]);
+			app_indicator_set_icon (tray->app_indicator, icon_name);
 #else
 			app_indicator_set_label (tray->app_indicator, layout_name, layout_name);
 			app_indicator_set_icon (tray->app_indicator, "");
@@ -379,9 +389,9 @@ gboolean clock_check(gpointer dummy)
 		else
 		{
 #ifdef HAVE_DEPREC_APP_INDICATOR
-			app_indicator_set_icon (tray->app_indicator, tray->images[kbd_gr]);
+			app_indicator_set_icon (tray->app_indicator, icon_name);
 #else
-			app_indicator_set_icon (tray->app_indicator, tray->images[kbd_gr]);
+			app_indicator_set_icon (tray->app_indicator, icon_name);
 			app_indicator_set_label (tray->app_indicator,"", "");
 #endif
 		}
@@ -428,15 +438,15 @@ void xneur_exit(void)
 	gtk_main_quit();
 }
 
-void gconf_key_text_on_tray_callback(GConfClient* client,
+void gconf_key_show_in_the_tray_callback(GConfClient* client,
                             guint cnxn_id,
                             GConfEntry* entry,
                             gpointer user_data)
 {
 	if (client || cnxn_id || user_data) {};
 	
-	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_BOOL)
-		text_on_tray = gconf_value_get_bool (gconf_entry_get_value (entry));
+	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
+		show_in_the_tray = strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
 
 	force_update = TRUE;
 }
@@ -462,7 +472,7 @@ void create_tray_icon(void)
 
 	GConfValue* gcValue = NULL;
 	
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "text_on_tray", NULL);
+	/*gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "text_on_tray", NULL);
 	if(gcValue != NULL) 
 	{
 		if(gcValue->type == GCONF_VALUE_BOOL) 
@@ -476,8 +486,26 @@ void create_tray_icon(void)
                           gconf_key_text_on_tray_callback,
                           NULL,
                           NULL,
-                          NULL);
+                          NULL);*/
 
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", NULL);
+	if(gcValue != NULL) 
+	{
+		if(gcValue->type == GCONF_VALUE_STRING) 
+			show_in_the_tray = strdup(gconf_value_get_string(gcValue));
+
+		gconf_value_free(gcValue);
+	}
+
+	printf("----> %s\n", show_in_the_tray);
+	
+	gconf_client_notify_add(gconfClient,
+                          PACKAGE_GCONF_DIR "show_in_the_tray",
+                          gconf_key_show_in_the_tray_callback,
+                          NULL,
+                          NULL,
+                          NULL);
+	
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", NULL);
 	if(gcValue != NULL) 
 	{
@@ -514,7 +542,7 @@ void create_tray_icon(void)
 
 	
 	tray->menu	= create_menu(tray, xconfig->is_manual_mode(xconfig));
-
+	
 #ifdef HAVE_APP_INDICATOR
 	// App indicator
 	tray->app_indicator = app_indicator_new ("X Neural Switcher",
@@ -531,11 +559,11 @@ void create_tray_icon(void)
 	g_signal_connect(G_OBJECT(tray->tray_icon), "popup-menu", G_CALLBACK(tray_icon_on_menu), NULL);
 
 	gtk_status_icon_set_from_icon_name(tray->tray_icon,  "gxneur");
-	gtk_status_icon_set_tooltip_text(tray->tray_icon, "Gxneur");
+	gtk_status_icon_set_tooltip_text(tray->tray_icon, "X Neural Switcher");
 	gtk_status_icon_set_visible(tray->tray_icon, TRUE);
 
 	gint kbd_gr = get_active_kbd_group(dpy);
-	if (text_on_tray)
+	if (strcmp(show_in_the_tray, "Text") == 0)
 	{
 		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
 		for (unsigned int i=0; i < strlen(layout_name); i++)

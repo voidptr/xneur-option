@@ -171,23 +171,23 @@ msgstr ""
 msgid "coincides"
 msgstr ""
 
-#: glade/abbr_add.glade:7
+#: glade/abbr_add.glade:8
 msgid "Add Abbreviation..."
 msgstr "Adaugă abreviere..."
 
-#: glade/abbr_add.glade:24
+#: glade/abbr_add.glade:72
 msgid "Abbreviation:"
 msgstr "Abreviere:"
 
-#: glade/abbr_add.glade:45
+#: glade/abbr_add.glade:101
 msgid "Expansion text:"
 msgstr ""
 
-#: glade/about.glade:7
+#: glade/about.glade:8
 msgid "gXNeur About..."
 msgstr "Despre gXneur"
 
-#: glade/about.glade:15
+#: glade/about.glade:19
 msgid ""
 "\n"
 "\t\t<b>X Neural Switcher for Gnome</b>\t\t\n"
@@ -205,35 +205,35 @@ msgstr ""
 "Andrei Crew Kuznețov\n"
 "Nikolai Iankin"
 
-#: glade/action_add.glade:7
+#: glade/action_add.glade:8
 msgid "Add user action..."
 msgstr "Adăugă acțiunea utilizătorului"
 
-#: glade/action_add.glade:25
+#: glade/action_add.glade:73
 msgid "Action name:"
 msgstr ""
 
-#: glade/action_add.glade:47
+#: glade/action_add.glade:102
 msgid "Key bind:"
 msgstr ""
 
-#: glade/action_add.glade:70
+#: glade/action_add.glade:132
 msgid "User action:"
 msgstr "Acțiune utilizatorului"
 
-#: glade/app_add.glade:7
+#: glade/app_add.glade:8
 msgid "Add application..."
 msgstr ""
 
-#: glade/app_add.glade:26
+#: glade/app_add.glade:72
 msgid "Application name"
 msgstr ""
 
-#: glade/app_add.glade:47
+#: glade/app_add.glade:98
 msgid "Get application name..."
 msgstr ""
 
-#: glade/choose_file.glade:7
+#: glade/choose_file.glade:8
 msgid "Choose File..."
 msgstr "Alegeți fișier"
 
@@ -293,7 +293,7 @@ msgstr ""
 msgid "<b>General</b>"
 msgstr "<b>Setări generale</b>"
 
-#: glade/config.glade:318 glade/list.glade:7
+#: glade/config.glade:318 glade/list.glade:8
 msgid "Rules change..."
 msgstr ""
 
@@ -565,67 +565,70 @@ msgstr ""
 msgid "Startup"
 msgstr ""
 
-#: glade/config.glade:2873
-msgid "Show text on the tray"
+#: glade/config.glade:2875
+msgid ""
+"Show flag\n"
+"Show text\n"
+"Show icon"
 msgstr ""
 
-#: glade/config.glade:2890
+#: glade/config.glade:2887
 msgid "Show icon on the panel indicators"
 msgstr ""
 
-#: glade/config.glade:2920
+#: glade/config.glade:2917
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2957
+#: glade/config.glade:2954
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:3046
+#: glade/config.glade:3043
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:3079
+#: glade/config.glade:3076
 msgid "<b>Properties</b>"
 msgstr ""
 
-#: glade/rule_add.glade:7
+#: glade/rule_add.glade:8
 msgid "Add your rule change..."
 msgstr ""
 
-#: glade/rule_add.glade:24
+#: glade/rule_add.glade:73
 msgid ""
 "The new rule change to that language.\n"
 "Enter a combination of letters and set the condition for its treatment:"
 msgstr ""
 
-#: glade/rule_add.glade:46
+#: glade/rule_add.glade:104
 msgid ""
 "NOTE: Special characters [] \\ ^ $. |? * + () {} must be preceded by a \\ "
 "(backslash)."
 msgstr ""
 
-#: glade/rule_add.glade:71
+#: glade/rule_add.glade:134
 msgid "Typed on the keyboard word must:"
 msgstr ""
 
-#: glade/rule_add.glade:92
+#: glade/rule_add.glade:160
 msgid "contain that sequence of letters"
 msgstr ""
 
-#: glade/rule_add.glade:105
+#: glade/rule_add.glade:176
 msgid "start with these letters"
 msgstr ""
 
-#: glade/rule_add.glade:118
+#: glade/rule_add.glade:192
 msgid "to end these letters"
 msgstr ""
 
-#: glade/rule_add.glade:131
+#: glade/rule_add.glade:208
 msgid "coincide with the combination of letters"
 msgstr ""
 
-#: glade/rule_add.glade:164
+#: glade/rule_add.glade:247
 msgid "More:"
 msgstr ""
 
