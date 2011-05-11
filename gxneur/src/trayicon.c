@@ -231,6 +231,26 @@ GdkPixbuf *text_to_gtk_pixbuf (GdkPixbuf *pb, int w, int h, gchar *text)
 	return ret; 
 } 
 
+/*static const char *getIconName( void )
+{
+    const char * icon_name;
+
+    GtkIconTheme * theme = gtk_icon_theme_get_default( );
+
+    // if the tray's icon is a 48x48 file, use it;
+    // otherwise, use the fallback builtin icon 
+    if( !gtk_icon_theme_has_icon( theme, TRAY_ICON ) )
+        icon_name = ICON_NAME;
+    else {
+        GtkIconInfo * icon_info = gtk_icon_theme_lookup_icon( theme, TRAY_ICON, 48, GTK_ICON_LOOKUP_USE_BUILTIN );
+        const gboolean icon_is_builtin = gtk_icon_info_get_filename ( icon_info ) == NULL;
+        gtk_icon_info_free ( icon_info );
+        icon_name = icon_is_builtin ? ICON_NAME : TRAY_ICON;
+    }
+
+    return icon_name;
+}*/
+
 gboolean clock_check(gpointer dummy)
 {
 	if (dummy) {};
