@@ -96,12 +96,7 @@ void on_addbutton_clicked(GtkButton *button, gpointer user_data)
 	GladeXML *gxml = glade_xml_new (GLADE_FILE_RULE_ADD, NULL, NULL);
 
 	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
-	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-	if (window_icon_pixbuf)
-	{
-		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-		gdk_pixbuf_unref (window_icon_pixbuf);
-	}
+	
 	gtk_widget_show(window);
 
 	xyz_t *ud = malloc(sizeof(xyz_t));
@@ -197,12 +192,7 @@ void on_editbutton_clicked(GtkButton *button, gpointer user_data)
 		GladeXML *gxml = glade_xml_new (GLADE_FILE_RULE_ADD, NULL, NULL);
 
 		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
-		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-		if (window_icon_pixbuf)
-		{
-			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-			gdk_pixbuf_unref (window_icon_pixbuf);
-		}
+
 		GtkWidget *entry = glade_xml_get_widget (gxml, "entry1");
 		gtk_entry_set_text(GTK_ENTRY(entry), letters);
 

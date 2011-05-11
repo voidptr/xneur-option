@@ -552,27 +552,23 @@ msgstr ""
 msgid "Show text on the tray"
 msgstr ""
 
-#: glade/config.glade:2887
-msgid "Change the icon size when resizing the tray"
+#: glade/config.glade:2890
+msgid "Show icon on the panel indicators"
 msgstr ""
 
-#: glade/config.glade:2902
-msgid "Pixmaps directory"
-msgstr ""
-
-#: glade/config.glade:2989
+#: glade/config.glade:2920
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:3026
+#: glade/config.glade:2957
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:3115
+#: glade/config.glade:3046
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:3148
+#: glade/config.glade:3079
 msgid "<b>Properties</b>"
 msgstr ""
 

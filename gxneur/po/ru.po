@@ -573,27 +573,23 @@ msgstr "Параметры запуска"
 msgid "Show text on the tray"
 msgstr "Показывать текст в системном лотке"
 
-#: glade/config.glade:2887
-msgid "Change the icon size when resizing the tray"
-msgstr "Менять размер значка при изменении размера системного лотка"
+#: glade/config.glade:2890
+msgid "Show icon on the panel indicators"
+msgstr "Показывать значек в панели индикаторов"
 
-#: glade/config.glade:2902
-msgid "Pixmaps directory"
-msgstr "Расположение значков"
-
-#: glade/config.glade:2989
+#: glade/config.glade:2920
 msgid "UI"
 msgstr "Внешний вид"
 
-#: glade/config.glade:3026
+#: glade/config.glade:2957
 msgid "Keyboard properties command"
 msgstr "Команда запуска параметров клавиатуры"
 
-#: glade/config.glade:3115
+#: glade/config.glade:3046
 msgid "System"
 msgstr "Системное"
 
-#: glade/config.glade:3148
+#: glade/config.glade:3079
 msgid "<b>Properties</b>"
 msgstr "<b>Параметры</b>"
 
@@ -801,5 +797,8 @@ msgstr "X Neural Switcher остановлен ("
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
 
-#~ msgid "Show icon on the panel indicators"
-#~ msgstr "Показывать значек в панели индикаторов"
+#~ msgid "Change the icon size when resizing the tray"
+#~ msgstr "Менять размер значка при изменении размера системного лотка"
+
+#~ msgid "Pixmaps directory"
+#~ msgstr "Расположение значков"

@@ -43,6 +43,7 @@ struct _tray_icon *tray;
 
 GConfClient* gconfClient = NULL;
 gboolean text_on_tray = FALSE;
+gboolean force_app_indicator = FALSE;
 
 Display *dpy = NULL;
 
@@ -254,11 +255,20 @@ gboolean clock_check(gpointer dummy)
 		gtk_main_quit();
 	}
 
+	int app_indicator_status = APP_INDICATOR_STATUS_PASSIVE;
+	gboolean tray_status = TRUE;
 	if (gtk_status_icon_is_embedded(tray->tray_icon))
 	{
-#ifdef HAVE_APP_INDICATOR
-		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_PASSIVE);
-#endif
+		if (force_app_indicator)
+		{
+			app_indicator_status = APP_INDICATOR_STATUS_ACTIVE;
+			tray_status = FALSE;
+		}
+	}
+	else
+	{
+		app_indicator_status = APP_INDICATOR_STATUS_ACTIVE;
+		tray_status = FALSE;
 	}
 	
 	if (xneur_pid == xneur_old_pid && 
@@ -295,8 +305,13 @@ gboolean clock_check(gpointer dummy)
 
 	gint kbd_gr = get_active_kbd_group(dpy);
 
+	gtk_status_icon_set_visible(tray->tray_icon, tray_status);
+#ifdef HAVE_APP_INDICATOR
+	app_indicator_set_status (tray->app_indicator, app_indicator_status);
+#endif
+	
 	if (gtk_status_icon_is_embedded(tray->tray_icon))
-	{
+	{	
 		// Tray part
 		if (text_on_tray)
 		{
@@ -327,16 +342,7 @@ gboolean clock_check(gpointer dummy)
 	else
 	{
 #ifdef HAVE_APP_INDICATOR
-		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
-		// App indicator part
-		if (xneur_pid != -1)
-		{
-			app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
-		}
-		else
-		{
-			app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ATTENTION);
-		}
+		app_indicator_set_status (tray->app_indicator, app_indicator_status);
 
 		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
 		if (text_on_tray)
@@ -415,6 +421,19 @@ void gconf_key_text_on_tray_callback(GConfClient* client,
 	force_update = TRUE;
 }
 
+void gconf_key_force_app_indicator_callback(GConfClient* client,
+                            guint cnxn_id,
+                            GConfEntry* entry,
+                            gpointer user_data)
+{
+	if (client || cnxn_id || user_data) {};
+	
+	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_BOOL)
+		force_app_indicator = gconf_value_get_bool (gconf_entry_get_value (entry));
+
+	force_update = TRUE;
+}
+
 void create_tray_icon(void)
 {
 	dpy = XOpenDisplay(NULL);
@@ -438,8 +457,24 @@ void create_tray_icon(void)
                           NULL,
                           NULL,
                           NULL);
+
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", NULL);
+	if(gcValue != NULL) 
+	{
+		if(gcValue->type == GCONF_VALUE_BOOL) 
+			force_app_indicator = gconf_value_get_bool(gcValue);
+
+		gconf_value_free(gcValue);
+	}
 	
-	g_object_unref(gconfClient);
+	gconf_client_notify_add(gconfClient,
+                          PACKAGE_GCONF_DIR "show_icon_on_panel_indicators",
+                          gconf_key_force_app_indicator_callback,
+                          NULL,
+                          NULL,
+                          NULL);
+	
+	//g_object_unref(gconfClient);
 	
 	tray = g_new0(struct _tray_icon, 1);	
 

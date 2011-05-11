@@ -270,13 +270,6 @@ static void xneur_add_application(GtkListStore *store)
 	glade_xml_signal_autoconnect (gxml);
 	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
 
-	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-	if (window_icon_pixbuf)
-	{
-		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-		gdk_pixbuf_unref (window_icon_pixbuf);
-	}
-	
 	gtk_widget_show(window);
 
 	GtkWidget *widget = glade_xml_get_widget (gxml, "button3");
@@ -361,17 +354,6 @@ void xneur_about(void)
 	glade_xml_signal_autoconnect (gxml);
 	GtkWidget *window = glade_xml_get_widget (gxml, "window1");
 
-	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-	if (window_icon_pixbuf)
-	{
-		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-		
-		GtkWidget *image = glade_xml_get_widget (gxml, "image1");	
-		gtk_image_set_from_pixbuf (GTK_IMAGE (image), window_icon_pixbuf);
-		
-		gdk_pixbuf_unref (window_icon_pixbuf);
-	}
-	
 	GtkWidget *widget = glade_xml_get_widget(gxml, "label44");
 	gchar *text = g_strdup_printf("%s %s", _("Current Version"), VERSION);
 	gtk_label_set_text(GTK_LABEL(widget), text);	
@@ -460,13 +442,7 @@ static void xneur_edit_keyboard_properties(GladeXML *parent_gxml)
 
 	tmp_widget = glade_xml_get_widget (parent_gxml, "entry5");
 	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(window), gtk_entry_get_text(GTK_ENTRY(tmp_widget)));
-	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-	if (window_icon_pixbuf)
-	{
-		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-		gdk_pixbuf_unref (window_icon_pixbuf);
-	}
-	
+		
 	gtk_widget_show(window);
 		
 	// Button OK
@@ -504,13 +480,6 @@ void xneur_preference(void)
 	glade_xml_signal_autoconnect (gxml);
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 
-	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-	if (window_icon_pixbuf)
-	{
-		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-		gdk_pixbuf_unref (window_icon_pixbuf);
-	}
-	
 	gtk_widget_show(window);
 
 	// Mode set
@@ -1276,6 +1245,21 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton28");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), value);
 
+	// Icon on app indicators panel
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", NULL);
+
+	value = FALSE;
+	if(gcValue != NULL) 
+	{
+		if(gcValue->type == GCONF_VALUE_BOOL) 
+			value = gconf_value_get_bool(gcValue);
+
+		gconf_value_free(gcValue);
+	}		
+
+	widget = glade_xml_get_widget (gxml, "checkbutton29");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), value);
+	
 	// Keyboard properties
 	const gchar *string_value = NULL;
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
@@ -1370,13 +1354,6 @@ void xneur_add_abbreviation(void)
 	glade_xml_signal_autoconnect (gxml);
 	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
 
-	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-	if (window_icon_pixbuf)
-	{
-		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-		gdk_pixbuf_unref (window_icon_pixbuf);
-	}
-	
 	gtk_widget_show(window);
 	
 	// Button OK
@@ -1420,13 +1397,6 @@ void xneur_add_user_action(void)
 	
 	glade_xml_signal_autoconnect (gxml);
 	GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
-
-	GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-	if (window_icon_pixbuf)
-	{
-		gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-		gdk_pixbuf_unref (window_icon_pixbuf);
-	}
 	
 	GtkWidget *widget= glade_xml_get_widget (gxml, "entry2");
 	g_signal_connect ((gpointer) widget, "key-press-event", G_CALLBACK (on_key_press_event), gxml);
@@ -1478,13 +1448,6 @@ void xneur_edit_user_action(GtkWidget *treeview)
 		glade_xml_signal_autoconnect (gxml);
 		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
 		
-		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-		if (window_icon_pixbuf)
-		{
-			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-			gdk_pixbuf_unref (window_icon_pixbuf);
-		}
-	
 		char *key_bind;
 		char *user_action;
 		char *action_name;
@@ -1564,13 +1527,6 @@ void xneur_edit_action(GtkWidget *treeview)
 		glade_xml_signal_autoconnect (gxml);
 		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
 		
-		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-		if (window_icon_pixbuf)
-		{
-			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-			gdk_pixbuf_unref (window_icon_pixbuf);
-		}
-	
 		char *key_bind;
 		char *action;
 		gtk_tree_model_get(GTK_TREE_MODEL(store_hotkey), &iter, 0, &action, 1, &key_bind, -1);
@@ -1638,13 +1594,6 @@ void xneur_edit_sound(GtkWidget *treeview)
 		char *file;
 		gtk_tree_model_get(GTK_TREE_MODEL(store_sound), &iter, 1, &file, -1);
 		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(window), file);
-		
-		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-		if (window_icon_pixbuf)
-		{
-			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-			gdk_pixbuf_unref (window_icon_pixbuf);
-		}
 	
 		gtk_widget_show(window);
 		
@@ -1686,12 +1635,7 @@ void xneur_edit_dictionary(GtkWidget *treeview)
 		}
 	
 		GtkWidget *window = glade_xml_get_widget (gxml, "dialog1");
-		GdkPixbuf *window_icon_pixbuf = create_pixbuf ("gxneur.png");
-		if (window_icon_pixbuf)
-		{
-			gtk_window_set_icon (GTK_WINDOW (window), window_icon_pixbuf);
-			gdk_pixbuf_unref (window_icon_pixbuf);
-		}
+
 		gtk_widget_show(window);
 
 		GtkWidget *widget = glade_xml_get_widget (gxml, "treeview1");
@@ -2267,6 +2211,15 @@ void xneur_save_preference(GladeXML *gxml)
 	}
 	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "text_on_tray");
 
+	// Icon on app indicators panel
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton29");
+	 
+	if(!gconf_client_set_bool(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)), NULL)) 
+	{
+	    g_warning("Failed to set %s (%d)\n", PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
+	}
+	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators");		
+	
 	// Keyboard properties
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry5");
 	
