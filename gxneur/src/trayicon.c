@@ -496,8 +496,6 @@ void create_tray_icon(void)
 
 		gconf_value_free(gcValue);
 	}
-
-	printf("----> %s\n", show_in_the_tray);
 	
 	gconf_client_notify_add(gconfClient,
                           PACKAGE_GCONF_DIR "show_in_the_tray",
