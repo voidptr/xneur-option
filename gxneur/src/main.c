@@ -76,14 +76,18 @@ int main(int argc, char *argv[])
 	{
 		gconf_value_free(gcValue);
 	}
-	
-	// Get show on panel status
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", NULL);
+
+	// Define rendering engine
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", NULL);
 
 	if(gcValue == NULL) 
 	{
-		if(!gconf_client_set_bool(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", TRUE, NULL)) 
-		    g_warning("Failed to set %s\n", PACKAGE_GCONF_DIR "show_icon_on_panel_indicators");
+		// May be:
+		// 1. Built-in
+		// 2. StatusIcon
+		// 3. AppIndicator
+		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", "Built-in", NULL)) 
+		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "rendering_engine", "Built-in");
 	}
 	else
 	{

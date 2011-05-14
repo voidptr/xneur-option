@@ -8,6 +8,7 @@
     <property name="title" translatable="yes">XNeur Settings</property>
     <property name="default_width">600</property>
     <property name="default_height">500</property>
+    <property name="icon_name">gxneur</property>
     <child>
       <widget class="GtkVBox" id="vbox7">
         <property name="visible">True</property>
@@ -2883,19 +2884,16 @@ Show icon</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkCheckButton" id="checkbutton29">
-                                        <property name="label" translatable="yes">Show icon on the panel indicators</property>
+                                      <widget class="GtkComboBox" id="combobox3">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
-                                        <property name="use_underline">True</property>
-                                        <property name="draw_indicator">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="items" translatable="yes">Used for rendering built-in engine
+Used for rendering Status Icon engine
+Used for rendering App Indicator engine</property>
                                       </widget>
                                       <packing>
                                         <property name="expand">True</property>
                                         <property name="fill">True</property>
-                                        <property name="padding">1</property>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>

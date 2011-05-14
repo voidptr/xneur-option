@@ -20,6 +20,8 @@
 #ifndef _TRAYICON_H_
 #define _TRAYICON_H_
 
+#include "tray_widget.h"
+
 #define MAX_LAYOUTS 4
 
 #ifdef HAVE_APP_INDICATOR
@@ -32,9 +34,17 @@ struct _tray_icon
 	// App Indicator part
 	AppIndicator *app_indicator;
 #endif
+	
 	// Tray part
-	GtkStatusIcon *tray_icon;
+	GtkTrayIcon *tray_icon;
+	GtkTooltips *tooltip;
+	GtkWidget *image;
+	GtkWidget *evbox;
+	
+	// Status Icon part
+	GtkStatusIcon *status_icon;
 
+	// All
 	gchar  *images[MAX_LAYOUTS];
 	GtkMenu *menu;
 	GtkWidget *status;

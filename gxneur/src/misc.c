@@ -1253,20 +1253,28 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "combobox2");
 	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), show_in_the_tray);
 
-	// Icon on app indicators panel
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", NULL);
+	// Define rendering engine
+	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", NULL);
 
-	value = FALSE;
+	string_value = NULL;
+	int rendering_engine = 0;
 	if(gcValue != NULL) 
 	{
-		if(gcValue->type == GCONF_VALUE_BOOL) 
-			value = gconf_value_get_bool(gcValue);
+		if(gcValue->type == GCONF_VALUE_STRING) 
+			string_value = gconf_value_get_string(gcValue);
 
+		if (strcmp(string_value, "Built-in") == 0)
+			rendering_engine = 0;
+		else if (strcmp(string_value, "StatusIcon") == 0)
+			rendering_engine = 1;
+		else
+			rendering_engine = 2;
+		
 		gconf_value_free(gcValue);
 	}		
-
-	widget = glade_xml_get_widget (gxml, "checkbutton29");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), value);
+	
+	widget = glade_xml_get_widget (gxml, "combobox3");
+	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), rendering_engine);
 	
 	// Keyboard properties
 	string_value = NULL;
@@ -2234,14 +2242,20 @@ void xneur_save_preference(GladeXML *gxml)
 	}
 	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray");
 	
-	// Icon on app indicators panel
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton29");
-	 
-	if(!gconf_client_set_bool(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)), NULL)) 
+	// Rendering engine
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox3");
+	int rendering_engine = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound));
+	string_value = "Built-in";
+	if (rendering_engine == 1)
+		string_value = "StatusIcon";
+	else if (rendering_engine == 2)
+		string_value = "AppIndicator";
+	
+	if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", string_value, NULL)) 
 	{
-	    g_warning("Failed to set %s (%d)\n", PACKAGE_GCONF_DIR "show_icon_on_panel_indicators", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
+	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "rendering_engine", string_value);
 	}
-	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "show_icon_on_panel_indicators");		
+	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "rendering_engine");	
 	
 	// Keyboard properties
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry5");
