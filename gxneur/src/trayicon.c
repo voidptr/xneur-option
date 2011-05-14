@@ -179,15 +179,25 @@ GtkMenu* create_menu(struct _tray_icon *tray, int state)
  	return GTK_MENU(menu);
 }		
 
-static void tray_icon_on_click(GtkWidget *widget, GdkEventButton *event, struct _tray_icon *tray)
-{	
-	printf("------------>>>>>>>>>>>>\n");
+gboolean tray_icon_press(GtkWidget *widget, GdkEventButton *event)
+{
 	if (widget){};
-		
-	//if (event->button == 1 || event->button == 2)
-		//return TRUE;
+	
+	if (event->button == 2)
+	{
+		xneur_start_stop();
+		return FALSE;
+	}
+	
+	if (event->button == 1)
+	{
+		set_next_kbd_group(dpy);
+		return FALSE;
+	}
 
 	gtk_menu_popup(GTK_MENU(tray->menu), NULL, NULL, NULL, NULL, event->button, event->time);
+	
+	return FALSE;
 }
 
 void status_icon_on_click(GtkStatusIcon *status_icon, 
@@ -201,6 +211,7 @@ void status_icon_on_menu(GtkStatusIcon *status_icon, guint button,
                        guint activate_time, gpointer user_data)
 {
 	if (status_icon || user_data){};
+	
     gtk_menu_popup(GTK_MENU(tray->menu), NULL, NULL, NULL, NULL, button, activate_time);
 }
 
@@ -344,7 +355,7 @@ gboolean clock_check(gpointer dummy)
 		}
 		else
 		{
-			tray->image = gtk_image_new_from_icon_name(tray->images[kbd_gr], GTK_ICON_SIZE_LARGE_TOOLBAR);
+			tray->image = gtk_image_new_from_icon_name(icon_name, GTK_ICON_SIZE_LARGE_TOOLBAR);
 		}
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
@@ -463,34 +474,25 @@ void gconf_key_rendering_engine_callback(GConfClient* client,
 {
 	if (client || cnxn_id || user_data) {};
 
-	gtk_widget_destroy(GTK_WIDGET(tray->menu));
-		tray->menu = NULL;
-	
-	if (strcmp(rendering_engine, "AppIndicator") == 0)
-	{
-		g_object_unref (tray->app_indicator);
-	}
-
-	if (strcmp(rendering_engine, "StatusIcon") == 0)
-	{
-		g_object_unref (tray->status_icon);
-	}
-	
-	if (strcmp(rendering_engine, "Built-in") == 0)
-	{
-		gtk_widget_destroy(GTK_WIDGET(tray->image));
-		tray->image = NULL;
-		gtk_widget_destroy(GTK_WIDGET(tray->evbox));
-		tray->evbox = NULL;
-		g_object_unref (tray->tray_icon);
-	}
-	
+	const char *new_engine = rendering_engine;
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
-		rendering_engine = strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
+		new_engine = strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
 
-	create_tray_icon();
+	if (strcmp(new_engine, rendering_engine) == 0)
+		return;
 	
-	force_update = TRUE;
+	for (int i = 0; i < MAX_LAYOUTS; i++)
+	{
+		if (tray->images[i] != NULL)
+			g_free(tray->images[i]);
+	}
+
+	gtk_widget_destroy(GTK_WIDGET(tray->menu));
+	tray->menu = NULL;
+		
+	g_spawn_command_line_async(PACKAGE, NULL);
+	
+	gtk_main_quit();
 }
 
 void create_tray_icon (void)
@@ -610,7 +612,7 @@ void create_tray_icon (void)
 	{
 		tray->tray_icon = _gtk_tray_icon_new(_("X Neural Switcher"));
 
-		g_signal_connect(G_OBJECT(tray->tray_icon), "button_press_event", G_CALLBACK(tray_icon_on_click), tray->tray_icon);
+		g_signal_connect(G_OBJECT(tray->tray_icon), "button_press_event", G_CALLBACK(tray_icon_press), NULL);
 		
 		tray->evbox		= gtk_event_box_new();
 		gtk_event_box_set_visible_window(GTK_EVENT_BOX(tray->evbox), 0);

@@ -232,67 +232,67 @@ msgstr ""
 msgid "XNeur Settings"
 msgstr ""
 
-#: glade/config.glade:42
+#: glade/config.glade:43
 msgid "Use manual switching mode"
 msgstr ""
 
-#: glade/config.glade:58
+#: glade/config.glade:59
 msgid "Enable auto-learning mode"
 msgstr ""
 
-#: glade/config.glade:74
+#: glade/config.glade:75
 msgid "Keep selection after changing selected text"
 msgstr ""
 
-#: glade/config.glade:90
+#: glade/config.glade:91
 msgid "Rotate layout after changing selected text"
 msgstr ""
 
-#: glade/config.glade:112
+#: glade/config.glade:113
 msgid "Check language on input process"
 msgstr ""
 
-#: glade/config.glade:135
+#: glade/config.glade:136
 msgid "Main"
 msgstr ""
 
-#: glade/config.glade:148
+#: glade/config.glade:149
 msgid "Correct aCCIDENTAL caps"
 msgstr ""
 
-#: glade/config.glade:164
+#: glade/config.glade:165
 msgid "Disable CapsLock use"
 msgstr ""
 
-#: glade/config.glade:180
+#: glade/config.glade:181
 msgid "Correct TWo INitial caps"
 msgstr ""
 
-#: glade/config.glade:196
+#: glade/config.glade:197
 msgid "Correct spaces with punctuation"
 msgstr ""
 
-#: glade/config.glade:212
+#: glade/config.glade:213
 msgid "Сorrect small letter to capital letter after dot"
 msgstr ""
 
-#: glade/config.glade:235
+#: glade/config.glade:236
 msgid "Typographics"
 msgstr ""
 
-#: glade/config.glade:259
+#: glade/config.glade:260
 msgid "<b>General</b>"
 msgstr ""
 
-#: glade/config.glade:318 glade/list.glade:8
+#: glade/config.glade:319 glade/list.glade:8
 msgid "Rules change..."
 msgstr ""
 
-#: glade/config.glade:360
+#: glade/config.glade:361
 msgid "Initial layout number:"
 msgstr ""
 
-#: glade/config.glade:372
+#: glade/config.glade:373
 msgid ""
 "0\n"
 "1\n"
@@ -300,219 +300,219 @@ msgid ""
 "3"
 msgstr ""
 
-#: glade/config.glade:403
+#: glade/config.glade:404
 msgid "Remember keyboard layout for each application instance"
 msgstr ""
 
-#: glade/config.glade:508
+#: glade/config.glade:509
 msgid "Exceptions (One keyboard layout for all application instances)"
 msgstr ""
 
-#: glade/config.glade:541
+#: glade/config.glade:542
 msgid "<b>Layouts</b>"
 msgstr ""
 
-#: glade/config.glade:761
+#: glade/config.glade:762
 msgid "<b>Hotkeys</b>"
 msgstr ""
 
-#: glade/config.glade:787
+#: glade/config.glade:788
 msgid "Enable pattern mining and recognition (autocompletion)"
 msgstr ""
 
-#: glade/config.glade:803
+#: glade/config.glade:804
 msgid "Add space after autocompletion"
 msgstr ""
 
-#: glade/config.glade:919
+#: glade/config.glade:920
 msgid "Disable the autocompletion for these applications"
 msgstr ""
 
-#: glade/config.glade:958
+#: glade/config.glade:959
 msgid "<b>Autocompletion</b>"
 msgstr ""
 
-#: glade/config.glade:1072
+#: glade/config.glade:1073
 msgid "Ignore these applications"
 msgstr ""
 
-#: glade/config.glade:1176
+#: glade/config.glade:1177
 msgid "Force automatic mode for these applications"
 msgstr ""
 
-#: glade/config.glade:1280
+#: glade/config.glade:1281
 msgid "Force manual mode for these applications"
 msgstr ""
 
-#: glade/config.glade:1313
+#: glade/config.glade:1314
 msgid "<b>Applications</b>"
 msgstr ""
 
-#: glade/config.glade:1348
+#: glade/config.glade:1349
 msgid "Enable sounds"
 msgstr ""
 
-#: glade/config.glade:1371
+#: glade/config.glade:1372
 msgid "Sound volume"
 msgstr ""
 
-#: glade/config.glade:1476
+#: glade/config.glade:1477
 msgid "Sounds"
 msgstr ""
 
-#: glade/config.glade:1494
+#: glade/config.glade:1495
 msgid "Show OSD"
 msgstr ""
 
-#: glade/config.glade:1517
+#: glade/config.glade:1518
 msgid "OSD Font"
 msgstr ""
 
-#: glade/config.glade:1555
+#: glade/config.glade:1556
 msgid "Use command <b>xfontsel -print</b> to get new font."
 msgstr ""
 
-#: glade/config.glade:1610
+#: glade/config.glade:1611
 msgid "OSD"
 msgstr ""
 
-#: glade/config.glade:1629
+#: glade/config.glade:1630
 msgid "Show popup messages"
 msgstr ""
 
-#: glade/config.glade:1652
+#: glade/config.glade:1653
 msgid "Popup expiration interval (in milliseconds)"
 msgstr ""
 
-#: glade/config.glade:1734
+#: glade/config.glade:1735
 msgid "Popup messages"
 msgstr ""
 
-#: glade/config.glade:1761
+#: glade/config.glade:1762
 msgid "<b>Notifications</b>"
 msgstr ""
 
-#: glade/config.glade:1787
+#: glade/config.glade:1788
 msgid "Ignore keyboard layout for abbreviations"
 msgstr ""
 
-#: glade/config.glade:1882
+#: glade/config.glade:1883
 msgid "<b>Abbreviations</b>"
 msgstr ""
 
-#: glade/config.glade:1908
+#: glade/config.glade:1909
 msgid "Enable keyboard logging"
 msgstr ""
 
-#: glade/config.glade:1955
+#: glade/config.glade:1956
 msgid "Send log via port"
 msgstr ""
 
-#: glade/config.glade:1988
+#: glade/config.glade:1989
 msgid "Send log via host (name or IP)"
 msgstr ""
 
-#: glade/config.glade:2021
+#: glade/config.glade:2022
 msgid "Send log to e-mail"
 msgstr ""
 
-#: glade/config.glade:2057
+#: glade/config.glade:2058
 msgid "Log file size in bytes"
 msgstr ""
 
-#: glade/config.glade:2068
+#: glade/config.glade:2069
 msgid "View log..."
 msgstr ""
 
-#: glade/config.glade:2107
+#: glade/config.glade:2108
 msgid "<b>Log</b>"
 msgstr ""
 
-#: glade/config.glade:2148
+#: glade/config.glade:2149
 msgid "Backspace"
 msgstr ""
 
-#: glade/config.glade:2164
+#: glade/config.glade:2165
 msgid "Left arrow"
 msgstr ""
 
-#: glade/config.glade:2180
+#: glade/config.glade:2181
 msgid "Right arrow"
 msgstr ""
 
-#: glade/config.glade:2196
+#: glade/config.glade:2197
 msgid "Up arrow"
 msgstr ""
 
-#: glade/config.glade:2212
+#: glade/config.glade:2213
 msgid "Down arrow"
 msgstr ""
 
-#: glade/config.glade:2228
+#: glade/config.glade:2229
 msgid "Delete"
 msgstr ""
 
-#: glade/config.glade:2244
+#: glade/config.glade:2245
 msgid "You changed layout"
 msgstr ""
 
-#: glade/config.glade:2275
+#: glade/config.glade:2276
 msgid ""
 "This will help avoid switching layout when editing parts previously "
 "introduced word."
 msgstr ""
 
-#: glade/config.glade:2304
+#: glade/config.glade:2305
 msgid "Don't switch layout if before input where pressed"
 msgstr ""
 
-#: glade/config.glade:2335
+#: glade/config.glade:2336
 msgid "Flush internal buffer on Escape"
 msgstr ""
 
-#: glade/config.glade:2351
+#: glade/config.glade:2352
 msgid "Flush internal buffer on Enter or Tab"
 msgstr ""
 
-#: glade/config.glade:2367
+#: glade/config.glade:2368
 msgid "Don't process words on Enter or Tab"
 msgstr ""
 
-#: glade/config.glade:2383
+#: glade/config.glade:2384
 msgid "Compatibility with the completion"
 msgstr ""
 
-#: glade/config.glade:2405
+#: glade/config.glade:2406
 msgid "Additional"
 msgstr ""
 
-#: glade/config.glade:2436
+#: glade/config.glade:2437
 msgid "Monitor the input"
 msgstr ""
 
-#: glade/config.glade:2467
+#: glade/config.glade:2468
 msgid ""
 "Disabling this option will add any application to the list of excluded "
 "applications."
 msgstr ""
 
-#: glade/config.glade:2496
+#: glade/config.glade:2497
 msgid "Tracking input"
 msgstr ""
 
-#: glade/config.glade:2523
+#: glade/config.glade:2524
 msgid "<b>Troubleshooting</b>"
 msgstr ""
 
-#: glade/config.glade:2575
+#: glade/config.glade:2576
 msgid "Delay before sending events (in milliseconds)"
 msgstr ""
 
-#: glade/config.glade:2587
+#: glade/config.glade:2588
 msgid "Log verbosity level"
 msgstr ""
 
-#: glade/config.glade:2600
+#: glade/config.glade:2601
 msgid ""
 "None\n"
 "Error\n"
@@ -522,54 +522,57 @@ msgid ""
 "Trace"
 msgstr ""
 
-#: glade/config.glade:2621
+#: glade/config.glade:2622
 msgid "Dont send KeyRelease event"
 msgstr ""
 
-#: glade/config.glade:2666
+#: glade/config.glade:2667
 msgid "<b>Advanced</b>"
 msgstr ""
 
-#: glade/config.glade:2733
+#: glade/config.glade:2734
 msgid "<b>Plugins</b>"
 msgstr ""
 
-#: glade/config.glade:2774
+#: glade/config.glade:2775
 msgid "Autostartup"
 msgstr ""
 
-#: glade/config.glade:2799
+#: glade/config.glade:2800
 msgid "Delay before startup"
 msgstr ""
 
-#: glade/config.glade:2842
+#: glade/config.glade:2843
 msgid "Startup"
 msgstr ""
 
-#: glade/config.glade:2875
+#: glade/config.glade:2876
 msgid ""
 "Show flag\n"
 "Show text\n"
 "Show icon"
 msgstr ""
 
-#: glade/config.glade:2887
-msgid "Show icon on the panel indicators"
+#: glade/config.glade:2890
+msgid ""
+"Used for rendering built-in engine\n"
+"Used for rendering Status Icon engine\n"
+"Used for rendering App Indicator engine"
 msgstr ""
 
-#: glade/config.glade:2917
+#: glade/config.glade:2915
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2954
+#: glade/config.glade:2952
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:3043
+#: glade/config.glade:3041
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:3076
+#: glade/config.glade:3074
 msgid "<b>Properties</b>"
 msgstr ""
 

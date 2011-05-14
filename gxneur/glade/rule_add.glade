@@ -30,7 +30,7 @@
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="gtk_widget_destroy" object="dialog1" swapped="yes"/>
+                <signal name="clicked" handler="gtk_widget_destroy" object="dialog1"/>
               </widget>
               <packing>
                 <property name="expand">False</property>

@@ -2170,7 +2170,13 @@ void xneur_save_preference(GladeXML *gxml)
 	// Tracking input mode
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton34");
 	xconfig->tracking_input = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	// Save
+	xconfig->save(xconfig);
+	xconfig->reload(xconfig);
 	
+	// GXNEUR Preferences
+
 	// Autostart
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton27");
 
@@ -2218,15 +2224,6 @@ void xneur_save_preference(GladeXML *gxml)
 	    g_warning("Failed to set %s (%d)\n", PACKAGE_GCONF_DIR "delay", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound)));
 	}
 
-	// Text on tray
-	/*widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton28");
-	 
-	if(!gconf_client_set_bool(gconfClient, PACKAGE_GCONF_DIR "text_on_tray", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)), NULL)) 
-	{
-	    g_warning("Failed to set %s (%d)\n", PACKAGE_GCONF_DIR "text_on_tray", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)));
-	}
-	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "text_on_tray");*/
-
 	// Show on the tray
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox2");
 	int show_in_the_tray = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound));
@@ -2242,6 +2239,15 @@ void xneur_save_preference(GladeXML *gxml)
 	}
 	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray");
 	
+	// Keyboard properties
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry5");
+	
+	if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)), NULL)) 
+	{
+	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "keyboard_properties", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
+	}
+	add_pixmap_directory(gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
+
 	// Rendering engine
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "combobox3");
 	int rendering_engine = gtk_combo_box_get_active(GTK_COMBO_BOX(widgetPtrToBefound));
@@ -2257,23 +2263,11 @@ void xneur_save_preference(GladeXML *gxml)
 	}
 	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "rendering_engine");	
 	
-	// Keyboard properties
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry5");
-	
-	if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)), NULL)) 
-	{
-	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "keyboard_properties", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
-	}
-	add_pixmap_directory(gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
-	
     /* release GConf client */
     g_object_unref(gconfClient);
 	
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);
-
-	xconfig->save(xconfig);
-	xconfig->reload(xconfig);
 }
 
 void xneur_dontsave_preference(GladeXML *gxml)

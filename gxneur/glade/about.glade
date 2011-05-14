@@ -36,6 +36,7 @@ Nikolay Yankin</property>
           <widget class="GtkImage" id="image1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="pixel_size">64</property>
             <property name="icon_name">gxneur</property>
           </widget>
           <packing>
@@ -60,7 +61,7 @@ Nikolay Yankin</property>
                 <property name="receives_default">False</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="gtk_widget_destroy" object="window1" swapped="yes"/>
+                <signal name="clicked" handler="gtk_widget_destroy" object="window1"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
