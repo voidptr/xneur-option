@@ -28,6 +28,7 @@
 #include <locale.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <getopt.h>
 
 #include "support.h"
 
@@ -107,7 +108,39 @@ int main(int argc, char *argv[])
 	}
 	
 	g_object_unref(gconfClient);
-	
+
+	static struct option longopts[] =
+	{
+			{ "help",		no_argument,	NULL,	'h' },
+			{ "configure",	no_argument,	NULL,	'c' },
+			{ NULL,			0,		NULL,	0 }
+	};
+
+	int opt;
+	while ((opt = getopt_long(argc, argv, "hc", longopts, NULL)) != -1)
+	{
+		switch (opt)
+		{
+			case 'c':
+			{
+				printf("\nThis option under construction. Sorry.\n");
+				return EXIT_SUCCESS;
+				break;
+			}
+			case '?':
+			case 'h':
+			{
+			    printf("\nGTK2 frontend for XNeur (version %s) \n", VERSION);
+				printf("usage: gxneur [options]\n");
+				printf("  where options are:\n");
+				printf("\n");
+				printf("  -h, --help		This help!\n");
+				printf("  -c, --configure	Configure xneur and gxneur\n");
+				exit(EXIT_SUCCESS);
+				break;
+			}
+		}
+	}
 	sleep (value);
 
 	xneur_start();
