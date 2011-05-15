@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 	}
 
 	// Get what to show in the tray
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", NULL);
+	/*gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", NULL);
 
 	if(gcValue == NULL) 
 	{
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 	else
 	{
 		gconf_value_free(gcValue);
-	}
+	}*/
 	
 	// Get delay from gconf
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "delay", NULL);

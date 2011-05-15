@@ -504,7 +504,13 @@ void create_tray_icon (void)
 	GConfValue* gcValue = NULL;
 
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", NULL);
-	if(gcValue != NULL) 
+	if(gcValue == NULL) 
+	{
+		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", "Flag", NULL)) 
+		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "show_in_the_tray", "Flag");
+		show_in_the_tray = "Flag";
+	}
+	else
 	{
 		if(gcValue->type == GCONF_VALUE_STRING) 
 			show_in_the_tray = strdup(gconf_value_get_string(gcValue));
@@ -520,7 +526,17 @@ void create_tray_icon (void)
                           NULL);
 	
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", NULL);
-	if(gcValue != NULL) 
+	if(gcValue == NULL) 
+	{
+		// May be:
+		// 1. Built-in
+		// 2. StatusIcon
+		// 3. AppIndicator
+		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", "StatusIcon", NULL)) 
+		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "rendering_engine", "StatusIcon");
+		rendering_engine = "StatusIcon";
+	}
+	else
 	{
 		if(gcValue->type == GCONF_VALUE_STRING) 
 			rendering_engine = strdup(gconf_value_get_string(gcValue));
@@ -563,7 +579,7 @@ void create_tray_icon (void)
 #ifdef HAVE_APP_INDICATOR
 		// App indicator
 		tray->app_indicator = app_indicator_new ("X Neural Switcher",
-		                           "gxneur",
+		                           PACKAGE,
 		                           APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
 	
 		app_indicator_set_status (tray->app_indicator, APP_INDICATOR_STATUS_ACTIVE);
@@ -582,7 +598,7 @@ void create_tray_icon (void)
 		g_signal_connect(G_OBJECT(tray->status_icon), "activate", G_CALLBACK(status_icon_on_click), NULL);
 		g_signal_connect(G_OBJECT(tray->status_icon), "popup-menu", G_CALLBACK(status_icon_on_menu), NULL);
 
-		gtk_status_icon_set_from_icon_name(tray->status_icon,  "gxneur");
+		gtk_status_icon_set_from_icon_name(tray->status_icon,  PACKAGE);
 		gtk_status_icon_set_tooltip_text(tray->status_icon, "X Neural Switcher");
 		gtk_status_icon_set_visible(tray->status_icon, TRUE);
 
