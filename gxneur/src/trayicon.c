@@ -552,8 +552,10 @@ void create_tray_icon (void)
                           NULL);
 	//g_object_unref(gconfClient);
 	
-	tray = g_new0(struct _tray_icon, 1);	
+	tray = g_new0(struct _tray_icon, 1);
+#ifdef HAVE_APP_INDICATOR
 	tray->app_indicator = NULL;
+#endif
 	tray->status_icon = NULL;
 	tray->tray_icon = NULL;
 	
