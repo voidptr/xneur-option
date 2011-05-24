@@ -707,7 +707,8 @@ msgid "Invalid value for tracking input mode specified"
 msgstr "Неправильное значение опции для слежения за вводом"
 
 #: lib/config/xnconfig.c:845
-msgid "Popup expire timeout must be between 0 and 30000"
+#, fuzzy
+msgid "PopupExpireTimeout must be between 0 and 30000"
 msgstr "Время показа всплывающего сообщения должно быть от 0 до 30000"
 
 #: lib/config/xnconfig.c:859
