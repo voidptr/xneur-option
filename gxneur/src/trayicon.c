@@ -321,16 +321,16 @@ gboolean clock_check(gpointer dummy)
 	
 	gchar *hint;
 	gchar *status_text;
-	float saturation;
+	//float saturation = 1.0;
 	if (xneur_pid != -1)
 	{
-		saturation = 1.0;
+		//saturation = 1.0;
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher running ("), xconfig->handle->languages[lang].dir, ")");
 		status_text = g_strdup_printf("%s", _("Stop daemon"));
 	}
 	else
 	{
-		saturation = 0.25;
+		//saturation = 0.25;
 		hint = g_strdup_printf("%s%s%s", _("X Neural Switcher stopped ("), xconfig->handle->languages[lang].dir, ")");
 		status_text = g_strdup_printf("%s", _("Start daemon"));
 	}
