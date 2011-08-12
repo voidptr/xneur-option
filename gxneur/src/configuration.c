@@ -53,8 +53,13 @@ static GConfClient* gconfClient(void)
 }
 
 
+static gboolean gxneur_config_enabled = TRUE;
+
 int gxneur_config_read_int(const char* key, int* value)
 {
+	if (!gxneur_config_enabled)
+		return CONFIG_NOT_SUPPORTED;
+
 	if (!key || !value)
 		return -2;
 
@@ -80,6 +85,9 @@ int gxneur_config_read_int(const char* key, int* value)
 
 int gxneur_config_read_str(const char* key, gchar** value)
 {
+	if (!gxneur_config_enabled)
+		return CONFIG_NOT_SUPPORTED;
+
 	if (!key || !value)
 		return -2;
 
@@ -106,6 +114,9 @@ int gxneur_config_read_str(const char* key, gchar** value)
 
 int gxneur_config_write_int(const char* key, int value, gboolean send_notify)
 {
+	if (!gxneur_config_enabled)
+		return CONFIG_NOT_SUPPORTED;
+
 	if (!key)
 		return -2;
 
@@ -127,6 +138,9 @@ int gxneur_config_write_int(const char* key, int value, gboolean send_notify)
 
 int gxneur_config_write_str(const char* key, const char* value, gboolean send_notify)
 {
+	if (!gxneur_config_enabled)
+		return CONFIG_NOT_SUPPORTED;
+
 	if (!key || !value)
 		return -2;
 
@@ -170,6 +184,9 @@ void gconf_callback(GConfClient* client,
 
 int gxneur_config_add_notify(const char* key, gxneur_config_notify_callback callback, gpointer payload)
 {
+	if (!gxneur_config_enabled)
+		return CONFIG_NOT_SUPPORTED;
+
 	gchar* k = g_strdup_printf("%s%s", PACKAGE_GCONF_DIR, key);
 	g_assert(k != NULL);
 
@@ -189,6 +206,11 @@ int gxneur_config_add_notify(const char* key, gxneur_config_notify_callback call
 	g_free(k);
 
 	return 0;
+}
+
+void gxneur_config_set_enabled(gboolean enabled)
+{
+	gxneur_config_enabled = enabled;
 }
 
 #else
@@ -224,6 +246,10 @@ int gxneur_config_add_notify(const char* key, gxneur_config_notify_callback call
 	return CONFIG_NOT_SUPPORTED;
 }
 
+void gxneur_config_set_enabled(gboolean enabled)
+{
+	UNUSED(enabled);
+}
 
 #endif
 

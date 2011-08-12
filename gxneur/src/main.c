@@ -55,10 +55,6 @@ int main(int argc, char *argv[])
 	gtk_set_locale();
 	gtk_init(&argc, &argv);
 	
-	int value = DEFAULT_DELAY;
-
-	gxneur_config_read_int("delay", &value);
-
 	static struct option longopts[] =
 	{
 			{ "help",	no_argument,	NULL,	'h' },
@@ -67,6 +63,7 @@ int main(int argc, char *argv[])
 			{ "keyboard-properties",	required_argument,	NULL,	1000 },
 			{ "rendering-engine",	required_argument,	NULL,	'E' },
 			{ "show",	required_argument,	NULL,	'S' },
+			{ "disable-settings-storage",	no_argument,	NULL,	1001 },
 			{ NULL,			0,		NULL,	0 }
 	};
 
@@ -78,7 +75,6 @@ int main(int argc, char *argv[])
 			case 'D':
 			{
 				arg_delay = atoi(optarg);
-				value = arg_delay;
 				break;
 			}
 			case 'S':
@@ -89,6 +85,11 @@ int main(int argc, char *argv[])
 			case 1000:
 			{
 				arg_keyboard_properties = optarg;
+				break;
+			}
+			case 1001:
+			{
+				gxneur_config_set_enabled(FALSE);
 				break;
 			}
 			case 'E':
@@ -113,6 +114,7 @@ int main(int argc, char *argv[])
 				printf(_("  -E, --rendering-engine=<engine>      Rendering engine to use (Built-in, StatusIcon, AppIndicator. Default is %s.)\n"), DEFAULT_RENDERING_ENGINE);
 				printf(_("  -S, --show=<mode>                    Icon display mode (Icon, Flag, Text. Default is %s.)\n"), DEFAULT_SHOW_IN_THE_TRAY);
 				printf(_("      --keyboard-properties=<command>  Command to run on \"Keyboard Properties\" menu item. Default is %s.\n"), KB_PROP_COMMAND);
+				printf(_("      --disable-settings-storage       Disable reading and saving gxneur settings to the persistent storage\n"));
 				printf(_("  -c, --configure                      Configure xneur and gxneur\n"));
 				printf(_("  -h, --help                           Display this help and exit\n"));
 				exit(EXIT_SUCCESS);
@@ -120,6 +122,14 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
+	
+	int value = -1;
+	gxneur_config_read_int("delay", &value);
+	if (arg_delay >= 0)
+		value = arg_delay;
+	if (value <= 0)
+		value = DEFAULT_DELAY;
+	
 	sleep (value);
 
 	xneur_start();

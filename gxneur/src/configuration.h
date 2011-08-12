@@ -37,4 +37,6 @@ int gxneur_config_write_str(const char* key, const char* value, gboolean send_no
 
 int gxneur_config_add_notify(const char* key, gxneur_config_notify_callback callback, gpointer payload);
 
+void gxneur_config_set_enabled(gboolean enabled);
+
 #endif /* _CONFIGURATION_H_ */
