@@ -23,10 +23,6 @@
 
 #include <gtk/gtk.h>
 
-#ifdef HAVE_GCONF
-#   include <gconf/gconf-client.h>
-#endif
- 
 #include <stdlib.h>
 #include <locale.h>
 #include <stdio.h>
@@ -61,70 +57,8 @@ int main(int argc, char *argv[])
 	
 	int value = DEFAULT_DELAY;
 
-#ifdef HAVE_GCONF
-	GConfClient* gconfClient = gconf_client_get_default();
-	g_assert(GCONF_IS_CLIENT(gconfClient));
+	gxneur_config_read_int("delay", &value);
 
-	GConfValue* gcValue = NULL;
-
-	// Get keyboard properties command
-	/*
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
-
-	if(gcValue == NULL) 
-	{
-		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", DEFAULT_KEYBOARD_PROPERTIES, NULL)) 
-		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "keyboard_properties", DEFAULT_KEYBOARD_PROPERTIES);
-	}
-	else
-	{
-		gconf_value_free(gcValue);
-	}
-	*/
-
-	// Get what to show in the tray
-	/*gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", NULL);
-
-	if(gcValue == NULL) 
-	{
-		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", "Flag", NULL)) 
-		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "show_in_the_tray", "Flag");
-	}
-	else
-	{
-		gconf_value_free(gcValue);
-	}
-
-	// Define rendering engine
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", NULL);
-
-	if(gcValue == NULL) 
-	{
-		// May be:
-		// 1. Built-in
-		// 2. StatusIcon
-		// 3. AppIndicator
-		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", "Built-in", NULL)) 
-		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "rendering_engine", "Built-in");
-	}
-	else
-	{
-		gconf_value_free(gcValue);
-	}*/
-	
-	// Get delay from gconf
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "delay", NULL);
-
-	if(gcValue != NULL) 
-	{
-		if(gcValue->type == GCONF_VALUE_INT) 
-			value = gconf_value_get_int(gcValue);
-
-		gconf_value_free(gcValue);
-	}
-	
-	g_object_unref(gconfClient);
-#endif
 	static struct option longopts[] =
 	{
 			{ "help",	no_argument,	NULL,	'h' },

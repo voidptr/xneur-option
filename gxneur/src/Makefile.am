@@ -8,6 +8,8 @@ bin_PROGRAMS = gxneur
 gxneur_SOURCES =		\
 	callbacks.c		\
 	callbacks.h		\
+	configuration.c		\
+	configuration.h		\
 	main.c			\
 	misc.c			\
 	misc.h			\

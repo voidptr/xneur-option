@@ -22,9 +22,6 @@
 #endif
 
 #include <gtk/gtk.h>
-#ifdef HAVE_GCONF
-#    include <gconf/gconf-client.h>
-#endif
 
 #include <stdlib.h>
 #include <ctype.h>
@@ -47,9 +44,7 @@ extern const char* arg_rendering_engine;
 extern struct _xneur_config *xconfig;
 
 struct _tray_icon *tray;
-#ifdef HAVE_GCONF
-GConfClient* gconfClient = NULL;
-#endif
+
 gchar *show_in_the_tray = NULL;
 gchar *rendering_engine = NULL;
 
@@ -462,38 +457,29 @@ void xneur_exit(void)
 	gtk_main_quit();
 }
 
-#ifdef HAVE_GCONF
-
-void gconf_key_show_in_the_tray_callback(GConfClient* client,
-                            guint cnxn_id,
-                            GConfEntry* entry,
-                            gpointer user_data)
+static
+void show_in_the_tray_callback(gpointer user_data)
 {
-	if (client || cnxn_id || user_data) {};
+	if (user_data) {};
 
 	if (arg_show_in_the_tray)
 		return;
 
-	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
-		g_free(show_in_the_tray),
-		show_in_the_tray = g_strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
+	gxneur_config_read_str("show_in_the_tray", &show_in_the_tray);
 
 	force_update = TRUE;
 }
 
-void gconf_key_rendering_engine_callback(GConfClient* client,
-                            guint cnxn_id,
-                            GConfEntry* entry,
-                            gpointer user_data)
+static
+void rendering_engine_callback(gpointer user_data)
 {
-	if (client || cnxn_id || user_data) {};
+	if (user_data) {};
 
 	if (arg_rendering_engine)
 		return;
 
-	const char *new_engine = rendering_engine;
-	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
-		new_engine = g_strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
+	gchar *new_engine = g_strdup(rendering_engine);
+	gxneur_config_read_str("rendering_engine", &new_engine);
 
 	if (strcasecmp(new_engine, rendering_engine) == 0)
 		return;
@@ -512,65 +498,16 @@ void gconf_key_rendering_engine_callback(GConfClient* client,
 	gtk_main_quit();
 }
 
-#endif
-
 void create_tray_icon (void)
 {
 	dpy = XOpenDisplay(NULL);
-#ifdef HAVE_GCONF
-	GConfClient* gconfClient = gconf_client_get_default();
 
-	GConfValue* gcValue = NULL;
+	gxneur_config_read_str("show_in_the_tray", &show_in_the_tray);
+	gxneur_config_read_str("rendering_engine", &rendering_engine);
 
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", NULL);
-	if(gcValue == NULL) 
-	{
-		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", DEFAULT_SHOW_IN_THE_TRAY, NULL)) 
-		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "show_in_the_tray", DEFAULT_SHOW_IN_THE_TRAY);
-	}
-	else
-	{
-		if(gcValue->type == GCONF_VALUE_STRING)
-			g_free(show_in_the_tray),
-			show_in_the_tray = g_strdup(gconf_value_get_string(gcValue));
+	gxneur_config_add_notify("show_in_the_tray", show_in_the_tray_callback, NULL);
+	gxneur_config_add_notify("rendering_engine", rendering_engine_callback, NULL);
 
-		gconf_value_free(gcValue);
-	}
-	
-	gconf_client_notify_add(gconfClient,
-                          PACKAGE_GCONF_DIR "show_in_the_tray",
-                          gconf_key_show_in_the_tray_callback,
-                          NULL,
-                          NULL,
-                          NULL);
-	
-	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", NULL);
-	if(gcValue == NULL) 
-	{
-		// May be:
-		// 1. Built-in
-		// 2. StatusIcon
-		// 3. AppIndicator
-		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", DEFAULT_RENDERING_ENGINE, NULL)) 
-		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "rendering_engine", DEFAULT_RENDERING_ENGINE);
-	}
-	else
-	{
-		if(gcValue->type == GCONF_VALUE_STRING)
-			g_free(rendering_engine),
-			rendering_engine = g_strdup(gconf_value_get_string(gcValue));
-
-		gconf_value_free(gcValue);
-	}
-	
-	gconf_client_notify_add(gconfClient,
-                          PACKAGE_GCONF_DIR "rendering_engine",
-                          gconf_key_rendering_engine_callback,
-                          NULL,
-                          NULL,
-                          NULL);
-	//g_object_unref(gconfClient);
-#endif
 	if (arg_show_in_the_tray)
 		g_free(show_in_the_tray),
 		show_in_the_tray = g_strdup(arg_show_in_the_tray);
