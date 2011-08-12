@@ -22,7 +22,10 @@
 #endif
 
 #include <gtk/gtk.h>
-#include <gconf/gconf-client.h>
+
+#ifdef HAVE_GCONF
+#   include <gconf/gconf-client.h>
+#endif
  
 #include <stdlib.h>
 #include <locale.h>
@@ -35,6 +38,13 @@
 #include "trayicon.h"
 #include "misc.h"
 
+
+int arg_delay = -1;
+const char* arg_keyboard_properties = NULL;
+const char* arg_show_in_the_tray = NULL;
+const char* arg_rendering_engine = NULL;
+
+
 int main(int argc, char *argv[])
 {
 #ifdef ENABLE_NLS
@@ -46,7 +56,10 @@ int main(int argc, char *argv[])
 
 	gtk_set_locale();
 	gtk_init(&argc, &argv);
+	
+	int value = 0;
 
+#ifdef HAVE_GCONF
 	GConfClient* gconfClient = gconf_client_get_default();
 	g_assert(GCONF_IS_CLIENT(gconfClient));
 
@@ -98,7 +111,6 @@ int main(int argc, char *argv[])
 	// Get delay from gconf
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "delay", NULL);
 
-	int value = 0;
 	if(gcValue != NULL) 
 	{
 		if(gcValue->type == GCONF_VALUE_INT) 
@@ -108,19 +120,44 @@ int main(int argc, char *argv[])
 	}
 	
 	g_object_unref(gconfClient);
-
+#endif
 	static struct option longopts[] =
 	{
-			{ "help",		no_argument,	NULL,	'h' },
+			{ "help",	no_argument,	NULL,	'h' },
 			{ "configure",	no_argument,	NULL,	'c' },
+			{ "delay",	required_argument,	NULL,	'D' },
+			{ "keyboard-properties",	required_argument,	NULL,	1000 },
+			{ "rendering-engine",	required_argument,	NULL,	'E' },
+			{ "show",	required_argument,	NULL,	'S' },
 			{ NULL,			0,		NULL,	0 }
 	};
 
 	int opt;
-	while ((opt = getopt_long(argc, argv, "hc", longopts, NULL)) != -1)
+	while ((opt = getopt_long(argc, argv, "hcS:D:E:", longopts, NULL)) != -1)
 	{
 		switch (opt)
 		{
+			case 'D':
+			{
+				arg_delay = atoi(optarg);
+				value = arg_delay;
+				break;
+			}
+			case 'S':
+			{
+				arg_show_in_the_tray = optarg;
+				break;
+			}
+			case 1000:
+			{
+				arg_keyboard_properties = optarg;
+				break;
+			}
+			case 'E':
+			{
+				arg_rendering_engine = optarg;
+				break;
+			}
 			case 'c':
 			{
 				printf("\nThis option under construction. Sorry.\n");
@@ -134,8 +171,12 @@ int main(int argc, char *argv[])
 				printf("usage: gxneur [options]\n");
 				printf("  where options are:\n");
 				printf("\n");
-				printf("  -h, --help		This help!\n");
-				printf("  -c, --configure	Configure xneur and gxneur\n");
+				printf("  -D, --delay=<seconds>                Seconds to wait before starting xneur\n");
+				printf("  -E, --rendering-engine=<engine>      Rendering engine to use (Built-in, StatusIcon, AppIndicator)\n");
+				printf("  -S, --show=<mode>                    Icon display mode (Icon, Flag, Text)\n");
+				printf("      --keyboard-properties=<command>  Command to run on \"Keyboard Properties\" menu item\n");
+				printf("  -c, --configure                      Configure xneur and gxneur\n");
+				printf("  -h, --help                           Display this help and exit\n");
 				exit(EXIT_SUCCESS);
 				break;
 			}

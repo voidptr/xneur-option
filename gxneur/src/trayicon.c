@@ -22,7 +22,9 @@
 #endif
 
 #include <gtk/gtk.h>
-#include <gconf/gconf-client.h>
+#ifdef HAVE_GCONF
+#    include <gconf/gconf-client.h>
+#endif
 
 #include <stdlib.h>
 #include <ctype.h>
@@ -37,11 +39,15 @@
 
 #include "trayicon.h"
 
+extern const char* arg_show_in_the_tray;
+extern const char* arg_rendering_engine;
+
 extern struct _xneur_config *xconfig;
 
 struct _tray_icon *tray;
-
+#ifdef HAVE_GCONF
 GConfClient* gconfClient = NULL;
+#endif
 gchar *show_in_the_tray = NULL;
 gchar *rendering_engine = NULL;
 
@@ -257,7 +263,7 @@ static const char *get_tray_icon_name (char *name)
 {
     const char * icon_name;
 
-	if (strcmp(show_in_the_tray, "Icon") == 0)
+	if (strcasecmp(show_in_the_tray, "Icon") == 0)
 	{
 		icon_name = PACKAGE;
 		return icon_name;
@@ -341,10 +347,10 @@ gboolean clock_check(gpointer dummy)
 
 
 	const char *icon_name = get_tray_icon_name(tray->images[kbd_gr]);
-	if (strcmp(rendering_engine, "Built-in") == 0)
+	if (strcasecmp(rendering_engine, "Built-in") == 0)
 	{
 		gtk_widget_destroy (tray->image);
-		if (strcmp(show_in_the_tray, "Text") == 0)
+		if (strcasecmp(show_in_the_tray, "Text") == 0)
 		{
 			char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
 			for (unsigned int i=0; i < strlen(layout_name); i++)
@@ -360,11 +366,11 @@ gboolean clock_check(gpointer dummy)
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 	}
-	else if (strcmp(rendering_engine, "StatusIcon") == 0)
+	else if (strcasecmp(rendering_engine, "StatusIcon") == 0)
 	{
 		if (gtk_status_icon_is_embedded(tray->status_icon))
 		{					
-			if (strcmp(show_in_the_tray, "Text") == 0)
+			if (strcasecmp(show_in_the_tray, "Text") == 0)
 			{
 				char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
 				for (unsigned int i=0; i < strlen(layout_name); i++)
@@ -387,11 +393,11 @@ gboolean clock_check(gpointer dummy)
 			gtk_status_icon_set_tooltip(tray->status_icon, hint);
 		}	
 	}
-	else if (strcmp(rendering_engine, "AppIndicator") == 0)
+	else if (strcasecmp(rendering_engine, "AppIndicator") == 0)
 	{
 #ifdef HAVE_APP_INDICATOR
 		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
-		if (strcmp(show_in_the_tray, "Text") == 0)
+		if (strcasecmp(show_in_the_tray, "Text") == 0)
 		{
 			for (unsigned int i=0; i < strlen(layout_name); i++)
 				layout_name[i] = toupper(layout_name[i]);
@@ -454,12 +460,17 @@ void xneur_exit(void)
 	gtk_main_quit();
 }
 
+#ifdef HAVE_GCONF
+
 void gconf_key_show_in_the_tray_callback(GConfClient* client,
                             guint cnxn_id,
                             GConfEntry* entry,
                             gpointer user_data)
 {
 	if (client || cnxn_id || user_data) {};
+
+	if (arg_show_in_the_tray)
+		return;
 	
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
 		show_in_the_tray = strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
@@ -474,11 +485,14 @@ void gconf_key_rendering_engine_callback(GConfClient* client,
 {
 	if (client || cnxn_id || user_data) {};
 
+	if (arg_rendering_engine)
+		return;
+
 	const char *new_engine = rendering_engine;
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
 		new_engine = strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
 
-	if (strcmp(new_engine, rendering_engine) == 0)
+	if (strcasecmp(new_engine, rendering_engine) == 0)
 		return;
 	
 	for (int i = 0; i < MAX_LAYOUTS; i++)
@@ -495,10 +509,12 @@ void gconf_key_rendering_engine_callback(GConfClient* client,
 	gtk_main_quit();
 }
 
+#endif
+
 void create_tray_icon (void)
 {
 	dpy = XOpenDisplay(NULL);
-	
+#ifdef HAVE_GCONF
 	GConfClient* gconfClient = gconf_client_get_default();
 
 	GConfValue* gcValue = NULL;
@@ -508,7 +524,6 @@ void create_tray_icon (void)
 	{
 		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", "Flag", NULL)) 
 		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "show_in_the_tray", "Flag");
-		show_in_the_tray = "Flag";
 	}
 	else
 	{
@@ -534,7 +549,6 @@ void create_tray_icon (void)
 		// 3. AppIndicator
 		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", "StatusIcon", NULL)) 
 		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "rendering_engine", "StatusIcon");
-		rendering_engine = "StatusIcon";
 	}
 	else
 	{
@@ -551,7 +565,17 @@ void create_tray_icon (void)
                           NULL,
                           NULL);
 	//g_object_unref(gconfClient);
-	
+#endif
+	if (arg_show_in_the_tray)
+		show_in_the_tray = strdup(arg_show_in_the_tray);
+	if (arg_rendering_engine)
+		rendering_engine = strdup(arg_rendering_engine);
+	if (!show_in_the_tray)
+		show_in_the_tray = strdup("Flag");
+	if (!rendering_engine)
+		rendering_engine = strdup("StatusIcon");
+
+
 	tray = g_new0(struct _tray_icon, 1);
 #ifdef HAVE_APP_INDICATOR
 	tray->app_indicator = NULL;
@@ -576,7 +600,7 @@ void create_tray_icon (void)
 	
 	tray->menu = create_menu(tray, xconfig->is_manual_mode(xconfig));
 
-	if (strcmp(rendering_engine, "AppIndicator") == 0)
+	if (strcasecmp(rendering_engine, "AppIndicator") == 0)
 	{
 #ifdef HAVE_APP_INDICATOR
 		// App indicator
@@ -593,7 +617,7 @@ void create_tray_icon (void)
 	gint kbd_gr = get_active_kbd_group(dpy);
 	
 	// Status Icon
-	if (strcmp(rendering_engine, "StatusIcon") == 0)
+	if (strcasecmp(rendering_engine, "StatusIcon") == 0)
 	{
 		tray->status_icon = gtk_status_icon_new();
 
@@ -604,7 +628,7 @@ void create_tray_icon (void)
 		gtk_status_icon_set_tooltip_text(tray->status_icon, "X Neural Switcher");
 		gtk_status_icon_set_visible(tray->status_icon, TRUE);
 
-		if (strcmp(show_in_the_tray, "Text") == 0)
+		if (strcasecmp(show_in_the_tray, "Text") == 0)
 		{
 			char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
 			for (unsigned int i=0; i < strlen(layout_name); i++)
@@ -626,7 +650,7 @@ void create_tray_icon (void)
 	}
 	
 	// Tray icon
-	if (strcmp(rendering_engine, "Built-in") == 0)
+	if (strcasecmp(rendering_engine, "Built-in") == 0)
 	{
 		tray->tray_icon = _gtk_tray_icon_new(_("X Neural Switcher"));
 
@@ -634,7 +658,7 @@ void create_tray_icon (void)
 		
 		tray->evbox		= gtk_event_box_new();
 		gtk_event_box_set_visible_window(GTK_EVENT_BOX(tray->evbox), 0);
-		if (strcmp(show_in_the_tray, "Text") == 0)
+		if (strcasecmp(show_in_the_tray, "Text") == 0)
 		{
 			char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
 			for (unsigned int i=0; i < strlen(layout_name); i++)

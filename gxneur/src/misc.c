@@ -25,7 +25,10 @@
 #include <gdk/gdkx.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <gconf/gconf-client.h>
+
+#ifdef HAVE_GCONF
+#   include <gconf/gconf-client.h>
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -53,6 +56,12 @@
 #include "trayicon.h"
 
 #include "misc.h"
+
+extern int arg_delay;
+extern const char* arg_keyboard_properties;
+extern const char* arg_show_in_the_tray;
+extern const char* arg_rendering_engine;
+
 
 void xneur_edit_regexp(GtkWidget *treeview);
 void xneur_edit_rule(GtkWidget *treeview);
@@ -417,6 +426,8 @@ static void notify_enable (GtkCellRendererToggle *renderer, gchar *path, GtkTree
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 2, value, -1);
 }
 
+#ifdef HAVE_GCONF
+
 static void xneur_restore_keyboard_properties(GladeXML *gxml)
 {
 	GtkWidget *widget = glade_xml_get_widget (gxml, "entry5");
@@ -450,8 +461,12 @@ static void xneur_edit_keyboard_properties(GladeXML *parent_gxml)
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_replace_keyboard_properties), gxml);
 }
 
+#endif
+
 void xneur_kb_preference(void)
 {
+	gchar *string_value = NULL;
+#ifdef HAVE_GCONF
 	GConfClient* gconfClient = gconf_client_get_default();
 	g_assert(GCONF_IS_CLIENT(gconfClient));
 
@@ -459,18 +474,27 @@ void xneur_kb_preference(void)
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
 	if(gcValue != NULL) 
 	{
-		const char *string_value = NULL;
 		if(gcValue->type == GCONF_VALUE_STRING) 
 		{
-			string_value = gconf_value_get_string(gcValue);
-			if (!g_spawn_command_line_async(string_value, NULL))
-			{
-				error_msg(_("Couldn't start %s\nVerify that it installed\n"), string_value);
-				fprintf(stderr, _("Couldn't start %s\nVerify that it installed\n"), string_value);
-			}
+			string_value = g_strdup(gconf_value_get_string(gcValue));
 		}
 		gconf_value_free(gcValue);
 	}
+#endif
+	if (arg_keyboard_properties) {
+		g_free(string_value);
+		string_value = g_strdup(arg_keyboard_properties);
+	}
+
+	gchar *cmd = string_value ? string_value : KB_PROP_COMMAND;
+
+	if (!g_spawn_command_line_async(cmd, NULL))
+	{
+		error_msg(_("Couldn't start %s\nVerify that it installed\n"), cmd);
+		fprintf(stderr, _("Couldn't start %s\nVerify that it installed\n"), cmd);
+	}
+
+	g_free(string_value);
 }
 
 void xneur_preference(void)
@@ -1207,8 +1231,11 @@ void xneur_preference(void)
 		widget = glade_xml_get_widget (gxml, "checkbutton27");
 	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 	}
-	
+
 	// Delay before start
+	widget = glade_xml_get_widget (gxml, "spinbutton5");
+	int value = 0;
+#ifdef HAVE_GCONF
 	GConfClient* gconfClient = gconf_client_get_default();
 	g_assert(GCONF_IS_CLIENT(gconfClient));
 
@@ -1216,7 +1243,6 @@ void xneur_preference(void)
 	GConfValue* gcValue = NULL;
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "delay", NULL);
 
-	int value = 0;
 	if(gcValue != NULL) 
 	{
 		/* Check if value type is integer */
@@ -1226,80 +1252,120 @@ void xneur_preference(void)
 		/* Release resources */
 		gconf_value_free(gcValue);
 	}
-
-	widget = glade_xml_get_widget (gxml, "spinbutton5");
+#else
+	gtk_widget_set_sensitive(GTK_WIDGET(widget), FALSE);
+#endif
+	if (arg_delay >= 0)
+		value = arg_delay;
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), value);
 
 	// Show on tray
+	widget = glade_xml_get_widget (gxml, "combobox2");
+	int show_in_the_tray = 0;
+	gchar *string_value = NULL;
+#ifdef HAVE_GCONF
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", NULL);
 
-	const gchar *string_value = NULL;
-	int show_in_the_tray = 0;
 	if(gcValue != NULL) 
 	{
 		if(gcValue->type == GCONF_VALUE_STRING) 
-			string_value = gconf_value_get_string(gcValue);
-
-		if (strcmp(string_value, "Flag") == 0)
+			string_value = g_strdup(gconf_value_get_string(gcValue));
+		gconf_value_free(gcValue);
+	}
+#else
+	gtk_widget_set_sensitive(GTK_WIDGET(widget), FALSE);
+#endif
+	if (arg_show_in_the_tray) {
+		g_free(string_value);
+		string_value = g_strdup(arg_show_in_the_tray);
+	}
+	if (string_value) {
+		if (strcasecmp(string_value, "Flag") == 0)
 			show_in_the_tray = 0;
-		else if (strcmp(string_value, "Text") == 0)
+		else if (strcasecmp(string_value, "Text") == 0)
 			show_in_the_tray = 1;
 		else
 			show_in_the_tray = 2;
-		
-		gconf_value_free(gcValue);
-	}		
-	
-	widget = glade_xml_get_widget (gxml, "combobox2");
+	}
 	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), show_in_the_tray);
+	g_free(string_value);
+
 
 	// Define rendering engine
+	widget = glade_xml_get_widget (gxml, "combobox3");
+	int rendering_engine = 1;
+	string_value = NULL;
+#ifdef HAVE_GCONF
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", NULL);
 
-	string_value = NULL;
-	int rendering_engine = 0;
 	if(gcValue != NULL) 
 	{
 		if(gcValue->type == GCONF_VALUE_STRING) 
-			string_value = gconf_value_get_string(gcValue);
-
-		if (strcmp(string_value, "Built-in") == 0)
+			string_value = g_strdup(gconf_value_get_string(gcValue));
+		gconf_value_free(gcValue);
+	}		
+#else
+	gtk_widget_set_sensitive(GTK_WIDGET(widget), FALSE);
+#endif
+	if (arg_rendering_engine) {
+		g_free(string_value);
+		string_value = g_strdup(arg_rendering_engine);
+	}
+	if (string_value) {
+		if (strcasecmp(string_value, "Built-in") == 0)
 			rendering_engine = 0;
-		else if (strcmp(string_value, "StatusIcon") == 0)
+		else if (strcasecmp(string_value, "StatusIcon") == 0)
 			rendering_engine = 1;
 		else
 			rendering_engine = 2;
-		
-		gconf_value_free(gcValue);
-	}		
-	
-	widget = glade_xml_get_widget (gxml, "combobox3");
+	}
 	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), rendering_engine);
 	
 	// Keyboard properties
+	widget = glade_xml_get_widget (gxml, "entry5");
 	string_value = NULL;
+#ifdef HAVE_GCONF
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", NULL);
 
 	if(gcValue != NULL) 
 	{
 		if(gcValue->type == GCONF_VALUE_STRING) 
 		{
-			string_value = gconf_value_get_string(gcValue);
-			widget = glade_xml_get_widget (gxml, "entry5");
-			gtk_entry_set_text(GTK_ENTRY(widget), string_value);
+			string_value = g_strdup(gconf_value_get_string(gcValue));
 		}
+		gconf_value_free(gcValue);
 	}
-	
+#endif
+	if (arg_keyboard_properties) {
+		g_free(string_value);
+		string_value = g_strdup(arg_keyboard_properties);
+	}
+#ifndef HAVE_GCONF
+	gtk_widget_set_sensitive(GTK_WIDGET(widget), FALSE);
+#endif
+	gtk_entry_set_text(GTK_ENTRY(widget), string_value ? string_value : KB_PROP_COMMAND);
+	g_free(string_value);
+
+
 	// Button Keyboard properties Edit
 	widget = glade_xml_get_widget (gxml, "button15");
+#ifdef HAVE_GCONF
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_edit_keyboard_properties), gxml);
-	// Button Keyboard properties Edit
+#else
+	gtk_widget_set_sensitive(GTK_WIDGET(widget), FALSE);
+#endif
+	// Button Keyboard properties Restore
 	widget = glade_xml_get_widget (gxml, "button16");
+#ifdef HAVE_GCONF
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_restore_keyboard_properties), gxml);
+#else
+	gtk_widget_set_sensitive(GTK_WIDGET(widget), FALSE);
+#endif
 
+#ifdef HAVE_GCONF
 	/* release GConf client */
 	g_object_unref(gconfClient);
-	
+#endif	
 	// Button OK
 	widget = glade_xml_get_widget (gxml, "button5");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_save_preference), gxml);
@@ -2213,7 +2279,7 @@ void xneur_save_preference(GladeXML *gxml)
 	}
 	g_free(path_file);
 
-	
+#ifdef HAVE_GCONF
 	GConfClient* gconfClient = gconf_client_get_default();
 	g_assert(GCONF_IS_CLIENT(gconfClient));
 	// Delay before start
@@ -2222,6 +2288,10 @@ void xneur_save_preference(GladeXML *gxml)
 	if(!gconf_client_set_int(gconfClient, PACKAGE_GCONF_DIR "delay", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound)), NULL)) 
 	{
 	    g_warning("Failed to set %s (%d)\n", PACKAGE_GCONF_DIR "delay", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound)));
+	}
+	else
+	{
+		arg_delay = -1;
 	}
 
 	// Show on the tray
@@ -2237,6 +2307,10 @@ void xneur_save_preference(GladeXML *gxml)
 	{
 	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "show_in_the_tray", string_value);
 	}
+	else
+	{
+		arg_show_in_the_tray = NULL;
+	}
 	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray");
 	
 	// Keyboard properties
@@ -2245,6 +2319,10 @@ void xneur_save_preference(GladeXML *gxml)
 	if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)), NULL)) 
 	{
 	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "keyboard_properties", gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
+	}
+	else
+	{
+		arg_keyboard_properties = NULL;
 	}
 	add_pixmap_directory(gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
 
@@ -2261,11 +2339,15 @@ void xneur_save_preference(GladeXML *gxml)
 	{
 	    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "rendering_engine", string_value);
 	}
+	else
+	{
+		arg_rendering_engine = NULL;
+	}
 	gconf_client_notify(gconfClient, PACKAGE_GCONF_DIR "rendering_engine");	
 	
     /* release GConf client */
     g_object_unref(gconfClient);
-	
+#endif
 	GtkWidget *window = glade_xml_get_widget (gxml, "window2");
 	gtk_widget_destroy(window);
 }
