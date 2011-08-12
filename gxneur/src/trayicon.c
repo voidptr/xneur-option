@@ -473,9 +473,10 @@ void gconf_key_show_in_the_tray_callback(GConfClient* client,
 
 	if (arg_show_in_the_tray)
 		return;
-	
+
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
-		show_in_the_tray = strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
+		g_free(show_in_the_tray),
+		show_in_the_tray = g_strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
 
 	force_update = TRUE;
 }
@@ -492,7 +493,7 @@ void gconf_key_rendering_engine_callback(GConfClient* client,
 
 	const char *new_engine = rendering_engine;
 	if (gconf_entry_get_value (entry) != NULL && gconf_entry_get_value (entry)->type == GCONF_VALUE_STRING)
-		new_engine = strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
+		new_engine = g_strdup(gconf_value_get_string (gconf_entry_get_value (entry)));
 
 	if (strcasecmp(new_engine, rendering_engine) == 0)
 		return;
@@ -529,8 +530,9 @@ void create_tray_icon (void)
 	}
 	else
 	{
-		if(gcValue->type == GCONF_VALUE_STRING) 
-			show_in_the_tray = strdup(gconf_value_get_string(gcValue));
+		if(gcValue->type == GCONF_VALUE_STRING)
+			g_free(show_in_the_tray),
+			show_in_the_tray = g_strdup(gconf_value_get_string(gcValue));
 
 		gconf_value_free(gcValue);
 	}
@@ -554,8 +556,9 @@ void create_tray_icon (void)
 	}
 	else
 	{
-		if(gcValue->type == GCONF_VALUE_STRING) 
-			rendering_engine = strdup(gconf_value_get_string(gcValue));
+		if(gcValue->type == GCONF_VALUE_STRING)
+			g_free(rendering_engine),
+			rendering_engine = g_strdup(gconf_value_get_string(gcValue));
 
 		gconf_value_free(gcValue);
 	}
@@ -569,13 +572,15 @@ void create_tray_icon (void)
 	//g_object_unref(gconfClient);
 #endif
 	if (arg_show_in_the_tray)
-		show_in_the_tray = strdup(arg_show_in_the_tray);
+		g_free(show_in_the_tray),
+		show_in_the_tray = g_strdup(arg_show_in_the_tray);
 	if (arg_rendering_engine)
-		rendering_engine = strdup(arg_rendering_engine);
+		g_free(rendering_engine),
+		rendering_engine = g_strdup(arg_rendering_engine);
 	if (!show_in_the_tray)
-		show_in_the_tray = strdup(DEFAULT_SHOW_IN_THE_TRAY);
+		show_in_the_tray = g_strdup(DEFAULT_SHOW_IN_THE_TRAY);
 	if (!rendering_engine)
-		rendering_engine = strdup(DEFAULT_RENDERING_ENGINE);
+		rendering_engine = g_strdup(DEFAULT_RENDERING_ENGINE);
 
 
 	tray = g_new0(struct _tray_icon, 1);
