@@ -39,6 +39,8 @@
 
 #include "trayicon.h"
 
+#include "configuration.h"
+
 extern const char* arg_show_in_the_tray;
 extern const char* arg_rendering_engine;
 
@@ -522,8 +524,8 @@ void create_tray_icon (void)
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", NULL);
 	if(gcValue == NULL) 
 	{
-		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", "Flag", NULL)) 
-		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "show_in_the_tray", "Flag");
+		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "show_in_the_tray", DEFAULT_SHOW_IN_THE_TRAY, NULL)) 
+		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "show_in_the_tray", DEFAULT_SHOW_IN_THE_TRAY);
 	}
 	else
 	{
@@ -547,8 +549,8 @@ void create_tray_icon (void)
 		// 1. Built-in
 		// 2. StatusIcon
 		// 3. AppIndicator
-		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", "StatusIcon", NULL)) 
-		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "rendering_engine", "StatusIcon");
+		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", DEFAULT_RENDERING_ENGINE, NULL)) 
+		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "rendering_engine", DEFAULT_RENDERING_ENGINE);
 	}
 	else
 	{
@@ -571,9 +573,9 @@ void create_tray_icon (void)
 	if (arg_rendering_engine)
 		rendering_engine = strdup(arg_rendering_engine);
 	if (!show_in_the_tray)
-		show_in_the_tray = strdup("Flag");
+		show_in_the_tray = strdup(DEFAULT_SHOW_IN_THE_TRAY);
 	if (!rendering_engine)
-		rendering_engine = strdup("StatusIcon");
+		rendering_engine = strdup(DEFAULT_RENDERING_ENGINE);
 
 
 	tray = g_new0(struct _tray_icon, 1);

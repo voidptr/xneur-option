@@ -57,6 +57,8 @@
 
 #include "misc.h"
 
+#include "configuration.h"
+
 extern int arg_delay;
 extern const char* arg_keyboard_properties;
 extern const char* arg_show_in_the_tray;
@@ -432,7 +434,7 @@ static void xneur_restore_keyboard_properties(GladeXML *gxml)
 {
 	GtkWidget *widget = glade_xml_get_widget (gxml, "entry5");
 
-	gtk_entry_set_text(GTK_ENTRY(widget), KB_PROP_COMMAND);
+	gtk_entry_set_text(GTK_ENTRY(widget), DEFAULT_KEYBOARD_PROPERTIES);
 }
 
 static void xneur_replace_keyboard_properties(GladeXML *gxml)
@@ -486,7 +488,7 @@ void xneur_kb_preference(void)
 		string_value = g_strdup(arg_keyboard_properties);
 	}
 
-	gchar *cmd = string_value ? string_value : KB_PROP_COMMAND;
+	gchar *cmd = string_value ? string_value : DEFAULT_KEYBOARD_PROPERTIES;
 
 	if (!g_spawn_command_line_async(cmd, NULL))
 	{
@@ -1234,7 +1236,7 @@ void xneur_preference(void)
 
 	// Delay before start
 	widget = glade_xml_get_widget (gxml, "spinbutton5");
-	int value = 0;
+	int value = DEFAULT_DELAY;
 #ifdef HAVE_GCONF
 	GConfClient* gconfClient = gconf_client_get_default();
 	g_assert(GCONF_IS_CLIENT(gconfClient));
@@ -1279,21 +1281,21 @@ void xneur_preference(void)
 		g_free(string_value);
 		string_value = g_strdup(arg_show_in_the_tray);
 	}
-	if (string_value) {
-		if (strcasecmp(string_value, "Flag") == 0)
-			show_in_the_tray = 0;
-		else if (strcasecmp(string_value, "Text") == 0)
-			show_in_the_tray = 1;
-		else
-			show_in_the_tray = 2;
-	}
+	if (!string_value)
+		string_value = g_strdup(DEFAULT_SHOW_IN_THE_TRAY);
+	if (strcasecmp(string_value, "Flag") == 0)
+		show_in_the_tray = 0;
+	else if (strcasecmp(string_value, "Text") == 0)
+		show_in_the_tray = 1;
+	else
+		show_in_the_tray = 2;
 	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), show_in_the_tray);
 	g_free(string_value);
 
 
 	// Define rendering engine
 	widget = glade_xml_get_widget (gxml, "combobox3");
-	int rendering_engine = 1;
+	int rendering_engine = 0;
 	string_value = NULL;
 #ifdef HAVE_GCONF
 	gcValue = gconf_client_get_without_default(gconfClient, PACKAGE_GCONF_DIR "rendering_engine", NULL);
@@ -1311,14 +1313,14 @@ void xneur_preference(void)
 		g_free(string_value);
 		string_value = g_strdup(arg_rendering_engine);
 	}
-	if (string_value) {
-		if (strcasecmp(string_value, "Built-in") == 0)
-			rendering_engine = 0;
-		else if (strcasecmp(string_value, "StatusIcon") == 0)
-			rendering_engine = 1;
-		else
-			rendering_engine = 2;
-	}
+	if (!string_value)
+		string_value = g_strdup(DEFAULT_RENDERING_ENGINE);
+	if (strcasecmp(string_value, "Built-in") == 0)
+		rendering_engine = 0;
+	else if (strcasecmp(string_value, "StatusIcon") == 0)
+		rendering_engine = 1;
+	else
+		rendering_engine = 2;
 	gtk_combo_box_set_active(GTK_COMBO_BOX(widget), rendering_engine);
 	
 	// Keyboard properties
@@ -1343,7 +1345,7 @@ void xneur_preference(void)
 #ifndef HAVE_GCONF
 	gtk_widget_set_sensitive(GTK_WIDGET(widget), FALSE);
 #endif
-	gtk_entry_set_text(GTK_ENTRY(widget), string_value ? string_value : KB_PROP_COMMAND);
+	gtk_entry_set_text(GTK_ENTRY(widget), string_value ? string_value : DEFAULT_KEYBOARD_PROPERTIES);
 	g_free(string_value);
 
 

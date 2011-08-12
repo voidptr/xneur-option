@@ -38,6 +38,8 @@
 #include "trayicon.h"
 #include "misc.h"
 
+#include "configuration.h"
+
 
 int arg_delay = -1;
 const char* arg_keyboard_properties = NULL;
@@ -57,7 +59,7 @@ int main(int argc, char *argv[])
 	gtk_set_locale();
 	gtk_init(&argc, &argv);
 	
-	int value = 0;
+	int value = DEFAULT_DELAY;
 
 #ifdef HAVE_GCONF
 	GConfClient* gconfClient = gconf_client_get_default();
@@ -70,8 +72,8 @@ int main(int argc, char *argv[])
 
 	if(gcValue == NULL) 
 	{
-		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", KB_PROP_COMMAND, NULL)) 
-		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "keyboard_properties", KB_PROP_COMMAND);
+		if(!gconf_client_set_string(gconfClient, PACKAGE_GCONF_DIR "keyboard_properties", DEFAULT_KEYBOARD_PROPERTIES, NULL)) 
+		    g_warning("Failed to set %s (%s)\n", PACKAGE_GCONF_DIR "keyboard_properties", DEFAULT_KEYBOARD_PROPERTIES);
 	}
 	else
 	{
@@ -172,9 +174,9 @@ int main(int argc, char *argv[])
 				printf("  where options are:\n");
 				printf("\n");
 				printf("  -D, --delay=<seconds>                Seconds to wait before starting xneur\n");
-				printf("  -E, --rendering-engine=<engine>      Rendering engine to use (Built-in, StatusIcon, AppIndicator)\n");
-				printf("  -S, --show=<mode>                    Icon display mode (Icon, Flag, Text)\n");
-				printf("      --keyboard-properties=<command>  Command to run on \"Keyboard Properties\" menu item\n");
+				printf("  -E, --rendering-engine=<engine>      Rendering engine to use (Built-in, StatusIcon, AppIndicator. Default is %s.)\n", DEFAULT_RENDERING_ENGINE);
+				printf("  -S, --show=<mode>                    Icon display mode (Icon, Flag, Text. Default is %s.)\n", DEFAULT_SHOW_IN_THE_TRAY);
+				printf("      --keyboard-properties=<command>  Command to run on \"Keyboard Properties\" menu item. Default is %s.\n", KB_PROP_COMMAND);
 				printf("  -c, --configure                      Configure xneur and gxneur\n");
 				printf("  -h, --help                           Display this help and exit\n");
 				exit(EXIT_SUCCESS);
