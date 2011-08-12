@@ -169,16 +169,16 @@ int main(int argc, char *argv[])
 			case '?':
 			case 'h':
 			{
-			    printf("\nGTK2 frontend for XNeur (version %s) \n", VERSION);
-				printf("usage: gxneur [options]\n");
-				printf("  where options are:\n");
+				printf(_("\nGTK2 frontend for XNeur (version %s) \n"), VERSION);
+				printf(_("usage: gxneur [options]\n"));
+				printf(_("  where options are:\n"));
 				printf("\n");
-				printf("  -D, --delay=<seconds>                Seconds to wait before starting xneur\n");
-				printf("  -E, --rendering-engine=<engine>      Rendering engine to use (Built-in, StatusIcon, AppIndicator. Default is %s.)\n", DEFAULT_RENDERING_ENGINE);
-				printf("  -S, --show=<mode>                    Icon display mode (Icon, Flag, Text. Default is %s.)\n", DEFAULT_SHOW_IN_THE_TRAY);
-				printf("      --keyboard-properties=<command>  Command to run on \"Keyboard Properties\" menu item. Default is %s.\n", KB_PROP_COMMAND);
-				printf("  -c, --configure                      Configure xneur and gxneur\n");
-				printf("  -h, --help                           Display this help and exit\n");
+				printf(_("  -D, --delay=<seconds>                Seconds to wait before starting xneur\n"));
+				printf(_("  -E, --rendering-engine=<engine>      Rendering engine to use (Built-in, StatusIcon, AppIndicator. Default is %s.)\n"), DEFAULT_RENDERING_ENGINE);
+				printf(_("  -S, --show=<mode>                    Icon display mode (Icon, Flag, Text. Default is %s.)\n"), DEFAULT_SHOW_IN_THE_TRAY);
+				printf(_("      --keyboard-properties=<command>  Command to run on \"Keyboard Properties\" menu item. Default is %s.\n"), KB_PROP_COMMAND);
+				printf(_("  -c, --configure                      Configure xneur and gxneur\n"));
+				printf(_("  -h, --help                           Display this help and exit\n"));
 				exit(EXIT_SUCCESS);
 				break;
 			}
