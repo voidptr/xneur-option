@@ -48,6 +48,7 @@ static GConfClient* gconfClient(void)
 	if (!_gconfClient) {
 		_gconfClient = gconf_client_get_default();
 		g_assert(GCONF_IS_CLIENT(_gconfClient));
+		gconf_client_add_dir(_gconfClient, PACKAGE_GCONF_DIR, GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
 	}
 	return _gconfClient;
 }
@@ -65,7 +66,7 @@ int gxneur_config_read_int(const char* key, int* value)
 
 	int result = -1;
 
-	gchar* k = g_strdup_printf("%s%s", PACKAGE_GCONF_DIR, key);
+	gchar* k = g_strdup_printf("%s/%s", PACKAGE_GCONF_DIR, key);
 	g_assert(k != NULL);
 
 	GConfValue* gcValue = gconf_client_get_without_default(gconfClient(),  k, NULL);
@@ -93,7 +94,7 @@ int gxneur_config_read_str(const char* key, gchar** value)
 
 	int result = -1;
 
-	gchar* k = g_strdup_printf("%s%s", PACKAGE_GCONF_DIR, key);
+	gchar* k = g_strdup_printf("%s/%s", PACKAGE_GCONF_DIR, key);
 	g_assert(k != NULL);
 
 	GConfValue* gcValue = gconf_client_get_without_default(gconfClient(),  k, NULL);
@@ -122,7 +123,7 @@ int gxneur_config_write_int(const char* key, int value, gboolean send_notify)
 
 	int result = 0;
 
-	gchar* k = g_strdup_printf("%s%s", PACKAGE_GCONF_DIR, key);
+	gchar* k = g_strdup_printf("%s/%s", PACKAGE_GCONF_DIR, key);
 	g_assert(k != NULL);
 
 	if(!gconf_client_set_int(gconfClient(), k, value, NULL)) 
@@ -146,7 +147,7 @@ int gxneur_config_write_str(const char* key, const char* value, gboolean send_no
 
 	int result = 0;
 
-	gchar* k = g_strdup_printf("%s%s", PACKAGE_GCONF_DIR, key);
+	gchar* k = g_strdup_printf("%s/%s", PACKAGE_GCONF_DIR, key);
 	g_assert(k != NULL);
 
 	if(!gconf_client_set_string(gconfClient(), k, value, NULL)) 
@@ -187,7 +188,7 @@ int gxneur_config_add_notify(const char* key, gxneur_config_notify_callback call
 	if (!gxneur_config_enabled)
 		return CONFIG_NOT_SUPPORTED;
 
-	gchar* k = g_strdup_printf("%s%s", PACKAGE_GCONF_DIR, key);
+	gchar* k = g_strdup_printf("%s/%s", PACKAGE_GCONF_DIR, key);
 	g_assert(k != NULL);
 
 	callback_t* callback_data = (callback_t*)malloc(sizeof(callback_t));

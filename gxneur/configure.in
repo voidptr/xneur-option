@@ -64,7 +64,7 @@ if test "x$with_appindicator" != "xno"; then
 	fi
 fi
 
-AC_DEFINE(PACKAGE_GCONF_DIR, "/apps/" PACKAGE "/", [Define GConf directory for settings])
+AC_DEFINE(PACKAGE_GCONF_DIR, "/apps/" PACKAGE, [Define GConf directory for settings])
 
 AC_DEFINE(KB_PROP_COMMAND, "/usr/bin/gnome-keyboard-properties", [Define keyboard properties command])
 
