@@ -618,19 +618,92 @@ msgstr ""
 msgid "More:"
 msgstr ""
 
-#: src/misc.c:334 src/misc.c:335
+#: src/callbacks.c:355 src/misc.c:2324
+msgid "Press any key"
+msgstr ""
+
+#: src/main.c:125
+#, c-format
+msgid ""
+"\n"
+"GTK2 frontend for XNeur (version %s) \n"
+msgstr ""
+
+#: src/main.c:126
+#, c-format
+msgid "usage: gxneur [options]\n"
+msgstr ""
+
+#: src/main.c:127
+#, c-format
+msgid "  where options are:\n"
+msgstr ""
+
+#: src/main.c:129
+#, c-format
+msgid ""
+"  -D, --delay=<seconds>                Seconds to wait before starting "
+"xneur\n"
+msgstr ""
+
+#: src/main.c:130
+#, c-format
+msgid ""
+"  -E, --rendering-engine=<engine>      Rendering engine to use (Built-in, "
+"StatusIcon, AppIndicator. Default is %s.)\n"
+msgstr ""
+
+#: src/main.c:131
+#, c-format
+msgid ""
+"  -S, --show=<mode>                    Icon display mode (Icon, Flag, Text. "
+"Default is %s.)\n"
+msgstr ""
+
+#: src/main.c:132
+#, c-format
+msgid ""
+"      --keyboard-properties=<command>  Command to run on \"Keyboard "
+"Properties\" menu item. Default is %s.\n"
+msgstr ""
+
+#: src/main.c:133
+#, c-format
+msgid ""
+"  -e  --store                          Save settings from the command line "
+"to the storage and exit\n"
+msgstr ""
+
+#: src/main.c:134
+#, c-format
+msgid ""
+"      --disable-settings-storage       Disable reading and saving gxneur "
+"settings to the persistent storage\n"
+msgstr ""
+
+#: src/main.c:135
+#, c-format
+msgid "  -c, --configure                      Configure xneur and gxneur\n"
+msgstr ""
+
+#: src/main.c:136
+#, c-format
+msgid "  -h, --help                           Display this help and exit\n"
+msgstr ""
+
+#: src/misc.c:328 src/misc.c:329
 #, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
 "Please, install libxnconfig version 0.%d.%d\n"
 msgstr ""
 
-#: src/misc.c:341
+#: src/misc.c:335
 #, c-format
 msgid "Using libxnconfig API version 0.%d.%d (build with 0.%d.%d)\n"
 msgstr ""
 
-#: src/misc.c:345 src/misc.c:346
+#: src/misc.c:339 src/misc.c:340
 #, c-format
 msgid ""
 "XNeur's config broken or was created with old version!\n"
@@ -639,99 +712,99 @@ msgid ""
 "and manually patch new configuration which will be created after first run.\n"
 msgstr ""
 
-#: src/misc.c:358 src/misc.c:359 src/misc.c:566 src/misc.c:567
+#: src/misc.c:352 src/misc.c:353 src/misc.c:473 src/misc.c:474
 #, c-format
 msgid ""
 "Couldn't start %s\n"
 "Verify that it installed\n"
 msgstr ""
 
-#: src/misc.c:409
+#: src/misc.c:365
 msgid "Current Version"
 msgstr ""
 
-#: src/misc.c:610 src/misc.c:636 src/misc.c:663 src/misc.c:689 src/misc.c:826
+#: src/misc.c:509 src/misc.c:535 src/misc.c:562 src/misc.c:588 src/misc.c:735
 msgid "Application"
 msgstr ""
 
-#: src/misc.c:707 src/misc.c:1210
+#: src/misc.c:606 src/misc.c:1135
 msgid "Description"
 msgstr ""
 
-#: src/misc.c:712
+#: src/misc.c:611
 msgid "Layout"
 msgstr ""
 
-#: src/misc.c:717
+#: src/misc.c:616
 msgid "Excluded"
 msgstr ""
 
-#: src/misc.c:860 src/misc.c:936 src/misc.c:1037 src/misc.c:1091
-#: src/misc.c:1141
+#: src/misc.c:769 src/misc.c:845 src/misc.c:954 src/misc.c:1008
+#: src/misc.c:1062
 msgid "Action"
 msgstr ""
 
-#: src/misc.c:867 src/misc.c:1048
+#: src/misc.c:776 src/misc.c:965
 msgid "Key bind"
 msgstr ""
 
-#: src/misc.c:903
+#: src/misc.c:812
 msgid "Abbreviation"
 msgstr ""
 
-#: src/misc.c:912
+#: src/misc.c:821
 msgid "Expansion text"
 msgstr ""
 
-#: src/misc.c:941
+#: src/misc.c:850
 msgid "Sound"
 msgstr ""
 
-#: src/misc.c:950 src/misc.c:1105 src/misc.c:1155 src/misc.c:1201
+#: src/misc.c:859 src/misc.c:1022 src/misc.c:1076 src/misc.c:1126
 msgid "Enabled"
 msgstr ""
 
-#: src/misc.c:1052 src/trayicon.c:158
+#: src/misc.c:969 src/trayicon.c:133
 msgid "User action"
 msgstr ""
 
-#: src/misc.c:1096
+#: src/misc.c:1013
 msgid "OSD text"
 msgstr ""
 
-#: src/misc.c:1146
+#: src/misc.c:1067
 msgid "Popup message text"
 msgstr ""
 
-#: src/misc.c:1215
+#: src/misc.c:1140
 msgid "File name"
 msgstr ""
 
-#: src/misc.c:1422
+#: src/misc.c:1338
 msgid "Abbreviation field is empty!"
 msgstr ""
 
-#: src/misc.c:1427
+#: src/misc.c:1343
 msgid "Expansion text field is empty!"
 msgstr ""
 
-#: src/misc.c:1472
+#: src/misc.c:1381
 msgid "Key bind field is empty!"
 msgstr ""
 
-#: src/misc.c:1477
+#: src/misc.c:1386
 msgid "User action field is empty!"
 msgstr ""
 
-#: src/misc.c:1778
+#: src/misc.c:1654
 msgid "Combination of letters"
 msgstr ""
 
-#: src/misc.c:1783
+#: src/misc.c:1659
 msgid "Condition"
 msgstr ""
 
-#: src/misc.c:1788
+#: src/misc.c:1664
 msgid "Insensitive"
 msgstr ""
 
@@ -740,31 +813,27 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr ""
 
-#: src/trayicon.c:115
+#: src/trayicon.c:96 src/trayicon.c:332
 msgid "Stop daemon"
 msgstr ""
 
-#: src/trayicon.c:120
+#: src/trayicon.c:100 src/trayicon.c:338
 msgid "Start daemon"
 msgstr ""
 
-#: src/trayicon.c:134
-msgid "Auto-correction"
-msgstr ""
-
-#: src/trayicon.c:180
+#: src/trayicon.c:164
 msgid "Keyboard Properties"
 msgstr ""
 
-#: src/trayicon.c:253
+#: src/trayicon.c:331
 msgid "X Neural Switcher running ("
 msgstr ""
 
-#: src/trayicon.c:258
+#: src/trayicon.c:337
 msgid "X Neural Switcher stopped ("
 msgstr ""
 
-#: src/trayicon.c:280
+#: src/trayicon.c:580
 msgid "X Neural Switcher"
 msgstr ""
 
