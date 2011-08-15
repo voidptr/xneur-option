@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 			}
 			case 'c':
 			{
-				printf("\nThis option under construction. Sorry.\n");
+				printf(_("\nThis option under construction. Sorry.\n"));
 				return EXIT_SUCCESS;
 				break;
 			}

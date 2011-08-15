@@ -640,6 +640,13 @@ msgstr ""
 msgid "Press any key"
 msgstr ""
 
+#: src/main.c:113
+#, c-format
+msgid ""
+"\n"
+"This option under construction. Sorry.\n"
+msgstr ""
+
 #: src/main.c:125
 #, c-format
 msgid ""

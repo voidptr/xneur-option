@@ -653,13 +653,23 @@ msgstr "Дополнительно:"
 msgid "Press any key"
 msgstr "Нажмите любую клавишу"
 
+#: src/main.c:113
+#, c-format
+msgid ""
+"\n"
+"This option under construction. Sorry.\n"
+msgstr ""
+"\n"
+"Эта опция в разработке. Извините.\n"
+
 #: src/main.c:125
 #, c-format
 msgid ""
 "\n"
 "GTK2 frontend for XNeur (version %s) \n"
-
-msgstr "\nGTK2 оболочка для XNeur (версия %s) \n"
+msgstr ""
+"\n"
+"GTK2 оболочка для XNeur (версия %s) \n"
 
 #: src/main.c:126
 #, c-format
@@ -676,7 +686,8 @@ msgstr "  где опциями являются:\n"
 msgid ""
 "  -D, --delay=<seconds>                Seconds to wait before starting "
 "xneur\n"
-msgstr "  -D, --delay=<секунды>                Задержка в секундах перед стартом "
+msgstr ""
+"  -D, --delay=<секунды>                Задержка в секундах перед стартом "
 "xneur\n"
 
 #: src/main.c:130
@@ -685,8 +696,8 @@ msgid ""
 "  -E, --rendering-engine=<engine>      Rendering engine to use (Built-in, "
 "StatusIcon, AppIndicator. Default is %s.)\n"
 msgstr ""
-"  -E, --rendering-engine=<engine>      Движок, используемый для отрисовки значка (Built-in, "
-"StatusIcon, AppIndicator. По умолчанию %s.)\n"
+"  -E, --rendering-engine=<движок>      Движок, используемый для отрисовки "
+"значка (Built-in, StatusIcon, AppIndicator. По умолчанию %s.)\n"
 
 #: src/main.c:131
 #, c-format
@@ -694,8 +705,8 @@ msgid ""
 "  -S, --show=<mode>                    Icon display mode (Icon, Flag, Text. "
 "Default is %s.)\n"
 msgstr ""
-"  -S, --show=<mode>                    Режим отображения иконки (Icon, Flag, Text. "
-"По умолчанию %s.)\n"
+"  -S, --show=<режим>                    Режим отображения иконки (Icon, Flag, "
+"Text. По умолчанию %s.)\n"
 
 #: src/main.c:132
 #, c-format
@@ -703,7 +714,7 @@ msgid ""
 "      --keyboard-properties=<command>  Command to run on \"Keyboard "
 "Properties\" menu item. Default is %s.\n"
 msgstr ""
-"      --keyboard-properties=<command>  Команда для пункта меню \"Параметры "
+"      --keyboard-properties=<команда>  Команда для пункта меню \"Параметры "
 "клавиатуры\". По умолчанию %s.\n"
 
 #: src/main.c:133
@@ -721,8 +732,8 @@ msgid ""
 "      --disable-settings-storage       Disable reading and saving gxneur "
 "settings to the persistent storage\n"
 msgstr ""
-"      --disable-settings-storage       Выключить чтение и сохранение настроек "
-"в постоянном хранилище\n"
+"      --disable-settings-storage       Выключить чтение и сохранение "
+"настроек в постоянном хранилище\n"
 
 #: src/main.c:135
 #, c-format
