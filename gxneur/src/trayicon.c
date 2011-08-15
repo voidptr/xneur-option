@@ -207,15 +207,15 @@ void status_icon_on_click(GtkStatusIcon *status_icon,
                         gpointer user_data)
 {
 	if (status_icon || user_data){};
-    set_next_kbd_group(dpy);
+	set_next_kbd_group(dpy);
 }
 
 void status_icon_on_menu(GtkStatusIcon *status_icon, guint button, 
                        guint activate_time, gpointer user_data)
 {
 	if (status_icon || user_data){};
-	
-    gtk_menu_popup(GTK_MENU(tray->menu), NULL, NULL, NULL, NULL, button, activate_time);
+
+	gtk_menu_popup(GTK_MENU(tray->menu), NULL, NULL, NULL, NULL, button, activate_time);
 }
 
 GdkPixbuf *text_to_gtk_pixbuf (GdkPixbuf *pb, int w, int h, gchar *text) 
@@ -254,33 +254,35 @@ GdkPixbuf *text_to_gtk_pixbuf (GdkPixbuf *pb, int w, int h, gchar *text)
 	
 	GdkPixbuf *ret = gdk_pixbuf_get_from_drawable (NULL, pm, NULL, 0, 0, 0, 0, w, h);
 	return ret; 
-} 
+}
 
 static const char *get_tray_icon_name (char *name)
 {
-    const char * icon_name;
+	const char * icon_name;
 
 	if (strcasecmp(show_in_the_tray, "Icon") == 0)
 	{
 		icon_name = PACKAGE;
 		return icon_name;
 	}
-	
-    GtkIconTheme * theme = gtk_icon_theme_get_default( );
 
-    // if the tray's icon is a 48x48 file, use it;
-    // otherwise, use the fallback builtin icon 
-    if (!gtk_icon_theme_has_icon (theme, name))
-        icon_name = PACKAGE;
-    else 
+	GtkIconTheme * theme = gtk_icon_theme_get_default( );
+
+	// if the tray's icon is a 48x48 file, use it;
+	// otherwise, use the fallback builtin icon 
+	if (!gtk_icon_theme_has_icon (theme, name))
 	{
-        GtkIconInfo * icon_info = gtk_icon_theme_lookup_icon (theme, name, 48, GTK_ICON_LOOKUP_USE_BUILTIN);
-        const gboolean icon_is_builtin = gtk_icon_info_get_filename (icon_info) == NULL;
-        gtk_icon_info_free (icon_info);
-        icon_name = icon_is_builtin ? PACKAGE : name;
-    }
+		icon_name = PACKAGE;
+	}
+	else
+	{
+		GtkIconInfo * icon_info = gtk_icon_theme_lookup_icon (theme, name, 48, GTK_ICON_LOOKUP_USE_BUILTIN);
+		const gboolean icon_is_builtin = gtk_icon_info_get_filename (icon_info) == NULL;
+		gtk_icon_info_free (icon_info);
+		icon_name = icon_is_builtin ? PACKAGE : name;
+	}
 
-    return icon_name;
+	return icon_name;
 }
 
 gboolean clock_check(gpointer dummy)
