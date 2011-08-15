@@ -344,7 +344,8 @@ gboolean clock_check(gpointer dummy)
 
 
 	const char *icon_name = get_tray_icon_name(tray->images[kbd_gr]);
-	if (strcasecmp(rendering_engine, "Built-in") == 0)
+	//if (strcasecmp(rendering_engine, "Built-in") == 0)
+	if (tray->tray_icon)
 	{
 		gtk_widget_destroy (tray->image);
 		if (strcasecmp(show_in_the_tray, "Text") == 0)
@@ -363,7 +364,8 @@ gboolean clock_check(gpointer dummy)
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 	}
-	else if (strcasecmp(rendering_engine, "StatusIcon") == 0)
+	//else if (strcasecmp(rendering_engine, "StatusIcon") == 0)
+	else if (tray->status_icon)
 	{
 		if (gtk_status_icon_is_embedded(tray->status_icon))
 		{					
@@ -390,9 +392,10 @@ gboolean clock_check(gpointer dummy)
 			gtk_status_icon_set_tooltip(tray->status_icon, hint);
 		}	
 	}
-	else if (strcasecmp(rendering_engine, "AppIndicator") == 0)
-	{
+	//else if (strcasecmp(rendering_engine, "AppIndicator") == 0)
 #ifdef HAVE_APP_INDICATOR
+	else if (tray->app_indicator)
+	{
 		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
 		if (strcasecmp(show_in_the_tray, "Text") == 0)
 		{
@@ -415,14 +418,14 @@ gboolean clock_check(gpointer dummy)
 #endif
 		}
 		free(layout_name);
-#endif
 	}
-	
+#endif
+
 	g_free (hint);
 	g_free (status_text);
 
 	return TRUE;
-}				
+}
 
 void xneur_start_stop(void)
 {
