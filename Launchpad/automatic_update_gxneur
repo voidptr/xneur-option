@@ -3,7 +3,7 @@
 # Must be from GPG key
 export DEBEMAIL="Andrew Crew Kuznetsov <andrewcrew@rambler.ru>"
 
-cd "${HOME}/develop/xneur/Launchpad"
+cd "${HOME}/develop/xneur-hg/xneur/Launchpad"
 
 if !([ -e gxneur_*.orig.tar.gz ]); then
   echo "File gxneur_*.orig.tar.gz is not found.";
@@ -12,7 +12,7 @@ else
   export OLD_VER=$(ls gxneur_*.orig.tar.gz | sed -e "s/^gxneur_\(.*\).orig.tar.gz$/\1/");
 fi
 
-export LAST_REVISION=$(svn log svn://xneur.ru:3690/xneur -r HEAD --quiet | grep "r[0-9]\+" | sed -e "s/^r\([0-9]\+\).*$/\1/")
+export LAST_REVISION=$(hg su | grep "parent: [0-9]\+" | sed -e "s/^parent: \([0-9]\+\).*$/\1/")
 
 echo "Number of last revision: ${LAST_REVISION}"
 
@@ -22,9 +22,13 @@ if [ -z ${LAST_REVISION} ]; then
 fi
 
 echo "Updating is started."
+# begin local updating
+hg pull
+hg update
+hg merge
 
-export CUR_VER=$(svn cat svn://xneur.ru:3690/xneur/gxneur/configure.in | grep "AM_INIT_AUTOMAKE" | sed -e "s/^AM_INIT_AUTOMAKE(gxneur, \(.*\))$/\1/")
-export NEW_VER="${CUR_VER}+svn${LAST_REVISION}"
+export CUR_VER=$(cat ../gxneur/configure.in | grep "AM_INIT_AUTOMAKE" | sed -e "s/^AM_INIT_AUTOMAKE(gxneur, \(.*\))$/\1/")
+export NEW_VER="${CUR_VER}+hg${LAST_REVISION}"
 
 echo "OLD_VER = ${OLD_VER}"
 echo "NEW_VER = ${NEW_VER}"
@@ -40,19 +44,19 @@ if [ ${NEW_VER} = ${OLD_VER} ]; then
 fi
 
 # begin local updating
-svn update ../gxneur/
-svn export ../gxneur/ "gxneur-tmp"
+hg archive -t files "gxneur-tmp"
+
 # end local updating
 
 # building to dist
-cd ./"gxneur-tmp"
+cd ./"gxneur-tmp"/gxneur
 # save debianize settings
-mv ./debian ../
+mv ./debian ../../
 ./autogen.sh
 make distcheck
-mkdir ../"gxneur-${CUR_VER}"
-tar -xvf "gxneur-${CUR_VER}.tar.gz" -C ../
-cd ..
+mkdir ../../"gxneur-${CUR_VER}"
+tar -xvf "gxneur-${CUR_VER}.tar.gz" -C ../../
+cd ../..
 rm -R ./"gxneur-tmp"
 # end building
 
