@@ -82,6 +82,14 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 	
 	if (mode == BY_PLAIN)
 	{
+		// Print all list for debug
+		/*for (int i = 0; i < list->data_count - 1; i++)
+		{
+			struct _list_char_data *data = &list->data[0];
+			data = &list->data[i];
+			log_message (ERROR, "%d %s", i, data->string);
+		}*/ 
+		
 		int first = 0;
 		int last = list->data_count - 1;
 

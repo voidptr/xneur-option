@@ -235,8 +235,8 @@ static void program_layout_update(struct _program *p)
 
 	// Save layout for old window
 	sprintf(window_layouts, "%s %d", text_to_find, p->last_layout);
-	xconfig->window_layouts->add(xconfig->window_layouts, window_layouts);
-
+	xconfig->window_layouts->add(xconfig->window_layouts, window_layouts);	
+	
 	struct _list_char_data* curr_app = NULL;
 
 	char *curr_app_name = get_wm_class_name(p->focus->owner_window);
@@ -255,7 +255,6 @@ static void program_layout_update(struct _program *p)
 	for (int lang = 0; lang < xconfig->handle->total_languages; lang++)
 	{
 		sprintf(window_layouts, "%s %d", text_to_find, lang);
-
 		if (!xconfig->window_layouts->exist(xconfig->window_layouts, window_layouts, BY_PLAIN))
 			continue;
 
@@ -313,13 +312,14 @@ static void program_process_input(struct _program *p)
 		int curr_layout = get_curr_keyboard_group();
 		if ((p->last_layout != curr_layout) && (p->last_window == p->focus->owner_window))
 		{
-			p->last_layout = curr_layout;
 			if (xconfig->troubleshoot_switch)
 			{
 				//log_message (ERROR, "KBD_SWITCH") ;
 				p->changed_manual = MANUAL_FLAG_SET;
 			}		
 		}
+		
+		p->last_layout = curr_layout;
 		
 		switch (type)
 		{
@@ -389,8 +389,6 @@ static void program_process_input(struct _program *p)
 				{
 					if (p->focus->owner_window != p->event->event.xfocus.window)
 						log_message(TRACE, _("Received FocusIn on window %d (event type %d)"), p->event->event.xfocus.window, type);
-
-					p->last_layout = get_curr_keyboard_group();
 				}
 				//else if (type == LeaveNotify)
 				//	log_message(TRACE, _("Received LeaveNotify (event type %d)"), type);
@@ -404,8 +402,6 @@ static void program_process_input(struct _program *p)
 				if (p->focus->owner_window != p->event->event.xfocus.window)
 					log_message(TRACE, _("Received FocusOut on window %d (event type %d)"), p->event->event.xfocus.window, type);
 
-				p->last_layout = get_curr_keyboard_group();
-				
 				p->update(p);
 				
 				break;
@@ -1385,7 +1381,7 @@ static int program_check_lang_last_syllable(struct _program *p)
 	show_notify(NOTIFY_AUTOMATIC_CHANGE_WORD, NULL);
 
 	p->last_layout = new_lang;
-	
+
 	return TRUE;
 }
 
