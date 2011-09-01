@@ -65,7 +65,7 @@ static const char *option_names[] = 	{
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
 						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
-						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput",
+						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
 						"PopupExpireTimeout"
 					};
 static const char *action_names[] =	{
@@ -836,7 +836,19 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->tracking_input = index;
 			break;
 		}
-		case 54: // PopupExpireTimeout
+		case 54: // Tracking mouse
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for tracking mouse mode specified"));
+				break;
+			}
+
+			p->tracking_mouse = index;
+			break;
+		}
+		case 55: // PopupExpireTimeout
 		{
 
 			p->popup_expire_timeout = atoi(param);
@@ -1326,6 +1338,8 @@ static int xneur_config_save(struct _xneur_config *p)
 
 	fprintf(stream, "# Disabling this option will add any application to the list of excluded applications.\nTrackingInput %s\n\n", p->get_bool_name(p->tracking_input));
 
+	fprintf(stream, "# Disabling this option will disable mouse tracking.\nTrackingMouse %s\n\n", p->get_bool_name(p->tracking_mouse));
+
 	fprintf(stream, "# Disable send KeyRelease event\nDontSendKeyRelease %s\n\n", p->get_bool_name(p->dont_send_key_release));
 	
 	fprintf(stream, "# Modules list\n");
@@ -1477,7 +1491,8 @@ struct _xneur_config* xneur_config_init(void)
 
 	p->dont_send_key_release = FALSE;
 	p->tracking_input = TRUE;
-
+	p->tracking_mouse = TRUE;
+	
 	p->popup_expire_timeout = 1000;
 
 	// Function mapping

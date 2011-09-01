@@ -221,7 +221,8 @@ static void focus_update_grab_events(struct _focus *p, int mode)
 		// Grabbing special key (Enter, Tab and other)
 		if (p->last_focus != FOCUS_EXCLUDED)
 		{
-			grab_button(TRUE);
+			if (xconfig->tracking_mouse)
+			  grab_button(TRUE);
 			grab_spec_keys(p->owner_window, TRUE);
 			set_event_mask(p->owner_window, INPUT_HANDLE_MASK | FOCUS_CHANGE_MASK | EVENT_KEY_MASK);
 		}

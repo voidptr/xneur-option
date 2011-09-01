@@ -232,6 +232,7 @@ struct _xneur_config
 		
 	int dont_send_key_release;
 	int tracking_input;
+	int tracking_mouse;
 		
 	char* (*get_home_dict_path) (const char *dir_name, const char *file_name);
 	char* (*get_global_dict_path) (const char *dir_name, const char *file_name);
