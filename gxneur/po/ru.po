@@ -506,30 +506,39 @@ msgstr "Дополнительно"
 msgid "Monitor the input"
 msgstr "Следить за вводом"
 
-#: glade/config.glade:2468
+#: glade/config.glade:2456
 msgid ""
 "Disabling this option will add any application to the list of excluded "
 "applications."
 msgstr ""
 "Выключение этой опции добавит ВСЕ приложения в список исключенных приложений."
 
-#: glade/config.glade:2497
+#: glade/config.glade:2466
+msgid "Monitor the mouse"
+msgstr "Следить за мышью"
+
+#: glade/config.glade:2485
+msgid "Disabling this option will disable mouse tracking. Reset buffer when clicking the mouse will not."
+msgstr ""
+"Выключение этой опции выключит слежение за мышью. Сброса буфера при клике мышью не будет."
+
+#: glade/config.glade:2501
 msgid "Tracking input"
 msgstr "Слежение за вводом"
 
-#: glade/config.glade:2524
+#: glade/config.glade:2528
 msgid "<b>Troubleshooting</b>"
 msgstr "<b>Устранение проблем</b>"
 
-#: glade/config.glade:2576
+#: glade/config.glade:2580
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Задержка перед отправкой событий (в миллисекундах)"
 
-#: glade/config.glade:2588
+#: glade/config.glade:2592
 msgid "Log verbosity level"
 msgstr "Уровень подробности выводимых сообщений"
 
-#: glade/config.glade:2601
+#: glade/config.glade:2605
 msgid ""
 "None\n"
 "Error\n"
@@ -545,31 +554,31 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2622
+#: glade/config.glade:2626
 msgid "Dont send KeyRelease event"
 msgstr "Не отправлять событие KeyRelease"
 
-#: glade/config.glade:2667
+#: glade/config.glade:2671
 msgid "<b>Advanced</b>"
 msgstr "<b>Специальное</b>"
 
-#: glade/config.glade:2734
+#: glade/config.glade:2738
 msgid "<b>Plugins</b>"
 msgstr "<b>Модули</b>"
 
-#: glade/config.glade:2775
+#: glade/config.glade:2779
 msgid "Autostartup"
 msgstr "Запускать автоматически при старте системы"
 
-#: glade/config.glade:2800
+#: glade/config.glade:2804
 msgid "Delay before startup"
 msgstr "Задержка перед запуском"
 
-#: glade/config.glade:2843
+#: glade/config.glade:2847
 msgid "Startup"
 msgstr "Параметры запуска"
 
-#: glade/config.glade:2876
+#: glade/config.glade:2880
 msgid ""
 "Show flag\n"
 "Show text\n"
@@ -579,7 +588,7 @@ msgstr ""
 "Показывать текст\n"
 "Показывать значок"
 
-#: glade/config.glade:2890
+#: glade/config.glade:2894
 msgid ""
 "Used for rendering built-in engine\n"
 "Used for rendering Status Icon engine\n"
@@ -589,19 +598,19 @@ msgstr ""
 "Использовать для отрисовки значка движок значков статуса\n"
 "Использовать для отрисовки значка движок индикаторов приложений"
 
-#: glade/config.glade:2915
+#: glade/config.glade:2919
 msgid "UI"
 msgstr "Внешний вид"
 
-#: glade/config.glade:2952
+#: glade/config.glade:2956
 msgid "Keyboard properties command"
 msgstr "Команда запуска параметров клавиатуры"
 
-#: glade/config.glade:3041
+#: glade/config.glade:3045
 msgid "System"
 msgstr "Системное"
 
-#: glade/config.glade:3074
+#: glade/config.glade:3078
 msgid "<b>Properties</b>"
 msgstr "<b>Параметры</b>"
 
@@ -705,8 +714,8 @@ msgid ""
 "  -S, --show=<mode>                    Icon display mode (Icon, Flag, Text. "
 "Default is %s.)\n"
 msgstr ""
-"  -S, --show=<режим>                    Режим отображения иконки (Icon, Flag, "
-"Text. По умолчанию %s.)\n"
+"  -S, --show=<режим>                    Режим отображения иконки (Icon, "
+"Flag, Text. По умолчанию %s.)\n"
 
 #: src/main.c:132
 #, c-format

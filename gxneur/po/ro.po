@@ -503,29 +503,39 @@ msgstr ""
 msgid "Monitor the input"
 msgstr ""
 
-#: glade/config.glade:2468
+#: glade/config.glade:2456
 msgid ""
 "Disabling this option will add any application to the list of excluded "
 "applications."
 msgstr ""
 
-#: glade/config.glade:2497
+#: glade/config.glade:2466
+msgid "Monitor the mouse"
+msgstr ""
+
+#: glade/config.glade:2485
+msgid ""
+"Disabling this option will disable mouse tracking. Reset buffer when "
+"clicking the mouse will not."
+msgstr ""
+
+#: glade/config.glade:2501
 msgid "Tracking input"
 msgstr ""
 
-#: glade/config.glade:2524
+#: glade/config.glade:2528
 msgid "<b>Troubleshooting</b>"
 msgstr ""
 
-#: glade/config.glade:2576
+#: glade/config.glade:2580
 msgid "Delay before sending events (in milliseconds)"
 msgstr ""
 
-#: glade/config.glade:2588
+#: glade/config.glade:2592
 msgid "Log verbosity level"
 msgstr ""
 
-#: glade/config.glade:2601
+#: glade/config.glade:2605
 msgid ""
 "None\n"
 "Error\n"
@@ -541,57 +551,57 @@ msgstr ""
 "Debug\n"
 "Trace"
 
-#: glade/config.glade:2622
+#: glade/config.glade:2626
 msgid "Dont send KeyRelease event"
 msgstr ""
 
-#: glade/config.glade:2667
+#: glade/config.glade:2671
 msgid "<b>Advanced</b>"
 msgstr "<b>Avansat</b>"
 
-#: glade/config.glade:2734
+#: glade/config.glade:2738
 msgid "<b>Plugins</b>"
 msgstr ""
 
-#: glade/config.glade:2775
+#: glade/config.glade:2779
 msgid "Autostartup"
 msgstr ""
 
-#: glade/config.glade:2800
+#: glade/config.glade:2804
 msgid "Delay before startup"
 msgstr ""
 
-#: glade/config.glade:2843
+#: glade/config.glade:2847
 msgid "Startup"
 msgstr ""
 
-#: glade/config.glade:2876
+#: glade/config.glade:2880
 msgid ""
 "Show flag\n"
 "Show text\n"
 "Show icon"
 msgstr ""
 
-#: glade/config.glade:2890
+#: glade/config.glade:2894
 msgid ""
 "Used for rendering built-in engine\n"
 "Used for rendering Status Icon engine\n"
 "Used for rendering App Indicator engine"
 msgstr ""
 
-#: glade/config.glade:2915
+#: glade/config.glade:2919
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2952
+#: glade/config.glade:2956
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:3041
+#: glade/config.glade:3045
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:3074
+#: glade/config.glade:3078
 msgid "<b>Properties</b>"
 msgstr ""
 

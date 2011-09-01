@@ -1116,6 +1116,10 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton34");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->tracking_input);
 
+	// Tracking mouse mode set
+	widget = glade_xml_get_widget (gxml, "checkbutton28");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->tracking_mouse);
+	
 	// Plugins
 	treeview = glade_xml_get_widget (gxml, "treeview11");
 	store_plugin = gtk_list_store_new(3, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
@@ -2162,6 +2166,10 @@ void xneur_save_preference(GladeXML *gxml)
 	// Tracking input mode
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton34");
 	xconfig->tracking_input = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	// Tracking input mode
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton28");
+	xconfig->tracking_mouse = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	// Save
 	xconfig->save(xconfig);
