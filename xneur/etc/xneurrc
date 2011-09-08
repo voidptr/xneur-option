@@ -354,6 +354,9 @@ CompatibilityWithCompletion Yes
 # Disabling this option will add any application to the list of excluded applications.
 TrackingInput Yes
 
+# Disabling this option will disable mouse tracking.
+TrackingMouse Yes
+
 # Disable send KeyRelease event
 DontSendKeyRelease No
 
