@@ -22,10 +22,11 @@
 #include <ctype.h>
 
 #include "types.h"
+#include "log.h"
 
 #include "conversion.h"
 
-static unsigned short rus[] =
+static unsigned short codes[] =
 {
 	// ё й ц у к е н г ш щ з х
 	0x91D1, 0xB9D0, 0x86D1, 0x83D1, 0xBAD0, 0xB5D0, 0xBDD0, 0xB3D0, 0x88D1, 0x89D1, 0xB7D0, 0x85D1,
@@ -72,23 +73,45 @@ static const char *translit[] =
 	// ў, Ў
 	"u`\0", "U`\0",
 	// ѓ, Ѓ, ј, Ј, ќ, Ќ, љ, Љ
-	"g`\n", "G`\n", "j\n", "J\n", "k`\n", "K`\n", "l`\n", "L`\n",
+	"g`\0", "G`\0", "j\0", "J\0", "k`\0", "K`\0", "l`\0", "L`\0",
 	// њ, Њ, џ, Џ, ѣ, Ѣ, ѳ, Ѳ
-	"n`\n", "N`\n", "dh\n", "Dh\n", "ye\n", "Ye\n", "fh\n", "Fh\n"
+	"n`\0", "N`\0", "dh\0", "Dh\0", "ye\0", "Ye\0", "fh\0", "Fh\0"
 };
 
-static const int rus_len = sizeof(rus) / sizeof(rus[0]);
+
+static const int codes_len = sizeof(codes) / sizeof(codes[0]);
 
 static const char* get_translit(const char *sym)
 {
-	for (int i = 0; i < rus_len; i++)
+	for (int i = 0; i < codes_len; i++)
 	{
 		unsigned short usym = *(unsigned short*) sym;
-		if (rus[i] == usym)
+		if (codes[i] == usym)
 			return translit[i];
 	}
 	return NULLSYM;
 }
+
+/*static char* get_revert_translit(const char *sym, unsigned int len)
+{
+	for (int i = 0; i < codes_len; i++)
+	{
+		if (strlen(translit[i]) != len)
+			continue;
+		if (strcmp(translit[i], sym) == 0) 
+		{
+			//log_message (ERROR, "%s", (char*)&codes[i]);
+			char* tmp = malloc (sizeof(unsigned short) + 1);
+			memset(tmp, NULLSYM, sizeof(unsigned short) + 1);
+			strncpy(tmp, (char*)codes+i*sizeof(codes[0]), sizeof(unsigned short));
+			//tmp[sizeof(codes[0])] = NULLSYM;
+			log_message (ERROR, "----%s-----", tmp);
+			free(tmp);
+			return (char*)codes+i;
+		}
+	}
+	return NULLSYM;
+}*/
 
 void convert_text_to_translit(char **work_text)
 {
@@ -101,7 +124,22 @@ void convert_text_to_translit(char **work_text)
 	{
 		if (isascii(text[i]))
 		{
+			// Revert translit here
+			/*for (int sylllen = 3; sylllen > 0; sylllen--)
+			{
+				if (i + sylllen > len)
+					continue;
+				char *syll = malloc ((sylllen+ 1) * sizeof(char));
+				strncpy(syll, (const char*) text+i, sylllen);
+				log_message (ERROR, "%s", syll);
+				get_revert_translit(syll, sylllen);
+				//log_message (ERROR, "%s - %s", syll, get_revert_translit(syll, sylllen));
+				free(syll);
+			}*/
+
+			// Without revert translit here
 			trans_text[j++] = text[i];
+			
 			continue;
 		}
 
