@@ -369,8 +369,42 @@ static void buffer_set_content(struct _buffer *p, const char *new_content)
 
 static void buffer_change_case(struct _buffer *p)
 {
+	char *symbol = (char *) malloc((256 + 1) * sizeof(char));
+	
+	Display *display = XOpenDisplay(NULL);
+	XEvent event;
+	event.type		= KeyPress;
+	event.xkey.type		= KeyPress;
+	event.xkey.root		= RootWindow(display, DefaultScreen(display));
+	event.xkey.subwindow	= None;
+	event.xkey.same_screen	= True;
+	event.xkey.display	= display;
+	event.xkey.state	= 0;
+	event.xkey.keycode	= XKeysymToKeycode(display, XK_space);
+	event.xkey.time		= CurrentTime;
+	
 	for (int i = 0; i < p->cur_pos; i++)
-		p->keycode_modifiers[i] = (p->keycode_modifiers[i] | LockMask);
+	{
+		event.xkey.keycode	= p->keycode[i];
+		event.xkey.state	= p->keycode_modifiers[i];
+
+		int nbytes = XLookupString((XKeyEvent *) &event, symbol, 256, NULL, NULL);
+		if (nbytes <= 0)
+			continue;
+
+		symbol[nbytes] = NULLSYM;	
+
+		if (ispunct(symbol[0]) || isdigit(symbol[0]))
+			continue;
+
+		if (p->keycode_modifiers[i] & ShiftMask)
+			p->keycode_modifiers[i] = (p->keycode_modifiers[i] & ~ShiftMask);
+		else
+			p->keycode_modifiers[i] = (p->keycode_modifiers[i] | ShiftMask);
+	}
+	
+	free(symbol);
+	XCloseDisplay(display);
 }
 
 static void buffer_rotate_layout(struct _buffer *p)
