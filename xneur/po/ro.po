@@ -699,20 +699,24 @@ msgstr ""
 msgid "Saving %s pattern"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:40
+#: lib/config/xnconfig_memory.c:42
 msgid "Can't generate shared memory segment key"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:58
+#: lib/config/xnconfig_memory.c:62
 msgid "Can't get exist shared memory segment id"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:64
+#: lib/config/xnconfig_memory.c:68
 msgid "Can't remove an old shared memory segment"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:71
+#: lib/config/xnconfig_memory.c:75
 msgid "Can't create new shared memory segment"
+msgstr ""
+
+#: lib/config/xnconfig_memory.c:89
+msgid "Shared memory is not available! Uses a local memory!"
 msgstr ""
 
 #: lib/misc/debug.c:93
@@ -855,7 +859,7 @@ msgstr ""
 msgid "Error rename file \"%s\" to \"%s\""
 msgstr ""
 
-#: lib/main/buffer.c:571
+#: lib/main/buffer.c:600
 msgid "String is freed"
 msgstr ""
 

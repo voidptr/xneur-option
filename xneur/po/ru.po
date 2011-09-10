@@ -757,21 +757,25 @@ msgstr "Сохранение словаря языка %s"
 msgid "Saving %s pattern"
 msgstr "Сохранение паттернов языка %s"
 
-#: lib/config/xnconfig_memory.c:40
+#: lib/config/xnconfig_memory.c:42
 msgid "Can't generate shared memory segment key"
 msgstr "Невозможно сгенерировать ключ общей области памяти"
 
-#: lib/config/xnconfig_memory.c:58
+#: lib/config/xnconfig_memory.c:62
 msgid "Can't get exist shared memory segment id"
 msgstr "Невозможно проверить наличие идентификатора общей области памяти"
 
-#: lib/config/xnconfig_memory.c:64
+#: lib/config/xnconfig_memory.c:68
 msgid "Can't remove an old shared memory segment"
 msgstr "Невозможно удалить старую общую область памяти"
 
-#: lib/config/xnconfig_memory.c:71
+#: lib/config/xnconfig_memory.c:75
 msgid "Can't create new shared memory segment"
 msgstr "Невозможно создать новую общую область памяти"
+
+#: lib/config/xnconfig_memory.c:89
+msgid "Shared memory is not available! Uses a local memory!"
+msgstr "Общая память недоступна. Используется локальная память!"
 
 #: lib/misc/debug.c:93
 #, c-format
@@ -913,7 +917,7 @@ msgstr "Отправлен журнал на %s через %s:%d"
 msgid "Error rename file \"%s\" to \"%s\""
 msgstr "Ошибка переименования файла \"%s\" в \"%s\""
 
-#: lib/main/buffer.c:571
+#: lib/main/buffer.c:600
 msgid "String is freed"
 msgstr "Текущие данные строки очищены"
 

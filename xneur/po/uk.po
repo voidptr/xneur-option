@@ -352,9 +352,9 @@ msgid "Tracking input mode set to %s"
 msgstr ""
 
 #: src/xneur.c:193
-#, fuzzy, c-format
+#, c-format
 msgid "Tracking mouse mode set to %s"
-msgstr "Ручний режим встановлено для %s"
+msgstr ""
 
 #: src/xneur.c:194
 #, c-format
@@ -665,9 +665,8 @@ msgid "Invalid value for tracking input mode specified"
 msgstr ""
 
 #: lib/config/xnconfig.c:844
-#, fuzzy
 msgid "Invalid value for tracking mouse mode specified"
-msgstr "Неправильне значення вказано для пам’яті режиму розкладки"
+msgstr ""
 
 #: lib/config/xnconfig.c:857
 msgid "Popup expire timeout must be between 0 and 30000"
@@ -711,20 +710,24 @@ msgstr "Зберігаю словник %s"
 msgid "Saving %s pattern"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:40
+#: lib/config/xnconfig_memory.c:42
 msgid "Can't generate shared memory segment key"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:58
+#: lib/config/xnconfig_memory.c:62
 msgid "Can't get exist shared memory segment id"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:64
+#: lib/config/xnconfig_memory.c:68
 msgid "Can't remove an old shared memory segment"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:71
+#: lib/config/xnconfig_memory.c:75
 msgid "Can't create new shared memory segment"
+msgstr ""
+
+#: lib/config/xnconfig_memory.c:89
+msgid "Shared memory is not available! Uses a local memory!"
 msgstr ""
 
 #: lib/misc/debug.c:93
@@ -867,7 +870,7 @@ msgstr ""
 msgid "Error rename file \"%s\" to \"%s\""
 msgstr ""
 
-#: lib/main/buffer.c:571
+#: lib/main/buffer.c:600
 msgid "String is freed"
 msgstr ""
 

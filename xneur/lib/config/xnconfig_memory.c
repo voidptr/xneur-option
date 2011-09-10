@@ -22,6 +22,8 @@
 #include <sys/ipc.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <errno.h>
 
 #include "types.h"
 #include "log.h"
@@ -41,18 +43,20 @@ static int get_memory_id(int segment_size, int *need_init)
 		return -1;
 	}
 
+	// If shared segment already exist, return id.
 	int shm_id = shmget(segment_key, segment_size, SEGMENT_PERMISSIONS);
 	if (shm_id != -1)
 		return shm_id;
-
+	
 	*need_init = TRUE;
 
+	// if shared segment not exist, create and return id.
 	shm_id = shmget(segment_key, segment_size, SEGMENT_PERMISSIONS | IPC_CREAT);
 	if (shm_id != -1)
 		return shm_id;
-
+	
 	// Segment size was changed - removing
-	shm_id = shmget(segment_key, 0, SEGMENT_PERMISSIONS);
+	shm_id = shmget(segment_key, 0, SEGMENT_PERMISSIONS | IPC_CREAT);
 	if (shm_id == -1)
 	{
 		log_message(ERROR, _("Can't get exist shared memory segment id"));
@@ -81,8 +85,12 @@ void* attach_memory_segment(int segment_size)
 
 	int shm_id = get_memory_id(segment_size, &need_init);
 	if (shm_id == -1)
-		return NULL;
-
+	{
+		log_message(ERROR, _("Shared memory is not available! Uses a local memory!"));
+		void *memory_segment = malloc(segment_size);
+		return memory_segment;
+	}
+	
 	void *memory_segment = shmat(shm_id, NULL, 0);
 	if (memory_segment == NULL)
 		return NULL;

@@ -27,7 +27,7 @@
 
 #include "log.h"
 
-static int LOG_LEVEL = NONE;
+static int LOG_LEVEL = TRACE;
 
 void log_set_level(int level)
 {
