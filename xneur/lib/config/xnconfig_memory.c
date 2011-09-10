@@ -22,8 +22,6 @@
 #include <sys/ipc.h>
 #include <string.h>
 #include <unistd.h>
-#include <stdio.h>
-#include <errno.h>
 
 #include "types.h"
 #include "log.h"
@@ -56,7 +54,7 @@ static int get_memory_id(int segment_size, int *need_init)
 		return shm_id;
 	
 	// Segment size was changed - removing
-	shm_id = shmget(segment_key, 0, SEGMENT_PERMISSIONS | IPC_CREAT);
+	shm_id = shmget(segment_key, 0, SEGMENT_PERMISSIONS);
 	if (shm_id == -1)
 	{
 		log_message(ERROR, _("Can't get exist shared memory segment id"));
