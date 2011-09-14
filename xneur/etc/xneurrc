@@ -200,6 +200,11 @@ CorrectTwoCapitalLetter Yes
 #CorrectCapitalLetterAfterDot Yes
 CorrectCapitalLetterAfterDot Yes
 
+# This option enable or disable correction of two space with a comma and a space
+# Example:
+#CorrectTwoSpaceWithCommaAndSpace Yes
+CorrectTwoSpaceWithCommaAndSpace No
+
 # This option enable or disable flushing internal buffer when pressed Escape
 # Example:
 #FlushBufferWhenPressEscape Yes

@@ -248,161 +248,166 @@ msgstr ""
 
 #: src/xneur.c:174
 #, c-format
-msgid "Disable CapsLock use mode set to %s"
+msgid "Correct two space with a comma and a space dot mode set to %s"
 msgstr ""
 
 #: src/xneur.c:175
 #, c-format
-msgid "Flush internal buffer when pressed Escape mode set to %s"
+msgid "Disable CapsLock use mode set to %s"
 msgstr ""
 
 #: src/xneur.c:176
 #, c-format
-msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
+msgid "Flush internal buffer when pressed Escape mode set to %s"
 msgstr ""
 
 #: src/xneur.c:177
 #, c-format
-msgid "Don't process word when pressed Enter or Tab mode set to %s"
+msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
 msgstr ""
 
 #: src/xneur.c:178
 #, c-format
-msgid "Show OSD mode set to %s"
+msgid "Don't process word when pressed Enter or Tab mode set to %s"
 msgstr ""
 
 #: src/xneur.c:179
 #, c-format
-msgid "Show popup messages mode set to %s"
+msgid "Show OSD mode set to %s"
 msgstr ""
 
 #: src/xneur.c:180
 #, c-format
-msgid "Popup expire timeout set to %d"
+msgid "Show popup messages mode set to %s"
 msgstr ""
 
 #: src/xneur.c:181
 #, c-format
-msgid "Check language on input process mode set to %s"
+msgid "Popup expire timeout set to %d"
 msgstr ""
 
 #: src/xneur.c:182
 #, c-format
-msgid "Pattern minig and recognition (autocompletion) mode set to %s"
+msgid "Check language on input process mode set to %s"
 msgstr ""
 
 #: src/xneur.c:183
 #, c-format
-msgid "Add space after autocompletion mode set to %s"
+msgid "Pattern minig and recognition (autocompletion) mode set to %s"
 msgstr ""
 
 #: src/xneur.c:184
 #, c-format
-msgid "Disable autoswitching if pressed backspace mode set to %s"
+msgid "Add space after autocompletion mode set to %s"
 msgstr ""
 
 #: src/xneur.c:185
 #, c-format
-msgid "Disable autoswitching if pressed left arrow mode set to %s"
+msgid "Disable autoswitching if pressed backspace mode set to %s"
 msgstr ""
 
 #: src/xneur.c:186
 #, c-format
-msgid "Disable autoswitching if pressed right arrow mode set to %s"
+msgid "Disable autoswitching if pressed left arrow mode set to %s"
 msgstr ""
 
 #: src/xneur.c:187
 #, c-format
-msgid "Disable autoswitching if pressed up arrow mode set to %s"
+msgid "Disable autoswitching if pressed right arrow mode set to %s"
 msgstr ""
 
 #: src/xneur.c:188
 #, c-format
-msgid "Disable autoswitching if pressed down arrow mode set to %s"
+msgid "Disable autoswitching if pressed up arrow mode set to %s"
 msgstr ""
 
 #: src/xneur.c:189
 #, c-format
-msgid "Disable autoswitching if pressed delete mode set to %s"
+msgid "Disable autoswitching if pressed down arrow mode set to %s"
 msgstr ""
 
 #: src/xneur.c:190
 #, c-format
-msgid "Disable autoswitching if layout switched mode set to %s"
+msgid "Disable autoswitching if pressed delete mode set to %s"
 msgstr ""
 
 #: src/xneur.c:191
 #, c-format
-msgid "Compatibility with the completion mode set to %s"
+msgid "Disable autoswitching if layout switched mode set to %s"
 msgstr ""
 
 #: src/xneur.c:192
 #, c-format
-msgid "Tracking input mode set to %s"
+msgid "Compatibility with the completion mode set to %s"
 msgstr ""
 
 #: src/xneur.c:193
 #, c-format
-msgid "Tracking mouse mode set to %s"
+msgid "Tracking input mode set to %s"
 msgstr ""
 
 #: src/xneur.c:194
 #, c-format
-msgid "Disable send KeyRelease event mode set to %s"
+msgid "Tracking mouse mode set to %s"
 msgstr ""
 
 #: src/xneur.c:195
 #, c-format
+msgid "Disable send KeyRelease event mode set to %s"
+msgstr ""
+
+#: src/xneur.c:196
+#, c-format
 msgid "Delay before sendind events to application set to (in milliseconds) %d"
 msgstr ""
 
-#: src/xneur.c:205
+#: src/xneur.c:206
 #, c-format
 msgid " already running with pid %d"
 msgstr ""
 
-#: src/xneur.c:218
+#: src/xneur.c:219
 msgid "Current sound data is freed"
 msgstr ""
 
-#: src/xneur.c:221
+#: src/xneur.c:222
 msgid "Current user keybinds is freed"
 msgstr ""
 
-#: src/xneur.c:226
+#: src/xneur.c:227
 msgid "Current program info is freed"
 msgstr ""
 
-#: src/xneur.c:233
+#: src/xneur.c:234
 msgid "Current configuration data is freed"
 msgstr ""
 
-#: src/xneur.c:244
+#: src/xneur.c:245
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr ""
 
-#: src/xneur.c:259
+#: src/xneur.c:260
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr ""
 
-#: src/xneur.c:273 src/xneur.c:409
+#: src/xneur.c:274 src/xneur.c:410
 msgid "Can't init libxnconfig"
 msgstr ""
 
-#: src/xneur.c:389
+#: src/xneur.c:390
 msgid "Can't trap signal"
 msgstr ""
 
-#: src/xneur.c:422
+#: src/xneur.c:423
 #, c-format
 msgid "Xneur process identificator is %d with nice %d"
 msgstr ""
 
-#: src/xneur.c:427
+#: src/xneur.c:428
 msgid "Failed to init program structure"
 msgstr ""
 
-#: src/xneur.c:437
+#: src/xneur.c:438
 msgid "Init program structure complete"
 msgstr ""
 
@@ -655,65 +660,70 @@ msgstr ""
 msgid "Invalid value for tracking mouse mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:857
+#: lib/config/xnconfig.c:856
 msgid "Popup expire timeout must be between 0 and 30000"
 msgstr ""
 
-#: lib/config/xnconfig.c:871
+#: lib/config/xnconfig.c:866
+msgid ""
+"Invalid value for correct two space with a comma and a space mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:882
 #, c-format
 msgid "Can't find config file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1007
+#: lib/config/xnconfig.c:1018
 msgid "No languages specified in config file"
 msgstr ""
 
-#: lib/config/xnconfig.c:1036
+#: lib/config/xnconfig.c:1047
 #, c-format
 msgid "Saving main config to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1041
+#: lib/config/xnconfig.c:1052
 #, c-format
 msgid "Can't create file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1364
+#: lib/config/xnconfig.c:1380
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1370
+#: lib/config/xnconfig.c:1386
 msgid "Can't move file!"
 msgstr ""
 
-#: lib/config/xnconfig.c:1388
+#: lib/config/xnconfig.c:1404
 #, c-format
 msgid "Saving %s dictionary"
 msgstr ""
 
-#: lib/config/xnconfig.c:1402
+#: lib/config/xnconfig.c:1418
 #, c-format
 msgid "Saving %s pattern"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:42
+#: lib/config/xnconfig_memory.c:40
 msgid "Can't generate shared memory segment key"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:62
+#: lib/config/xnconfig_memory.c:60
 msgid "Can't get exist shared memory segment id"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:68
+#: lib/config/xnconfig_memory.c:66
 msgid "Can't remove an old shared memory segment"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:75
+#: lib/config/xnconfig_memory.c:73
 msgid "Can't create new shared memory segment"
 msgstr ""
 
-#: lib/config/xnconfig_memory.c:89
+#: lib/config/xnconfig_memory.c:87
 msgid "Shared memory is not available! Uses a local memory!"
 msgstr ""
 

@@ -708,6 +708,9 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton31");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_capital_letter_after_dot);
 
+	widget = glade_xml_get_widget (gxml, "checkbutton29");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_two_space_with_comma_and_space);
+
 	// Autocompletion
 	widget = glade_xml_get_widget (gxml, "checkbutton21");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->autocompletion);
@@ -2124,6 +2127,9 @@ void xneur_save_preference(GladeXML *gxml)
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton31");
 	xconfig->correct_capital_letter_after_dot = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton29");
+	xconfig->correct_two_space_with_comma_and_space = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton21");
 	xconfig->autocompletion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

@@ -66,7 +66,7 @@ static const char *option_names[] = 	{
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
 						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
 						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
-						"PopupExpireTimeout"
+						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -850,13 +850,24 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 55: // PopupExpireTimeout
 		{
-
 			p->popup_expire_timeout = atoi(param);
 			if (p->popup_expire_timeout < 0 || p->popup_expire_timeout > 30000)
 			{
 				log_message(WARNING, _("Popup expire timeout must be between 0 and 30000"));
 				p->popup_expire_timeout = 0;
 			}
+			break;
+		}
+		case 56: // CorrectTwoSpaceWithCommaAndSpace
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for correct two space with a comma and a space mode specified"));
+				break;
+			}
+
+			p->correct_two_space_with_comma_and_space = index;
 			break;
 		}
 	}
@@ -1237,6 +1248,11 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CorrectCapitalLetterAfterDot Yes\n");
 	fprintf(stream, "CorrectCapitalLetterAfterDot %s\n\n", p->get_bool_name(p->correct_capital_letter_after_dot));
+
+	fprintf(stream, "# This option enable or disable correction of two space with a comma and a space\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectTwoSpaceWithCommaAndSpace Yes\n");
+	fprintf(stream, "CorrectTwoSpaceWithCommaAndSpace %s\n\n", p->get_bool_name(p->correct_two_space_with_comma_and_space));
 
 	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Escape\n");
 	fprintf(stream, "# Example:\n");
