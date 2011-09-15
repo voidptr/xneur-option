@@ -881,12 +881,17 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 			// Check incidental caps
 			p->check_caps_last_word(p);
-
+			
 			// Checking word
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 				p->check_lang_last_word(p);
 
 			p->add_word_to_pattern(p, get_curr_keyboard_group());
+
+			if (action == KLB_SPACE)
+			{
+				p->check_two_space(p);
+			}
 			
 			// Add symbol to internal bufer
 			p->event->event = p->event->default_event;
@@ -1439,6 +1444,41 @@ static void program_check_tcl_last_word(struct _program *p)
 	show_notify(NOTIFY_CORR_TWO_CAPITAL_LETTER, NULL);
 }
 
+static void program_check_two_space(struct _program *p)
+{
+	if (!xconfig->correct_two_space_with_comma_and_space)
+		return;
+
+	if (p->buffer->cur_pos < 3)
+		return;
+	
+	if (p->buffer->content[p->buffer->cur_pos-1] != ' ')
+		return;
+
+	char *word = strdup(get_last_word(p->buffer->i18n_content[get_curr_keyboard_group()].content_unchanged));
+	if (word == NULL)
+		return;
+
+	int pos = strlen(word);
+	trim_word(word, pos);
+	pos = strlen(word);
+	if (pos < 3)
+		return;
+	
+	pos = pos - 1;
+	if (ispunct(word[pos]) || isspace(word[pos]))
+	{
+		free(word);
+		return;
+	}
+
+	log_message (DEBUG, _("Find two space, correction with a comma and a space..."));
+
+	free(word);
+	p->change_word(p, CHANGE_TWO_SPACE);
+	show_notify(NOTIFY_CORR_TWO_SPACE, NULL);
+}		
+
 static void program_check_space_before_punctuation(struct _program *p)
 {
 	if (!xconfig->correct_space_with_punctuation)
@@ -1812,6 +1852,20 @@ static void program_change_word(struct _program *p, enum _change_action action)
 
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
+			break;
+		}
+		case CHANGE_TWO_SPACE:
+		{
+			p->event->send_backspaces(p->event, 1);
+			p->buffer->del_symbol(p->buffer);
+
+			KeyCode kc = 0;
+			int modifier = 0;
+			size_t sym_size = strlen(",");
+			int lang = get_curr_keyboard_group ();
+			p->buffer->keymap->get_ascii(p->buffer->keymap, ",", &lang, &kc, &modifier, &sym_size);
+			p->event->send_xkey(p->event, kc, modifier);
+			p->buffer->add_symbol(p->buffer, ',', kc, modifier);
 			break;
 		}
 		case CHANGE_WORD_TO_LAYOUT_0:
@@ -2313,6 +2367,7 @@ struct _program* program_init(void)
 	p->check_space_with_bracket	= program_check_space_with_bracket;
 	p->check_brackets_with_symbols = program_check_brackets_with_symbols;
 	p->check_capital_letter_after_dot = program_check_capital_letter_after_dot;
+	p->check_two_space = program_check_two_space;
 	p->check_pattern	= program_check_pattern;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;

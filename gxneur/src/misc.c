@@ -103,8 +103,8 @@ static const char *notify_names[]			=   {
 										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
 										"Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 	                                    "Expand abbreviations",
-										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Execute user action", 
-										"Block keyboard and mouse events", "Unblock keyboard and mouse events"
+										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Сorrect two space with a comma and a space",
+										"Execute user action", "Block keyboard and mouse events", "Unblock keyboard and mouse events"
 										};
 
 static const char *hotkey_names[]			=   {

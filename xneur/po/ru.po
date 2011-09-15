@@ -95,7 +95,6 @@ msgstr "Блокировка/Разблокировка клавиатуры и 
 msgid "Insert date"
 msgstr "Вставка даты"
 
-#: src/xneur.c:107
 msgid "Loading configuration"
 msgstr "Загрузка конфигурации"
 
@@ -728,7 +727,9 @@ msgstr "Время показа всплывающего сообщения до
 #: lib/config/xnconfig.c:866
 msgid ""
 "Invalid value for correct two space with a comma and a space mode specified"
-msgstr "Неправильное значение опции для режима исправления двух пробелов на запятую и пробел"
+msgstr ""
+"Неправильное значение опции для режима исправления двух пробелов на запятую "
+"и пробел"
 
 #: lib/config/xnconfig.c:882
 #, c-format
@@ -1113,89 +1114,94 @@ msgstr "Выполнение пользовательского действия
 msgid "Execute manual action \"%s\""
 msgstr "Выполнение действия \"%s\""
 
-#: lib/main/program.c:937
+#: lib/main/program.c:942
 #, c-format
 msgid "Manual mode changed to %s"
 msgstr "Ручной режим изменен на %s"
 
-#: lib/main/program.c:1136
+#: lib/main/program.c:1141
 #, c-format
 msgid "Now keyboard and mouse block status is %s"
 msgstr "Теперь статус блокировки клавиатуры и мыши установлен в значение %s"
 
-#: lib/main/program.c:1153
+#: lib/main/program.c:1158
 #, c-format
 msgid "Insert date '%s'."
 msgstr "Вставка даты '%s'."
 
-#: lib/main/program.c:1214
+#: lib/main/program.c:1219
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr "Найдено сокращение '%s' '%s'. Замена на '%s'."
 
-#: lib/main/program.c:1310 lib/main/program.c:1363
+#: lib/main/program.c:1315 lib/main/program.c:1368
 msgid "No language found to change to"
 msgstr "Не найдено языка для смены"
 
-#: lib/main/program.c:1471
+#: lib/main/program.c:1475
+msgid "Find two space, correction with a comma and a space..."
+msgstr ""
+"Найдены два пробела, исправление на запятую и пробел..."
+
+#: lib/main/program.c:1523
 msgid "Find spaces before punctuation, correction..."
 msgstr "Обнаружены пробелы перед знаком пунктуации, исправление..."
 
-#: lib/main/program.c:1520
+#: lib/main/program.c:1572
 msgid "Find no space before left bracket, correction..."
 msgstr "Не обнаружен пробел перед открывающей скобкой, исправление..."
 
-#: lib/main/program.c:1537
+#: lib/main/program.c:1589
 msgid "Find spaces before right bracket, correction..."
 msgstr "Обнаружены пробелы перед закрывающей скобкой, исправление..."
 
-#: lib/main/program.c:1567
+#: lib/main/program.c:1619
 msgid "Find no spaces after right bracket, correction..."
 msgstr "Не обнаружены пробелы после закрывающей скобки, исправление..."
 
-#: lib/main/program.c:1602
+#: lib/main/program.c:1654
 msgid "Find spaces after left bracket, correction..."
 msgstr "Обнаружены пробелы после открывающей скобки, исправление..."
 
-#: lib/main/program.c:1685
+#: lib/main/program.c:1737
 msgid "Find small letter after dot, correction..."
 msgstr "Обнаружена строчная буква после точки, исправление..."
 
-#: lib/main/program.c:1728
+#: lib/main/program.c:1780
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr "Распознано слово '%s' из текста '%s' (раскладка %d), автодополнение..."
 
-#: lib/main/program.c:1765
+#: lib/main/program.c:1817
 msgid "No string to change"
 msgstr "Нет строки для замены"
 
-#: lib/main/program.c:1769
+#: lib/main/program.c:1821
 #, c-format
 msgid "Processing string '%s'"
 msgstr "Обработка строки '%s'"
 
-#: lib/main/program.c:2148
+#: lib/main/program.c:2215
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr "Удалено слово '%s' из словаря %s"
 
-#: lib/main/program.c:2159
+#: lib/main/program.c:2226
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr "Добавлено слово '%s' в словарь %s"
 
-#: lib/main/program.c:2219
+#: lib/main/program.c:2286
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr "Удалено слово '%s' из паттерна %s"
 
-#: lib/main/program.c:2251
+#: lib/main/program.c:2318
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr "Добавлено слово '%s' в паттерн %s"
 
-#: lib/main/program.c:2270
+#: lib/main/program.c:2337
 msgid "Program is freed"
 msgstr "Текущие данные программы очищены"
 

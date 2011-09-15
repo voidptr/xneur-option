@@ -85,7 +85,8 @@ static const char *notify_names[] =	{
 						"ChangeString",
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",  "PreviewChangeClipboard",
-						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", "ExecuteUserAction", 
+						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", 
+						"CorrectTwoSpaceWithCommaAndSpace", "ExecuteUserAction", 
 						"BlockKeyboardAndMouseEvents", "UnblockKeyboardAndMouseEvents"
 					};
 
