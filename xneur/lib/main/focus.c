@@ -153,6 +153,21 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	{
 		if (new_app_name != NULL)
 			free(new_app_name);
+		if (xconfig->troubleshoot_full_screen)
+		{
+			Window root_return;
+			int x_return, y_return, root_x_return, root_y_return;
+			unsigned int width_return, height_return, root_width_return, root_height_return;
+			unsigned int border_width_return;
+			unsigned int depth_return;
+			XGetGeometry(main_window->display, p->parent_window, &root_return, &x_return, &y_return, &width_return, 
+							&height_return, &border_width_return, &depth_return);
+			XGetGeometry(main_window->display, root_return, &root_return, &root_x_return, &root_y_return, &root_width_return, 
+							&root_height_return, &border_width_return, &depth_return);
+			if ((x_return == 0) && (y_return == 0) && 
+			    (width_return == root_width_return) && (height_return == root_height_return))
+				*forced_mode = FORCE_MODE_MANUAL;
+		}
 		return FOCUS_UNCHANGED;
 	}
 
@@ -178,7 +193,23 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	// Replace unfocused window to focused window
 	p->owner_window = new_window;
 
-	log_message(DEBUG, _("Process new window (ID %d) with name '%s' (status %s, mode %s)"), new_window, new_app_name, verbose_focus_status[*focus_status], verbose_forced_mode[*forced_mode]);
+	if (xconfig->troubleshoot_full_screen)
+	{
+		Window root_return;
+		int x_return, y_return, root_x_return, root_y_return;
+		unsigned int width_return, height_return, root_width_return, root_height_return;
+		unsigned int border_width_return;
+		unsigned int depth_return;
+		XGetGeometry(main_window->display, p->parent_window, &root_return, &x_return, &y_return, &width_return, 
+						&height_return, &border_width_return, &depth_return);
+		XGetGeometry(main_window->display, root_return, &root_return, &root_x_return, &root_y_return, &root_width_return, 
+						&root_height_return, &border_width_return, &depth_return);
+		if ((x_return == 0) && (y_return == 0) && 
+			(width_return == root_width_return) && (height_return == root_height_return))
+			*forced_mode = FORCE_MODE_MANUAL;
+	}
+	
+	log_message(DEBUG, _("Process new window (ID %d) with name '%s' (status %s, mode %s)"), new_window, new_app_name, _(verbose_focus_status[*focus_status]), _(verbose_forced_mode[*forced_mode]));
 	
 	if (new_app_name != NULL)
 		free(new_app_name);

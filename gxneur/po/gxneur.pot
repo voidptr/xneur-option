@@ -460,73 +460,77 @@ msgstr ""
 msgid "You changed layout"
 msgstr ""
 
-#: glade/config.glade:2292
+#: glade/config.glade:2277
+msgid "Application in full screen mode"
+msgstr ""
+
+#: glade/config.glade:2308
 msgid ""
 "This will help avoid switching layout when editing parts previously "
 "introduced word."
 msgstr ""
 
-#: glade/config.glade:2321
+#: glade/config.glade:2337
 msgid "Don't switch layout if before input where pressed"
 msgstr ""
 
-#: glade/config.glade:2352
+#: glade/config.glade:2368
 msgid "Flush internal buffer on Escape"
 msgstr ""
 
-#: glade/config.glade:2368
+#: glade/config.glade:2384
 msgid "Flush internal buffer on Enter or Tab"
 msgstr ""
 
-#: glade/config.glade:2384
+#: glade/config.glade:2400
 msgid "Don't process words on Enter or Tab"
 msgstr ""
 
-#: glade/config.glade:2400
+#: glade/config.glade:2416
 msgid "Compatibility with the completion"
 msgstr ""
 
-#: glade/config.glade:2422
+#: glade/config.glade:2438
 msgid "Additional"
 msgstr ""
 
-#: glade/config.glade:2453
+#: glade/config.glade:2469
 msgid "Monitor the input"
 msgstr ""
 
-#: glade/config.glade:2472
+#: glade/config.glade:2488
 msgid ""
 "Disabling this option will add any application to the list of excluded "
 "applications."
 msgstr ""
 
-#: glade/config.glade:2482
+#: glade/config.glade:2498
 msgid "Monitor the mouse"
 msgstr ""
 
-#: glade/config.glade:2501
+#: glade/config.glade:2517
 msgid ""
 "Disabling this option will disable mouse tracking. Reset buffer when "
 "clicking the mouse will not."
 msgstr ""
 
-#: glade/config.glade:2517
+#: glade/config.glade:2533
 msgid "Tracking input"
 msgstr ""
 
-#: glade/config.glade:2544
+#: glade/config.glade:2560
 msgid "<b>Troubleshooting</b>"
 msgstr ""
 
-#: glade/config.glade:2596
+#: glade/config.glade:2612
 msgid "Delay before sending events (in milliseconds)"
 msgstr ""
 
-#: glade/config.glade:2608
+#: glade/config.glade:2624
 msgid "Log verbosity level"
 msgstr ""
 
-#: glade/config.glade:2621
+#: glade/config.glade:2637
 msgid ""
 "None\n"
 "Error\n"
@@ -536,57 +540,57 @@ msgid ""
 "Trace"
 msgstr ""
 
-#: glade/config.glade:2642
+#: glade/config.glade:2658
 msgid "Dont send KeyRelease event"
 msgstr ""
 
-#: glade/config.glade:2687
+#: glade/config.glade:2703
 msgid "<b>Advanced</b>"
 msgstr ""
 
-#: glade/config.glade:2754
+#: glade/config.glade:2770
 msgid "<b>Plugins</b>"
 msgstr ""
 
-#: glade/config.glade:2795
+#: glade/config.glade:2811
 msgid "Autostartup"
 msgstr ""
 
-#: glade/config.glade:2820
+#: glade/config.glade:2836
 msgid "Delay before startup"
 msgstr ""
 
-#: glade/config.glade:2863
+#: glade/config.glade:2879
 msgid "Startup"
 msgstr ""
 
-#: glade/config.glade:2896
+#: glade/config.glade:2912
 msgid ""
 "Show flag\n"
 "Show text\n"
 "Show icon"
 msgstr ""
 
-#: glade/config.glade:2910
+#: glade/config.glade:2926
 msgid ""
 "Used for rendering built-in engine\n"
 "Used for rendering Status Icon engine\n"
 "Used for rendering App Indicator engine"
 msgstr ""
 
-#: glade/config.glade:2935
+#: glade/config.glade:2951
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2972
+#: glade/config.glade:2988
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:3061
+#: glade/config.glade:3077
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:3094
+#: glade/config.glade:3110
 msgid "<b>Properties</b>"
 msgstr ""
 
@@ -628,7 +632,7 @@ msgstr ""
 
 #: glade/rule_add.glade:247
 msgid "More:"
-msgstr "" ""
+msgstr ""
 
 #: src/callbacks.c:355 src/misc.c:2324
 msgid "Press any key"

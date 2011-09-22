@@ -230,7 +230,8 @@ struct _xneur_config
 	int troubleshoot_down_arrow;
 	int troubleshoot_delete;
 	int troubleshoot_switch;
-
+	int troubleshoot_full_screen;
+	
 	int compatibility_with_completion;
 		
 	int dont_send_key_release;

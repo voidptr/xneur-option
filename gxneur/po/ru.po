@@ -474,7 +474,11 @@ msgstr "Delete"
 msgid "You changed layout"
 msgstr "Вы переключили раскладку"
 
-#: glade/config.glade:2292
+#: glade/config.glade:2277
+msgid "Application in full screen mode"
+msgstr "Приложение в полноэкранном режиме"
+
+#: glade/config.glade:2308
 msgid ""
 "This will help avoid switching layout when editing parts previously "
 "introduced word."
@@ -482,46 +486,46 @@ msgstr ""
 "Это поможет избежать переключений раскладки при редактировании частей ранее "
 "введенного слова"
 
-#: glade/config.glade:2321
+#: glade/config.glade:2337
 msgid "Don't switch layout if before input where pressed"
 msgstr "Не переключать раскладку, если перед вводом были нажаты"
 
-#: glade/config.glade:2352
+#: glade/config.glade:2368
 msgid "Flush internal buffer on Escape"
 msgstr "Сбрасывать внутренний буфер при нажатии Escape"
 
-#: glade/config.glade:2368
+#: glade/config.glade:2384
 msgid "Flush internal buffer on Enter or Tab"
 msgstr "Сбрасывать внутренний буфер при нажатии Enter или Tab"
 
-#: glade/config.glade:2384
+#: glade/config.glade:2400
 msgid "Don't process words on Enter or Tab"
 msgstr "Не проверять слово при нажатии Enter или Tab"
 
-#: glade/config.glade:2400
+#: glade/config.glade:2416
 msgid "Compatibility with the completion"
 msgstr "Совместимость с автодополнением"
 
-#: glade/config.glade:2422
+#: glade/config.glade:2438
 msgid "Additional"
 msgstr "Дополнительно"
 
-#: glade/config.glade:2453
+#: glade/config.glade:2469
 msgid "Monitor the input"
 msgstr "Следить за вводом"
 
-#: glade/config.glade:2472
+#: glade/config.glade:2488
 msgid ""
 "Disabling this option will add any application to the list of excluded "
 "applications."
 msgstr ""
 "Выключение этой опции добавит ВСЕ приложения в список исключенных приложений."
 
-#: glade/config.glade:2482
+#: glade/config.glade:2498
 msgid "Monitor the mouse"
 msgstr "Следить за мышью"
 
-#: glade/config.glade:2501
+#: glade/config.glade:2517
 msgid ""
 "Disabling this option will disable mouse tracking. Reset buffer when "
 "clicking the mouse will not."
@@ -529,23 +533,23 @@ msgstr ""
 "Выключение этой опции выключит слежение за мышью. Сброса буфера при клике "
 "мышью не будет."
 
-#: glade/config.glade:2517
+#: glade/config.glade:2533
 msgid "Tracking input"
 msgstr "Слежение за вводом"
 
-#: glade/config.glade:2544
+#: glade/config.glade:2560
 msgid "<b>Troubleshooting</b>"
 msgstr "<b>Устранение проблем</b>"
 
-#: glade/config.glade:2596
+#: glade/config.glade:2612
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Задержка перед отправкой событий (в миллисекундах)"
 
-#: glade/config.glade:2608
+#: glade/config.glade:2624
 msgid "Log verbosity level"
 msgstr "Уровень подробности выводимых сообщений"
 
-#: glade/config.glade:2621
+#: glade/config.glade:2637
 msgid ""
 "None\n"
 "Error\n"
@@ -561,31 +565,31 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2642
+#: glade/config.glade:2658
 msgid "Dont send KeyRelease event"
 msgstr "Не отправлять событие KeyRelease"
 
-#: glade/config.glade:2687
+#: glade/config.glade:2703
 msgid "<b>Advanced</b>"
 msgstr "<b>Специальное</b>"
 
-#: glade/config.glade:2754
+#: glade/config.glade:2770
 msgid "<b>Plugins</b>"
 msgstr "<b>Модули</b>"
 
-#: glade/config.glade:2795
+#: glade/config.glade:2811
 msgid "Autostartup"
 msgstr "Запускать автоматически при старте системы"
 
-#: glade/config.glade:2820
+#: glade/config.glade:2836
 msgid "Delay before startup"
 msgstr "Задержка перед запуском"
 
-#: glade/config.glade:2863
+#: glade/config.glade:2879
 msgid "Startup"
 msgstr "Параметры запуска"
 
-#: glade/config.glade:2896
+#: glade/config.glade:2912
 msgid ""
 "Show flag\n"
 "Show text\n"
@@ -595,7 +599,7 @@ msgstr ""
 "Показывать текст\n"
 "Показывать значок"
 
-#: glade/config.glade:2910
+#: glade/config.glade:2926
 msgid ""
 "Used for rendering built-in engine\n"
 "Used for rendering Status Icon engine\n"
@@ -605,19 +609,19 @@ msgstr ""
 "Использовать для отрисовки значка движок значков статуса\n"
 "Использовать для отрисовки значка движок индикаторов приложений"
 
-#: glade/config.glade:2935
+#: glade/config.glade:2951
 msgid "UI"
 msgstr "Внешний вид"
 
-#: glade/config.glade:2972
+#: glade/config.glade:2988
 msgid "Keyboard properties command"
 msgstr "Команда запуска параметров клавиатуры"
 
-#: glade/config.glade:3061
+#: glade/config.glade:3077
 msgid "System"
 msgstr "Системное"
 
-#: glade/config.glade:3094
+#: glade/config.glade:3110
 msgid "<b>Properties</b>"
 msgstr "<b>Параметры</b>"
 

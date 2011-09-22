@@ -189,6 +189,7 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Disable autoswitching if pressed down arrow mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_down_arrow)));
 	log_message(LOG, _("Disable autoswitching if pressed delete mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_delete)));
 	log_message(LOG, _("Disable autoswitching if layout switched mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_switch)));
+	log_message(LOG, _("Disable autoswitching for full screen apps mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_full_screen)));
 	log_message(LOG, _("Compatibility with the completion mode set to %s"), _(xconfig->get_bool_name(xconfig->compatibility_with_completion)));
 	log_message(LOG, _("Tracking input mode set to %s"), _(xconfig->get_bool_name(xconfig->tracking_input)));
 	log_message(LOG, _("Tracking mouse mode set to %s"), _(xconfig->get_bool_name(xconfig->tracking_mouse)));

@@ -63,7 +63,8 @@ static const char *option_names[] = 	{
 	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocompletion", "LoadModule",
 						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent",
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
-						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", "TroubleshootSwitch",
+						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", 
+						"TroubleshootSwitch", "TroubleshootFullScreen",
 						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
 						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
 						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace"
@@ -758,7 +759,19 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->troubleshoot_switch = status;
 			break;
 		}
-		case 47: // Get dont send KeyRelease event mode
+		case 47: // Get troubleshooting mode for full screen apps
+		{
+			int status = get_option_index(bool_names, param);
+			if (status == -1)
+			{
+				log_message(WARNING, _("Invalid value for troubleshooting mode for full screen apps specified"));
+				break;
+			}
+
+			p->troubleshoot_full_screen = status;
+			break;
+		}
+		case 48: // Get dont send KeyRelease event mode
 		{
 			int status = get_option_index(bool_names, param);
 			if (status == -1)
@@ -770,14 +783,14 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->dont_send_key_release = status;
 			break;
 		}
-		case 48: // Port on host to send logfile
+		case 49: // Port on host to send logfile
 		{
 			p->port_keyboard_log = atoi(get_word(&param));
 			if ((p->port_keyboard_log < 1) || (p->port_keyboard_log > 32000))
 				p->port_keyboard_log = 25;
 			break;
 		}
-		case 49: // Rotate layout after convert selected text
+		case 50: // Rotate layout after convert selected text
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -789,7 +802,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->rotate_layout_after_convert = index;
 			break;
 		}
-		case 50: // Correct small letter to capital letter after dot
+		case 51: // Correct small letter to capital letter after dot
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -801,7 +814,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->correct_capital_letter_after_dot = index;
 			break;
 		}
-		case 51: // Flush internal buffer when pressed Escape Mode
+		case 52: // Flush internal buffer when pressed Escape Mode
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -813,7 +826,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->flush_buffer_when_press_escape = index;
 			break;
 		}
-		case 52: // Compatibility with the completion
+		case 53: // Compatibility with the completion
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -825,7 +838,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->compatibility_with_completion = index;
 			break;
 		}
-		case 53: // Tracking input
+		case 54: // Tracking input
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -837,7 +850,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->tracking_input = index;
 			break;
 		}
-		case 54: // Tracking mouse
+		case 55: // Tracking mouse
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -849,7 +862,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->tracking_mouse = index;
 			break;
 		}
-		case 55: // PopupExpireTimeout
+		case 56: // PopupExpireTimeout
 		{
 			p->popup_expire_timeout = atoi(param);
 			if (p->popup_expire_timeout < 0 || p->popup_expire_timeout > 30000)
@@ -859,7 +872,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 			}
 			break;
 		}
-		case 56: // CorrectTwoSpaceWithCommaAndSpace
+		case 57: // CorrectTwoSpaceWithCommaAndSpace
 		{
 			int index = get_option_index(bool_names, param);
 			if (index == -1)
@@ -1349,8 +1362,9 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Disable autoswitching if pressed up arrow\nTroubleshootUpArrow %s\n", p->get_bool_name(p->troubleshoot_up_arrow));
 	fprintf(stream, "# Disable autoswitching if pressed down arrow\nTroubleshootDownArrow %s\n", p->get_bool_name(p->troubleshoot_down_arrow));
 	fprintf(stream, "# Disable autoswitching if pressed delete\nTroubleshootDelete %s\n", p->get_bool_name(p->troubleshoot_delete));
-	fprintf(stream, "# Disable autoswitching if layout switched\nTroubleshootSwitch %s\n\n", p->get_bool_name(p->troubleshoot_switch));
-
+	fprintf(stream, "# Disable autoswitching if layout switched\nTroubleshootSwitch %s\n", p->get_bool_name(p->troubleshoot_switch));
+	fprintf(stream, "# Disable autoswitching for full screen apps\nTroubleshootFullScreen %s\n\n", p->get_bool_name(p->troubleshoot_full_screen));
+	
 	fprintf(stream, "# Work-arround for compatibility with the completion\nCompatibilityWithCompletion %s\n\n", p->get_bool_name(p->compatibility_with_completion));
 
 	fprintf(stream, "# Disabling this option will add any application to the list of excluded applications.\nTrackingInput %s\n\n", p->get_bool_name(p->tracking_input));
@@ -1505,7 +1519,8 @@ struct _xneur_config* xneur_config_init(void)
 	p->troubleshoot_down_arrow = FALSE;
 	p->troubleshoot_delete = FALSE;
 	p->troubleshoot_switch = TRUE;
-
+	p->troubleshoot_full_screen = TRUE;
+	
 	p->dont_send_key_release = FALSE;
 	p->tracking_input = TRUE;
 	p->tracking_mouse = TRUE;

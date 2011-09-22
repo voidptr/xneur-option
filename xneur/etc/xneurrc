@@ -352,6 +352,8 @@ TroubleshootDownArrow No
 TroubleshootDelete No
 # Disable autoswitching if layout switched
 TroubleshootSwitch Yes
+# Disable autoswitching for full screen apps
+TroubleshootFullScreen Yes
 
 # Work-arround for compatibility with the completion
 CompatibilityWithCompletion Yes

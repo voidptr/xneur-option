@@ -1110,6 +1110,8 @@ void xneur_preference(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_delete);
 	widget = glade_xml_get_widget (gxml, "checkbutton25");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_switch);
+	widget = glade_xml_get_widget (gxml, "checkbutton35");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_full_screen);
 
 	// Dont Send KeyRelease Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton26");
@@ -2164,6 +2166,8 @@ void xneur_save_preference(GladeXML *gxml)
 	xconfig->troubleshoot_delete = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton25");
 	xconfig->troubleshoot_switch = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));;
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton35");
+	xconfig->troubleshoot_full_screen = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));;
 
 	// Dont send KeyRelease mode
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton26");
