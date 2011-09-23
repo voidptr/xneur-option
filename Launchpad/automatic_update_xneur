@@ -80,14 +80,15 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "natty" -v "${NEW_VER}-0natty" \
+dch -b --force-distribution --distribution "oneiric" -v "${NEW_VER}-0oneiric" \
   "Minor update."
 debuild -S -sa
 # end update for basic releases
 
-# Full list: hardy intrepid jaunty karmic lucid maverick natty
-# But not all of them are available, see: https://launchpad.net/ubuntu/+ppas
-# begin update for other releases
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "natty" -v "${NEW_VER}-0natty" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "maverick" -v "${NEW_VER}-0maverick" \
@@ -102,6 +103,8 @@ debuild -S -sd
 # end update for other releases
 
 cd ..
+echo "Download to Launchpad Oneiric..."
+dput ppa xneur_${NEW_VER}-0oneiric_source.changes | cat
 echo "Download to Launchpad Natty..."
 dput ppa xneur_${NEW_VER}-0natty_source.changes | cat
 echo "Download to Launchpad Maverick..."
