@@ -18,6 +18,7 @@
  */
 
 #include <X11/keysym.h>
+#include <X11/extensions/XTest.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -74,6 +75,8 @@ int get_key_state(int key)
 
 void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 {
+	//XTestFakeKeyEvent(xdo->xdpy, modkey, is_press, CurrentTime);
+	//XSync(xdo->xdpy, False);
 	usleep(xconfig->send_delay);
 	
 	p->event.type			= KeyPress;
@@ -201,11 +204,17 @@ static void event_send_next_event(struct _event *p)
 	p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_curr_keyboard_group()];
 	int event_mask = NoEventMask;
 	if (p->event.type == KeyPress) 
+	{
 		event_mask = KeyPressMask;
+		//XTestFakeKeyEvent(main_window->display, p->event.xkey.keycode, TRUE, CurrentTime);
+	}
 	else if (p->event.type == KeyRelease)
-		event_mask = KeyReleaseMask;
-
-	XSendEvent(main_window->display, p->event.xany.window, TRUE, event_mask, &p->event);
+	{
+		//event_mask = KeyReleaseMask;
+		XTestFakeKeyEvent(main_window->display, p->event.xkey.keycode, FALSE, CurrentTime);
+	}
+	XSendEvent(main_window->display, p->event.xany.window,FALSE, event_mask, &p->event);
+	XSync(main_window->display, False);
 }
 
 static void event_send_button_event (struct _event *p)

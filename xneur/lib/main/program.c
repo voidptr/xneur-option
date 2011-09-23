@@ -485,7 +485,7 @@ static void program_process_input(struct _program *p)
 				p->buffer = buffer_init(xconfig->handle, main_window->keymap);
 				
 				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
-				
+
 				break;
 			}
 			case MotionNotify:
