@@ -13,7 +13,7 @@ else
   export OLD_VER=$(ls xneur_*.orig.tar.gz | sed -e "s/^xneur_\(.*\).orig.tar.gz$/\1/");
 fi
 
-export LAST_REVISION=$(hg su | grep "parent: [0-9]\+" | sed -e "s/^parent: \([0-9]\+\).*$/\1/")
+export LAST_REVISION=$(hg su | grep "родитель: [0-9]\+" | sed -e "s/^родитель: \([0-9]\+\).*$/\1/")
 
 echo "Number of last revision: ${LAST_REVISION}"
 
