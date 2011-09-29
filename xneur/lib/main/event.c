@@ -90,7 +90,7 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 	p->event.xkey.keycode		= kc;
 	p->event.xkey.time		= CurrentTime;
 
-	XSendEvent(main_window->display, p->owner_window, TRUE, KeyPressMask, &p->event);
+	XSendEvent(main_window->display, p->owner_window, TRUE, NoEventMask, &p->event);
 
 	if (xconfig->dont_send_key_release) 
 		return;
@@ -99,7 +99,7 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 	p->event.xkey.type		= KeyRelease;
 	p->event.xkey.time		= CurrentTime;
 
-	XSendEvent(main_window->display, p->owner_window, TRUE, KeyReleaseMask, &p->event);
+	XSendEvent(main_window->display, p->owner_window, TRUE, NoEventMask, &p->event);
 }
 
 static void event_send_backspaces(struct _event *p, int count)
@@ -202,60 +202,7 @@ static int event_get_next_event(struct _event *p)
 static void event_send_next_event(struct _event *p)
 {
 	p->event.xkey.state = p->get_cur_modifiers(p) | groups[get_curr_keyboard_group()];
-	int event_mask = NoEventMask;
-	if (p->event.type == KeyPress) 
-	{
-		event_mask = KeyPressMask;
-		//XTestFakeKeyEvent(main_window->display, p->event.xkey.keycode, TRUE, CurrentTime);
-	}
-	else if (p->event.type == KeyRelease)
-	{
-		//event_mask = KeyReleaseMask;
-		XTestFakeKeyEvent(main_window->display, p->event.xkey.keycode, FALSE, CurrentTime);
-	}
-	XSendEvent(main_window->display, p->event.xany.window,FALSE, event_mask, &p->event);
-	XSync(main_window->display, False);
-}
-
-static void event_send_button_event (struct _event *p)
-{
-	log_message (TRACE, _("Resend Button Envent"));
-	/* Send to specific window */
-	XButtonEvent xbpe;
-	Display *dpy = XOpenDisplay(NULL);
-    xbpe.window = p->event.xbutton.window;
-    xbpe.button = p->event.xbutton.button;
-    xbpe.display = dpy;
-    xbpe.root = p->event.xbutton.root;
-    xbpe.same_screen = True; /* Should we detect if window is on the same
-                                 screen as cursor? */
-    xbpe.state = p->event.xbutton.state;
-
-    xbpe.subwindow = None;
-    xbpe.time = CurrentTime;
-    xbpe.type = p->event.xbutton.type;
-
-    /* Get the coordinates of the cursor relative to xbpe.window and also find what
-     * subwindow it might be on */
-    XTranslateCoordinates(dpy, xbpe.root, xbpe.window, 
-                          p->event.xbutton.x_root, p->event.xbutton.y_root, &xbpe.x, &xbpe.y, &xbpe.subwindow);
-
-	log_message (ERROR, "%d %d", xbpe.x, xbpe.y);
-    /* Normal behavior of 'mouse up' is that the modifier mask includes
-     * 'ButtonNMotionMask' where N is the button being released. This works the same
-     * way with keys, too. */
-    if (xbpe.type == ButtonRelease) { /* is mouse up */
-      switch(xbpe.button) {
-        case 1: xbpe.state |= Button1MotionMask; break;
-        case 2: xbpe.state |= Button2MotionMask; break;
-        case 3: xbpe.state |= Button3MotionMask; break;
-        case 4: xbpe.state |= Button4MotionMask; break;
-        case 5: xbpe.state |= Button5MotionMask; break;
-      }
-    }
-	XSendEvent(dpy, xbpe.window, True, ButtonPressMask, (XEvent *)&xbpe);
-    XFlush(dpy);
-	XCloseDisplay(dpy);
+	XSendEvent(main_window->display, p->event.xany.window,FALSE, NoEventMask, &p->event);
 }
 
 static void event_uninit(struct _event *p)
@@ -277,7 +224,6 @@ struct _event* event_init(void)
 	// Functions mapping
 	p->get_next_event	= event_get_next_event;
 	p->send_next_event	= event_send_next_event;
-	p->send_button_event	= event_send_button_event;
 	p->set_owner_window	= event_set_owner_window;
 	p->send_xkey		= event_send_xkey;
 	p->send_string		= event_send_string;

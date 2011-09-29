@@ -41,7 +41,6 @@ struct _event
 	
 	int  (*get_next_event) (struct _event *p);
 	void (*send_next_event) (struct _event *p);
-	void (*send_button_event) (struct _event *p);
 	void (*set_owner_window) (struct _event *p, Window window);
 	void (*send_xkey) (struct _event *p, KeyCode kc, int modifiers);
 	void (*send_string) (struct _event *p, struct _buffer *str);

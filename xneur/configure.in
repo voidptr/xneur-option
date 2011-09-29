@@ -45,8 +45,6 @@ else
 	AC_SUBST(X11_LIBS)
 fi
 
-PKG_CHECK_MODULES(XTST, [xtst])
-
 ADDITIONAL_LIBS="-lpthread -ldl"
 AC_SUBST(ADDITIONAL_LIBS)
 
@@ -268,9 +266,6 @@ $PACKAGE $VERSION configured successfully:
 
 	X11 compiler flags:		$X11_CFLAGS
 	X11 linker flags:		$X11_LIBS
-
-	XTST extention compiler flags:	$XTST_CFLAGS
-	XTST extention linker flags:	$XTST_LIBS
 
 	Pcre compiler flags:		$PCRE_CFLAGS
 	Pcre linker flags:		$PCRE_LIBS
