@@ -580,19 +580,27 @@ msgid ""
 "Used for rendering App Indicator engine"
 msgstr ""
 
-#: glade/config.glade:2951
+#: glade/config.glade:2949
+msgid "Set the extension to move the icon in the shell area of the Gnome 3."
+msgstr ""
+
+#: glade/config.glade:2964
+msgid "Gnome 3 Shell"
+msgstr ""
+
+#: glade/config.glade:2990
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:2988
+#: glade/config.glade:3027
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:3077
+#: glade/config.glade:3116
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:3110
+#: glade/config.glade:3149
 msgid "<b>Properties</b>"
 msgstr ""
 
@@ -636,7 +644,7 @@ msgstr ""
 msgid "More:"
 msgstr ""
 
-#: src/callbacks.c:355 src/misc.c:2324
+#: src/callbacks.c:355 src/misc.c:2455
 msgid "Press any key"
 msgstr ""
 
@@ -716,19 +724,19 @@ msgstr ""
 msgid "  -h, --help                           Display this help and exit\n"
 msgstr ""
 
-#: src/misc.c:328 src/misc.c:329
+#: src/misc.c:334 src/misc.c:335
 #, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
 "Please, install libxnconfig version 0.%d.%d\n"
 msgstr ""
 
-#: src/misc.c:335
+#: src/misc.c:341
 #, c-format
 msgid "Using libxnconfig API version 0.%d.%d (build with 0.%d.%d)\n"
 msgstr ""
 
-#: src/misc.c:339 src/misc.c:340
+#: src/misc.c:345 src/misc.c:346
 #, c-format
 msgid ""
 "XNeur's config broken or was created with old version!\n"
@@ -737,100 +745,104 @@ msgid ""
 "and manually patch new configuration which will be created after first run.\n"
 msgstr ""
 
-#: src/misc.c:352 src/misc.c:353 src/misc.c:473 src/misc.c:474
+#: src/misc.c:358 src/misc.c:359 src/misc.c:479 src/misc.c:480
 #, c-format
 msgid ""
 "Couldn't start %s\n"
 "Verify that it installed\n"
 msgstr ""
 
-#: src/misc.c:365
+#: src/misc.c:371
 msgid "Current Version"
 msgstr ""
 
-#: src/misc.c:509 src/misc.c:535 src/misc.c:562 src/misc.c:588 src/misc.c:735
+#: src/misc.c:515 src/misc.c:541 src/misc.c:568 src/misc.c:594 src/misc.c:744
 msgid "Application"
 msgstr ""
 
-#: src/misc.c:606 src/misc.c:1135
+#: src/misc.c:612 src/misc.c:1150
 msgid "Description"
 msgstr ""
 
-#: src/misc.c:611
+#: src/misc.c:617
 msgid "Layout"
 msgstr ""
 
-#: src/misc.c:616
+#: src/misc.c:622
 msgid "Excluded"
 msgstr ""
 
-#: src/misc.c:769 src/misc.c:845 src/misc.c:954 src/misc.c:1008
-#: src/misc.c:1062
+#: src/misc.c:778 src/misc.c:854 src/misc.c:963 src/misc.c:1017
+#: src/misc.c:1071
 msgid "Action"
 msgstr ""
 
-#: src/misc.c:776 src/misc.c:965
+#: src/misc.c:785 src/misc.c:974
 msgid "Key bind"
 msgstr ""
 
-#: src/misc.c:812
+#: src/misc.c:821
 msgid "Abbreviation"
 msgstr ""
 
-#: src/misc.c:821
+#: src/misc.c:830
 msgid "Expansion text"
 msgstr ""
 
-#: src/misc.c:850
+#: src/misc.c:859
 msgid "Sound"
 msgstr ""
 
-#: src/misc.c:859 src/misc.c:1022 src/misc.c:1076 src/misc.c:1126
+#: src/misc.c:868 src/misc.c:1031 src/misc.c:1085 src/misc.c:1141
 msgid "Enabled"
 msgstr ""
 
-#: src/misc.c:969 src/trayicon.c:133
+#: src/misc.c:978 src/trayicon.c:133
 msgid "User action"
 msgstr ""
 
-#: src/misc.c:1013
+#: src/misc.c:1022
 msgid "OSD text"
 msgstr ""
 
-#: src/misc.c:1067
+#: src/misc.c:1076
 msgid "Popup message text"
 msgstr ""
 
-#: src/misc.c:1140
+#: src/misc.c:1155
 msgid "File name"
 msgstr ""
 
-#: src/misc.c:1338
+#: src/misc.c:1362
 msgid "Abbreviation field is empty!"
 msgstr ""
 
-#: src/misc.c:1343
+#: src/misc.c:1367
 msgid "Expansion text field is empty!"
 msgstr ""
 
-#: src/misc.c:1381
+#: src/misc.c:1405
 msgid "Key bind field is empty!"
 msgstr ""
 
-#: src/misc.c:1386
+#: src/misc.c:1410
 msgid "User action field is empty!"
 msgstr ""
 
-#: src/misc.c:1654
+#: src/misc.c:1678
 msgid "Combination of letters"
 msgstr ""
 
-#: src/misc.c:1659
+#: src/misc.c:1683
 msgid "Condition"
 msgstr ""
 
-#: src/misc.c:1664
+#: src/misc.c:1688
 msgid "Insensitive"
+msgstr ""
+
+#: src/misc.c:2323
+msgid "To enable the extension you need to start the session again."
 msgstr ""
 
 #: src/support.c:80 src/support.c:104
@@ -838,11 +850,11 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr ""
 
-#: src/trayicon.c:96 src/trayicon.c:332
+#: src/trayicon.c:96 src/trayicon.c:334
 msgid "Stop daemon"
 msgstr ""
 
-#: src/trayicon.c:100 src/trayicon.c:338
+#: src/trayicon.c:100 src/trayicon.c:340
 msgid "Start daemon"
 msgstr ""
 
@@ -850,15 +862,15 @@ msgstr ""
 msgid "Keyboard Properties"
 msgstr ""
 
-#: src/trayicon.c:331
+#: src/trayicon.c:333
 msgid "X Neural Switcher running ("
 msgstr ""
 
-#: src/trayicon.c:337
+#: src/trayicon.c:339
 msgid "X Neural Switcher stopped ("
 msgstr ""
 
-#: src/trayicon.c:580
+#: src/trayicon.c:585
 msgid "X Neural Switcher"
 msgstr ""
 

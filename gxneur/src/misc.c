@@ -21,6 +21,8 @@
 #   include "config.h"
 #endif
 
+#include <glib/gstdio.h>
+
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <sys/stat.h>
@@ -44,6 +46,10 @@
 #define AUTOSTART_FILE PACKAGE ".desktop"
 
 #define GXNEUR_DESKTOP "[Desktop Entry]\nType=Application\nExec="  PACKAGE "\nHidden=false\nX-GNOME-Autostart-enabled=true\nName=GTK UI for X Neural Switcher\n"
+
+#define GNOME3_EXT_PATH ".local/share/gnome-shell/extensions/" PACKAGE "@xneur.ru"  
+#define GNOME3_EXT_JS_FILE "extension.js"
+#define GNOME3_EXT_JSON_FILE "metadata.json"
 
 #define DEFAULT_MAX_PATH	4096
 
@@ -1221,6 +1227,15 @@ void xneur_preference(void)
 	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 	}
 
+	// Gnome 3 shell
+	path_file = g_build_filename(getenv("HOME"), GNOME3_EXT_PATH, NULL);
+	if (g_file_test(path_file, G_FILE_TEST_IS_DIR))
+	{
+		widget = glade_xml_get_widget (gxml, "checkbutton36");
+	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
+	}
+	g_free(path_file);
+	
 	// Delay before start
 	widget = glade_xml_get_widget (gxml, "spinbutton5");
 	int value = DEFAULT_DELAY;
@@ -2223,6 +2238,104 @@ void xneur_save_preference(GladeXML *gxml)
 	}
 	g_free(path_file);
 
+	// Gnome 3 Shell Area
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton36");
+
+	path_file = g_build_filename(getenv("HOME"), GNOME3_EXT_PATH, NULL);
+	if (!g_file_test(path_file, G_FILE_TEST_IS_DIR))
+		g_mkdir_with_parents(path_file, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+	g_free(path_file);
+	
+	path_file = g_build_filename(getenv("HOME"), GNOME3_EXT_PATH, GNOME3_EXT_JS_FILE, NULL);
+	stream = fopen(path_file, "r");
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
+	{
+		if (stream != NULL)
+		{
+			fclose(stream);
+			remove(path_file);
+		}
+		// Create .js file
+		stream = fopen(path_file, "w");
+		if (stream != NULL)
+		{
+			fprintf(stream, "const StatusIconDispatcher = imports.ui.statusIconDispatcher;\n\n");
+			fprintf(stream, "function enable() {\n");
+			fprintf(stream, "    StatusIconDispatcher.STANDARD_TRAY_ICON_IMPLEMENTATIONS['gxneur'] = 'gxneur';\n");
+			fprintf(stream, "}\n\n");
+			fprintf(stream, "function disable() {\n");
+			fprintf(stream, "    StatusIconDispatcher.STANDARD_TRAY_ICON_IMPLEMENTATIONS['gxneur'] = '';\n");
+			fprintf(stream, "}\n\n");
+			fprintf(stream, "function init() {\n");
+			fprintf(stream, "   StatusIconDispatcher.STANDARD_TRAY_ICON_IMPLEMENTATIONS['gxneur'] = 'gxneur';\n");
+			fprintf(stream, "}\n\n");
+			fprintf(stream, "function main() {\n");
+			fprintf(stream, "   StatusIconDispatcher.STANDARD_TRAY_ICON_IMPLEMENTATIONS['gxneur'] = 'gxneur';\n");
+			fprintf(stream, "}\n\n");
+			fclose(stream);
+		}
+	}
+	else
+	{
+		if (stream != NULL)
+		{
+			fclose(stream);
+			remove(path_file);
+		}
+	}
+	g_free(path_file);
+
+	path_file = g_build_filename(getenv("HOME"), GNOME3_EXT_PATH, GNOME3_EXT_JSON_FILE, NULL);
+	stream = fopen(path_file, "r");
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
+	{
+		if (stream != NULL)
+		{
+			fclose(stream);
+			remove(path_file);
+		}
+		// Create .json file
+		stream = fopen(path_file, "w");
+		if (stream != NULL)
+		{
+			fprintf(stream, "{\n");
+			fprintf(stream, "   \"shell-version\": [\"3.2\"],\n");
+			fprintf(stream, "   \"uuid\": \"gxneur@xneur.ru\",\n");
+			fprintf(stream, "   \"name\": \"Gxneur\",\n");
+			fprintf(stream, "   \"description\": \"Move the gxneur icon in the shell area of the Gnome 3.\"\n");
+			fprintf(stream, "}\n");
+			fclose(stream);
+		}
+	}
+	else
+	{
+		if (stream != NULL)
+		{
+			fclose(stream);
+			remove(path_file);
+		}
+	}
+	g_free(path_file);
+
+	path_file = g_build_filename(getenv("HOME"), GNOME3_EXT_PATH, NULL);
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
+	{
+		char *buffer = _("To enable the extension you need to start the session again.");
+
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
+											GTK_DIALOG_DESTROY_WITH_PARENT,
+											GTK_MESSAGE_INFO,
+											GTK_BUTTONS_CLOSE,
+											"%s", buffer);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);	
+	}
+	else
+	{
+		g_rmdir(path_file);
+	}
+	g_free(path_file);
+	
 	// Delay
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "spinbutton5");
 	if (!gxneur_config_write_int("delay", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widgetPtrToBefound)), FALSE))

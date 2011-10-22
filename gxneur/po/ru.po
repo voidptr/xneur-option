@@ -609,19 +609,27 @@ msgstr ""
 "Использовать для отрисовки значка движок значков статуса\n"
 "Использовать для отрисовки значка движок индикаторов приложений"
 
-#: glade/config.glade:2951
+#: glade/config.glade:2949
+msgid "Set the extension to move the icon in the shell area of the Gnome 3."
+msgstr "Установить расширение для перемещения иконки в область оболочки Gnome 3."
+
+#: glade/config.glade:2964
+msgid "Gnome 3 Shell"
+msgstr "Оболочка Gnome 3"
+
+#: glade/config.glade:2990
 msgid "UI"
 msgstr "Внешний вид"
 
-#: glade/config.glade:2988
+#: glade/config.glade:3027
 msgid "Keyboard properties command"
 msgstr "Команда запуска параметров клавиатуры"
 
-#: glade/config.glade:3077
+#: glade/config.glade:3116
 msgid "System"
 msgstr "Системное"
 
-#: glade/config.glade:3110
+#: glade/config.glade:3149
 msgid "<b>Properties</b>"
 msgstr "<b>Параметры</b>"
 
@@ -669,7 +677,7 @@ msgstr "совпадать с данным сочетанием букв"
 msgid "More:"
 msgstr "Дополнительно:"
 
-#: src/callbacks.c:355 src/misc.c:2324
+#: src/callbacks.c:355 src/misc.c:2455
 msgid "Press any key"
 msgstr "Нажмите любую клавишу"
 
@@ -765,7 +773,7 @@ msgstr "  -c, --configure                      Настроить xneur и gxneu
 msgid "  -h, --help                           Display this help and exit\n"
 msgstr "  -h, --help                           Показать справку и выйти\n"
 
-#: src/misc.c:328 src/misc.c:329
+#: src/misc.c:334 src/misc.c:335
 #, c-format
 msgid ""
 "Wrong XNeur configuration library api version.\n"
@@ -774,12 +782,12 @@ msgstr ""
 "Несовпадение версии библиотеки конфигурации XNeur.\n"
 "Пожалуйста, установите libxnconfig версии 0.%d.%d\n"
 
-#: src/misc.c:335
+#: src/misc.c:341
 #, c-format
 msgid "Using libxnconfig API version 0.%d.%d (build with 0.%d.%d)\n"
 msgstr "Используется libxnconfig API версии 0.%d.%d (собрано с 0.%d.%d)\n"
 
-#: src/misc.c:339 src/misc.c:340
+#: src/misc.c:345 src/misc.c:346
 #, c-format
 msgid ""
 "XNeur's config broken or was created with old version!\n"
@@ -794,7 +802,7 @@ msgstr ""
 "и вручную измените новый конфигурационный файл, который будет создан после "
 "первого запуска.\n"
 
-#: src/misc.c:352 src/misc.c:353 src/misc.c:473 src/misc.c:474
+#: src/misc.c:358 src/misc.c:359 src/misc.c:479 src/misc.c:480
 #, c-format
 msgid ""
 "Couldn't start %s\n"
@@ -803,105 +811,109 @@ msgstr ""
 "Невозможно запустить %s\n"
 "Проверьте, что программа установлена.\n"
 
-#: src/misc.c:365
+#: src/misc.c:371
 msgid "Current Version"
 msgstr "Текущая версия"
 
-#: src/misc.c:509 src/misc.c:535 src/misc.c:562 src/misc.c:588 src/misc.c:735
+#: src/misc.c:515 src/misc.c:541 src/misc.c:568 src/misc.c:594 src/misc.c:744
 msgid "Application"
 msgstr "Приложение"
 
-#: src/misc.c:606 src/misc.c:1135
+#: src/misc.c:612 src/misc.c:1150
 msgid "Description"
 msgstr "Описание"
 
-#: src/misc.c:611
+#: src/misc.c:617
 msgid "Layout"
 msgstr "Раскладка"
 
-#: src/misc.c:616
+#: src/misc.c:622
 msgid "Excluded"
 msgstr "Не используется"
 
-#: src/misc.c:769 src/misc.c:845 src/misc.c:954 src/misc.c:1008
-#: src/misc.c:1062
+#: src/misc.c:778 src/misc.c:854 src/misc.c:963 src/misc.c:1017
+#: src/misc.c:1071
 msgid "Action"
 msgstr "Действие"
 
-#: src/misc.c:776 src/misc.c:965
+#: src/misc.c:785 src/misc.c:974
 msgid "Key bind"
 msgstr "Комбинация клавиш"
 
-#: src/misc.c:812
+#: src/misc.c:821
 msgid "Abbreviation"
 msgstr "Сокращение"
 
-#: src/misc.c:821
+#: src/misc.c:830
 msgid "Expansion text"
 msgstr "Полный Текст"
 
-#: src/misc.c:850
+#: src/misc.c:859
 msgid "Sound"
 msgstr "Звук"
 
-#: src/misc.c:859 src/misc.c:1022 src/misc.c:1076 src/misc.c:1126
+#: src/misc.c:868 src/misc.c:1031 src/misc.c:1085 src/misc.c:1141
 msgid "Enabled"
 msgstr "Включено"
 
-#: src/misc.c:969 src/trayicon.c:133
+#: src/misc.c:978 src/trayicon.c:133
 msgid "User action"
 msgstr "Пользовательское действие"
 
-#: src/misc.c:1013
+#: src/misc.c:1022
 msgid "OSD text"
 msgstr "Текст OSD"
 
-#: src/misc.c:1067
+#: src/misc.c:1076
 msgid "Popup message text"
 msgstr "Текст всплывающего сообщения"
 
-#: src/misc.c:1140
+#: src/misc.c:1155
 msgid "File name"
 msgstr "Имя файла"
 
-#: src/misc.c:1338
+#: src/misc.c:1362
 msgid "Abbreviation field is empty!"
 msgstr "Сокращение пусто!"
 
-#: src/misc.c:1343
+#: src/misc.c:1367
 msgid "Expansion text field is empty!"
 msgstr "Полный текст пуст!"
 
-#: src/misc.c:1381
+#: src/misc.c:1405
 msgid "Key bind field is empty!"
 msgstr "Комбинация клавиш пуста!"
 
-#: src/misc.c:1386
+#: src/misc.c:1410
 msgid "User action field is empty!"
 msgstr "Пользовательское действие пусто!"
 
-#: src/misc.c:1654
+#: src/misc.c:1678
 msgid "Combination of letters"
 msgstr "Буквосочетание"
 
-#: src/misc.c:1659
+#: src/misc.c:1683
 msgid "Condition"
 msgstr "Условие"
 
-#: src/misc.c:1664
+#: src/misc.c:1688
 msgid "Insensitive"
 msgstr "Не учитывать регистр"
+
+#: src/misc.c:2323
+msgid "To enable the extension you need to start the session again."
+msgstr "Для включения расширения вы должны начать сеанс заново."
 
 #: src/support.c:80 src/support.c:104
 #, c-format
 msgid "Couldn't find pixmap file: %s"
 msgstr "Не найден файл изображения: %s"
 
-#: src/trayicon.c:96 src/trayicon.c:332
+#: src/trayicon.c:96 src/trayicon.c:334
 msgid "Stop daemon"
 msgstr "Остановить демон"
 
-#: src/trayicon.c:100 src/trayicon.c:338
+#: src/trayicon.c:100 src/trayicon.c:340
 msgid "Start daemon"
 msgstr "Запустить демон"
 
@@ -909,15 +921,15 @@ msgstr "Запустить демон"
 msgid "Keyboard Properties"
 msgstr "Параметры клавиатуры"
 
-#: src/trayicon.c:331
+#: src/trayicon.c:333
 msgid "X Neural Switcher running ("
 msgstr "X Neural Switcher работает ("
 
-#: src/trayicon.c:337
+#: src/trayicon.c:339
 msgid "X Neural Switcher stopped ("
 msgstr "X Neural Switcher остановлен ("
 
-#: src/trayicon.c:580
+#: src/trayicon.c:585
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
 
