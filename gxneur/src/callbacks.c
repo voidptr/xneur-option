@@ -249,6 +249,23 @@ void on_deletebutton_clicked(GtkButton *button, gpointer user_data)
 		gtk_list_store_remove(GTK_LIST_STORE(model), &iter);
 }
 
+void on_extension_install_check(gpointer user_data)
+{
+	GtkWidget *checkbutton = (GtkWidget *)user_data;
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (checkbutton)))
+	{
+		char *buffer = _("To enable the extension you need to start the session again.");
+
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
+											GTK_DIALOG_DESTROY_WITH_PARENT,
+											GTK_MESSAGE_INFO,
+											GTK_BUTTONS_OK,
+											"%s", buffer);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+	}
+}
+
 // Save dictionary/regexp list
 static gboolean save_regexp(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
 {

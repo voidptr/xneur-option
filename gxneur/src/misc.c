@@ -1228,13 +1228,14 @@ void xneur_preference(void)
 	}
 
 	// Gnome 3 shell
+	widget = glade_xml_get_widget (gxml, "checkbutton36");
 	path_file = g_build_filename(getenv("HOME"), GNOME3_EXT_PATH, NULL);
 	if (g_file_test(path_file, G_FILE_TEST_IS_DIR))
 	{
-		widget = glade_xml_get_widget (gxml, "checkbutton36");
 	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 	}
 	g_free(path_file);
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(on_extension_install_check), G_OBJECT(widget));
 	
 	// Delay before start
 	widget = glade_xml_get_widget (gxml, "spinbutton5");
@@ -2318,19 +2319,7 @@ void xneur_save_preference(GladeXML *gxml)
 	g_free(path_file);
 
 	path_file = g_build_filename(getenv("HOME"), GNOME3_EXT_PATH, NULL);
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
-	{
-		char *buffer = _("To enable the extension you need to start the session again.");
-
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-											GTK_DIALOG_DESTROY_WITH_PARENT,
-											GTK_MESSAGE_INFO,
-											GTK_BUTTONS_CLOSE,
-											"%s", buffer);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);	
-	}
-	else
+	if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound)))
 	{
 		g_rmdir(path_file);
 	}

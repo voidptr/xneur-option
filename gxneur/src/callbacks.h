@@ -33,6 +33,7 @@ void on_editbutton_clicked(GtkButton *button, gpointer user_data);
 void on_deletebutton_clicked(GtkButton *button, gpointer user_data);
 void on_okbutton_clicked(GtkButton *button, gpointer user_data);
 void on_cancelbutton_clicked(GtkButton *button, gpointer user_data);
+void on_extension_install_check(gpointer user_data);
 
 gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 gboolean on_key_release_event (GtkWidget *widget, GdkEventKey *event, gpointer user_data);
