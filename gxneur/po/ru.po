@@ -611,7 +611,8 @@ msgstr ""
 
 #: glade/config.glade:2949
 msgid "Set the extension to move the icon in the shell area of the Gnome 3."
-msgstr "Установить расширение для перемещения иконки в область оболочки Gnome 3."
+msgstr ""
+"Установить расширение для перемещения иконки в область оболочки Gnome 3."
 
 #: glade/config.glade:2964
 msgid "Gnome 3 Shell"

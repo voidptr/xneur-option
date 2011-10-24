@@ -1,3 +1,11 @@
+October 24 2011:
+Version 0.14.0 released.
+New troubleshooting option for disable mouse tracking.
+New troubleshooting option for fullscreen apps.
+New option for сorrect two space with a comma and a space
+Bugfix for change case action.
+Bugfix for Gtk3 apps.
+
 May 24 2011:
 Version 0.13.0 released.
 Enabled hotkeys on excluded apps.

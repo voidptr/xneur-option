@@ -1,3 +1,9 @@
+October 24 2011:
+Version 0.14.0 released.
+Some bugfixes for rendering engine selection.
+Add CLI options for gxneur.
+Add option for setup Gnome3 extension for placing icon on shell area.
+
 May 24 2011:
 Version 0.13.0 released.
 Add App Indicator icon and option to select icon rendering engine (StatusIcon, AppIndicator and Built-in engines).

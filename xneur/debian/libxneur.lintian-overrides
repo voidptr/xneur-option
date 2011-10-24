@@ -1,3 +1,3 @@
 # upstream breaks API/ABI every release and plays with libraries
 # so I will use libxneur as package name
-libxneur: package-name-doesnt-match-sonames libxnconfig13 libxneur13
+libxneur: package-name-doesnt-match-sonames libxnconfig14 libxneur14
