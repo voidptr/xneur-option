@@ -72,7 +72,7 @@ void xneur_edit_rule(GtkWidget *treeview);
 void xneur_edit_dictionary(GtkWidget *treeview);
 
 #define MAX_LANGUAGES			4
-#define XNEUR_NEEDED_MAJOR_VERSION	13
+#define XNEUR_NEEDED_MAJOR_VERSION	14
 #define XNEUR_BUILD_MINOR_VERSION	0
 	
 struct _xneur_config *xconfig				= NULL;

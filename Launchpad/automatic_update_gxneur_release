@@ -3,7 +3,7 @@
 # Must be from GPG key
 export DEBEMAIL="Andrew Crew Kuznetsov <andrewcrew@rambler.ru>"
 
-cd "${HOME}/develop/xneur/Launchpad"
+cd "${HOME}/develop/xneur-hg/xneur/Launchpad"
 
 if !([ -e gxneur_*.orig.tar.gz ]); then
   echo "File gxneur_*.orig.tar.gz is not found.";
@@ -12,9 +12,22 @@ else
   export OLD_VER=$(ls gxneur_*.orig.tar.gz | sed -e "s/^gxneur_\(.*\).orig.tar.gz$/\1/");
 fi
 
-echo "Updating is started."
+export LAST_REVISION=$(hg su | grep "родитель: [0-9]\+" | sed -e "s/^родитель: \([0-9]\+\).*$/\1/")
 
-export CUR_VER=$(svn cat svn://xneur.ru:3690/xneur/gxneur/configure.in | grep "AM_INIT_AUTOMAKE" | sed -e "s/^AM_INIT_AUTOMAKE(gxneur, \(.*\))$/\1/")
+echo "Number of last revision: ${LAST_REVISION}"
+
+if [ -z ${LAST_REVISION} ]; then
+  echo "Error: number of last revision is empty!";
+  exit 0;
+fi
+
+echo "Updating is started."
+# begin local updating
+hg pull
+hg update
+hg merge
+
+export CUR_VER=$(cat ../gxneur/configure.in | grep "AM_INIT_AUTOMAKE" | sed -e "s/^AM_INIT_AUTOMAKE(gxneur, \(.*\))$/\1/")
 export NEW_VER="${CUR_VER}"
 
 echo "OLD_VER = ${OLD_VER}"
@@ -31,19 +44,19 @@ if [ ${NEW_VER} = ${OLD_VER} ]; then
 fi
 
 # begin local updating
-svn update ../gxneur/
-svn export ../gxneur/ "gxneur-tmp"
+hg archive -t files "gxneur-tmp"
+
 # end local updating
 
 # building to dist
-cd ./"gxneur-tmp"
+cd ./"gxneur-tmp"/gxneur
 # save debianize settings
-mv ./debian ../
+mv ./debian ../../
 ./autogen.sh
 make distcheck
-mkdir ../"gxneur-${CUR_VER}"
-tar -xvf "gxneur-${CUR_VER}.tar.gz" -C ../
-cd ..
+mkdir ../../"gxneur-${CUR_VER}"
+tar -xvf "gxneur-${CUR_VER}.tar.gz" -C ../../
+cd ../..
 rm -R ./"gxneur-tmp"
 # end building
 
@@ -58,7 +71,7 @@ read -p "Build package only on local system (y/N)?" RESPONSE
 echo
 if [ "$RESPONSE" = y ] ; then
 	# If you want to build package on your system uncomment this:
-	dch -v "$NEW_VER" "New Upstream version 0.13.0"
+	dch -v "$NEW_VER-mybuild1" "New upstream version 0.14.0."
 	dpkg-buildpackage -rfakeroot
 
 	cd ..
@@ -68,30 +81,31 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "natty" -v "${NEW_VER}-0natty" \
-  "New Upstream version 0.11.0"
+dch -b --force-distribution --distribution "oneiric" -v "${NEW_VER}-0oneiric" \
+  "New upstream version 0.14.0."
 debuild -S -sa
 # end update for basic releases
 
-# Full list: hardy intrepid jaunty karmic lucid maverick natty
-# But not all of them are available, see: https://launchpad.net/ubuntu/+ppas
-# begin update for other releases
-cp debian/changelog ../changelog # copy basic changelog
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "natty" -v "${NEW_VER}-0natty" \
+  "New upstream version 0.14.0."
+debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "maverick" -v "${NEW_VER}-0maverick" \
-  "New Upstream version 0.13.0"
+  "New upstream version 0.14.0."
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-0lucid" \
-  "New Upstream version 0.13.0"
+  "New upstream version 0.14.0."
 debuild -S -sd
 
-mv ../changelog debian/changelog # rollback basic changelog
 # end update for other releases
 
 cd ..
+echo "Download to Launchpad Oneiric..."
+dput ppa gxneur_${NEW_VER}-0oneiric_source.changes | cat
 echo "Download to Launchpad Natty..."
 dput ppa gxneur_${NEW_VER}-0natty_source.changes | cat
 echo "Download to Launchpad Maverick..."
