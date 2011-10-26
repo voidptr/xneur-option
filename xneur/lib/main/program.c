@@ -869,6 +869,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 				p->check_pattern(p, TRUE);
 
 				p->check_two_minus(p);
+
+				p->check_copyright(p);
 				
 				// Unblock keyboard
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
@@ -1521,6 +1523,49 @@ static void program_check_two_minus(struct _program *p)
 	p->buffer->clear(p->buffer);
 	p->event->default_event.xkey.keycode = 0;
 	log_message (DEBUG, _("Find two minus, correction with a dash..."));
+}		
+
+static void program_check_copyright(struct _program *p)
+{
+	if (!xconfig->correct_c_with_copyright)
+		return;
+
+	if (p->buffer->cur_pos < 3)
+		return;
+	
+	if ((p->buffer->content[p->buffer->cur_pos-1] != ')') || 
+		(p->buffer->content[p->buffer->cur_pos-2] != 'c') ||
+		(p->buffer->content[p->buffer->cur_pos-3] != '(')) 
+		return;
+	
+	p->event->send_backspaces(p->event, 2);
+	
+	int key_code = main_window->keymap->max_keycode;
+	KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
+	KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
+	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+	{
+		keysyms_bckp[i]= keymap[i];
+	}
+
+	KeySym keysyms[main_window->keymap->keysyms_per_keycode];
+				
+	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+	{
+		keysyms[i]= XK_copyright;//XK_emdash;//XK_trademark;//
+	}
+	XChangeKeyboardMapping(main_window->display, key_code, 
+		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
+
+	p->event->send_xkey(p->event, key_code, 0);
+	usleep(50000);
+	
+	XChangeKeyboardMapping(main_window->display, key_code, 
+   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+	
+	p->buffer->clear(p->buffer);
+	p->event->default_event.xkey.keycode = 0;
+	log_message (DEBUG, _("Find (c), correction with a copyright sign..."));
 }		
 
 static void program_check_space_before_punctuation(struct _program *p)
@@ -2413,6 +2458,7 @@ struct _program* program_init(void)
 	p->check_capital_letter_after_dot = program_check_capital_letter_after_dot;
 	p->check_two_space = program_check_two_space;
 	p->check_two_minus = program_check_two_minus;
+	p->check_copyright = program_check_copyright;
 	p->check_pattern	= program_check_pattern;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;
