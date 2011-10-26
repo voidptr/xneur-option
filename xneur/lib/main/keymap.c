@@ -245,7 +245,7 @@ static int init_keymaps(struct _keymap *p)
 	// Define all key codes and key symbols
 	XDisplayKeycodes(p->display, &(p->min_keycode), &(p->max_keycode));
 	p->keymap = XGetKeyboardMapping(p->display, p->min_keycode, p->max_keycode - p->min_keycode + 1, &(p->keysyms_per_keycode));
-
+	
 	if (!p->keymap)
 	{
 		log_message(ERROR, _("Unable to get keyboard mapping table"));

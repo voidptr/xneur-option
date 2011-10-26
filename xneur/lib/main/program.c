@@ -21,6 +21,7 @@
 #  include "config.h"
 #endif
 
+#define XK_PUBLISHING
 #include <X11/keysym.h>
 #include <X11/XKBlib.h>
 
@@ -473,18 +474,18 @@ static void program_process_input(struct _program *p)
 			}
 			case MappingNotify:
 			{
-				log_message(TRACE, _("Received MappingNotify (event type %d)"), type);
+				//log_message(TRACE, _("Received MappingNotify (event type %d)"), type);
 
-				p->buffer->uninit(p->buffer);
+				/*p->buffer->uninit(p->buffer);
 				main_window->uninit_keymap(main_window);
 				
 				xneur_handle_destroy(xconfig->handle);
 				xconfig->handle = xneur_handle_create();
 				
 				main_window->init_keymap(main_window);
-				p->buffer = buffer_init(xconfig->handle, main_window->keymap);
+				p->buffer = buffer_init(xconfig->handle, main_window->keymap);*/
 				
-				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
+				//log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
 
 				break;
 			}
@@ -817,7 +818,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 		case KLB_ENTER:
 		case KLB_SPACE:
 		case KLB_ADD_SYM:
-		{
+		{	
 			if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 			
@@ -848,7 +849,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 			    p->check_space_with_bracket(p);
 				
 				p->check_brackets_with_symbols(p);
-				
+
 				if (!xconfig->check_lang_on_process)
 				{
 					p->check_pattern(p, TRUE);
@@ -866,6 +867,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 				}
 
 				p->check_pattern(p, TRUE);
+
+				p->check_two_minus(p);
 				
 				// Unblock keyboard
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
@@ -1477,6 +1480,47 @@ static void program_check_two_space(struct _program *p)
 	free(word);
 	p->change_word(p, CHANGE_TWO_SPACE);
 	show_notify(NOTIFY_CORR_TWO_SPACE, NULL);
+}		
+
+static void program_check_two_minus(struct _program *p)
+{
+	if (!xconfig->correct_two_minus_with_dash)
+		return;
+
+	if (p->buffer->cur_pos < 2)
+		return;
+	
+	if ((p->buffer->content[p->buffer->cur_pos-1] != '-') || (p->buffer->content[p->buffer->cur_pos-2] != '-')) 
+		return;
+	
+	p->event->send_backspaces(p->event, 1);
+	
+	int key_code = main_window->keymap->max_keycode;
+	KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
+	KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
+	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+	{
+		keysyms_bckp[i]= keymap[i];
+	}
+
+	KeySym keysyms[main_window->keymap->keysyms_per_keycode];
+				
+	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+	{
+		keysyms[i]= XK_emdash;//XK_trademark;//XK_copyright;//
+	}
+	XChangeKeyboardMapping(main_window->display, key_code, 
+		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
+
+	p->event->send_xkey(p->event, key_code, 0);
+	usleep(50000);
+	
+	XChangeKeyboardMapping(main_window->display, key_code, 
+   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+	
+	p->buffer->clear(p->buffer);
+	p->event->default_event.xkey.keycode = 0;
+	log_message (DEBUG, _("Find two minus, correction with a dash..."));
 }		
 
 static void program_check_space_before_punctuation(struct _program *p)
@@ -2368,6 +2412,7 @@ struct _program* program_init(void)
 	p->check_brackets_with_symbols = program_check_brackets_with_symbols;
 	p->check_capital_letter_after_dot = program_check_capital_letter_after_dot;
 	p->check_two_space = program_check_two_space;
+	p->check_two_minus = program_check_two_minus;
 	p->check_pattern	= program_check_pattern;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;

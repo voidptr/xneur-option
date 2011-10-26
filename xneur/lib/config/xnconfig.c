@@ -39,7 +39,7 @@
 
 #include "xnconfig.h"
 
-#define LIBRARY_VERSION_MAJOR		14
+#define LIBRARY_VERSION_MAJOR		15
 #define LIBRARY_VERSION_MINOR		0
 #define OPTIONS_DELIMETER		" "
 
@@ -67,7 +67,8 @@ static const char *option_names[] = 	{
 						"TroubleshootSwitch", "TroubleshootFullScreen",
 						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
 						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
-						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace"
+						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace","CorrectTwoMinusWithDash",
+						"CorrectCWithCopyright", "CorrectTMWithTrademark"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -884,6 +885,42 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->correct_two_space_with_comma_and_space = index;
 			break;
 		}
+		case 58: // CorrectTwoMinusWithDash
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for correct two minus with a dash mode specified"));
+				break;
+			}
+
+			p->correct_two_minus_with_dash = index;
+			break;
+		}
+		case 59: // CorrectCWithCopyright
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for correct (c) with a copyright sign mode specified"));
+				break;
+			}
+
+			p->correct_c_with_copyright = index;
+			break;
+		}
+		case 60: // CorrectTMWithTrademark
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for correct (tm) with a trademark sign mode specified"));
+				break;
+			}
+
+			p->correct_tm_with_trademark = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1268,6 +1305,21 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#CorrectTwoSpaceWithCommaAndSpace Yes\n");
 	fprintf(stream, "CorrectTwoSpaceWithCommaAndSpace %s\n\n", p->get_bool_name(p->correct_two_space_with_comma_and_space));
 
+	fprintf(stream, "# This option enable or disable correction of two minus with a dash\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectTwoMinusWithDash Yes\n");
+	fprintf(stream, "CorrectTwoMinusWithDash %s\n\n", p->get_bool_name(p->correct_two_minus_with_dash));
+
+	fprintf(stream, "# This option enable or disable correction of (c) with a copyright sign\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectCWithCopyright Yes\n");
+	fprintf(stream, "CorrectCWithCopyright %s\n\n", p->get_bool_name(p->correct_c_with_copyright));
+
+	fprintf(stream, "# This option enable or disable correction of (tm) with a trademark sign\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectTMWithTrademark Yes\n");
+	fprintf(stream, "CorrectTMWithTrademark  %s\n\n", p->get_bool_name(p->correct_tm_with_trademark));
+	
 	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Escape\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#FlushBufferWhenPressEscape Yes\n");

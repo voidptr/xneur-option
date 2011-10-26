@@ -197,12 +197,16 @@ struct _xneur_config
 	int   correct_two_capital_letter;		// Change two CApital letter
 	int   correct_space_with_punctuation;	// Correct spaces before punctuation
 	int   correct_two_space_with_comma_and_space;	// Correct Two Space With A Comma And A Space
+	int   correct_capital_letter_after_dot;
+	int   correct_two_minus_with_dash;
+	int   correct_c_with_copyright;
+	int   correct_tm_with_trademark;
 	int   flush_buffer_when_press_escape;		// Flush internal buffer when pressed Escape
 	int   flush_buffer_when_press_enter;		// Flush internal buffer when pressed Enter or Tab
 	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter
 	int   check_lang_on_process;			// Check lang on input process
 	int   disable_capslock;				// Disable CapsLock use
-	int   correct_capital_letter_after_dot;
+
 	int   block_events;					// Block all events (keyboard and mouse)
 	
 	int   autocompletion;			// Save pattern and mining
