@@ -26,7 +26,7 @@
 
 #define SOUNDDIR			"sounds"
 
-#define MAX_NOTIFIES		35
+#define MAX_NOTIFIES		36
 #define MAX_HOTKEYS			24
 
 #include "xneur.h"
@@ -73,6 +73,7 @@ enum _notify_action
 	NOTIFY_CORR_TWO_MINUS,
 	NOTIFY_CORR_COPYRIGHT,
 	NOTIFY_CORR_TRADEMARK,
+	NOTIFY_CORR_REGISTERED,
 	NOTIFY_EXEC_USER_ACTION,
 	NOTIFY_BLOCK_EVENTS,
 	NOTIFY_UNBLOCK_EVENTS,
@@ -204,6 +205,8 @@ struct _xneur_config
 	int   correct_two_minus_with_dash;
 	int   correct_c_with_copyright;
 	int   correct_tm_with_trademark;
+	int   correct_r_with_registered;
+	
 	int   flush_buffer_when_press_escape;		// Flush internal buffer when pressed Escape
 	int   flush_buffer_when_press_enter;		// Flush internal buffer when pressed Enter or Tab
 	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter

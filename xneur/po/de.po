@@ -291,166 +291,171 @@ msgstr ""
 
 #: src/xneur.c:178
 #, c-format
-msgid "Disable CapsLock use mode set to %s"
+msgid "Correct (r) with a registered sign mode set to %s"
 msgstr ""
 
 #: src/xneur.c:179
 #, c-format
-msgid "Flush internal buffer when pressed Escape mode set to %s"
+msgid "Disable CapsLock use mode set to %s"
 msgstr ""
 
 #: src/xneur.c:180
 #, c-format
-msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
+msgid "Flush internal buffer when pressed Escape mode set to %s"
 msgstr ""
 
 #: src/xneur.c:181
 #, c-format
-msgid "Don't process word when pressed Enter or Tab mode set to %s"
+msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
 msgstr ""
 
 #: src/xneur.c:182
 #, c-format
-msgid "Show OSD mode set to %s"
+msgid "Don't process word when pressed Enter or Tab mode set to %s"
 msgstr ""
 
 #: src/xneur.c:183
 #, c-format
-msgid "Show popup messages mode set to %s"
+msgid "Show OSD mode set to %s"
 msgstr ""
 
 #: src/xneur.c:184
 #, c-format
-msgid "Popup expire timeout set to %d"
+msgid "Show popup messages mode set to %s"
 msgstr ""
 
 #: src/xneur.c:185
 #, c-format
-msgid "Check language on input process mode set to %s"
+msgid "Popup expire timeout set to %d"
 msgstr ""
 
 #: src/xneur.c:186
 #, c-format
-msgid "Pattern minig and recognition (autocompletion) mode set to %s"
+msgid "Check language on input process mode set to %s"
 msgstr ""
 
 #: src/xneur.c:187
 #, c-format
-msgid "Add space after autocompletion mode set to %s"
+msgid "Pattern minig and recognition (autocompletion) mode set to %s"
 msgstr ""
 
 #: src/xneur.c:188
 #, c-format
-msgid "Disable autoswitching if pressed backspace mode set to %s"
+msgid "Add space after autocompletion mode set to %s"
 msgstr ""
 
 #: src/xneur.c:189
 #, c-format
-msgid "Disable autoswitching if pressed left arrow mode set to %s"
+msgid "Disable autoswitching if pressed backspace mode set to %s"
 msgstr ""
 
 #: src/xneur.c:190
 #, c-format
-msgid "Disable autoswitching if pressed right arrow mode set to %s"
+msgid "Disable autoswitching if pressed left arrow mode set to %s"
 msgstr ""
 
 #: src/xneur.c:191
 #, c-format
-msgid "Disable autoswitching if pressed up arrow mode set to %s"
+msgid "Disable autoswitching if pressed right arrow mode set to %s"
 msgstr ""
 
 #: src/xneur.c:192
 #, c-format
-msgid "Disable autoswitching if pressed down arrow mode set to %s"
+msgid "Disable autoswitching if pressed up arrow mode set to %s"
 msgstr ""
 
 #: src/xneur.c:193
 #, c-format
-msgid "Disable autoswitching if pressed delete mode set to %s"
+msgid "Disable autoswitching if pressed down arrow mode set to %s"
 msgstr ""
 
 #: src/xneur.c:194
 #, c-format
-msgid "Disable autoswitching if layout switched mode set to %s"
+msgid "Disable autoswitching if pressed delete mode set to %s"
 msgstr ""
 
 #: src/xneur.c:195
 #, c-format
-msgid "Disable autoswitching for full screen apps mode set to %s"
+msgid "Disable autoswitching if layout switched mode set to %s"
 msgstr ""
 
 #: src/xneur.c:196
 #, c-format
-msgid "Compatibility with the completion mode set to %s"
+msgid "Disable autoswitching for full screen apps mode set to %s"
 msgstr ""
 
 #: src/xneur.c:197
 #, c-format
-msgid "Tracking input mode set to %s"
+msgid "Compatibility with the completion mode set to %s"
 msgstr ""
 
 #: src/xneur.c:198
 #, c-format
-msgid "Tracking mouse mode set to %s"
+msgid "Tracking input mode set to %s"
 msgstr ""
 
 #: src/xneur.c:199
 #, c-format
-msgid "Disable send KeyRelease event mode set to %s"
+msgid "Tracking mouse mode set to %s"
 msgstr ""
 
 #: src/xneur.c:200
 #, c-format
+msgid "Disable send KeyRelease event mode set to %s"
+msgstr ""
+
+#: src/xneur.c:201
+#, c-format
 msgid "Delay before sendind events to application set to (in milliseconds) %d"
 msgstr ""
 
-#: src/xneur.c:210
+#: src/xneur.c:211
 #, c-format
 msgid " already running with pid %d"
 msgstr ""
 
-#: src/xneur.c:223
+#: src/xneur.c:224
 msgid "Current sound data is freed"
 msgstr ""
 
-#: src/xneur.c:226
+#: src/xneur.c:227
 msgid "Current user keybinds is freed"
 msgstr ""
 
-#: src/xneur.c:231
+#: src/xneur.c:232
 msgid "Current program info is freed"
 msgstr ""
 
-#: src/xneur.c:238
+#: src/xneur.c:239
 msgid "Current configuration data is freed"
 msgstr ""
 
-#: src/xneur.c:249
+#: src/xneur.c:250
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr ""
 
-#: src/xneur.c:264
+#: src/xneur.c:265
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr ""
 
-#: src/xneur.c:278 src/xneur.c:414
+#: src/xneur.c:279 src/xneur.c:415
 msgid "Can't init libxnconfig"
 msgstr ""
 
-#: src/xneur.c:394
+#: src/xneur.c:395
 msgid "Can't trap signal"
 msgstr ""
 
-#: src/xneur.c:427
+#: src/xneur.c:428
 #, c-format
 msgid "Xneur process identificator is %d with nice %d"
 msgstr ""
 
-#: src/xneur.c:432
+#: src/xneur.c:433
 msgid "Failed to init program structure"
 msgstr ""
 
-#: src/xneur.c:442
+#: src/xneur.c:443
 msgid "Init program structure complete"
 msgstr ""
 
@@ -538,230 +543,234 @@ msgstr ""
 msgid "End word processing."
 msgstr ""
 
-#: lib/config/xnconfig.c:147
+#: lib/config/xnconfig.c:148
 #, c-format
 msgid "Unrecognized option \"%s\" detected"
 msgstr ""
 
-#: lib/config/xnconfig.c:157
+#: lib/config/xnconfig.c:158
 #, c-format
 msgid "Param mismatch for option %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:168
+#: lib/config/xnconfig.c:169
 msgid "Invalid value for manual mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:186
+#: lib/config/xnconfig.c:187
 msgid "Invalid value for action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:214
+#: lib/config/xnconfig.c:215
 msgid "Invalid value for log level specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:226
+#: lib/config/xnconfig.c:227
 msgid "Argument number mismatch for ExcludeLanguage option"
 msgstr ""
 
-#: lib/config/xnconfig.c:243
+#: lib/config/xnconfig.c:244
 msgid "Invalid value for pattern minig and recognition mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:255
+#: lib/config/xnconfig.c:256
 msgid "Invalid value for disable CapsLock using mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:267
+#: lib/config/xnconfig.c:268
 msgid "Invalid value for check language on input process mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:294
+#: lib/config/xnconfig.c:295
 msgid "Invalid value for education mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:311
+#: lib/config/xnconfig.c:312
 msgid "Invalid value for remember layout mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:323
+#: lib/config/xnconfig.c:324
 msgid "Invalid value for save selection mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:340
+#: lib/config/xnconfig.c:341
 msgid "Invalid value for sound action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:372
+#: lib/config/xnconfig.c:373
 msgid "Invalid value for play sounds mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:384
+#: lib/config/xnconfig.c:385
 msgid "Send delay must be between 0 and 50"
 msgstr ""
 
-#: lib/config/xnconfig.c:399
+#: lib/config/xnconfig.c:400
 msgid "Invalid value for save keyboard log mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:416
+#: lib/config/xnconfig.c:417
 msgid ""
 "Invalid value for ignore keyboard layout for abbreviations mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:428
+#: lib/config/xnconfig.c:429
 msgid "Invalid value for change iNCIDENTAL CapsLock mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:440
+#: lib/config/xnconfig.c:441
 msgid "Invalid value for change two CApital letter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:452
+#: lib/config/xnconfig.c:453
 msgid ""
 "Invalid value for flush internal buffer when pressed Enter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:464
+#: lib/config/xnconfig.c:465
 msgid ""
 "Invalid value for don't processing word when pressed Enter mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:532
+#: lib/config/xnconfig.c:533
 msgid "Invalid value for show OSD mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:544
+#: lib/config/xnconfig.c:545
 msgid "Invalid value for OSD action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:588
+#: lib/config/xnconfig.c:589
 msgid "Invalid value for show popup message mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:600
+#: lib/config/xnconfig.c:601
 msgid "Invalid value for popup message action name specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:684
+#: lib/config/xnconfig.c:685
 msgid "Invalid value for troubleshooting mode for backspace specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:696
+#: lib/config/xnconfig.c:697
 msgid "Invalid value for troubleshooting mode for left arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:708
+#: lib/config/xnconfig.c:709
 msgid "Invalid value for troubleshooting mode for right arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:720
+#: lib/config/xnconfig.c:721
 msgid "Invalid value for troubleshooting mode for up arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:732
+#: lib/config/xnconfig.c:733
 msgid "Invalid value for troubleshooting mode for down arrow specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:744
+#: lib/config/xnconfig.c:745
 msgid "Invalid value for troubleshooting mode for delete specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:756
+#: lib/config/xnconfig.c:757
 msgid "Invalid value for troubleshooting mode for keyboard switch specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:768
+#: lib/config/xnconfig.c:769
 msgid "Invalid value for troubleshooting mode for full screen apps specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:780
+#: lib/config/xnconfig.c:781
 msgid "Invalid value for dont send KeyRelease event mode"
 msgstr ""
 
-#: lib/config/xnconfig.c:799
+#: lib/config/xnconfig.c:800
 msgid ""
 "Invalid value for rotate layout after correction selected text mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:811
+#: lib/config/xnconfig.c:812
 msgid ""
 "Invalid value for change small letter to capital letter after dot mode "
 "specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:823
+#: lib/config/xnconfig.c:824
 msgid ""
 "Invalid value for flush internal buffer when pressed Escape mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:835
+#: lib/config/xnconfig.c:836
 msgid "Invalid value for compatibility with the completion mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:847
+#: lib/config/xnconfig.c:848
 msgid "Invalid value for tracking input mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:859
+#: lib/config/xnconfig.c:860
 msgid "Invalid value for tracking mouse mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:871
+#: lib/config/xnconfig.c:872
 msgid "Popup expire timeout must be between 0 and 30000"
 msgstr ""
 
-#: lib/config/xnconfig.c:881
+#: lib/config/xnconfig.c:882
 msgid ""
 "Invalid value for correct two space with a comma and a space mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:893
+#: lib/config/xnconfig.c:894
 msgid "Invalid value for correct two minus with a dash mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:905
+#: lib/config/xnconfig.c:906
 msgid "Invalid value for correct (c) with a copyright sign mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:917
+#: lib/config/xnconfig.c:918
 msgid "Invalid value for correct (tm) with a trademark sign mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:933
+#: lib/config/xnconfig.c:930
+msgid "Invalid value for correct (r) with a registered sign mode specified"
+msgstr ""
+
+#: lib/config/xnconfig.c:946
 #, c-format
 msgid "Can't find config file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1069
+#: lib/config/xnconfig.c:1082
 msgid "No languages specified in config file"
 msgstr ""
 
-#: lib/config/xnconfig.c:1098
+#: lib/config/xnconfig.c:1111
 #, c-format
 msgid "Saving main config to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1103
+#: lib/config/xnconfig.c:1116
 #, c-format
 msgid "Can't create file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1447
+#: lib/config/xnconfig.c:1465
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1453
+#: lib/config/xnconfig.c:1471
 msgid "Can't move file!"
 msgstr ""
 
-#: lib/config/xnconfig.c:1471
+#: lib/config/xnconfig.c:1489
 #, c-format
 msgid "Saving %s dictionary"
 msgstr ""
 
-#: lib/config/xnconfig.c:1485
+#: lib/config/xnconfig.c:1503
 #, c-format
 msgid "Saving %s pattern"
 msgstr ""
@@ -1093,105 +1102,109 @@ msgstr ""
 msgid "Execute manual action \"%s\""
 msgstr ""
 
-#: lib/main/program.c:949
+#: lib/main/program.c:950
 #, c-format
 msgid "Manual mode changed to %s"
 msgstr ""
 
-#: lib/main/program.c:1148
+#: lib/main/program.c:1149
 #, c-format
 msgid "Now keyboard and mouse block status is %s"
 msgstr ""
 
-#: lib/main/program.c:1165
+#: lib/main/program.c:1166
 #, c-format
 msgid "Insert date '%s'."
 msgstr ""
 
-#: lib/main/program.c:1226
+#: lib/main/program.c:1227
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr ""
 
-#: lib/main/program.c:1322 lib/main/program.c:1375
+#: lib/main/program.c:1323 lib/main/program.c:1376
 msgid "No language found to change to"
 msgstr ""
 
-#: lib/main/program.c:1482
+#: lib/main/program.c:1483
 msgid "Find two space, correction with a comma and a space..."
 msgstr ""
 
-#: lib/main/program.c:1527
+#: lib/main/program.c:1528
 msgid "Find two minus, correction with a dash..."
 msgstr ""
 
-#: lib/main/program.c:1570
+#: lib/main/program.c:1572
 msgid "Find (c), correction with a copyright sign..."
 msgstr ""
 
-#: lib/main/program.c:1614
+#: lib/main/program.c:1616
+msgid "Find (r), correction with a registered sign..."
+msgstr ""
+
+#: lib/main/program.c:1661
 msgid "Find (tm), correction with a trademark sign..."
 msgstr ""
 
-#: lib/main/program.c:1646
+#: lib/main/program.c:1694
 msgid "Find spaces before punctuation, correction..."
 msgstr ""
 
-#: lib/main/program.c:1695
+#: lib/main/program.c:1743
 msgid "Find no space before left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1712
+#: lib/main/program.c:1760
 msgid "Find spaces before right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1742
+#: lib/main/program.c:1790
 msgid "Find no spaces after right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1777
+#: lib/main/program.c:1825
 msgid "Find spaces after left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1860
+#: lib/main/program.c:1908
 msgid "Find small letter after dot, correction..."
 msgstr ""
 
-#: lib/main/program.c:1903
+#: lib/main/program.c:1951
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr ""
 
-#: lib/main/program.c:1940
+#: lib/main/program.c:1988
 msgid "No string to change"
 msgstr ""
 
-#: lib/main/program.c:1944
+#: lib/main/program.c:1992
 #, c-format
 msgid "Processing string '%s'"
 msgstr ""
 
-#: lib/main/program.c:2337
+#: lib/main/program.c:2385
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2348
+#: lib/main/program.c:2396
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2408
+#: lib/main/program.c:2456
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2440
+#: lib/main/program.c:2488
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2459
+#: lib/main/program.c:2507
 msgid "Program is freed"
 msgstr ""
 

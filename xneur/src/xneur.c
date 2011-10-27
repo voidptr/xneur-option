@@ -175,6 +175,7 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Correct two minus with a dash mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_two_minus_with_dash)));
 	log_message(LOG, _("Correct (c) with a copyright sign mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_c_with_copyright)));
 	log_message(LOG, _("Correct (tm) with a trademark sign mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_tm_with_trademark)));
+	log_message(LOG, _("Correct (r) with a registered sign mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_r_with_registered)));
 	log_message(LOG, _("Disable CapsLock use mode set to %s"), _(xconfig->get_bool_name(xconfig->disable_capslock)));
 	log_message(LOG, _("Flush internal buffer when pressed Escape mode set to %s"), _(xconfig->get_bool_name(xconfig->flush_buffer_when_press_escape)));
 	log_message(LOG, _("Flush internal buffer when pressed Enter or Tab mode set to %s"), _(xconfig->get_bool_name(xconfig->flush_buffer_when_press_enter)));

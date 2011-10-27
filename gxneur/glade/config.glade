@@ -288,6 +288,22 @@
                                 <property name="position">8</property>
                               </packing>
                             </child>
+                            <child>
+                              <widget class="GtkCheckButton" id="checkbutton40">
+                                <property name="label" translatable="yes">Сorrect (r) with a registered sign</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="use_action_appearance">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="draw_indicator">True</property>
+                              </widget>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">9</property>
+                              </packing>
+                            </child>
                           </widget>
                           <packing>
                             <property name="position">1</property>

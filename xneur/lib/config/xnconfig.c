@@ -68,7 +68,7 @@ static const char *option_names[] = 	{
 						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
 						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
 						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace","CorrectTwoMinusWithDash",
-						"CorrectCWithCopyright", "CorrectTMWithTrademark"
+						"CorrectCWithCopyright", "CorrectTMWithTrademark", "CorrectRWithRegistered"
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -89,7 +89,7 @@ static const char *notify_names[] =	{
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",  "PreviewChangeClipboard",
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", 
 						"CorrectTwoSpaceWithCommaAndSpace", "CorrectTwoMinusWithDash", "CorrectCWithCopyright", 
-						"CorrectTMWithTrademark", 
+						"CorrectTMWithTrademark", "CorrectRWithRegistered",
 						"ExecuteUserAction","BlockKeyboardAndMouseEvents", "UnblockKeyboardAndMouseEvents"
 					};
 
@@ -922,6 +922,18 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->correct_tm_with_trademark = index;
 			break;
 		}
+		case 61: // CorrectRWithRegistered
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for correct (r) with a registered sign mode specified"));
+				break;
+			}
+
+			p->correct_r_with_registered = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1320,6 +1332,11 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CorrectTMWithTrademark Yes\n");
 	fprintf(stream, "CorrectTMWithTrademark %s\n\n", p->get_bool_name(p->correct_tm_with_trademark));
+
+	fprintf(stream, "# This option enable or disable correction of (r) with a registered sign\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectRWithRegistered Yes\n");
+	fprintf(stream, "CorrectRWithRegistered %s\n\n", p->get_bool_name(p->correct_r_with_registered));
 	
 	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Escape\n");
 	fprintf(stream, "# Example:\n");
