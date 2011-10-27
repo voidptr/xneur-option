@@ -88,8 +88,9 @@ static const char *notify_names[] =	{
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",  "PreviewChangeClipboard",
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", 
-						"CorrectTwoSpaceWithCommaAndSpace", "ExecuteUserAction", 
-						"BlockKeyboardAndMouseEvents", "UnblockKeyboardAndMouseEvents"
+						"CorrectTwoSpaceWithCommaAndSpace", "CorrectTwoMinusWithDash", "CorrectCWithCopyright", 
+						"CorrectTMWithTrademark", 
+						"ExecuteUserAction","BlockKeyboardAndMouseEvents", "UnblockKeyboardAndMouseEvents"
 					};
 
 pid_t getsid(pid_t pid);
@@ -1318,7 +1319,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# This option enable or disable correction of (tm) with a trademark sign\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CorrectTMWithTrademark Yes\n");
-	fprintf(stream, "CorrectTMWithTrademark  %s\n\n", p->get_bool_name(p->correct_tm_with_trademark));
+	fprintf(stream, "CorrectTMWithTrademark %s\n\n", p->get_bool_name(p->correct_tm_with_trademark));
 	
 	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Escape\n");
 	fprintf(stream, "# Example:\n");

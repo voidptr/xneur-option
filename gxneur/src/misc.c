@@ -110,6 +110,7 @@ static const char *notify_names[]			=   {
 										"Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 	                                    "Expand abbreviations",
 										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Сorrect two space with a comma and a space",
+										"Сorrect two minus with a dash", "Сorrect (c) with a copyright sign", "Сorrect (tm) with a trademark sign",
 										"Execute user action", "Block keyboard and mouse events", "Unblock keyboard and mouse events"
 										};
 
@@ -716,6 +717,15 @@ void xneur_preference(void)
 
 	widget = glade_xml_get_widget (gxml, "checkbutton29");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_two_space_with_comma_and_space);
+
+	widget = glade_xml_get_widget (gxml, "checkbutton37");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_two_minus_with_dash);
+
+	widget = glade_xml_get_widget (gxml, "checkbutton38");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_c_with_copyright);
+
+	widget = glade_xml_get_widget (gxml, "checkbutton39");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_tm_with_trademark);
 
 	// Autocompletion
 	widget = glade_xml_get_widget (gxml, "checkbutton21");
@@ -2148,6 +2158,15 @@ void xneur_save_preference(GladeXML *gxml)
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton29");
 	xconfig->correct_two_space_with_comma_and_space = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton37");
+	xconfig->correct_two_minus_with_dash = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton38");
+	xconfig->correct_c_with_copyright = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton39");
+	xconfig->correct_tm_with_trademark = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton21");
 	xconfig->autocompletion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
