@@ -55,7 +55,7 @@ static int xneur_old_state = -1;
 static int xneur_old_group = -1;
 static int force_update = FALSE;
 
-#define ICON_SIZE 24
+//#define ICON_SIZE 24
 
 static void exec_user_action(char *cmd)
 {
@@ -218,12 +218,8 @@ void status_icon_on_menu(GtkStatusIcon *status_icon, guint button,
 	gtk_menu_popup(GTK_MENU(tray->menu), NULL, NULL, NULL, NULL, button, activate_time);
 }
 
-GdkPixbuf *text_to_gtk_pixbuf (GdkPixbuf *pb, int w, int h, gchar *text) 
-{ 
-	GdkPixmap *pm = gdk_pixmap_new (NULL, w, h, 24);
-	GdkGC *gc = gdk_gc_new (pm); 
-	gdk_draw_pixbuf (pm, gc, pb, 0, 0, 0, 0, w, h, GDK_RGB_DITHER_NONE, 0, 0);
-
+GdkPixbuf *text_to_gtk_pixbuf (gchar *text) 
+{	
 	GtkWidget *scratch = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_widget_realize (scratch); 
 	//GtkStyle *style = gtk_widget_get_style(scratch);
@@ -247,13 +243,22 @@ GdkPixbuf *text_to_gtk_pixbuf (GdkPixbuf *pb, int w, int h, gchar *text)
 	width = width/PANGO_SCALE;
 	heigth = heigth/PANGO_SCALE;
 
-	gdk_draw_layout (pm, gc, (w - width)/2,(h - heigth)/2, layout);
+	GdkPixbuf *pb = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, width, heigth);
+	gdk_pixbuf_fill(pb, 0xffffffff);
+	
+	GdkPixmap *pm = gdk_pixmap_new (NULL, width, heigth, 24);
+	GdkGC *gc = gdk_gc_new (pm); 
+	gdk_draw_pixbuf (pm, gc, pb, 0, 0, 0, 0, width, heigth, GDK_RGB_DITHER_NONE, 0, 0);
+	
+	gdk_draw_layout (pm, gc, 0, 0, layout);
+
 
 	g_object_unref(layout);
 	gdk_gc_unref(gc);
-	
-	GdkPixbuf *ret = gdk_pixbuf_get_from_drawable (NULL, pm, NULL, 0, 0, 0, 0, w, h);
-	return ret; 
+
+	GdkPixbuf *ret = gdk_pixbuf_get_from_drawable (NULL, pm, NULL, 0, 0, 0, 0, width, heigth);
+	gdk_pixbuf_unref(pb);
+	return ret;
 }
 
 static const char *get_tray_icon_name (char *name)
@@ -349,6 +354,7 @@ gboolean clock_check(gpointer dummy)
 	//if (strcasecmp(rendering_engine, "Built-in") == 0)
 	if (tray->tray_icon)
 	{
+		gtk_widget_hide_all(GTK_WIDGET(tray->tray_icon));
 		gtk_widget_destroy (tray->image);
 		if (strcasecmp(show_in_the_tray, "Text") == 0)
 		{
@@ -377,14 +383,11 @@ gboolean clock_check(gpointer dummy)
 				for (unsigned int i=0; i < strlen(layout_name); i++)
 					layout_name[i] = toupper(layout_name[i]);
 
-				GdkPixbuf *trasparent_pb = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, ICON_SIZE, ICON_SIZE);
-				gdk_pixbuf_fill(trasparent_pb, 0xffffffff);
-				GdkPixbuf *pb = text_to_gtk_pixbuf (trasparent_pb, gdk_pixbuf_get_width(trasparent_pb), gdk_pixbuf_get_height(trasparent_pb), layout_name);
+				GdkPixbuf *pb = text_to_gtk_pixbuf (layout_name);
 				free(layout_name);
 				pb = gdk_pixbuf_add_alpha(pb, TRUE, 255, 255, 255);
 				gtk_status_icon_set_from_pixbuf(tray->status_icon, pb);
 				gdk_pixbuf_unref(pb);
-				gdk_pixbuf_unref(trasparent_pb);
 			}
 			else
 			{
@@ -398,11 +401,11 @@ gboolean clock_check(gpointer dummy)
 #ifdef HAVE_APP_INDICATOR
 	else if (tray->app_indicator)
 	{
-		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].dir);
+		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].name);
 		if (strcasecmp(show_in_the_tray, "Text") == 0)
 		{
-			for (unsigned int i=0; i < strlen(layout_name); i++)
-				layout_name[i] = toupper(layout_name[i]);
+			//for (unsigned int i=0; i < strlen(layout_name); i++)
+				//layout_name[i] = toupper(layout_name[i]);
 #ifdef HAVE_DEPREC_APP_INDICATOR	
 			app_indicator_set_icon (tray->app_indicator, icon_name);
 #else
@@ -636,14 +639,11 @@ void create_tray_icon (void)
 			for (unsigned int i=0; i < strlen(layout_name); i++)
 				layout_name[i] = toupper(layout_name[i]);
 
-			GdkPixbuf *trasparent_pb = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, ICON_SIZE, ICON_SIZE);
-			gdk_pixbuf_fill(trasparent_pb, 0xffffffff);
-			GdkPixbuf *pb = text_to_gtk_pixbuf (trasparent_pb, gdk_pixbuf_get_width(trasparent_pb), gdk_pixbuf_get_height(trasparent_pb), layout_name);
+			GdkPixbuf *pb = text_to_gtk_pixbuf (layout_name);
 			free(layout_name);
 			pb = gdk_pixbuf_add_alpha(pb, TRUE, 255, 255, 255);
 			gtk_status_icon_set_from_pixbuf(tray->status_icon, pb);
 			gdk_pixbuf_unref(pb);
-			gdk_pixbuf_unref(trasparent_pb);
 		}
 		else
 		{
