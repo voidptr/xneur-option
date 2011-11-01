@@ -1,9 +1,6 @@
 2a# Note: configuration file in /etc/xneur is just a template. On first run XNeur\n# copies it into user's .xneur/. So all changes in this file will affect only\n# new users, who didn't run XNeur before.
-s/^ManualMode No/ManualMode Yes/
 s/^LogLevel Debug/LogLevel Error/
 s/^AddAction/#AddAction/
-s/^EducationMode Yes/EducationMode No/
-s/^LayoutRememberMode Yes/LayoutRememberMode No/
 s/^LogSave Yes/LogSave No/
 s/^Autocomplementation Yes/Autocomplementation No/
 s#/usr/local/#/usr/#g
