@@ -2,7 +2,6 @@
 s/^LogLevel Debug/LogLevel Error/
 s/^AddAction/#AddAction/
 s/^LogSave Yes/LogSave No/
-s/^Autocomplementation Yes/Autocomplementation No/
 s#/usr/local/#/usr/#g
 s/XneurStart Enable .*/XneurStart Enable X Neural Switcher started/
 s/XneurReload Enable .*/XneurReload Enable X Neural Switcher restarted/

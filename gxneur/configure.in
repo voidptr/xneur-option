@@ -3,7 +3,7 @@ AC_PREREQ(2.59)
 AM_CONFIG_HEADER(config.h)
 
 AC_CONFIG_MACRO_DIR(m4)
-AM_INIT_AUTOMAKE(gxneur, 0.14.0)
+AM_INIT_AUTOMAKE(gxneur, 0.15.0)
 
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
@@ -15,6 +15,9 @@ AC_PROG_MAKE_SET
 AC_HEADER_STDC
 
 PKG_PROG_PKG_CONFIG([0.20])
+
+PKG_CHECK_MODULES(XNEURCONF, [xnconfig = 0.15.0])
+PKG_CHECK_MODULES(XNEURLIB, [xneur = 0.15.0])
 
 PKG_CHECK_MODULES(X11, [x11 >= 1.1], found_x11="yes", found_x11="no")
 if test "x$found_x11" = "xno"; then
@@ -67,9 +70,6 @@ fi
 AC_DEFINE(PACKAGE_GCONF_DIR, "/apps/" PACKAGE, [Define GConf directory for settings])
 
 AC_DEFINE(KB_PROP_COMMAND, "/usr/bin/gnome-keyboard-properties", [Define keyboard properties command])
-
-PKG_CHECK_MODULES(XNEURCONF, [xnconfig = 0.14.0])
-PKG_CHECK_MODULES(XNEURLIB, [xneur = 0.14.0])
 
 PKG_CHECK_MODULES(GLADE, [libglade-2.0 >= 2.6.0])
 AC_SUBST(GLADE_CFLAGS)

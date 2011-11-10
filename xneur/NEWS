@@ -1,3 +1,10 @@
+November 10 2011:
+Version 0.15.0 released.
+New option for сorrect two minus with a dash
+New option for сorrect (c) with a copyright sign
+New option for сorrect (tm) with a trademark sign
+New option for сorrect (r) with a registered sign
+
 October 24 2011:
 Version 0.14.0 released.
 New troubleshooting option for disable mouse tracking.
