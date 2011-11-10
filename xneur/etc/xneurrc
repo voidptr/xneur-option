@@ -2,7 +2,7 @@
 # All values writted XNeur
 
 # Config version
-Version 0.13.0
+Version 0.15.0
 
 # Work in manual mode
 ManualMode No
@@ -204,6 +204,26 @@ CorrectCapitalLetterAfterDot Yes
 # Example:
 #CorrectTwoSpaceWithCommaAndSpace Yes
 CorrectTwoSpaceWithCommaAndSpace No
+
+# This option enable or disable correction of two minus with a dash
+# Example:
+#CorrectTwoMinusWithDash Yes
+CorrectTwoMinusWithDash No
+
+# This option enable or disable correction of (c) with a copyright sign
+# Example:
+#CorrectCWithCopyright Yes
+CorrectCWithCopyright No
+
+# This option enable or disable correction of (tm) with a trademark sign
+# Example:
+#CorrectTMWithTrademark Yes
+CorrectTMWithTrademark No
+
+# This option enable or disable correction of (r) with a registered sign
+# Example:
+#CorrectRWithRegistered Yes
+CorrectRWithRegistered No
 
 # This option enable or disable flushing internal buffer when pressed Escape
 # Example:
