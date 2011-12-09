@@ -722,6 +722,9 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton37");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_two_minus_with_dash);
 
+	widget = glade_xml_get_widget (gxml, "checkbutton41");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_dash_with_emdash);
+
 	widget = glade_xml_get_widget (gxml, "checkbutton38");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_c_with_copyright);
 
@@ -2165,6 +2168,9 @@ void xneur_save_preference(GladeXML *gxml)
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton37");
 	xconfig->correct_two_minus_with_dash = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton41");
+	xconfig->correct_dash_with_emdash = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton38");
 	xconfig->correct_c_with_copyright = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

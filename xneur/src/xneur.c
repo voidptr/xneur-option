@@ -173,6 +173,7 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Correct of small letter to capital letter after dot mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_capital_letter_after_dot)));
 	log_message(LOG, _("Correct two space with a comma and a space mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_two_space_with_comma_and_space)));
 	log_message(LOG, _("Correct two minus with a dash mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_two_minus_with_dash)));
+	log_message(LOG, _("Correct dash with a emdash mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_dash_with_emdash)));
 	log_message(LOG, _("Correct (c) with a copyright sign mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_c_with_copyright)));
 	log_message(LOG, _("Correct (tm) with a trademark sign mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_tm_with_trademark)));
 	log_message(LOG, _("Correct (r) with a registered sign mode set to %s"), _(xconfig->get_bool_name(xconfig->correct_r_with_registered)));

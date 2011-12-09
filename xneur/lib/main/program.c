@@ -1512,7 +1512,9 @@ static void program_check_two_minus(struct _program *p)
 				
 	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
 	{
-		keysyms[i]= XK_emdash;//XK_trademark;//XK_copyright;//
+		keysyms[i]= XK_endash;//XK_trademark;//XK_copyright;//
+		if (xconfig->correct_dash_with_emdash) 
+			keysyms[i]= XK_emdash;
 	}
 	XChangeKeyboardMapping(main_window->display, key_code, 
 		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);

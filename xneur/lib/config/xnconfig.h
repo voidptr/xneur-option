@@ -203,6 +203,7 @@ struct _xneur_config
 	int   correct_two_space_with_comma_and_space;	// Correct Two Space With A Comma And A Space
 	int   correct_capital_letter_after_dot;
 	int   correct_two_minus_with_dash;
+	int   correct_dash_with_emdash;
 	int   correct_c_with_copyright;
 	int   correct_tm_with_trademark;
 	int   correct_r_with_registered;

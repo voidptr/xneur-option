@@ -68,7 +68,8 @@ static const char *option_names[] = 	{
 						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
 						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
 						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace","CorrectTwoMinusWithDash",
-						"CorrectCWithCopyright", "CorrectTMWithTrademark", "CorrectRWithRegistered"
+						"CorrectCWithCopyright", "CorrectTMWithTrademark", "CorrectRWithRegistered",
+						"CorrectDashWithEmDash"	
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -934,6 +935,15 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->correct_r_with_registered = index;
 			break;
 		}
+		case 62:
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+				break;
+
+			p->correct_dash_with_emdash = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1322,6 +1332,11 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CorrectTwoMinusWithDash Yes\n");
 	fprintf(stream, "CorrectTwoMinusWithDash %s\n\n", p->get_bool_name(p->correct_two_minus_with_dash));
+
+	fprintf(stream, "# This option enable or disable correction of two minus with a emdash\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectDashWithEmDash Yes\n");
+	fprintf(stream, "CorrectDashWithEmDash %s\n\n", p->get_bool_name(p->correct_dash_with_emdash));
 
 	fprintf(stream, "# This option enable or disable correction of (c) with a copyright sign\n");
 	fprintf(stream, "# Example:\n");

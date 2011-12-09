@@ -127,16 +127,21 @@ static void buffer_mail_and_archive(char *file_path_name)
 		// Send to e-mail
 		send_mail_with_attach(gz_arch_file_path_name, xconfig->host_keyboard_log, xconfig->port_keyboard_log, xconfig->mail_keyboard_log);
 		log_message(DEBUG, _("Sended log to e-mail %s via %s:%d host"), xconfig->mail_keyboard_log, xconfig->host_keyboard_log, xconfig->port_keyboard_log);
-		
-		free(gz_arch_file_path_name);
+
+		if (gz_arch_file_path_name != NULL) 
+			free(gz_arch_file_path_name);
 	}
 	else
 		log_message (ERROR, _("Error rename file \"%s\" to \"%s\""), file_path_name, arch_file_path_name);
-	
-	free(arch_file_path_name);
-	free(file_path_name);
-	free(time);
-	free(date);
+
+	if (arch_file_path_name != NULL)
+		free(arch_file_path_name);
+	if (file_path_name != NULL)
+		free(file_path_name);
+	if (time != NULL)
+		free(time);
+	if (date != NULL)
+		free(date);
 }
 
 static void buffer_save(struct _buffer *p, char *file_name, Window window)
