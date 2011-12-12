@@ -89,6 +89,9 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	int show_message = TRUE;
 	while (TRUE)
 	{
+		// Wait for new window was focused.
+		usleep(250000);
+		
 		// This code commented be cause function XGrabKey for _NET_ACTIVE_WINDOW 
 		// dont process modifier keys (see utils.h)
 		/*if (main_window->_NET_SUPPORTED)
