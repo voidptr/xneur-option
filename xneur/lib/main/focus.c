@@ -89,7 +89,6 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 	int show_message = TRUE;
 	while (TRUE)
 	{
-		usleep(500000);
 		// This code commented be cause function XGrabKey for _NET_ACTIVE_WINDOW 
 		// dont process modifier keys (see utils.h)
 		/*if (main_window->_NET_SUPPORTED)
@@ -128,7 +127,7 @@ static int get_focus(struct _focus *p, int *forced_mode, int *focus_status, int 
 			log_message(DEBUG, _("New window empty"));
 			show_message = FALSE;
 		}
-		usleep(1000);
+		usleep(500000);
 	}
 
 	//char *new_app_name = get_wm_class_name(new_window);
