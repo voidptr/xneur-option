@@ -868,8 +868,6 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 				p->check_pattern(p, TRUE);
 
-				p->check_two_minus(p);
-
 				p->check_copyright(p);
 
 				p->check_trademark(p);
@@ -898,7 +896,9 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 			if (action == KLB_SPACE)
 			{
+				p->check_two_minus(p);
 				p->check_two_space(p);
+				
 			}
 			
 			// Add symbol to internal bufer
@@ -1494,11 +1494,11 @@ static void program_check_two_minus(struct _program *p)
 
 	if (p->buffer->cur_pos < 2)
 		return;
-	
+
 	if ((p->buffer->content[p->buffer->cur_pos-1] != '-') || (p->buffer->content[p->buffer->cur_pos-2] != '-')) 
 		return;
-	
-	p->event->send_backspaces(p->event, 1);
+
+	p->event->send_backspaces(p->event, 2);
 	
 	int key_code = main_window->keymap->max_keycode;
 	KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
@@ -1526,7 +1526,7 @@ static void program_check_two_minus(struct _program *p)
    		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
 	
 	p->buffer->clear(p->buffer);
-	p->event->default_event.xkey.keycode = 0;
+
 	log_message (DEBUG, _("Find two minus, correction with a dash..."));
 	show_notify(NOTIFY_CORR_TWO_MINUS, NULL);
 }		
