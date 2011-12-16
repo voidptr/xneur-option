@@ -1080,6 +1080,16 @@ msgstr ""
 msgid "Received MotionNotify (event type %d)"
 msgstr ""
 
+#: lib/main/program.c:477
+#, c-format
+msgid "Received MappingNotify (event type %d)"
+msgstr ""
+
+#: lib/main/program.c:488
+#, c-format
+msgid "Now layouts count %d"
+msgstr ""
+
 #: lib/main/program.c:499
 #, c-format
 msgid "Uncatched event with type %d (see X11/X.h for details)"

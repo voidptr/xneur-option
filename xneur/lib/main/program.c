@@ -474,18 +474,18 @@ static void program_process_input(struct _program *p)
 			}
 			case MappingNotify:
 			{
-				//log_message(TRACE, _("Received MappingNotify (event type %d)"), type);
+				log_message(TRACE, _("Received MappingNotify (event type %d)"), type);
 
-				/*p->buffer->uninit(p->buffer);
+				p->buffer->uninit(p->buffer);
 				main_window->uninit_keymap(main_window);
 				
 				xneur_handle_destroy(xconfig->handle);
 				xconfig->handle = xneur_handle_create();
 				
 				main_window->init_keymap(main_window);
-				p->buffer = buffer_init(xconfig->handle, main_window->keymap);*/
+				p->buffer = buffer_init(xconfig->handle, main_window->keymap);
 				
-				//log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
+				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
 
 				break;
 			}
@@ -1518,12 +1518,15 @@ static void program_check_two_minus(struct _program *p)
 	}
 	XChangeKeyboardMapping(main_window->display, key_code, 
 		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
-
+	XFlush(main_window->display);
+	XSync(main_window->display, TRUE);
 	p->event->send_xkey(p->event, key_code, 0);
 	usleep(100000);
 	
 	XChangeKeyboardMapping(main_window->display, key_code, 
    		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+	XFlush(main_window->display);
+	XSync(main_window->display, TRUE);
 	
 	p->buffer->clear(p->buffer);
 
@@ -1562,12 +1565,16 @@ static void program_check_copyright(struct _program *p)
 	}
 	XChangeKeyboardMapping(main_window->display, key_code, 
 		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
-
+	XFlush(main_window->display);
+	XSync(main_window->display, TRUE);
+	
 	p->event->send_xkey(p->event, key_code, 0);
 	usleep(100000);
 	
 	XChangeKeyboardMapping(main_window->display, key_code, 
    		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+	XFlush(main_window->display);
+	XSync(main_window->display, TRUE);
 	
 	p->buffer->clear(p->buffer);
 	p->event->default_event.xkey.keycode = 0;
@@ -1606,12 +1613,16 @@ static void program_check_registered(struct _program *p)
 	}
 	XChangeKeyboardMapping(main_window->display, key_code, 
 		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
-
+	XFlush(main_window->display);
+	XSync(main_window->display, TRUE);
+	
 	p->event->send_xkey(p->event, key_code, 0);
 	usleep(100000);
 	
 	XChangeKeyboardMapping(main_window->display, key_code, 
    		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+	XFlush(main_window->display);
+	XSync(main_window->display, TRUE);
 	
 	p->buffer->clear(p->buffer);
 	p->event->default_event.xkey.keycode = 0;
@@ -1651,12 +1662,16 @@ static void program_check_trademark(struct _program *p)
 	}
 	XChangeKeyboardMapping(main_window->display, key_code, 
 		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
-
+	XFlush(main_window->display);
+	XSync(main_window->display, TRUE);
+	
 	p->event->send_xkey(p->event, key_code, 0);
 	usleep(100000);
 	
 	XChangeKeyboardMapping(main_window->display, key_code, 
    		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+	XFlush(main_window->display);
+	XSync(main_window->display, TRUE);
 	
 	p->buffer->clear(p->buffer);
 	p->event->default_event.xkey.keycode = 0;

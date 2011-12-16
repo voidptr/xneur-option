@@ -1143,6 +1143,16 @@ msgstr ""
 msgid "Received MotionNotify (event type %d)"
 msgstr "Получено MotionNotify (тип события %d)"
 
+#: lib/main/program.c:477
+#, c-format
+msgid "Received MappingNotify (event type %d)"
+msgstr "Получено MappingNotify (тип события %d)"
+
+#: lib/main/program.c:488
+#, c-format
+msgid "Now layouts count %d"
+msgstr "Теперь раскладок %d"
+
 #: lib/main/program.c:499
 #, c-format
 msgid "Uncatched event with type %d (see X11/X.h for details)"
@@ -1343,12 +1353,6 @@ msgstr "Текущие данные окна очищены"
 
 #~ msgid "Resend Button Envent"
 #~ msgstr "Отправка события Button"
-
-#~ msgid "Received MappingNotify (event type %d)"
-#~ msgstr "Получено MappingNotify (тип события %d)"
-
-#~ msgid "Now layouts count %d"
-#~ msgstr "Теперь раскладок %d"
 
 #~ msgid "Allocating memory pointer %p (at %s:%d)"
 #~ msgstr "Получен указатель на область памяти %p (на %s:%d)"
