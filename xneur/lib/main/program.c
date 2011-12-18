@@ -83,7 +83,7 @@
 
 static const char *normal_action_names[] =	{
 										"Correct/Undo correction", "Transliterate", "Change case", "Preview correction", 
-										"Correct last line", "Switch between processing modes", 
+										"Correct last line", 
 										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
 	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
@@ -943,14 +943,6 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 	{
 		case ACTION_NONE:
 			return FALSE;
-		case ACTION_CHANGE_MODE:	// User needs to change current work mode
-		{
-			xconfig->set_manual_mode(xconfig, !xconfig->is_manual_mode(xconfig));
-
-			log_message(DEBUG, _("Manual mode changed to %s"), _(xconfig->get_bool_name(xconfig->is_manual_mode(xconfig))));
-			p->event->default_event.xkey.keycode = 0;
-			return TRUE;
-		}
 		case ACTION_CHANGE_SELECTED:
 		case ACTION_TRANSLIT_SELECTED:
 		case ACTION_CHANGECASE_SELECTED:
@@ -1302,7 +1294,7 @@ static int program_check_lang_last_word(struct _program *p)
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
 		return FALSE;
 
-	if (p->app_forced_mode != FORCE_MODE_AUTO && xconfig->is_manual_mode(xconfig))
+	if (p->app_forced_mode != FORCE_MODE_AUTO && xconfig->manual_mode)
 		return FALSE;
 
 	const char *word = get_last_word(p->buffer->content);
@@ -1358,7 +1350,7 @@ static int program_check_lang_last_syllable(struct _program *p)
 	if (p->app_forced_mode == FORCE_MODE_MANUAL)
 		return FALSE;
 
-	if (p->app_forced_mode != FORCE_MODE_AUTO && xconfig->is_manual_mode(xconfig))
+	if (p->app_forced_mode != FORCE_MODE_AUTO && xconfig->manual_mode)
 		return FALSE;
 
 	const char *word = get_last_word(p->buffer->content);

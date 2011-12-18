@@ -26,8 +26,11 @@
 
 #define SOUNDDIR			"sounds"
 
+#define CACHEDIR			".cache"
+#define LOCK_NAME			"lock"
+
 #define MAX_NOTIFIES		36
-#define MAX_HOTKEYS			24
+#define MAX_HOTKEYS			23
 
 #include "xneur.h"
 
@@ -87,7 +90,6 @@ enum _hotkey_action
 	ACTION_CHANGECASE_WORD,
 	ACTION_PREVIEW_CHANGE_WORD,
 	ACTION_CHANGE_STRING,
-	ACTION_CHANGE_MODE,
 	ACTION_CHANGE_SELECTED,
 	ACTION_TRANSLIT_SELECTED,
 	ACTION_CHANGECASE_SELECTED,
@@ -146,12 +148,6 @@ struct _xneur_notify
 	int enabled;
 };
 
-struct _xneur_data
-{
-	int process_id;
-	int manual_mode;
-};
-
 struct _xneur_action
 {
 	struct _xneur_hotkey hotkey;
@@ -163,6 +159,8 @@ struct _xneur_config
 {
 	char *version;
 
+	int pid;
+	
 	void (*get_library_version) (int *major_version, int *minor_version); // This function MUST be first
 
 	struct _list_char *excluded_apps;
@@ -172,8 +170,7 @@ struct _xneur_config
 	struct _list_char *window_layouts;
 	struct _list_char *abbreviations;
 	struct _list_char *plugins;
-	
-	struct _xneur_data *xneur_data;
+
 	struct _xneur_handle *handle;		// Array of languages used in program
 	struct _xneur_hotkey *hotkeys;			// Array of hotkeys used in program
 	struct _xneur_notify *sounds;			// Array of sounds for actions
@@ -261,10 +258,8 @@ struct _xneur_config
 	int   (*kill) (struct _xneur_config *p);
 	void  (*save_dict) (struct _xneur_config *p, int lang);
 	void  (*save_pattern) (struct _xneur_config *p, int lang);
-	void  (*set_pid) (struct _xneur_config *p, int pid);
+	int   (*set_pid) (struct _xneur_config *p, int pid);
 	int   (*get_pid) (struct _xneur_config *p);
-	void  (*set_manual_mode) (struct _xneur_config *p, int manual_mode);
-	int   (*is_manual_mode) (struct _xneur_config *p);
 	char* (*get_lang_dir) (struct _xneur_config *p, int lang);
 	const char* (*get_log_level_name) (struct _xneur_config *p);
 	void  (*uninit) (struct _xneur_config *p);

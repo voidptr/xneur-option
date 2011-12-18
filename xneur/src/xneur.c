@@ -156,7 +156,7 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Total %d keyboard layouts detected"), xconfig->handle->total_languages);
 
 	log_message(LOG, _("Default keyboard group for all new windows set to %d"), xconfig->default_group);
-	log_message(LOG, _("Manual mode set to %s"), _(xconfig->get_bool_name(xconfig->is_manual_mode(xconfig))));
+	log_message(LOG, _("Manual mode set to %s"), _(xconfig->get_bool_name(xconfig->manual_mode)));
 	log_message(LOG, _("Education mode set to %s"), _(xconfig->get_bool_name(xconfig->educate)));
 	log_message(LOG, _("Layout remember mode set to %s"), _(xconfig->get_bool_name(xconfig->remember_layout)));
 	log_message(LOG, _("Save selection mode set to %s"), _(xconfig->get_bool_name(xconfig->save_selection_after_convert)));
@@ -215,7 +215,9 @@ static void xneur_set_lock(void)
 	}
 
 	int process_id = getpid();
-	xconfig->set_pid(xconfig, process_id);
+	int result = xconfig->set_pid(xconfig, process_id);
+	if (result == -1)
+		exit(EXIT_FAILURE);
 }
 
 static void xneur_cleanup(void)

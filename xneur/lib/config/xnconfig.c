@@ -73,7 +73,7 @@ static const char *option_names[] = 	{
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
-						"ChangeString", "ChangeMode",
+						"ChangeString", 
 						"ChangeSelected", "TranslitSelected", "ChangecaseSelected", "PreviewChangeSelected",
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "PreviewChangeClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
@@ -171,7 +171,6 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->set_manual_mode(p, manual);
 			p->manual_mode = manual;
 			break;
 		}
@@ -964,18 +963,6 @@ static int parse_config_file(struct _xneur_config *p, const char *dir_name, cons
 	return TRUE;
 }
 
-static int check_memory_attached(struct _xneur_config *p)
-{
-	if (p->xneur_data != NULL)
-		return TRUE;
-
-	p->xneur_data = (struct _xneur_data *) attach_memory_segment(sizeof(struct _xneur_data));
-	if (p->xneur_data == NULL)
-		return FALSE;
-
-	return TRUE;
-}
-
 static void free_structures(struct _xneur_config *p)
 {
 	p->window_layouts->uninit(p->window_layouts);
@@ -1034,21 +1021,47 @@ static void free_structures(struct _xneur_config *p)
 
 static void xneur_config_reload(struct _xneur_config *p)
 {
-	int process_id = p->xneur_data->process_id;
+	int process_id = p->get_pid(p);
 	if (process_id <= 0)
 		return;
 
 	kill(process_id, SIGHUP);
 }
 
-static void xneur_config_set_pid(struct _xneur_config *p, int process_id)
+static int xneur_config_set_pid(struct _xneur_config *p, int process_id)
 {
-	p->xneur_data->process_id = process_id;
+	// Set lock file to ~/.xneur/.cache/lock
+	char *lock_file_path_name = get_home_file_path_name(CACHEDIR, LOCK_NAME);
+
+	if (process_id == 0)
+	{
+	    remove(lock_file_path_name);
+		free(lock_file_path_name);
+		p->pid = process_id;
+		return process_id;
+	}     
+	
+	log_message(LOG, _("Saving lock file to %s (pid %d)"), lock_file_path_name, process_id);
+
+	FILE *stream = fopen(lock_file_path_name, "w");
+	if (stream == NULL)
+	{
+		log_message(ERROR, _("Can't create lock file %s"), lock_file_path_name);
+		free(lock_file_path_name);
+		return -1;
+	}
+
+	free(lock_file_path_name);
+	
+	fprintf(stream, "%d", process_id);
+	fclose (stream);
+	p->pid = process_id;
+	return process_id;
 }
 
 static int xneur_config_kill(struct _xneur_config *p)
 {
-	int process_id = p->xneur_data->process_id;
+	int process_id = p->get_pid(p);
 	if (process_id <= 0)
 		return FALSE;
 
@@ -1062,24 +1075,24 @@ static int xneur_config_kill(struct _xneur_config *p)
 
 static int xneur_config_get_pid(struct _xneur_config *p)
 {
-	int process_id = p->xneur_data->process_id;
-	if (process_id <= 0)
+	// Get lock file from ~/.xneur/.cache/lock
+	char *config_file_path_name = get_home_file_path_name(CACHEDIR, LOCK_NAME);
+
+	log_message(LOG, _("Get lock file %s"), config_file_path_name);
+	
+	char *pid_str = get_file_content(config_file_path_name);
+	free(config_file_path_name);
+	if (pid_str == NULL)
 		return -1;
+
+	int process_id = atoi(pid_str);
+	free(pid_str);
 
 	if (getsid(process_id) == -1)
 		return -1;
 
-	return p->xneur_data->process_id;
-}
-
-static void xneur_config_set_manual_mode(struct _xneur_config *p, int manual_mode)
-{
-	p->xneur_data->manual_mode = manual_mode;
-}
-
-static int xneur_config_is_manual_mode(struct _xneur_config *p)
-{
-	return (p->xneur_data->manual_mode == TRUE);
+	p->pid = process_id;
+	return process_id;
 }
 
 static int xneur_config_load(struct _xneur_config *p)
@@ -1563,12 +1576,8 @@ struct _xneur_config* xneur_config_init(void)
 	struct _xneur_config *p = (struct _xneur_config *) malloc(sizeof(struct _xneur_config));
 	bzero(p, sizeof(struct _xneur_config));
 
-	if (!check_memory_attached(p))
-	{
-		free(p);
-		return NULL;
-	}
-
+	p->pid = -1;
+	
 	p->handle = xneur_handle_create();
 	
 	p->hotkeys = (struct _xneur_hotkey *) malloc(MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
@@ -1627,8 +1636,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->kill				= xneur_config_kill;
 	p->save_dict			= xneur_config_save_dict;
 	p->save_pattern			= xneur_config_save_pattern;
-	p->set_manual_mode		= xneur_config_set_manual_mode;
-	p->is_manual_mode		= xneur_config_is_manual_mode;
 	p->set_pid			= xneur_config_set_pid;
 	p->get_pid			= xneur_config_get_pid;
 	p->get_lang_dir		= xneur_config_get_lang_dir;

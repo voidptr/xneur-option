@@ -65,7 +65,7 @@ static struct _bind_table btable[MAX_HOTKEYS] =	{
 
 static const char *normal_action_names[] =	{
 										"Correct/Undo correction", "Transliterate", "Change case", "Preview correction", 
-										"Correct last line", "Switch between processing modes", 
+										"Correct last line", 
 										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
 	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",

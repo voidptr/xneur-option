@@ -99,7 +99,8 @@ GtkMenu* create_menu(struct _tray_icon *tray, int state)
 	{
 		status_text = g_strdup_printf("%s", _("Start daemon"));
 	}
-
+	xneur_old_pid = xneur_pid;
+	
 	if (tray->status == NULL)
 	{
 		tray->status = gtk_menu_item_new_with_mnemonic(status_text);
@@ -178,7 +179,8 @@ GtkMenu* create_menu(struct _tray_icon *tray, int state)
 	gtk_container_add(GTK_CONTAINER(menu), menuitem);
 	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(xneur_exit), tray);
 
-	gtk_widget_show (GTK_WIDGET(menu));
+
+	//gtk_widget_show (GTK_WIDGET(menu));
  	return GTK_MENU(menu);
 }		
 
@@ -294,8 +296,26 @@ gboolean clock_check(gpointer dummy)
 {
 	if (dummy) {};
 
-	int xneur_pid = xconfig->get_pid(xconfig);
-	int xneur_state = xconfig->is_manual_mode(xconfig);
+	int xneur_pid = -1;
+	char *ps_command = (char *) malloc(1024 * sizeof(char));
+	if (xneur_old_pid == -1)
+		xneur_old_pid = 1;
+	snprintf(ps_command, 1024, "ps -p %d | grep xneur", xneur_old_pid);
+	FILE *fp = popen(ps_command, "r");
+	free (ps_command);
+	if (fp != NULL)
+	{
+		char buffer[NAME_MAX];
+		if (fgets(buffer, NAME_MAX, fp) != NULL)
+			xneur_pid = xneur_old_pid;
+	
+		pclose(fp);
+	}
+	if (xneur_pid == -1)
+		xneur_pid = xconfig->get_pid(xconfig);
+	
+	
+	int xneur_state = xconfig->manual_mode;
 	int xneur_group = get_active_kbd_group(dpy);
 
 	if (get_kbd_group_count(dpy) != xconfig->handle->total_languages)
@@ -315,8 +335,8 @@ gboolean clock_check(gpointer dummy)
 	}
 
 
-	if (xneur_pid == xneur_old_pid && 
-	    xneur_state == xneur_old_state && 
+	if  (xneur_pid == xneur_old_pid &&
+	     xneur_state == xneur_old_state &&
 	    xneur_group == xneur_old_group &&
 	    force_update == FALSE)
 		return TRUE;
@@ -326,7 +346,7 @@ gboolean clock_check(gpointer dummy)
 	xneur_old_pid = xneur_pid;
 	xneur_old_state = xneur_state;
 	xneur_old_group = xneur_group;
-	
+		
 	int lang = get_active_kbd_group(dpy);
 	
 	gchar *hint;
@@ -351,7 +371,6 @@ gboolean clock_check(gpointer dummy)
 
 
 	const char *icon_name = get_tray_icon_name(tray->images[kbd_gr]);
-	//if (strcasecmp(rendering_engine, "Built-in") == 0)
 	if (tray->tray_icon)
 	{
 		gtk_widget_hide_all(GTK_WIDGET(tray->tray_icon));
@@ -372,7 +391,6 @@ gboolean clock_check(gpointer dummy)
 		gtk_container_add(GTK_CONTAINER(tray->evbox), tray->image);
 		gtk_widget_show_all(GTK_WIDGET(tray->tray_icon));
 	}
-	//else if (strcasecmp(rendering_engine, "StatusIcon") == 0)
 	else if (tray->status_icon)
 	{
 		if (gtk_status_icon_is_embedded(tray->status_icon))
@@ -397,15 +415,12 @@ gboolean clock_check(gpointer dummy)
 			gtk_status_icon_set_tooltip(tray->status_icon, hint);
 		}	
 	}
-	//else if (strcasecmp(rendering_engine, "AppIndicator") == 0)
 #ifdef HAVE_APP_INDICATOR
 	else if (tray->app_indicator)
 	{
 		char *layout_name = strdup(xconfig->handle->languages[kbd_gr].name);
 		if (strcasecmp(show_in_the_tray, "Text") == 0)
 		{
-			//for (unsigned int i=0; i < strlen(layout_name); i++)
-				//layout_name[i] = toupper(layout_name[i]);
 #ifdef HAVE_DEPREC_APP_INDICATOR	
 			app_indicator_set_icon (tray->app_indicator, icon_name);
 #else
@@ -442,11 +457,6 @@ void xneur_start_stop(void)
 
 	xneur_start();
 	clock_check(0);
-}
-
-void xneur_auto_manual(void)
-{
-	xconfig->set_manual_mode(xconfig, !xconfig->is_manual_mode(xconfig));
 }
 
 void xneur_exit(void)
@@ -548,9 +558,8 @@ void create_tray_icon (void)
 		tray->images[i] = g_strdup_printf("%s-%s", PACKAGE, layout_name);
 		free(layout_name);
 	}
-
 	
-	tray->menu = create_menu(tray, xconfig->is_manual_mode(xconfig));
+	tray->menu = create_menu(tray, xconfig->manual_mode);
 
 	int tray_icon_created = 0;
 	int tray_icon_failed = 0;
@@ -653,5 +662,5 @@ void create_tray_icon (void)
 	
 	force_update = TRUE;
 
-	g_timeout_add(G_PRIORITY_DEFAULT_IDLE, clock_check, 0);
+	g_timeout_add(1000, clock_check, 0);
 }
