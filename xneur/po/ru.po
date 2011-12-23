@@ -830,7 +830,7 @@ msgstr "Невозможно создать файл блокировки %s"
 #: lib/config/xnconfig.c:1081
 #, c-format
 msgid "Get lock file %s"
-msgstr "Невозможно получить файл блокировки %s"
+msgstr "Получение файла блокировки %s"
 
 #: lib/config/xnconfig.c:1105
 msgid "No languages specified in config file"

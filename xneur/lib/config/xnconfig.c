@@ -1091,8 +1091,22 @@ static int xneur_config_get_pid(struct _xneur_config *p)
 	if (getsid(process_id) == -1)
 		return -1;
 
-	p->pid = process_id;
-	return process_id;
+	char *ps_command = (char *) malloc(1024 * sizeof(char));
+	snprintf(ps_command, 1024, "ps -p %d | grep xneur", process_id);
+	FILE *fp = popen(ps_command, "r");
+	free (ps_command);
+	if (fp != NULL)
+	{
+		char buffer[1024];
+		if (fgets(buffer, 1024, fp) != NULL)
+		{
+			p->pid = process_id;
+			return process_id;
+		}
+		pclose(fp);
+	}
+	
+	return -1;
 }
 
 static int xneur_config_load(struct _xneur_config *p)

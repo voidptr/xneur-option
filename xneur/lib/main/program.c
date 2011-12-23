@@ -1796,6 +1796,12 @@ static void program_check_brackets_with_symbols(struct _program *p)
 	
 	if (text[text_len - 2] == ')')
 	{
+		//log_message(ERROR, "%c", text[text_len-1]);
+		if (ispunct(text[text_len-1]))
+		{
+			free(text);
+			return;
+		}
 		log_message(DEBUG, _("Find no spaces after right bracket, correction..."));
 		
 		p->buffer->del_symbol(p->buffer);
