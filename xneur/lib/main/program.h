@@ -63,6 +63,7 @@ struct _program
 	void (*check_copyright) (struct _program *p);
 	void (*check_trademark) (struct _program *p);
 	void (*check_registered) (struct _program *p);
+	void (*check_ellipsis) (struct _program *p);
 	void (*check_pattern) (struct _program *p, int selection);
 	void (*change_word) (struct _program *p, enum _change_action action);
 	void (*add_word_to_dict) (struct _program *p, int new_lang);

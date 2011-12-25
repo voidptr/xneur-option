@@ -69,7 +69,7 @@ static const char *option_names[] = 	{
 						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
 						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace","CorrectTwoMinusWithDash",
 						"CorrectCWithCopyright", "CorrectTMWithTrademark", "CorrectRWithRegistered",
-						"CorrectDashWithEmDash"	
+						"CorrectDashWithEmDash","CorrectThreePointsWithEllipsis"	
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -90,7 +90,7 @@ static const char *notify_names[] =	{
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard",  "PreviewChangeClipboard",
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", 
 						"CorrectTwoSpaceWithCommaAndSpace", "CorrectTwoMinusWithDash", "CorrectCWithCopyright", 
-						"CorrectTMWithTrademark", "CorrectRWithRegistered",
+						"CorrectTMWithTrademark", "CorrectRWithRegistered", "CorrectThreePointsWithEllipsis",
 						"ExecuteUserAction","BlockKeyboardAndMouseEvents", "UnblockKeyboardAndMouseEvents"
 					};
 
@@ -943,6 +943,15 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->correct_dash_with_emdash = index;
 			break;
 		}
+		case 63:
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+				break;
+
+			p->correct_three_points_with_ellipsis = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1379,7 +1388,12 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#CorrectRWithRegistered Yes\n");
 	fprintf(stream, "CorrectRWithRegistered %s\n\n", p->get_bool_name(p->correct_r_with_registered));
-	
+
+	fprintf(stream, "# This option enable or disable correction of three points with a ellipsis sign\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectThreePointsWithEllipsis Yes\n");
+	fprintf(stream, "CorrectThreePointsWithEllipsis %s\n\n", p->get_bool_name(p->correct_three_points_with_ellipsis));
+
 	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Escape\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#FlushBufferWhenPressEscape Yes\n");

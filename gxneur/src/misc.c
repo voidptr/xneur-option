@@ -111,7 +111,7 @@ static const char *notify_names[]			=   {
 	                                    "Expand abbreviations",
 										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Сorrect two space with a comma and a space",
 										"Сorrect two minus with a dash", "Сorrect (c) with a copyright sign", "Сorrect (tm) with a trademark sign",
-										"Сorrect (r) with a registered sign", 
+										"Сorrect (r) with a registered sign", "Сorrect three points with a ellipsis sign", 
 										"Execute user action", "Block keyboard and mouse events", "Unblock keyboard and mouse events"
 										};
 
@@ -733,6 +733,9 @@ void xneur_preference(void)
 
 	widget = glade_xml_get_widget (gxml, "checkbutton40");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_r_with_registered);
+
+	widget = glade_xml_get_widget (gxml, "checkbutton42");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_three_points_with_ellipsis);
 	
 	// Autocompletion
 	widget = glade_xml_get_widget (gxml, "checkbutton21");
@@ -2177,9 +2180,12 @@ void xneur_save_preference(GladeXML *gxml)
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton39");
 	xconfig->correct_tm_with_trademark = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
-
+	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton40");
 	xconfig->correct_r_with_registered = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton42");
+	xconfig->correct_three_points_with_ellipsis = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton21");
 	xconfig->autocompletion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

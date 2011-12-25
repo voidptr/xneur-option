@@ -873,6 +873,9 @@ static void program_perform_auto_action(struct _program *p, int action)
 				p->check_trademark(p);
 
 				p->check_registered(p);
+				
+				p->check_ellipsis(p);
+				
 				// Unblock keyboard
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
@@ -1650,7 +1653,7 @@ static void program_check_trademark(struct _program *p)
 				
 	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
 	{
-		keysyms[i]= XK_trademark;//XK_copyright;//XK_emdash;//
+		keysyms[i]= XK_trademark;//XK_copyright;//XK_emdash;//XK_ellipsis
 	}
 	XChangeKeyboardMapping(main_window->display, key_code, 
 		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
@@ -1670,6 +1673,54 @@ static void program_check_trademark(struct _program *p)
 	log_message (DEBUG, _("Find (tm), correction with a trademark sign..."));
 	show_notify(NOTIFY_CORR_TRADEMARK, NULL);
 }		
+
+static void program_check_ellipsis(struct _program *p)
+{
+	if (!xconfig->correct_three_points_with_ellipsis)
+		return;
+
+	if (p->buffer->cur_pos < 3)
+		return;
+	
+	if ((p->buffer->content[p->buffer->cur_pos-1] != '.') || 
+		(p->buffer->content[p->buffer->cur_pos-2] != '.') ||
+		(p->buffer->content[p->buffer->cur_pos-3] != '.')) 
+		return;
+	
+	p->event->send_backspaces(p->event, 2);
+	
+	int key_code = main_window->keymap->max_keycode;
+	KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
+	KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
+	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+	{
+		keysyms_bckp[i]= keymap[i];
+	}
+
+	KeySym keysyms[main_window->keymap->keysyms_per_keycode];
+				
+	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+	{
+		keysyms[i]= XK_ellipsis;//XK_copyright;//XK_emdash;//XK_ellipsis
+	}
+	XChangeKeyboardMapping(main_window->display, key_code, 
+		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
+	XFlush(main_window->display);
+	XSync(main_window->display, TRUE);
+	
+	p->event->send_xkey(p->event, key_code, 0);
+	usleep(100000);
+	
+	XChangeKeyboardMapping(main_window->display, key_code, 
+   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+	XFlush(main_window->display);
+	XSync(main_window->display, TRUE);
+	
+	p->buffer->clear(p->buffer);
+	p->event->default_event.xkey.keycode = 0;
+	log_message (DEBUG, _("Find three points, correction with a ellipsis sign..."));
+	show_notify(NOTIFY_CORR_ELLIPSIS, NULL);
+}
 
 static void program_check_space_before_punctuation(struct _program *p)
 {
@@ -2570,6 +2621,7 @@ struct _program* program_init(void)
 	p->check_copyright = program_check_copyright;
 	p->check_trademark = program_check_trademark;
 	p->check_registered = program_check_registered;
+	p->check_ellipsis = program_check_ellipsis;
 	p->check_pattern	= program_check_pattern;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;

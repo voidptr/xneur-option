@@ -210,6 +210,11 @@ CorrectTwoSpaceWithCommaAndSpace No
 #CorrectTwoMinusWithDash Yes
 CorrectTwoMinusWithDash No
 
+# This option enable or disable correction of two minus with a emdash
+# Example:
+#CorrectDashWithEmDash Yes
+CorrectDashWithEmDash Yes
+
 # This option enable or disable correction of (c) with a copyright sign
 # Example:
 #CorrectCWithCopyright Yes
@@ -224,6 +229,11 @@ CorrectTMWithTrademark No
 # Example:
 #CorrectRWithRegistered Yes
 CorrectRWithRegistered No
+
+# This option enable or disable correction of three points with a ellipsis sign
+# Example:
+#CorrectThreePointsWithEllipsis Yes
+CorrectThreePointsWithEllipsis No
 
 # This option enable or disable flushing internal buffer when pressed Escape
 # Example:

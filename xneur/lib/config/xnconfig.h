@@ -29,7 +29,7 @@
 #define CACHEDIR			".cache"
 #define LOCK_NAME			"lock"
 
-#define MAX_NOTIFIES		36
+#define MAX_NOTIFIES		37
 #define MAX_HOTKEYS			23
 
 #include "xneur.h"
@@ -77,6 +77,7 @@ enum _notify_action
 	NOTIFY_CORR_COPYRIGHT,
 	NOTIFY_CORR_TRADEMARK,
 	NOTIFY_CORR_REGISTERED,
+	NOTIFY_CORR_ELLIPSIS,
 	NOTIFY_EXEC_USER_ACTION,
 	NOTIFY_BLOCK_EVENTS,
 	NOTIFY_UNBLOCK_EVENTS,
@@ -204,6 +205,7 @@ struct _xneur_config
 	int   correct_c_with_copyright;
 	int   correct_tm_with_trademark;
 	int   correct_r_with_registered;
+	int   correct_three_points_with_ellipsis;
 	
 	int   flush_buffer_when_press_escape;		// Flush internal buffer when pressed Escape
 	int   flush_buffer_when_press_enter;		// Flush internal buffer when pressed Enter or Tab
