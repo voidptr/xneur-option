@@ -135,7 +135,6 @@ char* str_replace(const char *source, const char *search, const char *replace)
 	result[0] = NULLSYM;
 
 	char *result_orig = result;
-
 	while (TRUE)
 	{
 		char *found = strstr(source, search);
@@ -146,15 +145,51 @@ char* str_replace(const char *source, const char *search, const char *replace)
 		}
 
 		if (found != source)
-		{
-			memcpy(result, source, found - source);
-			result[(found - source)*sizeof(char)] = NULLSYM;
-		}
+			strncat(result, source, (found - source)/sizeof(char));
+
 		strcat(result, replace);
 		source = found + search_len;
 	}
 	
 	return result_orig;
+}
+
+char* real_sym_to_escaped_sym(const char *source)
+{
+	char *dummy = str_replace(source, "\\", "\\\\");
+	source = strdup(dummy);
+	free(dummy);
+
+	dummy = str_replace(source, "\t", "\\t");
+	free((void*)source);
+	source = strdup(dummy);
+	free(dummy);
+
+	dummy = str_replace(source, "\n", "\\n");
+	free((void*)source);
+
+	return dummy;
+}
+
+char* escaped_sym_to_real_sym(const char *source)
+{
+	// Replace escaped-symbols
+	char escape[] = {'\n', NULLSYM};
+	char *dummy = str_replace(source, "\\n", escape);
+	source = strdup(dummy);
+	free(dummy);
+
+	escape[0] = '\t';
+	dummy = str_replace(source, "\\t", escape);
+	free((void*)source);
+	source = strdup(dummy);
+	free(dummy);
+
+	escape[0] = '\\';
+	dummy = str_replace(source, "\\\\", escape);
+	free((void*)source);
+
+	return dummy;
 }
 
 void del_final_numeric_char(char *word)

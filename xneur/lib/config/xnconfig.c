@@ -35,6 +35,7 @@
 
 #include "types.h"
 #include "list_char.h"
+#include "text.h"
 #include "log.h"
 
 #include "xnconfig.h"
@@ -406,7 +407,9 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 21: // Get Words for Replacing
 		{
-			p->abbreviations->add(p->abbreviations, full_string);
+			char *replaced_string = escaped_sym_to_real_sym(full_string);
+			p->abbreviations->add(p->abbreviations, replaced_string);
+			free(replaced_string);
 			break;
 		}
 		case 22: // Ignore keyboard layout for abbreviations
@@ -1262,7 +1265,7 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#ReplaceAbbreviation xneur X Neural Switcher\n");
 	for (int words = 0; words < p->abbreviations->data_count; words++)
-		fprintf(stream, "ReplaceAbbreviation %s\n", p->abbreviations->data[words].string);
+		fprintf(stream, "ReplaceAbbreviation %s\n", real_sym_to_escaped_sym(p->abbreviations->data[words].string));
 	fprintf(stream, "\n");
 
 	fprintf(stream, "# This option enable or disable sound playing\n");

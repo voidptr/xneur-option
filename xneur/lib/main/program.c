@@ -1217,7 +1217,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				}
 
 				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
-				
+
 				// Replace Abbreviation
 				log_message(DEBUG, _("Found Abbreviation '%s' '%s'. Replacing to '%s'."), replacement, word, string);
 
@@ -1239,7 +1239,6 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 
 				free(replacement);
 				free(utf_string);
-
 				return TRUE;
 			}
 
