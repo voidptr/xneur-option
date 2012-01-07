@@ -6,13 +6,11 @@ xnincludedir = $(includedir)/xneur
 xninclude_HEADERS = xnconfig.h
 
 noinst_HEADERS =		\
-	xnconfig_files.h	\
-	xnconfig_memory.h	
+	xnconfig_files.h	
 
 libxnconfig_la_SOURCES =	\
 	xnconfig_files.c	\
-	xnconfig.c		\
-	xnconfig_memory.c	
+	xnconfig.c		
 
 libxnconfig_la_CFLAGS = -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/main -I@top_srcdir@/lib/lib @DEFAULT_CFLAGS@
 libxnconfig_la_LIBADD = ../lib/libxneur.la @ADDITIONAL_LIBS@
