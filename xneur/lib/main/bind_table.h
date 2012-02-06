@@ -20,7 +20,7 @@
 #ifndef _BIND_TABLE_H_
 #define _BIND_TABLE_H_
 
-#include <X11/Xutil.h>
+#include <X11/XKBlib.h>
 
 void bind_manual_actions(void);
 void bind_user_actions(void);

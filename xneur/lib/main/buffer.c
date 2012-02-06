@@ -21,8 +21,7 @@
 #  include "config.h"
 #endif
 
-#include <X11/Xlocale.h>
-#include <X11/keysym.h>
+#include <X11/XKBlib.h>
 
 #include <pthread.h>
 #include <sys/stat.h>

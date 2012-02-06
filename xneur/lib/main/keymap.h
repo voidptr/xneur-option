@@ -13,14 +13,14 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2010 XNeur Team
+ *  Copyright (C) 2006-2012 XNeur Team
  *
  */
 
 #ifndef _KEYMAP_H_
 #define _KEYMAP_H_
 
-#include <X11/Xutil.h>
+#include <X11/XKBlib.h>
 
 #include "xneur.h"
 

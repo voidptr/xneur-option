@@ -13,14 +13,14 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2010 XNeur Team
+ *  Copyright (C) 2006-2012 XNeur Team
  *
  */
 
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#include <X11/Xutil.h>
+#include <X11/XKBlib.h>
 
 void   set_event_mask(Window window, int event_mask);
 void   set_mask_to_window(Window window, int event_mask);

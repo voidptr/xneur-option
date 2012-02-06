@@ -13,11 +13,11 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2010 XNeur Team
+ *  Copyright (C) 2006-2012 XNeur Team
  *
  */
 
-#include <X11/keysym.h>
+#include <X11/XKBlib.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -141,7 +141,7 @@ static KeySym event_get_cur_keysym(struct _event *p)
 	return ks;*/
 
 	XKeyEvent *e = (XKeyEvent *) &p->event;
-	return XKeycodeToKeysym(main_window->display, e->keycode, 0);
+	return XkbKeycodeToKeysym(main_window->display, e->keycode, 0, 0);
 }
 
 static int event_get_cur_modifiers(struct _event *p)
