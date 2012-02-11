@@ -188,7 +188,8 @@ static void split_bind(char *text, int action)
 		int assigned = FALSE;
 		for (int j = 0; j < total_modifiers; j++) 
  		{ 
-			if (g_strcasecmp(key_stat[i], modifier_names[j]) != 0) 
+			if (g_utf8_collate (g_utf8_casefold(key_stat[i], strlen (key_stat[i])), 
+			                    g_utf8_casefold(modifier_names[j], strlen (modifier_names[j]))) != 0) 
 				continue; 
 
 			assigned = TRUE;
@@ -1915,7 +1916,8 @@ gboolean save_user_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *i
 		int assigned = FALSE;
 		for (int j = 0; j < total_modifiers; j++) 
  		{ 
-			if (g_strcasecmp(key_stat[i], modifier_names[j]) != 0) 
+			if (g_utf8_collate (g_utf8_casefold(key_stat[i], strlen (key_stat[i])), 
+								g_utf8_casefold(modifier_names[j], strlen (modifier_names[j]))) != 0) 
 				continue; 
 
 			assigned = TRUE;
@@ -2479,7 +2481,8 @@ int is_correct_hotkey(gchar **key_stat)
 		return -1;
 
 	last--;
-	if (g_strcasecmp(key_stat[last], _("Press any key")) == 0)
+	if (g_utf8_collate (g_utf8_casefold(key_stat[last], strlen (key_stat[last])), 
+	                    g_utf8_casefold(_("Press any key"), strlen (_("Press any key")))) == 0)
 		return -1;
 
 	return last;
