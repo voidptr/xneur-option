@@ -22,6 +22,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <X11/XKBlib.h>
+
 #include "misc.h"
 
 #include "support.h"
@@ -346,7 +348,7 @@ gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer user
 {
 	if (user_data){};
 		
-	char *string		= XKeysymToString(XKeycodeToKeysym(GDK_DISPLAY(), event->hardware_keycode, 0));
+	char *string		= XKeysymToString(XkbKeycodeToKeysym(GDK_DISPLAY(), event->hardware_keycode, 0, 0));
 	gchar *modifiers	= modifiers_to_string(event->state);
 	gchar *keycode		= g_strdup_printf("%d", event->hardware_keycode);
 	gchar *mkey		= g_strdup_printf("%s%s", modifiers, (string != NULL) ? string : keycode);
