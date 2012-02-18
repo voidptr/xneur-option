@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2010 XNeur Team
+ *  Copyright (C) 2006-2012 XNeur Team
  *
  */
 
@@ -256,10 +256,10 @@ GdkPixbuf *text_to_gtk_pixbuf (gchar *text)
 
 
 	g_object_unref(layout);
-	gdk_gc_unref(gc);
+	g_object_unref(gc);
 
 	GdkPixbuf *ret = gdk_pixbuf_get_from_drawable (NULL, pm, NULL, 0, 0, 0, 0, width, heigth);
-	gdk_pixbuf_unref(pb);
+	g_object_unref(pb);
 	return ret;
 }
 
@@ -405,7 +405,7 @@ gboolean clock_check(gpointer dummy)
 				free(layout_name);
 				pb = gdk_pixbuf_add_alpha(pb, TRUE, 255, 255, 255);
 				gtk_status_icon_set_from_pixbuf(tray->status_icon, pb);
-				gdk_pixbuf_unref(pb);
+				g_object_unref(pb);
 			}
 			else
 			{
@@ -652,7 +652,7 @@ void create_tray_icon (void)
 			free(layout_name);
 			pb = gdk_pixbuf_add_alpha(pb, TRUE, 255, 255, 255);
 			gtk_status_icon_set_from_pixbuf(tray->status_icon, pb);
-			gdk_pixbuf_unref(pb);
+			g_object_unref(pb);
 		}
 		else
 		{
