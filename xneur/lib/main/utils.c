@@ -224,32 +224,6 @@ void grab_keyboard(Window window, int is_grab)
 		log_message(ERROR, _("Failed to %s keyboard with error BadWindow"), grab_ungrab[is_grab]);
 }
 
-char* get_wm_class_name(Window window)
-{
-	if (window == None)
-		return NULL;
-
-	Window named_window = find_window_with_atom(window, XInternAtom(main_window->display, "WM_CLASS", True));
-	if (named_window == None)
-		return NULL;
-
-	XClassHint *wm_class = XAllocClassHint();
-
-	if (!XGetClassHint(main_window->display, named_window, wm_class))
-	{
-		XFree(wm_class);
-		return NULL;
-	}
-
-	char *string = strdup(wm_class->res_class);
-
-	XFree(wm_class->res_class);
-	XFree(wm_class->res_name);
-	XFree(wm_class);
-
-	return string;
-}
-
 unsigned char *get_win_prop(Window window, Atom atom, long *nitems, Atom *type, int *size) 
 {
 	Atom actual_type;
@@ -271,4 +245,48 @@ unsigned char *get_win_prop(Window window, Atom atom, long *nitems, Atom *type, 
 	*type = actual_type;
 	*size = actual_format;
 	return prop;
+}
+
+char* get_wm_class_name(Window window)
+{
+	if (window == None)
+		return NULL;
+
+	Window named_window = find_window_with_atom(window, XInternAtom(main_window->display, "WM_CLASS", True));
+	if (named_window == None)
+	{
+
+		named_window = find_window_with_atom(window, XInternAtom(main_window->display, "WM_NAME", True));
+
+		if (named_window == None)
+			return NULL;
+		
+		Atom type;
+		int size;
+		long nitems;
+
+		Atom request = XInternAtom(main_window->display, "WM_NAME", False);
+		unsigned char *data = get_win_prop(named_window, request, &nitems, &type, &size);
+
+		if (nitems > 0) 
+			return (char *)data;
+
+		return NULL;	
+	}
+	
+	XClassHint *wm_class = XAllocClassHint();
+
+	if (!XGetClassHint(main_window->display, named_window, wm_class))
+	{
+		XFree(wm_class);
+		return NULL;
+	}
+
+	char *string = strdup(wm_class->res_class);
+
+	XFree(wm_class->res_class);
+	XFree(wm_class->res_name);
+	XFree(wm_class);
+
+	return string;
 }

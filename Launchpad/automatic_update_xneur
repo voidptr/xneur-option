@@ -80,10 +80,15 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "oneiric" -v "${NEW_VER}-0oneiric" \
+dch -b --force-distribution --distribution "precise" -v "${NEW_VER}-0precise" \
   "Minor update."
 debuild -S -sa
 # end update for basic releases
+
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "oneiric" -v "${NEW_VER}-0oneiric" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "natty" -v "${NEW_VER}-0natty" \
@@ -103,6 +108,8 @@ debuild -S -sd
 # end update for other releases
 
 cd ..
+echo "Download to Launcshpad Precise..."
+dput ppa xneur_${NEW_VER}-0precise_source.changes | cat
 echo "Download to Launchpad Oneiric..."
 dput ppa xneur_${NEW_VER}-0oneiric_source.changes | cat
 echo "Download to Launchpad Natty..."
