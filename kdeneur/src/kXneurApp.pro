@@ -1,6 +1,6 @@
 QT += core gui dbus
 
-TARGET = kXneur
+TARGET = kdeneur
 TEMPLATE = app
 
 include(i18n/i18n.pri)
@@ -42,3 +42,4 @@ RESOURCES += \
 #BINDIR = $$PREFIX/bin
 #DATADIR = $$PREFIX/share
 #SHAREDIR = $$DATADIR/$${TARGET}
+#}
