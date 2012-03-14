@@ -34,9 +34,9 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
        <item row="1" column="0">
-        <widget class="QTabWidget" name="tabWidget_2">
+        <widget class="QTabWidget" name="tbWidGeneral">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tabMain">
           <attribute name="title">
@@ -46,35 +46,35 @@
            <item row="0" column="0">
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <item>
-              <widget class="QCheckBox" name="checkBox">
+              <widget class="QCheckBox" name="chkGenMain_ManualSwitch">
                <property name="text">
                 <string>Use manual switching mode</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_2">
+              <widget class="QCheckBox" name="chkGenMain_AutoLearning">
                <property name="text">
                 <string>Enable auto-learning mode</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_3">
+              <widget class="QCheckBox" name="chkGenMain_KeepSelect">
                <property name="text">
                 <string>Keep selection after changing selected text</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_4">
+              <widget class="QCheckBox" name="chkGenMain_RotateLayout">
                <property name="text">
                 <string>Rotate layout after changing selected text</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_5">
+              <widget class="QCheckBox" name="chkGenMain_CheckLang">
                <property name="text">
                 <string>Check language on input process</string>
                </property>
@@ -105,70 +105,70 @@
            <item row="0" column="0">
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <item>
-              <widget class="QCheckBox" name="checkBox_6">
+              <widget class="QCheckBox" name="chkGenTipograph_CeorrectCAPS">
                <property name="text">
                 <string>Correct aCCIDENTAL caps</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_7">
+              <widget class="QCheckBox" name="chkGenTipograph_DisableCaps">
                <property name="text">
                 <string>Disable CapsLock use</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_8">
+              <widget class="QCheckBox" name="chkGenTipograph_CorrectTwoCaps">
                <property name="text">
                 <string>Correct TWo INitial caps</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_9">
+              <widget class="QCheckBox" name="chkGenTipograph_CorrectSpace">
                <property name="text">
                 <string>Correct spaces with punctuation</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_10">
+              <widget class="QCheckBox" name="chkGenTipograph_CorrectSmallLitter">
                <property name="text">
                 <string>Сorrect small letter to capital letter after dot</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_11">
+              <widget class="QCheckBox" name="chkGenTipograph_CorrectTwoSpase">
                <property name="text">
                 <string>Сorrect two space with a comma and a space</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_12">
+              <widget class="QCheckBox" name="chkGenTipograph_CorrectTwoMinus">
                <property name="text">
                 <string>Сorrect two minus with a dash</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_13">
+              <widget class="QCheckBox" name="chkGenTipograph_Correct_c_">
                <property name="text">
                 <string>Сorrect (c) with a copyright sign</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_14">
+              <widget class="QCheckBox" name="chkGenTipograph_Correct_tm_">
                <property name="text">
                 <string>Сorrect (tm) with a trademark sign</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_15">
+              <widget class="QCheckBox" name="chkGenTipograph_Correct_r_">
                <property name="text">
                 <string>Сorrect (r) with a registered sign</string>
                </property>
@@ -206,12 +206,12 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="0" column="0">
-          <widget class="QTableWidget" name="tableWidget"/>
+          <widget class="QTableWidget" name="Layout_lstLayout"/>
          </item>
          <item row="1" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="Layout_lblLayoutNomber">
              <property name="text">
               <string>Initial layout number:</string>
              </property>
@@ -221,7 +221,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinBox">
+            <widget class="QSpinBox" name="Layout_spbLayoutNumber">
              <property name="maximumSize">
               <size>
                <width>50</width>
@@ -255,7 +255,7 @@
           </layout>
          </item>
          <item row="1" column="1">
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="Layout_cmdRulesChange">
            <property name="text">
             <string>Rules change...</string>
            </property>
@@ -277,7 +277,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox_16">
+        <widget class="QCheckBox" name="Layout_chkRememberKbLayout">
          <property name="text">
           <string>Remember keyboard layout for each application instance</string>
          </property>
@@ -290,7 +290,7 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QListWidget" name="listWidget"/>
+           <widget class="QListWidget" name="Layout_lstListApplicationOneKbLayout"/>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_16">
@@ -308,14 +308,14 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_2">
+             <widget class="QPushButton" name="Layout_AddApp">
               <property name="text">
                <string>Add</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_3">
+             <widget class="QPushButton" name="Layout_DelApp">
               <property name="text">
                <string>Remove</string>
               </property>
@@ -337,19 +337,19 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QTableWidget" name="tableWidget_2"/>
+        <widget class="QTableWidget" name="tabHotKey_lstHotKey"/>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="tabHotKeys_EditHotKey">
            <property name="text">
             <string>Edit</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_5">
+          <widget class="QPushButton" name="tabHotKeys_ClearHotKey">
            <property name="text">
             <string>Clear</string>
            </property>
@@ -371,26 +371,26 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableWidget" name="tableWidget_3"/>
+        <widget class="QTableWidget" name="tabHotKey_lstUserActions"/>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QPushButton" name="pushButton_6">
+          <widget class="QPushButton" name="tabHotKeys_UserActionsAdd">
            <property name="text">
             <string>Add</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_8">
+          <widget class="QPushButton" name="tabHotKeys_UserActionsEdit">
            <property name="text">
             <string>Edit</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_7">
+          <widget class="QPushButton" name="tabHotKeys_UserActionsDel">
            <property name="text">
             <string>Remove</string>
            </property>
@@ -422,14 +422,14 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="0" column="0">
-        <widget class="QCheckBox" name="checkBox_17">
+        <widget class="QCheckBox" name="tabAutocompletion_chkEnableAutocompl">
          <property name="text">
           <string>Enable pattern mining and recognition (autocompletion)</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QCheckBox" name="checkBox_18">
+        <widget class="QCheckBox" name="tabAutocompletion_chkAddSpace">
          <property name="text">
           <string>Add space after autocompletion</string>
          </property>
@@ -455,7 +455,7 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <widget class="QListWidget" name="listWidget_2">
+           <widget class="QListWidget" name="tabAutocompletion_lstApp">
             <property name="maximumSize">
              <size>
               <width>166666</width>
@@ -480,14 +480,14 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_10">
+             <widget class="QPushButton" name="tabAutocompletion_cmdAddApp">
               <property name="text">
                <string>Add</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_9">
+             <widget class="QPushButton" name="tabAutocompletion_cmdDelApp">
               <property name="text">
                <string>Remove</string>
               </property>
@@ -527,7 +527,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_21">
           <item row="0" column="0">
-           <widget class="QListWidget" name="listWidget_3"/>
+           <widget class="QListWidget" name="taApplication_lstAppNotUsed"/>
           </item>
          </layout>
         </widget>
@@ -551,7 +551,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_11">
+          <widget class="QPushButton" name="taApplication_cmdAdd_NotUsed">
            <property name="maximumSize">
             <size>
              <width>9999</width>
@@ -564,7 +564,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_12">
+          <widget class="QPushButton" name="taApplication_cmdDel_NotUsed">
            <property name="maximumSize">
             <size>
              <width>9999</width>
@@ -597,7 +597,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_23">
           <item row="0" column="0">
-           <widget class="QListWidget" name="listWidget_4"/>
+           <widget class="QListWidget" name="taApplication_lstAppAutoMode"/>
           </item>
          </layout>
         </widget>
@@ -621,7 +621,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_13">
+          <widget class="QPushButton" name="taApplication_cmdAdd_AutoMode">
            <property name="maximumSize">
             <size>
              <width>9999</width>
@@ -634,7 +634,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_14">
+          <widget class="QPushButton" name="taApplication_cmdDel_AutoMode">
            <property name="maximumSize">
             <size>
              <width>9999</width>
@@ -667,7 +667,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_22">
           <item row="0" column="0">
-           <widget class="QListWidget" name="listWidget_5"/>
+           <widget class="QListWidget" name="taApplication_lstAppManualMode"/>
           </item>
          </layout>
         </widget>
@@ -688,7 +688,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_15">
+          <widget class="QPushButton" name="taApplication_cmdAdd_ManualMode">
            <property name="maximumSize">
             <size>
              <width>9999</width>
@@ -701,7 +701,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_16">
+          <widget class="QPushButton" name="taApplication_cmdDel_ManualMode">
            <property name="maximumSize">
             <size>
              <width>9999</width>
@@ -739,17 +739,17 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="0" column="0">
-        <widget class="QTabWidget" name="tabWidget_3">
+        <widget class="QTabWidget" name="tbWidNotifications">
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
-         <widget class="QWidget" name="tab">
+         <widget class="QWidget" name="tabSound">
           <attribute name="title">
            <string>Sounds</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_8">
            <item row="0" column="0">
-            <widget class="QCheckBox" name="checkBox_19">
+            <widget class="QCheckBox" name="tabSound_chkEnableSound">
              <property name="text">
               <string>Enable sounds</string>
              </property>
@@ -758,14 +758,14 @@
            <item row="1" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
-              <widget class="QLabel" name="label_2">
+              <widget class="QLabel" name="lblSoundVolume">
                <property name="text">
                 <string>Sound volume:  </string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBox_2">
+              <widget class="QSpinBox" name="tabSound_spbSoundVolume">
                <property name="maximumSize">
                 <size>
                  <width>71</width>
@@ -796,12 +796,12 @@
             </layout>
            </item>
            <item row="2" column="0">
-            <widget class="QTableWidget" name="tableWidget_4"/>
+            <widget class="QTableWidget" name="tabSound_lstListSound"/>
            </item>
            <item row="3" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
-              <widget class="QPushButton" name="pushButton_23">
+              <widget class="QPushButton" name="tabSound_cmdEdit">
                <property name="maximumSize">
                 <size>
                  <width>16999</width>
@@ -830,13 +830,13 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="tab_3">
+         <widget class="QWidget" name="tabOSD">
           <attribute name="title">
            <string>OSD</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_9">
            <item>
-            <widget class="QCheckBox" name="checkBox_20">
+            <widget class="QCheckBox" name="tabOSD_chkEnableOSD">
              <property name="text">
               <string>Show OSD</string>
              </property>
@@ -845,14 +845,14 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_7">
              <item>
-              <widget class="QLabel" name="label_3">
+              <widget class="QLabel" name="lblFontOSD">
                <property name="text">
                 <string>OSD Font:  </string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit"/>
+              <widget class="QLineEdit" name="tabOSD_txtFontOSD"/>
              </item>
             </layout>
            </item>
@@ -868,17 +868,17 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item>
-            <widget class="QTableWidget" name="tableWidget_5"/>
+            <widget class="QTableWidget" name="tabOSD_lstListOSD"/>
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="tab_2">
+         <widget class="QWidget" name="tabPopupMessage">
           <attribute name="title">
            <string>Popup messages</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_9">
            <item row="0" column="0">
-            <widget class="QCheckBox" name="checkBox_21">
+            <widget class="QCheckBox" name="tabPopupMessage_chkShowPopupMessage">
              <property name="text">
               <string>Show popup messages</string>
              </property>
@@ -887,7 +887,7 @@ p, li { white-space: pre-wrap; }
            <item row="1" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
-              <widget class="QLabel" name="label_5">
+              <widget class="QLabel" name="lblInterval">
                <property name="maximumSize">
                 <size>
                  <width>19999</width>
@@ -900,7 +900,7 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBox_3">
+              <widget class="QSpinBox" name="tabPopupMessage_spbIntervalPopup">
                <property name="maximumSize">
                 <size>
                  <width>71</width>
@@ -921,7 +921,7 @@ p, li { white-space: pre-wrap; }
             </layout>
            </item>
            <item row="2" column="0">
-            <widget class="QTableWidget" name="tableWidget_6"/>
+            <widget class="QTableWidget" name="tabPopupMessage_lstListPopupMessage"/>
            </item>
           </layout>
          </widget>
@@ -938,26 +938,26 @@ p, li { white-space: pre-wrap; }
       </attribute>
       <layout class="QGridLayout" name="gridLayout_10">
        <item row="0" column="0">
-        <widget class="QCheckBox" name="checkBox_22">
+        <widget class="QCheckBox" name="tabAbbreviations_chkIgnoreKeyLayout">
          <property name="text">
           <string>Ignore keyboard layout for abbreviations</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QTableWidget" name="tableWidget_7"/>
+        <widget class="QTableWidget" name="tabAbbreviations_lstListAbbreviations"/>
        </item>
        <item row="2" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_9">
          <item>
-          <widget class="QPushButton" name="pushButton_17">
+          <widget class="QPushButton" name="tabAbbreviations_cmdAdd">
            <property name="text">
             <string>Add</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_18">
+          <widget class="QPushButton" name="tabAbbreviations_cmdDel">
            <property name="text">
             <string>Remove</string>
            </property>
@@ -987,7 +987,7 @@ p, li { white-space: pre-wrap; }
       <attribute name="title">
        <string>Log</string>
       </attribute>
-      <widget class="QCheckBox" name="checkBox_23">
+      <widget class="QCheckBox" name="tabLog_chkEnableLog">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -1023,7 +1023,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <layout class="QGridLayout" name="gridLayout_11">
         <item row="0" column="0">
-         <widget class="QLabel" name="label_6">
+         <widget class="QLabel" name="lblSizeLog">
           <property name="maximumSize">
            <size>
             <width>9999</width>
@@ -1036,7 +1036,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QSpinBox" name="spinBox_4">
+         <widget class="QSpinBox" name="tabLog_spbSizeLog">
           <property name="maximumSize">
            <size>
             <width>143</width>
@@ -1052,7 +1052,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_7">
+         <widget class="QLabel" name="lbSendLogEmail">
           <property name="maximumSize">
            <size>
             <width>9999</width>
@@ -1065,7 +1065,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLineEdit" name="lineEdit_2">
+         <widget class="QLineEdit" name="tabLog_txtSendLogEmail">
           <property name="maximumSize">
            <size>
             <width>143</width>
@@ -1075,7 +1075,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="lblSendLogHost">
           <property name="maximumSize">
            <size>
             <width>9999</width>
@@ -1088,7 +1088,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QLineEdit" name="lineEdit_3">
+         <widget class="QLineEdit" name="tabLog_txtSendLogHost">
           <property name="maximumSize">
            <size>
             <width>143</width>
@@ -1098,7 +1098,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="3" column="0">
-         <widget class="QLabel" name="label_9">
+         <widget class="QLabel" name="lblSendLogPort">
           <property name="maximumSize">
            <size>
             <width>9999</width>
@@ -1111,7 +1111,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QSpinBox" name="spinBox_5">
+         <widget class="QSpinBox" name="tabLog_spbSendLogPort">
           <property name="maximumSize">
            <size>
             <width>143</width>
@@ -1130,7 +1130,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="label_10">
+         <widget class="QLabel" name="lblOpenLogIn">
           <property name="maximumSize">
            <size>
             <width>9999</width>
@@ -1143,7 +1143,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="tabLog_cmbOpenLongIn">
           <property name="minimumSize">
            <size>
             <width>143</width>
@@ -1169,7 +1169,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="5" column="1">
-         <widget class="QPushButton" name="pushButton_19">
+         <widget class="QPushButton" name="tabLog_cmdOpenLog">
           <property name="text">
            <string>View log...</string>
           </property>
@@ -1221,63 +1221,63 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="0">
            <layout class="QVBoxLayout" name="verticalLayout_10">
             <item>
-             <widget class="QCheckBox" name="checkBox_26">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkBackspace">
               <property name="text">
                <string>Backspace</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_24">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkLeftArrow">
               <property name="text">
                <string>Left arrow</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_25">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkRightArrow">
               <property name="text">
                <string>Right arrow</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_27">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkUpArrow">
               <property name="text">
                <string>Up arrow</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_28">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkDownArrow">
               <property name="text">
                <string>Down arrow</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_29">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkDelete">
               <property name="text">
                <string>Delete</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_31">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkChangeLayout">
               <property name="text">
                <string>You changed layout</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_30">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkFullScreen">
               <property name="text">
                <string>Application in full screen mode</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_11">
+             <widget class="QLabel" name="lblProperties">
               <property name="text">
                <string>This will help avoid switching layout when editing parts previously introduced word.</string>
               </property>
@@ -1313,28 +1313,28 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="0">
            <layout class="QVBoxLayout" name="verticalLayout_11">
             <item>
-             <widget class="QCheckBox" name="checkBox_32">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkFlushInterBuffEscape">
               <property name="text">
                <string>Flush internal buffer on Escape</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_33">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkFlushInterBuffEnterTab">
               <property name="text">
                <string>Flush internal buffer on Enter or Tab</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_34">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkProcessWordEnterTab">
               <property name="text">
                <string>Don't process words on Enter or Tab</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_35">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkCompatCompletion">
               <property name="text">
                <string>Compatibility with the completion</string>
               </property>
@@ -1354,28 +1354,28 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="0">
            <layout class="QGridLayout" name="gridLayout_14">
             <item row="0" column="0">
-             <widget class="QCheckBox" name="checkBox_36">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkMonitorInput">
               <property name="text">
                <string>Monitor the input</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="label_12">
+             <widget class="QLabel" name="lblProperties_2">
               <property name="text">
                <string>Disabling this option will add any application to the list of excluded applications.</string>
               </property>
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QCheckBox" name="checkBox_37">
+             <widget class="QCheckBox" name="tabTroubleshooting_chkMonitorMouse">
               <property name="text">
                <string>Monitor the mouse</string>
               </property>
              </widget>
             </item>
             <item row="3" column="0">
-             <widget class="QLabel" name="label_13">
+             <widget class="QLabel" name="lblProperties_3">
               <property name="text">
                <string>Disabling this option will disable mouse tracking. Reset buffer when clicking the mouse will not.</string>
               </property>
@@ -1422,14 +1422,14 @@ p, li { white-space: pre-wrap; }
        </property>
        <layout class="QGridLayout" name="gridLayout_16">
         <item row="0" column="0">
-         <widget class="QLabel" name="label_14">
+         <widget class="QLabel" name="lblDelay">
           <property name="text">
            <string>Delay before sending events (in milliseconds)</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QSpinBox" name="spinBox_6">
+         <widget class="QSpinBox" name="tabAdvanced_spbDelay">
           <property name="maximumSize">
            <size>
             <width>191</width>
@@ -1442,28 +1442,28 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_15">
+         <widget class="QLabel" name="lblNotSenKeyRelease">
           <property name="text">
            <string>Dont send KeyRelease even</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QCheckBox" name="checkBox_38">
+         <widget class="QCheckBox" name="tabAdvanced_chkKeyRelease">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_16">
+         <widget class="QLabel" name="lblLogLevel">
           <property name="text">
            <string>Log verbosity level</string>
           </property>
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QComboBox" name="comboBox_2">
+         <widget class="QComboBox" name="tabAdvanced_cmbLogLevel">
           <property name="maximumSize">
            <size>
             <width>191</width>
@@ -1514,7 +1514,7 @@ p, li { white-space: pre-wrap; }
       </attribute>
       <layout class="QGridLayout" name="gridLayout_17">
        <item row="0" column="0">
-        <widget class="QTableWidget" name="tableWidget_8"/>
+        <widget class="QTableWidget" name="tabPlugins_lstListPlugins"/>
        </item>
       </layout>
      </widget>
@@ -1535,7 +1535,7 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="0">
            <layout class="QVBoxLayout" name="verticalLayout_13">
             <item>
-             <widget class="QCheckBox" name="checkBox_39">
+             <widget class="QCheckBox" name="tabProperties_chkEnableAutostart">
               <property name="text">
                <string>Autostartup</string>
               </property>
@@ -1544,7 +1544,7 @@ p, li { white-space: pre-wrap; }
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_10">
               <item>
-               <widget class="QLabel" name="label_17">
+               <widget class="QLabel" name="lblDelayStartApp">
                 <property name="minimumSize">
                  <size>
                   <width>300</width>
@@ -1557,7 +1557,7 @@ p, li { white-space: pre-wrap; }
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBox_7">
+               <widget class="QSpinBox" name="tabProperties_spbDelayStartApp">
                 <property name="maximumSize">
                  <size>
                   <width>61</width>
@@ -1604,7 +1604,7 @@ p, li { white-space: pre-wrap; }
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_14">
             <item>
-             <widget class="QComboBox" name="comboBox_3">
+             <widget class="QComboBox" name="tabProperties_cmbTypeIconTray">
               <property name="minimumSize">
                <size>
                 <width>240</width>
@@ -1635,14 +1635,14 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_18">
+             <widget class="QLabel" name="lblUsedEngineRender">
               <property name="text">
                <string>Used for rendering engine: </string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox_4">
+             <widget class="QComboBox" name="tabProperties_cmbUsedRenderingEngine">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -1697,10 +1697,10 @@ p, li { white-space: pre-wrap; }
             </property>
             <layout class="QGridLayout" name="gridLayout_19">
              <item row="0" column="0">
-              <widget class="QLineEdit" name="lineEdit_4"/>
+              <widget class="QLineEdit" name="tabProperties_txtPathIconTray"/>
              </item>
              <item row="0" column="1">
-              <widget class="QPushButton" name="pushButton_20">
+              <widget class="QPushButton" name="tabProperties_cmdBrowseIconTray">
                <property name="minimumSize">
                 <size>
                  <width>40</width>
@@ -1749,24 +1749,24 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_11">
             <item>
-             <widget class="QLabel" name="label_19">
+             <widget class="QLabel" name="lblKeyboardCommand">
               <property name="text">
                <string>Keyboard properties command: </string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_5"/>
+             <widget class="QLineEdit" name="tabProperties_txtKeyboardCommad"/>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_22">
+             <widget class="QPushButton" name="tabProperties_cmdRecoverKeyCommand">
               <property name="text">
                <string>Edit</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_21">
+             <widget class="QPushButton" name="tabProperties_cmdEditKeyCommand">
               <property name="text">
                <string>Recover</string>
               </property>

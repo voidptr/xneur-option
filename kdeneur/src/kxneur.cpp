@@ -37,12 +37,12 @@ kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
     if(xneur_pid < 0)
     {
         xneurStart();
-        running =false;
+
     }
     else
     {
-        procxNeurStart();
-        running = true;
+        xneurStop();
+        xneurStart();
         qDebug()<<"xneur is running";
     }
     emit changeIconTray(QString("%1").arg(xconfig->handle->languages[get_active_kbd_group(dpy)].dir));
@@ -143,10 +143,10 @@ bool kXneurApp::kXneur::xneurStop()
         }
         xneur_pid = 0;
         //TODO
-        if(running)
-        {
-           procxNeurStop(0,QProcess::NormalExit);
-        }
+//        if(running)
+//        {
+//           procxNeurStop(0,QProcess::NormalExit);
+//        }
         return true;
     }
     qDebug()<< "MSG: xNeur isn't running";
