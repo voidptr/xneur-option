@@ -98,7 +98,7 @@ void kXneurApp::kXneurTray::keyboardProperties()
   QStringList arg;
   arg<< "--args=--tab=layouts";
   arg << "kcm_keyboard";
-  KToolInvocation::kdeinitExec("kcmshell4", arg);
+  KToolInvocation::kdeinitExec("/usr/bin/kcmshell4", arg);
 }
 
 void kXneurApp::kXneurTray::settingsApp()

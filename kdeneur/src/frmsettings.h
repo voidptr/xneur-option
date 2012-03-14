@@ -24,8 +24,14 @@ namespace kXneurApp
     void Clicked(QAbstractButton *);
 
 
+    //tab properties
+    void RecoverKeyboardCommand();
+    void EditKeyboardCommand();
+
+
   private:
     Ui::frmSettings *ui;
+    void createConnect();
   };
 }
 #endif // FRMSETTINGS_H
