@@ -1564,6 +1564,9 @@ p, li { white-space: pre-wrap; }
               </item>
               <item>
                <widget class="QSpinBox" name="tabProperties_spbDelayStartApp">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>61</width>
@@ -1697,7 +1700,10 @@ p, li { white-space: pre-wrap; }
            </layout>
           </item>
           <item>
-           <widget class="QGroupBox" name="groupBox_10">
+           <widget class="QGroupBox" name="tabProperties_grpFolderIcon">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="title">
              <string>Folder icon indicator</string>
             </property>
