@@ -22,7 +22,7 @@ extern "C"
 
 extern "C"
 {
-#include "xkb.h"
+    #include "xkb.h"
 }
 
 Display *kXneurApp::kXneur::dpy=NULL;
@@ -209,15 +209,5 @@ void kXneurApp::kXneur::procxNeurStart()
     qDebug()<<"MSG: xNeur started.";
   trayApp->setStatusXneur(true);
 }
-
-
-
-
-
-
-
-
-
-
 
 

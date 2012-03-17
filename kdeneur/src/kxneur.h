@@ -37,7 +37,7 @@ namespace kXneurApp
       void startStopNeur();
       void nextLang();
       void restartNeur();
-      void procxNeurStop(int,QProcess::ExitStatus/*, bool run=false*/);
+      void procxNeurStop(int,QProcess::ExitStatus);
       void procxNeurStart();
 
     };

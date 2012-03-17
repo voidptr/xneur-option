@@ -10,16 +10,21 @@
 
 //Qt header files
 #include <QDebug>
+#include <QTextCodec>
 
 static const KLocalizedString description =ki18n("kXneur (KDE X Neural Switcher) is xNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.15 only");
 static const char version[] = "0.15.0";
 
 int main(int argc, char *argv[])
 {
-  //qDebug()<< KGlobal::dirs()->localkdedir();
+  qDebug()<< KGlobal::dirs()->localkdedir();
   kXneurApp::kXneur neur(argc, argv);
   neur.setApplicationName("kXneur");
   neur.setWindowIcon(QIcon(":/icons/kxneur.png"));
+  QTextCodec *codec = QTextCodec::codecForName("UTF8");
+      QTextCodec::setCodecForTr(codec);
+      QTextCodec::setCodecForCStrings(codec);
+      QTextCodec::setCodecForLocale(codec);
   kXneurApp::kXneur::setQuitOnLastWindowClosed(false);
   KAboutData about("kXneur",0, ki18n("kXneur Keyboard switcher") ,version,description,
                     KAboutData::License_GPL, ki18n("(C) 2012  Sergei Chystyakov"), ki18n(""), "http://xneur.ru","xneur@lists.net.ru");

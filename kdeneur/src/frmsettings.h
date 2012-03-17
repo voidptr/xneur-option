@@ -29,13 +29,14 @@ namespace kXneurApp
   private slots:
     void Clicked(QAbstractButton *);
 
-
     //tab properties
     void RecoverKeyboardCommand();
     void EditKeyboardCommand();
     void TypeIconTray(int);
+    void TypeEngine(int);
     void BrowseIconTray();
     void chekAutostart(bool);
+    void delayStartApp(int);
 
 
   private:
@@ -53,7 +54,9 @@ namespace kXneurApp
     KConfigGroup advanced;
     KConfigGroup plugins;
     KConfigGroup properties;
+    void settintgGrid();
     void createConnect();
+    void readSettings();
   };
 }
 #endif // FRMSETTINGS_H

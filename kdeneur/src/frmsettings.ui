@@ -29,7 +29,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>11</number>
+      <number>6</number>
      </property>
      <widget class="TabBar" name="tabGeneral">
       <property name="locale">
@@ -343,7 +343,18 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QTableWidget" name="tabHotKey_lstHotKey"/>
+        <widget class="QTableWidget" name="tabHotKey_lstHotKey">
+         <column>
+          <property name="text">
+           <string>Actions</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>HotKeys</string>
+          </property>
+         </column>
+        </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -377,7 +388,23 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableWidget" name="tabHotKey_lstUserActions"/>
+        <widget class="QTableWidget" name="tabHotKey_lstUserActions">
+         <column>
+          <property name="text">
+           <string>Action</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>HotKeys</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>User Actions</string>
+          </property>
+         </column>
+        </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -951,7 +978,18 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QTableWidget" name="tabAbbreviations_lstListAbbreviations"/>
+        <widget class="QTableWidget" name="tabAbbreviations_lstListAbbreviations">
+         <column>
+          <property name="text">
+           <string>Abbreviation</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Full text</string>
+          </property>
+         </column>
+        </widget>
        </item>
        <item row="2" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_9">

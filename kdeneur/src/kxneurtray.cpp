@@ -3,9 +3,6 @@
 #include "frmsettings.h"
 #include "frmabout.h"
 
-//Kde header files
-#include <ktoolinvocation.h>
-
 //Qt header files
 #include <QDebug>
 #include <QStringList>
@@ -15,6 +12,9 @@
 #include <QFile>
 #include <QUrl>
 #include <QDesktopServices>
+
+//Kde header files
+#include <ktoolinvocation.h>
 
 kXneurApp::kXneurTray::kXneurTray(QObject *parent): QObject(parent)
 {
@@ -82,9 +82,6 @@ void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
     {
         trayIcon->setIcon(QIcon(":/noLayout"));
     }
-
-
-  qDebug()<<lang;
 }
 
 void kXneurApp::kXneurTray::kXneurAbout()
@@ -139,7 +136,6 @@ void kXneurApp::kXneurTray::trayClicked(QSystemTrayIcon::ActivationReason click)
 
 void kXneurApp::kXneurTray::startStopNeur()
 {
-//    emit statusDaemon(start_stop_neur->data().toBool());
     emit statusDaemon();
 
 }
