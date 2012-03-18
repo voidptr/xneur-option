@@ -33,6 +33,9 @@ kXneurApp::frmSettings::~frmSettings()
 
 void kXneurApp::frmSettings::settintgGrid()
 {
+    ui->tabAbbreviations_lstListAbbreviations->verticalHeader()->setDefaultSectionSize(22);
+    ui->tabAbbreviations_lstListAbbreviations->verticalHeader()->hide();
+    ui->tabAbbreviations_lstListAbbreviations->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
 }
 
@@ -81,6 +84,10 @@ void kXneurApp::frmSettings::createConnect()
   connect(ui->tabProperties_cmdBrowseIconTray, SIGNAL(clicked()),SLOT(BrowseIconTray()));
   connect(ui->tabProperties_chkEnableAutostart, SIGNAL(clicked(bool)), SLOT(chekAutostart(bool)));
   connect(ui->tabProperties_spbDelayStartApp, SIGNAL(valueChanged(int)), SLOT(delayStartApp(int)));
+
+
+  //tab abbreviations
+  connect(ui->tabAbbreviations_cmdAdd, SIGNAL(clicked()), SLOT(addAbbreviation()));
 
 }
 
@@ -167,3 +174,15 @@ void kXneurApp::frmSettings::TypeEngine(int selectIndex)
     properties.writeEntry("TypeEngine", selectIndex);
 }
 
+void kXneurApp::frmSettings::addAbbreviation()
+{
+    frmAddAbbreviature *frmAbb = new frmAddAbbreviature();
+
+    if(frmAbb->exec() == QDialog::Accepted)
+    {
+        QTableWidgetItem *item=new QTableWidgetItem ();
+        ui->tabAbbreviations_lstListAbbreviations->setRowCount(ui->tabAbbreviations_lstListAbbreviations->rowCount()+1);
+        ui->tabAbbreviations_lstListAbbreviations->setItem(ui->tabAbbreviations_lstListAbbreviations->rowCount()-1, 0, new QTableWidgetItem(frmAbb->abb));
+        ui->tabAbbreviations_lstListAbbreviations->setItem(ui->tabAbbreviations_lstListAbbreviations->rowCount()-1, 1, new QTableWidgetItem(frmAbb->text));
+    }
+}

@@ -1,5 +1,8 @@
 #ifndef FRMSETTINGS_H
 #define FRMSETTINGS_H
+//app headre files
+#include "frmaddabbreviature.h"
+
 
 //Qt header files
 #include <QDialog>
@@ -28,6 +31,10 @@ namespace kXneurApp
 
   private slots:
     void Clicked(QAbstractButton *);
+
+
+    //tab abbreviations
+    void addAbbreviation();
 
     //tab properties
     void RecoverKeyboardCommand();

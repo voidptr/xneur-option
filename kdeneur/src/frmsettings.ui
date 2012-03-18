@@ -986,7 +986,7 @@ p, li { white-space: pre-wrap; }
          </column>
          <column>
           <property name="text">
-           <string>Full text</string>
+           <string>Expansion text</string>
           </property>
          </column>
         </widget>

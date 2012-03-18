@@ -11,7 +11,8 @@ SOURCES += \
     frmabout.cpp \
     frmsettings.cpp \
     kxneur.cpp \
-    xkb.c
+    xkb.c \
+    frmaddabbreviature.cpp
 
 INCLUDEPATH += /usr/include/xneur
 
@@ -23,11 +24,13 @@ HEADERS += \
     frmsettings.h \
     tabbar.h \
     kxneur.h \
-    xkb.h
+    xkb.h \
+    frmaddabbreviature.h
 
 FORMS += \
     frmabout.ui \
-    frmsettings.ui
+    frmsettings.ui \
+    frmaddabbreviature.ui
 
 RESOURCES += \
     resursrc.qrc
