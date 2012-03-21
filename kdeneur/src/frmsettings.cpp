@@ -180,7 +180,7 @@ void kXneurApp::frmSettings::addAbbreviation()
 
     if(frmAbb->exec() == QDialog::Accepted)
     {
-        QTableWidgetItem *item=new QTableWidgetItem ();
+        //QTableWidgetItem *item=new QTableWidgetItem ();
         ui->tabAbbreviations_lstListAbbreviations->setRowCount(ui->tabAbbreviations_lstListAbbreviations->rowCount()+1);
         ui->tabAbbreviations_lstListAbbreviations->setItem(ui->tabAbbreviations_lstListAbbreviations->rowCount()-1, 0, new QTableWidgetItem(frmAbb->abb));
         ui->tabAbbreviations_lstListAbbreviations->setItem(ui->tabAbbreviations_lstListAbbreviations->rowCount()-1, 1, new QTableWidgetItem(frmAbb->text));

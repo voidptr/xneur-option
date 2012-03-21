@@ -10,6 +10,7 @@
 class TabBar : public QTabBar
 {
 public:
+
     explicit TabBar(QWidget* parent=0) : QTabBar(parent)
     {
         setIconSize(QSize(18, 18));

@@ -3,6 +3,7 @@
 
 //app header files
 #include "kxneurtray.h"
+#include "xneurconfig.h"
 
 //Qt header files
 #include <QApplication>
@@ -17,28 +18,29 @@ namespace kXneurApp
     public:
         kXneur(int&, char **);
         ~kXneur();
-         static Display *dpy;
+       // static Display *dpy;
     public slots:
 
     private:
       bool running;
       kXneurTray *trayApp;
-      QProcess *procxNeur;
-      int xneur_pid;
-      struct _xneur_config *xconfig;
+//      QProcess *procxNeur;
+      xNeurConfig *cfgXneur;
+    //  int xneur_pid;
+    //  struct _xneur_config *xconfig;
       void settignsTray();
-      bool xneurStop();
-      bool xneurStart();
-      bool init_libxnconfig();
+    // bool xneurStop();
+   //   bool xneurStart();
+   //   bool init_libxnconfig();
     signals:
       void changeIconTray(QString);
     private slots:
       void layoutChanged(QString);
       void startStopNeur();
-      void nextLang();
-      void restartNeur();
-      void procxNeurStop(int,QProcess::ExitStatus);
-      void procxNeurStart();
+    //  void nextLang();
+      //void restartNeur();
+  //    void procxNeurStop(int,QProcess::ExitStatus);
+     // void procxNeurStart();
 
     };
 }

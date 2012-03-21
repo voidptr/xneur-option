@@ -1,16 +1,17 @@
 //xneur header files
-extern "C"
-{
-    #include <xneur/xneur.h>
-    #include <xneur/xnconfig.h>
-    #include <xneur/list_char.h>
-}
+//extern "C"
+//{
+//    #include <xneur/xneur.h>
+//    #include <xneur/xnconfig.h>
+//    #include <xneur/list_char.h>
+//}
 
-#define XNEUR_NEEDED_MAJOR_VERSION 15
-#define XNEUR_BUILD_MINOR_VERSION 0
+//#define XNEUR_NEEDED_MAJOR_VERSION 15
+//#define XNEUR_BUILD_MINOR_VERSION 0
 
 //app header files
 #include "kxneur.h"
+
 
 //Kde header files
 #include <ktoolinvocation.h>
@@ -20,57 +21,64 @@ extern "C"
 #include <QDBusConnection>
 #include <QDebug>
 
-extern "C"
-{
-    #include "xkb.h"
-}
+//extern "C"
+//{
+//    #include "xkb.h"
+//}
 
-Display *kXneurApp::kXneur::dpy=NULL;
+//Display *kXneurApp::kXneur::dpy=NULL;
 
 kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
 {
-    xconfig = NULL;
-    dpy=XOpenDisplay(NULL);
+    cfgXneur = new xNeurConfig();
+   // xconfig = NULL;
+//    dpy=XOpenDisplay(NULL);
     settignsTray();
-    init_libxnconfig();
-    xneur_pid=xconfig->get_pid(xconfig);
+   // init_libxnconfig();
+    int xneur_pid=cfgXneur->getNeur_pid();/*xconfig->get_pid(xconfig);*/
     if(xneur_pid < 0)
     {
-        xneurStart();
+        cfgXneur->xneurStart();
+        //xneurStart();
 
     }
     else
     {
-        xneurStop();
-        xneurStart();
+        cfgXneur->xneurStop()/*xneurStop()*/;
+       cfgXneur->xneurStart();// xneurStart();
         qDebug()<<"xneur is running";
     }
-    emit changeIconTray(QString("%1").arg(xconfig->handle->languages[get_active_kbd_group(dpy)].dir));
+    //emit changeIconTray(QString("%1").arg(xconfig->handle->languages[get_active_kbd_group(dpy)].dir));
+    emit changeIconTray(QString("%1").arg(cfgXneur->getCurrentLang()));
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.connect("org.kde.keyboard", "/Layouts", "org.kde.KeyboardLayouts","currentLayoutChanged", this, SLOT(layoutChanged(QString)));
-    qDebug()<<"CURRENT KEYBOARD LAYOUT " << get_active_kbd_group(dpy) << "LANG NAME " << xconfig->handle->languages[get_active_kbd_group(dpy)].dir;
+//    qDebug()<<"CURRENT KEYBOARD LAYOUT " << get_active_kbd_group(dpy) << "LANG NAME " << xconfig->handle->languages[get_active_kbd_group(dpy)].dir;
 
 
 }
 
 kXneurApp::kXneur::~kXneur()
 {
-    xneurStop();
-    XCloseDisplay(dpy);
+//    xneurStop();
+    if( cfgXneur->xneurStop())
+    {
+        qDebug()<<"Stop xneur";
+    }
+    delete cfgXneur;
+    //XCloseDisplay(dpy);
 }
 
 void kXneurApp::kXneur::settignsTray()
 {
     trayApp = new kXneurTray(this);
-    procxNeur = new QProcess();
-    connect(procxNeur, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(procxNeurStop(int,QProcess::ExitStatus)));
-    connect(procxNeur, SIGNAL(started()), SLOT(procxNeurStart()));
     connect(this, SIGNAL(changeIconTray(QString)), trayApp, SLOT(setTrayIconFlags(QString)));
+    connect(cfgXneur, SIGNAL(setStatusXneur(bool)), trayApp, SLOT(setStatusXneur(bool)));
+    connect(cfgXneur, SIGNAL(setStatusXneur(bool)), trayApp, SLOT(setStatusXneur(bool)));
     connect(trayApp, SIGNAL(exitApp()), SLOT(quit()));
-    connect(trayApp, SIGNAL(nextLang()), SLOT(nextLang()));
-    //connect(trayApp, SIGNAL(statusDaemon(bool)), SLOT(startStopNeur(bool)));
+    connect(trayApp, SIGNAL(nextLang()), cfgXneur, SLOT(setNextLang()));
+  //connect(trayApp, SIGNAL(statusDaemon(bool)), SLOT(startStopNeur(bool)));
     connect(trayApp, SIGNAL(statusDaemon()), SLOT(startStopNeur()));
-    connect(trayApp, SIGNAL(restartNeur()), SLOT(restartNeur()));
+    connect(trayApp, SIGNAL(restartNeur()), cfgXneur, SLOT(restartNeur()));
 }
 
 void kXneurApp::kXneur::layoutChanged(QString lang)
@@ -81,25 +89,20 @@ void kXneurApp::kXneur::layoutChanged(QString lang)
 //void kXneurApp::kXneur::startStopNeur(bool status)
 void kXneurApp::kXneur::startStopNeur()
 {
-    if(xconfig->get_pid(xconfig)>0)
+    //if(xconfig->get_pid(xconfig)>0)
+    if(cfgXneur->getNeur_pid()>0)
     {
-        xneurStop();
+        cfgXneur->xneurStop();
+        //xneurStop();
     }
     else
     {
-       xneurStart();
+        cfgXneur->xneurStart();
+       //xneurStart();
     }
-
-//    if(status)
-//    {
-//        xneurStop();
-//    }
-//    else
-//    {
-//        xneurStart();
-//    }
 }
 
+/* xneurStart
 bool kXneurApp::kXneur::xneurStart()
 {
     if ( !init_libxnconfig())
@@ -122,12 +125,15 @@ bool kXneurApp::kXneur::xneurStart()
         init_libxnconfig();
         return true;
     }
-    qDebug() << tr("ERROR: start xNeur Fail") /*<< error*/;
+    qDebug() << tr("ERROR: start xNeur Fail");// << error;
     xneur_pid = 0;
     qDebug("start -- fail 3\n");
     return false;
 }
+*/
 
+
+/* xneurStop
 bool kXneurApp::kXneur::xneurStop()
 {
     if ( xneur_pid > 0 )
@@ -152,18 +158,22 @@ bool kXneurApp::kXneur::xneurStop()
     qDebug()<< "MSG: xNeur isn't running";
     return false;
 }
+*/
 
-void kXneurApp::kXneur::nextLang()
-{
- //TODO
-    set_next_kbd_group(dpy);
-}
 
-void kXneurApp::kXneur::restartNeur()
-{
-    xconfig->reload(xconfig);
-}
 
+//void kXneurApp::kXneur::nextLang()
+//{
+// //TODO
+//    set_next_kbd_group(dpy);
+//}
+
+//void kXneurApp::kXneur::restartNeur()
+//{
+//    xconfig->reload(xconfig);
+//}
+
+/*init_libxnconfig()
 bool kXneurApp::kXneur::init_libxnconfig()
 {
     if (xconfig != NULL)
@@ -193,21 +203,22 @@ bool kXneurApp::kXneur::init_libxnconfig()
     }
   return true;
 }
+*/
 
-void kXneurApp::kXneur::procxNeurStop(int exitcode,QProcess::ExitStatus exitstatus)
-{
-  trayApp->setStatusXneur(false);
-  qDebug()<<"MSG: xNeur stopped:" << " ExitCode " << exitcode << " ExitStatus " << exitstatus;
-  if(exitstatus >0)
-  {
-      qDebug()<< tr("ERROR: Warning process xNeur crashed, please look log file and inform the author xNeur. Thank You!");
-  }
-}
+//void kXneurApp::kXneur::procxNeurStop(int exitcode,QProcess::ExitStatus exitstatus)
+//{
+//  trayApp->setStatusXneur(false);
+//  qDebug()<<"MSG: xNeur stopped:" << " ExitCode " << exitcode << " ExitStatus " << exitstatus;
+//  if(exitstatus >0)
+//  {
+//      qDebug()<< tr("ERROR: Warning process xNeur crashed, please look log file and inform the author xNeur. Thank You!");
+//  }
+//}
 
-void kXneurApp::kXneur::procxNeurStart()
-{
-    qDebug()<<"MSG: xNeur started.";
-  trayApp->setStatusXneur(true);
-}
+//void kXneurApp::kXneur::procxNeurStart()
+//{
+//    qDebug()<<"MSG: xNeur started.";
+//  trayApp->setStatusXneur(true);
+//}
 
 
