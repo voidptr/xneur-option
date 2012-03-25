@@ -42,6 +42,7 @@ signals:
     void restartNeur();
     void nextLang();
     void exitApp();
+    void openSettings();
   };
 }
 #endif // KXNEURTRAY_H

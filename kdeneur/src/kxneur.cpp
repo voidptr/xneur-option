@@ -11,7 +11,7 @@
 
 //app header files
 #include "kxneur.h"
-
+#include "frmsettings.h"
 
 //Kde header files
 #include <ktoolinvocation.h>
@@ -75,10 +75,10 @@ void kXneurApp::kXneur::settignsTray()
     connect(cfgXneur, SIGNAL(setStatusXneur(bool)), trayApp, SLOT(setStatusXneur(bool)));
     connect(cfgXneur, SIGNAL(setStatusXneur(bool)), trayApp, SLOT(setStatusXneur(bool)));
     connect(trayApp, SIGNAL(exitApp()), SLOT(quit()));
+    connect(trayApp, SIGNAL(openSettings()), SLOT(OpenSettings()));
     connect(trayApp, SIGNAL(nextLang()), cfgXneur, SLOT(setNextLang()));
-  //connect(trayApp, SIGNAL(statusDaemon(bool)), SLOT(startStopNeur(bool)));
     connect(trayApp, SIGNAL(statusDaemon()), SLOT(startStopNeur()));
-    connect(trayApp, SIGNAL(restartNeur()), cfgXneur, SLOT(restartNeur()));
+    connect(this,SIGNAL(reLoadNeur()), cfgXneur, SLOT(restartNeur()));
 }
 
 void kXneurApp::kXneur::layoutChanged(QString lang)
@@ -162,11 +162,17 @@ bool kXneurApp::kXneur::xneurStop()
 
 
 
-//void kXneurApp::kXneur::nextLang()
-//{
-// //TODO
-//    set_next_kbd_group(dpy);
-//}
+void kXneurApp::kXneur::OpenSettings()
+{
+    kXneurApp::frmSettings *formSettings = new kXneurApp::frmSettings(0, cfgXneur);
+
+      if(formSettings->exec() == QDialog::Accepted)
+      {
+          //cfgXneur->xconfig->reload(cfgXneur->xconfig);
+          emit reLoadNeur();
+      }
+
+}
 
 //void kXneurApp::kXneur::restartNeur()
 //{

@@ -2,11 +2,14 @@
 #define FRMSETTINGS_H
 //app headre files
 #include "frmaddabbreviature.h"
-
+#include "xneurconfig.h"
+#include "getnameapp.h"
 
 //Qt header files
 #include <QDialog>
 #include <QAbstractButton>
+#include <QListWidget>
+
 
 //Kde header files
 #include <kconfig.h>
@@ -26,11 +29,15 @@ namespace kXneurApp
     Q_OBJECT
 
   public:
-    explicit frmSettings(QWidget *parent = 0);
+    explicit frmSettings(QWidget *parent = 0,kXneurApp::xNeurConfig *cfg=0);
     ~frmSettings();
 
   private slots:
     void Clicked(QAbstractButton *);
+    //tab layout
+    void addApp_OneLayout();
+    void removeApp_OneLayout();
+    void rulesChange();
 
 
     //tab abbreviations
@@ -48,6 +55,10 @@ namespace kXneurApp
 
   private:
     Ui::frmSettings *ui;
+    void saveSettingsNeur();
+    QStringList getListFromWidget(QListWidget *);
+
+    xNeurConfig *cfgNeur;
     KConfig *config;
     KConfigGroup general;
     KConfigGroup layouts;
@@ -64,6 +75,11 @@ namespace kXneurApp
     void settintgGrid();
     void createConnect();
     void readSettings();
+
+    void tab_lay_get_list_lang(QStringList);
+    void tab_lay_get_list_app(QStringList);
+
+    void auto_get_list_app_autocomp(QStringList);
   };
 }
 #endif // FRMSETTINGS_H

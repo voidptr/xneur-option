@@ -1,6 +1,5 @@
 //app header files
 #include "kxneurtray.h"
-#include "frmsettings.h"
 #include "frmabout.h"
 
 //Qt header files
@@ -100,12 +99,13 @@ void kXneurApp::kXneurTray::keyboardProperties()
 
 void kXneurApp::kXneurTray::settingsApp()
 {
-  kXneurApp::frmSettings *formSettings = new kXneurApp::frmSettings;
+//  kXneurApp::frmSettings *formSettings = new kXneurApp::frmSettings;
 
-  if(formSettings->exec() == QDialog::Accepted)
-  {
-      emit restartNeur();
-  }
+//  if(formSettings->exec() == QDialog::Accepted)
+//  {
+//      emit restartNeur();
+//  }
+    emit openSettings();
 }
 
 void kXneurApp::kXneurTray::showJournal()

@@ -13,7 +13,8 @@ SOURCES += \
     kxneur.cpp \
     xkb.c \
     frmaddabbreviature.cpp \
-    xneurconfig.cpp
+    xneurconfig.cpp \
+    getnameapp.cpp
 
 INCLUDEPATH += /usr/include/xneur
 
@@ -27,12 +28,14 @@ HEADERS += \
     kxneur.h \
     xkb.h \
     frmaddabbreviature.h \
-    xneurconfig.h
+    xneurconfig.h \
+    getnameapp.h
 
 FORMS += \
     frmabout.ui \
     frmsettings.ui \
-    frmaddabbreviature.ui
+    frmaddabbreviature.ui \
+    getnameapp.ui
 
 RESOURCES += \
     resursrc.qrc

@@ -34,10 +34,11 @@ namespace kXneurApp
    //   bool init_libxnconfig();
     signals:
       void changeIconTray(QString);
+      void reLoadNeur();
     private slots:
       void layoutChanged(QString);
       void startStopNeur();
-    //  void nextLang();
+      void OpenSettings();
       //void restartNeur();
   //    void procxNeurStop(int,QProcess::ExitStatus);
      // void procxNeurStart();
