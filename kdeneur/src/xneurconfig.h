@@ -14,6 +14,7 @@ namespace kXneurApp
         Q_OBJECT
     private:
         int xneur_pid;
+        QString get_bind(int);
 
     private slots:
         void procxNeurStart();
@@ -60,6 +61,10 @@ namespace kXneurApp
         QStringList lay_get_list_language();
         QStringList lay_get_list_app_one_layout();
         void lay_save_list_app_one_layout(QStringList);
+
+
+        //tab hotkeys
+        void hot_get_list_command_hotkeys();
 
         //tab autocompletion
         void auto_enable_pattern(bool);

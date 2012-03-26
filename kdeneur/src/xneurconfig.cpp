@@ -10,6 +10,7 @@ extern "C"
 #include "xneurconfig.h"
 
 #define MAX_LANGUAGES 4
+#define TOTAL_MODIFER 4
 #define XNEUR_NEEDED_MAJOR_VERSION 15
 #define XNEUR_BUILD_MINOR_VERSION 0
 
@@ -35,6 +36,21 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
 kXneurApp::xNeurConfig::~xNeurConfig()
 {
     XCloseDisplay(dpy);
+}
+QString kXneurApp::xNeurConfig::get_bind(int ind)
+{
+    QString key;
+    QStringList lstModifer;
+    lstModifer << "Shift" << "Control" << "Alt" << "Super";
+    for (int i = 0; i < TOTAL_MODIFER; ++i)
+    {
+        if ((xconfig->hotkeys[ind].modifiers & (0x1 << i)) == 0)
+            continue;
+
+        key = QString("%1+").arg(lstModifer.at(i));
+    }
+  key+=QString("%1+").arg( xconfig->hotkeys[ind].key);
+  return key;
 }
 
 bool kXneurApp::xNeurConfig::init_libxnconfig()
@@ -285,6 +301,54 @@ void kXneurApp::xNeurConfig::lay_save_list_app_one_layout(QStringList lstApp)
     qDebug()<<lstApp.size();
 }
 
+/*================================= tab HotKeys =================================*/
+void kXneurApp::xNeurConfig::hot_get_list_command_hotkeys()
+{
+    QStringList lstCommand;
+//    QStringList lstModifer;
+//    lstModifer << "Shift" << "Control" << "Alt" << "Super";
+    lstCommand << tr("Correct/Undo correction") << tr("Transliterate") << tr("Change case") << tr("Preview correction") << tr("Correct last line")
+               << tr("Correct selected text") << tr("Transliterate selected text") << tr("Change case of selected text") << tr("Preview correction of selected text")
+               << tr("Correct clipboard text") << tr("Transliterate clipboard text") << tr("Change case of clipboard text") << tr("Preview correction of clipboard text")
+               << tr("Switch to layout 1") << tr("Switch to layout 2") << tr("Switch to layout 3") << tr("Switch to layout 4")
+               << tr("Rotate layouts") << tr("Rotate layouts back") << tr("Expand abbreviations") << tr("Autocompletion confirmation")
+               << tr("Block/Unblock keyboard and mouse events") << tr("Insert date");
+    QString hot_key;
+    qDebug() << "MAX_HOTKEY " << MAX_HOTKEYS;
+    qDebug() << "Size lstCommand " << lstCommand.size();
+
+//    for(int i=0;i<MAX_HOTKEYS; ++i)
+//    {
+//        if(xconfig->hotkeys[i].key!=NULL)
+//        {
+//            hot_key = get_bind(i);
+//            qDebug()<< "LST COMMAND " << lstCommand.at(i) << " HOT KEY " << hot_key;
+//        }
+//    }
+
+//    char *binds = "";
+//            if (xconfig->hotkeys[i].key != NULL)
+//                binds = concat_bind(i);
+
+//    //        if ((xconfig->hotkeys[action].modifiers & (0x1 << i)) == 0)
+//    //            continue;
+
+
+//            //qDebug()<<  ;
+//    for(int p=0; p< lstModifer.size();++p)
+//    {
+//        if()
+//        {
+//        }
+//    }
+//    for (int i = 0; i < total_modifiers; i++)
+//        {
+
+
+//            strcat(text, modifier_names[i]);
+//            strcat(text, "+");
+//        }
+}
 
 
 
@@ -366,3 +430,4 @@ void kXneurApp::xNeurConfig::app_save_list_manual_mode_app()
 {
 
 }
+

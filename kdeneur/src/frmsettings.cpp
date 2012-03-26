@@ -12,6 +12,7 @@ kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg
   ui->setupUi(this);
   setAttribute( Qt::WA_DeleteOnClose, true);
   cfgNeur = cfg;
+  cfgNeur->hot_get_list_command_hotkeys();
   config = new KConfig("kdeneurrc");
   general = config->group("General");
   layouts = config->group("Layouts");
