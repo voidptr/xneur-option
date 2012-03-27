@@ -15,6 +15,7 @@ namespace kXneurApp
     private:
         int xneur_pid;
         QString get_bind(int);
+        QStringList notifyNames;
 
     private slots:
         void procxNeurStart();
@@ -62,28 +63,49 @@ namespace kXneurApp
         QStringList lay_get_list_app_one_layout();
         void lay_save_list_app_one_layout(QStringList);
 
-
         //tab hotkeys
-        void hot_get_list_command_hotkeys();
+        QMap <QString, QString> hot_get_list_command_hotkeys();
+        QMap<QString, QMap<QString, QString> >  hot_get_list_user_actions();
+        void hot_save_list_command_hotkeys();
+        void hot_save_list_user_actions();
 
         //tab autocompletion
         void auto_enable_pattern(bool);
         void auto_add_apace(bool);
-
         QStringList auto_get_list_app_disable_autocomplite();
         void auto_save_list_app_disable_autocomplite(QStringList);
-
 
         //tab applications
         QStringList app_get_list_ignore_app();
         QStringList app_get_list_auto_mode_app();
         QStringList app_get_list_manual_mode_app();
-
         void app_save_list_ignore_app();
         void app_save_list_auto_mode_app();
         void app_save_list_manual_mode_app();
 
+        //tab Notifications
+            //tab SOUND
+        void notif_enable_sound(bool);
+        void notif_volume_sound(int);
+        QMap<QString, QMultiMap<QString, QString> > notif_get_action_sound();
+        void notif_save_action_sound();
+            //tab OSD
+        void notif_enable_show_osd(bool);
+        void notif_set_font_osd(QString);
+        QMap<QString, QMultiMap<QString, QString> >  notif_get_action_osd();
+        void notif_save_action_osd();
+            //tab POPUP MSG
+        void notif_enable_show_popup_msg(bool);
+        void notif_interval_popup_msg(int);
+        QMap<QString, QMultiMap<QString, QString> >  notif_get_action_popup_msg();
+        void notif_save_action_popup_msg();
 
+        //tab Abbreviations
+        void abbr_ignore_keyboarf_layout(bool);
+        QMap <QString, QString> abbr_get_list_abbreviations();
+        void abbr_save_list_abbreviations();
+
+        //xconfig->play_sounds
         //void delayStartApp(int);
 
     public slots:

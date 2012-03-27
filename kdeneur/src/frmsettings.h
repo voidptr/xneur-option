@@ -79,6 +79,16 @@ namespace kXneurApp
     void tab_lay_get_list_lang(QStringList);
     void tab_lay_get_list_app(QStringList);
 
+    void hot_get_list_hotkeys(QMap<QString, QString>);
+    void hot_get_list_user_actions(QMap<QString, QMap<QString, QString> >);
+
+    void notif_get_list_action_sound(QMap<QString, QMultiMap<QString, QString> >);
+    void notif_get_list_action_osd(QMap<QString, QMultiMap<QString, QString> >);
+    void notif_get_list_action_popup(QMap<QString, QMultiMap<QString, QString> >);
+
+    void abbr_get_list_abbreviations(QMap <QString, QString>);
+
+
     void auto_get_list_app_autocomp(QStringList);
   };
 }

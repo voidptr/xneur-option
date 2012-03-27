@@ -30,7 +30,17 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
     procxNeur = new QProcess();
     connect(procxNeur, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(procxNeurStop(int,QProcess::ExitStatus)));
     connect(procxNeur, SIGNAL(started()), SLOT(procxNeurStart()));
-
+    notifyNames << tr("Xneur started") << tr("Xneur reloaded") << tr("Xneur stopped") << tr("Keypress on layout 1")
+                << tr( "Keypress on layout 2") << tr("Keypress on layout 3") << tr("Keypress on layout 4") << tr("Switch to layout 1")
+                << tr( "Switch to layout 2") << tr("Switch to layout 3") << tr("Switch to layout 4") << tr("Correct word automatically")
+                << tr( "Correct last word manually") << tr("Transliterate last word manually") << tr("Change case of last word manually")
+                << tr( "Preview correction of last word manually") << tr("Correct last line") << tr("Correct selected text") << tr("Transliterate selected text")
+                << tr( "Change case of selected text") << tr("Preview correction of selected text") << tr("Correct clipboard text") << tr("Transliterate clipboard text")
+                << tr( "Change case of clipboard text") << tr("Preview correction of clipboard text") << tr("Expand abbreviations") << tr("Correct aCCIDENTAL caps")
+                << tr( "Correct TWo INitial caps") << tr("Correct two space with a comma and a space") << tr("Correct two minus with a dash")
+                << tr( "Correct (c) with a copyright sign") << tr("Correct (tm) with a trademark sign") << tr("Correct (r) with a registered sign")
+                << tr( "Correct three points with a ellipsis sign") << tr("Execute user action") << tr("Block keyboard and mouse events")
+                << tr( "Unblock keyboard and mouse events");
 }
 
 kXneurApp::xNeurConfig::~xNeurConfig()
@@ -49,7 +59,7 @@ QString kXneurApp::xNeurConfig::get_bind(int ind)
 
         key = QString("%1+").arg(lstModifer.at(i));
     }
-  key+=QString("%1+").arg( xconfig->hotkeys[ind].key);
+  key+=QString("%1").arg( xconfig->hotkeys[ind].key);
   return key;
 }
 
@@ -302,54 +312,74 @@ void kXneurApp::xNeurConfig::lay_save_list_app_one_layout(QStringList lstApp)
 }
 
 /*================================= tab HotKeys =================================*/
-void kXneurApp::xNeurConfig::hot_get_list_command_hotkeys()
+QMap <QString, QString> kXneurApp::xNeurConfig::hot_get_list_command_hotkeys()
 {
     QStringList lstCommand;
-//    QStringList lstModifer;
-//    lstModifer << "Shift" << "Control" << "Alt" << "Super";
+    QString hot_key;
+    QMap <QString, QString> tblHotKey;
     lstCommand << tr("Correct/Undo correction") << tr("Transliterate") << tr("Change case") << tr("Preview correction") << tr("Correct last line")
                << tr("Correct selected text") << tr("Transliterate selected text") << tr("Change case of selected text") << tr("Preview correction of selected text")
                << tr("Correct clipboard text") << tr("Transliterate clipboard text") << tr("Change case of clipboard text") << tr("Preview correction of clipboard text")
                << tr("Switch to layout 1") << tr("Switch to layout 2") << tr("Switch to layout 3") << tr("Switch to layout 4")
                << tr("Rotate layouts") << tr("Rotate layouts back") << tr("Expand abbreviations") << tr("Autocompletion confirmation")
                << tr("Block/Unblock keyboard and mouse events") << tr("Insert date");
-    QString hot_key;
-    qDebug() << "MAX_HOTKEY " << MAX_HOTKEYS;
-    qDebug() << "Size lstCommand " << lstCommand.size();
 
-//    for(int i=0;i<MAX_HOTKEYS; ++i)
-//    {
-//        if(xconfig->hotkeys[i].key!=NULL)
-//        {
-//            hot_key = get_bind(i);
-//            qDebug()<< "LST COMMAND " << lstCommand.at(i) << " HOT KEY " << hot_key;
-//        }
-//    }
-
-//    char *binds = "";
-//            if (xconfig->hotkeys[i].key != NULL)
-//                binds = concat_bind(i);
-
-//    //        if ((xconfig->hotkeys[action].modifiers & (0x1 << i)) == 0)
-//    //            continue;
-
-
-//            //qDebug()<<  ;
-//    for(int p=0; p< lstModifer.size();++p)
-//    {
-//        if()
-//        {
-//        }
-//    }
-//    for (int i = 0; i < total_modifiers; i++)
-//        {
-
-
-//            strcat(text, modifier_names[i]);
-//            strcat(text, "+");
-//        }
+    for(int i=0;i<MAX_HOTKEYS; ++i)
+    {
+        if(xconfig->hotkeys[i].key!=NULL)
+        {
+            hot_key = get_bind(i);
+            tblHotKey.insert(lstCommand.at(i), hot_key);
+        }
+        else
+        {
+            hot_key="";
+            tblHotKey.insert(lstCommand.at(i), hot_key);
+        }
+    }
+return tblHotKey;
 }
 
+void kXneurApp::xNeurConfig::hot_save_list_command_hotkeys()
+{
+    //TODO
+}
+
+QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_user_actions()
+{
+    QString text;
+    QStringList lstModifer;
+    //   hot_key       name act  command act
+    QMap<QString, QMap<QString, QString> > lstUserAction;
+    QMap<QString, QString> lstNameCmd;
+    lstModifer << "Shift" << "Control" << "Alt" << "Super";
+    for (int action = 0; action < xconfig->actions_count; action++)
+    {
+        for (int i = 0; i < TOTAL_MODIFER; ++i)
+        {
+                if ((xconfig->actions[action].hotkey.modifiers & (0x1 << i)) == 0)
+                {
+                    continue;
+                }
+
+               text = QString("%1+").arg(lstModifer.at(i));
+        }
+        text += QString("%1").arg(xconfig->actions[action].hotkey.key);
+
+
+
+        lstNameCmd.insert(xconfig->actions[action].name,xconfig->actions[action].command);
+        lstUserAction.insert(text, lstNameCmd);
+        lstNameCmd.clear();
+        text="";
+    }
+    return lstUserAction;
+}
+
+void kXneurApp::xNeurConfig::hot_save_list_user_actions()
+{
+    //TODO
+}
 
 
 /*================================= tab Autocompletion =================================*/
@@ -381,7 +411,7 @@ void kXneurApp::xNeurConfig::auto_save_list_app_disable_autocomplite(QStringList
 }
 
 
-/*================================= tab Aplication =================================*/
+/*================================= tab Application =================================*/
 
 QStringList kXneurApp::xNeurConfig::app_get_list_ignore_app()
 {
@@ -412,21 +442,118 @@ QStringList kXneurApp::xNeurConfig::app_get_list_manual_mode_app()
     {
         lstApp<<  xconfig->manual_apps->data[i].string;
     }
-
     return lstApp;
 }
 
 void kXneurApp::xNeurConfig::app_save_list_ignore_app()
 {
-
+//TODO
 }
 
 void kXneurApp::xNeurConfig::app_save_list_auto_mode_app()
 {
-
+//TODO
 }
 
 void kXneurApp::xNeurConfig::app_save_list_manual_mode_app()
+{
+    //TODO
+
+}
+
+/*================================= tab Notifications =================================*/
+                            /*========== tab SOUND ==========*/
+void kXneurApp::xNeurConfig::notif_enable_sound(bool stat)
+{
+    xconfig->play_sounds = stat;
+}
+
+void kXneurApp::xNeurConfig::notif_volume_sound(int volume)
+{
+    xconfig->volume_percent = volume;
+}
+
+QMap<QString, QMultiMap<QString, QString> > kXneurApp::xNeurConfig::notif_get_action_sound()
+{
+    QMap<QString, QMultiMap<QString, QString> > lstSound;
+    QMultiMap <QString, QString> lstFile;
+    for (int i = 0; i <notifyNames.size(); ++i)
+    {
+        lstFile.insert(QString("%1").arg(xconfig->sounds[i].enabled), QString("%1").arg(xconfig->sounds[i].file));
+        lstSound.insert(notifyNames.at(i), lstFile);
+        lstFile.clear();
+    }
+    return lstSound;
+}
+
+void kXneurApp::xNeurConfig::notif_save_action_sound(){}
+                            /*========== tab OSD ==========*/
+void kXneurApp::xNeurConfig::notif_enable_show_osd(bool stat)
+{
+    xconfig->show_osd = stat;
+}
+void kXneurApp::xNeurConfig::notif_set_font_osd(QString osd_font)
+{
+    xconfig->osd_font = osd_font.toAscii().data();
+}
+QMap<QString, QMultiMap<QString, QString> >  kXneurApp::xNeurConfig::notif_get_action_osd()
+{
+    QMap<QString, QMultiMap<QString, QString> > lstOSD;
+    QMultiMap <QString, QString> lstFile;
+    for (int i = 0; i <notifyNames.size(); ++i)
+    {
+        lstFile.insert(QString("%1").arg(xconfig->osds[i].enabled), QString("%1").arg(xconfig->osds[i].file));
+        lstOSD.insert(notifyNames.at(i), lstFile);
+        lstFile.clear();
+    }
+    return lstOSD;
+}
+void kXneurApp::xNeurConfig::notif_save_action_osd(){}
+                            /*========== tab POPUP MSG ==========*/
+void kXneurApp::xNeurConfig::notif_enable_show_popup_msg(bool stat)
+{
+    xconfig->show_popup = stat;
+}
+void kXneurApp::xNeurConfig::notif_interval_popup_msg(int interval)
+{
+    xconfig->popup_expire_timeout = interval;
+}
+QMap<QString, QMultiMap<QString, QString> >  kXneurApp::xNeurConfig::notif_get_action_popup_msg()
+{
+    QMap<QString, QMultiMap<QString, QString> > lstPOPUP;
+    QMultiMap <QString, QString> lstFile;
+    for (int i = 0; i <notifyNames.size(); ++i)
+    {
+        lstFile.insert(QString("%1").arg(xconfig->popups[i].enabled), QString("%1").arg(xconfig->popups[i].file));
+        lstPOPUP.insert(notifyNames.at(i), lstFile);
+        lstFile.clear();
+    }
+    return lstPOPUP;
+}
+void kXneurApp::xNeurConfig::notif_save_action_popup_msg()
+{
+
+}
+
+/*================================= tab Abbreviations =================================*/
+void kXneurApp::xNeurConfig::abbr_ignore_keyboarf_layout(bool stat)
+{
+    xconfig->abbr_ignore_layout = stat;
+}
+
+QMap <QString, QString> kXneurApp::xNeurConfig::abbr_get_list_abbreviations()
+{
+    QString tmpStr;
+    QMap <QString, QString> lstAbb;
+    for (int i = 0; i < xconfig->abbreviations->data_count; ++i)
+    {
+        tmpStr = xconfig->abbreviations->data[i].string;
+        lstAbb.insert(tmpStr.left(tmpStr.indexOf(" ")), tmpStr.right(tmpStr.length() -tmpStr.indexOf(" ")));
+    }
+return lstAbb;
+}
+
+void kXneurApp::xNeurConfig::abbr_save_list_abbreviations()
 {
 
 }

@@ -16,7 +16,7 @@ SOURCES += \
     xneurconfig.cpp \
     getnameapp.cpp
 
-INCLUDEPATH += /usr/include/xneur
+INCLUDEPATH += /usr/include
 
 LIBS += -lX11 -lkdeui -lkdecore -lxneur -lxnconfig
 

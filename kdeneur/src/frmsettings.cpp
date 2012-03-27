@@ -6,13 +6,14 @@
 #include <QFileDialog>
 #include <QListWidgetItem>
 #include <QMessageBox>
+#include <QMap>
 
 kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg) :  QDialog(parent),  ui(new Ui::frmSettings)
 {
   ui->setupUi(this);
   setAttribute( Qt::WA_DeleteOnClose, true);
   cfgNeur = cfg;
-  cfgNeur->hot_get_list_command_hotkeys();
+
   config = new KConfig("kdeneurrc");
   general = config->group("General");
   layouts = config->group("Layouts");
@@ -62,15 +63,40 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->lay_remember_layout_for_app(ui->Layout_chkRememberKbLayout->isChecked());
     cfgNeur->lay_save_list_app_one_layout(getListFromWidget(ui->Layout_lstListApplicationOneKbLayout));
 
+    //tab HotKeys
 
-
-    //tab autocompletion
+    //tab Autocompletion
     cfgNeur->auto_enable_pattern(ui->tabAutocompletion_chkEnableAutocompl->isChecked());
     cfgNeur->auto_add_apace(ui->tabAutocompletion_chkAddSpace->isChecked());
     cfgNeur->auto_save_list_app_disable_autocomplite(getListFromWidget(ui->tabAutocompletion_lstApp));
 
+    //tab Applications
+
+    //tab Notifications
+    cfgNeur->notif_enable_sound(ui->tabSound_chkEnableSound->isChecked());
+    cfgNeur->notif_volume_sound(ui->tabSound_spbSoundVolume->value());
+
+    cfgNeur->notif_enable_show_osd(ui->tabOSD_chkEnableOSD->isChecked());
+    cfgNeur->notif_set_font_osd(ui->tabOSD_txtFontOSD->text());
+
+    cfgNeur->notif_enable_show_popup_msg(ui->tabPopupMessage_chkShowPopupMessage->isChecked());
+    cfgNeur->notif_interval_popup_msg(ui->tabPopupMessage_spbIntervalPopup->value());
 
 
+
+    //tab Abbreviations
+    cfgNeur->abbr_ignore_keyboarf_layout(ui->tabAbbreviations_chkIgnoreKeyLayout->isChecked());
+
+
+    //tab Log
+
+    //tab Troubleshooting
+
+    //tab Advanced
+
+    //tab Plugins
+
+    //Properties
 
     cfgNeur->saveNeurConfig();
 
@@ -83,7 +109,6 @@ void kXneurApp::frmSettings::settintgGrid()
     QList<QTableWidget *> allTable = ui->tabWidget->findChildren<QTableWidget *>();
     for (int i=0; i< allTable.size();++i)
     {
-        //allTable.at(i)->horizontalHeader()
         allTable.at(i)->verticalHeader()->setDefaultSectionSize(22);
         allTable.at(i)->verticalHeader()->hide();
         allTable.at(i)->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
@@ -97,6 +122,8 @@ void kXneurApp::frmSettings::settintgGrid()
     tab_lay_get_list_app(cfgNeur->lay_get_list_app_one_layout());
 
     //tab HotKeys
+    hot_get_list_hotkeys(cfgNeur->hot_get_list_command_hotkeys());
+    hot_get_list_user_actions(cfgNeur->hot_get_list_user_actions());
 
 
     //tab autocomplection
@@ -106,6 +133,14 @@ void kXneurApp::frmSettings::settintgGrid()
     ui->taApplication_lstAppNotUsed->addItems(cfgNeur->app_get_list_ignore_app());
     ui->taApplication_lstAppAutoMode->addItems(cfgNeur->app_get_list_auto_mode_app());
     ui->taApplication_lstAppManualMode->addItems(cfgNeur->app_get_list_manual_mode_app());
+
+    //tab Notifications
+    notif_get_list_action_sound(cfgNeur->notif_get_action_sound());
+    notif_get_list_action_osd(cfgNeur->notif_get_action_osd());
+    notif_get_list_action_popup(cfgNeur->notif_get_action_popup_msg());
+
+    //tab Abbreviations
+    abbr_get_list_abbreviations(cfgNeur->abbr_get_list_abbreviations());
 
 
 }
@@ -269,10 +304,11 @@ void kXneurApp::frmSettings::tab_lay_get_list_lang(QStringList lstLng)
 {
     ui->Layout_lstLayout->setRowCount(lstLng.size()/3);
     ui->Layout_lstLayout->setColumnCount(3);
+    //create headers table
     ui->Layout_lstLayout->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Description")));
     ui->Layout_lstLayout->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Layout")));
     ui->Layout_lstLayout->setHorizontalHeaderItem(2, new QTableWidgetItem(tr("Excluded")));
-    //ui->Layout_lstLayout->
+
     int p=0;
     bool ok;
     for(int j=0;j<lstLng.size()/3;j++)
@@ -344,4 +380,133 @@ void kXneurApp::frmSettings::rulesChange()
 void kXneurApp::frmSettings::auto_get_list_app_autocomp(QStringList lstApp)
 {
     ui->tabAutocompletion_lstApp->addItems(lstApp);
+}
+
+void kXneurApp::frmSettings::hot_get_list_hotkeys(QMap<QString, QString> lstCommand)
+{
+    ui->tabHotKey_lstHotKey->setRowCount(lstCommand.size());
+    ui->tabHotKey_lstHotKey->setColumnCount(2);
+
+    QMap<QString, QString>::const_iterator i = lstCommand.constBegin();
+    int p=0;
+    while (i != lstCommand.constEnd())
+    {
+        ui->tabHotKey_lstHotKey->setItem(p,0, new QTableWidgetItem(i.key()));
+        ui->tabHotKey_lstHotKey->setItem(p,1, new QTableWidgetItem(i.value()));
+        ++p;++i;
+    }
+}
+
+void kXneurApp::frmSettings::hot_get_list_user_actions(QMap<QString, QMap<QString, QString> > lstUserActions)
+{
+    ui->tabHotKey_lstUserActions->setRowCount(lstUserActions.size());
+    ui->tabHotKey_lstUserActions->setColumnCount(3);
+    QMap<QString, QString> tmpMap;
+    int p=0;
+
+    QMap<QString, QMap<QString, QString> >::const_iterator i = lstUserActions.constBegin();
+    while (i != lstUserActions.constEnd())
+    {
+        ui->tabHotKey_lstUserActions->setItem(p,1, new QTableWidgetItem(i.key()));
+        tmpMap = i.value();
+        QMap<QString, QString>::const_iterator j = tmpMap.constBegin();
+        while (j != tmpMap.constEnd())
+        {
+            ui->tabHotKey_lstUserActions->setItem(p,0, new QTableWidgetItem(j.key()));
+            ui->tabHotKey_lstUserActions->setItem(p,2, new QTableWidgetItem(j.value()));
+            ++j;
+        }
+        ++p;++i;
+    }
+}
+
+void kXneurApp::frmSettings::notif_get_list_action_sound(QMap<QString, QMultiMap<QString, QString> > lstActions)
+{
+    ui->tabSound_lstListSound->setRowCount(lstActions.size());
+    ui->tabSound_lstListSound->setColumnCount(3);
+    ui->tabSound_lstListSound->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
+    ui->tabSound_lstListSound->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+    ui->tabSound_lstListSound->horizontalHeader()->setResizeMode(2, QHeaderView::Fixed);
+
+    QMultiMap<QString, QString> tmpMap;
+    int p=0;
+
+    QMap<QString, QMultiMap<QString, QString> >::const_iterator i = lstActions.constBegin();
+    while (i != lstActions.constEnd())
+    {
+        ui->tabSound_lstListSound->setItem(p,0, new QTableWidgetItem(i.key()));
+        tmpMap = i.value();
+        QMultiMap<QString, QString>::const_iterator j = tmpMap.constBegin();
+        while( j!= tmpMap.constEnd())
+        {
+            QTableWidgetItem *itm = new QTableWidgetItem();
+            (j.key()=="0") ? itm->setCheckState(Qt::Unchecked):itm->setCheckState(Qt::Checked);
+            ui->tabSound_lstListSound->setItem(p,2, itm);
+            ui->tabSound_lstListSound->setItem(p,1, new QTableWidgetItem(j.value()));
+            ++j;
+        }
+        ++p;++i;
+    }
+}
+
+void kXneurApp::frmSettings::notif_get_list_action_osd(QMap<QString, QMultiMap<QString, QString> > lstActions)
+{
+    ui->tabOSD_lstListOSD->setRowCount(lstActions.size());
+    ui->tabOSD_lstListOSD->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
+    ui->tabOSD_lstListOSD->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+    ui->tabOSD_lstListOSD->horizontalHeader()->setResizeMode(2, QHeaderView::Fixed);
+    ui->tabOSD_lstListOSD->setColumnCount(3);
+    QMultiMap<QString, QString> tmpMap;
+    int p=0;
+
+    QMap<QString, QMultiMap<QString, QString> >::const_iterator i = lstActions.constBegin();
+    while (i != lstActions.constEnd())
+    {
+        ui->tabOSD_lstListOSD->setItem(p,0, new QTableWidgetItem(i.key()));
+        tmpMap = i.value();
+        QMultiMap<QString, QString>::const_iterator j = tmpMap.constBegin();
+        while( j!= tmpMap.constEnd())
+        {
+            QTableWidgetItem *itm = new QTableWidgetItem();
+            (j.key()=="0") ? itm->setCheckState(Qt::Unchecked):itm->setCheckState(Qt::Checked);
+            ui->tabOSD_lstListOSD->setItem(p,2, itm);
+            ui->tabOSD_lstListOSD->setItem(p,1, new QTableWidgetItem(j.value()));
+            ++j;
+        }
+        ++p;++i;
+    }
+}
+
+void kXneurApp::frmSettings::notif_get_list_action_popup(QMap<QString, QMultiMap<QString, QString> > lstActions)
+{
+    ui->tabPopupMessage_lstListPopupMessage->setRowCount(lstActions.size());
+    ui->tabPopupMessage_lstListPopupMessage->setColumnCount(3);
+    ui->tabPopupMessage_lstListPopupMessage->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
+    ui->tabPopupMessage_lstListPopupMessage->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+    ui->tabPopupMessage_lstListPopupMessage->horizontalHeader()->setResizeMode(2, QHeaderView::Fixed);
+
+    QMultiMap<QString, QString> tmpMap;
+    int p=0;
+
+    QMap<QString, QMultiMap<QString, QString> >::const_iterator i = lstActions.constBegin();
+    while (i != lstActions.constEnd())
+    {
+        ui->tabPopupMessage_lstListPopupMessage->setItem(p,0, new QTableWidgetItem(i.key()));
+        tmpMap = i.value();
+        QMultiMap<QString, QString>::const_iterator j = tmpMap.constBegin();
+        while( j!= tmpMap.constEnd())
+        {
+            QTableWidgetItem *itm = new QTableWidgetItem();
+            (j.key()=="0") ? itm->setCheckState(Qt::Unchecked):itm->setCheckState(Qt::Checked);
+            ui->tabPopupMessage_lstListPopupMessage->setItem(p,2, itm);
+            ui->tabPopupMessage_lstListPopupMessage->setItem(p,1, new QTableWidgetItem(j.value()));
+            ++j;
+        }
+        ++p;++i;
+    }
+}
+
+void kXneurApp::frmSettings::abbr_get_list_abbreviations(QMap<QString, QString> lstAbb)
+{
+
 }
