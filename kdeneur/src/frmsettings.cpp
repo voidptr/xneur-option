@@ -29,7 +29,7 @@ kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg
   properties = config->group("Properties");
   settintgGrid();
   createConnect();
-  readSettings();
+  readSettingsKdeNeur();
 }
 
 kXneurApp::frmSettings::~frmSettings()
@@ -42,53 +42,56 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->clearNeurConfig();
 
     //tab General
-    cfgNeur->gen_main_manual_switch(ui->chkGenMain_ManualSwitch->isChecked());
-    cfgNeur->gen_main_auto_learning(ui->chkGenMain_AutoLearning->isChecked());
-    cfgNeur->gen_main_keep_select(ui->chkGenMain_KeepSelect->isChecked());
-    cfgNeur->gen_main_rotate_layout(ui->chkGenMain_RotateLayout->isChecked());
-    cfgNeur->gen_main_check_lang(ui->chkGenMain_CheckLang->isChecked());
-    cfgNeur->gen_tipo_correct_caps(ui->chkGenTipograph_CeorrectCAPS->isChecked());
-    cfgNeur->gen_tipo_disable_caps(ui->chkGenTipograph_DisableCaps->isChecked());
-    cfgNeur->gen_tipo_correct_two_caps(ui->chkGenTipograph_CorrectTwoCaps->isChecked());
-    cfgNeur->gen_tipo_correct_space(ui->chkGenTipograph_CorrectSpace->isChecked());
-    cfgNeur->gen_tipo_correct_small_letter(ui->chkGenTipograph_CorrectSmallLitter->isChecked());
-    cfgNeur->gen_tipo_correct_two_space(ui->chkGenTipograph_CorrectTwoSpase->isChecked());
-    cfgNeur->gen_tipo_correct_two_minus(ui->chkGenTipograph_CorrectTwoMinus->isChecked());
-    cfgNeur->gen_tipo_correct_c(ui->chkGenTipograph_Correct_c_->isChecked());
-    cfgNeur->gen_tipo_correct_tm(ui->chkGenTipograph_Correct_tm_->isChecked());
-    cfgNeur->gen_tipo_correct_r(ui->chkGenTipograph_Correct_r_->isChecked());
+    cfgNeur->gen_main_save_manual_switch(ui->chkGenMain_ManualSwitch->isChecked());
+    cfgNeur->gen_main_save_auto_learning(ui->chkGenMain_AutoLearning->isChecked());
+    cfgNeur->gen_main_save_keep_select(ui->chkGenMain_KeepSelect->isChecked());
+    cfgNeur->gen_main_save_rotate_layout(ui->chkGenMain_RotateLayout->isChecked());
+    cfgNeur->gen_main_save_check_lang(ui->chkGenMain_CheckLang->isChecked());
+    cfgNeur->gen_tipo_save_correct_caps(ui->chkGenTipograph_CeorrectCAPS->isChecked());
+    cfgNeur->gen_tipo_save_disable_caps(ui->chkGenTipograph_DisableCaps->isChecked());
+    cfgNeur->gen_tipo_save_correct_two_caps(ui->chkGenTipograph_CorrectTwoCaps->isChecked());
+    cfgNeur->gen_tipo_save_correct_space(ui->chkGenTipograph_CorrectSpace->isChecked());
+    cfgNeur->gen_tipo_save_correct_small_letter(ui->chkGenTipograph_CorrectSmallLitter->isChecked());
+    cfgNeur->gen_tipo_save_correct_two_space(ui->chkGenTipograph_CorrectTwoSpase->isChecked());
+    cfgNeur->gen_tipo_save_correct_two_minus(ui->chkGenTipograph_CorrectTwoMinus->isChecked());
+    cfgNeur->gen_tipo_save_correct_c(ui->chkGenTipograph_Correct_c_->isChecked());
+    cfgNeur->gen_tipo_save_correct_tm(ui->chkGenTipograph_Correct_tm_->isChecked());
+    cfgNeur->gen_tipo_save_correct_r(ui->chkGenTipograph_Correct_r_->isChecked());
 
     //tab Layout
-    cfgNeur->lay_number_layout(ui->Layout_spbLayoutNumber->value()-1);
-    cfgNeur->lay_remember_layout_for_app(ui->Layout_chkRememberKbLayout->isChecked());
+    cfgNeur->lay_save_number_layout(ui->Layout_spbLayoutNumber->value()-1);
+    cfgNeur->lay_save_remember_layout_for_app(ui->Layout_chkRememberKbLayout->isChecked());
     cfgNeur->lay_save_list_app_one_layout(getListFromWidget(ui->Layout_lstListApplicationOneKbLayout));
 
     //tab HotKeys
 
     //tab Autocompletion
-    cfgNeur->auto_enable_pattern(ui->tabAutocompletion_chkEnableAutocompl->isChecked());
-    cfgNeur->auto_add_apace(ui->tabAutocompletion_chkAddSpace->isChecked());
+    cfgNeur->auto_save_enable_pattern(ui->tabAutocompletion_chkEnableAutocompl->isChecked());
+    cfgNeur->auto_save_add_space(ui->tabAutocompletion_chkAddSpace->isChecked());
     cfgNeur->auto_save_list_app_disable_autocomplite(getListFromWidget(ui->tabAutocompletion_lstApp));
 
     //tab Applications
 
     //tab Notifications
-    cfgNeur->notif_enable_sound(ui->tabSound_chkEnableSound->isChecked());
-    cfgNeur->notif_volume_sound(ui->tabSound_spbSoundVolume->value());
+    cfgNeur->notif_save_enable_sound(ui->tabSound_chkEnableSound->isChecked());
+    cfgNeur->notif_save_volume_sound(ui->tabSound_spbSoundVolume->value());
 
-    cfgNeur->notif_enable_show_osd(ui->tabOSD_chkEnableOSD->isChecked());
-    cfgNeur->notif_set_font_osd(ui->tabOSD_txtFontOSD->text());
+    cfgNeur->notif_save_enable_show_osd(ui->tabOSD_chkEnableOSD->isChecked());
+    cfgNeur->notif_save_set_font_osd(ui->tabOSD_txtFontOSD->text());
 
-    cfgNeur->notif_enable_show_popup_msg(ui->tabPopupMessage_chkShowPopupMessage->isChecked());
-    cfgNeur->notif_interval_popup_msg(ui->tabPopupMessage_spbIntervalPopup->value());
-
-
+    cfgNeur->notif_save_enable_show_popup_msg(ui->tabPopupMessage_chkShowPopupMessage->isChecked());
+    cfgNeur->notif_save_interval_popup_msg(ui->tabPopupMessage_spbIntervalPopup->value());
 
     //tab Abbreviations
-    cfgNeur->abbr_ignore_keyboarf_layout(ui->tabAbbreviations_chkIgnoreKeyLayout->isChecked());
+    cfgNeur->abbr_save_ignore_keyboarf_layout(ui->tabAbbreviations_chkIgnoreKeyLayout->isChecked());
 
 
     //tab Log
+    cfgNeur->log_save_enable_keylog(ui->tabLog_chkEnableLog->isChecked());
+    cfgNeur->log_save_size_log_file(ui->tabLog_spbSizeLog->value());
+    cfgNeur->log_save_email(ui->tabLog_txtSendLogEmail->text());
+    cfgNeur->log_save_host(ui->tabLog_txtSendLogHost->text());
+    cfgNeur->log_save_port(ui->tabLog_spbSendLogPort->value());
 
     //tab Troubleshooting
 
@@ -135,9 +138,9 @@ void kXneurApp::frmSettings::settintgGrid()
     ui->taApplication_lstAppManualMode->addItems(cfgNeur->app_get_list_manual_mode_app());
 
     //tab Notifications
-    notif_get_list_action_sound(cfgNeur->notif_get_action_sound());
-    notif_get_list_action_osd(cfgNeur->notif_get_action_osd());
-    notif_get_list_action_popup(cfgNeur->notif_get_action_popup_msg());
+    notif_get_list_action_sound(cfgNeur->notif_get_list_action_sound());
+    notif_get_list_action_osd(cfgNeur->notif_get_list_action_osd());
+    notif_get_list_action_popup(cfgNeur->notif_get_list_action_popup_msg());
 
     //tab Abbreviations
     abbr_get_list_abbreviations(cfgNeur->abbr_get_list_abbreviations());
@@ -149,8 +152,12 @@ void kXneurApp::frmSettings::settintgGrid()
 
 }
 
-void kXneurApp::frmSettings::readSettings()
+void kXneurApp::frmSettings::readSettingsKdeNeur()
 {
+    readSettingsNeur();
+
+
+    // прочитать настройку  в чем открывать логи приложения
     //tab Properties
     ui->tabProperties_chkEnableAutostart->setChecked(properties.readEntry("Autostart",false));
     if(ui->tabProperties_chkEnableAutostart->isChecked())
@@ -167,6 +174,57 @@ void kXneurApp::frmSettings::readSettings()
     }
     ui->tabProperties_cmbUsedRenderingEngine->setCurrentIndex(properties.readEntry("TypeEngine",0));
 }
+
+void kXneurApp::frmSettings::readSettingsNeur()
+{
+
+    //tab General
+    ui->chkGenMain_ManualSwitch->setChecked(cfgNeur->gen_main_get_manual_switch());
+    ui->chkGenMain_AutoLearning->setChecked(cfgNeur->gen_main_get_auto_learning());
+    ui->chkGenMain_KeepSelect->setChecked(cfgNeur->gen_main_get_keep_select());
+    ui->chkGenMain_RotateLayout->setChecked(cfgNeur->gen_main_get_rotate_layout());
+    ui->chkGenMain_CheckLang->setChecked(cfgNeur->gen_main_get_check_lang());
+    ui->chkGenTipograph_CeorrectCAPS->setChecked(cfgNeur->gen_tipo_get_correct_caps());
+    ui->chkGenTipograph_DisableCaps->setChecked(cfgNeur->gen_tipo_get_disable_caps());
+    ui->chkGenTipograph_CorrectTwoCaps->setChecked(cfgNeur->gen_tipo_get_correct_two_caps());
+    ui->chkGenTipograph_CorrectSpace->setChecked(cfgNeur->gen_tipo_get_correct_space());
+    ui->chkGenTipograph_CorrectSmallLitter->setChecked(cfgNeur->gen_tipo_get_correct_small_letter());
+    ui->chkGenTipograph_CorrectTwoSpase->setChecked(cfgNeur->gen_tipo_get_correct_two_space());
+    ui->chkGenTipograph_CorrectTwoMinus->setChecked(cfgNeur->gen_tipo_get_correct_two_minus());
+    ui->chkGenTipograph_Correct_c_->setChecked(cfgNeur->gen_tipo_get_correct_c());
+    ui->chkGenTipograph_Correct_tm_->setChecked(cfgNeur->gen_tipo_get_correct_tm());
+    ui->chkGenTipograph_Correct_r_->setChecked(cfgNeur->gen_tipo_get_correct_r());
+
+    //tab Layout
+    ui->Layout_spbLayoutNumber->setValue(cfgNeur->lay_get_number_layout());
+    ui->Layout_chkRememberKbLayout->setChecked(cfgNeur->lay_get_remember_layout_for_app());
+
+    //tab Autocompletion
+    ui->tabAutocompletion_chkEnableAutocompl->setCheckable(cfgNeur->auto_get_enable_pattern());
+    ui->tabAutocompletion_chkAddSpace->setChecked(cfgNeur->auto_get_add_space());
+
+    //tab Notifications
+        //sound
+        ui->tabSound_chkEnableSound->setChecked(cfgNeur->notif_get_enable_sound());
+        ui->tabSound_spbSoundVolume->setValue(cfgNeur->notif_get_volume_sound());
+        //osd
+        ui->tabOSD_chkEnableOSD->setChecked(cfgNeur->notif_get_enable_show_osd());
+        ui->tabOSD_txtFontOSD->setText(cfgNeur->notif_get_font_osd());
+        //Popup msg
+        ui->tabPopupMessage_chkShowPopupMessage->setChecked(cfgNeur->notif_get_enable_show_popup_msg());
+        ui->tabPopupMessage_spbIntervalPopup->setValue(cfgNeur->notif_get_interval_popup_msg());
+    //tab Abbreviations
+    ui->tabAbbreviations_chkIgnoreKeyLayout->setChecked(cfgNeur->abbr_get_ignore_keyboard_layout());
+
+    //tab Log
+    ui->tabLog_chkEnableLog->setChecked(cfgNeur->log_get_enable_keylog());
+    ui->tabLog_spbSizeLog->setValue(cfgNeur->log_get_size_log_file());
+    ui->tabLog_txtSendLogEmail->setText(cfgNeur->log_get_email());
+    ui->tabLog_txtSendLogHost->setText(cfgNeur->log_get_host());
+    ui->tabLog_spbSendLogPort->setValue(cfgNeur->log_get_port());
+
+}
+
 
 void kXneurApp::frmSettings::Clicked(QAbstractButton *button)
 {
@@ -553,3 +611,4 @@ void kXneurApp::frmSettings::plug_get_list_plugins(QMap<QString, QMultiMap<bool,
         ++p;++i;
     }
 }
+

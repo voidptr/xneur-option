@@ -41,27 +41,44 @@ namespace kXneurApp
 
 
         //tab General
-        void gen_main_manual_switch(bool);
-        void gen_main_auto_learning(bool);
-        void gen_main_keep_select(bool);
-        void gen_main_rotate_layout(bool);
-        void gen_main_check_lang(bool);
-        void gen_tipo_correct_caps(bool);
-        void gen_tipo_disable_caps(bool);
-        void gen_tipo_correct_two_caps(bool);
-        void gen_tipo_correct_space(bool);
-        void gen_tipo_correct_small_letter(bool);
-        void gen_tipo_correct_two_space(bool);
-        void gen_tipo_correct_two_minus(bool);
-        void gen_tipo_correct_c(bool);
-        void gen_tipo_correct_tm(bool);
-        void gen_tipo_correct_r(bool);
+        void gen_main_save_manual_switch(bool);
+        bool gen_main_get_manual_switch();
+        void gen_main_save_auto_learning(bool);
+        bool gen_main_get_auto_learning();
+        void gen_main_save_keep_select(bool);
+        bool gen_main_get_keep_select();
+        void gen_main_save_rotate_layout(bool);
+        bool gen_main_get_rotate_layout();
+        void gen_main_save_check_lang(bool);
+        bool gen_main_get_check_lang();
+        void gen_tipo_save_correct_caps(bool);
+        bool gen_tipo_get_correct_caps();
+        void gen_tipo_save_disable_caps(bool);
+        bool gen_tipo_get_disable_caps();
+        void gen_tipo_save_correct_two_caps(bool);
+        bool gen_tipo_get_correct_two_caps();
+        void gen_tipo_save_correct_space(bool);
+        bool gen_tipo_get_correct_space();
+        void gen_tipo_save_correct_small_letter(bool);
+        bool gen_tipo_get_correct_small_letter();
+        void gen_tipo_save_correct_two_space(bool);
+        bool gen_tipo_get_correct_two_space();
+        void gen_tipo_save_correct_two_minus(bool);
+        bool gen_tipo_get_correct_two_minus();
+        void gen_tipo_save_correct_c(bool);
+        bool gen_tipo_get_correct_c();
+        void gen_tipo_save_correct_tm(bool);
+        bool gen_tipo_get_correct_tm();
+        void gen_tipo_save_correct_r(bool);
+        bool gen_tipo_get_correct_r();
 
         //tab Layout
-        void lay_number_layout(int);
-        void lay_remember_layout_for_app(bool);
-        void lay_save_list_language();
+        void lay_save_number_layout(int);
+        int lay_get_number_layout();
+        void lay_save_remember_layout_for_app(bool);
+        bool lay_get_remember_layout_for_app();
         QStringList lay_get_list_language();
+        void lay_save_list_language();
         QStringList lay_get_list_app_one_layout();
         void lay_save_list_app_one_layout(QStringList);
 
@@ -72,8 +89,12 @@ namespace kXneurApp
         void hot_save_list_user_actions();
 
         //tab autocompletion
-        void auto_enable_pattern(bool);
-        void auto_add_apace(bool);
+        void auto_save_enable_pattern(bool);
+        bool auto_get_enable_pattern();
+
+        void auto_save_add_space(bool);
+        bool auto_get_add_space();
+
         QStringList auto_get_list_app_disable_autocomplite();
         void auto_save_list_app_disable_autocomplite(QStringList);
 
@@ -87,28 +108,48 @@ namespace kXneurApp
 
         //tab Notifications
             //tab SOUND
-        void notif_enable_sound(bool);
-        void notif_volume_sound(int);
-        QMap<QString, QMultiMap<QString, QString> > notif_get_action_sound();
-        void notif_save_action_sound();
+        void notif_save_enable_sound(bool);
+        bool notif_get_enable_sound();
+        void notif_save_volume_sound(int);
+        int notif_get_volume_sound();
+        QMap<QString, QMultiMap<QString, QString> > notif_get_list_action_sound();
+        void notif_save_list_action_sound();
             //tab OSD
-        void notif_enable_show_osd(bool);
-        void notif_set_font_osd(QString);
-        QMap<QString, QMultiMap<QString, QString> >  notif_get_action_osd();
-        void notif_save_action_osd();
+        void notif_save_enable_show_osd(bool);
+        bool notif_get_enable_show_osd();
+        void notif_save_set_font_osd(QString);
+        QString notif_get_font_osd();
+        QMap<QString, QMultiMap<QString, QString> >  notif_get_list_action_osd();
+        void notif_save_list_action_osd();
             //tab POPUP MSG
-        void notif_enable_show_popup_msg(bool);
-        void notif_interval_popup_msg(int);
-        QMap<QString, QMultiMap<QString, QString> >  notif_get_action_popup_msg();
-        void notif_save_action_popup_msg();
+        void notif_save_enable_show_popup_msg(bool);
+        bool notif_get_enable_show_popup_msg();
+        void notif_save_interval_popup_msg(int);
+        int notif_get_interval_popup_msg();
+        QMap<QString, QMultiMap<QString, QString> >  notif_get_list_action_popup_msg();
+        void notif_save_list_action_popup_msg();
 
         //tab Abbreviations
-        void abbr_ignore_keyboarf_layout(bool);
+        void abbr_save_ignore_keyboarf_layout(bool);
+        bool abbr_get_ignore_keyboard_layout();
         QMap <QString, QString> abbr_get_list_abbreviations();
         void abbr_save_list_abbreviations();
 
-
         //tab Log
+        void log_save_enable_keylog(bool);
+        bool log_get_enable_keylog();
+        void log_save_size_log_file(int);
+        int log_get_size_log_file();
+        void log_save_email(QString);
+        QString log_get_email();
+        void log_save_host(QString);
+        QString log_get_host();
+        void log_save_port(int);
+        int log_get_port();
+
+
+
+
 
         //tab Trobleshooting
 

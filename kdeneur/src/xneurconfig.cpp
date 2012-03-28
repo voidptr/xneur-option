@@ -211,82 +211,182 @@ void kXneurApp::xNeurConfig::test(QString str)
 //}
 
 /*================================= tab General =================================*/
-void kXneurApp::xNeurConfig::gen_main_manual_switch(bool stat)
+void kXneurApp::xNeurConfig::gen_main_save_manual_switch(bool stat)
 {
   xconfig->manual_mode = stat;
 }
-void kXneurApp::xNeurConfig::gen_main_auto_learning(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_main_get_manual_switch()
+{
+    return xconfig->manual_mode;
+}
+
+void kXneurApp::xNeurConfig::gen_main_save_auto_learning(bool stat)
 {
     xconfig->educate = stat;
 }
-void kXneurApp::xNeurConfig::gen_main_keep_select(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_main_get_auto_learning()
+{
+    return xconfig->educate;
+}
+void kXneurApp::xNeurConfig::gen_main_save_keep_select(bool stat)
 {
     xconfig->save_selection_after_convert=stat;
 }
-void kXneurApp::xNeurConfig::gen_main_rotate_layout(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_main_get_keep_select()
+{
+    return xconfig->save_selection_after_convert;
+}
+
+void kXneurApp::xNeurConfig::gen_main_save_rotate_layout(bool stat)
 {
     xconfig->rotate_layout_after_convert=stat;
 }
-void kXneurApp::xNeurConfig::gen_main_check_lang(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_main_get_rotate_layout()
+{
+    return xconfig->rotate_layout_after_convert;
+}
+
+void kXneurApp::xNeurConfig::gen_main_save_check_lang(bool stat)
 {
     xconfig->check_lang_on_process=stat;
 }
-void kXneurApp::xNeurConfig::gen_tipo_correct_caps(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_main_get_check_lang()
+{
+    return xconfig->check_lang_on_process;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_caps(bool stat)
 {
     xconfig->correct_incidental_caps = stat;
 }
-void kXneurApp::xNeurConfig::gen_tipo_disable_caps(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_caps()
+{
+    return xconfig->correct_incidental_caps;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_disable_caps(bool stat)
 {
     xconfig->disable_capslock=stat;
 }
-void kXneurApp::xNeurConfig::gen_tipo_correct_two_caps(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_disable_caps()
+{
+    return xconfig->disable_capslock;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_two_caps(bool stat)
 {
     xconfig->correct_two_capital_letter =stat;
 }
-void kXneurApp::xNeurConfig::gen_tipo_correct_space(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_two_caps()
+{
+    return xconfig->correct_two_capital_letter;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_space(bool stat)
 {
     xconfig->correct_space_with_punctuation=stat;
 }
-void kXneurApp::xNeurConfig::gen_tipo_correct_small_letter(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_space()
+{
+    return xconfig->correct_space_with_punctuation;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_small_letter(bool stat)
 {
     xconfig->correct_capital_letter_after_dot = stat;
 }
-void kXneurApp::xNeurConfig::gen_tipo_correct_two_space(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_small_letter()
+{
+    return xconfig->correct_capital_letter_after_dot;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_two_space(bool stat)
 {
     xconfig->correct_two_space_with_comma_and_space =stat;
 }
-void kXneurApp::xNeurConfig::gen_tipo_correct_two_minus(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_two_space()
+{
+    return xconfig->correct_two_space_with_comma_and_space;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_two_minus(bool stat)
 {
     xconfig->correct_two_minus_with_dash = stat;
 }
-void kXneurApp::xNeurConfig::gen_tipo_correct_c(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_two_minus()
+{
+    return xconfig->correct_two_minus_with_dash;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_c(bool stat)
 {
     xconfig->correct_c_with_copyright =stat;
 }
-void kXneurApp::xNeurConfig::gen_tipo_correct_tm(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_c()
+{
+    return xconfig->correct_c_with_copyright;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_tm(bool stat)
 {
     xconfig->correct_tm_with_trademark = stat;
 }
-void kXneurApp::xNeurConfig::gen_tipo_correct_r(bool stat)
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_tm()
+{
+    return xconfig->correct_tm_with_trademark;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_r(bool stat)
 {
     xconfig->correct_r_with_registered = stat;
 }
 
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_r()
+{
+    return xconfig->correct_r_with_registered;
+}
+
 /*================================= tab Layout =================================*/
 
-void kXneurApp::xNeurConfig::lay_number_layout(int curIndex)
+void kXneurApp::xNeurConfig::lay_save_number_layout(int curIndex)
 {
     xconfig->default_group = curIndex;
 }
-void kXneurApp::xNeurConfig::lay_remember_layout_for_app(bool stat)
+
+int kXneurApp::xNeurConfig::lay_get_number_layout()
+{
+    return xconfig->default_group + 1;
+}
+
+void kXneurApp::xNeurConfig::lay_save_remember_layout_for_app(bool stat)
 {
     xconfig->remember_layout = stat;
+}
+
+bool kXneurApp::xNeurConfig::lay_get_remember_layout_for_app()
+{
+    return xconfig->remember_layout;
 }
 
 void kXneurApp::xNeurConfig::lay_save_list_language()
 {
 
 }
+
 QStringList kXneurApp::xNeurConfig::lay_get_list_language()
 {
     QStringList lstLng;
@@ -388,14 +488,24 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions()
 
 /*================================= tab Autocompletion =================================*/
 
-void kXneurApp::xNeurConfig::auto_enable_pattern(bool stat)
+void kXneurApp::xNeurConfig::auto_save_enable_pattern(bool stat)
 {
     xconfig->autocompletion =stat;
 }
 
-void kXneurApp::xNeurConfig::auto_add_apace(bool stat)
+bool kXneurApp::xNeurConfig::auto_get_enable_pattern()
+{
+    return xconfig->autocompletion;
+}
+
+void kXneurApp::xNeurConfig::auto_save_add_space(bool stat)
 {
     xconfig->add_space_after_autocompletion =stat;
+}
+
+bool kXneurApp::xNeurConfig::auto_get_add_space()
+{
+    return xconfig->add_space_after_autocompletion;
 }
 
 QStringList kXneurApp::xNeurConfig::auto_get_list_app_disable_autocomplite()
@@ -467,17 +577,27 @@ void kXneurApp::xNeurConfig::app_save_list_manual_mode_app()
 
 /*================================= tab Notifications =================================*/
                             /*========== tab SOUND ==========*/
-void kXneurApp::xNeurConfig::notif_enable_sound(bool stat)
+void kXneurApp::xNeurConfig::notif_save_enable_sound(bool stat)
 {
     xconfig->play_sounds = stat;
 }
 
-void kXneurApp::xNeurConfig::notif_volume_sound(int volume)
+bool kXneurApp::xNeurConfig::notif_get_enable_sound()
+{
+    return xconfig->play_sounds;
+}
+
+void kXneurApp::xNeurConfig::notif_save_volume_sound(int volume)
 {
     xconfig->volume_percent = volume;
 }
 
-QMap<QString, QMultiMap<QString, QString> > kXneurApp::xNeurConfig::notif_get_action_sound()
+int kXneurApp::xNeurConfig::notif_get_volume_sound()
+{
+    return xconfig->volume_percent;
+}
+
+QMap<QString, QMultiMap<QString, QString> > kXneurApp::xNeurConfig::notif_get_list_action_sound()
 {
     QMap<QString, QMultiMap<QString, QString> > lstSound;
     QMultiMap <QString, QString> lstFile;
@@ -490,17 +610,32 @@ QMap<QString, QMultiMap<QString, QString> > kXneurApp::xNeurConfig::notif_get_ac
     return lstSound;
 }
 
-void kXneurApp::xNeurConfig::notif_save_action_sound(){}
+void kXneurApp::xNeurConfig::notif_save_list_action_sound()
+{
+    //TODO
+}
                             /*========== tab OSD ==========*/
-void kXneurApp::xNeurConfig::notif_enable_show_osd(bool stat)
+void kXneurApp::xNeurConfig::notif_save_enable_show_osd(bool stat)
 {
     xconfig->show_osd = stat;
 }
-void kXneurApp::xNeurConfig::notif_set_font_osd(QString osd_font)
+
+bool kXneurApp::xNeurConfig::notif_get_enable_show_osd()
+{
+    return xconfig->show_osd;
+}
+
+void kXneurApp::xNeurConfig::notif_save_set_font_osd(QString osd_font)
 {
     xconfig->osd_font = osd_font.toAscii().data();
 }
-QMap<QString, QMultiMap<QString, QString> >  kXneurApp::xNeurConfig::notif_get_action_osd()
+
+QString kXneurApp::xNeurConfig::notif_get_font_osd()
+{
+    return QString("%1").arg(xconfig->osd_font);
+}
+
+QMap<QString, QMultiMap<QString, QString> >  kXneurApp::xNeurConfig::notif_get_list_action_osd()
 {
     QMap<QString, QMultiMap<QString, QString> > lstOSD;
     QMultiMap <QString, QString> lstFile;
@@ -512,17 +647,34 @@ QMap<QString, QMultiMap<QString, QString> >  kXneurApp::xNeurConfig::notif_get_a
     }
     return lstOSD;
 }
-void kXneurApp::xNeurConfig::notif_save_action_osd(){}
+
+void kXneurApp::xNeurConfig::notif_save_list_action_osd()
+{
+    //TODO
+}
+
                             /*========== tab POPUP MSG ==========*/
-void kXneurApp::xNeurConfig::notif_enable_show_popup_msg(bool stat)
+void kXneurApp::xNeurConfig::notif_save_enable_show_popup_msg(bool stat)
 {
     xconfig->show_popup = stat;
 }
-void kXneurApp::xNeurConfig::notif_interval_popup_msg(int interval)
+
+bool kXneurApp::xNeurConfig::notif_get_enable_show_popup_msg()
+{
+    return xconfig->show_popup;
+}
+
+void kXneurApp::xNeurConfig::notif_save_interval_popup_msg(int interval)
 {
     xconfig->popup_expire_timeout = interval;
 }
-QMap<QString, QMultiMap<QString, QString> >  kXneurApp::xNeurConfig::notif_get_action_popup_msg()
+
+int kXneurApp::xNeurConfig::notif_get_interval_popup_msg()
+{
+    return xconfig->popup_expire_timeout;
+}
+
+QMap<QString, QMultiMap<QString, QString> >  kXneurApp::xNeurConfig::notif_get_list_action_popup_msg()
 {
     QMap<QString, QMultiMap<QString, QString> > lstPOPUP;
     QMultiMap <QString, QString> lstFile;
@@ -534,15 +686,20 @@ QMap<QString, QMultiMap<QString, QString> >  kXneurApp::xNeurConfig::notif_get_a
     }
     return lstPOPUP;
 }
-void kXneurApp::xNeurConfig::notif_save_action_popup_msg()
+void kXneurApp::xNeurConfig::notif_save_list_action_popup_msg()
 {
-
+    //TODO
 }
 
 /*================================= tab Abbreviations =================================*/
-void kXneurApp::xNeurConfig::abbr_ignore_keyboarf_layout(bool stat)
+void kXneurApp::xNeurConfig::abbr_save_ignore_keyboarf_layout(bool stat)
 {
     xconfig->abbr_ignore_layout = stat;
+}
+
+bool kXneurApp::xNeurConfig::abbr_get_ignore_keyboard_layout()
+{
+    return xconfig->abbr_ignore_layout;
 }
 
 QMap <QString, QString> kXneurApp::xNeurConfig::abbr_get_list_abbreviations()
@@ -559,11 +716,59 @@ return lstAbb;
 
 void kXneurApp::xNeurConfig::abbr_save_list_abbreviations()
 {
-
+    //TODO
 }
 
+/*================================= tab Log =================================*/
 
+void kXneurApp::xNeurConfig::log_save_enable_keylog(bool stat)
+{
+    xconfig->save_keyboard_log =stat;
+}
 
+bool kXneurApp::xNeurConfig::log_get_enable_keylog()
+{
+    return xconfig->save_keyboard_log;
+}
+
+void kXneurApp::xNeurConfig::log_save_size_log_file(int size)
+{
+    xconfig->size_keyboard_log = size;
+}
+
+int kXneurApp::xNeurConfig::log_get_size_log_file()
+{
+    return xconfig->size_keyboard_log;
+}
+
+void kXneurApp::xNeurConfig::log_save_email(QString email)
+{
+    xconfig->mail_keyboard_log = email.toAscii().data();
+}
+QString kXneurApp::xNeurConfig::log_get_email()
+{
+    return QString("%1").arg(xconfig->mail_keyboard_log);
+}
+
+void kXneurApp::xNeurConfig::log_save_host(QString host)
+{
+    xconfig->host_keyboard_log = host.toAscii().data();
+}
+
+QString kXneurApp::xNeurConfig::log_get_host()
+{
+    return QString("%1").arg(xconfig->host_keyboard_log);
+}
+
+void kXneurApp::xNeurConfig::log_save_port(int port)
+{
+    xconfig->port_keyboard_log = port;
+}
+
+int kXneurApp::xNeurConfig::log_get_port()
+{
+    return xconfig->port_keyboard_log;
+}
 
 
 /*================================= tab Plugins =================================*/
@@ -601,4 +806,9 @@ QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::plug_get_list_
         xLib.unload();
     }
     return lstPlug;
+}
+
+void  kXneurApp::xNeurConfig::plug_save_list_plugins()
+{
+    //TODO
 }

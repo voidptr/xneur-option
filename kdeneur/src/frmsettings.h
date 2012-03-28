@@ -74,7 +74,8 @@ namespace kXneurApp
     KConfigGroup properties;
     void settintgGrid();
     void createConnect();
-    void readSettings();
+    void readSettingsKdeNeur();
+    void readSettingsNeur();
 
     void tab_lay_get_list_lang(QStringList);
     void tab_lay_get_list_app(QStringList);
