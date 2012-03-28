@@ -909,7 +909,7 @@ bool kXneurApp::xNeurConfig::trabl_get_monitor_mouse ()
     return xconfig->tracking_mouse;
 }
 
-void kXneurApp::xNeurConfig::trabl_save__monitor_mouse (bool stat)
+void kXneurApp::xNeurConfig::trabl_save_monitor_mouse (bool stat)
 {
     xconfig->tracking_mouse = stat;
 }

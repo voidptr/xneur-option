@@ -188,7 +188,7 @@ namespace kXneurApp
         void trabl_save_monitor_input (bool);
 
         bool trabl_get_monitor_mouse ();
-        void trabl_save__monitor_mouse (bool);
+        void trabl_save_monitor_mouse (bool);
 
         //tab Advanced
 
