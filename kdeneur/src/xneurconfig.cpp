@@ -13,9 +13,11 @@ extern "C"
 #define TOTAL_MODIFER 4
 #define XNEUR_NEEDED_MAJOR_VERSION 15
 #define XNEUR_BUILD_MINOR_VERSION 0
+#define XNEUR_PLUGIN_DIR "/usr/lib/xneur"
 
 extern "C"
 {
+    #include <dlfcn.h>
     #include "xkb.h"
 }
 
@@ -30,6 +32,8 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
     procxNeur = new QProcess();
     connect(procxNeur, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(procxNeurStop(int,QProcess::ExitStatus)));
     connect(procxNeur, SIGNAL(started()), SLOT(procxNeurStart()));
+   // plug_get_list_plugins();
+  //  qDebug() << XNEUR_PLUGIN_DIR;
     notifyNames << tr("Xneur started") << tr("Xneur reloaded") << tr("Xneur stopped") << tr("Keypress on layout 1")
                 << tr( "Keypress on layout 2") << tr("Keypress on layout 3") << tr("Keypress on layout 4") << tr("Switch to layout 1")
                 << tr( "Switch to layout 2") << tr("Switch to layout 3") << tr("Switch to layout 4") << tr("Correct word automatically")
@@ -558,3 +562,43 @@ void kXneurApp::xNeurConfig::abbr_save_list_abbreviations()
 
 }
 
+
+
+
+
+/*================================= tab Plugins =================================*/
+QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::plug_get_list_plugins()
+{
+    //   filename           bool     description
+    QMap<QString, QMultiMap<bool, QString> > lstPlug;
+    QMultiMap<bool, QString> plgDesript;
+    QDir folder(XNEUR_PLUGIN_DIR);
+    QLibrary xLib;
+    bool statePlugin=false;
+    typedef char *(*plgInfo)();
+    QStringList filtr;
+    filtr <<"*.so";
+    QFileInfoList infoPlugins = folder.entryInfoList(filtr, QDir::Files | QDir::NoDotAndDotDot);
+
+    for(int count=0; count<infoPlugins.size(); ++count)
+    {
+        xLib.setFileName(infoPlugins.at(count).absoluteFilePath());
+        plgInfo libDescription = (plgInfo) xLib.resolve("on_plugin_info");
+        if(!libDescription) continue;
+
+        for(int i=0; i< xconfig->plugins->data_count;++i)
+        {
+            if (xconfig->plugins->data[i].string == infoPlugins.at(count).fileName())
+                    statePlugin=true;
+        }
+        char *mod_info;
+        mod_info = libDescription();
+
+        plgDesript.insert(statePlugin, QString("%1").arg(mod_info));
+        lstPlug.insert(infoPlugins.at(count).fileName(), plgDesript);
+        plgDesript.clear();
+        statePlugin =false;
+        xLib.unload();
+    }
+    return lstPlug;
+}

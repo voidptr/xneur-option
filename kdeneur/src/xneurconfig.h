@@ -5,6 +5,8 @@
 #include <QProcess>
 #include <QObject>
 #include <QDebug>
+#include <QDir>
+#include <QLibrary>
 #include <qwindowdefs.h>
 
 namespace kXneurApp
@@ -104,6 +106,19 @@ namespace kXneurApp
         void abbr_ignore_keyboarf_layout(bool);
         QMap <QString, QString> abbr_get_list_abbreviations();
         void abbr_save_list_abbreviations();
+
+
+        //tab Log
+
+        //tab Trobleshooting
+
+        //tab Advanced
+
+        //tab Plugins
+        QMap<QString, QMultiMap<bool, QString> >  plug_get_list_plugins();
+        void plug_save_list_plugins();
+
+        //tab Properties
 
         //xconfig->play_sounds
         //void delayStartApp(int);

@@ -29,7 +29,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>10</number>
      </property>
      <widget class="TabBar" name="tabGeneral">
       <property name="locale">
@@ -1640,7 +1640,23 @@ p, li { white-space: pre-wrap; }
       </attribute>
       <layout class="QGridLayout" name="gridLayout_17">
        <item row="0" column="0">
-        <widget class="QTableWidget" name="tabPlugins_lstListPlugins"/>
+        <widget class="QTableWidget" name="tabPlugins_lstListPlugins">
+         <column>
+          <property name="text">
+           <string>Enabled</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Description</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>File name</string>
+          </property>
+         </column>
+        </widget>
        </item>
       </layout>
      </widget>

@@ -142,6 +142,10 @@ void kXneurApp::frmSettings::settintgGrid()
     //tab Abbreviations
     abbr_get_list_abbreviations(cfgNeur->abbr_get_list_abbreviations());
 
+    //tab Plugins
+    plug_get_list_plugins(cfgNeur->plug_get_list_plugins());
+
+
 
 }
 
@@ -508,5 +512,44 @@ void kXneurApp::frmSettings::notif_get_list_action_popup(QMap<QString, QMultiMap
 
 void kXneurApp::frmSettings::abbr_get_list_abbreviations(QMap<QString, QString> lstAbb)
 {
+    ui->tabAbbreviations_lstListAbbreviations->setRowCount(lstAbb.size());
+    ui->tabAbbreviations_lstListAbbreviations->horizontalHeader()->setResizeMode(0,QHeaderView::ResizeToContents);
+    ui->tabAbbreviations_lstListAbbreviations->horizontalHeader()->stretchLastSection();
+    int p=0;
+    QMap <QString, QString>::const_iterator i = lstAbb.constBegin();
+    while (i != lstAbb.constEnd())
+    {
+        ui->tabAbbreviations_lstListAbbreviations->setItem(p, 0, new QTableWidgetItem(QString("%1").arg(i.key()).trimmed()));
+        ui->tabAbbreviations_lstListAbbreviations->setItem(p, 1, new QTableWidgetItem(QString("%1").arg(i.value()).trimmed()));
+        ++p;++i;
+    }
+}
 
+void kXneurApp::frmSettings::plug_get_list_plugins(QMap<QString, QMultiMap<bool, QString> > lstPlg)
+{
+    ui->tabPlugins_lstListPlugins->setRowCount(lstPlg.size());
+    ui->tabPlugins_lstListPlugins->horizontalHeader()->setResizeMode(0,QHeaderView::ResizeToContents);
+    ui->tabPlugins_lstListPlugins->horizontalHeader()->setResizeMode(1,QHeaderView::Stretch);
+    ui->tabPlugins_lstListPlugins->horizontalHeader()->setResizeMode(2,QHeaderView::ResizeToContents);
+    //ui->tabPlugins_lstListPlugins->horizontalHeader()->stretchLastSection();
+
+    QMultiMap<bool, QString> tmpMap;
+    int p=0;
+
+    QMap<QString, QMultiMap<bool, QString> >::const_iterator i = lstPlg.constBegin();
+    while (i != lstPlg.constEnd())
+    {
+        ui->tabPlugins_lstListPlugins->setItem(p,2, new QTableWidgetItem(i.key()));
+        tmpMap = i.value();
+        QMultiMap<bool, QString>::const_iterator j = tmpMap.constBegin();
+        while( j!= tmpMap.constEnd())
+        {
+            QTableWidgetItem *itm = new QTableWidgetItem();
+            (j.key()) ? itm->setCheckState(Qt::Checked):itm->setCheckState(Qt::Unchecked);
+            ui->tabPlugins_lstListPlugins->setItem(p,0, itm);
+            ui->tabPlugins_lstListPlugins->setItem(p,1, new QTableWidgetItem(j.value()));
+            ++j;
+        }
+        ++p;++i;
+    }
 }

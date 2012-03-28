@@ -35,7 +35,7 @@ void kXneurApp::getNameApp::Clicked(QAbstractButton *cmd)
 
 void kXneurApp::getNameApp::getApp()
 {
-    Xprop->start("xprop | grep WM_CLASS");
+    Xprop->start("xprop WM_CLASS");
 }
 
 void kXneurApp::getNameApp::readOutput()

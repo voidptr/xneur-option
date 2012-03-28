@@ -88,6 +88,8 @@ namespace kXneurApp
 
     void abbr_get_list_abbreviations(QMap <QString, QString>);
 
+    void plug_get_list_plugins(QMap<QString, QMultiMap<bool, QString> >);
+
 
     void auto_get_list_app_autocomp(QStringList);
   };
