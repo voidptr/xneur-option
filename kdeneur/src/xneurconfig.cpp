@@ -428,7 +428,9 @@ QMap <QString, QString> kXneurApp::xNeurConfig::hot_get_list_command_hotkeys()
                << tr("Rotate layouts") << tr("Rotate layouts back") << tr("Expand abbreviations") << tr("Autocompletion confirmation")
                << tr("Block/Unblock keyboard and mouse events") << tr("Insert date");
 
-    for(int i=0;i<MAX_HOTKEYS; ++i)
+    //TODO почемуто у меня в файле xnconfig.h переменная  MAX_HOTKEYS 24 а должна быть 23
+    //for(int i=0;i<MAX_HOTKEYS; ++i)
+    for(int i=0;i<23; ++i)
     {
         if(xconfig->hotkeys[i].key!=NULL)
         {
@@ -768,6 +770,148 @@ void kXneurApp::xNeurConfig::log_save_port(int port)
 int kXneurApp::xNeurConfig::log_get_port()
 {
     return xconfig->port_keyboard_log;
+}
+
+/*============================== tab Troubleshooting ===============================*/
+
+bool kXneurApp::xNeurConfig::trabl_get_backspace()
+{
+    return xconfig->troubleshoot_backspace;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_backspace(bool stat)
+{
+    xconfig->troubleshoot_backspace = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_left_arrow()
+{
+    return xconfig->troubleshoot_left_arrow;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_left_arrow(bool stat)
+{
+    xconfig->troubleshoot_left_arrow = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_right_arrow ()
+{
+    return xconfig->troubleshoot_right_arrow;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_right_arrow (bool stat)
+{
+    xconfig->troubleshoot_right_arrow =stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_up_arrow ()
+{
+    return xconfig->troubleshoot_up_arrow;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_up_arrow (bool stat)
+{
+    xconfig->troubleshoot_up_arrow = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_down_arrow ()
+{
+    return xconfig->troubleshoot_down_arrow;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_down_arrow (bool stat)
+{
+    xconfig->troubleshoot_down_arrow = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_delete ()
+{
+    return xconfig->troubleshoot_delete;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_delete (bool stat)
+{
+    xconfig->troubleshoot_delete = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_user_change_layout ()
+{
+    return xconfig->troubleshoot_switch;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_user_change_layout (bool stat)
+{
+    xconfig->troubleshoot_switch = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_full_screen ()
+{
+    return xconfig->troubleshoot_full_screen;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_full_screen (bool stat)
+{
+    xconfig->troubleshoot_full_screen = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_flush_buffer_esc ()
+{
+    return xconfig->flush_buffer_when_press_escape;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_flush_buffer_esc (bool stat)
+{
+    xconfig->flush_buffer_when_press_escape = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_flush_buffer_tab_enter ()
+{
+    return xconfig->flush_buffer_when_press_enter;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_flush_buffer_tab_enter (bool stat)
+{
+    xconfig->flush_buffer_when_press_enter = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_words_enter_tab ()
+{
+    return xconfig->dont_process_when_press_enter;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_words_enter_tab (bool stat)
+{
+    xconfig->dont_process_when_press_enter = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_compat_with_completion ()
+{
+    return xconfig->compatibility_with_completion;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_compat_with_completion (bool stat)
+{
+    xconfig->compatibility_with_completion = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_monitor_input ()
+{
+    return xconfig->tracking_input;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_monitor_input (bool stat)
+{
+    xconfig->tracking_input = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_monitor_mouse ()
+{
+    return xconfig->tracking_mouse;
+}
+
+void kXneurApp::xNeurConfig::trabl_save__monitor_mouse (bool stat)
+{
+    xconfig->tracking_mouse = stat;
 }
 
 

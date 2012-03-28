@@ -147,11 +147,48 @@ namespace kXneurApp
         void log_save_port(int);
         int log_get_port();
 
-
-
-
-
         //tab Trobleshooting
+        bool trabl_get_backspace();
+        void trabl_save_backspace(bool);
+
+        bool trabl_get_left_arrow();
+        void trabl_save_left_arrow(bool);
+
+        bool trabl_get_right_arrow ();
+        void trabl_save_right_arrow (bool);
+
+        bool trabl_get_up_arrow ();
+        void trabl_save_up_arrow (bool);
+
+        bool trabl_get_down_arrow ();
+        void trabl_save_down_arrow (bool);
+
+        bool trabl_get_delete ();
+        void trabl_save_delete (bool);
+
+        bool trabl_get_user_change_layout ();
+        void trabl_save_user_change_layout (bool);
+
+        bool trabl_get_full_screen ();
+        void trabl_save_full_screen (bool);
+
+        bool trabl_get_flush_buffer_esc ();
+        void trabl_save_flush_buffer_esc (bool);
+
+        bool trabl_get_flush_buffer_tab_enter ();
+        void trabl_save_flush_buffer_tab_enter (bool);
+
+        bool trabl_get_words_enter_tab ();
+        void trabl_save_words_enter_tab (bool);
+
+        bool trabl_get_compat_with_completion ();
+        void trabl_save_compat_with_completion (bool);
+
+        bool trabl_get_monitor_input ();
+        void trabl_save_monitor_input (bool);
+
+        bool trabl_get_monitor_mouse ();
+        void trabl_save__monitor_mouse (bool);
 
         //tab Advanced
 

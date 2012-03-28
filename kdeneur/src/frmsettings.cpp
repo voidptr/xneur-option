@@ -94,6 +94,20 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->log_save_port(ui->tabLog_spbSendLogPort->value());
 
     //tab Troubleshooting
+    cfgNeur->trabl_save_backspace(ui->tabTroubleshooting_chkBackspace->isChecked());
+    cfgNeur->trabl_save_left_arrow(ui->tabTroubleshooting_chkLeftArrow->isChecked());
+    cfgNeur->trabl_save_right_arrow(ui->tabTroubleshooting_chkRightArrow->isChecked());
+    cfgNeur->trabl_save_up_arrow(ui->tabTroubleshooting_chkUpArrow->isChecked());
+    cfgNeur->trabl_save_down_arrow(ui->tabTroubleshooting_chkDownArrow->isChecked());
+    cfgNeur->trabl_save_delete(ui->tabTroubleshooting_chkDelete->isChecked());
+    cfgNeur->trabl_save_user_change_layout(ui->tabTroubleshooting_chkChangeLayout->isChecked());
+    cfgNeur->trabl_save_full_screen(ui->tabTroubleshooting_chkFullScreen->isChecked());
+    cfgNeur->trabl_save_flush_buffer_esc(ui->tabTroubleshooting_chkFlushInterBuffEscape->isChecked());
+    cfgNeur->trabl_save_flush_buffer_tab_enter(ui->tabTroubleshooting_chkFlushInterBuffEnterTab->isChecked());
+    cfgNeur->trabl_save_words_enter_tab(ui->tabTroubleshooting_chkProcessWordEnterTab->isChecked());
+    cfgNeur->trabl_save_compat_with_completion(ui->tabTroubleshooting_chkCompatCompletion->isChecked());
+    cfgNeur->trabl_save_monitor_input(ui->tabTroubleshooting_chkMonitorInput->isChecked());
+    cfgNeur->trabl_save_monitor_mouse(ui->tabTroubleshooting_chkMonitorMouse->isChecked());
 
     //tab Advanced
 
@@ -147,15 +161,11 @@ void kXneurApp::frmSettings::settintgGrid()
 
     //tab Plugins
     plug_get_list_plugins(cfgNeur->plug_get_list_plugins());
-
-
-
 }
 
 void kXneurApp::frmSettings::readSettingsKdeNeur()
 {
     readSettingsNeur();
-
 
     // прочитать настройку  в чем открывать логи приложения
     //tab Properties
@@ -172,7 +182,6 @@ void kXneurApp::frmSettings::readSettingsKdeNeur()
         ui->tabProperties_grpFolderIcon->setEnabled(true);
         ui->tabProperties_txtPathIconTray->setText(properties.readEntry("Iconpath",""));
     }
-    ui->tabProperties_cmbUsedRenderingEngine->setCurrentIndex(properties.readEntry("TypeEngine",0));
 }
 
 void kXneurApp::frmSettings::readSettingsNeur()
@@ -223,6 +232,26 @@ void kXneurApp::frmSettings::readSettingsNeur()
     ui->tabLog_txtSendLogHost->setText(cfgNeur->log_get_host());
     ui->tabLog_spbSendLogPort->setValue(cfgNeur->log_get_port());
 
+    //tab Troubleshooting
+
+    ui->tabTroubleshooting_chkBackspace->setChecked(cfgNeur->trabl_get_backspace());
+    ui->tabTroubleshooting_chkLeftArrow->setChecked(cfgNeur->trabl_get_left_arrow());
+    ui->tabTroubleshooting_chkRightArrow->setChecked(cfgNeur->trabl_get_right_arrow());
+    ui->tabTroubleshooting_chkUpArrow->setChecked(cfgNeur->trabl_get_up_arrow());
+    ui->tabTroubleshooting_chkDownArrow->setChecked(cfgNeur->trabl_get_down_arrow());
+    ui->tabTroubleshooting_chkDelete->setChecked(cfgNeur->trabl_get_delete());
+    ui->tabTroubleshooting_chkChangeLayout->setChecked(cfgNeur->trabl_get_user_change_layout());
+    ui->tabTroubleshooting_chkFullScreen->setChecked(cfgNeur->trabl_get_full_screen());
+
+    ui->tabTroubleshooting_chkFlushInterBuffEscape->setChecked(cfgNeur->trabl_get_flush_buffer_esc());
+    ui->tabTroubleshooting_chkFlushInterBuffEnterTab->setChecked(cfgNeur->trabl_get_flush_buffer_tab_enter());
+    ui->tabTroubleshooting_chkProcessWordEnterTab->setChecked(cfgNeur->trabl_get_words_enter_tab());
+    ui->tabTroubleshooting_chkCompatCompletion->setChecked(cfgNeur->trabl_get_compat_with_completion());
+
+    ui->tabTroubleshooting_chkMonitorInput->setChecked(cfgNeur->trabl_get_monitor_input());
+    ui->tabTroubleshooting_chkMonitorMouse->setChecked(cfgNeur->trabl_get_monitor_mouse());
+
+
 }
 
 
@@ -258,7 +287,6 @@ void kXneurApp::frmSettings::createConnect()
   connect(ui->tabProperties_cmdRecoverKeyCommand, SIGNAL(clicked()), SLOT(RecoverKeyboardCommand()));
   connect(ui->tabProperties_cmdEditKeyCommand, SIGNAL(clicked()),SLOT(EditKeyboardCommand()));
   connect(ui->tabProperties_cmbTypeIconTray, SIGNAL(activated(int)),SLOT(TypeIconTray(int)));
-  connect(ui->tabProperties_cmbUsedRenderingEngine,SIGNAL(activated(int)),SLOT(TypeEngine(int)));
   connect(ui->tabProperties_cmdBrowseIconTray, SIGNAL(clicked()),SLOT(BrowseIconTray()));
   connect(ui->tabProperties_chkEnableAutostart, SIGNAL(clicked(bool)), SLOT(chekAutostart(bool)));
   connect(ui->tabProperties_spbDelayStartApp, SIGNAL(valueChanged(int)), SLOT(delayStartApp(int)));
@@ -343,11 +371,6 @@ void kXneurApp::frmSettings::chekAutostart(bool cheked)
 void kXneurApp::frmSettings::delayStartApp(int val)
 {
     properties.writeEntry("WaiTime",  val);
-}
-
-void kXneurApp::frmSettings::TypeEngine(int selectIndex)
-{
-    properties.writeEntry("TypeEngine", selectIndex);
 }
 
 void kXneurApp::frmSettings::addAbbreviation()

@@ -47,7 +47,7 @@ namespace kXneurApp
     void RecoverKeyboardCommand();
     void EditKeyboardCommand();
     void TypeIconTray(int);
-    void TypeEngine(int);
+    //void TypeEngine(int);
     void BrowseIconTray();
     void chekAutostart(bool);
     void delayStartApp(int);

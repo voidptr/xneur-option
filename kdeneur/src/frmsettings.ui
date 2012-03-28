@@ -29,7 +29,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>11</number>
      </property>
      <widget class="TabBar" name="tabGeneral">
       <property name="locale">
@@ -1783,41 +1783,37 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="lblUsedEngineRender">
-              <property name="text">
-               <string>Used for rendering engine: </string>
+             <widget class="QGroupBox" name="tabProperties_grpFolderIcon">
+              <property name="enabled">
+               <bool>false</bool>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="tabProperties_cmbUsedRenderingEngine">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
+              <property name="title">
+               <string>Folder icon indicator</string>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>239</width>
-                <height>23</height>
-               </size>
-              </property>
-              <item>
-               <property name="text">
-                <string>Built-in</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Status Icon</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>App Indicator</string>
-               </property>
-              </item>
+              <layout class="QGridLayout" name="gridLayout_19">
+               <item row="0" column="0">
+                <widget class="QLineEdit" name="tabProperties_txtPathIconTray"/>
+               </item>
+               <item row="0" column="1">
+                <widget class="QPushButton" name="tabProperties_cmdBrowseIconTray">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>40</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string notr="true">...</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
             <item>
@@ -1837,56 +1833,6 @@ p, li { white-space: pre-wrap; }
              </spacer>
             </item>
            </layout>
-          </item>
-          <item>
-           <widget class="QGroupBox" name="tabProperties_grpFolderIcon">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="title">
-             <string>Folder icon indicator</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_19">
-             <item row="0" column="0">
-              <widget class="QLineEdit" name="tabProperties_txtPathIconTray"/>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="tabProperties_cmdBrowseIconTray">
-               <property name="minimumSize">
-                <size>
-                 <width>40</width>
-                 <height>25</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>40</width>
-                 <height>25</height>
-                </size>
-               </property>
-               <property name="text">
-                <string notr="true">...</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <spacer name="verticalSpacer_10">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Minimum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
           </item>
          </layout>
         </widget>
