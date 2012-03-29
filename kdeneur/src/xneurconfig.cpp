@@ -17,7 +17,7 @@ extern "C"
 
 extern "C"
 {
-    #include <dlfcn.h>
+  //  #include <dlfcn.h>
     #include "xkb.h"
 }
 
@@ -33,7 +33,17 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
     connect(procxNeur, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(procxNeurStop(int,QProcess::ExitStatus)));
     connect(procxNeur, SIGNAL(started()), SLOT(procxNeurStart()));
    // plug_get_list_plugins();
-  //  qDebug() << XNEUR_PLUGIN_DIR;
+   // qDebug() << XNEURPLUGINDIR;
+
+
+//    char *text_path = xconfig->get_global_dict_path(dir_name, "dictionary");
+//    char *text_home_path = xconfig->get_home_dict_path(dir_name, "dictionary");
+   // char *text = xneur_get_file_content(text_path);
+//    qDebug() << "TEXT PATH " << text_path << " TEXT HOME PATH " << text_home_path;
+
+
+
+
     notifyNames << tr("Xneur started") << tr("Xneur reloaded") << tr("Xneur stopped") << tr("Keypress on layout 1")
                 << tr( "Keypress on layout 2") << tr("Keypress on layout 3") << tr("Keypress on layout 4") << tr("Switch to layout 1")
                 << tr( "Switch to layout 2") << tr("Switch to layout 3") << tr("Switch to layout 4") << tr("Correct word automatically")
@@ -45,6 +55,7 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
                 << tr( "Correct (c) with a copyright sign") << tr("Correct (tm) with a trademark sign") << tr("Correct (r) with a registered sign")
                 << tr( "Correct three points with a ellipsis sign") << tr("Execute user action") << tr("Block keyboard and mouse events")
                 << tr( "Unblock keyboard and mouse events");
+    conditions_names << tr("contains") <<tr("begins") << tr("ends") << tr("coincides");
 }
 
 kXneurApp::xNeurConfig::~xNeurConfig()
@@ -382,9 +393,20 @@ bool kXneurApp::xNeurConfig::lay_get_remember_layout_for_app()
     return xconfig->remember_layout;
 }
 
-void kXneurApp::xNeurConfig::lay_save_list_language()
+void kXneurApp::xNeurConfig::lay_save_list_language(QHash<QString, bool> lstLang)
 {
-
+    for (int j=0;j< lstLang.size();++j)
+    {
+        QHash<QString, bool>::const_iterator i = lstLang.constBegin();
+        while (i != lstLang.constEnd())
+        {
+            if (QString("%1").arg(xconfig->handle->languages[j].dir) == i.key())
+            {
+                xconfig->handle->languages[j].excluded = i.value();
+            }
+           ++i;
+        }
+    }
 }
 
 QStringList kXneurApp::xNeurConfig::lay_get_list_language()
@@ -411,8 +433,10 @@ QStringList kXneurApp::xNeurConfig::lay_get_list_app_one_layout()
 }
 void kXneurApp::xNeurConfig::lay_save_list_app_one_layout(QStringList lstApp)
 {
-    //TODO save Add app for one layout
-    qDebug()<<lstApp.size();
+    for (int i=0; i<lstApp.size(); ++i)
+    {
+        xconfig->layout_remember_apps->add(xconfig->layout_remember_apps, lstApp.at(i).toAscii().data());
+    }
 }
 
 /*================================= tab HotKeys =================================*/
@@ -430,7 +454,7 @@ QMap <QString, QString> kXneurApp::xNeurConfig::hot_get_list_command_hotkeys()
 
     //TODO почемуто у меня в файле xnconfig.h переменная  MAX_HOTKEYS 24 а должна быть 23
     //for(int i=0;i<MAX_HOTKEYS; ++i)
-    for(int i=0;i<23; ++i)
+    for(int i=0;i<lstCommand.size(); ++i)
     {
         if(xconfig->hotkeys[i].key!=NULL)
         {
@@ -914,6 +938,32 @@ void kXneurApp::xNeurConfig::trabl_save_monitor_mouse (bool stat)
     xconfig->tracking_mouse = stat;
 }
 
+/*================================= tab Advanced =================================*/
+
+void kXneurApp::xNeurConfig::adv_save_delay_sending_events(int time)
+{
+    xconfig->send_delay = time;
+}
+int kXneurApp::xNeurConfig::adv_get_delay_sending_events()
+{
+    return xconfig->send_delay;
+}
+void kXneurApp::xNeurConfig::adv_save_key_release_event(bool stat)
+{
+    xconfig->dont_send_key_release =stat;
+}
+bool kXneurApp::xNeurConfig::adv_get_key_release_event()
+{
+    return xconfig->dont_send_key_release;
+}
+void kXneurApp::xNeurConfig::adv_save_log_level(int index)
+{
+    xconfig->log_level = index;
+}
+int kXneurApp::xNeurConfig::adv_get_log_level()
+{
+    return xconfig->log_level;
+}
 
 /*================================= tab Plugins =================================*/
 QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::plug_get_list_plugins()
@@ -941,9 +991,8 @@ QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::plug_get_list_
                     statePlugin=true;
         }
         char *mod_info;
-        mod_info = libDescription();
-
-        plgDesript.insert(statePlugin, QString("%1").arg(mod_info));
+        mod_info =libDescription();
+        plgDesript.insert(statePlugin,QString("%1").arg(mod_info));
         lstPlug.insert(infoPlugins.at(count).fileName(), plgDesript);
         plgDesript.clear();
         statePlugin =false;

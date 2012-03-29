@@ -13,7 +13,6 @@ kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg
   ui->setupUi(this);
   setAttribute( Qt::WA_DeleteOnClose, true);
   cfgNeur = cfg;
-
   config = new KConfig("kdeneurrc");
   general = config->group("General");
   layouts = config->group("Layouts");
@@ -30,6 +29,7 @@ kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg
   settintgGrid();
   createConnect();
   readSettingsKdeNeur();
+
 }
 
 kXneurApp::frmSettings::~frmSettings()
@@ -110,6 +110,9 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->trabl_save_monitor_mouse(ui->tabTroubleshooting_chkMonitorMouse->isChecked());
 
     //tab Advanced
+    cfgNeur->adv_save_log_level(ui->tabAdvanced_cmbLogLevel->currentIndex());
+    cfgNeur->adv_save_delay_sending_events(ui->tabAdvanced_spbDelay->value());
+    cfgNeur->adv_save_key_release_event(ui->tabAdvanced_chkKeyRelease->isChecked());
 
     //tab Plugins
 
@@ -137,6 +140,7 @@ void kXneurApp::frmSettings::settintgGrid()
     //tab layout
     tab_lay_get_list_lang(cfgNeur->lay_get_list_language());
     tab_lay_get_list_app(cfgNeur->lay_get_list_app_one_layout());
+
 
     //tab HotKeys
     hot_get_list_hotkeys(cfgNeur->hot_get_list_command_hotkeys());
@@ -251,6 +255,11 @@ void kXneurApp::frmSettings::readSettingsNeur()
     ui->tabTroubleshooting_chkMonitorInput->setChecked(cfgNeur->trabl_get_monitor_input());
     ui->tabTroubleshooting_chkMonitorMouse->setChecked(cfgNeur->trabl_get_monitor_mouse());
 
+    //tab Advanced
+   ui->tabAdvanced_chkKeyRelease->setChecked(cfgNeur->adv_get_key_release_event());
+   ui->tabAdvanced_spbDelay->setValue(cfgNeur->adv_get_delay_sending_events());
+   ui->tabAdvanced_cmbLogLevel->setCurrentIndex(cfgNeur->adv_get_log_level());
+
 
 }
 
@@ -267,6 +276,7 @@ void kXneurApp::frmSettings::Clicked(QAbstractButton *button)
   else
   {
       done(QDialog::Rejected);
+   //   cfgNeur->lay_save_list_language(tab_lay_save_list_lang());
       this->close();
   }
 }
@@ -375,7 +385,7 @@ void kXneurApp::frmSettings::delayStartApp(int val)
 
 void kXneurApp::frmSettings::addAbbreviation()
 {
-    frmAddAbbreviature *frmAbb = new frmAddAbbreviature();
+    kXneurApp::frmAddAbbreviature *frmAbb = new kXneurApp::frmAddAbbreviature();
 
     if(frmAbb->exec() == QDialog::Accepted)
     {
@@ -383,6 +393,7 @@ void kXneurApp::frmSettings::addAbbreviation()
         ui->tabAbbreviations_lstListAbbreviations->setItem(ui->tabAbbreviations_lstListAbbreviations->rowCount()-1, 0, new QTableWidgetItem(frmAbb->abb));
         ui->tabAbbreviations_lstListAbbreviations->setItem(ui->tabAbbreviations_lstListAbbreviations->rowCount()-1, 1, new QTableWidgetItem(frmAbb->text));
     }
+    delete frmAbb;
 }
 
 void kXneurApp::frmSettings::tab_lay_get_list_lang(QStringList lstLng)
@@ -434,7 +445,7 @@ QStringList kXneurApp::frmSettings::getListFromWidget(QListWidget *wid)
 
 void kXneurApp::frmSettings::addApp_OneLayout()
 {
-    getNameApp *frm = new getNameApp();
+    kXneurApp::getNameApp *frm = new kXneurApp::getNameApp();
     if(frm->exec() == QDialog::Accepted)
     {
         QString str = frm->appName;
@@ -459,7 +470,14 @@ void kXneurApp::frmSettings::removeApp_OneLayout()
 //show  rule change layout
 void kXneurApp::frmSettings::rulesChange()
 {
+    qDebug()<<ui->Layout_lstLayout->currentRow();
+//    if(ui->Layout_lstLayout->currentRow())
+    kXneurApp::RulesChange *frm = new kXneurApp::RulesChange();
+    if(frm->exec() == QDialog::Accepted)
+    {
 
+    }
+    delete frm;
 }
 
 void kXneurApp::frmSettings::auto_get_list_app_autocomp(QStringList lstApp)
@@ -635,3 +653,14 @@ void kXneurApp::frmSettings::plug_get_list_plugins(QMap<QString, QMultiMap<bool,
     }
 }
 
+QHash <QString, bool > kXneurApp::frmSettings::tab_lay_save_list_lang()
+{
+    QHash <QString, bool > lstLang;
+    for (int i=0; i< ui->Layout_lstLayout->rowCount(); ++i)
+    {
+        (ui->Layout_lstLayout->item(i,2)->checkState()==Qt::Unchecked)?
+                    lstLang.insert(ui->Layout_lstLayout->item(i,1)->text(),false):
+                    lstLang.insert(ui->Layout_lstLayout->item(i,1)->text(),true);
+    }
+    return  lstLang;
+}

@@ -14,7 +14,9 @@ SOURCES += \
     xkb.c \
     frmaddabbreviature.cpp \
     xneurconfig.cpp \
-    getnameapp.cpp
+    getnameapp.cpp \
+    ruleschange.cpp \
+    addrules.cpp
 
 INCLUDEPATH += /usr/include
 
@@ -29,23 +31,29 @@ HEADERS += \
     xkb.h \
     frmaddabbreviature.h \
     xneurconfig.h \
-    getnameapp.h
+    getnameapp.h \
+    ruleschange.h \
+    addrules.h
 
 FORMS += \
     frmabout.ui \
     frmsettings.ui \
     frmaddabbreviature.ui \
-    getnameapp.ui
+    getnameapp.ui \
+    ruleschange.ui \
+    addrules.ui
 
 RESOURCES += \
     resursrc.qrc
 
 
+
 #unix {
+#XNEURPLUGINDIR = /usr/lib/xneur
   #VARIABLES
  # isEmpty(PREFIX) {
   #  PREFIX = /usr
-  #}
+#}
 
 #BINDIR = $$PREFIX/bin
 #DATADIR = $$PREFIX/share

@@ -4,6 +4,7 @@
 #include "frmaddabbreviature.h"
 #include "xneurconfig.h"
 #include "getnameapp.h"
+#include "ruleschange.h"
 
 //Qt header files
 #include <QDialog>
@@ -38,7 +39,6 @@ namespace kXneurApp
     void addApp_OneLayout();
     void removeApp_OneLayout();
     void rulesChange();
-
 
     //tab abbreviations
     void addAbbreviation();
@@ -79,6 +79,7 @@ namespace kXneurApp
 
     void tab_lay_get_list_lang(QStringList);
     void tab_lay_get_list_app(QStringList);
+    QHash<QString, bool> tab_lay_save_list_lang();
 
     void hot_get_list_hotkeys(QMap<QString, QString>);
     void hot_get_list_user_actions(QMap<QString, QMap<QString, QString> >);

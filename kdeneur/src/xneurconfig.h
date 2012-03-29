@@ -5,6 +5,7 @@
 #include <QProcess>
 #include <QObject>
 #include <QDebug>
+#include <QHash>
 #include <QDir>
 #include <QLibrary>
 #include <qwindowdefs.h>
@@ -18,6 +19,7 @@ namespace kXneurApp
         int xneur_pid;
         QString get_bind(int);
         QStringList notifyNames;
+        QStringList conditions_names;
 
     private slots:
         void procxNeurStart();
@@ -78,7 +80,7 @@ namespace kXneurApp
         void lay_save_remember_layout_for_app(bool);
         bool lay_get_remember_layout_for_app();
         QStringList lay_get_list_language();
-        void lay_save_list_language();
+        void lay_save_list_language(QHash<QString, bool>);
         QStringList lay_get_list_app_one_layout();
         void lay_save_list_app_one_layout(QStringList);
 
@@ -150,47 +152,42 @@ namespace kXneurApp
         //tab Trobleshooting
         bool trabl_get_backspace();
         void trabl_save_backspace(bool);
-
         bool trabl_get_left_arrow();
         void trabl_save_left_arrow(bool);
-
         bool trabl_get_right_arrow ();
         void trabl_save_right_arrow (bool);
-
         bool trabl_get_up_arrow ();
         void trabl_save_up_arrow (bool);
-
         bool trabl_get_down_arrow ();
         void trabl_save_down_arrow (bool);
-
         bool trabl_get_delete ();
         void trabl_save_delete (bool);
-
         bool trabl_get_user_change_layout ();
         void trabl_save_user_change_layout (bool);
-
         bool trabl_get_full_screen ();
         void trabl_save_full_screen (bool);
-
         bool trabl_get_flush_buffer_esc ();
         void trabl_save_flush_buffer_esc (bool);
-
         bool trabl_get_flush_buffer_tab_enter ();
         void trabl_save_flush_buffer_tab_enter (bool);
-
         bool trabl_get_words_enter_tab ();
         void trabl_save_words_enter_tab (bool);
-
         bool trabl_get_compat_with_completion ();
         void trabl_save_compat_with_completion (bool);
-
         bool trabl_get_monitor_input ();
         void trabl_save_monitor_input (bool);
-
         bool trabl_get_monitor_mouse ();
         void trabl_save_monitor_mouse (bool);
 
         //tab Advanced
+        void adv_save_delay_sending_events(int);
+        int adv_get_delay_sending_events();
+        void adv_save_key_release_event(bool);
+        bool adv_get_key_release_event();
+        void adv_save_log_level(int);
+        int adv_get_log_level();
+
+
 
         //tab Plugins
         QMap<QString, QMultiMap<bool, QString> >  plug_get_list_plugins();
