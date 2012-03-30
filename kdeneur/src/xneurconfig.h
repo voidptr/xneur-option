@@ -19,7 +19,7 @@ namespace kXneurApp
         int xneur_pid;
         QString get_bind(int);
         QStringList notifyNames;
-        QStringList conditions_names;
+
 
     private slots:
         void procxNeurStart();
@@ -38,7 +38,6 @@ namespace kXneurApp
         int getNeur_pid();
         void clearNeurConfig();
         void saveNeurConfig();
-
         void test(QString);
 
 
@@ -83,6 +82,7 @@ namespace kXneurApp
         void lay_save_list_language(QHash<QString, bool>);
         QStringList lay_get_list_app_one_layout();
         void lay_save_list_app_one_layout(QStringList);
+        QStringList lay_get_text_dictionary(QString);
 
         //tab hotkeys
         QMap <QString, QString> hot_get_list_command_hotkeys();

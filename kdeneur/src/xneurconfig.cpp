@@ -11,6 +11,7 @@ extern "C"
 
 #define MAX_LANGUAGES 4
 #define TOTAL_MODIFER 4
+#define LANGUAGES_DIR "languages"
 #define XNEUR_NEEDED_MAJOR_VERSION 15
 #define XNEUR_BUILD_MINOR_VERSION 0
 #define XNEUR_PLUGIN_DIR "/usr/lib/xneur"
@@ -41,6 +42,8 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
    // char *text = xneur_get_file_content(text_path);
 //    qDebug() << "TEXT PATH " << text_path << " TEXT HOME PATH " << text_home_path;
 
+  //  lay_get_text_dictionary("ru");
+
 
 
 
@@ -55,7 +58,7 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
                 << tr( "Correct (c) with a copyright sign") << tr("Correct (tm) with a trademark sign") << tr("Correct (r) with a registered sign")
                 << tr( "Correct three points with a ellipsis sign") << tr("Execute user action") << tr("Block keyboard and mouse events")
                 << tr( "Unblock keyboard and mouse events");
-    conditions_names << tr("contains") <<tr("begins") << tr("ends") << tr("coincides");
+
 }
 
 kXneurApp::xNeurConfig::~xNeurConfig()
@@ -439,6 +442,24 @@ void kXneurApp::xNeurConfig::lay_save_list_app_one_layout(QStringList lstApp)
     }
 }
 
+QStringList kXneurApp::xNeurConfig::lay_get_text_dictionary(QString lang)
+{
+    QStringList text;
+    QString dir_name = QString("%1/%2").arg(LANGUAGES_DIR).arg(lang);
+    QString path_dict = xconfig->get_global_dict_path(dir_name.toAscii().data(), "dictionary");
+    text << xconfig->get_home_dict_path(dir_name.toAscii().data(), "dictionary");
+    QFile fileDict(path_dict);
+    if(fileDict.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QTextStream dict(&fileDict);
+        while(!dict.atEnd())
+        {
+            text << dict.readLine();
+        }
+    }
+    return text;
+}
+
 /*================================= tab HotKeys =================================*/
 QMap <QString, QString> kXneurApp::xNeurConfig::hot_get_list_command_hotkeys()
 {
@@ -495,8 +516,6 @@ QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_use
                text = QString("%1+").arg(lstModifer.at(i));
         }
         text += QString("%1").arg(xconfig->actions[action].hotkey.key);
-
-
 
         lstNameCmd.insert(xconfig->actions[action].name,xconfig->actions[action].command);
         lstUserAction.insert(text, lstNameCmd);

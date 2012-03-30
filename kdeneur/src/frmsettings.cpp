@@ -302,6 +302,7 @@ void kXneurApp::frmSettings::createConnect()
   connect(ui->tabProperties_spbDelayStartApp, SIGNAL(valueChanged(int)), SLOT(delayStartApp(int)));
 
 
+
 }
 
 void kXneurApp::frmSettings::RecoverKeyboardCommand()
@@ -470,14 +471,19 @@ void kXneurApp::frmSettings::removeApp_OneLayout()
 //show  rule change layout
 void kXneurApp::frmSettings::rulesChange()
 {
-    qDebug()<<ui->Layout_lstLayout->currentRow();
-//    if(ui->Layout_lstLayout->currentRow())
-    kXneurApp::RulesChange *frm = new kXneurApp::RulesChange();
-    if(frm->exec() == QDialog::Accepted)
+    int row = ui->Layout_lstLayout->currentRow();
+    if(row < 0)
     {
-
+        qDebug()<< tr("WAR: Don't select language!");
+        QMessageBox::information(0, tr("Warning...."), tr("You don't select lang"), QMessageBox::Ok);
     }
-    delete frm;
+    else
+    {
+        QStringList text = cfgNeur->lay_get_text_dictionary(ui->Layout_lstLayout->item(row, 1)->text());
+        kXneurApp::RulesChange *frm = new kXneurApp::RulesChange(text);
+        frm->exec();
+        delete frm;
+    }
 }
 
 void kXneurApp::frmSettings::auto_get_list_app_autocomp(QStringList lstApp)
