@@ -1,6 +1,9 @@
 #include "frmsettings.h"
 #include "ui_frmsettings.h"
 
+//app header
+#include "edithotkey.h"
+
 //Qt header files
 #include <QDebug>
 #include <QFileDialog>
@@ -276,7 +279,6 @@ void kXneurApp::frmSettings::Clicked(QAbstractButton *button)
   else
   {
       done(QDialog::Rejected);
-   //   cfgNeur->lay_save_list_language(tab_lay_save_list_lang());
       this->close();
   }
 }
@@ -289,6 +291,9 @@ void kXneurApp::frmSettings::createConnect()
   connect(ui->Layout_AddApp, SIGNAL(clicked()), SLOT(addApp_OneLayout()));
   connect(ui->Layout_DelApp,SIGNAL(clicked()),SLOT(removeApp_OneLayout()));
   connect(ui->Layout_cmdRulesChange, SIGNAL(clicked()),SLOT(rulesChange()));
+
+  //tab hotkeys
+  connect(ui->tabHotKeys_EditHotKey, SIGNAL(clicked()), SLOT(editHotkey()));
 
   //tab abbreviations
   connect(ui->tabAbbreviations_cmdAdd, SIGNAL(clicked()), SLOT(addAbbreviation()));
@@ -669,4 +674,24 @@ QHash <QString, bool > kXneurApp::frmSettings::tab_lay_save_list_lang()
                     lstLang.insert(ui->Layout_lstLayout->item(i,1)->text(),true);
     }
     return  lstLang;
+}
+
+void kXneurApp::frmSettings::editHotkey()
+{
+    int row=ui->tabHotKey_lstHotKey->currentRow();
+    if(row<0)
+    {
+        //TODO
+    }
+    else
+    {
+        QString action=ui->tabHotKey_lstHotKey->item(row, 0)->text();
+        QString key=ui->tabHotKey_lstHotKey->item(row, 1)->text();
+        kXneurApp::EditHotKey *frm = new kXneurApp::EditHotKey(0,action, key);
+        if(frm->exec()==QDialog::Accepted)
+        {
+            ui->tabHotKey_lstHotKey->item(row, 1)->setText(frm->hot_keys);
+        }
+        delete frm;
+    }
 }

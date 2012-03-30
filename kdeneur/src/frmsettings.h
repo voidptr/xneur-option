@@ -40,6 +40,9 @@ namespace kXneurApp
     void removeApp_OneLayout();
     void rulesChange();
 
+    //tab hotkeys
+    void editHotkey();
+
     //tab abbreviations
     void addAbbreviation();
 

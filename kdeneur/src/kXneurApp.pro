@@ -16,7 +16,8 @@ SOURCES += \
     xneurconfig.cpp \
     getnameapp.cpp \
     ruleschange.cpp \
-    addrules.cpp
+    addrules.cpp \
+    edithotkey.cpp
 
 INCLUDEPATH += /usr/include
 
@@ -33,7 +34,8 @@ HEADERS += \
     xneurconfig.h \
     getnameapp.h \
     ruleschange.h \
-    addrules.h
+    addrules.h \
+    edithotkey.h
 
 FORMS += \
     frmabout.ui \
@@ -41,7 +43,8 @@ FORMS += \
     frmaddabbreviature.ui \
     getnameapp.ui \
     ruleschange.ui \
-    addrules.ui
+    addrules.ui \
+    edithotkey.ui
 
 RESOURCES += \
     resursrc.qrc
