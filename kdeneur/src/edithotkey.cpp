@@ -15,10 +15,15 @@ kXneurApp::EditHotKey::~EditHotKey()
 
 void kXneurApp::EditHotKey::keyPressEvent(QKeyEvent *event)
 {
-    qDebug()<< event->key();
+ /*   qDebug()<< event->nativeVirtualKey();
+    qDebug()<< event->nativeScanCode();
+    qDebug()<<event->nativeModifiers()*/;
+    //qDebug()<< event->text();
 }
 
 void kXneurApp::EditHotKey::keyReleaseEvent(QKeyEvent *event)
 {
-    //qDebug()<< event->key();
+    qDebug()<< QChar(event->key());
+//    qDebug()<< event->text();
+
 }

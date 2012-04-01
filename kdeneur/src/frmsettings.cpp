@@ -294,6 +294,9 @@ void kXneurApp::frmSettings::createConnect()
 
   //tab hotkeys
   connect(ui->tabHotKeys_EditHotKey, SIGNAL(clicked()), SLOT(editHotkey()));
+  connect(ui->tabHotKeys_UserActionsDel, SIGNAL(clicked()), SLOT(removeUserAction()));
+  connect(ui->tabHotKeys_UserActionsAdd, SIGNAL(clicked()), SLOT(addUserAction()));
+  connect(ui->tabHotKeys_UserActionsEdit, SIGNAL(clicked()), SLOT(editUserAction()));
 
   //tab abbreviations
   connect(ui->tabAbbreviations_cmdAdd, SIGNAL(clicked()), SLOT(addAbbreviation()));
@@ -694,4 +697,28 @@ void kXneurApp::frmSettings::editHotkey()
         }
         delete frm;
     }
+}
+
+void kXneurApp::frmSettings::removeUserAction()
+{
+    int row = ui->tabHotKey_lstUserActions->currentRow();
+
+    if(row< 0)
+    {
+        //TODO
+    }
+    else
+    {
+        ui->tabHotKey_lstUserActions->removeRow(row);
+    }
+}
+
+void kXneurApp::frmSettings::addUserAction()
+{
+
+}
+
+void kXneurApp::frmSettings::editUserAction()
+{
+
 }

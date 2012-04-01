@@ -42,6 +42,9 @@ namespace kXneurApp
 
     //tab hotkeys
     void editHotkey();
+    void removeUserAction();
+    void addUserAction();
+    void editUserAction();
 
     //tab abbreviations
     void addAbbreviation();
@@ -86,6 +89,7 @@ namespace kXneurApp
 
     void hot_get_list_hotkeys(QMap<QString, QString>);
     void hot_get_list_user_actions(QMap<QString, QMap<QString, QString> >);
+
 
     void notif_get_list_action_sound(QMap<QString, QMultiMap<QString, QString> >);
     void notif_get_list_action_osd(QMap<QString, QMultiMap<QString, QString> >);

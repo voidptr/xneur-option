@@ -17,7 +17,8 @@ SOURCES += \
     getnameapp.cpp \
     ruleschange.cpp \
     addrules.cpp \
-    edithotkey.cpp
+    edithotkey.cpp \
+    adduseraction.cpp
 
 INCLUDEPATH += /usr/include
 
@@ -35,7 +36,8 @@ HEADERS += \
     getnameapp.h \
     ruleschange.h \
     addrules.h \
-    edithotkey.h
+    edithotkey.h \
+    adduseraction.h
 
 FORMS += \
     frmabout.ui \
@@ -44,7 +46,8 @@ FORMS += \
     getnameapp.ui \
     ruleschange.ui \
     addrules.ui \
-    edithotkey.ui
+    edithotkey.ui \
+    adduseraction.ui
 
 RESOURCES += \
     resursrc.qrc
