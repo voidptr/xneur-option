@@ -22,9 +22,16 @@ void kXneurApp::getNameApp::Clicked(QAbstractButton *cmd)
 {
     if(ui->cmdBox->standardButton(cmd) == QDialogButtonBox::Ok)
     {
-        done(QDialog::Accepted);
-        appName = ui->txtNameApp->text();
-        this->close();
+        if(ui->txtNameApp->text().trimmed().isEmpty())
+        {
+            QMessageBox::information(0, tr("Applecation name is empty"), tr("You don't specify the application name."), QMessageBox::Ok);
+        }
+        else
+        {
+            done(QDialog::Accepted);
+            appName = ui->txtNameApp->text();
+            this->close();
+        }
     }
     else
     {

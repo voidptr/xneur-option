@@ -565,8 +565,10 @@ QStringList kXneurApp::xNeurConfig::auto_get_list_app_disable_autocomplite()
 
 void kXneurApp::xNeurConfig::auto_save_list_app_disable_autocomplite(QStringList lstApp)
 {
-    //TODO
-    qDebug()<<lstApp.size();
+    for (int i =0; i< lstApp.size(); ++i)
+    {
+      xconfig->autocompletion_excluded_apps->add(xconfig->autocompletion_excluded_apps, lstApp.at(i).toAscii().data());
+    }
 }
 
 
@@ -604,20 +606,28 @@ QStringList kXneurApp::xNeurConfig::app_get_list_manual_mode_app()
     return lstApp;
 }
 
-void kXneurApp::xNeurConfig::app_save_list_ignore_app()
+void kXneurApp::xNeurConfig::app_save_list_ignore_app(QStringList lstApp)
 {
-//TODO
+    for (int i =0; i< lstApp.size(); ++i)
+    {
+      xconfig->excluded_apps->add(xconfig->excluded_apps, lstApp.at(i).toAscii().data());
+    }
 }
 
-void kXneurApp::xNeurConfig::app_save_list_auto_mode_app()
+void kXneurApp::xNeurConfig::app_save_list_auto_mode_app(QStringList lstApp)
 {
-//TODO
+    for (int i =0; i< lstApp.size(); ++i)
+    {
+      xconfig->auto_apps->add(xconfig->auto_apps, lstApp.at(i).toAscii().data());
+    }
 }
 
-void kXneurApp::xNeurConfig::app_save_list_manual_mode_app()
+void kXneurApp::xNeurConfig::app_save_list_manual_mode_app(QStringList lstApp)
 {
-    //TODO
-
+    for (int i =0; i< lstApp.size(); ++i)
+    {
+      xconfig->manual_apps->add(xconfig->manual_apps, lstApp.at(i).toAscii().data());
+    }
 }
 
 /*================================= tab Notifications =================================*/
@@ -759,9 +769,14 @@ QMap <QString, QString> kXneurApp::xNeurConfig::abbr_get_list_abbreviations()
 return lstAbb;
 }
 
-void kXneurApp::xNeurConfig::abbr_save_list_abbreviations()
+void kXneurApp::xNeurConfig::abbr_save_list_abbreviations(QMap <QString, QString> lstAbbr)
 {
-    //TODO
+    QMap <QString, QString>::const_iterator i = lstAbbr.constBegin();
+    while (i!= lstAbbr.constEnd())
+    {
+        xconfig->abbreviations->add(xconfig->abbreviations, QString("%1 %2").arg(i.key()).arg(i.value()).toAscii().data());
+        ++i;
+    }
 }
 
 /*================================= tab Log =================================*/

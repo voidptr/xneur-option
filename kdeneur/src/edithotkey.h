@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QKeyEvent>
+#include <QFlags>
 
 #include <QDebug>
 namespace Ui
@@ -27,6 +28,7 @@ namespace kXneurApp
 
     private:
         Ui::EditHotKey *ui;
+        QString modif(int);
     };
 }
 #endif // EDITHOTKEY_H

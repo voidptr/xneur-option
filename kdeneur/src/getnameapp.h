@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QProcess>
 #include <QAbstractButton>
+#include <QMessageBox>
 namespace Ui
 {
     class getNameApp;

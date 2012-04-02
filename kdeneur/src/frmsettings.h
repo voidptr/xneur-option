@@ -5,6 +5,7 @@
 #include "xneurconfig.h"
 #include "getnameapp.h"
 #include "ruleschange.h"
+#include "adduseraction.h"
 
 //Qt header files
 #include <QDialog>
@@ -35,6 +36,7 @@ namespace kXneurApp
 
   private slots:
     void Clicked(QAbstractButton *);
+
     //tab layout
     void addApp_OneLayout();
     void removeApp_OneLayout();
@@ -45,6 +47,19 @@ namespace kXneurApp
     void removeUserAction();
     void addUserAction();
     void editUserAction();
+    void clearHotKey();
+
+    //tab autocompletion
+    void auto_add_app_list_disable_autocompletion();
+    void auto_del_app_list_disable_autocompletion();
+
+    //tab applications
+    void app_add_app_ignore_list();
+    void app_del_app_ignore_list();
+    void app_add_app_auto_mode_list();
+    void app_del_app_auto_mode_list();
+    void app_add_app_manual_mode_list();
+    void app_del_app_manual_mode_list();
 
     //tab abbreviations
     void addAbbreviation();
@@ -63,6 +78,8 @@ namespace kXneurApp
     Ui::frmSettings *ui;
     void saveSettingsNeur();
     QStringList getListFromWidget(QListWidget *);
+    void add_Application_to_Widget(QListWidget *);
+    void del_Application_to_Widget(QListWidget *);
 
     xNeurConfig *cfgNeur;
     KConfig *config;
@@ -96,6 +113,7 @@ namespace kXneurApp
     void notif_get_list_action_popup(QMap<QString, QMultiMap<QString, QString> >);
 
     void abbr_get_list_abbreviations(QMap <QString, QString>);
+    QMap <QString, QString> abbr_save_list_apprevaitions();
 
     void plug_get_list_plugins(QMap<QString, QMultiMap<bool, QString> >);
 

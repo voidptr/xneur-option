@@ -74,16 +74,19 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->auto_save_list_app_disable_autocomplite(getListFromWidget(ui->tabAutocompletion_lstApp));
 
     //tab Applications
+    cfgNeur->app_save_list_auto_mode_app(getListFromWidget(ui->taApplication_lstAppAutoMode));
+    cfgNeur->app_save_list_ignore_app(getListFromWidget(ui->taApplication_lstAppNotUsed));
+    cfgNeur->app_save_list_manual_mode_app(getListFromWidget(ui->taApplication_lstAppManualMode));
 
     //tab Notifications
     cfgNeur->notif_save_enable_sound(ui->tabSound_chkEnableSound->isChecked());
     cfgNeur->notif_save_volume_sound(ui->tabSound_spbSoundVolume->value());
-
     cfgNeur->notif_save_enable_show_osd(ui->tabOSD_chkEnableOSD->isChecked());
     cfgNeur->notif_save_set_font_osd(ui->tabOSD_txtFontOSD->text());
-
     cfgNeur->notif_save_enable_show_popup_msg(ui->tabPopupMessage_chkShowPopupMessage->isChecked());
     cfgNeur->notif_save_interval_popup_msg(ui->tabPopupMessage_spbIntervalPopup->value());
+    //TODO LIST SOUND, OSD, POPUP MSG
+
 
     //tab Abbreviations
     cfgNeur->abbr_save_ignore_keyboarf_layout(ui->tabAbbreviations_chkIgnoreKeyLayout->isChecked());
@@ -298,6 +301,20 @@ void kXneurApp::frmSettings::createConnect()
   connect(ui->tabHotKeys_UserActionsAdd, SIGNAL(clicked()), SLOT(addUserAction()));
   connect(ui->tabHotKeys_UserActionsEdit, SIGNAL(clicked()), SLOT(editUserAction()));
 
+  //tab autocompletion
+  connect(ui->tabAutocompletion_cmdAddApp, SIGNAL(clicked()),SLOT(auto_add_app_list_disable_autocompletion()));
+  connect(ui->tabAutocompletion_cmdDelApp, SIGNAL(clicked()),SLOT(auto_del_app_list_disable_autocompletion()));
+
+  //tab applications
+  connect(ui->taApplication_cmdAdd_NotUsed,SIGNAL(clicked()),SLOT(app_add_app_ignore_list()));
+  connect(ui->taApplication_cmdDel_NotUsed,SIGNAL(clicked()),SLOT(app_del_app_ignore_list()));
+
+  connect(ui->taApplication_cmdAdd_AutoMode,SIGNAL(clicked()),SLOT(app_add_app_auto_mode_list()));
+  connect(ui->taApplication_cmdDel_AutoMode, SIGNAL(clicked()),SLOT(app_del_app_auto_mode_list()));
+
+  connect(ui->taApplication_cmdAdd_ManualMode, SIGNAL(clicked()),SLOT(app_add_app_manual_mode_list()));
+  connect(ui->taApplication_cmdDel_ManualMode, SIGNAL(clicked()),SLOT(app_del_app_manual_mode_list()));
+
   //tab abbreviations
   connect(ui->tabAbbreviations_cmdAdd, SIGNAL(clicked()), SLOT(addAbbreviation()));
 
@@ -452,29 +469,38 @@ QStringList kXneurApp::frmSettings::getListFromWidget(QListWidget *wid)
     return lstApp;
 }
 
-void kXneurApp::frmSettings::addApp_OneLayout()
+void kXneurApp::frmSettings::add_Application_to_Widget(QListWidget *wid)
 {
     kXneurApp::getNameApp *frm = new kXneurApp::getNameApp();
     if(frm->exec() == QDialog::Accepted)
     {
         QString str = frm->appName;
-        ui->Layout_lstListApplicationOneKbLayout->addItem(new QListWidgetItem(str));
+        wid->addItem(new QListWidgetItem(str));
     }
     delete frm;
 }
 
-void kXneurApp::frmSettings::removeApp_OneLayout()
+void kXneurApp::frmSettings::del_Application_to_Widget(QListWidget *wid)
 {
-    if (ui->Layout_lstListApplicationOneKbLayout->currentRow()<0)
+    if (wid->currentRow()<0)
     {
         QMessageBox::information(0,tr("Nothing deleted"), tr("You don't select an application that must be removed"), QMessageBox::Ok);
     }
     else
     {
-        delete  ui->Layout_lstListApplicationOneKbLayout->takeItem( ui->Layout_lstListApplicationOneKbLayout->currentRow());
+        delete wid->takeItem(wid->currentRow());
     }
 }
 
+void kXneurApp::frmSettings::addApp_OneLayout()
+{
+    add_Application_to_Widget(ui->Layout_lstListApplicationOneKbLayout);
+}
+
+void kXneurApp::frmSettings::removeApp_OneLayout()
+{
+    del_Application_to_Widget( ui->Layout_lstListApplicationOneKbLayout);
+}
 
 //show  rule change layout
 void kXneurApp::frmSettings::rulesChange()
@@ -637,6 +663,19 @@ void kXneurApp::frmSettings::abbr_get_list_abbreviations(QMap<QString, QString> 
         ++p;++i;
     }
 }
+QMap <QString, QString> kXneurApp::frmSettings::abbr_save_list_apprevaitions()
+{
+    QMap <QString, QString> lstAbbr;
+    QString key, value;
+    for(int i=0; i < ui->tabAbbreviations_lstListAbbreviations->rowCount();++i)
+    {
+        key=ui->tabAbbreviations_lstListAbbreviations->item(i, 0)->text();
+        value = ui->tabAbbreviations_lstListAbbreviations->item(i,2)->text();
+        lstAbbr.insert(key,value);
+        key=value="";
+    }
+    return lstAbbr;
+}
 
 void kXneurApp::frmSettings::plug_get_list_plugins(QMap<QString, QMultiMap<bool, QString> > lstPlg)
 {
@@ -715,10 +754,84 @@ void kXneurApp::frmSettings::removeUserAction()
 
 void kXneurApp::frmSettings::addUserAction()
 {
-
+    kXneurApp::addUserAction *frmUsrAction = new kXneurApp::addUserAction();
+    if(frmUsrAction->exec() ==QDialog::Accepted)
+    {
+        int row = ui->tabHotKey_lstUserActions->rowCount();
+        ui->tabHotKey_lstUserActions->insertRow(row);
+        ui->tabHotKey_lstUserActions->setItem(row,0, new QTableWidgetItem(frmUsrAction->name));
+        ui->tabHotKey_lstUserActions->setItem(row,1, new QTableWidgetItem(frmUsrAction->hot_key));
+        ui->tabHotKey_lstUserActions->setItem(row,2, new QTableWidgetItem(frmUsrAction->command));
+    }
+    delete frmUsrAction;
 }
 
 void kXneurApp::frmSettings::editUserAction()
 {
+    int row = ui->tabHotKey_lstUserActions->currentRow();
+    if (row < 0)
+    {
+        //TODO
+    }
+    else
+    {
+        QString name, key, cmd;
+        name = ui->tabHotKey_lstUserActions->item(row,0)->text();
+        key = ui->tabHotKey_lstUserActions->item(row,1)->text();
+        cmd = ui->tabHotKey_lstUserActions->item(row,2)->text();
+        kXneurApp::addUserAction *frmUsrAction = new kXneurApp::addUserAction(name, key, cmd);
+        if(frmUsrAction->exec() ==QDialog::Accepted)
+        {
+            ui->tabHotKey_lstUserActions->item(row,0)->setText(frmUsrAction->name);
+            ui->tabHotKey_lstUserActions->item(row,1)->setText(frmUsrAction->hot_key);
+            ui->tabHotKey_lstUserActions->item(row,2)->setText(frmUsrAction->command);
+        }
+        delete frmUsrAction;
+    }
+}
 
+void kXneurApp::frmSettings::clearHotKey()
+{
+    int row = ui->tabHotKey_lstHotKey->currentRow();
+    ui->tabHotKey_lstHotKey->item(row, 1)->setText("");
+}
+
+void kXneurApp::frmSettings::auto_add_app_list_disable_autocompletion()
+{
+    add_Application_to_Widget(ui->tabAutocompletion_lstApp);
+}
+
+void kXneurApp::frmSettings::auto_del_app_list_disable_autocompletion()
+{
+    del_Application_to_Widget(ui->tabAutocompletion_lstApp);
+}
+
+void kXneurApp::frmSettings::app_add_app_ignore_list()
+{
+    add_Application_to_Widget(ui->taApplication_lstAppNotUsed);
+}
+
+void kXneurApp::frmSettings::app_del_app_ignore_list()
+{
+    del_Application_to_Widget(ui->taApplication_lstAppNotUsed);
+}
+
+void kXneurApp::frmSettings::app_add_app_auto_mode_list()
+{
+    add_Application_to_Widget(ui->taApplication_lstAppAutoMode);
+}
+
+void kXneurApp::frmSettings::app_del_app_auto_mode_list()
+{
+    del_Application_to_Widget(ui->taApplication_lstAppAutoMode);
+}
+
+void kXneurApp::frmSettings::app_add_app_manual_mode_list()
+{
+    add_Application_to_Widget(ui->taApplication_lstAppManualMode);
+}
+
+void kXneurApp::frmSettings::app_del_app_manual_mode_list()
+{
+    del_Application_to_Widget(ui->taApplication_lstAppManualMode);
 }

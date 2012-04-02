@@ -19,11 +19,14 @@ kXneurApp::addUserAction::~addUserAction()
 
 void kXneurApp::addUserAction::saveAction()
 {
-    done(Accepted);
-    name=ui->txtActionName->text();
-    hot_key= ui->txtKeyBind->text();
-    command = ui->txtCommandAction->text();
-    this->close();
+    if(!ui->txtActionName->text().trimmed().isEmpty() && !ui->txtKeyBind->text().trimmed().isEmpty() && !ui->txtCommandAction->text().trimmed().isEmpty())
+    {
+        done(Accepted);
+        name=ui->txtActionName->text();
+        hot_key= ui->txtKeyBind->text();
+        command = ui->txtCommandAction->text();
+        this->close();
+    }
 }
 
 void kXneurApp::addUserAction::cancelAction()

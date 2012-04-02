@@ -20,7 +20,6 @@ namespace kXneurApp
         QString get_bind(int);
         QStringList notifyNames;
 
-
     private slots:
         void procxNeurStart();
         void procxNeurStop(int,QProcess::ExitStatus);
@@ -104,9 +103,9 @@ namespace kXneurApp
         QStringList app_get_list_ignore_app();
         QStringList app_get_list_auto_mode_app();
         QStringList app_get_list_manual_mode_app();
-        void app_save_list_ignore_app();
-        void app_save_list_auto_mode_app();
-        void app_save_list_manual_mode_app();
+        void app_save_list_ignore_app(QStringList);
+        void app_save_list_auto_mode_app(QStringList);
+        void app_save_list_manual_mode_app(QStringList);
 
         //tab Notifications
             //tab SOUND
@@ -135,7 +134,7 @@ namespace kXneurApp
         void abbr_save_ignore_keyboarf_layout(bool);
         bool abbr_get_ignore_keyboard_layout();
         QMap <QString, QString> abbr_get_list_abbreviations();
-        void abbr_save_list_abbreviations();
+        void abbr_save_list_abbreviations(QMap <QString, QString>);
 
         //tab Log
         void log_save_enable_keylog(bool);
