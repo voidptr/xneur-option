@@ -473,7 +473,7 @@ QMap <QString, QString> kXneurApp::xNeurConfig::hot_get_list_command_hotkeys()
                << tr("Rotate layouts") << tr("Rotate layouts back") << tr("Expand abbreviations") << tr("Autocompletion confirmation")
                << tr("Block/Unblock keyboard and mouse events") << tr("Insert date");
 
-    //TODO почемуто у меня в файле xnconfig.h переменная  MAX_HOTKEYS 24 а должна быть 23
+    //TODO почему-то у меня в файле xnconfig.h переменная  MAX_HOTKEYS 24 а должна быть 23
     //for(int i=0;i<MAX_HOTKEYS; ++i)
     for(int i=0;i<lstCommand.size(); ++i)
     {
@@ -491,7 +491,7 @@ QMap <QString, QString> kXneurApp::xNeurConfig::hot_get_list_command_hotkeys()
 return tblHotKey;
 }
 
-void kXneurApp::xNeurConfig::hot_save_list_command_hotkeys()
+void kXneurApp::xNeurConfig::hot_save_list_command_hotkeys(QMap <QString, QString>)
 {
     //TODO
 }

@@ -25,10 +25,14 @@ namespace kXneurApp
         virtual void keyPressEvent(QKeyEvent *event);
         virtual void keyReleaseEvent(QKeyEvent * event);
 
-
     private:
         Ui::EditHotKey *ui;
         QString modif(int);
+        //QString md_key;
+
+    private slots:
+        void closeForm();
+        void save();
     };
 }
 #endif // EDITHOTKEY_H

@@ -297,6 +297,7 @@ void kXneurApp::frmSettings::createConnect()
 
   //tab hotkeys
   connect(ui->tabHotKeys_EditHotKey, SIGNAL(clicked()), SLOT(editHotkey()));
+  connect(ui->tabHotKeys_ClearHotKey, SIGNAL(clicked()),SLOT(clearHotKey()));
   connect(ui->tabHotKeys_UserActionsDel, SIGNAL(clicked()), SLOT(removeUserAction()));
   connect(ui->tabHotKeys_UserActionsAdd, SIGNAL(clicked()), SLOT(addUserAction()));
   connect(ui->tabHotKeys_UserActionsEdit, SIGNAL(clicked()), SLOT(editUserAction()));
@@ -308,10 +309,8 @@ void kXneurApp::frmSettings::createConnect()
   //tab applications
   connect(ui->taApplication_cmdAdd_NotUsed,SIGNAL(clicked()),SLOT(app_add_app_ignore_list()));
   connect(ui->taApplication_cmdDel_NotUsed,SIGNAL(clicked()),SLOT(app_del_app_ignore_list()));
-
   connect(ui->taApplication_cmdAdd_AutoMode,SIGNAL(clicked()),SLOT(app_add_app_auto_mode_list()));
   connect(ui->taApplication_cmdDel_AutoMode, SIGNAL(clicked()),SLOT(app_del_app_auto_mode_list()));
-
   connect(ui->taApplication_cmdAdd_ManualMode, SIGNAL(clicked()),SLOT(app_add_app_manual_mode_list()));
   connect(ui->taApplication_cmdDel_ManualMode, SIGNAL(clicked()),SLOT(app_del_app_manual_mode_list()));
 

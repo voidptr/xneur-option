@@ -86,7 +86,7 @@ namespace kXneurApp
         //tab hotkeys
         QMap <QString, QString> hot_get_list_command_hotkeys();
         QMap<QString, QMap<QString, QString> >  hot_get_list_user_actions();
-        void hot_save_list_command_hotkeys();
+        void hot_save_list_command_hotkeys(QMap <QString, QString>);
         void hot_save_list_user_actions();
 
         //tab autocompletion
