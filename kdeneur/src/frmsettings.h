@@ -110,9 +110,16 @@ namespace kXneurApp
     QMap<QString, QMap<QString, QString> > hot_save_list_user_actions();
 
 
-    void notif_get_list_action_sound(QMap<QString, QMultiMap<QString, QString> >);
+    void notif_get_list_action_sound(QMap<QString, QMultiMap<bool, QString> >);
     void notif_get_list_action_osd(QMap<QString, QMultiMap<QString, QString> >);
     void notif_get_list_action_popup(QMap<QString, QMultiMap<QString, QString> >);
+
+    QMap<QString, QMultiMap<bool, QString> > notif_save_list_action_sound();
+    QMap<QString, QMultiMap<QString, QString> > notif_save_list_action_osd();
+    QMap<QString, QMultiMap<QString, QString> > notif_save_list_action_popup();
+
+
+
 
     void abbr_get_list_abbreviations(QMap <QString, QString>);
     QMap <QString, QString> abbr_save_list_apprevaitions();

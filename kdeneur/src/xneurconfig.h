@@ -115,8 +115,8 @@ namespace kXneurApp
         bool notif_get_enable_sound();
         void notif_save_volume_sound(int);
         int notif_get_volume_sound();
-        QMap<QString, QMultiMap<QString, QString> > notif_get_list_action_sound();
-        void notif_save_list_action_sound();
+        QMap<QString, QMultiMap<bool, QString> > notif_get_list_action_sound();
+        void notif_save_list_action_sound(QMap<QString, QMultiMap<bool, QString> > );
             //tab OSD
         void notif_save_enable_show_osd(bool);
         bool notif_get_enable_show_osd();

@@ -14,11 +14,10 @@ extern "C"
 #define LANGUAGES_DIR "languages"
 #define XNEUR_NEEDED_MAJOR_VERSION 15
 #define XNEUR_BUILD_MINOR_VERSION 0
-#define XNEUR_PLUGIN_DIR "/usr/lib/xneur"
+#define XNEUR_PLUGIN_DIR "/usr/lib64/xneur"
 
 extern "C"
 {
-  //  #include <dlfcn.h>
     #include "xkb.h"
 }
 
@@ -719,20 +718,21 @@ int kXneurApp::xNeurConfig::notif_get_volume_sound()
     return xconfig->volume_percent;
 }
 
-QMap<QString, QMultiMap<QString, QString> > kXneurApp::xNeurConfig::notif_get_list_action_sound()
+QMap<QString, QMultiMap<bool, QString> > kXneurApp::xNeurConfig::notif_get_list_action_sound()
 {
-    QMap<QString, QMultiMap<QString, QString> > lstSound;
-    QMultiMap <QString, QString> lstFile;
+    QMap<QString, QMultiMap<bool, QString> > lstSound;
+    QMultiMap <bool, QString> lstFile;
     for (int i = 0; i <notifyNames.size(); ++i)
     {
-        lstFile.insert(QString("%1").arg(xconfig->sounds[i].enabled), QString("%1").arg(xconfig->sounds[i].file));
+        qDebug()<< "ENABLED " << xconfig->sounds[i].enabled << notifyNames.at(i);
+        lstFile.insert(xconfig->sounds[i].enabled, QString("%1").arg(xconfig->sounds[i].file));
         lstSound.insert(notifyNames.at(i), lstFile);
         lstFile.clear();
     }
     return lstSound;
 }
 
-void kXneurApp::xNeurConfig::notif_save_list_action_sound()
+void kXneurApp::xNeurConfig::notif_save_list_action_sound(QMap<QString, QMultiMap<bool, QString> >)
 {
     //TODO
 }
