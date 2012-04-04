@@ -68,6 +68,7 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->lay_save_number_layout(ui->Layout_spbLayoutNumber->value()-1);
     cfgNeur->lay_save_remember_layout_for_app(ui->Layout_chkRememberKbLayout->isChecked());
     cfgNeur->lay_save_list_app_one_layout(getListFromWidget(ui->Layout_lstListApplicationOneKbLayout));
+    cfgNeur->lay_save_list_language(tab_lay_save_list_lang());
 
     //tab HotKeys
     cfgNeur->hot_save_list_command_hotkeys(hot_save_list_hotkeys());
@@ -95,6 +96,7 @@ void kXneurApp::frmSettings::saveSettingsNeur()
 
     //tab Abbreviations
     cfgNeur->abbr_save_ignore_keyboarf_layout(ui->tabAbbreviations_chkIgnoreKeyLayout->isChecked());
+    cfgNeur->abbr_save_list_abbreviations(abbr_save_list_apprevaitions());
 
 
     //tab Log

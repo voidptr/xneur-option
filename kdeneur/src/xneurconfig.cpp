@@ -576,22 +576,22 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
                      QMap<QString, QString>::const_iterator l = tmpCmd.constBegin();
                      while(l!=tmpCmd.constEnd())
                      {
-                         qDebug()<< "KEY " << lsh_k.at(k);
+ //                        qDebug()<< "KEY " << lsh_k.at(k);
 //                         xconfig->actions[j].hotkey.key = lsh_k.at(k);
 //                         if (action_text != NULL)
-                         qDebug()<< "COMMAND " << l.value();
+ //                        qDebug()<< "COMMAND " << l.value();
 //                               xconfig->actions[j].command = l.value();
 //                         if (action_name != NULL)
-                         qDebug()<< "NAME " << l.key();
+//                         qDebug()<< "NAME " << l.key();
 //                               xconfig->actions[j].name = l.key();
                          ++l;
                      }
                  }
              }
-              if(ppp>0)
-                 qDebug()<< "Command value " << ppp;
+//              if(ppp>0)
+//                 qDebug()<< "Command value " << ppp;
 
-              ppp=0;
+             ppp=0;
             ++i;++j;
          }
    //  }

@@ -2,7 +2,8 @@
 #define ADDUSERACTION_H
 
 #include <QDialog>
-
+#include <QKeyEvent>
+#include <QFlags>
 namespace Ui
 {
     class addUserAction;
@@ -22,7 +23,11 @@ namespace kXneurApp
         void saveAction();
         void cancelAction();
     private:
+        QString modif(int);
         Ui::addUserAction *ui;
+    protected:
+        virtual void keyPressEvent(QKeyEvent *event);
+        virtual void keyReleaseEvent(QKeyEvent * event);
     };
 }
 
