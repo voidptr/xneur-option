@@ -19,6 +19,8 @@ namespace kXneurApp
         int xneur_pid;
         QString get_bind(int);
         QStringList notifyNames;
+        QStringList lstCommand_hotKey;
+        QStringList lstModifer;
 
     private slots:
         void procxNeurStart();
@@ -87,7 +89,7 @@ namespace kXneurApp
         QMap <QString, QString> hot_get_list_command_hotkeys();
         QMap<QString, QMap<QString, QString> >  hot_get_list_user_actions();
         void hot_save_list_command_hotkeys(QMap <QString, QString>);
-        void hot_save_list_user_actions();
+        void hot_save_list_user_actions(QMap<QString, QMap<QString, QString> > );
 
         //tab autocompletion
         void auto_save_enable_pattern(bool);

@@ -14,7 +14,7 @@ extern "C"
 #define LANGUAGES_DIR "languages"
 #define XNEUR_NEEDED_MAJOR_VERSION 15
 #define XNEUR_BUILD_MINOR_VERSION 0
-#define XNEUR_PLUGIN_DIR "/usr/lib64/xneur"
+#define XNEUR_PLUGIN_DIR "/usr/lib/xneur"
 
 extern "C"
 {
@@ -35,18 +35,6 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
     connect(procxNeur, SIGNAL(started()), SLOT(procxNeurStart()));
    // plug_get_list_plugins();
    // qDebug() << XNEURPLUGINDIR;
-
-
-//    char *text_path = xconfig->get_global_dict_path(dir_name, "dictionary");
-//    char *text_home_path = xconfig->get_home_dict_path(dir_name, "dictionary");
-   // char *text = xneur_get_file_content(text_path);
-//    qDebug() << "TEXT PATH " << text_path << " TEXT HOME PATH " << text_home_path;
-
-  //  lay_get_text_dictionary("ru");
-
-
-
-
     notifyNames << tr("Xneur started") << tr("Xneur reloaded") << tr("Xneur stopped") << tr("Keypress on layout 1")
                 << tr( "Keypress on layout 2") << tr("Keypress on layout 3") << tr("Keypress on layout 4") << tr("Switch to layout 1")
                 << tr( "Switch to layout 2") << tr("Switch to layout 3") << tr("Switch to layout 4") << tr("Correct word automatically")
@@ -59,6 +47,14 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
                 << tr( "Correct three points with a ellipsis sign") << tr("Execute user action") << tr("Block keyboard and mouse events")
                 << tr( "Unblock keyboard and mouse events");
 
+    lstCommand_hotKey << tr("Correct/Undo correction") << tr("Transliterate") << tr("Change case") << tr("Preview correction") << tr("Correct last line")
+               << tr("Correct selected text") << tr("Transliterate selected text") << tr("Change case of selected text") << tr("Preview correction of selected text")
+               << tr("Correct clipboard text") << tr("Transliterate clipboard text") << tr("Change case of clipboard text") << tr("Preview correction of clipboard text")
+               << tr("Switch to layout 1") << tr("Switch to layout 2") << tr("Switch to layout 3") << tr("Switch to layout 4")
+               << tr("Rotate layouts") << tr("Rotate layouts back") << tr("Expand abbreviations") << tr("Autocompletion confirmation")
+               << tr("Block/Unblock keyboard and mouse events") << tr("Insert date");
+     lstModifer << "Shift" << "Control" << "Alt" << "Super";
+
 }
 
 kXneurApp::xNeurConfig::~xNeurConfig()
@@ -68,14 +64,13 @@ kXneurApp::xNeurConfig::~xNeurConfig()
 QString kXneurApp::xNeurConfig::get_bind(int ind)
 {
     QString key;
-    QStringList lstModifer;
-    lstModifer << "Shift" << "Control" << "Alt" << "Super";
+    key.clear();
     for (int i = 0; i < TOTAL_MODIFER; ++i)
     {
         if ((xconfig->hotkeys[ind].modifiers & (0x1 << i)) == 0)
             continue;
 
-        key = QString("%1+").arg(lstModifer.at(i));
+        key += QString("%1+").arg(lstModifer.at(i));
     }
   key+=QString("%1").arg( xconfig->hotkeys[ind].key);
   return key;
@@ -463,37 +458,65 @@ QStringList kXneurApp::xNeurConfig::lay_get_text_dictionary(QString lang)
 /*================================= tab HotKeys =================================*/
 QMap <QString, QString> kXneurApp::xNeurConfig::hot_get_list_command_hotkeys()
 {
-    QStringList lstCommand;
+
     QString hot_key;
     QMap <QString, QString> tblHotKey;
-    lstCommand << tr("Correct/Undo correction") << tr("Transliterate") << tr("Change case") << tr("Preview correction") << tr("Correct last line")
-               << tr("Correct selected text") << tr("Transliterate selected text") << tr("Change case of selected text") << tr("Preview correction of selected text")
-               << tr("Correct clipboard text") << tr("Transliterate clipboard text") << tr("Change case of clipboard text") << tr("Preview correction of clipboard text")
-               << tr("Switch to layout 1") << tr("Switch to layout 2") << tr("Switch to layout 3") << tr("Switch to layout 4")
-               << tr("Rotate layouts") << tr("Rotate layouts back") << tr("Expand abbreviations") << tr("Autocompletion confirmation")
-               << tr("Block/Unblock keyboard and mouse events") << tr("Insert date");
-
     //TODO почему-то у меня в файле xnconfig.h переменная  MAX_HOTKEYS 24 а должна быть 23
     //for(int i=0;i<MAX_HOTKEYS; ++i)
-    for(int i=0;i<lstCommand.size(); ++i)
+    for(int i=0;i<lstCommand_hotKey.size(); ++i)
     {
         if(xconfig->hotkeys[i].key!=NULL)
         {
             hot_key = get_bind(i);
-            tblHotKey.insert(lstCommand.at(i), hot_key);
+            tblHotKey.insert(lstCommand_hotKey.at(i), hot_key);
         }
         else
         {
             hot_key="";
-            tblHotKey.insert(lstCommand.at(i), hot_key);
+            tblHotKey.insert(lstCommand_hotKey.at(i), hot_key);
         }
     }
 return tblHotKey;
 }
 
-void kXneurApp::xNeurConfig::hot_save_list_command_hotkeys(QMap <QString, QString>)
+void kXneurApp::xNeurConfig::hot_save_list_command_hotkeys(QMap <QString, QString> listHotKey)
 {
-    //TODO
+    int ppp=0;
+    bool key=false;
+    for(int j=0; j< listHotKey.size();++j)
+    {
+        QMap <QString, QString>::const_iterator i = listHotKey.constBegin();
+        while(i!=listHotKey.constEnd())
+        {
+            if (lstCommand_hotKey.at(j)==i.key() && !QString("%1").arg(i.value()).isEmpty())
+            {
+                QStringList lsh_k = QString("%1").arg(i.value()).replace(" ","").split("+");
+                for(int k=0; k<lsh_k.size();++k)
+                {
+                    key=false;
+                    for(int p=0; p<TOTAL_MODIFER;++p)
+                    {
+                        if(lsh_k.at(k)== lstModifer.at(p))
+                        {
+                            key = true;
+                            ppp |= (0x1 << p);
+                            //xconfig->hotkeys[j].modifiers |= (0x1 << p);
+                        }
+                    }
+                    if (key==false)
+                    {
+                       // xconfig->hotkeys[j].key = lsh_k.at(k);
+                    }
+
+                }
+               // if(ppp>0)
+                   //qDebug()<< "Command " << i.key() << " hot_key " << i.value() << " int value " << ppp;
+
+                ppp=0;
+             }
+            ++i;
+        }
+    }
 }
 
 QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_user_actions()
@@ -525,9 +548,53 @@ QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_use
     return lstUserAction;
 }
 
-void kXneurApp::xNeurConfig::hot_save_list_user_actions()
+void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QString, QString> > lstActions)
 {
-    //TODO
+     QMap<QString, QString> tmpCmd;
+     bool key=false;  int ppp=0; int j=0;
+//     for(int j=0; j< lstActions.size();++j)
+//     {
+         QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
+         while(i!=lstActions.constEnd())
+         {
+             tmpCmd = i.value();
+             QStringList lsh_k = QString("%1").arg(i.key()).replace(" ","").split("+");
+             for(int k=0; k<lsh_k.size();++k)
+             {
+                 key=false;
+                 for(int p=0; p<TOTAL_MODIFER;++p)
+                 {
+                     if(lsh_k.at(k)== lstModifer.at(p) || lsh_k.at(k).endsWith("_L") || lsh_k.at(k).endsWith("_R"))
+                     {
+                         key = true;
+                         ppp |= (0x1 << p);
+                         //xconfig->actions[j].hotkey.modifiers |= (0x1 << p);
+                     }
+                 }
+                 if (key==false)
+                 {
+                     QMap<QString, QString>::const_iterator l = tmpCmd.constBegin();
+                     while(l!=tmpCmd.constEnd())
+                     {
+                         qDebug()<< "KEY " << lsh_k.at(k);
+//                         xconfig->actions[j].hotkey.key = lsh_k.at(k);
+//                         if (action_text != NULL)
+                         qDebug()<< "COMMAND " << l.value();
+//                               xconfig->actions[j].command = l.value();
+//                         if (action_name != NULL)
+                         qDebug()<< "NAME " << l.key();
+//                               xconfig->actions[j].name = l.key();
+                         ++l;
+                     }
+                 }
+             }
+              if(ppp>0)
+                 qDebug()<< "Command value " << ppp;
+
+              ppp=0;
+            ++i;++j;
+         }
+   //  }
 }
 
 

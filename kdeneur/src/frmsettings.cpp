@@ -33,6 +33,9 @@ kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg
   createConnect();
   readSettingsKdeNeur();
 
+  cfgNeur->hot_save_list_user_actions(hot_save_list_user_actions());
+  cfgNeur->hot_save_list_command_hotkeys(hot_save_list_hotkeys());
+
 }
 
 kXneurApp::frmSettings::~frmSettings()
@@ -67,6 +70,8 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->lay_save_list_app_one_layout(getListFromWidget(ui->Layout_lstListApplicationOneKbLayout));
 
     //tab HotKeys
+    cfgNeur->hot_save_list_command_hotkeys(hot_save_list_hotkeys());
+    cfgNeur->hot_save_list_user_actions(hot_save_list_user_actions());
 
     //tab Autocompletion
     cfgNeur->auto_save_enable_pattern(ui->tabAutocompletion_chkEnableAutocompl->isChecked());
@@ -539,6 +544,17 @@ void kXneurApp::frmSettings::hot_get_list_hotkeys(QMap<QString, QString> lstComm
     }
 }
 
+QMap<QString, QString> kXneurApp::frmSettings::hot_save_list_hotkeys()
+{
+    QMap<QString, QString> lstHotKey;
+    for (int i=0; i< ui->tabHotKey_lstHotKey->rowCount();++i)
+    {
+        lstHotKey.insert(ui->tabHotKey_lstHotKey->item(i,0)->text(),ui->tabHotKey_lstHotKey->item(i,1)->text());
+    }
+    return lstHotKey;
+}
+
+
 void kXneurApp::frmSettings::hot_get_list_user_actions(QMap<QString, QMap<QString, QString> > lstUserActions)
 {
     ui->tabHotKey_lstUserActions->setRowCount(lstUserActions.size());
@@ -560,6 +576,21 @@ void kXneurApp::frmSettings::hot_get_list_user_actions(QMap<QString, QMap<QStrin
         }
         ++p;++i;
     }
+}
+
+QMap<QString, QMap<QString, QString> > kXneurApp::frmSettings::hot_save_list_user_actions()
+{
+    QMap<QString, QMap<QString, QString> >  lstActions;
+    QMap<QString, QString> lstcommand;
+
+    for(int i=0; i< ui->tabHotKey_lstUserActions->rowCount();++i)
+    {
+        lstcommand.insert(ui->tabHotKey_lstUserActions->item(i,0)->text(),ui->tabHotKey_lstUserActions->item(i,2)->text());
+        lstActions.insert(ui->tabHotKey_lstUserActions->item(i,1)->text(), lstcommand);
+        lstcommand.clear();
+    }
+
+    return lstActions;
 }
 
 void kXneurApp::frmSettings::notif_get_list_action_sound(QMap<QString, QMultiMap<QString, QString> > lstActions)
