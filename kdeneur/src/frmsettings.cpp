@@ -33,8 +33,7 @@ kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg
   createConnect();
   readSettingsKdeNeur();
 
-  cfgNeur->hot_save_list_user_actions(hot_save_list_user_actions());
-  cfgNeur->hot_save_list_command_hotkeys(hot_save_list_hotkeys());
+  cfgNeur->notif_save_list_action_sound(get_lget_from_notif_widget(ui->tabSound_lstListSound));
 
 }
 
@@ -91,10 +90,10 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->notif_save_set_font_osd(ui->tabOSD_txtFontOSD->text());
     cfgNeur->notif_save_enable_show_popup_msg(ui->tabPopupMessage_chkShowPopupMessage->isChecked());
     cfgNeur->notif_save_interval_popup_msg(ui->tabPopupMessage_spbIntervalPopup->value());
-    //TODO LIST SOUND, OSD, POPUP MSG
-    // SOUND
-    //cfgNeur->notif_save_list_action_sound();
 
+    cfgNeur->notif_save_list_action_sound(get_lget_from_notif_widget(ui->tabSound_lstListSound));
+    cfgNeur->notif_save_list_action_osd(get_lget_from_notif_widget(ui->tabOSD_lstListOSD));
+    cfgNeur->notif_save_list_action_popup_msg(get_lget_from_notif_widget(ui->tabPopupMessage_lstListPopupMessage));
 
     //tab Abbreviations
     cfgNeur->abbr_save_ignore_keyboarf_layout(ui->tabAbbreviations_chkIgnoreKeyLayout->isChecked());
@@ -323,6 +322,11 @@ void kXneurApp::frmSettings::createConnect()
   connect(ui->taApplication_cmdAdd_ManualMode, SIGNAL(clicked()),SLOT(app_add_app_manual_mode_list()));
   connect(ui->taApplication_cmdDel_ManualMode, SIGNAL(clicked()),SLOT(app_del_app_manual_mode_list()));
 
+  //tab notifications
+  connect(ui->tabSound_lstListSound, SIGNAL(cellDoubleClicked(int,int)),SLOT(notif_dublClicked(int,int)));
+  connect(ui->tabOSD_lstListOSD, SIGNAL(cellDoubleClicked(int,int)),SLOT(notif_dublClicked(int,int)));
+  connect(ui->tabPopupMessage_lstListPopupMessage, SIGNAL(cellDoubleClicked(int,int)),SLOT(notif_dublClicked(int,int)));
+
   //tab abbreviations
   connect(ui->tabAbbreviations_cmdAdd, SIGNAL(clicked()), SLOT(addAbbreviation()));
 
@@ -333,9 +337,6 @@ void kXneurApp::frmSettings::createConnect()
   connect(ui->tabProperties_cmdBrowseIconTray, SIGNAL(clicked()),SLOT(BrowseIconTray()));
   connect(ui->tabProperties_chkEnableAutostart, SIGNAL(clicked(bool)), SLOT(chekAutostart(bool)));
   connect(ui->tabProperties_spbDelayStartApp, SIGNAL(valueChanged(int)), SLOT(delayStartApp(int)));
-
-
-
 }
 
 void kXneurApp::frmSettings::RecoverKeyboardCommand()
@@ -371,7 +372,7 @@ void kXneurApp::frmSettings::TypeIconTray(int selectIndex)
 
 void kXneurApp::frmSettings::BrowseIconTray()
 {
-    ui->tabProperties_txtPathIconTray->setText(QFileDialog::getOpenFileName(0,tr("Select folder with image for icon tray kdeNeur"),"" ));
+    ui->tabProperties_txtPathIconTray->setText(QFileDialog::getExistingDirectory(this, tr("Select Directory with icon tray"),"",QFileDialog::ShowDirsOnly| QFileDialog::DontResolveSymlinks));
     if(! ui->tabProperties_txtPathIconTray->text().isEmpty())
     {
       properties.writeEntry("Iconpath",  ui->tabProperties_txtPathIconTray->text());
@@ -604,6 +605,7 @@ void kXneurApp::frmSettings::notif_get_list_action_sound(QMap<QString, QMultiMap
     ui->tabSound_lstListSound->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
     ui->tabSound_lstListSound->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
     ui->tabSound_lstListSound->horizontalHeader()->setResizeMode(2, QHeaderView::Fixed);
+    ui->tabSound_lstListSound->setObjectName("sound");
 
     QMultiMap<bool, QString> tmpMap;
     int p=0;
@@ -611,12 +613,17 @@ void kXneurApp::frmSettings::notif_get_list_action_sound(QMap<QString, QMultiMap
     QMap<QString, QMultiMap<bool, QString> >::const_iterator i = lstActions.constBegin();
     while (i != lstActions.constEnd())
     {
-        ui->tabSound_lstListSound->setItem(p,0, new QTableWidgetItem(i.key()));
+        QTableWidgetItem *itmNoEdit = new QTableWidgetItem();
+        itmNoEdit->setText(i.key());
+        itmNoEdit->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+        ui->tabSound_lstListSound->setItem(p,0,itmNoEdit);
+        //ui->tabSound_lstListSound->setItem(p,0, new QTableWidgetItem(i.key()));
         tmpMap = i.value();
         QMultiMap<bool, QString>::const_iterator j = tmpMap.constBegin();
         while( j!= tmpMap.constEnd())
         {
             QTableWidgetItem *itm = new QTableWidgetItem();
+            itm->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
             (j.key()) ? itm->setCheckState(Qt::Checked):itm->setCheckState(Qt::Unchecked);
             ui->tabSound_lstListSound->setItem(p,2, itm);
             ui->tabSound_lstListSound->setItem(p,1, new QTableWidgetItem(j.value()));
@@ -626,43 +633,49 @@ void kXneurApp::frmSettings::notif_get_list_action_sound(QMap<QString, QMultiMap
     }
 }
 
-QMap<QString, QMultiMap<bool, QString> >  kXneurApp::frmSettings::notif_save_list_action_sound()
-{
-    QMap<QString, QMultiMap<bool, QString> > sound;
-    QMultiMap<bool, QString> tmpMap;
+//QMap<QString, QMultiMap<bool, QString> >  kXneurApp::frmSettings::notif_save_list_action_sound()
+//{
+//    QMap<QString, QMultiMap<bool, QString> > sound;
+//    QMultiMap<bool, QString> tmpMap;
 
-    for (int i=0; i< ui->tabSound_lstListSound->rowCount();++i)
-    {
-        if (ui->tabSound_lstListSound->item(i,2)->checkState()==Qt::Unchecked)
-            {tmpMap.insert(false, ui->tabSound_lstListSound->item(i,1)->text());}
-        else
-            {tmpMap.insert(true, ui->tabSound_lstListSound->item(i,1)->text());}
-        sound.insert(ui->tabSound_lstListSound->item(i,0)->text(),tmpMap);
-        tmpMap.clear();
-    }
-    return sound;
-}
+//    for (int i=0; i< ui->tabSound_lstListSound->rowCount();++i)
+//    {
+//        if (ui->tabSound_lstListSound->item(i,2)->checkState()==Qt::Unchecked)
+//            {tmpMap.insert(false, ui->tabSound_lstListSound->item(i,1)->text());}
+//        else
+//            {tmpMap.insert(true, ui->tabSound_lstListSound->item(i,1)->text());}
+//        sound.insert(ui->tabSound_lstListSound->item(i,0)->text(),tmpMap);
+//        tmpMap.clear();
+//    }
+//    return sound;
+//}
 
-void kXneurApp::frmSettings::notif_get_list_action_osd(QMap<QString, QMultiMap<QString, QString> > lstActions)
+void kXneurApp::frmSettings::notif_get_list_action_osd(QMap<QString, QMultiMap<bool, QString> > lstActions)
 {
     ui->tabOSD_lstListOSD->setRowCount(lstActions.size());
     ui->tabOSD_lstListOSD->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
     ui->tabOSD_lstListOSD->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
     ui->tabOSD_lstListOSD->horizontalHeader()->setResizeMode(2, QHeaderView::Fixed);
     ui->tabOSD_lstListOSD->setColumnCount(3);
-    QMultiMap<QString, QString> tmpMap;
+    ui->tabOSD_lstListOSD->setObjectName("osd");
+    QMultiMap<bool, QString> tmpMap;
     int p=0;
 
-    QMap<QString, QMultiMap<QString, QString> >::const_iterator i = lstActions.constBegin();
+    QMap<QString, QMultiMap<bool, QString> >::const_iterator i = lstActions.constBegin();
     while (i != lstActions.constEnd())
     {
-        ui->tabOSD_lstListOSD->setItem(p,0, new QTableWidgetItem(i.key()));
+        QTableWidgetItem *itmNoEdit = new QTableWidgetItem();
+        itmNoEdit->setText(i.key());
+        itmNoEdit->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+        ui->tabOSD_lstListOSD->setItem(p,0,itmNoEdit);
+       // ui->tabOSD_lstListOSD->setItem(p,0, new QTableWidgetItem(i.key()));
         tmpMap = i.value();
-        QMultiMap<QString, QString>::const_iterator j = tmpMap.constBegin();
+        QMultiMap<bool, QString>::const_iterator j = tmpMap.constBegin();
         while( j!= tmpMap.constEnd())
         {
             QTableWidgetItem *itm = new QTableWidgetItem();
-            (j.key()=="0") ? itm->setCheckState(Qt::Unchecked):itm->setCheckState(Qt::Checked);
+             itm->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+            (j.key()) ? itm->setCheckState(Qt::Checked):itm->setCheckState(Qt::Unchecked);
             ui->tabOSD_lstListOSD->setItem(p,2, itm);
             ui->tabOSD_lstListOSD->setItem(p,1, new QTableWidgetItem(j.value()));
             ++j;
@@ -670,28 +683,50 @@ void kXneurApp::frmSettings::notif_get_list_action_osd(QMap<QString, QMultiMap<Q
         ++p;++i;
     }
 }
+//QMap<QString, QMultiMap<bool, QString> > kXneurApp::frmSettings::notif_save_list_action_osd()
+//{
 
-void kXneurApp::frmSettings::notif_get_list_action_popup(QMap<QString, QMultiMap<QString, QString> > lstActions)
+//    QMap<QString, QMultiMap<bool, QString> > osd;
+//    QMultiMap<bool, QString> tmpMap;
+
+//    for (int i=0; i< ui->tabSound_lstListSound->rowCount();++i)
+//    {
+//        if (ui->tabSound_lstListSound->item(i,2)->checkState()==Qt::Unchecked)
+//            {tmpMap.insert(false, ui->tabSound_lstListSound->item(i,1)->text());}
+//        else
+//            {tmpMap.insert(true, ui->tabSound_lstListSound->item(i,1)->text());}
+//        osd.insert(ui->tabSound_lstListSound->item(i,0)->text(),tmpMap);
+//        tmpMap.clear();
+//    }
+//    return osd;
+//}
+
+void kXneurApp::frmSettings::notif_get_list_action_popup(QMap<QString, QMultiMap<bool, QString> > lstActions)
 {
     ui->tabPopupMessage_lstListPopupMessage->setRowCount(lstActions.size());
     ui->tabPopupMessage_lstListPopupMessage->setColumnCount(3);
     ui->tabPopupMessage_lstListPopupMessage->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
     ui->tabPopupMessage_lstListPopupMessage->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
     ui->tabPopupMessage_lstListPopupMessage->horizontalHeader()->setResizeMode(2, QHeaderView::Fixed);
-
-    QMultiMap<QString, QString> tmpMap;
+    ui->tabPopupMessage_lstListPopupMessage->setObjectName("popup");
+    QMultiMap<bool, QString> tmpMap;
     int p=0;
 
-    QMap<QString, QMultiMap<QString, QString> >::const_iterator i = lstActions.constBegin();
+    QMap<QString, QMultiMap<bool, QString> >::const_iterator i = lstActions.constBegin();
     while (i != lstActions.constEnd())
     {
-        ui->tabPopupMessage_lstListPopupMessage->setItem(p,0, new QTableWidgetItem(i.key()));
+        QTableWidgetItem *itmNoEdit = new QTableWidgetItem();
+        itmNoEdit->setText(i.key());
+        itmNoEdit->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+        ui->tabPopupMessage_lstListPopupMessage->setItem(p,0,itmNoEdit);
+      //  ui->tabPopupMessage_lstListPopupMessage->setItem(p,0, new QTableWidgetItem(i.key()));
         tmpMap = i.value();
-        QMultiMap<QString, QString>::const_iterator j = tmpMap.constBegin();
+        QMultiMap<bool, QString>::const_iterator j = tmpMap.constBegin();
         while( j!= tmpMap.constEnd())
         {
             QTableWidgetItem *itm = new QTableWidgetItem();
-            (j.key()=="0") ? itm->setCheckState(Qt::Unchecked):itm->setCheckState(Qt::Checked);
+            itm->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+            (j.key()) ? itm->setCheckState(Qt::Checked):itm->setCheckState(Qt::Unchecked);
             ui->tabPopupMessage_lstListPopupMessage->setItem(p,2, itm);
             ui->tabPopupMessage_lstListPopupMessage->setItem(p,1, new QTableWidgetItem(j.value()));
             ++j;
@@ -885,4 +920,45 @@ void kXneurApp::frmSettings::app_add_app_manual_mode_list()
 void kXneurApp::frmSettings::app_del_app_manual_mode_list()
 {
     del_Application_to_Widget(ui->taApplication_lstAppManualMode);
+}
+
+void kXneurApp::frmSettings::notif_dublClicked(int row, int colum)
+{
+    QTableWidget *tmpWid = (QTableWidget *)sender();
+    if(tmpWid->objectName()=="sound")
+    {
+        if(colum==1)
+        {
+            QString str = QFileDialog::getOpenFileName(this, tr("Open File"),"",tr("Audio ( *.wav)"));
+            if (!str.isEmpty())
+            {
+                tmpWid->item(row,colum)->setText(str);
+                tmpWid->item(row,colum+1)->setCheckState(Qt::Checked);
+            }
+        }
+    }
+    else
+    {
+        if( colum==1)
+        {
+        tmpWid->setEditTriggers(QAbstractItemView::AllEditTriggers);
+        }
+    }
+}
+
+
+QMap<QString, QMultiMap<bool, QString> > kXneurApp::frmSettings::get_lget_from_notif_widget(QTableWidget *wid)
+{
+    QMap<QString, QMultiMap<bool, QString> > mapList;
+    QMultiMap<bool, QString> mapTmp;
+    for (int i=0; i< wid->rowCount();++i)
+    {
+        if (wid->item(i,2)->checkState()==Qt::Unchecked)
+            {mapTmp.insert(false, wid->item(i,1)->text());}
+        else
+            {mapTmp.insert(true, wid->item(i,1)->text());}
+        mapList.insert(wid->item(i,0)->text(),mapTmp);
+        mapTmp.clear();
+    }
+    return mapList;
 }

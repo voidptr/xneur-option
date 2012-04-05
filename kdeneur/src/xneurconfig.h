@@ -122,15 +122,15 @@ namespace kXneurApp
         bool notif_get_enable_show_osd();
         void notif_save_set_font_osd(QString);
         QString notif_get_font_osd();
-        QMap<QString, QMultiMap<QString, QString> >  notif_get_list_action_osd();
-        void notif_save_list_action_osd();
+        QMap<QString, QMultiMap<bool, QString> >  notif_get_list_action_osd();
+        void notif_save_list_action_osd( QMap<QString, QMultiMap<bool, QString> >);
             //tab POPUP MSG
         void notif_save_enable_show_popup_msg(bool);
         bool notif_get_enable_show_popup_msg();
         void notif_save_interval_popup_msg(int);
         int notif_get_interval_popup_msg();
-        QMap<QString, QMultiMap<QString, QString> >  notif_get_list_action_popup_msg();
-        void notif_save_list_action_popup_msg();
+        QMap<QString, QMultiMap<bool, QString> >  notif_get_list_action_popup_msg();
+        void notif_save_list_action_popup_msg(QMap<QString, QMultiMap<bool, QString> >);
 
         //tab Abbreviations
         void abbr_save_ignore_keyboarf_layout(bool);

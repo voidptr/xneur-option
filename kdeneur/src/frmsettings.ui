@@ -905,6 +905,9 @@
               <property name="text">
                <string>Enabled</string>
               </property>
+              <property name="textAlignment">
+               <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+              </property>
              </column>
             </widget>
            </item>

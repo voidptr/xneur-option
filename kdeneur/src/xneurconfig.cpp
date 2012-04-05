@@ -14,7 +14,7 @@ extern "C"
 #define LANGUAGES_DIR "languages"
 #define XNEUR_NEEDED_MAJOR_VERSION 15
 #define XNEUR_BUILD_MINOR_VERSION 0
-#define XNEUR_PLUGIN_DIR "/usr/lib64/xneur"
+#define XNEUR_PLUGIN_DIR "/usr/lib/xneur"
 
 extern "C"
 {
@@ -732,8 +732,24 @@ QMap<QString, QMultiMap<bool, QString> > kXneurApp::xNeurConfig::notif_get_list_
     return lstSound;
 }
 
-void kXneurApp::xNeurConfig::notif_save_list_action_sound(QMap<QString, QMultiMap<bool, QString> >)
+void kXneurApp::xNeurConfig::notif_save_list_action_sound(QMap<QString, QMultiMap<bool, QString> > lstSound)
 {
+    int i=0;
+    QMultiMap<bool, QString> mapTmp;
+    QMap<QString, QMultiMap<bool, QString> >::const_iterator p = lstSound.constBegin();
+    while(p!=lstSound.constEnd())
+    {
+        mapTmp = p.value();
+        QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
+        while(j!=mapTmp.constEnd())
+        {
+            qDebug()<< "FILE " << j.value() << " ENABLED " << j.key();
+  //           xconfig->sounds[i].enabled = j.key();
+//             xconfig->sounds[i].file = j.value();
+            ++j;++i;
+        }
+        ++p;
+    }
     //TODO
 }
                             /*========== tab OSD ==========*/
@@ -757,20 +773,20 @@ QString kXneurApp::xNeurConfig::notif_get_font_osd()
     return QString("%1").arg(xconfig->osd_font);
 }
 
-QMap<QString, QMultiMap<QString, QString> >  kXneurApp::xNeurConfig::notif_get_list_action_osd()
+QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::notif_get_list_action_osd()
 {
-    QMap<QString, QMultiMap<QString, QString> > lstOSD;
-    QMultiMap <QString, QString> lstFile;
+    QMap<QString, QMultiMap<bool, QString> > lstOSD;
+    QMultiMap <bool, QString> lstFile;
     for (int i = 0; i <notifyNames.size(); ++i)
     {
-        lstFile.insert(QString("%1").arg(xconfig->osds[i].enabled), QString("%1").arg(xconfig->osds[i].file));
+        lstFile.insert(xconfig->osds[i].enabled, QString("%1").arg(xconfig->osds[i].file));
         lstOSD.insert(notifyNames.at(i), lstFile);
         lstFile.clear();
     }
     return lstOSD;
 }
 
-void kXneurApp::xNeurConfig::notif_save_list_action_osd()
+void kXneurApp::xNeurConfig::notif_save_list_action_osd(QMap<QString, QMultiMap<bool, QString> > lstOsd)
 {
     //TODO
 }
@@ -796,19 +812,19 @@ int kXneurApp::xNeurConfig::notif_get_interval_popup_msg()
     return xconfig->popup_expire_timeout;
 }
 
-QMap<QString, QMultiMap<QString, QString> >  kXneurApp::xNeurConfig::notif_get_list_action_popup_msg()
+QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::notif_get_list_action_popup_msg()
 {
-    QMap<QString, QMultiMap<QString, QString> > lstPOPUP;
-    QMultiMap <QString, QString> lstFile;
+    QMap<QString, QMultiMap<bool, QString> > lstPOPUP;
+    QMultiMap <bool, QString> lstFile;
     for (int i = 0; i <notifyNames.size(); ++i)
     {
-        lstFile.insert(QString("%1").arg(xconfig->popups[i].enabled), QString("%1").arg(xconfig->popups[i].file));
+        lstFile.insert(xconfig->popups[i].enabled, QString("%1").arg(xconfig->popups[i].file));
         lstPOPUP.insert(notifyNames.at(i), lstFile);
         lstFile.clear();
     }
     return lstPOPUP;
 }
-void kXneurApp::xNeurConfig::notif_save_list_action_popup_msg()
+void kXneurApp::xNeurConfig::notif_save_list_action_popup_msg(QMap<QString, QMultiMap<bool, QString> > lstPopMsg)
 {
     //TODO
 }

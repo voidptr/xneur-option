@@ -2114,10 +2114,14 @@ void xneur_save_preference(GladeXML *gxml)
 
 	// Log send to e-mail
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry3");
+	if (xconfig->mail_keyboard_log != NULL)
+	    free(xconfig->mail_keyboard_log);
 	xconfig->mail_keyboard_log = strdup((char *) gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
 	
 	// Log send via host
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "entry4");
+	if (xconfig->host_keyboard_log != NULL)
+	    free(xconfig->host_keyboard_log);
 	xconfig->host_keyboard_log = strdup((char *) gtk_entry_get_text(GTK_ENTRY(widgetPtrToBefound)));
 
 	// Log port

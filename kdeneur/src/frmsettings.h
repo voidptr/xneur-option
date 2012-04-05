@@ -11,6 +11,7 @@
 #include <QDialog>
 #include <QAbstractButton>
 #include <QListWidget>
+#include <QTableWidget>
 
 
 //Kde header files
@@ -37,6 +38,7 @@ namespace kXneurApp
   private slots:
     void Clicked(QAbstractButton *);
 
+
     //tab layout
     void addApp_OneLayout();
     void removeApp_OneLayout();
@@ -60,6 +62,9 @@ namespace kXneurApp
     void app_del_app_auto_mode_list();
     void app_add_app_manual_mode_list();
     void app_del_app_manual_mode_list();
+
+    //tab notifications
+    void notif_dublClicked(int,int);
 
     //tab abbreviations
     void addAbbreviation();
@@ -111,15 +116,14 @@ namespace kXneurApp
 
 
     void notif_get_list_action_sound(QMap<QString, QMultiMap<bool, QString> >);
-    void notif_get_list_action_osd(QMap<QString, QMultiMap<QString, QString> >);
-    void notif_get_list_action_popup(QMap<QString, QMultiMap<QString, QString> >);
+    void notif_get_list_action_osd(QMap<QString, QMultiMap<bool, QString> >);
+    void notif_get_list_action_popup(QMap<QString, QMultiMap<bool, QString> >);
 
-    QMap<QString, QMultiMap<bool, QString> > notif_save_list_action_sound();
-    QMap<QString, QMultiMap<QString, QString> > notif_save_list_action_osd();
-    QMap<QString, QMultiMap<QString, QString> > notif_save_list_action_popup();
+    QMap<QString, QMultiMap<bool, QString> > get_lget_from_notif_widget(QTableWidget *);
 
-
-
+  //  QMap<QString, QMultiMap<bool, QString> > notif_save_list_action_sound();
+  //  QMap<QString, QMultiMap<bool, QString> > notif_save_list_action_osd();
+   // QMap<QString, QMultiMap<bool, QString> > notif_save_list_action_popup();
 
     void abbr_get_list_abbreviations(QMap <QString, QString>);
     QMap <QString, QString> abbr_save_list_apprevaitions();
