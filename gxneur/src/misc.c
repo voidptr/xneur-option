@@ -1929,9 +1929,9 @@ gboolean save_user_action(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *i
 		{
 			xconfig->actions[action].hotkey.key = strdup(key_stat[i]); 
 			if (action_text != NULL)
-				xconfig->actions[action].command = strdup(action_text);
+			  xconfig->actions[action].command = strdup(action_text);
 			if (action_name != NULL)
-				xconfig->actions[action].name = strdup(action_name);
+			  xconfig->actions[action].name = strdup(action_name);
 		}
 	}
 

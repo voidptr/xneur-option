@@ -192,7 +192,7 @@ namespace kXneurApp
 
         //tab Plugins
         QMap<QString, QMultiMap<bool, QString> >  plug_get_list_plugins();
-        void plug_save_list_plugins();
+        void plug_save_list_plugins(QMap<QString, QMultiMap<bool, QString> > );
 
         //tab Properties
 

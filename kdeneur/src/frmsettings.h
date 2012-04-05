@@ -121,15 +121,11 @@ namespace kXneurApp
 
     QMap<QString, QMultiMap<bool, QString> > get_lget_from_notif_widget(QTableWidget *);
 
-  //  QMap<QString, QMultiMap<bool, QString> > notif_save_list_action_sound();
-  //  QMap<QString, QMultiMap<bool, QString> > notif_save_list_action_osd();
-   // QMap<QString, QMultiMap<bool, QString> > notif_save_list_action_popup();
-
     void abbr_get_list_abbreviations(QMap <QString, QString>);
     QMap <QString, QString> abbr_save_list_apprevaitions();
 
     void plug_get_list_plugins(QMap<QString, QMultiMap<bool, QString> >);
-
+    QMap<QString, QMultiMap<bool, QString> > plug_save_list_plugins();
 
     void auto_get_list_app_autocomp(QStringList);
   };

@@ -200,6 +200,7 @@ void kXneurApp::xNeurConfig::procxNeurStart()
 
 void kXneurApp::xNeurConfig::clearNeurConfig()
 {
+    qDebug()<< "Clear config";
     xconfig->clear(xconfig);
 }
 
@@ -221,6 +222,7 @@ void kXneurApp::xNeurConfig::test(QString str)
 /*================================= tab General =================================*/
 void kXneurApp::xNeurConfig::gen_main_save_manual_switch(bool stat)
 {
+    qDebug()<< "set manual mode";
   xconfig->manual_mode = stat;
 }
 
@@ -231,6 +233,7 @@ bool kXneurApp::xNeurConfig::gen_main_get_manual_switch()
 
 void kXneurApp::xNeurConfig::gen_main_save_auto_learning(bool stat)
 {
+    qDebug()<< "set educate";
     xconfig->educate = stat;
 }
 
@@ -240,6 +243,7 @@ bool kXneurApp::xNeurConfig::gen_main_get_auto_learning()
 }
 void kXneurApp::xNeurConfig::gen_main_save_keep_select(bool stat)
 {
+    qDebug()<< "set save selection text";
     xconfig->save_selection_after_convert=stat;
 }
 
@@ -250,6 +254,7 @@ bool kXneurApp::xNeurConfig::gen_main_get_keep_select()
 
 void kXneurApp::xNeurConfig::gen_main_save_rotate_layout(bool stat)
 {
+    qDebug()<< "set rotate layout convert";
     xconfig->rotate_layout_after_convert=stat;
 }
 
@@ -260,6 +265,7 @@ bool kXneurApp::xNeurConfig::gen_main_get_rotate_layout()
 
 void kXneurApp::xNeurConfig::gen_main_save_check_lang(bool stat)
 {
+    qDebug()<< "set check lang process";
     xconfig->check_lang_on_process=stat;
 }
 
@@ -270,6 +276,7 @@ bool kXneurApp::xNeurConfig::gen_main_get_check_lang()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_caps(bool stat)
 {
+    qDebug()<< "set correct incidental caps";
     xconfig->correct_incidental_caps = stat;
 }
 
@@ -280,6 +287,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_caps()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_disable_caps(bool stat)
 {
+    qDebug()<< "set disable caps lock";
     xconfig->disable_capslock=stat;
 }
 
@@ -290,6 +298,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_disable_caps()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_two_caps(bool stat)
 {
+    qDebug()<< "set correct two caps";
     xconfig->correct_two_capital_letter =stat;
 }
 
@@ -300,6 +309,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_two_caps()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_space(bool stat)
 {
+    qDebug()<< "set correct two space with punct";
     xconfig->correct_space_with_punctuation=stat;
 }
 
@@ -310,6 +320,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_space()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_small_letter(bool stat)
 {
+    qDebug()<< "set correct capital letter after dot";
     xconfig->correct_capital_letter_after_dot = stat;
 }
 
@@ -320,6 +331,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_small_letter()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_two_space(bool stat)
 {
+    qDebug()<< "set correct two space with command and space";
     xconfig->correct_two_space_with_comma_and_space =stat;
 }
 
@@ -330,6 +342,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_two_space()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_two_minus(bool stat)
 {
+    qDebug()<< "set correct to minus";
     xconfig->correct_two_minus_with_dash = stat;
 }
 
@@ -340,6 +353,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_two_minus()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_c(bool stat)
 {
+    qDebug()<< "set correct (c)";
     xconfig->correct_c_with_copyright =stat;
 }
 
@@ -350,6 +364,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_c()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_tm(bool stat)
 {
+    qDebug()<< "set correct (tm)";
     xconfig->correct_tm_with_trademark = stat;
 }
 
@@ -360,6 +375,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_tm()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_r(bool stat)
 {
+    qDebug()<< "set correct (r)";
     xconfig->correct_r_with_registered = stat;
 }
 
@@ -372,6 +388,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_r()
 
 void kXneurApp::xNeurConfig::lay_save_number_layout(int curIndex)
 {
+    qDebug()<< "set save layout";
     xconfig->default_group = curIndex;
 }
 
@@ -382,6 +399,7 @@ int kXneurApp::xNeurConfig::lay_get_number_layout()
 
 void kXneurApp::xNeurConfig::lay_save_remember_layout_for_app(bool stat)
 {
+    qDebug()<< "set remember layout";
     xconfig->remember_layout = stat;
 }
 
@@ -399,6 +417,7 @@ void kXneurApp::xNeurConfig::lay_save_list_language(QHash<QString, bool> lstLang
         {
             if (QString("%1").arg(xconfig->handle->languages[j].dir) == i.key())
             {
+                qDebug()<< "set save lang ignord";
                 xconfig->handle->languages[j].excluded = i.value();
             }
            ++i;
@@ -434,6 +453,7 @@ void kXneurApp::xNeurConfig::lay_save_list_app_one_layout(QStringList lstApp)
     {
         xconfig->layout_remember_apps->add(xconfig->layout_remember_apps, lstApp.at(i).toAscii().data());
     }
+    qDebug()<< "save list app one layout";
 }
 
 QStringList kXneurApp::xNeurConfig::lay_get_text_dictionary(QString lang)
@@ -480,7 +500,7 @@ return tblHotKey;
 
 void kXneurApp::xNeurConfig::hot_save_list_command_hotkeys(QMap <QString, QString> listHotKey)
 {
-    int ppp=0;
+    //int ppp=0;
     bool key=false;
     for(int j=0; j< listHotKey.size();++j)
     {
@@ -498,20 +518,22 @@ void kXneurApp::xNeurConfig::hot_save_list_command_hotkeys(QMap <QString, QStrin
                         if(lsh_k.at(k)== lstModifer.at(p))
                         {
                             key = true;
-                            ppp |= (0x1 << p);
-                            //xconfig->hotkeys[j].modifiers |= (0x1 << p);
+                          //  ppp |= (0x1 << p);
+                            xconfig->hotkeys[j].modifiers |= (0x1 << p);
                         }
                     }
                     if (key==false)
                     {
-                       // xconfig->hotkeys[j].key = lsh_k.at(k);
+                        if(xconfig->hotkeys[j].key != NULL)
+                            {delete xconfig->hotkeys[j].key;}
+                        xconfig->hotkeys[j].key = lsh_k.at(k).toAscii().data();
                     }
 
                 }
                // if(ppp>0)
                    //qDebug()<< "Command " << i.key() << " hot_key " << i.value() << " int value " << ppp;
 
-                ppp=0;
+              //  ppp=0;
              }
             ++i;
         }
@@ -550,7 +572,7 @@ QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_use
 void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QString, QString> > lstActions)
 {
      QMap<QString, QString> tmpCmd;
-     bool key=false;  int ppp=0; int j=0;
+     bool key=false;  /*int ppp=0; */int j=1;
 //     for(int j=0; j< lstActions.size();++j)
 //     {
          QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
@@ -566,8 +588,9 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
                      if(lsh_k.at(k)== lstModifer.at(p) || lsh_k.at(k).endsWith("_L") || lsh_k.at(k).endsWith("_R"))
                      {
                          key = true;
-                         ppp |= (0x1 << p);
-                         //xconfig->actions[j].hotkey.modifiers |= (0x1 << p);
+//                         ppp |= (0x1 << p);
+               //          qDebug() << " J " << j << " " << xconfig->actions[j].hotkey.modifiers;
+                       //  xconfig->actions[j].hotkey.modifiers |= (0x1 << p);
                      }
                  }
                  if (key==false)
@@ -575,14 +598,19 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
                      QMap<QString, QString>::const_iterator l = tmpCmd.constBegin();
                      while(l!=tmpCmd.constEnd())
                      {
- //                        qDebug()<< "KEY " << lsh_k.at(k);
-//                         xconfig->actions[j].hotkey.key = lsh_k.at(k);
-//                         if (action_text != NULL)
- //                        qDebug()<< "COMMAND " << l.value();
-//                               xconfig->actions[j].command = l.value();
-//                         if (action_name != NULL)
-//                         qDebug()<< "NAME " << l.key();
-//                               xconfig->actions[j].name = l.key();
+               //          xconfig->actions[j].hotkey.key = lsh_k.at(k).toAscii().data();
+                         if (!QString("%1").arg(l.value()).isEmpty())
+                         {
+//                             if(xconfig->actions[j].command != NULL)
+//                                 {delete xconfig->actions[j].command;}
+//                               xconfig->actions[j].command = QString("%1").arg(l.value()).toAscii().data();
+                         }
+                         if (!QString("%1").arg(l.key()).isEmpty())
+                         {
+//                             if(xconfig->actions[j].name != NULL)
+//                                 {delete xconfig->actions[j].name;}
+//                             xconfig->actions[j].name = QString("%1").arg(l.key()).toAscii().data();
+                         }
                          ++l;
                      }
                  }
@@ -590,7 +618,7 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
 //              if(ppp>0)
 //                 qDebug()<< "Command value " << ppp;
 
-             ppp=0;
+       //      ppp=0;
             ++i;++j;
          }
    //  }
@@ -724,7 +752,7 @@ QMap<QString, QMultiMap<bool, QString> > kXneurApp::xNeurConfig::notif_get_list_
     QMultiMap <bool, QString> lstFile;
     for (int i = 0; i <notifyNames.size(); ++i)
     {
-        qDebug()<< "ENABLED " << xconfig->sounds[i].enabled << notifyNames.at(i);
+      //  qDebug()<< "ENABLED " << xconfig->sounds[i].enabled << notifyNames.at(i);
         lstFile.insert(xconfig->sounds[i].enabled, QString("%1").arg(xconfig->sounds[i].file));
         lstSound.insert(notifyNames.at(i), lstFile);
         lstFile.clear();
@@ -743,14 +771,16 @@ void kXneurApp::xNeurConfig::notif_save_list_action_sound(QMap<QString, QMultiMa
         QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
         while(j!=mapTmp.constEnd())
         {
-            qDebug()<< "FILE " << j.value() << " ENABLED " << j.key();
-  //           xconfig->sounds[i].enabled = j.key();
-//             xconfig->sounds[i].file = j.value();
+             xconfig->sounds[i].enabled = j.key();
+             if (xconfig->sounds[i].file != NULL)
+             {
+                 delete xconfig->sounds[i].file;
+             }
+             xconfig->sounds[i].file = QString("%1").arg(j.value()).toAscii().data();
             ++j;++i;
         }
         ++p;
     }
-    //TODO
 }
                             /*========== tab OSD ==========*/
 void kXneurApp::xNeurConfig::notif_save_enable_show_osd(bool stat)
@@ -765,6 +795,10 @@ bool kXneurApp::xNeurConfig::notif_get_enable_show_osd()
 
 void kXneurApp::xNeurConfig::notif_save_set_font_osd(QString osd_font)
 {
+    if (xconfig->osd_font != NULL)
+    {
+        delete xconfig->osd_font;
+    }
     xconfig->osd_font = osd_font.toAscii().data();
 }
 
@@ -788,7 +822,25 @@ QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::notif_get_list
 
 void kXneurApp::xNeurConfig::notif_save_list_action_osd(QMap<QString, QMultiMap<bool, QString> > lstOsd)
 {
-    //TODO
+    int i=0;
+    QMultiMap<bool, QString> mapTmp;
+    QMap<QString, QMultiMap<bool, QString> >::const_iterator p = lstOsd.constBegin();
+    while(p!=lstOsd.constEnd())
+    {
+        mapTmp = p.value();
+        QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
+        while(j!=mapTmp.constEnd())
+        {
+             xconfig->osds[i].enabled = j.key();
+             if (xconfig->osds[i].file != NULL)
+             {
+                 delete xconfig->osds[i].file;
+             }
+             xconfig->osds[i].file = QString("%1").arg(j.value()).toAscii().data();
+            ++j;++i;
+        }
+        ++p;
+    }
 }
 
                             /*========== tab POPUP MSG ==========*/
@@ -826,7 +878,25 @@ QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::notif_get_list
 }
 void kXneurApp::xNeurConfig::notif_save_list_action_popup_msg(QMap<QString, QMultiMap<bool, QString> > lstPopMsg)
 {
-    //TODO
+    int i=0;
+    QMultiMap<bool, QString> mapTmp;
+    QMap<QString, QMultiMap<bool, QString> >::const_iterator p = lstPopMsg.constBegin();
+    while(p!=lstPopMsg.constEnd())
+    {
+        mapTmp = p.value();
+        QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
+        while(j!=mapTmp.constEnd())
+        {
+             xconfig->popups[i].enabled = j.key();
+             if (xconfig->popups[i].file != NULL)
+             {
+                 delete xconfig->popups[i].file;
+             }
+             xconfig->popups[i].file = QString("%1").arg(j.value()).toAscii().data();
+            ++j;++i;
+        }
+        ++p;
+    }
 }
 
 /*================================= tab Abbreviations =================================*/
@@ -857,7 +927,7 @@ void kXneurApp::xNeurConfig::abbr_save_list_abbreviations(QMap <QString, QString
     QMap <QString, QString>::const_iterator i = lstAbbr.constBegin();
     while (i!= lstAbbr.constEnd())
     {
-        xconfig->abbreviations->add(xconfig->abbreviations, QString("%1 %2").arg(i.key()).arg(i.value()).toAscii().data());
+        //xconfig->abbreviations->add(xconfig->abbreviations, QString("%1 %2").arg(i.key()).arg(i.value()).toAscii().data());
         ++i;
     }
 }
@@ -886,6 +956,10 @@ int kXneurApp::xNeurConfig::log_get_size_log_file()
 
 void kXneurApp::xNeurConfig::log_save_email(QString email)
 {
+//    if (xconfig->mail_keyboard_log != NULL)
+//    {
+//        delete xconfig->mail_keyboard_log;
+//    }
     xconfig->mail_keyboard_log = email.toAscii().data();
 }
 QString kXneurApp::xNeurConfig::log_get_email()
@@ -895,6 +969,10 @@ QString kXneurApp::xNeurConfig::log_get_email()
 
 void kXneurApp::xNeurConfig::log_save_host(QString host)
 {
+    if (xconfig->host_keyboard_log != NULL)
+    {
+        delete xconfig->host_keyboard_log;
+    }
     xconfig->host_keyboard_log = host.toAscii().data();
 }
 
@@ -1118,7 +1196,24 @@ QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::plug_get_list_
     return lstPlug;
 }
 
-void  kXneurApp::xNeurConfig::plug_save_list_plugins()
+void  kXneurApp::xNeurConfig::plug_save_list_plugins(QMap<QString, QMultiMap<bool, QString> > lstPlugin)
 {
-    //TODO
+    QMultiMap<bool, QString> mapTmp;
+    QMap<QString, QMultiMap<bool, QString> >::const_iterator i = lstPlugin.constBegin();
+    while(i!=lstPlugin.constEnd())
+    {
+        mapTmp = i.value();
+        QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
+        while(j!=mapTmp.constEnd())
+        {
+            if(j.key())
+            {
+               // qDebug()<< " chek plugin " << i.key();
+               xconfig->plugins->add(xconfig->plugins,  QString("%1").arg(i.key()).toAscii().data());
+            }
+            ++j;
+        }
+        ++i;
+    }
+
 }

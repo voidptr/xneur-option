@@ -33,7 +33,8 @@ kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg
   createConnect();
   readSettingsKdeNeur();
 
-  cfgNeur->notif_save_list_action_sound(get_lget_from_notif_widget(ui->tabSound_lstListSound));
+
+
 
 }
 
@@ -91,14 +92,13 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->notif_save_enable_show_popup_msg(ui->tabPopupMessage_chkShowPopupMessage->isChecked());
     cfgNeur->notif_save_interval_popup_msg(ui->tabPopupMessage_spbIntervalPopup->value());
 
-    cfgNeur->notif_save_list_action_sound(get_lget_from_notif_widget(ui->tabSound_lstListSound));
-    cfgNeur->notif_save_list_action_osd(get_lget_from_notif_widget(ui->tabOSD_lstListOSD));
-    cfgNeur->notif_save_list_action_popup_msg(get_lget_from_notif_widget(ui->tabPopupMessage_lstListPopupMessage));
+//    cfgNeur->notif_save_list_action_sound(get_lget_from_notif_widget(ui->tabSound_lstListSound));
+//    cfgNeur->notif_save_list_action_osd(get_lget_from_notif_widget(ui->tabOSD_lstListOSD));
+//    cfgNeur->notif_save_list_action_popup_msg(get_lget_from_notif_widget(ui->tabPopupMessage_lstListPopupMessage));
 
     //tab Abbreviations
     cfgNeur->abbr_save_ignore_keyboarf_layout(ui->tabAbbreviations_chkIgnoreKeyLayout->isChecked());
     cfgNeur->abbr_save_list_abbreviations(abbr_save_list_apprevaitions());
-
 
     //tab Log
     cfgNeur->log_save_enable_keylog(ui->tabLog_chkEnableLog->isChecked());
@@ -129,8 +129,7 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->adv_save_key_release_event(ui->tabAdvanced_chkKeyRelease->isChecked());
 
     //tab Plugins
-
-    //Properties
+    cfgNeur->plug_save_list_plugins(plug_save_list_plugins());
 
     cfgNeur->saveNeurConfig();
 
@@ -756,7 +755,7 @@ QMap <QString, QString> kXneurApp::frmSettings::abbr_save_list_apprevaitions()
     for(int i=0; i < ui->tabAbbreviations_lstListAbbreviations->rowCount();++i)
     {
         key=ui->tabAbbreviations_lstListAbbreviations->item(i, 0)->text();
-        value = ui->tabAbbreviations_lstListAbbreviations->item(i,2)->text();
+        value = ui->tabAbbreviations_lstListAbbreviations->item(i,1)->text();
         lstAbbr.insert(key,value);
         key=value="";
     }
@@ -790,6 +789,23 @@ void kXneurApp::frmSettings::plug_get_list_plugins(QMap<QString, QMultiMap<bool,
         }
         ++p;++i;
     }
+}
+
+QMap<QString, QMultiMap<bool, QString> > kXneurApp::frmSettings::plug_save_list_plugins()
+{
+    QMultiMap<bool, QString> mapTmp;
+    bool chk =false;
+    QMap<QString, QMultiMap<bool, QString> > lstPlugin;
+    for (int i=0; i< ui->tabPlugins_lstListPlugins->rowCount();++i)
+    {
+        chk = false;
+        if(ui->tabPlugins_lstListPlugins->item(i, 0)->checkState()==Qt::Checked)
+            chk =true;
+        mapTmp.insert(chk, ui->tabPlugins_lstListPlugins->item(i,1)->text());
+        lstPlugin.insert(ui->tabPlugins_lstListPlugins->item(i,2)->text(), mapTmp);
+        mapTmp.clear();
+    }
+    return lstPlugin;
 }
 
 QHash <QString, bool > kXneurApp::frmSettings::tab_lay_save_list_lang()
