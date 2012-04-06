@@ -73,6 +73,11 @@ namespace kXneurApp
         bool gen_tipo_get_correct_tm();
         void gen_tipo_save_correct_r(bool);
         bool gen_tipo_get_correct_r();
+        void gen_tipo_save_correct_three_point(bool);
+        bool gen_tipo_get_correct_three_point();
+        void gen_tipo_save_correct_dash(bool);
+        bool gen_tipo_get_correct_dash();
+
 
         //tab Layout
         void lay_save_number_layout(int);

@@ -222,7 +222,7 @@ void kXneurApp::xNeurConfig::test(QString str)
 /*================================= tab General =================================*/
 void kXneurApp::xNeurConfig::gen_main_save_manual_switch(bool stat)
 {
-    qDebug()<< "set manual mode";
+    qDebug()<< "set manual mode " << stat;
   xconfig->manual_mode = stat;
 }
 
@@ -233,7 +233,7 @@ bool kXneurApp::xNeurConfig::gen_main_get_manual_switch()
 
 void kXneurApp::xNeurConfig::gen_main_save_auto_learning(bool stat)
 {
-    qDebug()<< "set educate";
+    qDebug()<< "set educate "  << stat;
     xconfig->educate = stat;
 }
 
@@ -243,7 +243,7 @@ bool kXneurApp::xNeurConfig::gen_main_get_auto_learning()
 }
 void kXneurApp::xNeurConfig::gen_main_save_keep_select(bool stat)
 {
-    qDebug()<< "set save selection text";
+    qDebug()<< "set save selection text " << stat;
     xconfig->save_selection_after_convert=stat;
 }
 
@@ -254,7 +254,7 @@ bool kXneurApp::xNeurConfig::gen_main_get_keep_select()
 
 void kXneurApp::xNeurConfig::gen_main_save_rotate_layout(bool stat)
 {
-    qDebug()<< "set rotate layout convert";
+    qDebug()<< "set rotate layout convert "  << stat;
     xconfig->rotate_layout_after_convert=stat;
 }
 
@@ -265,18 +265,18 @@ bool kXneurApp::xNeurConfig::gen_main_get_rotate_layout()
 
 void kXneurApp::xNeurConfig::gen_main_save_check_lang(bool stat)
 {
-    qDebug()<< "set check lang process";
+    qDebug()<< "set check lang process "  << stat;
     xconfig->check_lang_on_process=stat;
 }
 
 bool kXneurApp::xNeurConfig::gen_main_get_check_lang()
 {
-    return xconfig->check_lang_on_process;
+    return xconfig->check_lang_on_process ;
 }
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_caps(bool stat)
 {
-    qDebug()<< "set correct incidental caps";
+    qDebug()<< "set correct incidental caps "  << stat;
     xconfig->correct_incidental_caps = stat;
 }
 
@@ -287,7 +287,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_caps()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_disable_caps(bool stat)
 {
-    qDebug()<< "set disable caps lock";
+    qDebug()<< "set disable caps lock "  << stat;
     xconfig->disable_capslock=stat;
 }
 
@@ -298,7 +298,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_disable_caps()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_two_caps(bool stat)
 {
-    qDebug()<< "set correct two caps";
+    qDebug()<< "set correct two caps "  << stat;
     xconfig->correct_two_capital_letter =stat;
 }
 
@@ -309,7 +309,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_two_caps()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_space(bool stat)
 {
-    qDebug()<< "set correct two space with punct";
+    qDebug()<< "set correct two space with punct "  << stat;
     xconfig->correct_space_with_punctuation=stat;
 }
 
@@ -320,7 +320,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_space()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_small_letter(bool stat)
 {
-    qDebug()<< "set correct capital letter after dot";
+    qDebug()<< "set correct capital letter after dot "  << stat;
     xconfig->correct_capital_letter_after_dot = stat;
 }
 
@@ -331,7 +331,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_small_letter()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_two_space(bool stat)
 {
-    qDebug()<< "set correct two space with command and space";
+    qDebug()<< "set correct two space with command and space "  << stat;
     xconfig->correct_two_space_with_comma_and_space =stat;
 }
 
@@ -342,7 +342,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_two_space()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_two_minus(bool stat)
 {
-    qDebug()<< "set correct to minus";
+    qDebug()<< "set correct to minus "  << stat;
     xconfig->correct_two_minus_with_dash = stat;
 }
 
@@ -353,7 +353,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_two_minus()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_c(bool stat)
 {
-    qDebug()<< "set correct (c)";
+    qDebug()<< "set correct (c) "  << stat;
     xconfig->correct_c_with_copyright =stat;
 }
 
@@ -364,7 +364,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_c()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_tm(bool stat)
 {
-    qDebug()<< "set correct (tm)";
+    qDebug()<< "set correct (tm) "  << stat;
     xconfig->correct_tm_with_trademark = stat;
 }
 
@@ -375,7 +375,7 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_tm()
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_r(bool stat)
 {
-    qDebug()<< "set correct (r)";
+    qDebug()<< "set correct (r) "  << stat;
     xconfig->correct_r_with_registered = stat;
 }
 
@@ -384,11 +384,31 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_r()
     return xconfig->correct_r_with_registered;
 }
 
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_three_point(bool stat)
+{
+    xconfig->correct_three_points_with_ellipsis = stat;
+}
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_three_point()
+{
+    return xconfig->correct_three_points_with_ellipsis;
+}
+
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_dash(bool stat)
+{
+    xconfig->correct_dash_with_emdash = stat;
+}
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_dash()
+{
+    return xconfig->correct_dash_with_emdash;
+}
+
 /*================================= tab Layout =================================*/
 
 void kXneurApp::xNeurConfig::lay_save_number_layout(int curIndex)
 {
-    qDebug()<< "set save layout";
+ //   qDebug()<< "set save layout";
     xconfig->default_group = curIndex;
 }
 
@@ -399,7 +419,7 @@ int kXneurApp::xNeurConfig::lay_get_number_layout()
 
 void kXneurApp::xNeurConfig::lay_save_remember_layout_for_app(bool stat)
 {
-    qDebug()<< "set remember layout";
+    //   qDebug()<< "set remember layout";
     xconfig->remember_layout = stat;
 }
 
@@ -417,7 +437,7 @@ void kXneurApp::xNeurConfig::lay_save_list_language(QHash<QString, bool> lstLang
         {
             if (QString("%1").arg(xconfig->handle->languages[j].dir) == i.key())
             {
-                qDebug()<< "set save lang ignord";
+               // qDebug()<< "set save lang ignord";
                 xconfig->handle->languages[j].excluded = i.value();
             }
            ++i;
@@ -443,7 +463,7 @@ QStringList kXneurApp::xNeurConfig::lay_get_list_app_one_layout()
 
     for(int i=0; i<xconfig->layout_remember_apps->data_count;i++)
     {
-        lstApp << xconfig->layout_remember_apps->data[0].string;
+        lstApp << xconfig->layout_remember_apps->data[i].string;
     }
     return lstApp;
 }
@@ -453,7 +473,7 @@ void kXneurApp::xNeurConfig::lay_save_list_app_one_layout(QStringList lstApp)
     {
         xconfig->layout_remember_apps->add(xconfig->layout_remember_apps, lstApp.at(i).toAscii().data());
     }
-    qDebug()<< "save list app one layout";
+ //   qDebug()<< "save list app one layout";
 }
 
 QStringList kXneurApp::xNeurConfig::lay_get_text_dictionary(QString lang)
@@ -524,14 +544,14 @@ void kXneurApp::xNeurConfig::hot_save_list_command_hotkeys(QMap <QString, QStrin
                     }
                     if (key==false)
                     {
-                        if(xconfig->hotkeys[j].key != NULL)
-                            {delete xconfig->hotkeys[j].key;}
+//                        if(xconfig->hotkeys[j].key != NULL)
+//                            {delete xconfig->hotkeys[j].key;}
+                        qDebug()<< " Save Key is " << j << " " <<lsh_k.at(k).toLatin1();
                         xconfig->hotkeys[j].key = lsh_k.at(k).toAscii().data();
                     }
-
                 }
-               // if(ppp>0)
-                   //qDebug()<< "Command " << i.key() << " hot_key " << i.value() << " int value " << ppp;
+//                if(xconfig->hotkeys[j].modifiers>0)
+//                   qDebug()<< "Command " <<xconfig->hotkeys[j].modifiers;
 
               //  ppp=0;
              }
@@ -572,7 +592,7 @@ QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_use
 void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QString, QString> > lstActions)
 {
      QMap<QString, QString> tmpCmd;
-     bool key=false;  /*int ppp=0; */int j=1;
+     bool key=false;  /*int ppp=0; */int j=0;
 //     for(int j=0; j< lstActions.size();++j)
 //     {
          QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
@@ -590,7 +610,7 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
                          key = true;
 //                         ppp |= (0x1 << p);
                //          qDebug() << " J " << j << " " << xconfig->actions[j].hotkey.modifiers;
-                       //  xconfig->actions[j].hotkey.modifiers |= (0x1 << p);
+                         xconfig->actions[j].hotkey.modifiers |= (0x1 << p);
                      }
                  }
                  if (key==false)
@@ -598,18 +618,18 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
                      QMap<QString, QString>::const_iterator l = tmpCmd.constBegin();
                      while(l!=tmpCmd.constEnd())
                      {
-               //          xconfig->actions[j].hotkey.key = lsh_k.at(k).toAscii().data();
+                        xconfig->actions[j].hotkey.key = lsh_k.at(k).toAscii().data();
                          if (!QString("%1").arg(l.value()).isEmpty())
                          {
 //                             if(xconfig->actions[j].command != NULL)
 //                                 {delete xconfig->actions[j].command;}
-//                               xconfig->actions[j].command = QString("%1").arg(l.value()).toAscii().data();
+                               xconfig->actions[j].command = QString("%1").arg(l.value()).toAscii().data();
                          }
                          if (!QString("%1").arg(l.key()).isEmpty())
                          {
 //                             if(xconfig->actions[j].name != NULL)
 //                                 {delete xconfig->actions[j].name;}
-//                             xconfig->actions[j].name = QString("%1").arg(l.key()).toAscii().data();
+                             xconfig->actions[j].name = QString("%1").arg(l.key()).toAscii().data();
                          }
                          ++l;
                      }

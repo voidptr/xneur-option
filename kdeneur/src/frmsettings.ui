@@ -29,7 +29,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="TabBar" name="tabGeneral">
       <property name="locale">
@@ -42,7 +42,7 @@
        <item row="1" column="0">
         <widget class="QTabWidget" name="tbWidGeneral">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="tabMain">
           <attribute name="title">
@@ -160,6 +160,13 @@
               </widget>
              </item>
              <item>
+              <widget class="QCheckBox" name="chkGenTipograph_CorrectDash">
+               <property name="text">
+                <string>Сorrect dash with a emdash</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QCheckBox" name="chkGenTipograph_Correct_c_">
                <property name="text">
                 <string>Сorrect (c) with a copyright sign</string>
@@ -177,6 +184,13 @@
               <widget class="QCheckBox" name="chkGenTipograph_Correct_r_">
                <property name="text">
                 <string>Сorrect (r) with a registered sign</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="chkGenTipograph_Correct_Three_Point">
+               <property name="text">
+                <string>Сorrect three points with a ellipsis sign</string>
                </property>
               </widget>
              </item>
@@ -983,6 +997,9 @@ p, li { white-space: pre-wrap; }
             <widget class="QCheckBox" name="tabPopupMessage_chkShowPopupMessage">
              <property name="text">
               <string>Show popup messages</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
              </property>
             </widget>
            </item>

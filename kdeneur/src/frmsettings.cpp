@@ -32,10 +32,6 @@ kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg
   settintgGrid();
   createConnect();
   readSettingsKdeNeur();
-
-
-
-
 }
 
 kXneurApp::frmSettings::~frmSettings()
@@ -63,6 +59,9 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->gen_tipo_save_correct_c(ui->chkGenTipograph_Correct_c_->isChecked());
     cfgNeur->gen_tipo_save_correct_tm(ui->chkGenTipograph_Correct_tm_->isChecked());
     cfgNeur->gen_tipo_save_correct_r(ui->chkGenTipograph_Correct_r_->isChecked());
+    cfgNeur->gen_tipo_save_correct_three_point(ui->chkGenTipograph_Correct_Three_Point->isChecked());
+    cfgNeur->gen_tipo_save_correct_dash(ui->chkGenTipograph_CorrectDash->isChecked());
+
 
     //tab Layout
     cfgNeur->lay_save_number_layout(ui->Layout_spbLayoutNumber->value()-1);
@@ -72,64 +71,64 @@ void kXneurApp::frmSettings::saveSettingsNeur()
 
     //tab HotKeys
     cfgNeur->hot_save_list_command_hotkeys(hot_save_list_hotkeys());
-    cfgNeur->hot_save_list_user_actions(hot_save_list_user_actions());
+  //  cfgNeur->hot_save_list_user_actions(hot_save_list_user_actions());
 
-    //tab Autocompletion
-    cfgNeur->auto_save_enable_pattern(ui->tabAutocompletion_chkEnableAutocompl->isChecked());
-    cfgNeur->auto_save_add_space(ui->tabAutocompletion_chkAddSpace->isChecked());
-    cfgNeur->auto_save_list_app_disable_autocomplite(getListFromWidget(ui->tabAutocompletion_lstApp));
+//    //tab Autocompletion
+//    cfgNeur->auto_save_enable_pattern(ui->tabAutocompletion_chkEnableAutocompl->isChecked());
+//    cfgNeur->auto_save_add_space(ui->tabAutocompletion_chkAddSpace->isChecked());
+//    cfgNeur->auto_save_list_app_disable_autocomplite(getListFromWidget(ui->tabAutocompletion_lstApp));
 
-    //tab Applications
-    cfgNeur->app_save_list_auto_mode_app(getListFromWidget(ui->taApplication_lstAppAutoMode));
-    cfgNeur->app_save_list_ignore_app(getListFromWidget(ui->taApplication_lstAppNotUsed));
-    cfgNeur->app_save_list_manual_mode_app(getListFromWidget(ui->taApplication_lstAppManualMode));
+//    //tab Applications
+//    cfgNeur->app_save_list_auto_mode_app(getListFromWidget(ui->taApplication_lstAppAutoMode));
+//    cfgNeur->app_save_list_ignore_app(getListFromWidget(ui->taApplication_lstAppNotUsed));
+//    cfgNeur->app_save_list_manual_mode_app(getListFromWidget(ui->taApplication_lstAppManualMode));
 
-    //tab Notifications
-    cfgNeur->notif_save_enable_sound(ui->tabSound_chkEnableSound->isChecked());
-    cfgNeur->notif_save_volume_sound(ui->tabSound_spbSoundVolume->value());
-    cfgNeur->notif_save_enable_show_osd(ui->tabOSD_chkEnableOSD->isChecked());
-    cfgNeur->notif_save_set_font_osd(ui->tabOSD_txtFontOSD->text());
-    cfgNeur->notif_save_enable_show_popup_msg(ui->tabPopupMessage_chkShowPopupMessage->isChecked());
-    cfgNeur->notif_save_interval_popup_msg(ui->tabPopupMessage_spbIntervalPopup->value());
+//    //tab Notifications
+//    cfgNeur->notif_save_enable_sound(ui->tabSound_chkEnableSound->isChecked());
+//    cfgNeur->notif_save_volume_sound(ui->tabSound_spbSoundVolume->value());
+//    cfgNeur->notif_save_enable_show_osd(ui->tabOSD_chkEnableOSD->isChecked());
+//    cfgNeur->notif_save_set_font_osd(ui->tabOSD_txtFontOSD->text());
+//    cfgNeur->notif_save_enable_show_popup_msg(ui->tabPopupMessage_chkShowPopupMessage->isChecked());
+//    cfgNeur->notif_save_interval_popup_msg(ui->tabPopupMessage_spbIntervalPopup->value());
 
 //    cfgNeur->notif_save_list_action_sound(get_lget_from_notif_widget(ui->tabSound_lstListSound));
 //    cfgNeur->notif_save_list_action_osd(get_lget_from_notif_widget(ui->tabOSD_lstListOSD));
 //    cfgNeur->notif_save_list_action_popup_msg(get_lget_from_notif_widget(ui->tabPopupMessage_lstListPopupMessage));
 
-    //tab Abbreviations
-    cfgNeur->abbr_save_ignore_keyboarf_layout(ui->tabAbbreviations_chkIgnoreKeyLayout->isChecked());
-    cfgNeur->abbr_save_list_abbreviations(abbr_save_list_apprevaitions());
+//    //tab Abbreviations
+//    cfgNeur->abbr_save_ignore_keyboarf_layout(ui->tabAbbreviations_chkIgnoreKeyLayout->isChecked());
+//    cfgNeur->abbr_save_list_abbreviations(abbr_save_list_apprevaitions());
 
-    //tab Log
-    cfgNeur->log_save_enable_keylog(ui->tabLog_chkEnableLog->isChecked());
-    cfgNeur->log_save_size_log_file(ui->tabLog_spbSizeLog->value());
-    cfgNeur->log_save_email(ui->tabLog_txtSendLogEmail->text());
-    cfgNeur->log_save_host(ui->tabLog_txtSendLogHost->text());
-    cfgNeur->log_save_port(ui->tabLog_spbSendLogPort->value());
+//    //tab Log
+//    cfgNeur->log_save_enable_keylog(ui->tabLog_chkEnableLog->isChecked());
+//    cfgNeur->log_save_size_log_file(ui->tabLog_spbSizeLog->value());
+//    cfgNeur->log_save_email(ui->tabLog_txtSendLogEmail->text());
+//    cfgNeur->log_save_host(ui->tabLog_txtSendLogHost->text());
+//    cfgNeur->log_save_port(ui->tabLog_spbSendLogPort->value());
 
-    //tab Troubleshooting
-    cfgNeur->trabl_save_backspace(ui->tabTroubleshooting_chkBackspace->isChecked());
-    cfgNeur->trabl_save_left_arrow(ui->tabTroubleshooting_chkLeftArrow->isChecked());
-    cfgNeur->trabl_save_right_arrow(ui->tabTroubleshooting_chkRightArrow->isChecked());
-    cfgNeur->trabl_save_up_arrow(ui->tabTroubleshooting_chkUpArrow->isChecked());
-    cfgNeur->trabl_save_down_arrow(ui->tabTroubleshooting_chkDownArrow->isChecked());
-    cfgNeur->trabl_save_delete(ui->tabTroubleshooting_chkDelete->isChecked());
-    cfgNeur->trabl_save_user_change_layout(ui->tabTroubleshooting_chkChangeLayout->isChecked());
-    cfgNeur->trabl_save_full_screen(ui->tabTroubleshooting_chkFullScreen->isChecked());
-    cfgNeur->trabl_save_flush_buffer_esc(ui->tabTroubleshooting_chkFlushInterBuffEscape->isChecked());
-    cfgNeur->trabl_save_flush_buffer_tab_enter(ui->tabTroubleshooting_chkFlushInterBuffEnterTab->isChecked());
-    cfgNeur->trabl_save_words_enter_tab(ui->tabTroubleshooting_chkProcessWordEnterTab->isChecked());
-    cfgNeur->trabl_save_compat_with_completion(ui->tabTroubleshooting_chkCompatCompletion->isChecked());
-    cfgNeur->trabl_save_monitor_input(ui->tabTroubleshooting_chkMonitorInput->isChecked());
-    cfgNeur->trabl_save_monitor_mouse(ui->tabTroubleshooting_chkMonitorMouse->isChecked());
+//    //tab Troubleshooting
+//    cfgNeur->trabl_save_backspace(ui->tabTroubleshooting_chkBackspace->isChecked());
+//    cfgNeur->trabl_save_left_arrow(ui->tabTroubleshooting_chkLeftArrow->isChecked());
+//    cfgNeur->trabl_save_right_arrow(ui->tabTroubleshooting_chkRightArrow->isChecked());
+//    cfgNeur->trabl_save_up_arrow(ui->tabTroubleshooting_chkUpArrow->isChecked());
+//    cfgNeur->trabl_save_down_arrow(ui->tabTroubleshooting_chkDownArrow->isChecked());
+//    cfgNeur->trabl_save_delete(ui->tabTroubleshooting_chkDelete->isChecked());
+//    cfgNeur->trabl_save_user_change_layout(ui->tabTroubleshooting_chkChangeLayout->isChecked());
+//    cfgNeur->trabl_save_full_screen(ui->tabTroubleshooting_chkFullScreen->isChecked());
+//    cfgNeur->trabl_save_flush_buffer_esc(ui->tabTroubleshooting_chkFlushInterBuffEscape->isChecked());
+//    cfgNeur->trabl_save_flush_buffer_tab_enter(ui->tabTroubleshooting_chkFlushInterBuffEnterTab->isChecked());
+//    cfgNeur->trabl_save_words_enter_tab(ui->tabTroubleshooting_chkProcessWordEnterTab->isChecked());
+//    cfgNeur->trabl_save_compat_with_completion(ui->tabTroubleshooting_chkCompatCompletion->isChecked());
+//    cfgNeur->trabl_save_monitor_input(ui->tabTroubleshooting_chkMonitorInput->isChecked());
+//    cfgNeur->trabl_save_monitor_mouse(ui->tabTroubleshooting_chkMonitorMouse->isChecked());
 
-    //tab Advanced
-    cfgNeur->adv_save_log_level(ui->tabAdvanced_cmbLogLevel->currentIndex());
-    cfgNeur->adv_save_delay_sending_events(ui->tabAdvanced_spbDelay->value());
-    cfgNeur->adv_save_key_release_event(ui->tabAdvanced_chkKeyRelease->isChecked());
+//    //tab Advanced
+//    cfgNeur->adv_save_log_level(ui->tabAdvanced_cmbLogLevel->currentIndex());
+//    cfgNeur->adv_save_delay_sending_events(ui->tabAdvanced_spbDelay->value());
+//    cfgNeur->adv_save_key_release_event(ui->tabAdvanced_chkKeyRelease->isChecked());
 
-    //tab Plugins
-    cfgNeur->plug_save_list_plugins(plug_save_list_plugins());
+//    //tab Plugins
+//    cfgNeur->plug_save_list_plugins(plug_save_list_plugins());
 
     cfgNeur->saveNeurConfig();
 
@@ -220,6 +219,8 @@ void kXneurApp::frmSettings::readSettingsNeur()
     ui->chkGenTipograph_Correct_c_->setChecked(cfgNeur->gen_tipo_get_correct_c());
     ui->chkGenTipograph_Correct_tm_->setChecked(cfgNeur->gen_tipo_get_correct_tm());
     ui->chkGenTipograph_Correct_r_->setChecked(cfgNeur->gen_tipo_get_correct_r());
+    ui->chkGenTipograph_CorrectDash->setChecked(cfgNeur->gen_tipo_get_correct_dash());
+    ui->chkGenTipograph_Correct_Three_Point->setChecked(cfgNeur->gen_tipo_get_correct_three_point());
 
     //tab Layout
     ui->Layout_spbLayoutNumber->setValue(cfgNeur->lay_get_number_layout());

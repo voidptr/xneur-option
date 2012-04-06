@@ -21,10 +21,12 @@ int main(int argc, char *argv[])
   kXneurApp::kXneur neur(argc, argv);
   neur.setApplicationName("kXneur");
   neur.setWindowIcon(QIcon(":/icons/kxneur.png"));
-  QTextCodec *codec = QTextCodec::codecForName("UTF8");
+  //qDebug()<< QTextCodec::codecForLocale()->name();
+  QTextCodec *codec = QTextCodec::codecForName(QTextCodec::codecForLocale()->name());
       QTextCodec::setCodecForTr(codec);
       QTextCodec::setCodecForCStrings(codec);
       QTextCodec::setCodecForLocale(codec);
+  //qDebug()<< QTextCodec::codecForLocale()->name();
   kXneurApp::kXneur::setQuitOnLastWindowClosed(false);
   KAboutData about("kXneur",0, ki18n("kXneur Keyboard switcher") ,version,description,
                     KAboutData::License_GPL, ki18n("(C) 2012  Sergei Chystyakov"), ki18n(""), "http://xneur.ru","xneur@lists.net.ru");
