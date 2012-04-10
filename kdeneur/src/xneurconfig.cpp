@@ -29,6 +29,7 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
     procxNeur = new QProcess();
     connect(procxNeur, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(procxNeurStop(int,QProcess::ExitStatus)));
     connect(procxNeur, SIGNAL(started()), SLOT(procxNeurStart()));
+    connect(procxNeur, SIGNAL(readyRead()), SLOT(procxNeurOutput()));
    // plug_get_list_plugins();
    // qDebug() << XNEURPLUGINDIR;
     notifyNames << tr("Xneur started") << tr("Xneur reloaded") << tr("Xneur stopped") << tr("Keypress on layout 1")
@@ -187,6 +188,11 @@ void kXneurApp::xNeurConfig::procxNeurStop(int exitcode, QProcess::ExitStatus ex
   {
       qDebug()<< tr("ERROR: Warning process xNeur crashed, please look log file and inform the author xNeur. Thank You!");
   }
+}
+
+void kXneurApp::xNeurConfig::procxNeurOutput()
+{
+   // qDebug() << procxNeur->readAll();
 }
 
 void kXneurApp::xNeurConfig::procxNeurStart()
@@ -582,61 +588,59 @@ QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_use
 
 void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QString, QString> > lstActions)
 {
-     QMap<QString, QString> tmpCmd;
+    QMap<QString, QString> tmpCmd;
     QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
-     bool key=false;
-     for(int j=0; j < lstActions.size();++j)
-     {
+    bool key=false;
+    for(int j=0; j < lstActions.size();++j)
+    {
+         qDebug () << "TOTAL.NUM---> " <<lstActions.size() ;
+         qDebug () << "HOTKEY.NUM---> " << j ;
 
- qDebug () << "TOTAL.NUM---> " <<lstActions.size() ;
+         xconfig->actions = (struct _xneur_action *) realloc(xconfig->actions, (j + 1) * sizeof(struct _xneur_action));
+         bzero(&xconfig->actions[j], sizeof(struct _xneur_action));
+        // memset(&xconfig->actions[j], 0,  sizeof(struct _xneur_action));
+         xconfig->actions[j].hotkey.modifiers = 0;
 
-qDebug () << "HOTKEY.NUM---> " << j ;
+         tmpCmd = i.value();
+         QStringList lsh_k = QString("%1").arg(i.key()).replace(" ","").split("+");
+         for(int k=0; k<lsh_k.size();++k)
+         {
 
-             xconfig->actions = (struct _xneur_action *) realloc(xconfig->actions, (j + 1) * sizeof(struct _xneur_action));
-             bzero(&xconfig->actions[j], sizeof(struct _xneur_action));
-            // memset(&xconfig->actions[j], 0,  sizeof(struct _xneur_action));
-             xconfig->actions[j].hotkey.modifiers = 0;
-
-             tmpCmd = i.value();
-             QStringList lsh_k = QString("%1").arg(i.key()).replace(" ","").split("+");
-             for(int k=0; k<lsh_k.size();++k)
+             key=false;
+             for(int p=0; p<TOTAL_MODIFER;++p)
              {
-
-                 key=false;
-                 for(int p=0; p<TOTAL_MODIFER;++p)
+                 if(lsh_k.at(k)== lstModifer.at(p)/* || lsh_k.at(k).endsWith("_L") || lsh_k.at(k).endsWith("_R")*/)
                  {
-                     if(lsh_k.at(k)== lstModifer.at(p)/* || lsh_k.at(k).endsWith("_L") || lsh_k.at(k).endsWith("_R")*/)
-                     {
-                         key = true;
-                         xconfig->actions[j].hotkey.modifiers |= (0x1 << p);
-                     }
-                 }
-                 if (key==false)
-                 {
-                     QMap<QString, QString>::const_iterator l = tmpCmd.constBegin();
-                     while(l!=tmpCmd.constEnd())
-                    {
-                         //qDebug () << "HOTKEY.KEY ---> " << lsh_k.at(k).toAscii().data();
-
-                         xconfig->actions[j].hotkey.key = strdup(lsh_k.at(k).toUtf8().data());
-                         if (!QString("%1").arg(l.value()).isEmpty())
-                         {
-                            // qDebug () << QString("command: %1").arg(l.value()).toAscii().data();
-                             xconfig->actions[j].command = strdup(QString("%1").arg(l.value()).toAscii().data());
-                         }
-                         if (!QString("%1").arg(l.key()).isEmpty())
-                         {
-                             //qDebug () <<  QString("name: %1").arg(l.key()).toAscii().data();
-                             xconfig->actions[j].name = strdup(QString("%1").arg(l.key()).toAscii().data());
-                         }
-                        xconfig->actions_count = j + 1;
-                        ++l;
-                     }
-
+                     key = true;
+                     xconfig->actions[j].hotkey.modifiers |= (0x1 << p);
                  }
              }
-            ++i;//++j;
+             if (key==false)
+             {
+                 QMap<QString, QString>::const_iterator l = tmpCmd.constBegin();
+                 while(l!=tmpCmd.constEnd())
+                {
+                     //qDebug () << "HOTKEY.KEY ---> " << lsh_k.at(k).toAscii().data();
+
+                     xconfig->actions[j].hotkey.key = strdup(lsh_k.at(k).toUtf8().data());
+                     if (!QString("%1").arg(l.value()).isEmpty())
+                     {
+                        // qDebug () << QString("command: %1").arg(l.value()).toAscii().data();
+                         xconfig->actions[j].command = strdup(QString("%1").arg(l.value()).toAscii().data());
+                     }
+                     if (!QString("%1").arg(l.key()).isEmpty())
+                     {
+                         //qDebug () <<  QString("name: %1").arg(l.key()).toAscii().data();
+                         xconfig->actions[j].name = strdup(QString("%1").arg(l.key()).toAscii().data());
+                     }
+                    xconfig->actions_count = j + 1;
+                    ++l;
+                 }
+
+             }
          }
+        ++i;//++j;
+     }
         
    //  }
 }
@@ -779,24 +783,29 @@ QMap<QString, QMultiMap<bool, QString> > kXneurApp::xNeurConfig::notif_get_list_
 
 void kXneurApp::xNeurConfig::notif_save_list_action_sound(QMap<QString, QMultiMap<bool, QString> > lstSound)
 {
-    int i=0;
     QMultiMap<bool, QString> mapTmp;
-    QMap<QString, QMultiMap<bool, QString> >::const_iterator p = lstSound.constBegin();
-    while(p!=lstSound.constEnd())
+    for(int i=0; i< notifyNames.size();++i)//notifyNames.at(i)
     {
-        mapTmp = p.value();
-        QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
-        while(j!=mapTmp.constEnd())
+        QMap<QString, QMultiMap<bool, QString> >::const_iterator p = lstSound.constBegin();
+        while(p!=lstSound.constEnd())
         {
-             xconfig->sounds[i].enabled = j.key();
-             if (xconfig->sounds[i].file != NULL)
-             {
-                 delete xconfig->sounds[i].file;
-             }
-             xconfig->sounds[i].file = QString("%1").arg(j.value()).toAscii().data();
-            ++j;++i;
+            if(notifyNames.at(i) == p.key())
+            {
+                mapTmp = p.value();
+                QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
+                while(j!=mapTmp.constEnd())
+                {
+                     xconfig->sounds[i].enabled = j.key();
+                     if (xconfig->sounds[i].file != NULL)
+                     {
+                         delete xconfig->sounds[i].file;
+                     }
+                     xconfig->sounds[i].file = strdup(QString("%1").arg(j.value()).toAscii().data());
+                    ++j;//++i;
+                }
+            }
+            ++p;
         }
-        ++p;
     }
 }
                             /*========== tab OSD ==========*/
@@ -840,24 +849,29 @@ QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::notif_get_list
 
 void kXneurApp::xNeurConfig::notif_save_list_action_osd(QMap<QString, QMultiMap<bool, QString> > lstOsd)
 {
-    int i=0;
     QMultiMap<bool, QString> mapTmp;
-    QMap<QString, QMultiMap<bool, QString> >::const_iterator p = lstOsd.constBegin();
-    while(p!=lstOsd.constEnd())
+    for(int i=0; i< notifyNames.size();++i)//notifyNames.at(i)
     {
-        mapTmp = p.value();
-        QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
-        while(j!=mapTmp.constEnd())
+        QMap<QString, QMultiMap<bool, QString> >::const_iterator p = lstOsd.constBegin();
+        while(p!=lstOsd.constEnd())
         {
-             xconfig->osds[i].enabled = j.key();
-             if (xconfig->osds[i].file != NULL)
-             {
-                 delete xconfig->osds[i].file;
-             }
-             xconfig->osds[i].file = QString("%1").arg(j.value()).toAscii().data();
-            ++j;++i;
+            if(notifyNames.at(i) == p.key())
+            {
+                mapTmp = p.value();
+                QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
+                while(j!=mapTmp.constEnd())
+                {
+                     xconfig->osds[i].enabled = j.key();
+                     if (xconfig->osds[i].file != NULL)
+                     {
+                         delete xconfig->osds[i].file;
+                     }
+                     xconfig->osds[i].file = strdup(QString("%1").arg(j.value()).toAscii().data());
+                    ++j;
+                }
+            }
+            ++p;
         }
-        ++p;
     }
 }
 
@@ -896,24 +910,29 @@ QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::notif_get_list
 }
 void kXneurApp::xNeurConfig::notif_save_list_action_popup_msg(QMap<QString, QMultiMap<bool, QString> > lstPopMsg)
 {
-    int i=0;
     QMultiMap<bool, QString> mapTmp;
-    QMap<QString, QMultiMap<bool, QString> >::const_iterator p = lstPopMsg.constBegin();
-    while(p!=lstPopMsg.constEnd())
+    for(int i=0; i< notifyNames.size();++i)
     {
-        mapTmp = p.value();
-        QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
-        while(j!=mapTmp.constEnd())
+        QMap<QString, QMultiMap<bool, QString> >::const_iterator p = lstPopMsg.constBegin();
+        while(p!=lstPopMsg.constEnd())
         {
-             xconfig->popups[i].enabled = j.key();
-             if (xconfig->popups[i].file != NULL)
-             {
-                 delete xconfig->popups[i].file;
-             }
-             xconfig->popups[i].file = QString("%1").arg(j.value()).toAscii().data();
-            ++j;++i;
+            if(notifyNames.at(i) == p.key())
+            {
+                mapTmp = p.value();
+                QMultiMap<bool, QString>::const_iterator j = mapTmp.constBegin();
+                while(j!=mapTmp.constEnd())
+                {
+                     xconfig->popups[i].enabled = j.key();
+                     if (xconfig->popups[i].file != NULL)
+                     {
+                         delete xconfig->popups[i].file;
+                     }
+                     xconfig->popups[i].file = strdup(QString("%1").arg(j.value()).toAscii().data());
+                    ++j;
+                }
+            }
+            ++p;
         }
-        ++p;
     }
 }
 

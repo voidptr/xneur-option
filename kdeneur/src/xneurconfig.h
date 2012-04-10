@@ -25,6 +25,7 @@ namespace kXneurApp
     private slots:
         void procxNeurStart();
         void procxNeurStop(int,QProcess::ExitStatus);
+        void procxNeurOutput();
 
     public:
        explicit xNeurConfig(QObject *parent = 0);
