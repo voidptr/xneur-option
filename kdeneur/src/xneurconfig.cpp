@@ -586,28 +586,15 @@ QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_use
 void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QString, QString> > lstActions)
 {
      QMap<QString, QString> tmpCmd;
-<<<<<<< local
-     bool key=false;  /*int ppp=0; */int j=0;
-//     for(int j=0; j< lstActions.size();++j)
-//     {
-         QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
-         while(i!=lstActions.constEnd()) //<< Пропускает последний экшн. Надо <= !!!
-         {
-=======
     QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
      bool key=false;
      for(int j=0; j < lstActions.size();++j)
      {
-<<<<<<< local
- qDebug () << "TOTAL.NUM---> " <<lstActions.size() ;
-         //QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
-        // while(i!=lstActions.constEnd()) // Пропускает последний экшн. Надо <= !!!
-         //{
->>>>>>> other
-qDebug () << "HOTKEY.NUM---> " << j ;
-=======
 
->>>>>>> other
+ qDebug () << "TOTAL.NUM---> " <<lstActions.size() ;
+
+qDebug () << "HOTKEY.NUM---> " << j ;
+
              xconfig->actions = (struct _xneur_action *) realloc(xconfig->actions, (j + 1) * sizeof(struct _xneur_action));
              bzero(&xconfig->actions[j], sizeof(struct _xneur_action));
             // memset(&xconfig->actions[j], 0,  sizeof(struct _xneur_action));
@@ -637,12 +624,12 @@ qDebug () << "HOTKEY.NUM---> " << j ;
                          xconfig->actions[j].hotkey.key = strdup(lsh_k.at(k).toUtf8().data());
                          if (!QString("%1").arg(l.value()).isEmpty())
                          {
-                             qDebug () << QString("command: %1").arg(l.value()).toAscii().data();
+                            // qDebug () << QString("command: %1").arg(l.value()).toAscii().data();
                              xconfig->actions[j].command = strdup(QString("%1").arg(l.value()).toAscii().data());
                          }
                          if (!QString("%1").arg(l.key()).isEmpty())
                          {
-                             qDebug () <<  QString("name: %1").arg(l.key()).toAscii().data();
+                             //qDebug () <<  QString("name: %1").arg(l.key()).toAscii().data();
                              xconfig->actions[j].name = strdup(QString("%1").arg(l.key()).toAscii().data());
                          }
                         xconfig->actions_count = j + 1;
@@ -1251,3 +1238,4 @@ void  kXneurApp::xNeurConfig::plug_save_list_plugins(QMap<QString, QMultiMap<boo
     }
 
 }
+
