@@ -589,7 +589,7 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
 //     for(int j=0; j< lstActions.size();++j)
 //     {
          QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
-         while(i!=lstActions.constEnd())
+         while(i!=lstActions.constEnd()) << Пропускает последний экшн. Надо <= !!!
          {
 qDebug () << "HOTKEY.NUM---> " << j ;
              xconfig->actions = (struct _xneur_action *) realloc(xconfig->actions, (j + 1) * sizeof(struct _xneur_action));
@@ -629,13 +629,14 @@ qDebug () << "HOTKEY.NUM---> " << j ;
                              qDebug () <<  QString("name: %1").arg(l.key()).toAscii().data();
                              xconfig->actions[j].name = strdup(QString("%1").arg(l.key()).toAscii().data());
                          }
+                        xconfig->actions_count = j + 1;
                          ++l;
                      }
                  }
              }
             ++i;++j;
          }
-        xconfig->actions_count = j;
+        
    //  }
 }
 
