@@ -21,8 +21,8 @@ kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
     }
     else
     {
-        cfgXneur->xneurStop();
-        cfgXneur->xneurStart();
+     //   cfgXneur->xneurStop();
+      //  cfgXneur->xneurStart();
         qDebug()<<"xneur is running";
     }
     emit changeIconTray(QString("%1").arg(cfgXneur->getCurrentLang()));
