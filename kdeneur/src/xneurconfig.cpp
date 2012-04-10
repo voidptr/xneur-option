@@ -5,9 +5,6 @@ extern "C"
     #include <xneur/list_char.h>
 }
 
-test
-
-
 #include "xneurconfig.h"
 #define MAX_LANGUAGES 4
 #define TOTAL_MODIFER 4
