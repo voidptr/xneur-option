@@ -5,6 +5,7 @@ extern "C"
     #include <xneur/list_char.h>
 }
 
+test
 
 
 #include "xneurconfig.h"
