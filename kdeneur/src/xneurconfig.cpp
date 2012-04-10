@@ -585,6 +585,14 @@ QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_use
 void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QString, QString> > lstActions)
 {
      QMap<QString, QString> tmpCmd;
+<<<<<<< local
+     bool key=false;  /*int ppp=0; */int j=0;
+//     for(int j=0; j< lstActions.size();++j)
+//     {
+         QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
+         while(i!=lstActions.constEnd()) //<< Пропускает последний экшн. Надо <= !!!
+         {
+=======
     QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
      bool key=false;  /*int ppp=0; int j=0;*/
      for(int j=0; j< lstActions.size();++j)
@@ -593,6 +601,7 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
          //QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
         // while(i!=lstActions.constEnd()) // Пропускает последний экшн. Надо <= !!!
          //{
+>>>>>>> other
 qDebug () << "HOTKEY.NUM---> " << j ;
              xconfig->actions = (struct _xneur_action *) realloc(xconfig->actions, (j + 1) * sizeof(struct _xneur_action));
              bzero(&xconfig->actions[j], sizeof(struct _xneur_action));

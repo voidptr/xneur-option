@@ -594,7 +594,7 @@ QMap<QString, QMap<QString, QString> > kXneurApp::frmSettings::hot_save_list_use
         lstActions.insert(ui->tabHotKey_lstUserActions->item(i,1)->text(), lstcommand);
         lstcommand.clear();
     }
-
+    lstActions.insert("", lstcommand);
     return lstActions;
 }
 
