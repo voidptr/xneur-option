@@ -200,7 +200,7 @@ static void split_bind(char *text, int action)
 		if (assigned == FALSE)
 			xconfig->hotkeys[action].key = strdup(key_stat[i]); 
 	}
-
+ 
 	g_strfreev(key_stat);
 }
 

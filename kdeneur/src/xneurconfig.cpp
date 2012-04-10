@@ -8,7 +8,6 @@ extern "C"
 
 
 #include "xneurconfig.h"
-#include <c++/4.6.1/string>
 #define MAX_LANGUAGES 4
 #define TOTAL_MODIFER 4
 #define LANGUAGES_DIR "languages"
@@ -592,7 +591,7 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
          QMap<QString, QMap<QString, QString> >::const_iterator i = lstActions.constBegin();
          while(i!=lstActions.constEnd())
          {
-
+qDebug () << "HOTKEY.NUM---> " << j ;
              xconfig->actions = (struct _xneur_action *) realloc(xconfig->actions, (j + 1) * sizeof(struct _xneur_action));
              bzero(&xconfig->actions[j], sizeof(struct _xneur_action));
             // memset(&xconfig->actions[j], 0,  sizeof(struct _xneur_action));
@@ -602,6 +601,7 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
              QStringList lsh_k = QString("%1").arg(i.key()).replace(" ","").split("+");
              for(int k=0; k<lsh_k.size();++k)
              {
+
                  key=false;
                  for(int p=0; p<TOTAL_MODIFER;++p)
                  {
@@ -616,18 +616,18 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
                      QMap<QString, QString>::const_iterator l = tmpCmd.constBegin();
                      while(l!=tmpCmd.constEnd())
                      {
-                         qDebug () << "HOTKEY.KEY " << lsh_k.at(k).toAscii().data();
+                         qDebug () << "HOTKEY.KEY ---> " << lsh_k.at(k).toAscii().data();
 
-                         xconfig->actions[j].hotkey.key = (char *)"Ctrl + P"/*strdup(lsh_k.at(k).toUtf8().data())*/;
+                         xconfig->actions[j].hotkey.key = strdup(lsh_k.at(k).toUtf8().data());
                          if (!QString("%1").arg(l.value()).isEmpty())
                          {
-                             qDebug () << QString("%1").arg(l.value()).toAscii().data();
-                             xconfig->actions[j].command = (char *) "command" /*strdup(QString("%1").arg(l.value()).toAscii().data())*/;
+                             qDebug () << QString("command: %1").arg(l.value()).toAscii().data();
+                             xconfig->actions[j].command = strdup(QString("%1").arg(l.value()).toAscii().data());
                          }
                          if (!QString("%1").arg(l.key()).isEmpty())
                          {
-                             qDebug () <<  QString("%1").arg(l.key()).toAscii().data();
-                             xconfig->actions[j].name = strdup("name") /*strdup(QString("%1").arg(l.key()).toAscii().data())*/;
+                             qDebug () <<  QString("name: %1").arg(l.key()).toAscii().data();
+                             xconfig->actions[j].name = strdup(QString("%1").arg(l.key()).toAscii().data());
                          }
                          ++l;
                      }
@@ -635,6 +635,7 @@ void kXneurApp::xNeurConfig::hot_save_list_user_actions(QMap<QString, QMap<QStri
              }
             ++i;++j;
          }
+        xconfig->actions_count = j;
    //  }
 }
 
