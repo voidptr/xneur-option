@@ -17,17 +17,17 @@ kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg
   setAttribute( Qt::WA_DeleteOnClose, true);
   cfgNeur = cfg;
   config = new KConfig("kdeneurrc");
-  general = config->group("General");
-  layouts = config->group("Layouts");
-  hotkeys =config->group("Hotkeys");
-  autocompletion = config->group("Autocompletion");
-  applications = config->group("Applications");
-  notifications = config->group("Notifications");
-  Abbreviations = config->group("Abbreviations");
-  log = config->group("Log");
-  troubleshooting = config->group("Troubleshooting");
-  advanced = config->group("Advanced");
-  plugins = config->group("Plugins");
+  //  general = config->group("General");
+  //  layouts = config->group("Layouts");
+  //  hotkeys =config->group("Hotkeys");
+  //  autocompletion = config->group("Autocompletion");
+  //  applications = config->group("Applications");
+  //  notifications = config->group("Notifications");
+  //  Abbreviations = config->group("Abbreviations");
+  //  log = config->group("Log");
+  //  troubleshooting = config->group("Troubleshooting");
+  //  advanced = config->group("Advanced");
+  //  plugins = config->group("Plugins");
   properties = config->group("Properties");
   settintgGrid();
   createConnect();
@@ -183,7 +183,9 @@ void kXneurApp::frmSettings::readSettingsKdeNeur()
 {
     readSettingsNeur();
 
-    // прочитать настройку  в чем открывать логи приложения
+    //tab log
+    QString view=properties.readEntry("Viewer","browser");
+    (view=="browser")?ui->tabLog_cmbOpenLongIn->setCurrentIndex(0): ui->tabLog_cmbOpenLongIn->setCurrentIndex(1);
     //tab Properties
     ui->tabProperties_chkEnableAutostart->setChecked(properties.readEntry("Autostart",false));
     if(ui->tabProperties_chkEnableAutostart->isChecked())
@@ -330,6 +332,9 @@ void kXneurApp::frmSettings::createConnect()
   //tab abbreviations
   connect(ui->tabAbbreviations_cmdAdd, SIGNAL(clicked()), SLOT(addAbbreviation()));
 
+  //tab log
+  connect(ui->tabLog_cmbOpenLongIn, SIGNAL(currentIndexChanged(int)), SLOT(openLoFileIn(int)));
+
   //tab properties
   connect(ui->tabProperties_cmdRecoverKeyCommand, SIGNAL(clicked()), SLOT(RecoverKeyboardCommand()));
   connect(ui->tabProperties_cmdEditKeyCommand, SIGNAL(clicked()),SLOT(EditKeyboardCommand()));
@@ -344,6 +349,13 @@ void kXneurApp::frmSettings::RecoverKeyboardCommand()
     ui->tabProperties_txtKeyboardCommad->clear();
     ui->tabProperties_txtKeyboardCommad->setText("/usr/bin/kcmshell4 --args=--tab=layouts kcm_keyboard");
     properties.writeEntry("KeyboardCommand", "/usr/bin/kcmshell4 --args=--tab=layouts kcm_keyboard");
+}
+
+void kXneurApp::frmSettings::openLoFileIn(int index)
+{
+    QString view;
+    (index==0)?view="browser":view="viewer";
+    properties.writeEntry("Viewer", view);
 }
 
 void kXneurApp::frmSettings::EditKeyboardCommand()
@@ -384,7 +396,7 @@ void kXneurApp::frmSettings::chekAutostart(bool cheked)
 {
     KStandardDirs dir;
     QString kdeneur = "kdeneur.desktop";
-    QString str="[Desktop Entry]\nEncoding=UTF-8\nExec=kdeneur\nIcon=kdeneur\nTerminal=false\nType=Application\nCategories=Qt;KDE;Utility;\nStartupNotify=true\nName=kdeNeur\nName[ru]=kdeNeur\nComment=Automatic keyboard layout switcher\nComment[ru]=Автоматический переключатель раскладки клавиатуры";
+    QString str="[Desktop Entry]\nCategories=Qt;KDE;Utility;\nComment[ru]=Автоматический переключатель раскладки клавиатуры\nComment=Автоматический переключатель раскладки клавиатуры\nExec=kdeneur\nIcon=kdexneur\nName[ru]=kdeNeur\nName=kdeNeur\nStartupNotify=true\nTerminal=false\nType=Application\nX-KDE-SubstituteUID=false";
     QString pathAutostart = dir.findResourceDir("xdgconf-autostart", "");
     QString fileDesktop = QString("%1%2").arg(pathAutostart).arg(kdeneur);
     if(cheked && KStandardDirs::exists(pathAutostart))

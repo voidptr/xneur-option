@@ -14,14 +14,14 @@
 
 //Kde header files
 #include <ktoolinvocation.h>
-
-kXneurApp::kXneurTray::kXneurTray(QObject *parent): QObject(parent)
+#include <kconfiggroup.h>
+kXneurApp::kXneurTray::kXneurTray( QMap<QString, QMap<QString, QString> > listActions,QObject *parent): QObject(parent)
 {
-  createActions();
+  createActions(listActions);
 }
 
 
-void kXneurApp::kXneurTray::createActions()
+void kXneurApp::kXneurTray::createActions(QMap<QString, QMap<QString, QString> > lstAct)
 {
   trayIcon = new QSystemTrayIcon();
   trayIcon->setIcon(QIcon(":/by"));
@@ -44,9 +44,15 @@ void kXneurApp::kXneurTray::createActions()
   connect(show_journal,SIGNAL(triggered()), SLOT(showJournal()));
 
   //TODO add dynamic user action from file settings
-  user_action = new QAction(tr("User Action"), this);
-  add_user_action_menu_from_file();
-  user_action->setMenu(user_action_menu);
+  if(add_user_action_menu_from_file(lstAct))
+  {
+      user_action = new QAction(tr("User Action"), this);
+      user_action->setMenu(user_action_menu);
+  }
+  else
+  {
+      user_action=NULL;
+  }
 
   //TODO ?
   start_stop_neur = new QAction(tr("Start daemon"), this);
@@ -55,7 +61,8 @@ void kXneurApp::kXneurTray::createActions()
 
   trayMenu->addAction(start_stop_neur);
   trayMenu->addSeparator();
-  trayMenu->addAction(user_action);
+  if(user_action!=NULL)
+    trayMenu->addAction(user_action);
   trayMenu->addAction(show_journal);
   trayMenu->addSeparator();
   trayMenu->addAction(settings_app);
@@ -71,15 +78,33 @@ void kXneurApp::kXneurTray::createActions()
 
 void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
 {
-    QString path;
-    path=QString("%1%2.png").arg("/usr/share/gxneur/pixmaps/").arg(lang);
-    if (QFile::exists(path))
+    KConfig conf("kdeneurrc");
+    KConfigGroup properties = conf.group("Properties");
+    QString path, usrPath;
+    int tray = properties.readEntry("Typeicontray", 0);
+    switch(tray)
     {
-        trayIcon->setIcon(QIcon(path));
-    }
-    else
-    {
-        trayIcon->setIcon(QIcon(":/noLayout"));
+    case FLAG:
+        usrPath = properties.readEntry("Iconpath", "");
+        if(usrPath.isEmpty())
+            path=QString("%1%2.png").arg("/usr/share/gxneur/pixmaps/").arg(lang);
+        else
+            path=QString("%1/%2.png").arg(usrPath).arg(lang);
+
+        if (QFile::exists(path))
+        {
+            trayIcon->setIcon(QIcon(path));
+        }
+        else
+        {
+            trayIcon->setIcon(QIcon(":/noLayout"));
+        }
+        break;
+    case TEXT:
+//        break;
+    case ICON:
+        trayIcon->setIcon(QIcon(":/icon"));
+        break;
     }
 }
 
@@ -99,12 +124,6 @@ void kXneurApp::kXneurTray::keyboardProperties()
 
 void kXneurApp::kXneurTray::settingsApp()
 {
-//  kXneurApp::frmSettings *formSettings = new kXneurApp::frmSettings;
-
-//  if(formSettings->exec() == QDialog::Accepted)
-//  {
-//      emit restartNeur();
-//  }
     emit openSettings();
 }
 
@@ -140,9 +159,45 @@ void kXneurApp::kXneurTray::startStopNeur()
 
 }
 
-void kXneurApp::kXneurTray::add_user_action_menu_from_file()
+bool kXneurApp::kXneurTray::add_user_action_menu_from_file(QMap<QString, QMap<QString, QString> > lstAct)
 {
-  qDebug()<< "read settings from file for add user action";
+    if (lstAct.size()>0)
+    {
+        QMap<QString, QString> tmpCmd;
+        QMap<QString, QMap<QString, QString> >::const_iterator i = lstAct.constBegin();
+        while (i!=lstAct.constEnd())
+        {
+            tmpCmd = i.value();
+            QMap<QString, QString>::const_iterator p = tmpCmd.constBegin();
+            while(p!=tmpCmd.constEnd())
+            {
+                QAction *usrAct = new QAction(p.key(), this);
+                usrAct->setData(p.value());
+                connect(usrAct, SIGNAL(triggered()), SLOT(runUserActions()));
+                user_action_menu->addAction(usrAct);
+                ++p;
+            }
+            ++i;
+        }
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void kXneurApp::kXneurTray::runUserActions()
+{
+    QAction *usrAct = (QAction *)sender();
+    QProcess prc/* = new QProcess()*/;
+    if(!prc.startDetached(usrAct->data().toString()))
+    {
+        QMessageBox::information(0, tr("Error: Execute Actions"), tr(prc.errorString().toUtf8().data()), QMessageBox::Ok);
+        qDebug() << prc.errorString();
+    }
+   // delete usrAct;
+   // delete prc;
 }
 
 

@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/kxneur.png</file>
+        <file alias="icon">icons/kxneur.png</file>
         <file alias="noLayout">icons/layout.png</file>
     </qresource>
 </RCC>

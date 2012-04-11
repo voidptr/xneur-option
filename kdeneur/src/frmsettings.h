@@ -69,6 +69,9 @@ namespace kXneurApp
     //tab abbreviations
     void addAbbreviation();
 
+    //tab log
+    void openLoFileIn(int);
+
     //tab properties
     void RecoverKeyboardCommand();
     void EditKeyboardCommand();

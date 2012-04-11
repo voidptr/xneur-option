@@ -12,7 +12,7 @@
 
 kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
 {
-    cfgXneur = new xNeurConfig();
+    cfgXneur = new kXneurApp::xNeurConfig();
     settignsTray();
     int xneur_pid=cfgXneur->getNeur_pid();
     if(xneur_pid < 0)
@@ -41,7 +41,7 @@ kXneurApp::kXneur::~kXneur()
 
 void kXneurApp::kXneur::settignsTray()
 {
-    trayApp = new kXneurTray(this);
+    trayApp = new kXneurApp::kXneurTray(cfgXneur->hot_get_list_user_actions(),this);
     connect(this, SIGNAL(changeIconTray(QString)), trayApp, SLOT(setTrayIconFlags(QString)));
     connect(cfgXneur, SIGNAL(setStatusXneur(bool)), trayApp, SLOT(setStatusXneur(bool)));
     connect(cfgXneur, SIGNAL(setStatusXneur(bool)), trayApp, SLOT(setStatusXneur(bool)));

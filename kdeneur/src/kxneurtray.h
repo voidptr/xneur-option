@@ -5,6 +5,10 @@
 #include <QObject>
 #include <QAction>
 #include <QMenu>
+#include <QProcess>
+
+
+#include <kconfig.h>
 
 namespace kXneurApp
 {
@@ -12,7 +16,7 @@ namespace kXneurApp
   {
     Q_OBJECT
   public:
-    explicit kXneurTray(QObject *parent=0);
+    explicit kXneurTray(QMap<QString, QMap<QString, QString> > listAction, QObject *parent=0);
     void  setTrayToolTips(QString);
   public slots:
     void setTrayIconFlags(QString);
@@ -24,6 +28,7 @@ namespace kXneurApp
     void trayClicked(QSystemTrayIcon::ActivationReason);
     void setStatusXneur(bool);
   private:
+    enum trayStat {FLAG=0,TEXT,ICON};
     QSystemTrayIcon *trayIcon;
     QMenu *trayMenu;
     QMenu *user_action_menu;
@@ -34,8 +39,10 @@ namespace kXneurApp
     QAction *settings_keyboard;
     QAction *about_app;
     QAction *exit_app;
-    void createActions();
-    void add_user_action_menu_from_file();
+    void createActions(QMap<QString, QMap<QString, QString> >);
+    bool add_user_action_menu_from_file(QMap<QString, QMap<QString, QString> >);
+  private slots:
+    void runUserActions();
 signals:
     void statusDaemon(bool);
     void statusDaemon();
