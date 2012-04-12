@@ -11,6 +11,7 @@
 #include <QFile>
 #include <QUrl>
 #include <QDesktopServices>
+#include <QTranslator>
 
 //Kde header files
 #include <ktoolinvocation.h>
@@ -31,7 +32,7 @@ void kXneurApp::kXneurTray::createActions(QMap<QString, QMap<QString, QString> >
   exit_app = new QAction(tr("Exit"), this);
   connect(exit_app, SIGNAL(triggered()), SIGNAL(exitApp()));
 
-  about_app = new QAction(tr("kXneur About..."), this);
+  about_app = new QAction(tr("kdeNeur About..."), this);
   connect(about_app, SIGNAL(triggered()),SLOT(kXneurAbout()));
 
   settings_keyboard =  new QAction(tr("Keyboard Properties..."), this);
@@ -103,7 +104,7 @@ void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
     case TEXT:
 //        break;
     case ICON:
-        trayIcon->setIcon(QIcon(":/icon"));
+        trayIcon->setIcon(QIcon(":/icons/kdeneur.png"));
         break;
     }
 }

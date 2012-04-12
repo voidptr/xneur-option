@@ -13,6 +13,7 @@
 //Qt header files
 #include <QDebug>
 #include <QTextCodec>
+#include <QTranslator>
 #include <QTime>
 
 static const KLocalizedString description =ki18n("kXneur (KDE X Neural Switcher) is xNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.15 only");
@@ -22,15 +23,19 @@ int main(int argc, char *argv[])
 {
   qDebug()<< KGlobal::dirs()->localkdedir();
   qDebug()<<QTime::currentTime();
+  qDebug() << QLocale::system().name();
   QTextCodec *codec = QTextCodec::codecForName("UTF-8");
   QTextCodec::setCodecForTr(codec);
   QTextCodec::setCodecForCStrings(codec);
   QTextCodec::setCodecForLocale(codec);
   KConfig conf("kdeneurrc");
   sleep(conf.group("Properties").readEntry("WaiTime", 0));
+  QTranslator transApp;
+  transApp.load(QString("kdeNeur_%1").arg(QLocale::system().name()), "i18n");
   kXneurApp::kXneur neur(argc, argv);
-  neur.setApplicationName("kXneur");
-  neur.setWindowIcon(QIcon(":/icons/kxneur.png"));
+  neur.installTranslator(&transApp);
+  neur.setApplicationName("kdeNeur");
+  neur.setWindowIcon(QIcon(":/icons/kdeneur.png"));
   kXneurApp::kXneur::setQuitOnLastWindowClosed(false);
   KAboutData about("kXneur",0, ki18n("kXneur Keyboard switcher") ,version,description,
                     KAboutData::License_GPL, ki18n("(C) 2012  Sergei Chystyakov"), ki18n(""), "http://xneur.ru","xneur@lists.net.ru");

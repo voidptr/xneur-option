@@ -74,7 +74,7 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->hot_save_list_user_actions(hot_save_list_user_actions());
 
     //tab Autocompletion
-    cfgNeur->auto_save_enable_pattern(ui->tabAutocompletion_chkEnableAutocompl->isChecked());
+    cfgNeur->auto_save_enable_pattern(ui->tabAutocompletion_chkTrueAutocomplit->isChecked());
     cfgNeur->auto_save_add_space(ui->tabAutocompletion_chkAddSpace->isChecked());
     cfgNeur->auto_save_list_app_disable_autocomplite(getListFromWidget(ui->tabAutocompletion_lstApp));
 
@@ -229,7 +229,7 @@ void kXneurApp::frmSettings::readSettingsNeur()
     ui->Layout_chkRememberKbLayout->setChecked(cfgNeur->lay_get_remember_layout_for_app());
 
     //tab Autocompletion
-    ui->tabAutocompletion_chkEnableAutocompl->setCheckable(cfgNeur->auto_get_enable_pattern());
+    ui->tabAutocompletion_chkTrueAutocomplit->setChecked(cfgNeur->auto_get_enable_pattern());
     ui->tabAutocompletion_chkAddSpace->setChecked(cfgNeur->auto_get_add_space());
 
     //tab Notifications

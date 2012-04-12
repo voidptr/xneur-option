@@ -19,7 +19,7 @@ public:
 protected:
     QSize tabSizeHint(int) const
     {
-        return QSize(150, 27);
+        return QSize(150, 30);
     }
     void paintEvent(QPaintEvent *)
     {

@@ -9,9 +9,13 @@
 //Qt header files
 #include <QDBusConnection>
 #include <QDebug>
+#include <QTranslator>
 
 kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
 {
+    QTranslator transApp;
+    transApp.load(QString("kdeNeur_%1").arg(QLocale::system().name()), "i18n");
+    installTranslator(&transApp);
     cfgXneur = new kXneurApp::xNeurConfig();
     settignsTray();
     int xneur_pid=cfgXneur->getNeur_pid();
@@ -28,7 +32,7 @@ kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
     emit changeIconTray(QString("%1").arg(cfgXneur->getCurrentLang()));
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.connect("org.kde.keyboard", "/Layouts", "org.kde.KeyboardLayouts","currentLayoutChanged", this, SLOT(layoutChanged(QString)));
-}
+ }
 
 kXneurApp::kXneur::~kXneur()
 {

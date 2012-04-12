@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>XNeur Settings</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resursrc.qrc">
+    <normaloff>:/icons/kdeneur.png</normaloff>:/icons/kdeneur.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="TabWidget" name="tabWidget">
@@ -42,7 +46,7 @@
        <item row="1" column="0">
         <widget class="QTabWidget" name="tbWidGeneral">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tabMain">
           <attribute name="title">
@@ -493,13 +497,6 @@
        <string>Autocompletion</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_6">
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="tabAutocompletion_chkEnableAutocompl">
-         <property name="text">
-          <string>Enable pattern mining and recognition (autocompletion)</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0">
         <widget class="QCheckBox" name="tabAutocompletion_chkAddSpace">
          <property name="text">
@@ -568,6 +565,13 @@
            </layout>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="tabAutocompletion_chkTrueAutocomplit">
+         <property name="text">
+          <string>Enable pattern mining and recognition (autocompletion)</string>
+         </property>
         </widget>
        </item>
       </layout>
@@ -1941,6 +1945,8 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resursrc.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,4 +1,4 @@
-TRANSLATIONS += i18n/kXneur_ru_RU.ts 
+TRANSLATIONS += i18n/kdeNeur_ru_RU.ts
 
 isEmpty(QMAKE_LRELEASE) {
     !exists($$QMAKE_LRELEASE) { QMAKE_LRELEASE = lrelease }
