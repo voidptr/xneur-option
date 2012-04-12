@@ -29,6 +29,7 @@ namespace kXneurApp
     void setStatusXneur(bool);
   private:
     enum trayStat {FLAG=0,TEXT,ICON};
+    //enum logViewer {BROWSER=0,PROGRAM};
     QSystemTrayIcon *trayIcon;
     QMenu *trayMenu;
     QMenu *user_action_menu;

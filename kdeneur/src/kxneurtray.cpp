@@ -15,7 +15,10 @@
 
 //Kde header files
 #include <ktoolinvocation.h>
+//#include <kconfiggroup.h>
+#include <kconfig.h>
 #include <kconfiggroup.h>
+
 kXneurApp::kXneurTray::kXneurTray( QMap<QString, QMap<QString, QString> > listActions,QObject *parent): QObject(parent)
 {
   createActions(listActions);
@@ -111,8 +114,8 @@ void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
 
 void kXneurApp::kXneurTray::kXneurAbout()
 {
-  kXneurApp::frmAbout *formAbout = new kXneurApp::frmAbout;
-  formAbout->show();
+    kXneurApp::frmAbout *formAbout = new kXneurApp::frmAbout();
+    formAbout->exec();
 }
 
 void kXneurApp::kXneurTray::keyboardProperties()
@@ -134,7 +137,17 @@ void kXneurApp::kXneurTray::showJournal()
     QString logFile = QString("%1/%2").arg(QDir::homePath()).arg(".xneur/xneurlog.html");
     if (QFile::exists(logFile))
     {
-       QDesktopServices::openUrl(QUrl(logFile));
+        KConfig conf("kdeneurrc");
+        KConfigGroup properties = conf.group("Properties");
+        int viewer = properties.readEntry("Viewer", 0);
+        switch(viewer)
+        {
+        case 0:
+            QDesktopServices::openUrl(QUrl(logFile));
+            break;
+        case 1:
+            break;
+        }
     }
     else
     {

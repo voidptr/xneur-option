@@ -47,7 +47,7 @@ void kXneurApp::RulesChange::editWors()
     int currentRow = ui->listWords->currentRow();
     if (currentRow < 0)
     {
-        QMessageBox::information(0, tr("Warning...."), tr("You don't select lang"), QMessageBox::Ok);
+        QMessageBox::information(0, tr("Warning...."), tr("You don't select rules"), QMessageBox::Ok);
     }
     else
     {

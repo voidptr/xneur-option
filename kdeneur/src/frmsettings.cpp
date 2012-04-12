@@ -9,25 +9,16 @@
 #include <QFileDialog>
 #include <QListWidgetItem>
 #include <QMessageBox>
+#include <QDesktopServices>
 #include <QMap>
 
 kXneurApp::frmSettings::frmSettings(QWidget *parent, kXneurApp::xNeurConfig *cfg) :  QDialog(parent),  ui(new Ui::frmSettings)
 {
   ui->setupUi(this);
   setAttribute( Qt::WA_DeleteOnClose, true);
+  ui->tabWidget->setCurrentIndex(0);
   cfgNeur = cfg;
   config = new KConfig("kdeneurrc");
-  //  general = config->group("General");
-  //  layouts = config->group("Layouts");
-  //  hotkeys =config->group("Hotkeys");
-  //  autocompletion = config->group("Autocompletion");
-  //  applications = config->group("Applications");
-  //  notifications = config->group("Notifications");
-  //  Abbreviations = config->group("Abbreviations");
-  //  log = config->group("Log");
-  //  troubleshooting = config->group("Troubleshooting");
-  //  advanced = config->group("Advanced");
-  //  plugins = config->group("Plugins");
   properties = config->group("Properties");
   settintgGrid();
   createConnect();
@@ -331,9 +322,12 @@ void kXneurApp::frmSettings::createConnect()
 
   //tab abbreviations
   connect(ui->tabAbbreviations_cmdAdd, SIGNAL(clicked()), SLOT(addAbbreviation()));
+  connect(ui->tabAbbreviations_cmdDel, SIGNAL(clicked()), SLOT(delAbbreviation()));
+
 
   //tab log
   connect(ui->tabLog_cmbOpenLongIn, SIGNAL(currentIndexChanged(int)), SLOT(openLoFileIn(int)));
+  connect(ui->tabLog_cmdOpenLog, SIGNAL(clicked()),SLOT(openLogFile()));
 
   //tab properties
   connect(ui->tabProperties_cmdRecoverKeyCommand, SIGNAL(clicked()), SLOT(RecoverKeyboardCommand()));
@@ -356,6 +350,27 @@ void kXneurApp::frmSettings::openLoFileIn(int index)
     QString view;
     (index==0)?view="browser":view="viewer";
     properties.writeEntry("Viewer", view);
+}
+
+void kXneurApp::frmSettings::openLogFile()
+{
+    QString logFile = QString("%1/%2").arg(QDir::homePath()).arg(".xneur/xneurlog.html");
+    if (QFile::exists(logFile))
+    {
+        int viewer = ui->tabLog_cmbOpenLongIn->currentIndex();
+        switch(viewer)
+        {
+        case 0:
+            QDesktopServices::openUrl(QUrl(logFile));
+            break;
+        case 1:
+            break;
+        }
+    }
+    else
+    {
+        QMessageBox::warning(0,tr("Log file not found..."),tr("Log file xneurlog.html not found. Maybe you do not have the option of logging!"));
+    }
 }
 
 void kXneurApp::frmSettings::EditKeyboardCommand()
@@ -441,6 +456,20 @@ void kXneurApp::frmSettings::addAbbreviation()
         ui->tabAbbreviations_lstListAbbreviations->setItem(ui->tabAbbreviations_lstListAbbreviations->rowCount()-1, 1, new QTableWidgetItem(frmAbb->text));
     }
     delete frmAbb;
+}
+
+void kXneurApp::frmSettings::delAbbreviation()
+{
+    int row = ui->tabAbbreviations_lstListAbbreviations->currentRow();
+    if(row <0)
+    {
+        QMessageBox::information(0, tr("Warning...."), tr("You don't select abbreviation for remove."), QMessageBox::Ok);
+    }
+    else
+    {
+        ui->tabAbbreviations_lstListAbbreviations->removeRow(row);
+    }
+
 }
 
 void kXneurApp::frmSettings::tab_lay_get_list_lang(QStringList lstLng)

@@ -76,10 +76,9 @@ void kXneurApp::kXneur::startStopNeur()
 void kXneurApp::kXneur::OpenSettings()
 {
     kXneurApp::frmSettings *formSettings = new kXneurApp::frmSettings(0,cfgXneur);
-      if(formSettings->exec() == QDialog::Accepted)
-      {
-          emit reLoadNeur();
-      }
-      //delete formSettings;
+    if(formSettings->exec() == QDialog::Accepted)
+    {
+      emit reLoadNeur();
+    }
 }
 
