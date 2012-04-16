@@ -3,7 +3,7 @@ QT += core gui dbus
 TARGET = kdeneur
 TEMPLATE = app
 
-include(i18n/i18n.pri)
+include(../po/localize.pri)
 
 SOURCES += \
     main.cpp \
@@ -54,14 +54,29 @@ RESOURCES += \
 
 
 
-#unix {
-#XNEURPLUGINDIR = /usr/lib/xneur
+unix{
+ contains(QMAKE_HOST.arch, x86_64) {
+    DEFINES += XNEUR_PLUGIN_DIR=\\\"/usr/lib64/xneur\\\"
+ }
+ else {
+    DEFINES += XNEUR_PLUGIN_DIR=\\\"/usr/lib/xneur\\\"
+ }
   #VARIABLES
- # isEmpty(PREFIX) {
-  #  PREFIX = /usr
-#}
+ isEmpty(PREFIX) {
+   PREFIX = /usr
+ }
 
-#BINDIR = $$PREFIX/bin
-#DATADIR = $$PREFIX/share
-#SHAREDIR = $$DATADIR/$${TARGET}
-#}
+BINDIR = $$PREFIX/bin
+DATADIR = $$PREFIX/share
+LOCALEDIR = $$DATADIR/locale/
+SHAREDIR = $$DATADIR/$${TARGET}
+
+target.path    = $${BINDIR}
+
+kdeneur_data.files  = ../pixmaps/*.png
+kdeneur_data.path  = $${SHAREDIR}
+
+INSTALLS = target kdeneur_data
+
+}
+

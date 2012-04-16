@@ -15,6 +15,7 @@
 #include <QTextCodec>
 #include <QTranslator>
 #include <QTime>
+#include <QLibraryInfo>
 
 static const KLocalizedString description =ki18n("kXneur (KDE X Neural Switcher) is xNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.15 only");
 static const char version[] = "0.15.0";
@@ -31,7 +32,7 @@ int main(int argc, char *argv[])
   KConfig conf("kdeneurrc");
   sleep(conf.group("Properties").readEntry("WaiTime", 0));
   QTranslator transApp;
-  transApp.load(QString("kdeNeur_%1").arg(QLocale::system().name()), "i18n");
+  transApp.load(QString("kdeNeur_%1").arg(QLocale::system().name()), "../po");
   kXneurApp::kXneur neur(argc, argv);
   neur.installTranslator(&transApp);
   neur.setApplicationName("kdeNeur");

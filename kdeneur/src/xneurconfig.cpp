@@ -11,7 +11,7 @@ extern "C"
 #define LANGUAGES_DIR "languages"
 #define XNEUR_NEEDED_MAJOR_VERSION 15
 #define XNEUR_BUILD_MINOR_VERSION 0
-#define XNEUR_PLUGIN_DIR "/usr/lib/xneur"
+//#define XNEUR_PLUGIN_DIR "/usr/lib/xneur"
 
 extern "C"
 {
