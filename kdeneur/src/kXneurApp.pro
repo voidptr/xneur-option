@@ -3,7 +3,7 @@ QT += core gui dbus
 TARGET = kdeneur
 TEMPLATE = app
 
-include(../po/localize.pri)
+include(i18n/localize.pri)
 
 SOURCES += \
     main.cpp \
@@ -55,28 +55,63 @@ RESOURCES += \
 
 
 unix{
+ isEmpty(PREFIX) {
+   PREFIX = /usr
+ }
+BINDIR = $$PREFIX/bin
+DATADIR = $$PREFIX/share
+LOCALEDIR = $$DATADIR/locale
+SHAREDIR = $$DATADIR/$${TARGET}
+
  contains(QMAKE_HOST.arch, x86_64) {
     DEFINES += XNEUR_PLUGIN_DIR=\\\"/usr/lib64/xneur\\\"
  }
  else {
     DEFINES += XNEUR_PLUGIN_DIR=\\\"/usr/lib/xneur\\\"
  }
-  #VARIABLES
- isEmpty(PREFIX) {
-   PREFIX = /usr
- }
 
-BINDIR = $$PREFIX/bin
-DATADIR = $$PREFIX/share
-LOCALEDIR = $$DATADIR/locale/
-SHAREDIR = $$DATADIR/$${TARGET}
+DEFINES += COUNTRY_FLAGS=\\\"$${SHAREDIR}/pixmaps\\\" LOCALEDIR=\\\"$${LOCALEDIR}\\\"
+
+INSTALLS =  target \
+            flags \
+            iconsvg \
+            desktop \
+            translate \
+            icon_x16 \
+            icon_x22 \
+            icon_x24 \
+            icon_x32 \
+            icon_x48
 
 target.path    = $${BINDIR}
 
-kdeneur_data.files  = ../pixmaps/*.png
-kdeneur_data.path  = $${SHAREDIR}
+flags.files  += pixmaps/png/*
+flags.path  = $${SHAREDIR}/pixmaps
 
-INSTALLS = target kdeneur_data
+iconsvg.path = $$DATADIR/icons/hicolor/scalable/apps
+iconsvg.files += pixmaps/scalable/*
+
+desktop.path = $$DATADIR/applications
+desktop.files += ../kdeneur.desktop
+
+translate.path = $$LOCALEDIR/ru/LC_MESSAGES
+translate.files += i18n/*.qm
+
+icon_x16.path = $$DATADIR/icons/hicolor/16x16/apps
+icon_x16.files += pixmaps/x16/*
+
+icon_x22.path = $$DATADIR/icons/hicolor/22x22/apps
+icon_x22.files += pixmaps/x22/*
+
+icon_x24.path = $$DATADIR/icons/hicolor/24x24/apps
+icon_x24.files += pixmaps/x24/*
+
+icon_x32.path = $$DATADIR/icons/hicolor/32x32/apps
+icon_x32.files += pixmaps/x32/*
+
+icon_x48.path = $$DATADIR/icons/hicolor/48x48/apps
+icon_x48.files += pixmaps/x48/*
 
 }
 
+OTHER_FILES +=

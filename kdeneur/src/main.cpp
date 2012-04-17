@@ -22,9 +22,9 @@ static const char version[] = "0.15.0";
 
 int main(int argc, char *argv[])
 {
-  qDebug()<< KGlobal::dirs()->localkdedir();
-  qDebug()<<QTime::currentTime();
-  qDebug() << QLocale::system().name();
+  //qDebug()<< KGlobal::dirs()->localkdedir();
+  //qDebug()<<QTime::currentTime();
+  //qDebug() << QString("%1/%2/%3/kdeneur_%4").arg(LOCALEDIR).arg(QLocale::system().name().left(QLocale::system().name().indexOf("_"))).arg("LC_MESSAGES").arg(QLocale::system().name());
   QTextCodec *codec = QTextCodec::codecForName("UTF-8");
   QTextCodec::setCodecForTr(codec);
   QTextCodec::setCodecForCStrings(codec);
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   KConfig conf("kdeneurrc");
   sleep(conf.group("Properties").readEntry("WaiTime", 0));
   QTranslator transApp;
-  transApp.load(QString("kdeNeur_%1").arg(QLocale::system().name()), "../po");
+  transApp.load(QString("%1/%2/%3/kdeneur_%4").arg(LOCALEDIR).arg(QLocale::system().name().left(QLocale::system().name().indexOf("_"))).arg("LC_MESSAGES").arg(QLocale::system().name()));
   kXneurApp::kXneur neur(argc, argv);
   neur.installTranslator(&transApp);
   neur.setApplicationName("kdeNeur");

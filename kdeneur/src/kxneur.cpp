@@ -14,7 +14,7 @@
 kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
 {
     QTranslator transApp;
-    transApp.load(QString("kdeNeur_%1").arg(QLocale::system().name()), "i18n");
+    transApp.load(QString("%1/%2/%3/kdeneur_%4").arg(LOCALEDIR).arg(QLocale::system().name().left(QLocale::system().name().indexOf("_"))).arg("LC_MESSAGES").arg(QLocale::system().name()));
     installTranslator(&transApp);
     cfgXneur = new kXneurApp::xNeurConfig();
     settignsTray();

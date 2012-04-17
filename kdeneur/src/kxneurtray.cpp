@@ -91,7 +91,7 @@ void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
     case FLAG:
         usrPath = properties.readEntry("Iconpath", "");
         if(usrPath.isEmpty())
-            path=QString("%1%2.png").arg("/usr/share/gxneur/pixmaps/").arg(lang);
+            path=QString("%1%2.png").arg(COUNTRY_FLAGS).arg(lang);
         else
             path=QString("%1/%2.png").arg(usrPath).arg(lang);
 
