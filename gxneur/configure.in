@@ -69,7 +69,7 @@ fi
 
 AC_DEFINE(PACKAGE_GCONF_DIR, "/apps/" PACKAGE, [Define GConf directory for settings])
 
-AC_DEFINE(KB_PROP_COMMAND, "/usr/bin/gnome-keyboard-properties", [Define keyboard properties command])
+AC_DEFINE(KB_PROP_COMMAND, "/usr/bin/gnome-control-center region layouts", [Define keyboard properties command])
 
 PKG_CHECK_MODULES(GLADE, [libglade-2.0 >= 2.6.0])
 AC_SUBST(GLADE_CFLAGS)
