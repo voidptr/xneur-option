@@ -225,7 +225,7 @@ static int get_proto_lang(struct _xneur_handle *handle, char **word, int **sym_l
 	if (hits == 0)
 	{
 		log_message(DEBUG, _("   [-] This word is ok for %s proto of size %d"), handle->languages[cur_lang].name, proto_len);
-		return curr_lang;
+		return cur_lang;
 	}
 
 	log_message(DEBUG, _("   [*] This word has hits for %s proto of size %d"), handle->languages[cur_lang].name, proto_len);
