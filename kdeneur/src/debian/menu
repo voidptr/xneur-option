@@ -1,4 +1,4 @@
-?package(gxneur):needs="X11"\
+?package(kdeneur):needs="X11"\
  section="Applications/General"\
  title="X Neural Switcher KDE frontend"\
  command="/usr/bin/kdeneur"\
