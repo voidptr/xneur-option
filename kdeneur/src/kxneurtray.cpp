@@ -58,7 +58,7 @@ void kXneurApp::kXneurTray::createActions(QMap<QString, QMap<QString, QString> >
       user_action=NULL;
   }
 
-  //TODO ?
+  //TODO
   start_stop_neur = new QAction(tr("Start daemon"), this);
   start_stop_neur->setData(QVariant(false));
   connect(start_stop_neur, SIGNAL(triggered()), SLOT(startStopNeur()));
@@ -204,14 +204,12 @@ bool kXneurApp::kXneurTray::add_user_action_menu_from_file(QMap<QString, QMap<QS
 void kXneurApp::kXneurTray::runUserActions()
 {
     QAction *usrAct = (QAction *)sender();
-    QProcess prc/* = new QProcess()*/;
+    QProcess prc;
     if(!prc.startDetached(usrAct->data().toString()))
     {
         QMessageBox::information(0, tr("Error: Execute Actions"), tr(prc.errorString().toUtf8().data()), QMessageBox::Ok);
         qDebug() << prc.errorString();
     }
-   // delete usrAct;
-   // delete prc;
 }
 
 

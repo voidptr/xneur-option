@@ -13,9 +13,11 @@
 
 kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
 {
+    //FIXME
     QTranslator transApp;
-    transApp.load(QString("%1/%2/%3/kdeneur_%4").arg(LOCALEDIR).arg(QLocale::system().name().left(QLocale::system().name().indexOf("_"))).arg("LC_MESSAGES").arg(QLocale::system().name()));
+    transApp.load(QString("%1/%2/kdeneur_%3.qm").arg(SHAREDIR).arg("i18n").arg(QLocale::system().name()));
     installTranslator(&transApp);
+
     cfgXneur = new kXneurApp::xNeurConfig();
     settignsTray();
     int xneur_pid=cfgXneur->getNeur_pid();
@@ -25,8 +27,8 @@ kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
     }
     else
     {
-     //   cfgXneur->xneurStop();
-      //  cfgXneur->xneurStart();
+        cfgXneur->xneurStop();
+        cfgXneur->xneurStart();
         qDebug()<<"xneur is running";
     }
     emit changeIconTray(QString("%1").arg(cfgXneur->getCurrentLang()));

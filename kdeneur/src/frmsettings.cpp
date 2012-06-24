@@ -7,6 +7,7 @@
 //Qt header files
 #include <QDebug>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QDesktopServices>
@@ -414,14 +415,18 @@ void kXneurApp::frmSettings::chekAutostart(bool cheked)
     QString str="[Desktop Entry]\nCategories=Qt;KDE;Utility;\nComment[ru]=Автоматический переключатель раскладки клавиатуры\nComment=Автоматический переключатель раскладки клавиатуры\nExec=kdeneur\nIcon=kdexneur\nName[ru]=kdeNeur\nName=kdeNeur\nStartupNotify=true\nTerminal=false\nType=Application\nX-KDE-SubstituteUID=false";
     QString pathAutostart = dir.findResourceDir("xdgconf-autostart", "");
     QString fileDesktop = QString("%1%2").arg(pathAutostart).arg(kdeneur);
+
     if(cheked && KStandardDirs::exists(pathAutostart))
     {
         QFile file(fileDesktop);
+        QFileInfo tmp_file(file);
         if(file.open(QIODevice::WriteOnly))
         {
            QTextStream out(&file);
            out.setCodec("UTF-8");
            out <<str;
+           qDebug()<< "FILE AUTOSTART IS fileDesktop " <<fileDesktop;
+           qDebug()<< "FILE AUTOSTART IS FILE " <<tmp_file.absoluteFilePath();
            file.close();
         }
        properties.writeEntry("WaiTime",  ui->tabProperties_spbDelayStartApp->value());

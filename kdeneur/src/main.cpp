@@ -22,9 +22,6 @@ static const char version[] = "0.15.0";
 
 int main(int argc, char *argv[])
 {
-  //qDebug()<< KGlobal::dirs()->localkdedir();
-  //qDebug()<<QTime::currentTime();
-  //qDebug() << QString("%1/%2/%3/kdeneur_%4").arg(LOCALEDIR).arg(QLocale::system().name().left(QLocale::system().name().indexOf("_"))).arg("LC_MESSAGES").arg(QLocale::system().name());
   QTextCodec *codec = QTextCodec::codecForName("UTF-8");
   QTextCodec::setCodecForTr(codec);
   QTextCodec::setCodecForCStrings(codec);
@@ -32,7 +29,7 @@ int main(int argc, char *argv[])
   KConfig conf("kdeneurrc");
   sleep(conf.group("Properties").readEntry("WaiTime", 0));
   QTranslator transApp;
-  transApp.load(QString("%1/%2/%3/kdeneur_%4").arg(LOCALEDIR).arg(QLocale::system().name().left(QLocale::system().name().indexOf("_"))).arg("LC_MESSAGES").arg(QLocale::system().name()));
+  transApp.load(QString("%1/%2/kdeneur_%3.qm").arg(SHAREDIR).arg("i18n").arg(QLocale::system().name()));
   kXneurApp::kXneur neur(argc, argv);
   neur.installTranslator(&transApp);
   neur.setApplicationName("kdeNeur");
@@ -44,7 +41,6 @@ int main(int argc, char *argv[])
   about.addCredit(ki18n("Andrew Crew Kuznetsov"), ki18n("Development X Neural Switcher"),"andrewcrew@rambler.ru","http://xneur.ru");
   about.addCredit(ki18n("Yankin Nickolay Valerevich"), ki18n("Site"),"web@softodrom.ru","http://xneur.ru");
   KCmdLineArgs::init(argc, argv, &about, KCmdLineArgs::CmdLineArgKDE);
-  qDebug()<<QTime::currentTime();
   return neur.exec();
 
 }

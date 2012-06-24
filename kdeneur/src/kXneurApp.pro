@@ -66,13 +66,13 @@ LOCALEDIR = $$DATADIR/locale
 SHAREDIR = $$DATADIR/$${TARGET}
 
  contains(QMAKE_HOST.arch, x86_64) {
-    DEFINES += XNEUR_PLUGIN_DIR=\\\"/usr/lib64/xneur\\\"
+    DEFINES += XNEUR_PLUGIN_DIR=\\\"/usr/lib/xneur\\\"
  }
  else {
     DEFINES += XNEUR_PLUGIN_DIR=\\\"/usr/lib/xneur\\\"
  }
 
-DEFINES += COUNTRY_FLAGS=\\\"$${SHAREDIR}/pixmaps\\\" LOCALEDIR=\\\"$${LOCALEDIR}\\\"
+DEFINES += COUNTRY_FLAGS=\\\"$${SHAREDIR}/pixmaps\\\" SHAREDIR=\\\"$${SHAREDIR}\\\"
 
 INSTALLS =  target \
             flags \
@@ -96,7 +96,7 @@ iconsvg.files += pixmaps/scalable/*
 desktop.path = $$DATADIR/applications
 desktop.files += ../kdeneur.desktop
 
-translate.path = $$LOCALEDIR/ru/LC_MESSAGES
+translate.path = $$DATADIR/i18n
 translate.files += i18n/*.qm
 
 icon_x16.path = $$DATADIR/icons/hicolor/16x16/apps

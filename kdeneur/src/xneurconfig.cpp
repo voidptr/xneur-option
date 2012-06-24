@@ -1168,6 +1168,8 @@ QMap<QString, QMultiMap<bool, QString> >  kXneurApp::xNeurConfig::plug_get_list_
     filtr <<"*.so";
     QFileInfoList infoPlugins = folder.entryInfoList(filtr, QDir::Files | QDir::NoDotAndDotDot);
 
+    qDebug()<<"COUNT PLUGINS " <<infoPlugins.size();
+    qDebug()<< "FOLDER PLUGINS " << folder.absolutePath();
     for(int count=0; count<infoPlugins.size(); ++count)
     {
         xLib.setFileName(infoPlugins.at(count).absoluteFilePath());

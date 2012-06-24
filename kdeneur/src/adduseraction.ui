@@ -67,6 +67,9 @@
        <height>22</height>
       </size>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::WheelFocus</enum>
+     </property>
      <property name="frameShape">
       <enum>QFrame::Panel</enum>
      </property>
