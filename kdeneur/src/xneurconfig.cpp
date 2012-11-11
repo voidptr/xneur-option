@@ -9,7 +9,7 @@ extern "C"
 #define MAX_LANGUAGES 4
 #define TOTAL_MODIFER 4
 #define LANGUAGES_DIR "languages"
-#define XNEUR_NEEDED_MAJOR_VERSION 15
+#define XNEUR_NEEDED_MAJOR_VERSION 16
 #define XNEUR_BUILD_MINOR_VERSION 0
 //#define XNEUR_PLUGIN_DIR "/usr/lib/xneur"
 

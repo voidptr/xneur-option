@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
-    <height>640</height>
+    <width>752</width>
+    <height>632</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -33,7 +33,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>11</number>
      </property>
      <widget class="TabBar" name="tabGeneral">
       <property name="locale">
@@ -1792,6 +1792,11 @@ p, li { white-space: pre-wrap; }
               <item>
                <property name="text">
                 <string>Show flag</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Show user flag</string>
                </property>
               </item>
               <item>

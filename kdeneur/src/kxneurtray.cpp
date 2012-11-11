@@ -47,7 +47,7 @@ void kXneurApp::kXneurTray::createActions(QMap<QString, QMap<QString, QString> >
   show_journal = new QAction(tr("View log..."), this);
   connect(show_journal,SIGNAL(triggered()), SLOT(showJournal()));
 
-  //TODO add dynamic user action from file settings
+  //TODO: add dynamic user action from file settings
   if(add_user_action_menu_from_file(lstAct))
   {
       user_action = new QAction(tr("User Action"), this);
@@ -58,7 +58,7 @@ void kXneurApp::kXneurTray::createActions(QMap<QString, QMap<QString, QString> >
       user_action=NULL;
   }
 
-  //TODO
+  //TODO:
   start_stop_neur = new QAction(tr("Start daemon"), this);
   start_stop_neur->setData(QVariant(false));
   connect(start_stop_neur, SIGNAL(triggered()), SLOT(startStopNeur()));
@@ -86,15 +86,12 @@ void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
     KConfigGroup properties = conf.group("Properties");
     QString path, usrPath;
     int tray = properties.readEntry("Typeicontray", 0);
+    usrPath = properties.readEntry("Iconpath", COUNTRY_FLAGS);
     switch(tray)
     {
     case FLAG:
-        usrPath = properties.readEntry("Iconpath", "");
-        if(usrPath.isEmpty())
-            path=QString("%1/%2.png").arg(COUNTRY_FLAGS).arg(lang);
-        else
-            path=QString("%1/%2.png").arg(usrPath).arg(lang);
-
+        path=QString("%1/%2.png").arg(COUNTRY_FLAGS).arg(lang);
+        qDebug()<< "TYPE ICON " << FLAG << path;
         if (QFile::exists(path))
         {
             trayIcon->setIcon(QIcon(path));
@@ -104,6 +101,18 @@ void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
             trayIcon->setIcon(QIcon(":/noLayout"));
         }
         break;
+    case FLAG_USER:
+        path=QString("%1/%2.png").arg(usrPath).arg(lang);
+        qDebug()<< "TYPE ICON " << FLAG_USER << path;
+        if (QFile::exists(path))
+        {
+            trayIcon->setIcon(QIcon(path));
+        }
+        else
+        {
+            trayIcon->setIcon(QIcon(":/noLayout"));
+        }
+          break;
     case TEXT:
 //        break;
     case ICON:
@@ -133,7 +142,7 @@ void kXneurApp::kXneurTray::settingsApp()
 
 void kXneurApp::kXneurTray::showJournal()
 {
-    //TODO лог файл может иметь расширение отличное от html
+    //TODO: лог файл может иметь расширение отличное от html
     QString logFile = QString("%1/%2").arg(QDir::homePath()).arg(".xneur/xneurlog.html");
     if (QFile::exists(logFile))
     {
@@ -229,6 +238,6 @@ void kXneurApp::kXneurTray::setStatusXneur(bool status)
         start_stop_neur->setText(tr("Start daemon"));
 
     }
-    //TODO .....
+    //TODO:
     start_stop_neur->setData(QVariant(status));
 }

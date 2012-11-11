@@ -187,7 +187,7 @@ void kXneurApp::frmSettings::readSettingsKdeNeur()
 
     }
     ui->tabProperties_cmbTypeIconTray->setCurrentIndex(properties.readEntry("Typeicontray",0));
-    if(ui->tabProperties_cmbTypeIconTray->currentIndex()==0)
+    if(ui->tabProperties_cmbTypeIconTray->currentIndex()==1)
     {
         ui->tabProperties_grpFolderIcon->setEnabled(true);
         ui->tabProperties_txtPathIconTray->setText(properties.readEntry("Iconpath",""));
@@ -267,10 +267,7 @@ void kXneurApp::frmSettings::readSettingsNeur()
    ui->tabAdvanced_chkKeyRelease->setChecked(cfgNeur->adv_get_key_release_event());
    ui->tabAdvanced_spbDelay->setValue(cfgNeur->adv_get_delay_sending_events());
    ui->tabAdvanced_cmbLogLevel->setCurrentIndex(cfgNeur->adv_get_log_level());
-
-
 }
-
 
 void kXneurApp::frmSettings::Clicked(QAbstractButton *button)
 {
@@ -388,7 +385,7 @@ void kXneurApp::frmSettings::TypeIconTray(int selectIndex)
 {
     switch(selectIndex)
     {
-    case 0:
+    case 1:
         ui->tabProperties_grpFolderIcon->setEnabled(true);
         break;
     default:
