@@ -1,3 +1,12 @@
+October 25 2012:
+Version 0.16.0 released.
+New option for сorrect two minus with a long dash
+New option for сorrect ... with a …
+Add multistring abbreviation
+Remove deprecated Xlib function
+Add support window with WM_NAME atom
+Big lot of bugfixes (see mercurial journal).
+
 November 10 2011:
 Version 0.15.0 released.
 New option for сorrect two minus with a dash
