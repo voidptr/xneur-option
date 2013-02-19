@@ -12,13 +12,17 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include <QTranslator>
+#include <QFont>
+#include <QPoint>
+#include <QColor>
 
 //Kde header files
 #include <ktoolinvocation.h>
 //#include <kconfiggroup.h>
 #include <kconfig.h>
 #include <kconfiggroup.h>
-
+#include <plasma/theme.h>
+#include <plasma/paintutils.h>
 kXneurApp::kXneurTray::kXneurTray( QMap<QString, QMap<QString, QString> > listActions,QObject *parent): QObject(parent)
 {
   createActions(listActions);
@@ -47,7 +51,6 @@ void kXneurApp::kXneurTray::createActions(QMap<QString, QMap<QString, QString> >
   show_journal = new QAction(tr("View log..."), this);
   connect(show_journal,SIGNAL(triggered()), SLOT(showJournal()));
 
-  //TODO: add dynamic user action from file settings
   if(add_user_action_menu_from_file(lstAct))
   {
       user_action = new QAction(tr("User Action"), this);
@@ -62,7 +65,6 @@ void kXneurApp::kXneurTray::createActions(QMap<QString, QMap<QString, QString> >
   start_stop_neur = new QAction(tr("Start daemon"), this);
   start_stop_neur->setData(QVariant(false));
   connect(start_stop_neur, SIGNAL(triggered()), SLOT(startStopNeur()));
-
   trayMenu->addAction(start_stop_neur);
   trayMenu->addSeparator();
   if(user_action!=NULL)
@@ -98,6 +100,7 @@ void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
         }
         else
         {
+            qDebug() << tr(QString("ERROR: Not Found %1").arg(path).toAscii());
             trayIcon->setIcon(QIcon(":/noLayout"));
         }
         break;
@@ -110,11 +113,22 @@ void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
         }
         else
         {
+            qDebug() << tr(QString("ERROR: Not Found %1").arg(path).toAscii());
             trayIcon->setIcon(QIcon(":/noLayout"));
         }
           break;
     case TEXT:
-//        break;
+    {
+        //TODO: Add userSettings for text in tray
+        QFont font;
+        font.setFamily("Ubuntu");
+        font.setBold(true);
+        font.setPointSize(18);
+        QColor 	textColor = Plasma::Theme::defaultTheme()->color(Plasma::Theme::TextColor);
+        QColor 	shadowColor = Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor);
+        QPoint 	offset = QPoint(0, 0);
+        trayIcon->setIcon(QIcon(Plasma::PaintUtils::shadowText(lang, font, textColor, shadowColor, offset, 0)));
+    }break;
     case ICON:
         trayIcon->setIcon(QIcon(":/icons/kdeneur.png"));
         break;
@@ -209,7 +223,7 @@ bool kXneurApp::kXneurTray::add_user_action_menu_from_file(QMap<QString, QMap<QS
         return false;
     }
 }
-
+//выполняем пользовательское действие
 void kXneurApp::kXneurTray::runUserActions()
 {
     QAction *usrAct = (QAction *)sender();
@@ -218,6 +232,7 @@ void kXneurApp::kXneurTray::runUserActions()
     {
         QMessageBox::information(0, tr("Error: Execute Actions"), tr(prc.errorString().toUtf8().data()), QMessageBox::Ok);
         qDebug() << prc.errorString();
+        qDebug() << usrAct->data().toString();
     }
 }
 
