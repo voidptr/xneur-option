@@ -312,7 +312,8 @@ msgstr "Режим исправления (r) на знак регистраци
 #: src/xneur.c:180
 #, c-format
 msgid "Correct three points with a ellipsis mode set to %s"
-msgstr "Режим исправления трех точек на знак многоточия установлен в значение %s"
+msgstr ""
+"Режим исправления трех точек на знак многоточия установлен в значение %s"
 
 #: src/xneur.c:181
 #, c-format
