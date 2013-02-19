@@ -119,6 +119,8 @@ debuild -S -sd
 # end update for other releases
 
 cd ..
+echo "Download to Launcshpad Raring..."
+dput ppa gxneur_${NEW_VER}-0raring_source.changes | cat
 echo "Download to Launchpad Quantal..."
 dput ppa gxneur_${NEW_VER}-0quantal_source.changes | cat
 echo "Download to Launchpad Precise..."
