@@ -17,6 +17,7 @@
 #include <QTime>
 #include <QLibraryInfo>
 
+#include <unistd.h>
 static const KLocalizedString description =ki18n("kXneur (KDE X Neural Switcher) is xNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.15 only");
 static const char version[] = "0.16.0";
 

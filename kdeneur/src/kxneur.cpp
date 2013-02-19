@@ -13,7 +13,7 @@
 
 kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
 {
-    //FIXME
+    //FIXME:
     QTranslator transApp;
     transApp.load(QString("%1/%2/kdeneur_%3.qm").arg(SHAREDIR).arg("i18n").arg(QLocale::system().name()));
     installTranslator(&transApp);

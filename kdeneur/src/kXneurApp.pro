@@ -3,7 +3,7 @@ QT += core gui dbus
 TARGET = kdeneur
 TEMPLATE = app
 SEPARATOR = -
-VERSION = 0.15.0
+VERSION = 0.16.0
 
 include(i18n/localize.pri)
 
