@@ -81,10 +81,15 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "quantal" -v "${NEW_VER}-0quantal" \
+dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
   "Minor update."
 debuild -S -sa
 # end update for basic releases
+
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "quantal" -v "${NEW_VER}-0quantal" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "precise" -v "${NEW_VER}-0precise" \
