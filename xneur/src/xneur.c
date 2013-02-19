@@ -23,6 +23,8 @@
 
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include <signal.h>
 #include <stdlib.h>
@@ -262,6 +264,15 @@ static void xneur_terminate(int status)
 	exit(EXIT_SUCCESS);
 }
 
+static void xneur_zombie(int status)
+{
+	if (status){}
+	int stat;
+	log_message(DEBUG, _("Caught SIGCHLD terminating"));
+	/*Kills all the zombie processes*/
+	while(waitpid(-1, &stat, WNOHANG) > 0);
+}
+
 static void xneur_reload(int status)
 {
 	if (status){}
@@ -409,6 +420,11 @@ int main(int argc, char *argv[])
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 	textdomain(PACKAGE);
 #endif	
+	xneur_trap(SIGTERM, xneur_terminate);
+	xneur_trap(SIGINT, xneur_terminate);
+	xneur_trap(SIGHUP, xneur_reload);
+	xneur_trap(SIGCHLD, xneur_zombie);
+	
 	xneur_get_options(argc, argv);
 	
 	xneur_reklama();
@@ -446,10 +462,6 @@ int main(int argc, char *argv[])
 
 	log_message(DEBUG, _("Init program structure complete"));
 	show_notify(NOTIFY_XNEUR_START, NULL);
-
-	xneur_trap(SIGTERM, xneur_terminate);
-	xneur_trap(SIGINT, xneur_terminate);
-	xneur_trap(SIGHUP, xneur_reload);
 
 	program->plugin->xneur_start(program->plugin);
 			

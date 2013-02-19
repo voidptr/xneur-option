@@ -23,11 +23,16 @@
 
 #include <gtk/gtk.h>
 
+#include <signal.h>
 #include <stdlib.h>
 #include <locale.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <string.h>
+
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include "support.h"
 
@@ -42,6 +47,14 @@ const char* arg_keyboard_properties = NULL;
 const char* arg_show_in_the_tray = NULL;
 const char* arg_rendering_engine = NULL;
 
+static  void trap_child(int status) 
+{
+	if (status) {};
+	
+	int stat;
+	/*Kills all the zombie processes*/
+	while(waitpid(-1, &stat, WNOHANG) > 0);
+}
 
 int main(int argc, char *argv[])
 {
@@ -152,6 +165,8 @@ int main(int argc, char *argv[])
 	
 	sleep (value);
 
+	signal(SIGCHLD, trap_child);
+	
 	xneur_start();
 
 	create_tray_icon();	
