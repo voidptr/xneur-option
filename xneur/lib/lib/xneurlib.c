@@ -242,8 +242,14 @@ struct _xneur_handle *xneur_handle_create (void)
 
 		handle->languages[lang].dictionary = load_list(lang_dir, DICT_NAME, TRUE);		
 		if (handle->languages[lang].dictionary == NULL)
+		{
 			handle->languages[lang].dictionary->data_count = 0;
-
+		}
+		else	
+		{
+			handle->languages[lang].dictionary->rem(handle->languages[lang].dictionary, "(?i)^.$");
+		}
+		
 		handle->languages[lang].proto = load_list(lang_dir, PROTO_NAME, TRUE);
 		if (handle->languages[lang].proto == NULL)
 			handle->languages[lang].proto->data_count = 0;

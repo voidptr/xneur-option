@@ -2436,7 +2436,10 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 	{
 		char *word_to_dict = malloc((strlen(new_word) + 7) * sizeof(char));
 		sprintf(word_to_dict, "%s%s%s", "(?i)^", new_word, "$");
-		new_temp_dictionary->add(new_temp_dictionary, word_to_dict);
+		if (strcmp(word_to_dict, "(?i)^.$") != 0)
+		{
+			new_temp_dictionary->add(new_temp_dictionary, word_to_dict);
+		}
 		free(word_to_dict);
 		free(curr_word);
 		free(new_word);
@@ -2456,11 +2459,14 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 
 	struct _list_char *new_dictionary = xconfig->handle->languages[new_lang].dictionary;
 	if (!new_dictionary->exist(new_dictionary, new_word, BY_REGEXP))
-	{
-		log_message(DEBUG, _("Add word '%s' in %s dictionary"), new_word, xconfig->handle->languages[new_lang].name);
+	{		
 		char *word_to_dict = malloc((strlen(new_word) + 7) * sizeof(char));
 		sprintf(word_to_dict, "%s%s%s", "(?i)^", new_word, "$");
-		new_dictionary->add(new_dictionary, word_to_dict);
+		if (strcmp(word_to_dict, "(?i)^.$") != 0)
+		{
+			log_message(DEBUG, _("Add word '%s' in %s dictionary"), new_word, xconfig->handle->languages[new_lang].name);
+			new_dictionary->add(new_dictionary, word_to_dict);
+		}
 		xconfig->save_dict(xconfig, new_lang);
 		free(word_to_dict);
 	}
