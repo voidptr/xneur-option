@@ -889,11 +889,11 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 			// Check incidental caps
 			p->check_caps_last_word(p);
-			
+
 			// Checking word
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 				p->check_lang_last_word(p);
-
+		
 			p->add_word_to_pattern(p, get_curr_keyboard_group());
 
 			if (action == KLB_SPACE)
@@ -1255,38 +1255,6 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 	return TRUE;
 }
 
-/* 
-static void get_suggest(struct _program *p, int lang)
-{
-	char *word = strdup(get_last_word(p->buffer->i18n_content[lang].content));
-	del_final_numeric_char(word);
-	
-	if (!enchant_dict_check(xconfig->handle->enchant_dicts[lang], word, strlen(word)))
-	{
-		free (word);
-		return;
-	}
-	
-	unsigned int count = 0;
-	char **suggs = enchant_dict_suggest (xconfig->handle->enchant_dicts[lang], word, strlen(word), &count); 
-	
-	log_message (ERROR, "Probably word \"%s\" is (count %d):", word, count);
-
-	for (unsigned int i = 0; i < count; i++)
-	{
-		log_message (ERROR, "    %d. %s", i+1, suggs[i]);
-	}
-	
-	free (word);
-
-	for (unsigned int i = 0; i < count; i++)
-	{
-		free (suggs[i]);
-	}
-	free (suggs);
-}
-*/
-
 static int program_check_lang_last_word(struct _program *p)
 {
 	if (xconfig->handle->languages[get_curr_keyboard_group()].excluded)
@@ -1309,8 +1277,17 @@ static int program_check_lang_last_word(struct _program *p)
 			return FALSE;
 	
 	int cur_lang = get_curr_keyboard_group();
-	int new_lang = check_lang(xconfig->handle, p->buffer, cur_lang);
 
+	int new_lang = NO_LANGUAGE;
+	if (xconfig->correct_misprint)
+	{
+		new_lang = check_lang_with_misprint(xconfig->handle, p->buffer, cur_lang);
+	}
+	else
+	{
+		new_lang = check_lang(xconfig->handle, p->buffer, cur_lang);
+	}
+	
 	if (new_lang == NO_LANGUAGE)
 	{
 		log_message(DEBUG, _("No language found to change to"));

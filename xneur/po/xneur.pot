@@ -534,6 +534,9 @@ msgstr ""
 msgid "   [-] This word has hits in all languages proto of size %d"
 msgstr ""
 
+msgid "   [+] Found suggest word '%s' in %s enchant wrapper dictionary (Levenshtein distance = %d)"
+msgstr ""
+
 #: lib/ai/detection.c:259
 msgid "Processing word:"
 msgstr ""

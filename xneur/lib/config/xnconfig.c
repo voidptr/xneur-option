@@ -69,7 +69,7 @@ static const char *option_names[] = 	{
 						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
 						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace","CorrectTwoMinusWithDash",
 						"CorrectCWithCopyright", "CorrectTMWithTrademark", "CorrectRWithRegistered",
-						"CorrectDashWithEmDash","CorrectThreePointsWithEllipsis"	
+						"CorrectDashWithEmDash","CorrectThreePointsWithEllipsis", "CorrectMisprint"	
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -954,6 +954,15 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->correct_three_points_with_ellipsis = index;
 			break;
 		}
+		case 64:
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+				break;
+
+			p->correct_misprint = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1396,6 +1405,11 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#CorrectThreePointsWithEllipsis Yes\n");
 	fprintf(stream, "CorrectThreePointsWithEllipsis %s\n\n", p->get_bool_name(p->correct_three_points_with_ellipsis));
 
+	fprintf(stream, "# This option enable or disable correction of mispints\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CorrectMisprint Yes\n");
+	fprintf(stream, "CorrectMisprint %s\n\n", p->get_bool_name(p->correct_misprint));
+	
 	fprintf(stream, "# This option enable or disable flushing internal buffer when pressed Escape\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#FlushBufferWhenPressEscape Yes\n");

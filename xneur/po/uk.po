@@ -545,6 +545,11 @@ msgstr "   [+] Це слово не має співпадінь для proto м�
 msgid "   [-] This word has hits in all languages proto of size %d"
 msgstr "   [-] Це слово має співпадіння у всіх мовних proto з розміром %d"
 
+msgid ""
+"   [+] Found suggest word '%s' in %s enchant wrapper dictionary (Levenshtein "
+"distance = %d)"
+msgstr ""
+
 #: lib/ai/detection.c:259
 msgid "Processing word:"
 msgstr ""

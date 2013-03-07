@@ -30,5 +30,7 @@ char* str_replace(const char *source, const char *search, const char *replace);
 char* real_sym_to_escaped_sym(const char *source);
 char* escaped_sym_to_real_sym(const char *source);
 void  del_final_numeric_char(char *word);
+int levenshtein(const char *s, const char *t);
+int damerau_levenshtein(const char *string1, const char *string2, int w, int s, int a, int d);
 
 #endif /* _TEXT_H_ */

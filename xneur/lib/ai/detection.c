@@ -250,6 +250,72 @@ static int get_proto_lang(struct _xneur_handle *handle, char **word, int **sym_l
 	return NO_LANGUAGE;
 }
 
+#ifdef WITH_ENCHANT 
+static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
+{
+	int min_levenshtein = 3;
+	char *possible_words = NULL;
+	int possible_lang = NO_LANGUAGE;
+	
+	int lang = 0;
+	for (lang = 0; lang < handle->total_languages; lang++)
+	{
+		char *word = strdup(get_last_word(p->i18n_content[lang].content));
+		del_final_numeric_char(word);
+		
+		if (handle->languages[lang].disable_auto_detection || handle->languages[lang].excluded)
+		{
+			if (possible_words != NULL)
+				free (possible_words);
+			if (word != NULL)
+				free(word);
+			continue;
+		}
+		
+		if (!handle->has_enchant_checker[lang])
+		{
+			if (possible_words != NULL)
+				free (possible_words);
+			if (word != NULL)
+				free(word);
+			continue;
+		}
+
+		long unsigned int count = 0;
+		char **suggs = enchant_dict_suggest (handle->enchant_dicts[lang], word, strlen(word), &count); 
+		if (count > 0)
+		{
+			for (unsigned int i = 0; i < count; i++)
+			{
+				int tmp_levenshtein = levenshtein(word, suggs[i]);
+				if (tmp_levenshtein < min_levenshtein)
+				{
+					min_levenshtein = tmp_levenshtein;
+					if (possible_words != NULL)
+						free(possible_words);
+					possible_words = strdup(suggs[i]);
+					possible_lang = lang;
+					
+				}
+				//log_message (ERROR, "    %d. %s (%d) (%d)", i+1, suggs[i], levenshtein(word, suggs[i]), damerau_levenshtein(word, suggs[i], 1, 1, 1, 1));	
+			}			
+		}
+		enchant_dict_free_string_list(handle->enchant_dicts[lang], suggs);
+		if (word != NULL)
+			free(word);
+	}
+	
+	if (possible_words != NULL)
+		log_message(ERROR, _("   [+] Found suggest word '%s' in %s enchant wrapper dictionary (Levenshtein distance = %d)"),  
+		            possible_words, handle->languages[possible_lang].name, min_levenshtein);
+	
+	if (possible_words != NULL)
+		free (possible_words); 
+
+	return possible_lang;
+}
+#endif
+
 int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 {
 	char **word = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
@@ -281,6 +347,9 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 	// Check by enchant wrapper
 	if (lang == NO_LANGUAGE)
 		lang = get_enchant_hits(handle, word, len, cur_lang);
+	// Check misprint
+	if (lang == NO_LANGUAGE)
+		lang = check_misprint (handle, p);
 #endif
 
 #ifdef WITH_ASPELL
@@ -311,3 +380,63 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 	return lang;
 }
 
+int check_lang_with_misprint (struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
+{
+	#ifdef WITH_ENCHANT
+	char **word = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
+	char **word_unchanged = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
+	int **sym_len = (int **) malloc((handle->total_languages + 1) * sizeof(int *));
+
+	log_message(DEBUG, _("Processing word:"));
+	for (int i = 0; i < handle->total_languages; i++)
+	{
+		word[i] = strdup(get_last_word(p->i18n_content[i].content));
+		del_final_numeric_char(word[i]);
+
+		word_unchanged[i] = strdup(get_last_word(p->i18n_content[i].content_unchanged));
+		del_final_numeric_char(word_unchanged[i]);
+		
+		log_message(DEBUG, _("   '%s' on layout '%s'"), word_unchanged[i], handle->languages[i].dir);
+
+		sym_len[i] = p->i18n_content[i].symbol_len + get_last_word_offset(p->content, strlen(p->content));
+	}
+
+	log_message(DEBUG, _("Start word processing..."));
+
+	// Check by dictionary
+	int lang = get_dictionary_lang(handle, word);
+
+	int len = strlen(get_last_word(p->content));
+
+	// Check by enchant wrapper
+	if (lang == NO_LANGUAGE)
+		lang = get_enchant_hits(handle, word, len, cur_lang);
+
+	// Check misprint
+	if (lang == NO_LANGUAGE)
+		lang = check_misprint (handle, p);
+	
+	// If not found in dictionary, try to find in proto
+	len = strlen(p->content);
+	int offset = get_last_word_offset(p->content, len);
+	if (lang == NO_LANGUAGE)
+		lang = get_proto_lang(handle, word, sym_len, len, offset, cur_lang, PROTO_LEN);
+
+	if (lang == NO_LANGUAGE)
+		lang = get_proto_lang(handle, word, sym_len, len, offset, cur_lang, BIG_PROTO_LEN);
+
+	log_message(DEBUG, _("End word processing."));
+
+	for (int i = 0; i < handle->total_languages; i++)
+	{
+		free(word[i]);
+		free(word_unchanged[i]);
+	}
+	free(word);
+	free(word_unchanged);
+	free(sym_len);
+	return lang;
+#else
+	return check_lang(handle, p, cur_lang)
+#endif
+}

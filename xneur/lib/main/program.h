@@ -20,6 +20,8 @@
 #ifndef _PROGRAM_H_
 #define _PROGRAM_H_
 
+#include "detection.h"
+
 struct _program
 {
 	struct _switchlang *switchlang;

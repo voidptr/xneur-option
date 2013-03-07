@@ -195,6 +195,8 @@ struct _xneur_config
 	int   save_selection_after_convert;	// Save selection after convert selected text
 	int   rotate_layout_after_convert;	// Rotate layout after convert selected text
 
+	int   correct_misprint;
+	
 	int   correct_incidental_caps;			// Change iNCIDENTAL CapsLock
 	int   correct_two_capital_letter;		// Change two CApital letter
 	int   correct_space_with_punctuation;	// Correct spaces before punctuation
