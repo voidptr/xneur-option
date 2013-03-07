@@ -269,7 +269,7 @@ static void xneur_zombie(int status)
 {
 	if (status){}
 	int stat;
-	log_message(DEBUG, _("Caught SIGCHLD terminating"));
+	log_message(DEBUG, _("Caught SIGCHLD, kill zombie process"));
 	/*Kills all the zombie processes*/
 	while(waitpid(-1, &stat, WNOHANG) > 0);
 }

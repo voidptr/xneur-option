@@ -281,8 +281,8 @@ static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
 			continue;
 		}
 
-		long unsigned int count = 0;
-		char **suggs = enchant_dict_suggest (handle->enchant_dicts[lang], word, strlen(word), &count); 
+		unsigned int count = 0;
+		char **suggs = enchant_dict_suggest (handle->enchant_dicts[lang], word, (size_t)strlen(word), &count); 
 		if (count > 0)
 		{
 			for (unsigned int i = 0; i < count; i++)
@@ -306,12 +306,15 @@ static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
 	}
 	
 	if (possible_words != NULL)
-		log_message(ERROR, _("   [+] Found suggest word '%s' in %s enchant wrapper dictionary (Levenshtein distance = %d)"),  
+	{
+		log_message(DEBUG, _("   [+] Found suggest word '%s' in %s enchant wrapper dictionary (Levenshtein distance = %d)"),  
 		            possible_words, handle->languages[possible_lang].name, min_levenshtein);
-	
-	if (possible_words != NULL)
 		free (possible_words); 
-
+	}
+	else
+	{
+		log_message(DEBUG, _("   [-] This word has no suggest for all enchant wrapper dictionaries")); 
+	}
 	return possible_lang;
 }
 #endif
