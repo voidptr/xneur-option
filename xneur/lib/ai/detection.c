@@ -250,7 +250,6 @@ static int get_proto_lang(struct _xneur_handle *handle, char **word, int **sym_l
 	return NO_LANGUAGE;
 }
 
-#ifdef WITH_ENCHANT 
 static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
 {
 	int min_levenshtein = 3;
@@ -271,6 +270,9 @@ static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
 				free(word);
 			continue;
 		}
+
+#ifdef WITH_ENCHANT 
+		unsigned int count = 0;
 		
 		if (!handle->has_enchant_checker[lang])
 		{
@@ -280,8 +282,7 @@ static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
 				free(word);
 			continue;
 		}
-
-		unsigned int count = 0;
+		
 		char **suggs = enchant_dict_suggest (handle->enchant_dicts[lang], word, (size_t)strlen(word), &count); 
 		if (count > 0)
 		{
@@ -301,23 +302,65 @@ static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
 			}			
 		}
 		enchant_dict_free_string_list(handle->enchant_dicts[lang], suggs);
+#endif
+
+#ifdef WITH_ASPELL
+		if (!handle->has_spell_checker[lang])
+		{
+			if (possible_words != NULL)
+				free (possible_words);
+			if (word != NULL)
+				free(word);
+			continue;
+		}
+		const AspellWordList *suggestions = aspell_speller_suggest (handle->spell_checkers[lang], (const char *) word, strlen(word));
+		if (! suggestions)
+		{
+			if (possible_words != NULL)
+				free (possible_words);
+			if (word != NULL)
+				free(word);
+			continue;
+		}
+
+		AspellStringEnumeration *elements = aspell_word_list_elements(suggestions);
+		const char *sugg_word;
+		int i = 0;
+		while ((sugg_word = aspell_string_enumeration_next (elements)) != NULL)
+		{
+			
+			int tmp_levenshtein = levenshtein(word, sugg_word);
+			if (tmp_levenshtein < min_levenshtein)
+			{
+				min_levenshtein = tmp_levenshtein;
+				if (possible_words != NULL)
+					free(possible_words);
+				possible_words = strdup(sugg_word);
+				possible_lang = lang;
+				
+			}
+			i++;
+			//log_message (ERROR, "    %d. %s (%d) (%d)", i, sugg_word, levenshtein(word, sugg_word), damerau_levenshtein(word, sugg_word, 1, 1, 1, 1));	
+		}
+
+		delete_aspell_string_enumeration (elements);
+#endif
 		if (word != NULL)
 			free(word);
 	}
 	
 	if (possible_words != NULL)
 	{
-		log_message(DEBUG, _("   [+] Found suggest word '%s' in %s enchant wrapper dictionary (Levenshtein distance = %d)"),  
+		log_message(DEBUG, _("   [+] Found suggest word '%s' in %s dictionary (Levenshtein distance = %d)"),  
 		            possible_words, handle->languages[possible_lang].name, min_levenshtein);
 		free (possible_words); 
 	}
 	else
 	{
-		log_message(DEBUG, _("   [-] This word has no suggest for all enchant wrapper dictionaries")); 
+		log_message(DEBUG, _("   [-] This word has no suggest for all dictionaries")); 
 	}
 	return possible_lang;
 }
-#endif
 
 int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 {
@@ -380,9 +423,10 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 	return lang;
 }
 
-int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
+int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer *p, int cur_lang, int correct_misprint)
 {
-	#ifdef WITH_ENCHANT
+	if (correct_misprint) {}; // Tmp fix
+	
 	char **word = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	char **word_unchanged = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	int **sym_len = (int **) malloc((handle->total_languages + 1) * sizeof(int *));
@@ -408,9 +452,17 @@ int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer 
 
 	int len = strlen(get_last_word(p->content));
 
+#ifdef WITH_ENCHANT
 	// Check by enchant wrapper
 	if (lang == NO_LANGUAGE)
 		lang = get_enchant_hits(handle, word, len, cur_lang);
+#endif
+
+#ifdef WITH_ASPELL
+	// Check by aspell
+	if (lang == NO_LANGUAGE)
+		lang = get_aspell_hits(handle, word, len, cur_lang);
+#endif
 
 	// Check misprint
 	if (lang == NO_LANGUAGE)
@@ -436,7 +488,4 @@ int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer 
 	free(word_unchanged);
 	free(sym_len);
 	return lang;
-#else
-	return check_lang(handle, p, cur_lang)
-#endif
 }

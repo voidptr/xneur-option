@@ -585,17 +585,15 @@ msgstr "   [-] Это слово имеет совпадение для всех
 #: lib/ai/detection.c:310
 #, c-format
 msgid ""
-"   [+] Found suggest word '%s' in %s enchant wrapper dictionary (Levenshtein "
-"distance = %d)"
+"   [+] Found suggest word '%s' in %s dictionary (Levenshtein distance = %d)"
 msgstr ""
-"   [+] Найдено похожее слово '%s' в обертке словарей enchant %s  (дистанция "
+"   [+] Найдено похожее слово '%s' в словаре %s  (дистанция "
 "Левенштейна = %d)"
 
 #: lib/ai/detection.c:316
-msgid "   [-] This word has no suggest for all enchant wrapper dictionaries"
+msgid "   [-] This word has no suggest for all dictionaries"
 msgstr ""
-"   [-] Это слово не имеет похожих при проверке по всем оберткам словарей "
-"enchant"
+"   [-] Это слово не имеет похожих при проверке по всем словарям"
 
 #: lib/ai/detection.c:328 lib/ai/detection.c:393
 msgid "Processing word:"

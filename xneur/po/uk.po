@@ -557,13 +557,12 @@ msgstr "   [-] Це слово має співпадіння у всіх мов�
 #: lib/ai/detection.c:310
 #, c-format
 msgid ""
-"   [+] Found suggest word '%s' in %s enchant wrapper dictionary (Levenshtein "
-"distance = %d)"
+"   [+] Found suggest word '%s' in %s dictionary (Levenshtein distance = %d)"
 msgstr ""
 
 #: lib/ai/detection.c:316
 #, fuzzy
-msgid "   [-] This word has no suggest for all enchant wrapper dictionaries"
+msgid "   [-] This word has no suggest for all dictionaries"
 msgstr "   [-] Це слово не знайдено в жодному словнику"
 
 #: lib/ai/detection.c:328 lib/ai/detection.c:393

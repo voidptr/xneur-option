@@ -1281,7 +1281,7 @@ static int program_check_lang_last_word(struct _program *p)
 	int new_lang = NO_LANGUAGE;
 	if (xconfig->check_similar_words)
 	{
-		new_lang = check_lang_with_similar_words(xconfig->handle, p->buffer, cur_lang);
+		new_lang = check_lang_with_similar_words(xconfig->handle, p->buffer, cur_lang, xconfig->correct_misprint);
 	}
 	else
 	{
