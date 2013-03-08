@@ -271,6 +271,15 @@ static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
 			continue;
 		}
 
+		if (strlen(word) > 250) 
+		{
+			if (possible_words != NULL)
+				free (possible_words);
+			if (word != NULL)
+				free(word);
+			continue;
+		}
+		
 #ifdef WITH_ENCHANT 
 		unsigned int count = 0;
 		
