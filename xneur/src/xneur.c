@@ -160,6 +160,7 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Default keyboard group for all new windows set to %d"), xconfig->default_group);
 	log_message(LOG, _("Manual mode set to %s"), _(xconfig->get_bool_name(xconfig->manual_mode)));
 	log_message(LOG, _("Education mode set to %s"), _(xconfig->get_bool_name(xconfig->educate)));
+	log_message(LOG, _("Check similar words mode set to %s"), _(xconfig->get_bool_name(xconfig->check_similar_words)));
 	log_message(LOG, _("Layout remember mode set to %s"), _(xconfig->get_bool_name(xconfig->remember_layout)));
 	log_message(LOG, _("Save selection mode set to %s"), _(xconfig->get_bool_name(xconfig->save_selection_after_convert)));
 	log_message(LOG, _("Rotate layout after convert selected text mode set to %s"), _(xconfig->get_bool_name(xconfig->rotate_layout_after_convert)));

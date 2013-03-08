@@ -651,6 +651,10 @@ void xneur_preference(void)
 	// Education Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton2");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->educate);
+
+	// Check similar words
+	widget = glade_xml_get_widget (gxml, "checkbutton43");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->check_similar_words);
 	
 	// Layout Remember Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton3");
@@ -737,6 +741,9 @@ void xneur_preference(void)
 
 	widget = glade_xml_get_widget (gxml, "checkbutton42");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_three_points_with_ellipsis);
+
+	widget = glade_xml_get_widget (gxml, "checkbutton44");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->correct_misprint);
 	
 	// Autocompletion
 	widget = glade_xml_get_widget (gxml, "checkbutton21");
@@ -2090,6 +2097,9 @@ void xneur_save_preference(GladeXML *gxml)
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton2");
 	xconfig->educate = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton43");
+	xconfig->check_similar_words = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton3");
 	xconfig->remember_layout = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
@@ -2192,6 +2202,9 @@ void xneur_save_preference(GladeXML *gxml)
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton42");
 	xconfig->correct_three_points_with_ellipsis = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton44");
+	xconfig->correct_misprint = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton21");
 	xconfig->autocompletion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

@@ -207,277 +207,282 @@ msgid "Education mode set to %s"
 msgstr "Вызначылі стан саманавучаньня: %s"
 
 #: src/xneur.c:163
+#, fuzzy, c-format
+msgid "Check similar words mode set to %s"
+msgstr "Вызначылі, ці выпраўляць парадак прагалаў і знакаў прыпынку: %s"
+
+#: src/xneur.c:164
 #, c-format
 msgid "Layout remember mode set to %s"
 msgstr "Вызначылі, ці памятаваць раскладку: %s"
 
-#: src/xneur.c:164
+#: src/xneur.c:165
 #, c-format
 msgid "Save selection mode set to %s"
 msgstr "Вызначылі, ці захоўваць вылучэньне: %s"
 
-#: src/xneur.c:165
+#: src/xneur.c:166
 #, c-format
 msgid "Rotate layout after convert selected text mode set to %s"
 msgstr ""
 
-#: src/xneur.c:166
+#: src/xneur.c:167
 #, c-format
 msgid "Sound playing mode set to %s"
 msgstr "Вызначылі, ці граць гукі: %s"
 
-#: src/xneur.c:167
+#: src/xneur.c:168
 #, c-format
 msgid "Sound playing volume percentage set to %d"
 msgstr ""
 
-#: src/xneur.c:168
+#: src/xneur.c:169
 #, c-format
 msgid "Logging keyboard mode set to %s"
 msgstr "Вызначылі, ці захоўваць набраны тэкст: %s"
 
-#: src/xneur.c:169
+#: src/xneur.c:170
 #, c-format
 msgid "Max file size of keyboard log set to %d bytes"
 msgstr ""
 
-#: src/xneur.c:170
+#: src/xneur.c:171
 #, c-format
 msgid "Keyboard log will send to %s via %s:%d host"
 msgstr ""
 
-#: src/xneur.c:171
+#: src/xneur.c:172
 #, c-format
 msgid "Ignore keyboard layout for abbreviations mode set to %s"
 msgstr "Вызначылі, ці ігнараваць раскладку для скарачэньняў: %s"
 
-#: src/xneur.c:172
+#: src/xneur.c:173
 #, c-format
 msgid "Correct of iNCIDENTAL CapsLock mode set to %s"
 msgstr "Вызначылі, ці выпраўляць, калі вЫПАДКОВА націснулі CapsLock: %s"
 
-#: src/xneur.c:173
+#: src/xneur.c:174
 #, c-format
 msgid "Correct of two CApital letter mode set to %s"
 msgstr "Вызначылі, ці выпраўляць дзьве ВЯлікія літары: %s"
 
-#: src/xneur.c:174
+#: src/xneur.c:175
 #, c-format
 msgid "Correct of spaces with punctuation mode set to %s"
 msgstr "Вызначылі, ці выпраўляць парадак прагалаў і знакаў прыпынку: %s"
 
-#: src/xneur.c:175
+#: src/xneur.c:176
 #, c-format
 msgid "Correct of small letter to capital letter after dot mode set to %s"
 msgstr ""
 
-#: src/xneur.c:176
+#: src/xneur.c:177
 #, c-format
 msgid "Correct two space with a comma and a space mode set to %s"
 msgstr ""
 
-#: src/xneur.c:177
+#: src/xneur.c:178
 #, c-format
 msgid "Correct two minus with a dash mode set to %s"
 msgstr ""
 
-#: src/xneur.c:178
+#: src/xneur.c:179
 #, c-format
 msgid "Correct dash with a emdash mode set to %s"
 msgstr ""
 
-#: src/xneur.c:179
+#: src/xneur.c:180
 #, c-format
 msgid "Correct (c) with a copyright sign mode set to %s"
 msgstr ""
 
-#: src/xneur.c:180
+#: src/xneur.c:181
 #, c-format
 msgid "Correct (tm) with a trademark sign mode set to %s"
 msgstr ""
 
-#: src/xneur.c:181
+#: src/xneur.c:182
 #, c-format
 msgid "Correct (r) with a registered sign mode set to %s"
 msgstr ""
 
-#: src/xneur.c:182
+#: src/xneur.c:183
 #, c-format
 msgid "Correct three points with a ellipsis mode set to %s"
 msgstr ""
 
-#: src/xneur.c:183
+#: src/xneur.c:184
 #, fuzzy, c-format
 msgid "Correct misprint mode set to %s"
 msgstr "Вызначылі, ці выпраўляць парадак прагалаў і знакаў прыпынку: %s"
 
-#: src/xneur.c:184
+#: src/xneur.c:185
 #, c-format
 msgid "Disable CapsLock use mode set to %s"
 msgstr "Вызначылі, ці вымыкаць CapsLock: %s"
 
-#: src/xneur.c:185
+#: src/xneur.c:186
 #, c-format
 msgid "Flush internal buffer when pressed Escape mode set to %s"
 msgstr "Вызначылі, ці ачышчаць унутраны буфэр, калі націснуць Escape: %s"
 
-#: src/xneur.c:186
+#: src/xneur.c:187
 #, c-format
 msgid "Flush internal buffer when pressed Enter or Tab mode set to %s"
 msgstr "Вызначылі, ці ачышчаць унутраны буфэр, калі націснуць Enter ці Tab: %s"
 
-#: src/xneur.c:187
+#: src/xneur.c:188
 #, c-format
 msgid "Don't process word when pressed Enter or Tab mode set to %s"
 msgstr ""
 "Вызначылі, ці скасаваць апрацоўку словаў, калі націснуць Enter ці Tab: %s"
 
-#: src/xneur.c:188
+#: src/xneur.c:189
 #, c-format
 msgid "Show OSD mode set to %s"
 msgstr "Вызначылі, ці паказваць OSD: %s"
 
-#: src/xneur.c:189
+#: src/xneur.c:190
 #, c-format
 msgid "Show popup messages mode set to %s"
 msgstr "Вызначылі, ці паказваць вынырцы: %s"
 
-#: src/xneur.c:190
+#: src/xneur.c:191
 #, c-format
 msgid "Popup expire timeout set to %d"
 msgstr ""
 
-#: src/xneur.c:191
+#: src/xneur.c:192
 #, c-format
 msgid "Check language on input process mode set to %s"
 msgstr "Вызначылі, ці спраўджваць мову, калі набіраецца тэкст: %s"
 
-#: src/xneur.c:192
+#: src/xneur.c:193
 #, c-format
 msgid "Pattern minig and recognition (autocompletion) mode set to %s"
 msgstr "Вызначылі, ці дапаўняць самарушна: %s"
 
-#: src/xneur.c:193
+#: src/xneur.c:194
 #, c-format
 msgid "Add space after autocompletion mode set to %s"
 msgstr "Вызначылі, ці дадаваць пасьля самарушнага дапаўненьня: %s"
 
-#: src/xneur.c:194
+#: src/xneur.c:195
 #, c-format
 msgid "Disable autoswitching if pressed backspace mode set to %s"
 msgstr ""
 
-#: src/xneur.c:195
+#: src/xneur.c:196
 #, c-format
 msgid "Disable autoswitching if pressed left arrow mode set to %s"
 msgstr ""
 
-#: src/xneur.c:196
+#: src/xneur.c:197
 #, c-format
 msgid "Disable autoswitching if pressed right arrow mode set to %s"
 msgstr ""
 
-#: src/xneur.c:197
+#: src/xneur.c:198
 #, c-format
 msgid "Disable autoswitching if pressed up arrow mode set to %s"
 msgstr ""
 
-#: src/xneur.c:198
+#: src/xneur.c:199
 #, c-format
 msgid "Disable autoswitching if pressed down arrow mode set to %s"
 msgstr ""
 
-#: src/xneur.c:199
+#: src/xneur.c:200
 #, c-format
 msgid "Disable autoswitching if pressed delete mode set to %s"
 msgstr ""
 
-#: src/xneur.c:200
+#: src/xneur.c:201
 #, c-format
 msgid "Disable autoswitching if layout switched mode set to %s"
 msgstr ""
 
-#: src/xneur.c:201
+#: src/xneur.c:202
 #, c-format
 msgid "Disable autoswitching for full screen apps mode set to %s"
 msgstr ""
 
-#: src/xneur.c:202
+#: src/xneur.c:203
 #, c-format
 msgid "Compatibility with the completion mode set to %s"
 msgstr ""
 
-#: src/xneur.c:203
+#: src/xneur.c:204
 #, c-format
 msgid "Tracking input mode set to %s"
 msgstr ""
 
-#: src/xneur.c:204
+#: src/xneur.c:205
 #, c-format
 msgid "Tracking mouse mode set to %s"
 msgstr ""
 
-#: src/xneur.c:205
+#: src/xneur.c:206
 #, c-format
 msgid "Disable send KeyRelease event mode set to %s"
 msgstr ""
 
-#: src/xneur.c:206
+#: src/xneur.c:207
 #, c-format
 msgid "Delay before sendind events to application set to (in milliseconds) %d"
 msgstr ""
 
-#: src/xneur.c:216
+#: src/xneur.c:217
 #, c-format
 msgid " already running with pid %d"
 msgstr " ужо працуе; азначальнік працэсу (pid): %d"
 
-#: src/xneur.c:231
+#: src/xneur.c:232
 msgid "Current sound data is freed"
 msgstr "Ачысьцілі бягучыя дадзеныя гуку"
 
-#: src/xneur.c:234
+#: src/xneur.c:235
 msgid "Current user keybinds is freed"
 msgstr "Вызвалілі бягучыя спалучэньні клявішаў, вызначаныя карыстальнікам"
 
-#: src/xneur.c:239
+#: src/xneur.c:240
 msgid "Current program info is freed"
 msgstr "Вызвалілі бягучыя зьвесткі праграмы"
 
-#: src/xneur.c:246
+#: src/xneur.c:247
 msgid "Current configuration data is freed"
 msgstr "Вызвалілі бягучыя дадзеныя наладжваньняў"
 
-#: src/xneur.c:257
+#: src/xneur.c:258
 msgid "Caught SIGTERM/SIGINT, terminating"
 msgstr "Атрымалі SIGTERM/SIGINT, спыняемся"
 
-#: src/xneur.c:272
+#: src/xneur.c:273
 msgid "Caught SIGCHLD, kill zombie process"
 msgstr ""
 
-#: src/xneur.c:281
+#: src/xneur.c:282
 msgid "Caught SIGHUP, reloading configuration file"
 msgstr ""
 
-#: src/xneur.c:295 src/xneur.c:436
+#: src/xneur.c:296 src/xneur.c:437
 msgid "Can't init libxnconfig"
 msgstr ""
 
-#: src/xneur.c:411
+#: src/xneur.c:412
 msgid "Can't trap signal"
 msgstr ""
 
-#: src/xneur.c:449
+#: src/xneur.c:450
 #, c-format
 msgid "Xneur process identificator is %d with nice %d"
 msgstr ""
 
-#: src/xneur.c:454
+#: src/xneur.c:455
 msgid "Failed to init program structure"
 msgstr ""
 
-#: src/xneur.c:464
+#: src/xneur.c:465
 msgid "Init program structure complete"
 msgstr ""
 
@@ -548,30 +553,30 @@ msgstr ""
 msgid "   [-] This word has hits in all languages proto of size %d"
 msgstr ""
 
-#: lib/ai/detection.c:310
+#: lib/ai/detection.c:354
 #, c-format
 msgid ""
 "   [+] Found suggest word '%s' in %s dictionary (Levenshtein distance = %d)"
 msgstr ""
 
-#: lib/ai/detection.c:316
+#: lib/ai/detection.c:360
 msgid "   [-] This word has no suggest for all dictionaries"
 msgstr ""
 
-#: lib/ai/detection.c:328 lib/ai/detection.c:393
+#: lib/ai/detection.c:371 lib/ai/detection.c:434
 msgid "Processing word:"
 msgstr ""
 
-#: lib/ai/detection.c:337 lib/ai/detection.c:402
+#: lib/ai/detection.c:380 lib/ai/detection.c:443
 #, c-format
 msgid "   '%s' on layout '%s'"
 msgstr ""
 
-#: lib/ai/detection.c:342 lib/ai/detection.c:407
+#: lib/ai/detection.c:385 lib/ai/detection.c:448
 msgid "Start word processing..."
 msgstr ""
 
-#: lib/ai/detection.c:373 lib/ai/detection.c:431
+#: lib/ai/detection.c:413 lib/ai/detection.c:480
 msgid "End word processing."
 msgstr ""
 
@@ -769,55 +774,55 @@ msgstr ""
 msgid "Invalid value for correct (r) with a registered sign mode specified"
 msgstr ""
 
-#: lib/config/xnconfig.c:975
+#: lib/config/xnconfig.c:984
 #, c-format
 msgid "Can't find config file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1064
+#: lib/config/xnconfig.c:1073
 #, c-format
 msgid "Saving lock file to %s (pid %d)"
 msgstr ""
 
-#: lib/config/xnconfig.c:1069
+#: lib/config/xnconfig.c:1078
 #, c-format
 msgid "Can't create lock file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1101
+#: lib/config/xnconfig.c:1110
 #, c-format
 msgid "Get lock file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1139
+#: lib/config/xnconfig.c:1148
 msgid "No languages specified in config file"
 msgstr ""
 
-#: lib/config/xnconfig.c:1168
+#: lib/config/xnconfig.c:1177
 #, c-format
 msgid "Saving main config to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1173
+#: lib/config/xnconfig.c:1182
 #, c-format
 msgid "Can't create file %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1537
+#: lib/config/xnconfig.c:1551
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr ""
 
-#: lib/config/xnconfig.c:1543
+#: lib/config/xnconfig.c:1557
 msgid "Can't move file!"
 msgstr ""
 
-#: lib/config/xnconfig.c:1561
+#: lib/config/xnconfig.c:1575
 #, c-format
 msgid "Saving %s dictionary"
 msgstr ""
 
-#: lib/config/xnconfig.c:1575
+#: lib/config/xnconfig.c:1589
 #, c-format
 msgid "Saving %s pattern"
 msgstr ""
