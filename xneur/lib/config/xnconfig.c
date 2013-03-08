@@ -69,7 +69,7 @@ static const char *option_names[] = 	{
 						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
 						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace","CorrectTwoMinusWithDash",
 						"CorrectCWithCopyright", "CorrectTMWithTrademark", "CorrectRWithRegistered",
-						"CorrectDashWithEmDash","CorrectThreePointsWithEllipsis", "CorrectMisprint"	
+						"CorrectDashWithEmDash","CorrectThreePointsWithEllipsis", "CorrectMisprint", "CheckSimilarWords"	
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -963,6 +963,15 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->correct_misprint = index;
 			break;
 		}
+		case 65:
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+				break;
+
+			p->check_similar_words = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1301,6 +1310,11 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#EducationMode No\n");
 	fprintf(stream, "EducationMode %s\n\n", p->get_bool_name(p->educate));
 
+	fprintf(stream, "# This option enable or disable checking similar words in heuristics\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#CheckSimilarWords No\n");
+	fprintf(stream, "CheckSimilarWords %s\n\n", p->get_bool_name(p->check_similar_words));
+	
 	fprintf(stream, "# This option enable or disable layout remember for each window\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#LayoutRememberMode No\n");
@@ -1650,6 +1664,8 @@ struct _xneur_config* xneur_config_init(void)
 	p->autocompletion_excluded_apps	= list_char_init();
 	p->plugins		= list_char_init();
 
+	p->check_similar_words = TRUE;
+	
 	p->troubleshoot_backspace = FALSE; 
 	p->troubleshoot_left_arrow = FALSE; 
 	p->troubleshoot_right_arrow = FALSE;

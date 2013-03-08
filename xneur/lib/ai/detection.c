@@ -350,9 +350,6 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 	// Check by enchant wrapper
 	if (lang == NO_LANGUAGE)
 		lang = get_enchant_hits(handle, word, len, cur_lang);
-	// Check misprint
-	if (lang == NO_LANGUAGE)
-		lang = check_misprint (handle, p);
 #endif
 
 #ifdef WITH_ASPELL
@@ -383,7 +380,7 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 	return lang;
 }
 
-int check_lang_with_misprint (struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
+int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 {
 	#ifdef WITH_ENCHANT
 	char **word = (char **) malloc((handle->total_languages + 1) * sizeof(char *));

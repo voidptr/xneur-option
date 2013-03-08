@@ -191,6 +191,7 @@ struct _xneur_config
 	int   volume_percent;			// Sound Volume Percent
 
 	int   educate;					// Education xneur
+	int   check_similar_words;
 	int   remember_layout;				// Remember layout for each of window
 	int   save_selection_after_convert;	// Save selection after convert selected text
 	int   rotate_layout_after_convert;	// Rotate layout after convert selected text
