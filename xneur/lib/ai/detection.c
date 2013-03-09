@@ -281,7 +281,7 @@ static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
 		}
 		
 #ifdef WITH_ENCHANT 
-		unsigned int count = 0;
+		size_t count = 0;
 		
 		if (!handle->has_enchant_checker[lang])
 		{
@@ -292,7 +292,7 @@ static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
 			continue;
 		}
 		
-		char **suggs = enchant_dict_suggest (handle->enchant_dicts[lang], word, (size_t)strlen(word), &count); 
+		char **suggs = enchant_dict_suggest (handle->enchant_dicts[lang], word, strlen(word), &count); 
 		if (count > 0)
 		{
 			for (unsigned int i = 0; i < count; i++)
