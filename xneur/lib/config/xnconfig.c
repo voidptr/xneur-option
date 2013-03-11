@@ -91,6 +91,7 @@ static const char *notify_names[] =	{
 						"ReplaceAbbreviation", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter", 
 						"CorrectTwoSpaceWithCommaAndSpace", "CorrectTwoMinusWithDash", "CorrectCWithCopyright", 
 						"CorrectTMWithTrademark", "CorrectRWithRegistered", "CorrectThreePointsWithEllipsis",
+						"CorrectMisprint",
 						"ExecuteUserAction","BlockKeyboardAndMouseEvents", "UnblockKeyboardAndMouseEvents"
 					};
 

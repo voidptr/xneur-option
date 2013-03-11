@@ -27,6 +27,6 @@
 
 int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang);
 
-int check_lang_with_similar_words(struct _xneur_handle *handle, struct _buffer *p, int cur_lang, int correct_misprint);
+int check_lang_with_similar_words(struct _xneur_handle *handle, struct _buffer *p, int cur_lang);
 
 #endif /* _DETECTION_H_ */

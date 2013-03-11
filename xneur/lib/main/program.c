@@ -915,6 +915,9 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 			// Correct spaces with brackets
 			p->check_space_with_bracket(p);
+
+			// Check and correct misprint
+			p->check_misprint(p);
 			
 			// Send Event
 			p->event->event = p->event->default_event;
@@ -1281,7 +1284,7 @@ static int program_check_lang_last_word(struct _program *p)
 	int new_lang = NO_LANGUAGE;
 	if (xconfig->check_similar_words)
 	{
-		new_lang = check_lang_with_similar_words(xconfig->handle, p->buffer, cur_lang, xconfig->correct_misprint);
+		new_lang = check_lang_with_similar_words(xconfig->handle, p->buffer, cur_lang);
 	}
 	else
 	{
@@ -2022,6 +2025,177 @@ static void program_check_pattern(struct _program *p, int selection)
 	free (word);
 }
 
+static void program_check_misprint(struct _program *p)
+{
+	if (!xconfig->correct_misprint)
+		return;
+
+	int lang = get_curr_keyboard_group ();
+	if (xconfig->handle->languages[lang].disable_auto_detection || xconfig->handle->languages[lang].excluded)
+		return;
+
+	char *word = strdup(get_last_word(p->buffer->i18n_content[lang].content));
+	del_final_numeric_char(word);
+	
+	if (word == NULL)
+		return;
+
+	if ((strlen(word) > 250) || (strlen(word) < 4))
+	{
+		free(word);
+		return;
+	}
+
+	if (xconfig->handle->languages[lang].dictionary->exist(xconfig->handle->languages[lang].dictionary, word, BY_PLAIN))
+	{
+		free(word);
+		return;
+	}
+	
+	int min_levenshtein = 3;
+	char **possible_words = malloc(sizeof(char*));
+	int possible_count = 0;
+	
+#ifdef WITH_ENCHANT 
+	size_t count = 0;
+		
+	if (!xconfig->handle->has_enchant_checker[lang])
+	{
+		free(possible_words);		
+		free(word);
+		return;
+	}
+
+	if (!enchant_dict_check(handle->enchant_dicts[cur_lang], word[cur_lang], strlen(word[cur_lang])))
+	{
+		free(possible_words);		
+		free(word);
+		return;
+	}
+	
+	char **suggs = enchant_dict_suggest (xconfig->handle->enchant_dicts[lang], word, strlen(word), &count); 
+	if (count > 0)
+	{
+		
+		for (unsigned int i = 0; i < count; i++)
+		{
+			int tmp_levenshtein = levenshtein(word, suggs[i]);
+			if (tmp_levenshtein < min_levenshtein)
+				min_levenshtein = tmp_levenshtein;
+		}	
+		
+		if (min_levenshtein < 3) 
+		{
+			for (unsigned int i = 0; i < count; i++)
+			{
+				int tmp_levenshtein = levenshtein(word, suggs[i]);
+				if (tmp_levenshtein == min_levenshtein)
+				{
+					possible_words[possible_count] = strdup(suggs[i]);
+					possible_words = realloc(possible_words, sizeof(char*) * (possible_count+2));
+					possible_count++;
+				}
+			}
+		}
+	}
+	
+	enchant_dict_free_string_list(xconfig->handle->enchant_dicts[lang], suggs);
+#endif
+
+#ifdef WITH_ASPELL
+	if (!xconfig->handle->has_spell_checker[lang])
+	{
+		free(possible_words);		
+		free(word);
+		return;
+	}
+	if (aspell_speller_check(xconfig->handle->spell_checkers[lang], word, strlen(word)))
+	{
+		free(possible_words);		
+		free(word);
+		return;
+	}
+	const AspellWordList *suggestions = aspell_speller_suggest (xconfig->handle->spell_checkers[lang], (const char *) word, strlen(word));
+	if (! suggestions)
+	{
+		free(possible_words);		
+		free(word);
+		return;
+	}
+
+	AspellStringEnumeration *elements = aspell_word_list_elements(suggestions);
+	const char *sugg_word;
+	while ((sugg_word = aspell_string_enumeration_next (elements)) != NULL)
+	{		
+		int tmp_levenshtein = levenshtein(word, sugg_word);
+		if (tmp_levenshtein < min_levenshtein)
+			min_levenshtein = tmp_levenshtein;
+	}
+	delete_aspell_string_enumeration (elements);
+
+	elements = aspell_word_list_elements(suggestions);
+	if (min_levenshtein < 3) 
+	{
+		while ((sugg_word = aspell_string_enumeration_next (elements)) != NULL)
+		{		
+			
+			int tmp_levenshtein = levenshtein(word, sugg_word);
+			if (tmp_levenshtein == min_levenshtein)
+			{
+				possible_words[possible_count] = strdup(sugg_word);
+				possible_words = realloc(possible_words, sizeof(char*) * (possible_count+2));
+				possible_count++;
+			}
+		}
+	}	
+	delete_aspell_string_enumeration (elements);
+#endif
+
+	for (int i = 0; i < possible_count; i++)
+	{
+		if (xconfig->handle->languages[lang].pattern->exist(xconfig->handle->languages[lang].pattern, possible_words[i], BY_PLAIN))	
+		{
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+			
+			log_message (DEBUG, _("Found a misprint , correction '%s' to '%s'..."), word, possible_words[i]);
+
+			int backspaces_count = strlen(get_last_word(p->buffer->content)) - 1;
+
+			p->event->send_backspaces(p->event, backspaces_count);
+			p->buffer->set_content(p->buffer, possible_words[i]);
+
+			p->change_word(p, CHANGE_MISPRINT);
+
+			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
+
+			show_notify(NOTIFY_CORR_MISPRINT, NULL);
+			p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+
+			//Incapsulate to p->event->clear_code() or smth else
+			//p->event->default_event.xkey.keycode = 0;
+			
+			free(word);
+
+			for (int i = 0; i < possible_count; i++)
+			{
+				if (possible_words[i] != NULL)
+					free(possible_words[i]);
+			}
+			free(possible_words);
+			return;
+		}
+	}
+	
+	free(word);
+
+	for (int i = 0; i < possible_count; i++)
+	{
+		if (possible_words[i] != NULL)
+			free(possible_words[i]);
+	}
+	free(possible_words);
+}
+
 static void program_send_string_silent(struct _program *p, int send_backspaces)
 {
 	if (p->buffer->cur_pos == 0)
@@ -2342,6 +2516,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		}
 		case CHANGE_ABBREVIATION:
 		case CHANGE_INS_DATE:
+		case CHANGE_MISPRINT:
 		{
 			p->send_string_silent(p, 0);
 			break;
@@ -2604,6 +2779,7 @@ struct _program* program_init(void)
 	p->check_registered = program_check_registered;
 	p->check_ellipsis = program_check_ellipsis;
 	p->check_pattern	= program_check_pattern;
+	p->check_misprint	= program_check_misprint;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;
 	p->add_word_to_pattern		= program_add_word_to_pattern;

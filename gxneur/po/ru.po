@@ -286,39 +286,39 @@ msgid "Correct spaces with punctuation"
 msgstr "Исправление пробелов со знаками пунктуации"
 
 #: glade/config.glade:226
-msgid "Сorrect small letter to capital letter after dot"
+msgid "Correct small letter to capital letter after dot"
 msgstr "Исправление строчной буквы на прописную после точки"
 
 #: glade/config.glade:242
-msgid "Сorrect two space with a comma and a space"
+msgid "Correct two space with a comma and a space"
 msgstr "Исправление двух пробелов на запятую и пробел"
 
 #: glade/config.glade:258
-msgid "Сorrect two minus with a dash"
+msgid "Correct two minus with a dash"
 msgstr "Исправление двух минусов на тире"
 
 #: glade/config.glade:274
-msgid "Сorrect dash with a emdash"
+msgid "Correct dash with a emdash"
 msgstr "Исправление тире на длинное тире"
 
 #: glade/config.glade:290
-msgid "Сorrect (c) with a copyright sign"
+msgid "Correct (c) with a copyright sign"
 msgstr "Исправление (с) на знак копирайта"
 
 #: glade/config.glade:306
-msgid "Сorrect (tm) with a trademark sign"
+msgid "Correct (tm) with a trademark sign"
 msgstr "Исправление (tm) на знак торговой марки"
 
 #: glade/config.glade:322
-msgid "Сorrect (r) with a registered sign"
+msgid "Correct (r) with a registered sign"
 msgstr "Исправление (r) на знак регистрации"
 
 #: glade/config.glade:338
-msgid "Сorrect three points with a ellipsis sign"
+msgid "Correct three points with a ellipsis sign"
 msgstr "Исправление трех точек на знак многоточия"
 
 #: glade/config.glade:354
-msgid "Сorrect misprint"
+msgid "Correct misprint"
 msgstr "Исправление опечаток"
 
 #: glade/config.glade:377
@@ -966,7 +966,7 @@ msgstr "X Neural Switcher остановлен ("
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
 
-#~ msgid "Auto-correction"
+#~ msgid "Auto-Correction"
 #~ msgstr "Автопереключение"
 
 #~ msgid "Show icon on the panel indicators"

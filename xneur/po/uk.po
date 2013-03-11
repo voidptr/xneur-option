@@ -559,31 +559,31 @@ msgstr "   [+] Це слово не має співпадінь для proto м�
 msgid "   [-] This word has hits in all languages proto of size %d"
 msgstr "   [-] Це слово має співпадіння у всіх мовних proto з розміром %d"
 
-#: lib/ai/detection.c:354
+#: lib/ai/detection.c:363
 #, c-format
 msgid ""
 "   [+] Found suggest word '%s' in %s dictionary (Levenshtein distance = %d)"
 msgstr ""
 
-#: lib/ai/detection.c:360
+#: lib/ai/detection.c:369
 #, fuzzy
 msgid "   [-] This word has no suggest for all dictionaries"
 msgstr "   [-] Це слово не знайдено в жодному словнику"
 
-#: lib/ai/detection.c:371 lib/ai/detection.c:434
+#: lib/ai/detection.c:380 lib/ai/detection.c:441
 msgid "Processing word:"
 msgstr ""
 
-#: lib/ai/detection.c:380 lib/ai/detection.c:443
+#: lib/ai/detection.c:389 lib/ai/detection.c:450
 #, c-format
 msgid "   '%s' on layout '%s'"
 msgstr ""
 
-#: lib/ai/detection.c:385 lib/ai/detection.c:448
+#: lib/ai/detection.c:394 lib/ai/detection.c:455
 msgid "Start word processing..."
 msgstr ""
 
-#: lib/ai/detection.c:413 lib/ai/detection.c:480
+#: lib/ai/detection.c:422 lib/ai/detection.c:487
 msgid "End word processing."
 msgstr "Обробку слова закінчено."
 
@@ -1153,108 +1153,113 @@ msgstr ""
 msgid "Execute manual action \"%s\""
 msgstr ""
 
-#: lib/main/program.c:1143
+#: lib/main/program.c:1146
 #, c-format
 msgid "Now keyboard and mouse block status is %s"
 msgstr ""
 
-#: lib/main/program.c:1160
+#: lib/main/program.c:1163
 #, c-format
 msgid "Insert date '%s'."
 msgstr ""
 
-#: lib/main/program.c:1221
+#: lib/main/program.c:1224
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr ""
 
-#: lib/main/program.c:1293 lib/main/program.c:1346
+#: lib/main/program.c:1296 lib/main/program.c:1349
 msgid "No language found to change to"
 msgstr ""
 
-#: lib/main/program.c:1453
+#: lib/main/program.c:1456
 msgid "Find two space, correction with a comma and a space..."
 msgstr ""
 
-#: lib/main/program.c:1503
+#: lib/main/program.c:1506
 msgid "Find two minus, correction with a dash..."
 msgstr ""
 
-#: lib/main/program.c:1551
+#: lib/main/program.c:1554
 msgid "Find (c), correction with a copyright sign..."
 msgstr ""
 
-#: lib/main/program.c:1599
+#: lib/main/program.c:1602
 msgid "Find (r), correction with a registered sign..."
 msgstr ""
 
-#: lib/main/program.c:1648
+#: lib/main/program.c:1651
 msgid "Find (tm), correction with a trademark sign..."
 msgstr ""
 
-#: lib/main/program.c:1696
+#: lib/main/program.c:1699
 msgid "Find three points, correction with a ellipsis sign..."
 msgstr ""
 
-#: lib/main/program.c:1729
+#: lib/main/program.c:1732
 msgid "Find spaces before punctuation, correction..."
 msgstr ""
 
-#: lib/main/program.c:1778
+#: lib/main/program.c:1781
 msgid "Find no space before left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1795
+#: lib/main/program.c:1798
 msgid "Find spaces before right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1831
+#: lib/main/program.c:1834
 msgid "Find no spaces after right bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1866
+#: lib/main/program.c:1869
 msgid "Find spaces after left bracket, correction..."
 msgstr ""
 
-#: lib/main/program.c:1949
+#: lib/main/program.c:1952
 msgid "Find small letter after dot, correction..."
 msgstr ""
 
-#: lib/main/program.c:1992
+#: lib/main/program.c:1995
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr ""
 
-#: lib/main/program.c:2029
+#: lib/main/program.c:2160
+#, c-format
+msgid "Found a misprint , correction '%s' to '%s'..."
+msgstr ""
+
+#: lib/main/program.c:2203
 msgid "No string to change"
 msgstr ""
 
-#: lib/main/program.c:2033
+#: lib/main/program.c:2207
 #, c-format
 msgid "Processing string '%s'"
 msgstr ""
 
-#: lib/main/program.c:2429
+#: lib/main/program.c:2604
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2444
+#: lib/main/program.c:2619
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr ""
 
-#: lib/main/program.c:2503
+#: lib/main/program.c:2678
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2535
+#: lib/main/program.c:2710
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr ""
 
-#: lib/main/program.c:2554
+#: lib/main/program.c:2729
 msgid "Program is freed"
 msgstr ""
 

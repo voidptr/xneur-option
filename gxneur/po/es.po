@@ -279,39 +279,39 @@ msgid "Correct spaces with punctuation"
 msgstr ""
 
 #: glade/config.glade:226
-msgid "Сorrect small letter to capital letter after dot"
+msgid "Correct small letter to capital letter after dot"
 msgstr ""
 
 #: glade/config.glade:242
-msgid "Сorrect two space with a comma and a space"
+msgid "Correct two space with a comma and a space"
 msgstr ""
 
 #: glade/config.glade:258
-msgid "Сorrect two minus with a dash"
+msgid "Correct two minus with a dash"
 msgstr ""
 
 #: glade/config.glade:274
-msgid "Сorrect dash with a emdash"
+msgid "Correct dash with a emdash"
 msgstr ""
 
 #: glade/config.glade:290
-msgid "Сorrect (c) with a copyright sign"
+msgid "Correct (c) with a copyright sign"
 msgstr ""
 
 #: glade/config.glade:306
-msgid "Сorrect (tm) with a trademark sign"
+msgid "Correct (tm) with a trademark sign"
 msgstr ""
 
 #: glade/config.glade:322
-msgid "Сorrect (r) with a registered sign"
+msgid "Correct (r) with a registered sign"
 msgstr ""
 
 #: glade/config.glade:338
-msgid "Сorrect three points with a ellipsis sign"
+msgid "Correct three points with a ellipsis sign"
 msgstr ""
 
 #: glade/config.glade:354
-msgid "Сorrect misprint"
+msgid "Correct misprint"
 msgstr ""
 
 #: glade/config.glade:377
@@ -911,9 +911,6 @@ msgstr ""
 
 #~ msgid "Keypress on Layout 2"
 #~ msgstr "Pulsación en el diseño 2"
-
-#~ msgid "Correct word manually"
-#~ msgstr "Corregir palabra manualmente"
 
 #~ msgid "Keypress on Layout 4"
 #~ msgstr "Pulsación en el diseño 4"

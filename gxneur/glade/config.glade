@@ -223,7 +223,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton31">
-                                <property name="label" translatable="yes">Сorrect small letter to capital letter after dot</property>
+                                <property name="label" translatable="yes">Correct small letter to capital letter after dot</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -239,7 +239,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton29">
-                                <property name="label" translatable="yes">Сorrect two space with a comma and a space</property>
+                                <property name="label" translatable="yes">Correct two space with a comma and a space</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -255,7 +255,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton37">
-                                <property name="label" translatable="yes">Сorrect two minus with a dash</property>
+                                <property name="label" translatable="yes">Correct two minus with a dash</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -271,7 +271,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton41">
-                                <property name="label" translatable="yes">Сorrect dash with a emdash</property>
+                                <property name="label" translatable="yes">Correct dash with a emdash</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -287,7 +287,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton38">
-                                <property name="label" translatable="yes">Сorrect (c) with a copyright sign</property>
+                                <property name="label" translatable="yes">Correct (c) with a copyright sign</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -303,7 +303,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton39">
-                                <property name="label" translatable="yes">Сorrect (tm) with a trademark sign</property>
+                                <property name="label" translatable="yes">Correct (tm) with a trademark sign</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -319,7 +319,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton40">
-                                <property name="label" translatable="yes">Сorrect (r) with a registered sign</property>
+                                <property name="label" translatable="yes">Correct (r) with a registered sign</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -335,7 +335,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton42">
-                                <property name="label" translatable="yes">Сorrect three points with a ellipsis sign</property>
+                                <property name="label" translatable="yes">Correct three points with a ellipsis sign</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -351,7 +351,7 @@
                             </child>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton44">
-                                <property name="label" translatable="yes">Сorrect misprint</property>
+                                <property name="label" translatable="yes">Correct misprint</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>

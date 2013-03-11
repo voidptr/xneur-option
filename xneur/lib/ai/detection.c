@@ -250,7 +250,7 @@ static int get_proto_lang(struct _xneur_handle *handle, char **word, int **sym_l
 	return NO_LANGUAGE;
 }
 
-static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
+static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 {
 	int min_levenshtein = 3;
 	char *possible_words = NULL;
@@ -307,7 +307,7 @@ static int check_misprint(struct _xneur_handle *handle, struct _buffer *p)
 					possible_lang = lang;
 					
 				}
-				//log_message (ERROR, "    %d. %s (%d) (%d)", i+1, suggs[i], levenshtein(word, suggs[i]), damerau_levenshtein(word, suggs[i], 1, 1, 1, 1));	
+				//log_message (ERROR, "    %d. %s (%d)", i+1, suggs[i], levenshtein(word, suggs[i]));	
 			}			
 		}
 		enchant_dict_free_string_list(handle->enchant_dicts[lang], suggs);
@@ -432,10 +432,8 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 	return lang;
 }
 
-int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer *p, int cur_lang, int correct_misprint)
+int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 {
-	if (correct_misprint) {}; // Tmp fix
-	
 	char **word = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	char **word_unchanged = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	int **sym_len = (int **) malloc((handle->total_languages + 1) * sizeof(int *));
@@ -475,7 +473,7 @@ int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer 
 
 	// Check misprint
 	if (lang == NO_LANGUAGE)
-		lang = check_misprint (handle, p);
+		lang = get_similar_words (handle, p);
 	
 	// If not found in dictionary, try to find in proto
 	len = strlen(p->content);

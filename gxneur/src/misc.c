@@ -109,9 +109,10 @@ static const char *notify_names[]			=   {
 										"Correct selected text", "Transliterate selected text", "Change case of selected text", "Preview correction of selected text",
 										"Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 	                                    "Expand abbreviations",
-										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Сorrect two space with a comma and a space",
-										"Сorrect two minus with a dash", "Сorrect (c) with a copyright sign", "Сorrect (tm) with a trademark sign",
-										"Сorrect (r) with a registered sign", "Сorrect three points with a ellipsis sign", 
+										"Correct aCCIDENTAL caps", "Correct TWo INitial caps", "Correct two space with a comma and a space",
+										"Correct two minus with a dash", "Correct (c) with a copyright sign", "Correct (tm) with a trademark sign",
+										"Correct (r) with a registered sign", "Correct three points with a ellipsis sign", 
+										"Correct misprint",
 										"Execute user action", "Block keyboard and mouse events", "Unblock keyboard and mouse events"
 										};
 
