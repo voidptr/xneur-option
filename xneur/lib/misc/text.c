@@ -221,6 +221,8 @@ void del_final_numeric_char(char *word)
 			case '9':
 			case '0':
 			case ' ':
+			case 13:	// Return
+			case 9:		// Tab
 			{
 				offset++;
 				break;

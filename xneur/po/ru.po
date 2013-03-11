@@ -615,177 +615,177 @@ msgstr "Начало обработки слова..."
 msgid "End word processing."
 msgstr "Конец обработки слова."
 
-#: lib/config/xnconfig.c:149
+#: lib/config/xnconfig.c:150
 #, c-format
 msgid "Unrecognized option \"%s\" detected"
 msgstr "Обнаружена неизвестная опция \"%s\""
 
-#: lib/config/xnconfig.c:159
+#: lib/config/xnconfig.c:160
 #, c-format
 msgid "Param mismatch for option %s"
 msgstr "Несовпадение параметров для опции %s"
 
-#: lib/config/xnconfig.c:170
+#: lib/config/xnconfig.c:171
 msgid "Invalid value for manual mode specified"
 msgstr "Неправильное значение опции для ручного режима"
 
-#: lib/config/xnconfig.c:187
+#: lib/config/xnconfig.c:188
 msgid "Invalid value for action name specified"
 msgstr "Неправильное значение опции для названия действия"
 
-#: lib/config/xnconfig.c:215
+#: lib/config/xnconfig.c:216
 msgid "Invalid value for log level specified"
 msgstr "Неправильное значение опции для уровня отладочных сообщений"
 
-#: lib/config/xnconfig.c:227
+#: lib/config/xnconfig.c:228
 msgid "Argument number mismatch for ExcludeLanguage option"
 msgstr "Несовпаденние числа аргументов для опции ExcludeLanguage"
 
-#: lib/config/xnconfig.c:244
+#: lib/config/xnconfig.c:245
 msgid "Invalid value for pattern minig and recognition mode specified"
 msgstr ""
 "Неправильное значение опции для режима сохранения паттернов и распознавания"
 
-#: lib/config/xnconfig.c:256
+#: lib/config/xnconfig.c:257
 msgid "Invalid value for disable CapsLock using mode specified"
 msgstr "Неправильное значение опции для режима отключения CapsLock"
 
-#: lib/config/xnconfig.c:268
+#: lib/config/xnconfig.c:269
 msgid "Invalid value for check language on input process mode specified"
 msgstr "Неправильное значение опции для режима проверки языка при вводе"
 
-#: lib/config/xnconfig.c:295
+#: lib/config/xnconfig.c:296
 msgid "Invalid value for education mode specified"
 msgstr "Неправильное значение опции для режима обучения"
 
-#: lib/config/xnconfig.c:312
+#: lib/config/xnconfig.c:313
 msgid "Invalid value for remember layout mode specified"
 msgstr "Неправильное значение опции для режима запоминия раскладки"
 
-#: lib/config/xnconfig.c:324
+#: lib/config/xnconfig.c:325
 msgid "Invalid value for save selection mode specified"
 msgstr "Неправильное значение опции для режима сохранения выделения"
 
-#: lib/config/xnconfig.c:341
+#: lib/config/xnconfig.c:342
 msgid "Invalid value for sound action name specified"
 msgstr "Неправильное значение имени для проигрывания звука"
 
-#: lib/config/xnconfig.c:373
+#: lib/config/xnconfig.c:374
 msgid "Invalid value for play sounds mode specified"
 msgstr "Неправильное значение опции для режима проигрывания звука"
 
-#: lib/config/xnconfig.c:385
+#: lib/config/xnconfig.c:386
 msgid "Send delay must be between 0 and 50"
 msgstr "Задержка отправки должна быть от 0 до 50"
 
-#: lib/config/xnconfig.c:400
+#: lib/config/xnconfig.c:401
 msgid "Invalid value for save keyboard log mode specified"
 msgstr "Неправильное значение опции для режима сохранения лога клавиатуры"
 
-#: lib/config/xnconfig.c:419
+#: lib/config/xnconfig.c:420
 msgid ""
 "Invalid value for ignore keyboard layout for abbreviations mode specified"
 msgstr ""
 "Неправильное значение опции для режима игнорирования раскладки для сокращений"
 
-#: lib/config/xnconfig.c:431
+#: lib/config/xnconfig.c:432
 msgid "Invalid value for change iNCIDENTAL CapsLock mode specified"
 msgstr "Неправильное значение опции для режима исправления сЛУЧАЙНОГО КапсЛока"
 
-#: lib/config/xnconfig.c:443
+#: lib/config/xnconfig.c:444
 msgid "Invalid value for change two CApital letter mode specified"
 msgstr "Неправильное значение опции для режима исправления двух ПРописных букв"
 
-#: lib/config/xnconfig.c:455
+#: lib/config/xnconfig.c:456
 msgid ""
 "Invalid value for flush internal buffer when pressed Enter mode specified"
 msgstr ""
 "Неправильное значение опции для режима сброса буфера при нажатии Ввод или Таб"
 
-#: lib/config/xnconfig.c:467
+#: lib/config/xnconfig.c:468
 msgid ""
 "Invalid value for don't processing word when pressed Enter mode specified"
 msgstr ""
 "Неправильное значение опции для режима отмены проверки слова при нажатии "
 "Ввод или Таб"
 
-#: lib/config/xnconfig.c:535
+#: lib/config/xnconfig.c:536
 msgid "Invalid value for show OSD mode specified"
 msgstr "Неправильное значение опции для режима показа OSD"
 
-#: lib/config/xnconfig.c:547
+#: lib/config/xnconfig.c:548
 msgid "Invalid value for OSD action name specified"
 msgstr "Неправильное значение опции для названия действия показа OSD"
 
-#: lib/config/xnconfig.c:591
+#: lib/config/xnconfig.c:592
 msgid "Invalid value for show popup message mode specified"
 msgstr "Неправильное значение опции для режима показа всплывающих сообщений"
 
-#: lib/config/xnconfig.c:603
+#: lib/config/xnconfig.c:604
 msgid "Invalid value for popup message action name specified"
 msgstr ""
 "Неправильное значение имени для названия действия показа всплывающих "
 "сообщений"
 
-#: lib/config/xnconfig.c:687
+#: lib/config/xnconfig.c:688
 msgid "Invalid value for troubleshooting mode for backspace specified"
 msgstr ""
 "Неправильное значение опции для режима исправления проблем, если нажат "
 "backspace"
 
-#: lib/config/xnconfig.c:699
+#: lib/config/xnconfig.c:700
 msgid "Invalid value for troubleshooting mode for left arrow specified"
 msgstr ""
 "Неправильное значение опции для режима исправления проблем, если нажата "
 "стрелка влево"
 
-#: lib/config/xnconfig.c:711
+#: lib/config/xnconfig.c:712
 msgid "Invalid value for troubleshooting mode for right arrow specified"
 msgstr ""
 "Неправильное значение опции для режима исправления проблем, если нажата "
 "стрелка вправо"
 
-#: lib/config/xnconfig.c:723
+#: lib/config/xnconfig.c:724
 msgid "Invalid value for troubleshooting mode for up arrow specified"
 msgstr ""
 "Неправильное значение опции для режима исправления проблем, если нажата "
 "стрелка вверх"
 
-#: lib/config/xnconfig.c:735
+#: lib/config/xnconfig.c:736
 msgid "Invalid value for troubleshooting mode for down arrow specified"
 msgstr ""
 "Неправильное значение опции для режима исправления проблем, если нажата "
 "стрелка вниз"
 
-#: lib/config/xnconfig.c:747
+#: lib/config/xnconfig.c:748
 msgid "Invalid value for troubleshooting mode for delete specified"
 msgstr ""
 "Неправильное значение опции для режима исправления проблем, если нажат delete"
 
-#: lib/config/xnconfig.c:759
+#: lib/config/xnconfig.c:760
 msgid "Invalid value for troubleshooting mode for keyboard switch specified"
 msgstr ""
 "Неправильное значение опции для режима исправления проблем, если переключена "
 "раскладка"
 
-#: lib/config/xnconfig.c:771
+#: lib/config/xnconfig.c:772
 msgid "Invalid value for troubleshooting mode for full screen apps specified"
 msgstr ""
 "Неправильное значение опции для режима исправления проблем, если приложение "
 "в полноэкранном режиме"
 
-#: lib/config/xnconfig.c:783
+#: lib/config/xnconfig.c:784
 msgid "Invalid value for dont send KeyRelease event mode"
 msgstr "Неправильное значение опции для режима отправки события KeyRelease"
 
-#: lib/config/xnconfig.c:802
+#: lib/config/xnconfig.c:803
 msgid ""
 "Invalid value for rotate layout after correction selected text mode specified"
 msgstr ""
 "Неправильное значение опции для режима переключения раскладки после "
 "коррекции выделенного текста"
 
-#: lib/config/xnconfig.c:814
+#: lib/config/xnconfig.c:815
 msgid ""
 "Invalid value for change small letter to capital letter after dot mode "
 "specified"
@@ -793,105 +793,105 @@ msgstr ""
 "Неправильное значение опции для режима исправления строчной буквы на "
 "прописную после точки"
 
-#: lib/config/xnconfig.c:826
+#: lib/config/xnconfig.c:827
 msgid ""
 "Invalid value for flush internal buffer when pressed Escape mode specified"
 msgstr ""
 "Неправильное значение опции для режима сброса буфера при нажатии Escape"
 
-#: lib/config/xnconfig.c:838
+#: lib/config/xnconfig.c:839
 msgid "Invalid value for compatibility with the completion mode specified"
 msgstr "Неправильное значение опции для режима совместимости с автодополнением"
 
-#: lib/config/xnconfig.c:850
+#: lib/config/xnconfig.c:851
 msgid "Invalid value for tracking input mode specified"
 msgstr "Неправильное значение опции для слежения за вводом"
 
-#: lib/config/xnconfig.c:862
+#: lib/config/xnconfig.c:863
 msgid "Invalid value for tracking mouse mode specified"
 msgstr "Неправильное значение опции для слежения за мышью"
 
-#: lib/config/xnconfig.c:874
+#: lib/config/xnconfig.c:875
 msgid "Popup expire timeout must be between 0 and 30000"
 msgstr "Время показа всплывающего сообщения должно быть от 0 до 30000"
 
-#: lib/config/xnconfig.c:884
+#: lib/config/xnconfig.c:885
 msgid ""
 "Invalid value for correct two space with a comma and a space mode specified"
 msgstr ""
 "Неправильное значение опции для режима исправления двух пробелов на запятую "
 "и пробел"
 
-#: lib/config/xnconfig.c:896
+#: lib/config/xnconfig.c:897
 msgid "Invalid value for correct two minus with a dash mode specified"
 msgstr ""
 "Неправильное значение опции для режима исправления двух минусов на тире"
 
-#: lib/config/xnconfig.c:908
+#: lib/config/xnconfig.c:909
 msgid "Invalid value for correct (c) with a copyright sign mode specified"
 msgstr ""
 "Неправильное значение опции для режима исправления (с) на знак копирайта"
 
-#: lib/config/xnconfig.c:920
+#: lib/config/xnconfig.c:921
 msgid "Invalid value for correct (tm) with a trademark sign mode specified"
 msgstr ""
 "Неправильное значение опции для режима исправления (tm) на знак торговой "
 "марки"
 
-#: lib/config/xnconfig.c:932
+#: lib/config/xnconfig.c:933
 msgid "Invalid value for correct (r) with a registered sign mode specified"
 msgstr ""
 "Неправильное значение опции для режима исправления (r) на знак регистрации"
 
-#: lib/config/xnconfig.c:984
+#: lib/config/xnconfig.c:985
 #, c-format
 msgid "Can't find config file %s"
 msgstr "Не найден конфигурационный файл %s"
 
-#: lib/config/xnconfig.c:1073
+#: lib/config/xnconfig.c:1074
 #, c-format
 msgid "Saving lock file to %s (pid %d)"
 msgstr "Установка файла блокировки в %s (id процесса %d)"
 
-#: lib/config/xnconfig.c:1078
+#: lib/config/xnconfig.c:1079
 #, c-format
 msgid "Can't create lock file %s"
 msgstr "Невозможно создать файл блокировки %s"
 
-#: lib/config/xnconfig.c:1110
+#: lib/config/xnconfig.c:1111
 #, c-format
 msgid "Get lock file %s"
 msgstr "Получение файла блокировки %s"
 
-#: lib/config/xnconfig.c:1148
+#: lib/config/xnconfig.c:1149
 msgid "No languages specified in config file"
 msgstr "В конфигурационном файле не определены языки"
 
-#: lib/config/xnconfig.c:1177
+#: lib/config/xnconfig.c:1178
 #, c-format
 msgid "Saving main config to %s"
 msgstr "Сохранение основной конфигурации в %s"
 
-#: lib/config/xnconfig.c:1182
+#: lib/config/xnconfig.c:1183
 #, c-format
 msgid "Can't create file %s"
 msgstr "Невозможно создать файл %s"
 
-#: lib/config/xnconfig.c:1551
+#: lib/config/xnconfig.c:1552
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr "Перемещение конфигурационного файла из %s в %s"
 
-#: lib/config/xnconfig.c:1557
+#: lib/config/xnconfig.c:1558
 msgid "Can't move file!"
 msgstr "Невозможно переместить файл!"
 
-#: lib/config/xnconfig.c:1575
+#: lib/config/xnconfig.c:1576
 #, c-format
 msgid "Saving %s dictionary"
 msgstr "Сохранение словаря языка %s"
 
-#: lib/config/xnconfig.c:1589
+#: lib/config/xnconfig.c:1590
 #, c-format
 msgid "Saving %s pattern"
 msgstr "Сохранение паттернов языка %s"
@@ -1294,36 +1294,41 @@ msgstr "Распознано слово '%s' из текста '%s' (раскл�
 msgid "Found a misprint , correction '%s' to '%s'..."
 msgstr "Найдена опечатка, исправление '%s' на '%s'..."
 
-#: lib/main/program.c:2203
+#: lib/main/program.c:2173
+#, c-format
+msgid "Correction '%s' to '%s'"
+msgstr "Исправление '%s' на '%s'"
+
+#: lib/main/program.c:2205
 msgid "No string to change"
 msgstr "Нет строки для замены"
 
-#: lib/main/program.c:2207
+#: lib/main/program.c:2209
 #, c-format
 msgid "Processing string '%s'"
 msgstr "Обработка строки '%s'"
 
-#: lib/main/program.c:2604
+#: lib/main/program.c:2606
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr "Удалено слово '%s' из словаря %s"
 
-#: lib/main/program.c:2619
+#: lib/main/program.c:2621
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr "Добавлено слово '%s' в словарь %s"
 
-#: lib/main/program.c:2678
+#: lib/main/program.c:2680
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr "Удалено слово '%s' из паттерна %s"
 
-#: lib/main/program.c:2710
+#: lib/main/program.c:2712
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr "Добавлено слово '%s' в паттерн %s"
 
-#: lib/main/program.c:2729
+#: lib/main/program.c:2731
 msgid "Program is freed"
 msgstr "Текущие данные программы очищены"
 

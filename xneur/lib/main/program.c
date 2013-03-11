@@ -2066,7 +2066,7 @@ static void program_check_misprint(struct _program *p)
 		return;
 	}
 
-	if (!enchant_dict_check(handle->enchant_dicts[cur_lang], word[cur_lang], strlen(word[cur_lang])))
+	if (!enchant_dict_check(xconfig->handle->enchant_dicts[lang], word, strlen(word)))
 	{
 		free(possible_words);		
 		free(word);
@@ -2168,12 +2168,15 @@ static void program_check_misprint(struct _program *p)
 
 			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
-			show_notify(NOTIFY_CORR_MISPRINT, NULL);
-			p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
-
-			//Incapsulate to p->event->clear_code() or smth else
-			//p->event->default_event.xkey.keycode = 0;
+			int notify_text_len = strlen(_("Correction '%s' to '%s'")) + strlen(word) + strlen(possible_words[i]);
+			log_message (ERROR, _("%d"), notify_text_len);
+			char *notify_text = (char *) malloc((notify_text_len + 1) * sizeof(char));
+			snprintf(notify_text , notify_text_len+1, _("Correction '%s' to '%s'"), word, possible_words[i]);			
+			show_notify(NOTIFY_CORR_MISPRINT, notify_text);
+			free(notify_text);
 			
+			p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+	
 			free(word);
 
 			for (int i = 0; i < possible_count; i++)
