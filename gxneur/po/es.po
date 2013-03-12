@@ -355,8 +355,8 @@ msgid "<b>Hotkeys</b>"
 msgstr ""
 
 #: glade/config.glade:929
-msgid "Enable pattern mining and recognition (autocompletion)"
-msgstr ""
+msgid "Enable autocompletion"
+msgstr "Habilitar modo de autoaprendizaje"
 
 #: glade/config.glade:945
 msgid "Add space after autocompletion"

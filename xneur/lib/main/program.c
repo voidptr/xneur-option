@@ -2103,6 +2103,10 @@ static void program_check_misprint(struct _program *p)
 					}
 				}
 			}
+			if (possible_word == NULL)
+			{
+				possible_word = strdup(suggs[0]);
+			}
 		}
 	}
 	
@@ -2137,23 +2141,34 @@ static void program_check_misprint(struct _program *p)
 	}
 	delete_aspell_string_enumeration (elements);
 
+	// Check word in user's pattern  
 	elements = aspell_word_list_elements(suggestions);
 	if (min_levenshtein < 3) 
 	{
+		char *first_sugg = NULL;
 		while ((sugg_word = aspell_string_enumeration_next (elements)) != NULL)
-		{		
-			
+		{	
 			int tmp_levenshtein = levenshtein(word+offset, sugg_word);
 			if (tmp_levenshtein == min_levenshtein)
 			{
-				if (xconfig->handle->languages[lang].pattern->exist(xconfig->handle->languages[lang].pattern, sugg_word, BY_PLAIN))	
+				if (first_sugg == NULL)
+					first_sugg = strdup(sugg_word);
+				if (xconfig->handle->languages[lang].pattern->exist(xconfig->handle->languages[lang].pattern, sugg_word, BY_PLAIN))
 				{
 					possible_word = strdup(sugg_word);
 					break;
 				}
 			}
 		}
+		// If user's pattern is clear then get first word 
+		if (possible_word == NULL)
+			possible_word = first_sugg;
+		else
+			if (first_sugg != NULL)
+				free(first_sugg);
 	}	
+	
+
 	delete_aspell_string_enumeration (elements);
 #endif
 
@@ -2620,8 +2635,9 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 
 static void program_add_word_to_pattern(struct _program *p, int new_lang)
 {
-	if (!xconfig->autocompletion)
-		return;
+	// Enable saving pettern always
+	//if (!xconfig->autocompletion)
+	//	return;
 	
 	char *tmp = get_last_word(p->buffer->content);
 	if (tmp == NULL)

@@ -366,8 +366,8 @@ msgid "<b>Hotkeys</b>"
 msgstr "<b>Поєднання клавіш</b>"
 
 #: glade/config.glade:929
-msgid "Enable pattern mining and recognition (autocompletion)"
-msgstr "Включити схему аналізу і розпізнавання (автодоповнення)"
+msgid "Enable autocompletion"
+msgstr "Включити автодоповнення"
 
 #: glade/config.glade:945
 msgid "Add space after autocompletion"
@@ -926,6 +926,9 @@ msgstr "X Neural Switcher зупинений ("
 #: src/trayicon.c:585
 msgid "X Neural Switcher"
 msgstr "Перемикач X Neural"
+
+#~ msgid "Enable pattern mining and recognition (autocompletion)"
+#~ msgstr "Включити схему аналізу і розпізнавання (автодоповнення)"
 
 #~ msgid "Auto-Correction"
 #~ msgstr "Включити автокорекцію введення"

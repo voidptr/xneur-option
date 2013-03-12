@@ -367,8 +367,8 @@ msgid "<b>Hotkeys</b>"
 msgstr "<b>Спалучэньні клявішаў</b>"
 
 #: glade/config.glade:929
-msgid "Enable pattern mining and recognition (autocompletion)"
-msgstr ""
+msgid "Enable autocompletion"
+msgstr "Уключыць рэжым саманавучаньня"
 
 #: glade/config.glade:945
 msgid "Add space after autocompletion"

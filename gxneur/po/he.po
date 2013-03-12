@@ -366,8 +366,8 @@ msgid "<b>Hotkeys</b>"
 msgstr "<b>צירופי מקשים</b>"
 
 #: glade/config.glade:929
-msgid "Enable pattern mining and recognition (autocompletion)"
-msgstr "הפעלת כרייה וזיהוי של תבניות (השלמה אוטומטית)"
+msgid "Enable autocompletion"
+msgstr ""
 
 #: glade/config.glade:945
 msgid "Add space after autocompletion"
@@ -916,6 +916,9 @@ msgstr "המחליף העצבי X הופסק ("
 #: src/trayicon.c:585
 msgid "X Neural Switcher"
 msgstr "המחליף העצבי X"
+
+#~ msgid "Enable pattern mining and recognition (autocompletion)"
+#~ msgstr "הפעלת כרייה וזיהוי של תבניות (השלמה אוטומטית)"
 
 #~ msgid "Auto-Correction"
 #~ msgstr "תיקון אוטומטי"
