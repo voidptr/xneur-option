@@ -2104,9 +2104,7 @@ static void program_check_misprint(struct _program *p)
 				}
 			}
 			if (possible_word == NULL)
-			{
 				possible_word = strdup(suggs[0]);
-			}
 		}
 	}
 	
@@ -2171,7 +2169,6 @@ static void program_check_misprint(struct _program *p)
 
 	delete_aspell_string_enumeration (elements);
 #endif
-
 	if (possible_word != NULL)	
 	{
 		p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
