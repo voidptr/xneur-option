@@ -52,8 +52,14 @@ static  void trap_child(int status)
 	if (status) {};
 	
 	int stat;
+	int pid;
 	/*Kills all the zombie processes*/
-	while(waitpid(-1, &stat, WNOHANG) > 0);
+	while(1)
+	{
+		pid = waitpid(-1, &stat, WNOHANG);
+		if (pid <= 0)
+			break;  
+	}
 }
 
 int main(int argc, char *argv[])

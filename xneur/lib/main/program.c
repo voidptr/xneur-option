@@ -2053,22 +2053,19 @@ static void program_check_misprint(struct _program *p)
 	}
 	
 	int min_levenshtein = 3;
-	char **possible_words = malloc(sizeof(char*));
-	int possible_count = 0;
+	char *possible_word = NULL;
 	
 #ifdef WITH_ENCHANT 
 	size_t count = 0;
 		
 	if (!xconfig->handle->has_enchant_checker[lang])
 	{
-		free(possible_words);		
 		free(word);
 		return;
 	}
 
 	if (!enchant_dict_check(xconfig->handle->enchant_dicts[lang], word, strlen(word)))
 	{
-		free(possible_words);		
 		free(word);
 		return;
 	}
@@ -2091,9 +2088,11 @@ static void program_check_misprint(struct _program *p)
 				int tmp_levenshtein = levenshtein(word, suggs[i]);
 				if (tmp_levenshtein == min_levenshtein)
 				{
-					possible_words[possible_count] = strdup(suggs[i]);
-					possible_words = realloc(possible_words, sizeof(char*) * (possible_count+2));
-					possible_count++;
+					if (xconfig->handle->languages[lang].pattern->exist(xconfig->handle->languages[lang].pattern, suggs[i], BY_PLAIN))	
+					{
+						possible_word = strdup(suggs[i]);
+						break;
+					}
 				}
 			}
 		}
@@ -2105,20 +2104,17 @@ static void program_check_misprint(struct _program *p)
 #ifdef WITH_ASPELL
 	if (!xconfig->handle->has_spell_checker[lang])
 	{
-		free(possible_words);		
 		free(word);
 		return;
 	}
 	if (aspell_speller_check(xconfig->handle->spell_checkers[lang], word, strlen(word)))
 	{
-		free(possible_words);		
 		free(word);
 		return;
 	}
 	const AspellWordList *suggestions = aspell_speller_suggest (xconfig->handle->spell_checkers[lang], (const char *) word, strlen(word));
 	if (! suggestions)
 	{
-		free(possible_words);		
 		free(word);
 		return;
 	}
@@ -2142,60 +2138,43 @@ static void program_check_misprint(struct _program *p)
 			int tmp_levenshtein = levenshtein(word, sugg_word);
 			if (tmp_levenshtein == min_levenshtein)
 			{
-				possible_words[possible_count] = strdup(sugg_word);
-				possible_words = realloc(possible_words, sizeof(char*) * (possible_count+2));
-				possible_count++;
+				if (xconfig->handle->languages[lang].pattern->exist(xconfig->handle->languages[lang].pattern, sugg_word, BY_PLAIN))	
+				{
+					possible_word = strdup(sugg_word);
+					break;
+				}
 			}
 		}
 	}	
 	delete_aspell_string_enumeration (elements);
 #endif
 
-	for (int i = 0; i < possible_count; i++)
+	if (possible_word != NULL)	
 	{
-		if (xconfig->handle->languages[lang].pattern->exist(xconfig->handle->languages[lang].pattern, possible_words[i], BY_PLAIN))	
-		{
-			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+		p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 			
-			log_message (DEBUG, _("Found a misprint , correction '%s' to '%s'..."), word, possible_words[i]);
+		log_message (DEBUG, _("Found a misprint , correction '%s' to '%s'..."), word, possible_word);
 
-			int backspaces_count = strlen(get_last_word(p->buffer->content)) - 1;
+		int backspaces_count = strlen(get_last_word(p->buffer->content)) - 1;
+		p->event->send_backspaces(p->event, backspaces_count);
+		p->buffer->set_content(p->buffer, possible_word);
 
-			p->event->send_backspaces(p->event, backspaces_count);
-			p->buffer->set_content(p->buffer, possible_words[i]);
+		p->change_word(p, CHANGE_MISPRINT);
 
-			p->change_word(p, CHANGE_MISPRINT);
+		p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
-			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
-
-			int notify_text_len = strlen(_("Correction '%s' to '%s'")) + strlen(word) + strlen(possible_words[i]);
-			char *notify_text = (char *) malloc((notify_text_len + 1) * sizeof(char));
-			snprintf(notify_text , notify_text_len+1, _("Correction '%s' to '%s'"), word, possible_words[i]);			
-			show_notify(NOTIFY_CORR_MISPRINT, notify_text);
-			free(notify_text);
+		int notify_text_len = strlen(_("Correction '%s' to '%s'")) + strlen(word) + strlen(possible_word);
+		char *notify_text = (char *) malloc((notify_text_len + 1) * sizeof(char));
+		snprintf(notify_text , notify_text_len+1, _("Correction '%s' to '%s'"), word, possible_word);			
+		show_notify(NOTIFY_CORR_MISPRINT, notify_text);
+		free(notify_text);
 			
-			p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
-	
-			free(word);
+		p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
-			for (int i = 0; i < possible_count; i++)
-			{
-				if (possible_words[i] != NULL)
-					free(possible_words[i]);
-			}
-			free(possible_words);
-			return;
-		}
+		free(possible_word);
 	}
 	
 	free(word);
-
-	for (int i = 0; i < possible_count; i++)
-	{
-		if (possible_words[i] != NULL)
-			free(possible_words[i]);
-	}
-	free(possible_words);
 }
 
 static void program_send_string_silent(struct _program *p, int send_backspaces)
