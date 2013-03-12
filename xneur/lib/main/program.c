@@ -2632,7 +2632,7 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 
 static void program_add_word_to_pattern(struct _program *p, int new_lang)
 {
-	// Enable saving pettern always
+	// Enable saving pattern always
 	//if (!xconfig->autocompletion)
 	//	return;
 	

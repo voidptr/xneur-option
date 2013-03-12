@@ -371,7 +371,7 @@ msgstr ""
 
 #: glade/config.glade:945
 msgid "Add space after autocompletion"
-msgstr "הוספת רווח לאחר השלמה אוטומטית"
+msgstr ""
 
 #: glade/config.glade:1061
 msgid "Disable the autocompletion for these applications"
