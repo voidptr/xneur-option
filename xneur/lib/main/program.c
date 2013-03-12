@@ -2054,6 +2054,14 @@ static void program_check_misprint(struct _program *p)
 	
 	int min_levenshtein = 3;
 	char *possible_word = NULL;
+
+	// check leader puctuation char
+	unsigned int offset = 0;
+	for (offset = 0; offset < strlen(word); offset++)
+	{
+		if (!ispunct(word[offset]))
+			break;
+	}
 	
 #ifdef WITH_ENCHANT 
 	size_t count = 0;
@@ -2064,19 +2072,19 @@ static void program_check_misprint(struct _program *p)
 		return;
 	}
 
-	if (!enchant_dict_check(xconfig->handle->enchant_dicts[lang], word, strlen(word)))
+	if (!enchant_dict_check(xconfig->handle->enchant_dicts[lang], word+offset, strlen(word+offset)))
 	{
 		free(word);
 		return;
 	}
 	
-	char **suggs = enchant_dict_suggest (xconfig->handle->enchant_dicts[lang], word, strlen(word), &count); 
+	char **suggs = enchant_dict_suggest (xconfig->handle->enchant_dicts[lang], word+offset, strlen(word+offset), &count); 
 	if (count > 0)
 	{
 		
 		for (unsigned int i = 0; i < count; i++)
 		{
-			int tmp_levenshtein = levenshtein(word, suggs[i]);
+			int tmp_levenshtein = levenshtein(word+offset, suggs[i]);
 			if (tmp_levenshtein < min_levenshtein)
 				min_levenshtein = tmp_levenshtein;
 		}	
@@ -2085,7 +2093,7 @@ static void program_check_misprint(struct _program *p)
 		{
 			for (unsigned int i = 0; i < count; i++)
 			{
-				int tmp_levenshtein = levenshtein(word, suggs[i]);
+				int tmp_levenshtein = levenshtein(word+offset, suggs[i]);
 				if (tmp_levenshtein == min_levenshtein)
 				{
 					if (xconfig->handle->languages[lang].pattern->exist(xconfig->handle->languages[lang].pattern, suggs[i], BY_PLAIN))	
@@ -2107,12 +2115,12 @@ static void program_check_misprint(struct _program *p)
 		free(word);
 		return;
 	}
-	if (aspell_speller_check(xconfig->handle->spell_checkers[lang], word, strlen(word)))
+	if (aspell_speller_check(xconfig->handle->spell_checkers[lang], word+offset, strlen(word+offset)))
 	{
 		free(word);
 		return;
 	}
-	const AspellWordList *suggestions = aspell_speller_suggest (xconfig->handle->spell_checkers[lang], (const char *) word, strlen(word));
+	const AspellWordList *suggestions = aspell_speller_suggest (xconfig->handle->spell_checkers[lang], (const char *) word+offset, strlen(word+offset));
 	if (! suggestions)
 	{
 		free(word);
@@ -2123,7 +2131,7 @@ static void program_check_misprint(struct _program *p)
 	const char *sugg_word;
 	while ((sugg_word = aspell_string_enumeration_next (elements)) != NULL)
 	{		
-		int tmp_levenshtein = levenshtein(word, sugg_word);
+		int tmp_levenshtein = levenshtein(word+offset, sugg_word);
 		if (tmp_levenshtein < min_levenshtein)
 			min_levenshtein = tmp_levenshtein;
 	}
@@ -2135,7 +2143,7 @@ static void program_check_misprint(struct _program *p)
 		while ((sugg_word = aspell_string_enumeration_next (elements)) != NULL)
 		{		
 			
-			int tmp_levenshtein = levenshtein(word, sugg_word);
+			int tmp_levenshtein = levenshtein(word+offset, sugg_word);
 			if (tmp_levenshtein == min_levenshtein)
 			{
 				if (xconfig->handle->languages[lang].pattern->exist(xconfig->handle->languages[lang].pattern, sugg_word, BY_PLAIN))	
@@ -2153,10 +2161,10 @@ static void program_check_misprint(struct _program *p)
 	{
 		p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 			
-		log_message (DEBUG, _("Found a misprint , correction '%s' to '%s'..."), word, possible_word);
+		log_message (DEBUG, _("Found a misprint , correction '%s' to '%s'..."), word+offset, possible_word);
 
-		int backspaces_count = strlen(get_last_word(p->buffer->content)) - 1;
-		p->event->send_backspaces(p->event, backspaces_count);
+		int backspaces_count = strlen(get_last_word(p->buffer->content));
+		p->event->send_backspaces(p->event, backspaces_count - offset - 1);
 		p->buffer->set_content(p->buffer, possible_word);
 
 		p->change_word(p, CHANGE_MISPRINT);

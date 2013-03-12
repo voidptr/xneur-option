@@ -280,6 +280,13 @@ static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 			continue;
 		}
 		
+		unsigned int offset = 0;
+		for (offset = 0; offset < strlen(word); offset++)
+		{
+			if (!ispunct(word[offset]))
+				break;
+		}
+		
 #ifdef WITH_ENCHANT 
 		size_t count = 0;
 		
@@ -292,12 +299,12 @@ static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 			continue;
 		}
 		
-		char **suggs = enchant_dict_suggest (handle->enchant_dicts[lang], word, strlen(word), &count); 
+		char **suggs = enchant_dict_suggest (handle->enchant_dicts[lang], word+offset, strlen(word+offset), &count); 
 		if (count > 0)
 		{
 			for (unsigned int i = 0; i < count; i++)
 			{
-				int tmp_levenshtein = levenshtein(word, suggs[i]);
+				int tmp_levenshtein = levenshtein(word+offset, suggs[i]);
 				if (tmp_levenshtein < min_levenshtein)
 				{
 					min_levenshtein = tmp_levenshtein;
@@ -322,7 +329,7 @@ static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 				free(word);
 			continue;
 		}
-		const AspellWordList *suggestions = aspell_speller_suggest (handle->spell_checkers[lang], (const char *) word, strlen(word));
+		const AspellWordList *suggestions = aspell_speller_suggest (handle->spell_checkers[lang], (const char *) word+offset, strlen(word+offset));
 		if (! suggestions)
 		{
 			if (possible_words != NULL)
@@ -338,7 +345,7 @@ static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 		while ((sugg_word = aspell_string_enumeration_next (elements)) != NULL)
 		{
 			
-			int tmp_levenshtein = levenshtein(word, sugg_word);
+			int tmp_levenshtein = levenshtein(word+offset, sugg_word);
 			if (tmp_levenshtein < min_levenshtein)
 			{
 				min_levenshtein = tmp_levenshtein;
