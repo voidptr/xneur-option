@@ -269,18 +269,10 @@ static void xneur_terminate(int status)
 static void xneur_zombie(int status)
 {
 	if (status){}
-	int stat;
-	int pid;
-	/*Kills all the zombie processes*/
-	while(1)
-	{
-		pid = waitpid(-1, &stat, WNOHANG);
-		if (pid <= 0)
-			break;               
-
-		log_message(DEBUG, _("Caught SIGCHLD, kill zombie process"));
-	}
-}
+	//Kills all the zombie processes
+	log_message(DEBUG, _("Caught SIGCHLD, kill zombie process"));
+	while(waitpid(-1, NULL, WNOHANG) > 0);
+} 
 
 static void xneur_reload(int status)
 {

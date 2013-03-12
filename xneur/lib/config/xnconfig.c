@@ -1131,6 +1131,7 @@ static int xneur_config_get_pid(struct _xneur_config *p)
 		if (fgets(buffer, 1024, fp) != NULL)
 		{
 			p->pid = process_id;
+			pclose(fp);
 			return process_id;
 		}
 		pclose(fp);

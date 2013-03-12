@@ -2171,9 +2171,9 @@ static void program_check_misprint(struct _program *p)
 
 		p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
-		int notify_text_len = strlen(_("Correction '%s' to '%s'")) + strlen(word) + strlen(possible_word);
+		int notify_text_len = strlen(_("Correction '%s' to '%s'")) + strlen(word+offset) + strlen(possible_word);
 		char *notify_text = (char *) malloc((notify_text_len + 1) * sizeof(char));
-		snprintf(notify_text , notify_text_len+1, _("Correction '%s' to '%s'"), word, possible_word);			
+		snprintf(notify_text , notify_text_len+1, _("Correction '%s' to '%s'"), word+offset, possible_word);			
 		show_notify(NOTIFY_CORR_MISPRINT, notify_text);
 		free(notify_text);
 			

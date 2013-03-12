@@ -49,17 +49,9 @@ const char* arg_rendering_engine = NULL;
 
 static  void trap_child(int status) 
 {
-	if (status) {};
-	
-	int stat;
-	int pid;
+	if (status){}
 	/*Kills all the zombie processes*/
-	while(1)
-	{
-		pid = waitpid(-1, &stat, WNOHANG);
-		if (pid <= 0)
-			break;  
-	}
+	while(waitpid(-1, NULL, WNOHANG) > 0);
 }
 
 int main(int argc, char *argv[])
