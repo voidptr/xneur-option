@@ -44,6 +44,9 @@ struct _program
 
 	int user_action;
 	enum _hotkey_action manual_action;
+
+	enum _correction_action correction_action;
+	struct _buffer *correction_buffer;
 	
 	void (*layout_update) (struct _program *p);
 	void (*update) (struct _program *p);

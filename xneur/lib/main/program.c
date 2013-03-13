@@ -878,6 +878,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 				// Unblock keyboard
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
+				p->correction_action = CORRECTION_NONE;				
+				
 				return;
 			}
 			
@@ -1035,6 +1037,11 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 					change_action = CHANGE_WORD_TO_LAYOUT_2;
 				else
 					change_action = CHANGE_WORD_TO_LAYOUT_3;
+
+				if (p->correction_action == CORRECTION_MISPRINT)
+					change_action = CHANGE_MISPRINT;
+				if (p->correction_action == CORRECTION_INCIDENTAL_CAPS)
+					change_action = CHANGE_INCIDENTAL_CAPS;
 			}	
 			
 			if (action == ACTION_TRANSLIT_WORD)
@@ -1097,6 +1104,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_AUTOCOMPLETION:
 		{
+			log_message (ERROR, "AUTOCOMPLETION");
 			if (p->last_action == ACTION_AUTOCOMPLETION)
 			{	
 				p->check_pattern(p, FALSE);
@@ -1381,6 +1389,9 @@ static void program_check_caps_last_word(struct _program *p)
 	if (!(p->buffer->keycode_modifiers[offset] & LockMask) || !(p->buffer->keycode_modifiers[offset] & ShiftMask))
 		return;
 
+	p->correction_buffer->set_content(p->correction_buffer, p->buffer->get_utf_string(p->buffer));
+
+	log_message (ERROR, "CORRECTION_INCIDENTAL_CAPS");
 	for (int i = 1; i < p->buffer->cur_pos - offset; i++)
 	{
 		if ((p->buffer->keycode_modifiers[offset + i] & LockMask) && (p->buffer->keycode_modifiers[offset+i] & ShiftMask))
@@ -1391,6 +1402,8 @@ static void program_check_caps_last_word(struct _program *p)
 
 	p->change_word(p, CHANGE_INCIDENTAL_CAPS);
 	show_notify(NOTIFY_CORR_INCIDENTAL_CAPS, NULL);
+
+	p->correction_action = CORRECTION_INCIDENTAL_CAPS;
 }
 
 static void program_check_tcl_last_word(struct _program *p)
@@ -2175,11 +2188,14 @@ static void program_check_misprint(struct _program *p)
 			
 		log_message (DEBUG, _("Found a misprint , correction '%s' to '%s'..."), word+offset, possible_word);
 
+		p->correction_action = CORRECTION_MISPRINT;
+		
 		int backspaces_count = strlen(get_last_word(p->buffer->content));
 		p->event->send_backspaces(p->event, backspaces_count - offset - 1);
+		p->correction_buffer->set_content(p->correction_buffer, word+offset);
 		p->buffer->set_content(p->buffer, possible_word);
 
-		p->change_word(p, CHANGE_MISPRINT);
+		p->event->send_string(p->event, p->buffer);	
 
 		p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
@@ -2188,8 +2204,8 @@ static void program_check_misprint(struct _program *p)
 		snprintf(notify_text , notify_text_len+1, _("Correction '%s' to '%s'"), word+offset, possible_word);			
 		show_notify(NOTIFY_CORR_MISPRINT, notify_text);
 		free(notify_text);
-			
-		p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+		
+		//p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 		free(possible_word);
 	}
@@ -2225,17 +2241,30 @@ static void program_change_word(struct _program *p, enum _change_action action)
 	{
 		case CHANGE_INCIDENTAL_CAPS:
 		{
-			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
+			if (p->correction_action == CORRECTION_NONE) 
+			{
+				int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 
-			// Shift fields to point to begin of word
-			p->buffer->set_offset(p->buffer, offset);
+				// Shift fields to point to begin of word
+				p->buffer->set_offset(p->buffer, offset);
 
-			p->change_incidental_caps(p);
+				p->change_incidental_caps(p);
 
-			p->send_string_silent(p, p->buffer->cur_pos);
+				p->send_string_silent(p, p->buffer->cur_pos);
 
-			// Revert fields back
-			p->buffer->unset_offset(p->buffer, offset);
+				// Revert fields back
+				p->buffer->unset_offset(p->buffer, offset);
+			}
+			else
+			{
+				p->event->send_backspaces(p->event, p->buffer->cur_pos);
+				p->buffer->set_content(p->buffer, p->correction_buffer->get_utf_string(p->correction_buffer));
+				p->correction_buffer->clear(p->correction_buffer);
+				
+				p->event->send_string(p->event, p->buffer);	
+				p->correction_action = CORRECTION_NONE;
+			}
+			
 			break;
 		}
 		case CHANGE_TWO_CAPITAL_LETTER:
@@ -2517,9 +2546,18 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		}
 		case CHANGE_ABBREVIATION:
 		case CHANGE_INS_DATE:
-		case CHANGE_MISPRINT:
 		{
 			p->send_string_silent(p, 0);
+			break;
+		}
+		case CHANGE_MISPRINT:
+		{
+			p->event->send_backspaces(p->event, p->buffer->cur_pos + 1);
+			p->buffer->set_content(p->buffer, p->correction_buffer->get_utf_string(p->correction_buffer));
+			p->correction_buffer->clear(p->correction_buffer);
+				
+			p->event->send_string(p->event, p->buffer);	
+			p->correction_action = CORRECTION_NONE;
 			break;
 		}
 	}
@@ -2723,6 +2761,8 @@ static void program_uninit(struct _program *p)
 	p->event->uninit(p->event);
 	p->buffer->uninit(p->buffer);
 	p->plugin->uninit(p->plugin);
+
+	p->correction_buffer->uninit(p->correction_buffer);
 	
 	main_window->uninit(main_window);
 	
@@ -2756,6 +2796,9 @@ struct _program* program_init(void)
 	
 	p->user_action = -1;
 	p->manual_action = ACTION_NONE;
+
+	p->correction_buffer			= buffer_init(xconfig->handle, main_window->keymap);
+	p->correction_action = CORRECTION_NONE;
 	
 	// Function mapping
 	p->uninit			= program_uninit;
