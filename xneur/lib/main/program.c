@@ -528,6 +528,25 @@ static void program_change_incidental_caps(struct _program *p)
 		XkbLockModifiers(main_window->display, XkbUseCoreKbd, LockMask, 0);
 }
 
+static void program_unchange_incidental_caps(struct _program *p)
+{
+	// Change modifier mask
+	p->buffer->set_caps_mask(p->buffer);
+
+	// Change CAPS if need
+	if (get_key_state(XK_Caps_Lock))
+		return;
+
+	int xkb_opcode, xkb_event, xkb_error;
+	int xkb_lmaj = XkbMajorVersion;
+	int xkb_lmin = XkbMinorVersion;
+	if (XkbLibraryVersion(&xkb_lmaj, &xkb_lmin) && XkbQueryExtension(main_window->display, &xkb_opcode, &xkb_event, &xkb_error, &xkb_lmaj, &xkb_lmin))
+	{
+		const int CapsLock = 2;//, NumLock = 16, ScrollLock = 1;
+		XkbLockModifiers(main_window->display, XkbUseCoreKbd, LockMask, CapsLock);
+	}
+}
+
 static void program_change_two_capital_letter(struct _program *p)
 {
 	log_message(DEBUG, _("Correcting two CApital letter"));
@@ -825,10 +844,13 @@ static void program_perform_auto_action(struct _program *p, int action)
 				action = KLB_ADD_SYM;
 			
 			if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
-					p->changed_manual = MANUAL_FLAG_UNSET;
+			{
+				p->changed_manual = MANUAL_FLAG_UNSET;
+				//p->correction_action = CORRECTION_NONE;
+			}
 			
 			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
-
+			
 			if (action == KLB_ADD_SYM)
 			{
 				// Correct small letter to capital letter after dot
@@ -837,7 +859,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 				// Add symbol to internal bufer
 				int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 				p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
-
+				p->correction_buffer->add_symbol(p->correction_buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 				// Block events of keyboard (push to event queue)
 				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 
@@ -877,8 +899,6 @@ static void program_perform_auto_action(struct _program *p, int action)
 				
 				// Unblock keyboard
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
-
-				p->correction_action = CORRECTION_NONE;				
 				
 				return;
 			}
@@ -886,30 +906,35 @@ static void program_perform_auto_action(struct _program *p, int action)
 			// Block events of keyboard (push to event queue)
 			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 
-			// Check two capital letter
-			p->check_tcl_last_word(p);
+			//if (p->correction_action == CORRECTION_NONE)
+			//{
+				// Check two capital letter
+				p->check_tcl_last_word(p);
 
-			// Check incidental caps
-			p->check_caps_last_word(p);
+				// Check incidental caps
+				p->check_caps_last_word(p);
 
+				// Check two minus
+				p->check_two_minus(p);
+			//}
+			
 			// Checking word
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 				p->check_lang_last_word(p);
-		
+
 			p->add_word_to_pattern(p, get_curr_keyboard_group());
 
 			if (action == KLB_SPACE)
 			{
-				p->check_two_minus(p);
 				p->check_two_space(p);
-				
 			}
 			
 			// Add symbol to internal bufer
 			p->event->event = p->event->default_event;
 			int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 			p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
-
+			p->correction_buffer->add_symbol(p->correction_buffer, sym, p->event->event.xkey.keycode, modifier_mask);
+			
 			//p->check_space_with_punctuation_mark(p);
 			
 			// Correct space before punctuation
@@ -935,7 +960,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 			p->last_action = ACTION_NONE;
 
 			if (p->changed_manual == MANUAL_FLAG_SET)
-					p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
+				p->changed_manual = MANUAL_FLAG_NEED_FLUSH;
 
 			return;
 		}
@@ -1042,6 +1067,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 					change_action = CHANGE_MISPRINT;
 				if (p->correction_action == CORRECTION_INCIDENTAL_CAPS)
 					change_action = CHANGE_INCIDENTAL_CAPS;
+				if (p->correction_action == CORRECTION_TWO_CAPITAL_LETTER)
+					change_action = CHANGE_TWO_CAPITAL_LETTER;
 			}	
 			
 			if (action == ACTION_TRANSLIT_WORD)
@@ -1104,7 +1131,6 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_AUTOCOMPLETION:
 		{
-			log_message (ERROR, "AUTOCOMPLETION");
 			if (p->last_action == ACTION_AUTOCOMPLETION)
 			{	
 				p->check_pattern(p, FALSE);
@@ -1389,9 +1415,6 @@ static void program_check_caps_last_word(struct _program *p)
 	if (!(p->buffer->keycode_modifiers[offset] & LockMask) || !(p->buffer->keycode_modifiers[offset] & ShiftMask))
 		return;
 
-	p->correction_buffer->set_content(p->correction_buffer, p->buffer->get_utf_string(p->buffer));
-
-	log_message (ERROR, "CORRECTION_INCIDENTAL_CAPS");
 	for (int i = 1; i < p->buffer->cur_pos - offset; i++)
 	{
 		if ((p->buffer->keycode_modifiers[offset + i] & LockMask) && (p->buffer->keycode_modifiers[offset+i] & ShiftMask))
@@ -1400,6 +1423,8 @@ static void program_check_caps_last_word(struct _program *p)
 			return;
 	}
 
+	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+	
 	p->change_word(p, CHANGE_INCIDENTAL_CAPS);
 	show_notify(NOTIFY_CORR_INCIDENTAL_CAPS, NULL);
 
@@ -1434,8 +1459,12 @@ static void program_check_tcl_last_word(struct _program *p)
 			return;
 	}
 
+	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+
 	p->change_word(p, CHANGE_TWO_CAPITAL_LETTER);
 	show_notify(NOTIFY_CORR_TWO_CAPITAL_LETTER, NULL);
+
+	p->correction_action = CORRECTION_TWO_CAPITAL_LETTER;
 }
 
 static void program_check_two_space(struct _program *p)
@@ -2257,11 +2286,25 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			}
 			else
 			{
-				p->event->send_backspaces(p->event, p->buffer->cur_pos);
-				p->buffer->set_content(p->buffer, p->correction_buffer->get_utf_string(p->correction_buffer));
-				p->correction_buffer->clear(p->correction_buffer);
+				//int corr_offset = get_last_word_offset(p->correction_buffer->content, p->correction_buffer->cur_pos);
+				//p->correction_buffer->set_offset(p->correction_buffer, corr_offset);				
+				p->buffer->set_content(p->buffer, get_last_word(p->correction_buffer->content));
+				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
+				//p->correction_buffer->unset_offset(p->correction_buffer, corr_offset);
 				
-				p->event->send_string(p->event, p->buffer);	
+				int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
+
+				// Shift fields to point to begin of word
+				p->buffer->set_offset(p->buffer, offset);
+
+				p->unchange_incidental_caps(p);
+
+				p->send_string_silent(p, p->buffer->cur_pos);
+
+				// Revert fields back
+				p->buffer->unset_offset(p->buffer, offset);
+
+				p->correction_buffer->clear(p->correction_buffer);
 				p->correction_action = CORRECTION_NONE;
 			}
 			
@@ -2269,17 +2312,30 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		}
 		case CHANGE_TWO_CAPITAL_LETTER:
 		{
-			int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
+			if (p->correction_action == CORRECTION_NONE) 
+			{
+				int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
 
-			// Shift fields to point to begin of word
-			p->buffer->set_offset(p->buffer, offset);
+				// Shift fields to point to begin of word
+				p->buffer->set_offset(p->buffer, offset);
 
-			p->change_two_capital_letter(p);
+				p->change_two_capital_letter(p);
 
-			p->send_string_silent(p, p->buffer->cur_pos);
+				p->send_string_silent(p, p->buffer->cur_pos);
 
-			// Revert fields back
-			p->buffer->unset_offset(p->buffer, offset);
+				// Revert fields back
+				p->buffer->unset_offset(p->buffer, offset);
+			}
+			else
+			{
+				p->event->send_backspaces(p->event, strlen(get_last_word(p->buffer->content)));
+				p->buffer->set_content(p->buffer, get_last_word(p->correction_buffer->content));
+				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
+				p->correction_buffer->clear(p->correction_buffer);
+				
+				p->event->send_string(p->event, p->buffer);	
+				p->correction_action = CORRECTION_NONE;
+			}
 			break;
 		}
 		case CHANGE_TWO_SPACE:
@@ -2831,6 +2887,7 @@ struct _program* program_init(void)
 	p->process_selection_notify	= program_process_selection_notify;
 	p->change_lang			= program_change_lang;
 	p->change_incidental_caps	= program_change_incidental_caps;
+	p->unchange_incidental_caps	= program_unchange_incidental_caps;
 	p->change_two_capital_letter	= program_change_two_capital_letter;
 	p->send_string_silent		= program_send_string_silent;
 

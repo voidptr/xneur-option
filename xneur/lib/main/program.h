@@ -76,6 +76,7 @@ struct _program
 	void (*process_selection_notify) (struct _program *p);
 	void (*change_lang) (struct _program *p, int new_lang);
 	void (*change_incidental_caps) (struct _program *p);
+	void (*unchange_incidental_caps) (struct _program *p);
 	void (*change_two_capital_letter) (struct _program *p);
 	void (*check_misprint) (struct _program *p);
 	void (*send_string_silent) (struct _program *p, int send_backspaces);

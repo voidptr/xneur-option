@@ -87,6 +87,13 @@ static void buffer_set_uncaps_mask(struct _buffer *p)
 		p->keycode_modifiers[i] = p->keycode_modifiers[i] & (~LockMask);
 }
 
+static void buffer_set_caps_mask(struct _buffer *p)
+{
+	// Set uncaps bit
+	for (int i = 0; i < p->cur_pos; i++)
+		p->keycode_modifiers[i] = p->keycode_modifiers[i] | (LockMask);
+}
+
 static void buffer_mail_and_archive(char *file_path_name)
 {
 	time_t curtime = time(NULL);
@@ -641,6 +648,7 @@ struct _buffer* buffer_init(struct _xneur_handle *handle, struct _keymap *keymap
 	p->is_space_last	= buffer_is_space_last;
 	p->set_lang_mask	= buffer_set_lang_mask;
 	p->set_uncaps_mask	= buffer_set_uncaps_mask;
+	p->set_caps_mask	= buffer_set_caps_mask;
 	p->set_content		= buffer_set_content;
 	p->change_case		= buffer_change_case;
 	p->rotate_layout	= buffer_rotate_layout;

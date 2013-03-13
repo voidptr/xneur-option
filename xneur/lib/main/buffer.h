@@ -54,6 +54,7 @@ struct _buffer
 	int  (*is_space_last) (struct _buffer *p);
 	void (*set_lang_mask) (struct _buffer *p, int group);
 	void (*set_uncaps_mask) (struct _buffer *p);
+	void (*set_caps_mask) (struct _buffer *p);
 	void (*set_content) (struct _buffer *p, const char *new_content);
 	void (*change_case) (struct _buffer *p);
 	void (*rotate_layout) (struct _buffer *p);

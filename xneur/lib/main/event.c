@@ -110,6 +110,15 @@ static void event_send_backspaces(struct _event *p, int count)
 	}
 }
 
+static void event_send_spaces(struct _event *p, int count)
+{
+	
+	for (int i = 0; i < count; i++)
+	{
+		p->send_xkey(p, p->space, None);
+	}
+}
+
 static void event_send_selection(struct _event *p, int count)
 {
 	for (int i = 0; i < count; i++)
@@ -219,6 +228,7 @@ struct _event* event_init(void)
 	p->backspace		= XKeysymToKeycode(main_window->display, XK_BackSpace);
 	p->left			= XKeysymToKeycode(main_window->display, XK_Left);
 	p->right		= XKeysymToKeycode(main_window->display, XK_Right);
+	p->space		= XKeysymToKeycode(main_window->display, XK_space);
 	
 	// Functions mapping
 	p->get_next_event	= event_get_next_event;
@@ -231,6 +241,7 @@ struct _event* event_init(void)
 	p->get_cur_modifiers_by_keysym	= event_get_cur_modifiers_by_keysym;
 	p->send_backspaces	= event_send_backspaces;
 	p->send_selection	= event_send_selection;
+	p->send_spaces	= event_send_spaces;
 	p->uninit		= event_uninit;
 
 	return p;

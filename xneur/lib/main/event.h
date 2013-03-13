@@ -34,7 +34,8 @@ struct _event
 	KeyCode backspace;		// Backspace key code
 	KeyCode left;			// Left Arrow key code
 	KeyCode right;			// Right Arrow key code
-
+	KeyCode space;
+	
 	KeySym (*get_cur_keysym) (struct _event *p);
 	int (*get_cur_modifiers) (struct _event *p);
 	int (*get_cur_modifiers_by_keysym) (struct _event *p);
@@ -46,6 +47,7 @@ struct _event
 	void (*send_string) (struct _event *p, struct _buffer *str);
 	void (*send_backspaces) (struct _event *p, int n);
 	void (*send_selection) (struct _event *p, int n);
+	void (*send_spaces) (struct _event *p, int n);
 	void (*uninit) (struct _event *p);
 };
 
