@@ -1068,14 +1068,49 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 				else
 					change_action = CHANGE_WORD_TO_LAYOUT_3;
 
-				if (p->correction_action == CORRECTION_MISPRINT)
-					change_action = CHANGE_MISPRINT;
-				if (p->correction_action == CORRECTION_INCIDENTAL_CAPS)
-					change_action = CHANGE_INCIDENTAL_CAPS;
-				if (p->correction_action == CORRECTION_TWO_CAPITAL_LETTER)
-					change_action = CHANGE_TWO_CAPITAL_LETTER;
-				if (p->correction_action == CORRECTION_TWO_SPACE)
-					change_action = CHANGE_TWO_SPACE;
+				switch (p->correction_action)
+				{
+					case CORRECTION_MISPRINT:
+					{
+						change_action = CHANGE_MISPRINT; break;
+					}
+					case CORRECTION_INCIDENTAL_CAPS:
+					{
+						change_action = CHANGE_INCIDENTAL_CAPS; break;
+					}
+					case CORRECTION_TWO_CAPITAL_LETTER:
+					{
+						change_action = CHANGE_TWO_CAPITAL_LETTER; break;
+					}
+					case CORRECTION_TWO_SPACE:
+					{
+						change_action = CHANGE_TWO_SPACE; break;
+					}
+					case CORRECTION_TWO_MINUS:
+					{
+						change_action = CHANGE_TWO_MINUS; break;
+					}
+					case CORRECTION_COPYRIGHT:
+					{
+						change_action = CHANGE_COPYRIGHT; break;
+					}
+					case CORRECTION_TRADEMARK:
+					{
+						change_action = CHANGE_TRADEMARK; break;
+					}
+					case CORRECTION_REGISTERED:
+					{
+						change_action = CHANGE_REGISTERED; break;
+					}
+					case CORRECTION_ELLIPSIS:
+					{
+						change_action = CHANGE_ELLIPSIS; break;
+					}
+					case CORRECTION_NONE:
+					{
+						break;
+					}
+				};
 			}	
 			
 			if (action == ACTION_TRANSLIT_WORD)
@@ -1525,40 +1560,17 @@ static void program_check_two_minus(struct _program *p)
 	if ((p->buffer->content[p->buffer->cur_pos-1] != '-') || (p->buffer->content[p->buffer->cur_pos-2] != '-')) 
 		return;
 
-	p->event->send_backspaces(p->event, 2);
-	
-	int key_code = main_window->keymap->max_keycode;
-	KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
-	KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
-	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
-	{
-		keysyms_bckp[i]= keymap[i];
-	}
-
-	KeySym keysyms[main_window->keymap->keysyms_per_keycode];
-				
-	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
-	{
-		keysyms[i]= XK_endash;//XK_trademark;//XK_copyright;//
-		if (xconfig->correct_dash_with_emdash) 
-			keysyms[i]= XK_emdash;
-	}
-	XChangeKeyboardMapping(main_window->display, key_code, 
-		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
-	XFlush(main_window->display);
-	XSync(main_window->display, TRUE);
-	p->event->send_xkey(p->event, key_code, 0);
-	usleep(100000);
-	
-	XChangeKeyboardMapping(main_window->display, key_code, 
-   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
-	XFlush(main_window->display);
-	XSync(main_window->display, TRUE);
-	
-	p->buffer->clear(p->buffer);
-
 	log_message (DEBUG, _("Find two minus, correction with a dash..."));
+	
+	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+
+	p->change_word(p, CHANGE_TWO_MINUS);	
 	show_notify(NOTIFY_CORR_TWO_MINUS, NULL);
+
+	if (p->correction_action != CORRECTION_NONE)
+		p->correction_action = CORRECTION_NONE;
+	else
+		p->correction_action = CORRECTION_TWO_MINUS;
 }		
 
 static void program_check_copyright(struct _program *p)
@@ -2390,6 +2402,77 @@ static void program_change_word(struct _program *p, enum _change_action action)
 				p->correction_buffer->clear(p->correction_buffer);
 				p->correction_action = CORRECTION_NONE;
 			}
+			break;
+		}
+		case CHANGE_TWO_MINUS:
+		{
+			if (p->correction_action == CORRECTION_NONE) 
+			{
+				p->event->send_backspaces(p->event, 2);
+	
+				int key_code = main_window->keymap->max_keycode;
+				KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
+				KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
+				for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+				{
+					keysyms_bckp[i]= keymap[i];
+				}
+
+				KeySym keysyms[main_window->keymap->keysyms_per_keycode];
+				
+				for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+				{
+					keysyms[i]= XK_endash;//XK_trademark;//XK_copyright;//
+					if (xconfig->correct_dash_with_emdash) 
+						keysyms[i]= XK_emdash;
+				}
+				XChangeKeyboardMapping(main_window->display, key_code, 
+								        main_window->keymap->keysyms_per_keycode, keysyms, 1);
+				XFlush(main_window->display);
+				XSync(main_window->display, TRUE);
+				p->event->send_xkey(p->event, key_code, 0);
+				usleep(100000);
+	
+				XChangeKeyboardMapping(main_window->display, key_code, 
+			   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+				XFlush(main_window->display);
+				XSync(main_window->display, TRUE);
+	
+				p->buffer->clear(p->buffer);
+			}
+			else
+			{
+				p->event->send_backspaces(p->event, 2);
+				
+				p->buffer->set_content(p->buffer, get_last_word(p->correction_buffer->content));
+				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
+				
+				KeyCode kc = 0;
+				int modifier = 0;
+				size_t sym_size = strlen("-");
+				int lang = get_curr_keyboard_group ();
+				p->buffer->keymap->get_ascii(p->buffer->keymap, "-", &lang, &kc, &modifier, &sym_size);
+				p->event->send_xkey(p->event, kc, modifier);
+				p->event->send_xkey(p->event, kc, modifier);
+				
+				p->event->send_spaces(p->event, 1);
+
+				kc = 0;
+				modifier = 0;
+				sym_size = strlen(" ");
+				p->buffer->keymap->get_ascii(p->buffer->keymap, " ", &lang, &kc, &modifier, &sym_size);
+				//p->buffer->add_symbol(p->buffer, ' ', kc, modifier);
+				
+				p->correction_buffer->clear(p->correction_buffer);
+				p->correction_action = CORRECTION_NONE;
+			}
+			break;
+		}
+		case CHANGE_COPYRIGHT:
+		case CHANGE_TRADEMARK:
+		case CHANGE_REGISTERED:
+		case CHANGE_ELLIPSIS:
+		{
 			break;
 		}
 		case CHANGE_WORD_TO_LAYOUT_0:
