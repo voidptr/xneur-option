@@ -2171,9 +2171,15 @@ static void program_check_misprint(struct _program *p)
 		p->event->send_backspaces(p->event, backspaces_count);
 		for (int i = 0; i < (backspaces_count); i++)
 			p->buffer->del_symbol(p->buffer);
-
+		
 		int new_offset = p->buffer->cur_pos;
-		p->buffer->set_content(p->buffer, strcat(p->buffer->content, possible_word));
+		char *new_content = malloc((strlen(p->buffer->content) + strlen(possible_word) + 1) * sizeof(char));
+		memset(new_content, 0, (strlen(p->buffer->content) + strlen(possible_word) + 1) * sizeof(char));
+		new_content = strcat(new_content, p->buffer->content);
+		new_content = strcat(new_content, possible_word);
+		p->buffer->set_content(p->buffer, new_content);
+		if (new_content != NULL)
+			free(new_content);
 		p->buffer->set_offset(p->buffer, new_offset);
 		p->send_string_silent(p, 0);	
 		p->buffer->unset_offset(p->buffer, new_offset);
@@ -2883,20 +2889,21 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			if (p->correction_action == CORRECTION_MISPRINT) 
 			{
 				int backspaces_count = p->buffer->cur_pos - get_last_word_offset (p->correction_buffer->content, p->correction_buffer->cur_pos);
-
-				log_message (ERROR, "'%s'", p->buffer->content);
+				int offset = p->buffer->cur_pos - p->correction_buffer->cur_pos;
+				
 				p->buffer->set_content(p->buffer, p->correction_buffer->content);
 				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
 
-				log_message (ERROR, "'%s'", p->buffer->content);
-
-				int cur_pos = p->buffer->cur_pos - backspaces_count;
+				int cur_pos = p->buffer->cur_pos - backspaces_count + offset;
+				
 				p->buffer->set_offset(p->buffer, cur_pos);
-				log_message (ERROR, "'%s'", p->buffer->content);
 				p->send_string_silent(p, backspaces_count);
 				p->buffer->unset_offset(p->buffer, cur_pos);
-				log_message (ERROR, "'%s'", p->buffer->content);
+
 				p->correction_buffer->clear(p->correction_buffer);
+
+				if (xconfig->educate)
+					p->add_word_to_dict(p, get_curr_keyboard_group());
 				
 				p->correction_action = CORRECTION_NONE;
 			}
