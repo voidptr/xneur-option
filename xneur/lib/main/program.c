@@ -1620,40 +1620,18 @@ static void program_check_registered(struct _program *p)
 		(p->buffer->content[p->buffer->cur_pos-2] != 'r') ||
 		(p->buffer->content[p->buffer->cur_pos-3] != '(')) 
 		return;
-	
-	p->event->send_backspaces(p->event, 2);
-	
-	int key_code = main_window->keymap->max_keycode;
-	KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
-	KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
-	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
-	{
-		keysyms_bckp[i]= keymap[i];
-	}
-
-	KeySym keysyms[main_window->keymap->keysyms_per_keycode];
-				
-	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
-	{
-		keysyms[i]= XK_registered;//XK_emdash;//XK_trademark;//
-	}
-	XChangeKeyboardMapping(main_window->display, key_code, 
-		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
-	XFlush(main_window->display);
-	XSync(main_window->display, TRUE);
-	
-	p->event->send_xkey(p->event, key_code, 0);
-	usleep(100000);
-	
-	XChangeKeyboardMapping(main_window->display, key_code, 
-   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
-	XFlush(main_window->display);
-	XSync(main_window->display, TRUE);
-	
-	p->buffer->clear(p->buffer);
-	p->event->default_event.xkey.keycode = 0;
+		
 	log_message (DEBUG, _("Find (r), correction with a registered sign..."));
+	
+	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+
+	if (p->correction_action != CORRECTION_NONE)
+		p->correction_action = CORRECTION_NONE;
+
+	p->change_word(p, CHANGE_REGISTERED);
 	show_notify(NOTIFY_CORR_REGISTERED, NULL);
+
+	p->correction_action = CORRECTION_REGISTERED;
 }		
 
 static void program_check_trademark(struct _program *p)
@@ -1691,44 +1669,22 @@ static void program_check_ellipsis(struct _program *p)
 	if (p->buffer->cur_pos < 3)
 		return;
 	
-	if ((p->buffer->content[p->buffer->cur_pos-1] != '.') || 
-		(p->buffer->content[p->buffer->cur_pos-2] != '.') ||
-		(p->buffer->content[p->buffer->cur_pos-3] != '.')) 
+	if ((p->buffer->get_utf_string_on_kbd_group(p->buffer, )[p->buffer->cur_pos-1] != '.') || 
+		(p->buffer->get_utf_string(p->buffer)[p->buffer->cur_pos-2] != '.') ||
+		(p->buffer->get_utf_string(p->buffer)[p->buffer->cur_pos-3] != '.')) 
 		return;
 	
-	p->event->send_backspaces(p->event, 2);
-	
-	int key_code = main_window->keymap->max_keycode;
-	KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
-	KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
-	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
-	{
-		keysyms_bckp[i]= keymap[i];
-	}
-
-	KeySym keysyms[main_window->keymap->keysyms_per_keycode];
-				
-	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
-	{
-		keysyms[i]= XK_ellipsis;//XK_copyright;//XK_emdash;//XK_ellipsis
-	}
-	XChangeKeyboardMapping(main_window->display, key_code, 
-		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
-	XFlush(main_window->display);
-	XSync(main_window->display, TRUE);
-	
-	p->event->send_xkey(p->event, key_code, 0);
-	usleep(100000);
-	
-	XChangeKeyboardMapping(main_window->display, key_code, 
-   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
-	XFlush(main_window->display);
-	XSync(main_window->display, TRUE);
-	
-	p->buffer->clear(p->buffer);
-	p->event->default_event.xkey.keycode = 0;
 	log_message (DEBUG, _("Find three points, correction with a ellipsis sign..."));
+
+	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+
+	if (p->correction_action != CORRECTION_NONE)
+		p->correction_action = CORRECTION_NONE;
+
+	p->change_word(p, CHANGE_ELLIPSIS);
 	show_notify(NOTIFY_CORR_ELLIPSIS, NULL);
+
+	p->correction_action = CORRECTION_ELLIPSIS;
 }
 
 static void program_check_space_before_punctuation(struct _program *p)
@@ -2547,8 +2503,117 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			break;
 		}	
 		case CHANGE_REGISTERED:
+		{
+			if (p->correction_action == CORRECTION_NONE) 
+			{
+				p->event->send_backspaces(p->event, 2);
+	
+				int key_code = main_window->keymap->max_keycode;
+				KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
+				KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
+				for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+				{
+					keysyms_bckp[i]= keymap[i];
+				}
+
+				KeySym keysyms[main_window->keymap->keysyms_per_keycode];
+				
+				for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+				{
+					keysyms[i]= XK_registered;//
+				}
+				XChangeKeyboardMapping(main_window->display, key_code, 
+								        main_window->keymap->keysyms_per_keycode, keysyms, 1);
+				XFlush(main_window->display);
+				XSync(main_window->display, TRUE);
+				p->event->send_xkey(p->event, key_code, 0);
+				usleep(100000);
+	
+				XChangeKeyboardMapping(main_window->display, key_code, 
+			   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+				XFlush(main_window->display);
+				XSync(main_window->display, TRUE);
+	
+				p->buffer->clear(p->buffer);
+				p->event->default_event.xkey.keycode = 0;
+			}
+			else if (p->correction_action == CORRECTION_REGISTERED) 
+			{
+				p->event->send_spaces(p->event, 2);
+				
+				p->buffer->set_content(p->buffer, get_last_word(p->correction_buffer->content));
+				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
+
+				int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
+
+				// Shift fields to point to begin of word
+				p->buffer->set_offset(p->buffer, offset);
+
+				p->send_string_silent(p, p->buffer->cur_pos);
+
+				// Revert fields back
+				p->buffer->unset_offset(p->buffer, offset);
+				
+				p->correction_buffer->clear(p->correction_buffer);
+				p->correction_action = CORRECTION_NONE;
+			}
+			break;
+		}
 		case CHANGE_ELLIPSIS:
 		{
+			if (p->correction_action == CORRECTION_NONE) 
+			{
+				p->event->send_backspaces(p->event, 2);
+	
+				int key_code = main_window->keymap->max_keycode;
+				KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
+				KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
+				for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+				{
+					keysyms_bckp[i]= keymap[i];
+				}
+
+				KeySym keysyms[main_window->keymap->keysyms_per_keycode];
+				
+				for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+				{
+					keysyms[i]= XK_ellipsis;//
+				}
+				XChangeKeyboardMapping(main_window->display, key_code, 
+								        main_window->keymap->keysyms_per_keycode, keysyms, 1);
+				XFlush(main_window->display);
+				XSync(main_window->display, TRUE);
+				p->event->send_xkey(p->event, key_code, 0);
+				usleep(100000);
+	
+				XChangeKeyboardMapping(main_window->display, key_code, 
+			   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+				XFlush(main_window->display);
+				XSync(main_window->display, TRUE);
+	
+				p->buffer->clear(p->buffer);
+				p->event->default_event.xkey.keycode = 0;
+			}
+			else if (p->correction_action == CORRECTION_ELLIPSIS) 
+			{
+				p->event->send_spaces(p->event, 2);
+				
+				p->buffer->set_content(p->buffer, get_last_word(p->correction_buffer->content));
+				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
+
+				int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
+
+				// Shift fields to point to begin of word
+				p->buffer->set_offset(p->buffer, offset);
+
+				p->send_string_silent(p, p->buffer->cur_pos);
+
+				// Revert fields back
+				p->buffer->unset_offset(p->buffer, offset);
+				
+				p->correction_buffer->clear(p->correction_buffer);
+				p->correction_action = CORRECTION_NONE;
+			}
 			break;
 		}
 		case CHANGE_WORD_TO_LAYOUT_0:
