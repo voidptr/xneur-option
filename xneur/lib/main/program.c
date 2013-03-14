@@ -904,6 +904,8 @@ static void program_perform_auto_action(struct _program *p, int action)
 				p->check_registered(p);
 				
 				p->check_ellipsis(p);
+
+				p->last_action = ACTION_NONE;
 				
 				// Unblock keyboard
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
@@ -1050,7 +1052,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 			if (next_lang == curr_lang)
 				break;
 
-			if ((xconfig->educate) && (action == ACTION_CHANGE_WORD))
+			if ((xconfig->educate) && (action == ACTION_CHANGE_WORD) && (p->correction_action == CORRECTION_NONE))
 				p->add_word_to_dict(p, next_lang);
 
 			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
@@ -1466,6 +1468,9 @@ static void program_check_caps_last_word(struct _program *p)
 	}
 
 	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+
+	if (p->correction_action != CORRECTION_NONE)
+		p->correction_action = CORRECTION_NONE;
 	
 	p->change_word(p, CHANGE_INCIDENTAL_CAPS);
 	show_notify(NOTIFY_CORR_INCIDENTAL_CAPS, NULL);
@@ -1503,6 +1508,9 @@ static void program_check_tcl_last_word(struct _program *p)
 
 	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
 
+	if (p->correction_action != CORRECTION_NONE)
+		p->correction_action = CORRECTION_NONE;
+	
 	p->change_word(p, CHANGE_TWO_CAPITAL_LETTER);
 	show_notify(NOTIFY_CORR_TWO_CAPITAL_LETTER, NULL);
 
@@ -1543,6 +1551,9 @@ static void program_check_two_space(struct _program *p)
 
 	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
 
+	if (p->correction_action != CORRECTION_NONE)
+		p->correction_action = CORRECTION_NONE;
+	
 	p->change_word(p, CHANGE_TWO_SPACE);
 	show_notify(NOTIFY_CORR_TWO_SPACE, NULL);
 
@@ -1564,13 +1575,12 @@ static void program_check_two_minus(struct _program *p)
 	
 	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
 
-	p->change_word(p, CHANGE_TWO_MINUS);	
-	show_notify(NOTIFY_CORR_TWO_MINUS, NULL);
-
 	if (p->correction_action != CORRECTION_NONE)
 		p->correction_action = CORRECTION_NONE;
-	else
-		p->correction_action = CORRECTION_TWO_MINUS;
+
+	p->change_word(p, CHANGE_TWO_MINUS);	
+	show_notify(NOTIFY_CORR_TWO_MINUS, NULL);
+	p->correction_action = CORRECTION_TWO_MINUS;
 }		
 
 static void program_check_copyright(struct _program *p)
@@ -1586,39 +1596,16 @@ static void program_check_copyright(struct _program *p)
 		(p->buffer->content[p->buffer->cur_pos-3] != '(')) 
 		return;
 	
-	p->event->send_backspaces(p->event, 2);
-	
-	int key_code = main_window->keymap->max_keycode;
-	KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
-	KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
-	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
-	{
-		keysyms_bckp[i]= keymap[i];
-	}
-
-	KeySym keysyms[main_window->keymap->keysyms_per_keycode];
-				
-	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
-	{
-		keysyms[i]= XK_copyright;//XK_emdash;//XK_trademark;//
-	}
-	XChangeKeyboardMapping(main_window->display, key_code, 
-		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
-	XFlush(main_window->display);
-	XSync(main_window->display, TRUE);
-	
-	p->event->send_xkey(p->event, key_code, 0);
-	usleep(100000);
-	
-	XChangeKeyboardMapping(main_window->display, key_code, 
-   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
-	XFlush(main_window->display);
-	XSync(main_window->display, TRUE);
-	
-	p->buffer->clear(p->buffer);
-	p->event->default_event.xkey.keycode = 0;
 	log_message (DEBUG, _("Find (c), correction with a copyright sign..."));
+	
+	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+
+	if (p->correction_action != CORRECTION_NONE)
+		p->correction_action = CORRECTION_NONE;
+
+	p->change_word(p, CHANGE_COPYRIGHT);	
 	show_notify(NOTIFY_CORR_COPYRIGHT, NULL);
+	p->correction_action = CORRECTION_COPYRIGHT;	
 }		
 
 static void program_check_registered(struct _program *p)
@@ -1683,39 +1670,17 @@ static void program_check_trademark(struct _program *p)
 		(p->buffer->content[p->buffer->cur_pos-4] != '(')) 
 		return;
 	
-	p->event->send_backspaces(p->event, 3);
-	
-	int key_code = main_window->keymap->max_keycode;
-	KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
-	KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
-	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
-	{
-		keysyms_bckp[i]= keymap[i];
-	}
-
-	KeySym keysyms[main_window->keymap->keysyms_per_keycode];
-				
-	for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
-	{
-		keysyms[i]= XK_trademark;//XK_copyright;//XK_emdash;//XK_ellipsis
-	}
-	XChangeKeyboardMapping(main_window->display, key_code, 
-		                    main_window->keymap->keysyms_per_keycode, keysyms, 1);
-	XFlush(main_window->display);
-	XSync(main_window->display, TRUE);
-	
-	p->event->send_xkey(p->event, key_code, 0);
-	usleep(100000);
-	
-	XChangeKeyboardMapping(main_window->display, key_code, 
-   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
-	XFlush(main_window->display);
-	XSync(main_window->display, TRUE);
-	
-	p->buffer->clear(p->buffer);
-	p->event->default_event.xkey.keycode = 0;
 	log_message (DEBUG, _("Find (tm), correction with a trademark sign..."));
+	
+	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+
+	if (p->correction_action != CORRECTION_NONE)
+		p->correction_action = CORRECTION_NONE;
+
+	p->change_word(p, CHANGE_TRADEMARK);
 	show_notify(NOTIFY_CORR_TRADEMARK, NULL);
+
+	p->correction_action = CORRECTION_TRADEMARK;
 }		
 
 static void program_check_ellipsis(struct _program *p)
@@ -2308,7 +2273,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 				// Revert fields back
 				p->buffer->unset_offset(p->buffer, offset);
 			}
-			else
+			else if (p->correction_action == CORRECTION_INCIDENTAL_CAPS)
 			{
 				p->buffer->set_content(p->buffer, get_last_word(p->correction_buffer->content));
 				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
@@ -2347,7 +2312,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 				// Revert fields back
 				p->buffer->unset_offset(p->buffer, offset);
 			}
-			else
+			else if (p->correction_action == CORRECTION_TWO_CAPITAL_LETTER)
 			{
 				p->buffer->set_content(p->buffer, get_last_word(p->correction_buffer->content));
 				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
@@ -2384,7 +2349,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 				p->event->send_xkey(p->event, kc, modifier);
 				p->buffer->add_symbol(p->buffer, ',', kc, modifier);
 			}
-			else
+			else if (p->correction_action == CORRECTION_TWO_SPACE) 
 			{
 				p->event->send_backspaces(p->event, 2);
 				p->buffer->del_symbol(p->buffer);
@@ -2440,7 +2405,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 	
 				p->buffer->clear(p->buffer);
 			}
-			else
+			else if (p->correction_action == CORRECTION_TWO_MINUS) 
 			{
 				p->event->send_backspaces(p->event, 2);
 				
@@ -2461,7 +2426,6 @@ static void program_change_word(struct _program *p, enum _change_action action)
 				modifier = 0;
 				sym_size = strlen(" ");
 				p->buffer->keymap->get_ascii(p->buffer->keymap, " ", &lang, &kc, &modifier, &sym_size);
-				//p->buffer->add_symbol(p->buffer, ' ', kc, modifier);
 				
 				p->correction_buffer->clear(p->correction_buffer);
 				p->correction_action = CORRECTION_NONE;
@@ -2469,7 +2433,119 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			break;
 		}
 		case CHANGE_COPYRIGHT:
+		{
+			if (p->correction_action == CORRECTION_NONE) 
+			{
+				p->event->send_backspaces(p->event, 2);
+	
+				int key_code = main_window->keymap->max_keycode;
+				KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
+				KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
+				for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+				{
+					keysyms_bckp[i]= keymap[i];
+				}
+
+				KeySym keysyms[main_window->keymap->keysyms_per_keycode];
+				
+				for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+				{
+					keysyms[i]= XK_copyright;//
+				}
+				XChangeKeyboardMapping(main_window->display, key_code, 
+								        main_window->keymap->keysyms_per_keycode, keysyms, 1);
+				XFlush(main_window->display);
+				XSync(main_window->display, TRUE);
+				p->event->send_xkey(p->event, key_code, 0);
+				usleep(100000);
+	
+				XChangeKeyboardMapping(main_window->display, key_code, 
+			   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+				XFlush(main_window->display);
+				XSync(main_window->display, TRUE);
+	
+				p->buffer->clear(p->buffer);
+				p->event->default_event.xkey.keycode = 0;
+			}
+			else if (p->correction_action == CORRECTION_COPYRIGHT) 
+			{
+				p->event->send_spaces(p->event, 2);
+				
+				p->buffer->set_content(p->buffer, get_last_word(p->correction_buffer->content));
+				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
+
+				int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
+
+				// Shift fields to point to begin of word
+				p->buffer->set_offset(p->buffer, offset);
+
+				p->send_string_silent(p, p->buffer->cur_pos);
+
+				// Revert fields back
+				p->buffer->unset_offset(p->buffer, offset);
+				
+				p->correction_buffer->clear(p->correction_buffer);
+				p->correction_action = CORRECTION_NONE;
+			}
+			break;
+		}	
 		case CHANGE_TRADEMARK:
+		{
+			if (p->correction_action == CORRECTION_NONE) 
+			{
+				p->event->send_backspaces(p->event, 3);
+	
+				int key_code = main_window->keymap->max_keycode;
+				KeySym keysyms_bckp[main_window->keymap->keysyms_per_keycode];
+				KeySym *keymap = main_window->keymap->keymap + (key_code - main_window->keymap->min_keycode) * main_window->keymap->keysyms_per_keycode;
+				for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+				{
+					keysyms_bckp[i]= keymap[i];
+				}
+
+				KeySym keysyms[main_window->keymap->keysyms_per_keycode];
+				
+				for (int i = 0; i < main_window->keymap->keysyms_per_keycode; i++)
+				{
+					keysyms[i]= XK_trademark;//
+				}
+				XChangeKeyboardMapping(main_window->display, key_code, 
+								        main_window->keymap->keysyms_per_keycode, keysyms, 1);
+				XFlush(main_window->display);
+				XSync(main_window->display, TRUE);
+				p->event->send_xkey(p->event, key_code, 0);
+				usleep(100000);
+	
+				XChangeKeyboardMapping(main_window->display, key_code, 
+			   		                    main_window->keymap->keysyms_per_keycode, keysyms_bckp, 1);
+				XFlush(main_window->display);
+				XSync(main_window->display, TRUE);
+	
+				p->buffer->clear(p->buffer);
+				p->event->default_event.xkey.keycode = 0;
+			}
+			else if (p->correction_action == CORRECTION_TRADEMARK) 
+			{
+				p->event->send_spaces(p->event, 3);
+				
+				p->buffer->set_content(p->buffer, get_last_word(p->correction_buffer->content));
+				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
+
+				int offset = get_last_word_offset(p->buffer->content, p->buffer->cur_pos);
+
+				// Shift fields to point to begin of word
+				p->buffer->set_offset(p->buffer, offset);
+
+				p->send_string_silent(p, p->buffer->cur_pos);
+
+				// Revert fields back
+				p->buffer->unset_offset(p->buffer, offset);
+				
+				p->correction_buffer->clear(p->correction_buffer);
+				p->correction_action = CORRECTION_NONE;
+			}
+			break;
+		}	
 		case CHANGE_REGISTERED:
 		case CHANGE_ELLIPSIS:
 		{
