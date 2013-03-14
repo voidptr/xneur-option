@@ -2036,7 +2036,7 @@ static void program_check_misprint(struct _program *p)
 		return;
 	}
 
-	if (xconfig->handle->languages[lang].dictionary->exist(xconfig->handle->languages[lang].dictionary, word, BY_PLAIN))
+	if (xconfig->handle->languages[lang].dictionary->exist(xconfig->handle->languages[lang].dictionary, word, BY_REGEXP))
 	{
 		free(word);
 		return;
@@ -2919,35 +2919,41 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 	char *tmp = get_last_word(p->buffer->content);
 	if (tmp == NULL)
 		return;
-	
-	int curr_lang = get_curr_keyboard_group();
 
-	tmp = get_last_word(p->buffer->i18n_content[curr_lang].content);
+	// Remove word from all temp dictionary (excl. new language)
+	for (int lang = 0; lang < xconfig->handle->total_languages; lang++)
+	{
+		if (lang != new_lang)
+		{
+			tmp = get_last_word(p->buffer->i18n_content[lang].content);
 
-	char *curr_word = strdup(tmp);
+			char *curr_word = strdup(tmp);
 	
-	// Del final spaces
-	int len = trim_word(curr_word, strlen(tmp));
-	if (len == 0)
-	{
-		free(curr_word);
-		return;
-	}
+			// Del final spaces
+			int len = trim_word(curr_word, strlen(tmp));
+			if (len == 0)
+			{
+				free(curr_word);
+				continue;
+			}
 
-	del_final_numeric_char(curr_word);
-	if (strlen(curr_word) == 0)
-	{
-		free(curr_word);
-		return;
-	}
-	
-	struct _list_char *curr_temp_dictionary = xconfig->handle->languages[curr_lang].temp_dictionary;
-	if (curr_temp_dictionary->exist(curr_temp_dictionary, curr_word, BY_REGEXP))
-	{
-		char *word_to_dict = malloc((strlen(curr_word) + 7) * sizeof(char));
-		sprintf(word_to_dict, "%s%s%s", "(?i)^", curr_word, "$");
-		curr_temp_dictionary->rem(curr_temp_dictionary, word_to_dict);
-		free(word_to_dict);
+			del_final_numeric_char(curr_word);
+			if (strlen(curr_word) == 0)
+			{
+				free(curr_word);
+				continue;
+			}
+
+			struct _list_char *curr_temp_dictionary = xconfig->handle->languages[lang].temp_dictionary;
+			if (curr_temp_dictionary->exist(curr_temp_dictionary, curr_word, BY_REGEXP))
+			{
+				char *word_to_dict = malloc((strlen(curr_word) + 7) * sizeof(char));
+				sprintf(word_to_dict, "%s%s%s", "(?i)^", curr_word, "$");
+				curr_temp_dictionary->rem(curr_temp_dictionary, word_to_dict);
+				free(word_to_dict);
+			}
+			free(curr_word);
+		}
 	}
 	
 	struct _list_char *new_temp_dictionary = xconfig->handle->languages[new_lang].temp_dictionary;
@@ -2956,10 +2962,9 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 
 	char *new_word = strdup(tmp);
 
-	len = trim_word(new_word, strlen(tmp));
-	if (len == 0)
+	int new_len = trim_word(new_word, strlen(tmp));
+	if (new_len == 0)
 	{
-		free(curr_word);
 		free(new_word);
 		return;
 	}
@@ -2967,11 +2972,10 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 	del_final_numeric_char(new_word);
 	if (strlen(new_word) == 0)
 	{
-		free(curr_word);
 		free(new_word);
 		return;
 	}
-	
+
 	if (!new_temp_dictionary->exist(new_temp_dictionary, new_word, BY_REGEXP))
 	{
 		char *word_to_dict = malloc((strlen(new_word) + 7) * sizeof(char));
@@ -2981,22 +2985,47 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 			new_temp_dictionary->add(new_temp_dictionary, word_to_dict);
 		}
 		free(word_to_dict);
-		free(curr_word);
 		free(new_word);
 		return;
 	}
 
-	struct _list_char *curr_dictionary = xconfig->handle->languages[curr_lang].dictionary;
-	if (curr_dictionary->exist(curr_dictionary, curr_word, BY_REGEXP))
+	for (int lang = 0; lang < xconfig->handle->total_languages; lang++)
 	{
-		log_message(DEBUG, _("Remove word '%s' from %s dictionary"), curr_word, xconfig->handle->languages[curr_lang].name);
-		char *word_to_dict = malloc((strlen(curr_word) + 7) * sizeof(char));
-		sprintf(word_to_dict, "%s%s%s", "(?i)^", curr_word, "$");
-		curr_dictionary->rem(curr_dictionary, word_to_dict);
-		xconfig->save_dict(xconfig, curr_lang);
-		free(word_to_dict);
-	}
+		if (lang != new_lang)
+		{
+			tmp = get_last_word(p->buffer->i18n_content[lang].content);
 
+			char *curr_word = strdup(tmp);
+	
+			// Del final spaces
+			int len = trim_word(curr_word, strlen(tmp));
+			if (len == 0)
+			{
+				free(curr_word);
+				continue;
+			}
+
+			del_final_numeric_char(curr_word);
+			if (strlen(curr_word) == 0)
+			{
+				free(curr_word);
+				continue;
+			}
+			
+			struct _list_char *curr_dictionary = xconfig->handle->languages[lang].dictionary;
+			if (curr_dictionary->exist(curr_dictionary, curr_word, BY_REGEXP))
+			{
+				log_message(DEBUG, _("Remove word '%s' from %s dictionary"), curr_word, xconfig->handle->languages[lang].name);
+				char *word_to_dict = malloc((strlen(curr_word) + 7) * sizeof(char));
+				sprintf(word_to_dict, "%s%s%s", "(?i)^", curr_word, "$");
+				curr_dictionary->rem(curr_dictionary, word_to_dict);
+				xconfig->save_dict(xconfig, lang);
+				free(word_to_dict);
+			}
+			free(curr_word);
+		}
+	}
+	
 	struct _list_char *new_dictionary = xconfig->handle->languages[new_lang].dictionary;
 	if (!new_dictionary->exist(new_dictionary, new_word, BY_REGEXP))
 	{		
@@ -3013,7 +3042,6 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 
 	p->add_word_to_pattern(p, new_lang);
 		
-	free(curr_word);
 	free(new_word);
 }
 
