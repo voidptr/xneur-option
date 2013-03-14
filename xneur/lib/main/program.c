@@ -887,6 +887,14 @@ static void program_perform_auto_action(struct _program *p, int action)
 					p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 					return;
 				}
+
+				p->check_copyright(p);
+
+				p->check_trademark(p);
+
+				p->check_registered(p);
+				
+				p->check_ellipsis(p);
 				
 				// Checking word
 				if (p->changed_manual == MANUAL_FLAG_UNSET)
@@ -896,14 +904,6 @@ static void program_perform_auto_action(struct _program *p, int action)
 				}
 
 				p->check_pattern(p, TRUE);
-
-				p->check_copyright(p);
-
-				p->check_trademark(p);
-
-				p->check_registered(p);
-				
-				p->check_ellipsis(p);
 
 				p->last_action = ACTION_NONE;
 				
@@ -928,13 +928,16 @@ static void program_perform_auto_action(struct _program *p, int action)
 			// Checking word
 			if (p->changed_manual == MANUAL_FLAG_UNSET)
 				p->check_lang_last_word(p);
-
+			
 			p->add_word_to_pattern(p, get_curr_keyboard_group());
 
 			if (action == KLB_SPACE)
 			{
 				p->check_two_space(p);
 			}
+
+			// Check and correct misprint
+			p->check_misprint(p);
 			
 			// Add symbol to internal bufer
 			p->event->event = p->event->default_event;
@@ -949,9 +952,6 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 			// Correct spaces with brackets
 			p->check_space_with_bracket(p);
-
-			// Check and correct misprint
-			p->check_misprint(p);
 			
 			// Send Event
 			p->event->event = p->event->default_event;
@@ -1668,10 +1668,10 @@ static void program_check_ellipsis(struct _program *p)
 
 	if (p->buffer->cur_pos < 3)
 		return;
-	
-	if ((p->buffer->get_utf_string_on_kbd_group(p->buffer, )[p->buffer->cur_pos-1] != '.') || 
-		(p->buffer->get_utf_string(p->buffer)[p->buffer->cur_pos-2] != '.') ||
-		(p->buffer->get_utf_string(p->buffer)[p->buffer->cur_pos-3] != '.')) 
+
+	if (((p->buffer->content[p->buffer->cur_pos-1] != '.') && (p->buffer->content[p->buffer->cur_pos-1] != '/')) || 
+		((p->buffer->content[p->buffer->cur_pos-2] != '.') && (p->buffer->content[p->buffer->cur_pos-2] != '/')) ||
+		((p->buffer->content[p->buffer->cur_pos-3] != '.') && (p->buffer->content[p->buffer->cur_pos-3] != '/'))) 
 		return;
 	
 	log_message (DEBUG, _("Find three points, correction with a ellipsis sign..."));
@@ -2017,13 +2017,16 @@ static void program_check_misprint(struct _program *p)
 	if (!xconfig->correct_misprint)
 		return;
 
+	if (p->correction_action != CORRECTION_NONE)
+		p->correction_action = CORRECTION_NONE;
+
 	int lang = get_curr_keyboard_group ();
 	if (xconfig->handle->languages[lang].disable_auto_detection || xconfig->handle->languages[lang].excluded)
 		return;
 
 	char *word = strdup(get_last_word(p->buffer->i18n_content[lang].content));
 	del_final_numeric_char(word);
-	
+
 	if (word == NULL)
 		return;
 
@@ -2038,7 +2041,7 @@ static void program_check_misprint(struct _program *p)
 		free(word);
 		return;
 	}
-	
+
 	int min_levenshtein = 3;
 	char *possible_word = NULL;
 
@@ -2049,10 +2052,10 @@ static void program_check_misprint(struct _program *p)
 		if (!ispunct(word[offset]))
 			break;
 	}
-	
+
 #ifdef WITH_ENCHANT 
 	size_t count = 0;
-		
+
 	if (!xconfig->handle->has_enchant_checker[lang])
 	{
 		free(word);
@@ -2064,18 +2067,18 @@ static void program_check_misprint(struct _program *p)
 		free(word);
 		return;
 	}
-	
+
 	char **suggs = enchant_dict_suggest (xconfig->handle->enchant_dicts[lang], word+offset, strlen(word+offset), &count); 
 	if (count > 0)
 	{
-		
+
 		for (unsigned int i = 0; i < count; i++)
 		{
 			int tmp_levenshtein = levenshtein(word+offset, suggs[i]);
 			if (tmp_levenshtein < min_levenshtein)
 				min_levenshtein = tmp_levenshtein;
 		}	
-		
+
 		if (min_levenshtein < 3) 
 		{
 			for (unsigned int i = 0; i < count; i++)
@@ -2094,7 +2097,7 @@ static void program_check_misprint(struct _program *p)
 				possible_word = strdup(suggs[0]);
 		}
 	}
-	
+
 	enchant_dict_free_string_list(xconfig->handle->enchant_dicts[lang], suggs);
 #endif
 
@@ -2150,27 +2153,31 @@ static void program_check_misprint(struct _program *p)
 			possible_word = first_sugg;
 		else
 			if (first_sugg != NULL)
-				free(first_sugg);
+			free(first_sugg);
 	}	
-	
+
 
 	delete_aspell_string_enumeration (elements);
 #endif
 	if (possible_word != NULL)	
 	{
 		p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
-			
+
 		log_message (DEBUG, _("Found a misprint , correction '%s' to '%s'..."), word+offset, possible_word);
 
-		p->correction_action = CORRECTION_MISPRINT;
+		p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+
+		int backspaces_count = p->buffer->cur_pos - get_last_word_offset (p->buffer->content, p->buffer->cur_pos);
+		p->event->send_backspaces(p->event, backspaces_count);
+		for (int i = 0; i < (backspaces_count); i++)
+			p->buffer->del_symbol(p->buffer);
+
+		int new_offset = p->buffer->cur_pos;
+		p->buffer->set_content(p->buffer, strcat(p->buffer->content, possible_word));
+		p->buffer->set_offset(p->buffer, new_offset);
+		p->send_string_silent(p, 0);	
+		p->buffer->unset_offset(p->buffer, new_offset);
 		
-		int backspaces_count = strlen(get_last_word(p->buffer->content));
-		p->event->send_backspaces(p->event, backspaces_count - offset - 1);
-		p->correction_buffer->set_content(p->correction_buffer, word+offset);
-		p->buffer->set_content(p->buffer, possible_word);
-
-		p->event->send_string(p->event, p->buffer);	
-
 		p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
 		int notify_text_len = strlen(_("Correction '%s' to '%s'")) + strlen(word+offset) + strlen(possible_word);
@@ -2178,12 +2185,13 @@ static void program_check_misprint(struct _program *p)
 		snprintf(notify_text , notify_text_len+1, _("Correction '%s' to '%s'"), word+offset, possible_word);			
 		show_notify(NOTIFY_CORR_MISPRINT, notify_text);
 		free(notify_text);
-		
+
+		p->correction_action = CORRECTION_MISPRINT;
+
 		//p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 		free(possible_word);
 	}
-	
 	free(word);
 }
 
@@ -2872,12 +2880,26 @@ static void program_change_word(struct _program *p, enum _change_action action)
 		}
 		case CHANGE_MISPRINT:
 		{
-			p->event->send_backspaces(p->event, p->buffer->cur_pos + 1);
-			p->buffer->set_content(p->buffer, p->correction_buffer->get_utf_string(p->correction_buffer));
-			p->correction_buffer->clear(p->correction_buffer);
+			if (p->correction_action == CORRECTION_MISPRINT) 
+			{
+				int backspaces_count = p->buffer->cur_pos - get_last_word_offset (p->correction_buffer->content, p->correction_buffer->cur_pos);
+
+				log_message (ERROR, "'%s'", p->buffer->content);
+				p->buffer->set_content(p->buffer, p->correction_buffer->content);
+				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
+
+				log_message (ERROR, "'%s'", p->buffer->content);
+
+				int cur_pos = p->buffer->cur_pos - backspaces_count;
+				p->buffer->set_offset(p->buffer, cur_pos);
+				log_message (ERROR, "'%s'", p->buffer->content);
+				p->send_string_silent(p, backspaces_count);
+				p->buffer->unset_offset(p->buffer, cur_pos);
+				log_message (ERROR, "'%s'", p->buffer->content);
+				p->correction_buffer->clear(p->correction_buffer);
 				
-			p->event->send_string(p->event, p->buffer);	
-			p->correction_action = CORRECTION_NONE;
+				p->correction_action = CORRECTION_NONE;
+			}
 			break;
 		}
 	}

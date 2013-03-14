@@ -271,7 +271,8 @@ static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 			continue;
 		}
 
-		if (strlen(word) > 250) 
+		int word_len = strlen(word); 
+		if ((word_len > 250) || (word_len < 2))
 		{
 			if (possible_words != NULL)
 				free (possible_words);
@@ -280,8 +281,8 @@ static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 			continue;
 		}
 		
-		unsigned int offset = 0;
-		for (offset = 0; offset < strlen(word); offset++)
+		int offset = 0;
+		for (offset = 0; offset < word_len; offset++)
 		{
 			if (!ispunct(word[offset]))
 				break;
@@ -298,7 +299,7 @@ static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 				free(word);
 			continue;
 		}
-		
+
 		char **suggs = enchant_dict_suggest (handle->enchant_dicts[lang], word+offset, strlen(word+offset), &count); 
 		if (count > 0)
 		{
