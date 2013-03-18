@@ -45,7 +45,7 @@ else
 	AC_SUBST(X11_LIBS)
 fi
 
-ADDITIONAL_LIBS="-lpthread -ldl"
+ADDITIONAL_LIBS="-lpthread -ldl -lXtst"
 AC_SUBST(ADDITIONAL_LIBS)
 
 AC_ARG_WITH(sound, [  --with-sound[[=ARG]]	  Compile with sound support ARG=[[yes|no|gstreamer|openal|aplay]] [[default=yes]]])
@@ -98,6 +98,8 @@ if test "x$with_debug" == "xyes"; then
 fi
 
 PKG_CHECK_MODULES(PCRE, [libpcre >= 5.0])
+
+PKG_CHECK_MODULES(XTST, [xtst]) 
 
 AC_ARG_WITH(keylogger, [  --without-keylogger	  Compile without keylogger function])
 if test "x$with_keylogger" != "xno"; then
@@ -277,6 +279,9 @@ $PACKAGE $VERSION configured successfully:
 
 	X11 compiler flags:		$X11_CFLAGS
 	X11 linker flags:		$X11_LIBS
+
+	XTST compiler flags:	$XTST_CFLAGS
+	XTST linker flags:		$XTST_LIBS
 
 	Pcre compiler flags:		$PCRE_CFLAGS
 	Pcre linker flags:		$PCRE_LIBS

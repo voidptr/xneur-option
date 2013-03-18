@@ -18,6 +18,7 @@
  */
 
 #include <X11/XKBlib.h>
+#include <X11/extensions/XTest.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -123,6 +124,7 @@ static void event_send_selection(struct _event *p, int count)
 {
 	for (int i = 0; i < count; i++)
 		p->send_xkey(p, p->left, None);
+
 	for (int i = 0; i < count; i++)
 		p->send_xkey(p, p->right, ShiftMask);
 }

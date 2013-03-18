@@ -877,9 +877,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 				
 				// Add symbol to internal bufer
 				int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
-				log_message (ERROR, "!!!");
 				p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
-				log_message (ERROR, "%c", sym);
 				p->correction_buffer->add_symbol(p->correction_buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 				// Block events of keyboard (push to event queue)
 				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
@@ -916,9 +914,11 @@ static void program_perform_auto_action(struct _program *p, int action)
 						p->event->default_event.xkey.keycode = 0;
 				}
 
+				p->last_action = ACTION_NONE;
+				
 				p->check_pattern(p, TRUE);
 
-				p->last_action = ACTION_NONE;
+				
 				
 				// Unblock keyboard
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
@@ -2042,9 +2042,6 @@ static void program_check_misprint(struct _program *p)
 	if (!xconfig->correct_misprint)
 		return;
 
-	if (p->correction_action != CORRECTION_NONE)
-		p->correction_action = CORRECTION_NONE;
-
 	int lang = get_curr_keyboard_group ();
 	if (xconfig->handle->languages[lang].disable_auto_detection || xconfig->handle->languages[lang].excluded)
 		return;
@@ -2186,6 +2183,9 @@ static void program_check_misprint(struct _program *p)
 #endif
 	if (possible_word != NULL)	
 	{
+		if (p->correction_action != CORRECTION_NONE)
+			p->correction_action = CORRECTION_NONE;
+		
 		p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
 
 		log_message (DEBUG, _("Found a misprint , correction '%s' to '%s'..."), word+offset, possible_word);

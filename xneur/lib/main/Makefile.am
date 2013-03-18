@@ -28,6 +28,6 @@ libxnmain_la_SOURCES =		\
 	defines.h
 
 
-libxnmain_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc  -I@top_srcdir@/lib/notify -I@top_srcdir@/lib/ai -I@top_srcdir@/lib/lib -I@top_srcdir@/lib/rec @X11_CFLAGS@ @DEFAULT_CFLAGS@ -DXNEUR_PLUGIN_DIR=\""@libdir@/xneur"\"
-libxnmain_la_LDFLAGS = -static @X11_LIBS@ @ADDITIONAL_LIBS@
+libxnmain_la_CFLAGS = -I@top_srcdir@/lib/config -I@top_srcdir@/lib/misc  -I@top_srcdir@/lib/notify -I@top_srcdir@/lib/ai -I@top_srcdir@/lib/lib -I@top_srcdir@/lib/rec @X11_CFLAGS@ @XTST_CFLAGS@ @DEFAULT_CFLAGS@ -DXNEUR_PLUGIN_DIR=\""@libdir@/xneur"\"
+libxnmain_la_LDFLAGS = -static @X11_LIBS@ @XTST_LIBS@ @ADDITIONAL_LIBS@
 
