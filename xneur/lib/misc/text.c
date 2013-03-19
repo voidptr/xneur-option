@@ -203,6 +203,7 @@ void del_final_numeric_char(char *word)
 			case '=':
 			case '+':
 			case '-':
+			case '_':
 			case '/':
 			case '|':
 			case '\\':
@@ -210,6 +211,20 @@ void del_final_numeric_char(char *word)
 			case ';':
 			case ',':
 			case '.':
+			case '"':
+			case '@':
+			case '#':
+			case '$':
+			case '%':
+			case '^':
+			case '&':
+			case '*':
+			case ':':
+			case '!':
+			case '(':
+			case ')':
+			case '\'':
+			case '~':
 			case '1':
 			case '2':
 			case '3':
