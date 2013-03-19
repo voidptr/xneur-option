@@ -13,7 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- *  Copyright (C) 2006-2012 XNeur Team
+ *  Copyright (C) 2006-2013 XNeur Team
  *
  */
 
@@ -2046,7 +2046,7 @@ static void program_check_misprint(struct _program *p)
 	if (xconfig->handle->languages[lang].disable_auto_detection || xconfig->handle->languages[lang].excluded)
 		return;
 
-	char *word = strdup(get_last_word(p->buffer->i18n_content[lang].content));
+	char *word = strdup(get_last_word(p->buffer->i18n_content[lang].content_unchanged));
 	del_final_numeric_char(word);
 
 	if (word == NULL)
@@ -2063,15 +2063,17 @@ static void program_check_misprint(struct _program *p)
 		free(word);
 		return;
 	}
-
+	
 	int min_levenshtein = 3;
 	char *possible_word = NULL;
 
 	// check leader puctuation char
 	unsigned int offset = 0;
+	int finish_offset = 0;
 	for (offset = 0; offset < strlen(word); offset++)
 	{
-		if (!ispunct(word[offset]))
+		finish_offset++;
+		if (!ispunct(word[offset]) && (!isdigit(word[offset])))
 			break;
 	}
 
@@ -2181,6 +2183,7 @@ static void program_check_misprint(struct _program *p)
 
 	delete_aspell_string_enumeration (elements);
 #endif
+
 	if (possible_word != NULL)	
 	{
 		if (p->correction_action != CORRECTION_NONE)
@@ -2192,17 +2195,22 @@ static void program_check_misprint(struct _program *p)
 
 		p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
 
-		int backspaces_count = p->buffer->cur_pos - get_last_word_offset (p->buffer->content, p->buffer->cur_pos);
+		int backspaces_count = p->buffer->cur_pos - get_last_word_offset (p->buffer->content, p->buffer->cur_pos) - offset;
 		p->event->send_backspaces(p->event, backspaces_count);
+		if (p->last_action == ACTION_AUTOCOMPLETION)
+			p->event->send_backspaces(p->event, 1);
 		for (int i = 0; i < (backspaces_count); i++)
 			p->buffer->del_symbol(p->buffer);
 		
 		int new_offset = p->buffer->cur_pos;
-		char *new_content = malloc((strlen(p->buffer->content) + strlen(possible_word) + 1) * sizeof(char));
-		memset(new_content, 0, (strlen(p->buffer->content) + strlen(possible_word) + 1) * sizeof(char));
+		int possible_word_len = strlen(possible_word);
+		char *new_content = malloc((p->buffer->cur_pos + possible_word_len + backspaces_count + 1) * sizeof(char));
+		memset(new_content, 0, (p->buffer->cur_pos + possible_word_len + backspaces_count + 1) * sizeof(char));
 		new_content = strcat(new_content, p->buffer->content);
 		new_content = strcat(new_content, possible_word);
+		new_content = strcat(new_content, p->correction_buffer->i18n_content[lang].content_unchanged + strlen(p->correction_buffer->i18n_content[lang].content_unchanged) - finish_offset + 1);
 		p->buffer->set_content(p->buffer, new_content);
+
 		if (new_content != NULL)
 			free(new_content);
 		p->buffer->set_offset(p->buffer, new_offset);
@@ -2211,9 +2219,9 @@ static void program_check_misprint(struct _program *p)
 		
 		p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 
-		int notify_text_len = strlen(_("Correction '%s' to '%s'")) + strlen(word+offset) + strlen(possible_word);
-		char *notify_text = (char *) malloc((notify_text_len + 1) * sizeof(char));
-		snprintf(notify_text , notify_text_len+1, _("Correction '%s' to '%s'"), word+offset, possible_word);			
+		int notify_text_len = strlen(_("Correction '%s' to '%s'")) + strlen(word+offset) + 1 + possible_word_len;
+		char *notify_text = (char *) malloc(notify_text_len * sizeof(char));
+		snprintf(notify_text , notify_text_len, _("Correction '%s' to '%s'"), word+offset, possible_word);			
 		show_notify(NOTIFY_CORR_MISPRINT, notify_text);
 		free(notify_text);
 
