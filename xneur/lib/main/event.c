@@ -18,7 +18,6 @@
  */
 
 #include <X11/XKBlib.h>
-#include <X11/extensions/XTest.h>
 
 #include <stdlib.h>
 #include <stdio.h>
