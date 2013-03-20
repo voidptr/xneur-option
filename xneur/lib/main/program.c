@@ -1735,13 +1735,16 @@ static void program_check_space_before_punctuation(struct _program *p)
 	}
 	
 	log_message(DEBUG, _("Find spaces before punctuation, correction..."));
-	
+
+	p->buffer->del_symbol(p->buffer);
 	p->correction_buffer->del_symbol(p->correction_buffer);
-	while (p->buffer->content[p->buffer->cur_pos-2] == ' ')
+	while (p->buffer->content[p->buffer->cur_pos-1] == ' ')
 	{
+		log_message (ERROR, "1 '%s'", p->buffer->content);
 		p->event->send_backspaces(p->event, 1);
 		p->buffer->del_symbol(p->buffer);
 		p->correction_buffer->del_symbol(p->correction_buffer);
+		log_message (ERROR, "2 '%s'", p->buffer->content);
 	}
 
 	p->event->event = p->event->default_event;
@@ -1749,6 +1752,7 @@ static void program_check_space_before_punctuation(struct _program *p)
 	int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
+	log_message (ERROR, "'%s'", p->buffer->content);
 	free(text);
 }
 
