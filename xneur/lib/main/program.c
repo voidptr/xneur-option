@@ -1736,7 +1736,6 @@ static void program_check_space_before_punctuation(struct _program *p)
 	
 	log_message(DEBUG, _("Find spaces before punctuation, correction..."));
 	
-	p->event->send_backspaces(p->event, 1);
 	p->correction_buffer->del_symbol(p->correction_buffer);
 	while (p->buffer->content[p->buffer->cur_pos-2] == ' ')
 	{
@@ -1826,16 +1825,21 @@ static void program_check_brackets_with_symbols(struct _program *p)
 	if (!xconfig->correct_space_with_punctuation)
 		return;
 
-	char *text = p->buffer->get_utf_string(p->buffer);
+	char *text = strdup(p->buffer->content);
 	if (text == NULL)
 		return;
-
-	int text_len = strlen(text);
 	
-	if (text[text_len - 2] == ')')
+	int text_len = strlen(text);
+	if (text_len < 2)
 	{
-		//log_message(ERROR, "%c", text[text_len-1]);
-		if (ispunct(text[text_len-1]))
+		free(text);
+		return;
+	}
+	
+	if (text[text_len-2] == ')')
+	{
+		//log_message(ERROR, "%c", text[text_len-2]);
+		if (ispunct(text[text_len]))
 		{
 			free(text);
 			return;
