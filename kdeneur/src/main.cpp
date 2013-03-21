@@ -1,5 +1,5 @@
 //app header files
-#include "kxneur.h"
+#include "kdeneur.h"
 
 //KDE header files
 #include <kcmdlineargs.h>

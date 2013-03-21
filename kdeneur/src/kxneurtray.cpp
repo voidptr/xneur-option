@@ -18,11 +18,11 @@
 
 //Kde header files
 #include <ktoolinvocation.h>
-//#include <kconfiggroup.h>
 #include <kconfig.h>
 #include <kconfiggroup.h>
 #include <plasma/theme.h>
 #include <plasma/paintutils.h>
+
 kXneurApp::kXneurTray::kXneurTray( QMap<QString, QMap<QString, QString> > listActions,QObject *parent): QObject(parent)
 {
   createActions(listActions);
@@ -88,11 +88,11 @@ void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
     KConfigGroup properties = conf.group("Properties");
     QString path, usrPath;
     int tray = properties.readEntry("Typeicontray", 0);
-    usrPath = properties.readEntry("Iconpath", COUNTRY_FLAGS);
+    usrPath = properties.readEntry("Iconpath", PACKAGE_PIXMAPS_DIR);
     switch(tray)
     {
     case FLAG:
-        path=QString("%1/%2.png").arg(COUNTRY_FLAGS).arg(lang);
+        path=QString("%1/%2.png").arg(PACKAGE_PIXMAPS_DIR).arg(lang);
         qDebug()<< "TYPE ICON " << FLAG << path;
         if (QFile::exists(path))
         {

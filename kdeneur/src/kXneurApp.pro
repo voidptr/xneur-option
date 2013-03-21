@@ -12,7 +12,7 @@ SOURCES += \
     kxneurtray.cpp \
     frmabout.cpp \
     frmsettings.cpp \
-    kxneur.cpp \
+    kdeneur.cpp \
     xkb.c \
     frmaddabbreviature.cpp \
     xneurconfig.cpp \
@@ -24,14 +24,14 @@ SOURCES += \
 
 INCLUDEPATH += /usr/include
 
-LIBS += -lX11 -lkdeui -lkdecore -lxneur -lxnconfig
+LIBS += -lX11 -lkdeui -lkdecore -ldbus -lxneur -lxnconfig
 
 HEADERS += \
     kxneurtray.h \
     frmabout.h \
     frmsettings.h \
     tabbar.h \
-    kxneur.h \
+    kdeneur.h \
     xkb.h \
     frmaddabbreviature.h \
     xneurconfig.h \
