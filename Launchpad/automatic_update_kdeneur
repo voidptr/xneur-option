@@ -3,8 +3,6 @@
 # Must be from GPG key
 export DEBEMAIL="Andrew Crew Kuznetsov <andrewcrew@rambler.ru>"
 
-cd "${HOME}/develop/xneur/xneur/Launchpad"
-
 if !([ -e kdeneur_*.orig.tar.gz ]); then
   echo "File kdeneur_*.orig.tar.gz is not found.";
   export OLD_VER=0;
