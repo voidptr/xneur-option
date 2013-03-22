@@ -256,9 +256,19 @@ void kXneurApp::xNeurConfig::gen_main_save_check_lang(bool stat)
     xconfig->check_lang_on_process=stat;
 }
 
+void kXneurApp::xNeurConfig::gen_main_save_check_similar(bool stat)
+{
+    xconfig->check_similar_words=stat;
+}
+
 bool kXneurApp::xNeurConfig::gen_main_get_check_lang()
 {
     return xconfig->check_lang_on_process ;
+}
+
+bool kXneurApp::xNeurConfig::gen_main_get_check_similar()
+{
+    return xconfig->check_similar_words ;
 }
 
 void kXneurApp::xNeurConfig::gen_tipo_save_correct_caps(bool stat)

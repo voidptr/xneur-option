@@ -53,7 +53,9 @@ namespace kXneurApp
         void gen_main_save_rotate_layout(bool);
         bool gen_main_get_rotate_layout();
         void gen_main_save_check_lang(bool);
+        void gen_main_save_check_similar(bool);
         bool gen_main_get_check_lang();
+        bool gen_main_get_check_similar();
         void gen_tipo_save_correct_caps(bool);
         bool gen_tipo_get_correct_caps();
         void gen_tipo_save_disable_caps(bool);

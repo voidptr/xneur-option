@@ -90,6 +90,13 @@
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QCheckBox" name="chkGenMain_CheckSimilar">
+               <property name="text">
+                <string>Check similar words</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
            <item row="1" column="0">
@@ -195,6 +202,13 @@
               <widget class="QCheckBox" name="chkGenTipograph_Correct_Three_Point">
                <property name="text">
                 <string>Сorrect three points with a ellipsis sign</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="chkGenTipograph_Correct_Misprint">
+               <property name="text">
+                <string>Correct misprint</string>
                </property>
               </widget>
              </item>
@@ -570,7 +584,7 @@
        <item row="0" column="0">
         <widget class="QCheckBox" name="tabAutocompletion_chkTrueAutocomplit">
          <property name="text">
-          <string>Enable pattern mining and recognition (autocompletion)</string>
+          <string>Enable autocompletion</string>
          </property>
         </widget>
        </item>

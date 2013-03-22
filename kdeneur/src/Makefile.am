@@ -19,14 +19,6 @@ kdeneur_SOURCES =	\
 		ruleschange.cpp \
 		xkb.c \
 		xneurconfig.cpp \
-		ui_addrules.h \
-		ui_adduseraction.h 	\
-		ui_edithotkey.h	\
-		ui_frmabout.h	\
-		ui_frmaddabbreviature.h	\
-		ui_frmsettings.h	\
-		ui_getnameapp.h	\
-		ui_ruleschange.h	\
 		xkb.h	\
 		xneurconfig.h \
 		tabbar.h
@@ -42,7 +34,15 @@ nodist_kdeneur_SOURCES =	\
 		moc_kdeneur.cpp \
 		moc_kxneurtray.cpp \
 		moc_ruleschange.cpp \
-		moc_xneurconfig.cpp 
+		moc_xneurconfig.cpp \
+		ui_addrules.h \
+		ui_adduseraction.h 	\
+		ui_edithotkey.h	\
+		ui_frmabout.h	\
+		ui_frmaddabbreviature.h	\
+		ui_frmsettings.h	\
+		ui_getnameapp.h	\
+		ui_ruleschange.h	
 
 EXTRA_DIST = \
 	$(nodist_kdeneur_SOURCES:moc_%.cpp=%.h) 
@@ -51,13 +51,16 @@ EXTRA_DIST = \
 moc_%.cpp: %.h
 	moc $< -o $@
 
+ui_%.h: %.ui
+	uic $< -o $@
+
 # Adjust this line according to your resources.qrc
 resources.cpp : resources.qrc octave-gui.png
 	rcc resources.qrc -o resources.cpp
 
 # This line ensures that generated moc_*.cpp and resources.cpp files are
 # deleted when we make clean.
-CLEANFILES = $(filter moc_%.cpp,$(nodist_kdeneur_SOURCES)) resources.cpp
+CLEANFILES = $(filter moc_%.cpp,$(nodist_kdeneur_SOURCES)) resources.cpp $(filter ui_%.h,$(nodist_kdeneur_SOURCES))
 
 kdeneur_CXXFLAGS = @X11_CFLAGS@ @QTCORE_CFLAGS@ @QTGUI_CFLAGS@ @QTUITOOLS_CFLAGS@ @QTDBUS_CFLAGS@ @XNEURCONF_CFLAGS@ @DEFAULT_CFLAGS@ @XNEURLIB_CFLAGS@ -I/usr/include/qt4/Qt
 kdeneur_LDFLAGS = @X11_LIBS@ @QTCORE_LIBS@ @QTGUI_LIBS@ @QTUITOOLS_LIBS@ @QTDBUS_LIBS@ @XNEURCONF_LIBS@ @XNEURLIB_LIBS@ 

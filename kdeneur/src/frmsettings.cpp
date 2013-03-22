@@ -41,6 +41,7 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->gen_main_save_keep_select(ui->chkGenMain_KeepSelect->isChecked());
     cfgNeur->gen_main_save_rotate_layout(ui->chkGenMain_RotateLayout->isChecked());
     cfgNeur->gen_main_save_check_lang(ui->chkGenMain_CheckLang->isChecked());
+    cfgNeur->gen_main_save_check_similar(ui->chkGenMain_CheckSimilar->isChecked());
     cfgNeur->gen_tipo_save_correct_caps(ui->chkGenTipograph_CeorrectCAPS->isChecked());
     cfgNeur->gen_tipo_save_disable_caps(ui->chkGenTipograph_DisableCaps->isChecked());
     cfgNeur->gen_tipo_save_correct_two_caps(ui->chkGenTipograph_CorrectTwoCaps->isChecked());
@@ -203,6 +204,7 @@ void kXneurApp::frmSettings::readSettingsNeur()
     ui->chkGenMain_KeepSelect->setChecked(cfgNeur->gen_main_get_keep_select());
     ui->chkGenMain_RotateLayout->setChecked(cfgNeur->gen_main_get_rotate_layout());
     ui->chkGenMain_CheckLang->setChecked(cfgNeur->gen_main_get_check_lang());
+    ui->chkGenMain_CheckSimilar->setChecked(cfgNeur->gen_main_get_check_similar());
     ui->chkGenTipograph_CeorrectCAPS->setChecked(cfgNeur->gen_tipo_get_correct_caps());
     ui->chkGenTipograph_DisableCaps->setChecked(cfgNeur->gen_tipo_get_disable_caps());
     ui->chkGenTipograph_CorrectTwoCaps->setChecked(cfgNeur->gen_tipo_get_correct_two_caps());
