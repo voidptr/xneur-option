@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'addrules.ui'
 **
-** Created: Thu Mar 21 20:47:07 2013
+** Created: Fri Mar 22 13:33:50 2013
 **      by: Qt User Interface Compiler version 4.8.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

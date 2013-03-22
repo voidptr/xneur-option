@@ -64,7 +64,7 @@ unix{
  }
 BINDIR = $$PREFIX/bin
 DATADIR = $$PREFIX/share
-LOCALEDIR = $$DATADIR/locale
+LOCALEDIR = $$DATADIR/$${TARGET}/i18n
 SHAREDIR = $$DATADIR/$${TARGET}
 
  contains(QMAKE_HOST.arch, x86_64) {
@@ -74,7 +74,7 @@ SHAREDIR = $$DATADIR/$${TARGET}
     DEFINES += XNEUR_PLUGIN_DIR=\\\"/usr/lib/xneur\\\"
  }
 
-DEFINES += PACKAGE_PIXMAPS_DIR=\\\"$${SHAREDIR}/pixmaps\\\" SHAREDIR=\\\"$${SHAREDIR}\\\"
+DEFINES += PACKAGE_PIXMAPS_DIR=\\\"$${SHAREDIR}/pixmaps\\\" SHAREDIR=\\\"$${SHAREDIR}\\\" LOCALEDIR=\\\"$${LOCALEDIR}\\\"
 
 INSTALLS =  target \
             flags \
@@ -98,7 +98,7 @@ iconsvg.files += pixmaps/scalable/*
 desktop.path = $$DATADIR/applications
 desktop.files += ../kdeneur.desktop
 
-translate.path = $$DATADIR/i18n
+translate.path = $$LOCALEDIR
 translate.files += i18n/*.qm
 
 icon_x16.path = $$DATADIR/icons/hicolor/16x16/apps

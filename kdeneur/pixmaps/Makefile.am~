@@ -281,9 +281,9 @@ uninstall-icons:
 		rm -f $(DESTDIR)$(pkgdatadir)/icons/$$THEME/$$SIZE/$$CONTEXT/$$ICONFILE; \
 	done
 
-install-data-local: install-icons update-icon-cache
+install-data-local: install-icons
 
-uninstall-local: uninstall-icons update-icon-cache
+uninstall-local: uninstall-icons
 
 pixmapsdir = @datarootdir@/kdeneur/pixmaps
 pixmaps_DATA =			\

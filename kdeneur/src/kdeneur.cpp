@@ -14,7 +14,9 @@
 kXneurApp::kXneur::kXneur(int& argc, char **argv): QApplication (argc, argv)
 {
     QTranslator *transApp = new QTranslator(this);
-    transApp->load(QString("%1/%2/kdeneur_%3.qm").arg(SHAREDIR).arg("i18n").arg(QLocale::system().name()));
+    transApp->load(QString("%1/kdeneur_%2.qm").arg(LOCALEDIR).arg(QLocale::system().name()));
+    //QTextStream qout(stdout);
+    //qout << QString("%1/kdeneur_%2.qm").arg(LOCALEDIR).arg(QLocale::system().name());
     installTranslator(transApp);
 
     cfgXneur = new kXneurApp::xNeurConfig();

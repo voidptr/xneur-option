@@ -1,7 +1,7 @@
 INCLUDES = 	-DPACKAGE_PIXMAPS_DIR=\""@datadir@/kdeneur/pixmaps"\" 	\
-		-DLOCALEDIR=\""@localedir@"\"				\
+		-DLOCALEDIR=\""@datadir@/kdeneur/i18n"\" 				\
 		-DXNEUR_PLUGIN_DIR=\""@libdir@/xneur"\"	\
-		-DSHAREDIR=\""@datadir@s"\" 				
+		-DSHAREDIR=\""@datadir@"\" 				
 		
 bin_PROGRAMS = kdeneur
 
