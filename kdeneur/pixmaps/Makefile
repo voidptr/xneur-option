@@ -49,15 +49,19 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = x86_64-unknown-linux-gnu
-host_triplet = x86_64-unknown-linux-gnu
+build_triplet = i686-pc-linux-gnu
+host_triplet = i686-pc-linux-gnu
 subdir = pixmaps
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/pkg.m4 $(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/pkg.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -130,23 +134,34 @@ ECHO_T =
 EGREP = /bin/grep -E
 EXEEXT = 
 FGREP = /bin/grep -F
+GMSGFMT = /usr/bin/msgfmt
+GMSGFMT_015 = /usr/bin/msgfmt
 GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /usr/bin/ld -m elf_x86_64
+INTLLIBS = 
+INTL_MACOSX_LIBS = 
+LD = /usr/bin/ld
 LDFLAGS = 
+LIBICONV = -liconv
+LIBINTL = 
 LIBOBJS = 
 LIBS = 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIPO = 
 LN_S = ln -s
+LTLIBICONV = -liconv
+LTLIBINTL = 
 LTLIBOBJS = 
 MAKEINFO = ${SHELL} /home/crew/develop/xneur/kdeneur/missing --run makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /bin/mkdir -p
+MSGFMT = /usr/bin/msgfmt
+MSGFMT_015 = /usr/bin/msgfmt
+MSGMERGE = /usr/bin/msgmerge
 NM = /usr/bin/nm -B
 NMEDIT = 
 OBJDUMP = objdump
@@ -162,6 +177,7 @@ PACKAGE_URL =
 PACKAGE_VERSION = 
 PATH_SEPARATOR = :
 PKG_CONFIG = /usr/bin/pkg-config
+POSUB = po
 QTCORE_CFLAGS = -DQT_SHARED -I/usr/include/qt4 -I/usr/include/qt4/QtCore  
 QTCORE_LIBS = -lQtCore  
 QTDBUS_CFLAGS = -DQT_SHARED -I/usr/include/qt4 -I/usr/include/qt4/QtDBus -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtXml  
@@ -175,9 +191,12 @@ SED = /bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
 STRIP = strip
+USE_NLS = yes
 VERSION = 0.16.0
 X11_CFLAGS =  
 X11_LIBS = -lX11  
+XGETTEXT = /usr/bin/xgettext
+XGETTEXT_015 = /usr/bin/xgettext
 XMKMF = 
 XNEURCONF_CFLAGS = -I/usr/local/include  
 XNEURCONF_LIBS = -L/usr/local/lib -lxnconfig -lpthread -ldl -lpcre  
@@ -201,22 +220,22 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = x86_64-unknown-linux-gnu
+build = i686-pc-linux-gnu
 build_alias = 
-build_cpu = x86_64
+build_cpu = i686
 build_os = linux-gnu
-build_vendor = unknown
+build_vendor = pc
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = x86_64-unknown-linux-gnu
+host = i686-pc-linux-gnu
 host_alias = 
-host_cpu = x86_64
+host_cpu = i686
 host_os = linux-gnu
-host_vendor = unknown
+host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
