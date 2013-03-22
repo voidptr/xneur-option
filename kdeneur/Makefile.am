@@ -2,7 +2,8 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS =			\
 	src				\
-	pixmaps			
+	pixmaps		\
+	i18n	
 
 AUTOMAKE_OPTIONS =		\
 	1.9			\
@@ -24,6 +25,12 @@ Multimedia_DATA = $(Multimedia_in_files:.desktop.in=.desktop)
 EXTRA_DIST = $(noinst_DATA) m4/ChangeLog kdeneur.1 $(Multimedia_DATA) kdeneur.desktop.in
 
 man_MANS = kdeneur.1
+
+compiler_updateqm_make_all: i18n/kdeneur_ru_RU.qm
+compiler_updateqm_clean:
+	-$(DEL_FILE) i18n/kdeneur_ru_RU.qm
+i18n/kdeneur_ru_RU.qm: i18n/kdeneur_ru_RU.ts
+	lrelease -silent i18n/kdeneur_ru_RU.ts -qm i18n/kdeneur_ru_RU.qm
 
 check-gettext:
 	@if test x$(USE_NLS) != "xyes" ; then echo "Missing gettext. Rerun configure and check for" \

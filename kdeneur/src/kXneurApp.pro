@@ -1,9 +1,11 @@
-QT += core gui dbus
+QT += core gui qdbus
 
 TARGET = kdeneur
 TEMPLATE = app
 SEPARATOR = -
 VERSION = 0.16.0
+
+CONFIG += qdbus
 
 include(i18n/localize.pri)
 
@@ -72,7 +74,7 @@ SHAREDIR = $$DATADIR/$${TARGET}
     DEFINES += XNEUR_PLUGIN_DIR=\\\"/usr/lib/xneur\\\"
  }
 
-DEFINES += COUNTRY_FLAGS=\\\"$${SHAREDIR}/pixmaps\\\" SHAREDIR=\\\"$${SHAREDIR}\\\"
+DEFINES += PACKAGE_PIXMAPS_DIR=\\\"$${SHAREDIR}/pixmaps\\\" SHAREDIR=\\\"$${SHAREDIR}\\\"
 
 INSTALLS =  target \
             flags \
