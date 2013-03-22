@@ -54,7 +54,7 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->gen_tipo_save_correct_r(ui->chkGenTipograph_Correct_r_->isChecked());
     cfgNeur->gen_tipo_save_correct_three_point(ui->chkGenTipograph_Correct_Three_Point->isChecked());
     cfgNeur->gen_tipo_save_correct_dash(ui->chkGenTipograph_CorrectDash->isChecked());
-
+    cfgNeur->gen_tipo_save_correct_misprint(ui->chkGenTipograph_Correct_Misprint->isChecked());
 
     //tab Layout
     cfgNeur->lay_save_number_layout(ui->Layout_spbLayoutNumber->value()-1);
@@ -217,6 +217,7 @@ void kXneurApp::frmSettings::readSettingsNeur()
     ui->chkGenTipograph_Correct_r_->setChecked(cfgNeur->gen_tipo_get_correct_r());
     ui->chkGenTipograph_CorrectDash->setChecked(cfgNeur->gen_tipo_get_correct_dash());
     ui->chkGenTipograph_Correct_Three_Point->setChecked(cfgNeur->gen_tipo_get_correct_three_point());
+    ui->chkGenTipograph_Correct_Misprint->setChecked(cfgNeur->gen_tipo_get_correct_misprint());
 
     //tab Layout
     ui->Layout_spbLayoutNumber->setValue(cfgNeur->lay_get_number_layout());

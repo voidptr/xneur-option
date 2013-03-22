@@ -391,6 +391,16 @@ bool kXneurApp::xNeurConfig::gen_tipo_get_correct_dash()
     return xconfig->correct_dash_with_emdash;
 }
 
+void kXneurApp::xNeurConfig::gen_tipo_save_correct_misprint(bool stat)
+{
+    xconfig->correct_misprint = stat;
+}
+
+bool kXneurApp::xNeurConfig::gen_tipo_get_correct_misprint()
+{
+    return xconfig->correct_misprint;
+}
+
 /*================================= tab Layout =================================*/
 
 void kXneurApp::xNeurConfig::lay_save_number_layout(int curIndex)

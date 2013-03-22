@@ -1195,78 +1195,78 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>kXneurApp::frmSettings</name>
     <message>
-        <location filename="../src/frmsettings.cpp" line="378"/>
+        <location filename="../src/frmsettings.cpp" line="379"/>
         <source>Select execute file</source>
         <translation>Выберите исполняемый файл</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="402"/>
+        <location filename="../src/frmsettings.cpp" line="403"/>
         <source>Select Directory with icon tray</source>
         <translation>Укажите каталог содержащий иконки для трея</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="470"/>
+        <location filename="../src/frmsettings.cpp" line="471"/>
         <source>You don&apos;t select abbreviation for remove.</source>
         <translation>Вы не выбрали какое сокращение необходимо удалить.</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="484"/>
+        <location filename="../src/frmsettings.cpp" line="485"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="485"/>
+        <location filename="../src/frmsettings.cpp" line="486"/>
         <source>Layout</source>
         <translation>Раскладка</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="486"/>
+        <location filename="../src/frmsettings.cpp" line="487"/>
         <source>Excluded</source>
         <translation>Включено</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="541"/>
+        <location filename="../src/frmsettings.cpp" line="542"/>
         <source>Nothing deleted</source>
         <translation>Нечего удалять</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="541"/>
+        <location filename="../src/frmsettings.cpp" line="542"/>
         <source>You don&apos;t select an application that must be removed</source>
         <translation>Вы не указали какие именно приложение необходимо удалить из списка</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="565"/>
+        <location filename="../src/frmsettings.cpp" line="566"/>
         <source>WAR: Don&apos;t select language!</source>
         <translation>WAR: Не выбран язык!</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="470"/>
-        <location filename="../src/frmsettings.cpp" line="566"/>
+        <location filename="../src/frmsettings.cpp" line="471"/>
+        <location filename="../src/frmsettings.cpp" line="567"/>
         <source>Warning....</source>
         <translation>Предупреждение...</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="372"/>
+        <location filename="../src/frmsettings.cpp" line="373"/>
         <source>Log file not found...</source>
         <translation>Файл журнала не найден...</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="372"/>
+        <location filename="../src/frmsettings.cpp" line="373"/>
         <source>Log file xneurlog.html not found. Maybe you do not have the option of logging!</source>
         <translation>Файл журнала xneur.html не найден. Возможно вы не включили опцию сохранения набираемого текста в журнал, проверьте настройки приложения!</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="566"/>
+        <location filename="../src/frmsettings.cpp" line="567"/>
         <source>You don&apos;t select lang</source>
         <translation>Вы не выбрали язык</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="993"/>
+        <location filename="../src/frmsettings.cpp" line="994"/>
         <source>Open File</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="993"/>
+        <location filename="../src/frmsettings.cpp" line="994"/>
         <source>Audio ( *.wav)</source>
         <translation>Аудио (*.wav)</translation>
     </message>

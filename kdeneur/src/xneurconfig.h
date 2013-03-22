@@ -80,7 +80,8 @@ namespace kXneurApp
         bool gen_tipo_get_correct_three_point();
         void gen_tipo_save_correct_dash(bool);
         bool gen_tipo_get_correct_dash();
-
+        void gen_tipo_save_correct_misprint(bool);
+        bool gen_tipo_get_correct_misprint();
 
         //tab Layout
         void lay_save_number_layout(int);
