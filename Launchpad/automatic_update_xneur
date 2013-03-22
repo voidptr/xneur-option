@@ -135,7 +135,7 @@ echo "Download to Launchpad Lucid..."
 dput ppa xneur_${NEW_VER}-0lucid_source.changes | cat
 
 rm -R ./"xneur-${NEW_VER}"
-
+rm -R ./"xneur-${CUR_VER}"
 fi
 
 echo "Update xneur finished successfully"

@@ -135,6 +135,7 @@ echo "Download to Launchpad Lucid..."
 dput ppa gxneur_${NEW_VER}-0lucid_source.changes | cat
 
 rm -R ./"gxneur-${NEW_VER}"
+rm -R ./"gxneur-${CUR_VER}"
 
 fi
 
