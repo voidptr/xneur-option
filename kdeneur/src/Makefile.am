@@ -49,10 +49,10 @@ EXTRA_DIST = \
 
 # This rule lets GNU make create any moc_*.cpp from the equivalent *.h
 moc_%.cpp: %.h
-	moc $< -o $@
+	moc-qt4 $< -o $@
 
 ui_%.h: %.ui
-	uic $< -o $@
+	uic-qt4 $< -o $@
 
 # Adjust this line according to your resources.qrc
 resources.cpp : resources.qrc octave-gui.png
@@ -62,5 +62,5 @@ resources.cpp : resources.qrc octave-gui.png
 # deleted when we make clean.
 CLEANFILES = $(filter moc_%.cpp,$(nodist_kdeneur_SOURCES)) resources.cpp $(filter ui_%.h,$(nodist_kdeneur_SOURCES))
 
-kdeneur_CXXFLAGS = @X11_CFLAGS@ @QTCORE_CFLAGS@ @QTGUI_CFLAGS@ @QTUITOOLS_CFLAGS@ @QTDBUS_CFLAGS@ @XNEURCONF_CFLAGS@ @DEFAULT_CFLAGS@
-kdeneur_LDFLAGS = @X11_LIBS@ @QTCORE_LIBS@ @QTGUI_LIBS@ @QTUITOOLS_LIBS@ @QTDBUS_LIBS@ @XNEURCONF_LIBS@ 
+kdeneur_CXXFLAGS = @QTCORE_CFLAGS@ @QTGUI_CFLAGS@ @QTUITOOLS_CFLAGS@ @QTDBUS_CFLAGS@ @XNEURCONF_CFLAGS@ @DEFAULT_CFLAGS@
+kdeneur_LDFLAGS = @QTCORE_LIBS@ @QTGUI_LIBS@ @QTUITOOLS_LIBS@ @QTDBUS_LIBS@ @XNEURCONF_LIBS@ 
