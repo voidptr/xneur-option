@@ -142,6 +142,54 @@ void *play_file_thread(void *param)
 		return NULL;
   	}
 
+	/*if (!pipeline)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (pipeline)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+
+	if (!source)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (source)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+	
+	if (!parser)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (parser)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+
+	if (!conv)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (conv)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+
+	if (!volume)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (volume)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+
+	if (!sink)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (sink)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}*/
+	
 	g_object_set(G_OBJECT(source), "location", path, NULL);
 	double i = (double) xconfig->volume_percent / 100.0;
 	g_object_set (G_OBJECT (volume), "volume", (double)i, NULL);
