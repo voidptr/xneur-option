@@ -309,6 +309,16 @@ static int buffer_is_space_last(struct _buffer *p)
 static void buffer_set_i18n_content(struct _buffer *p)
 {
 	// i18n_content
+	/*for (int i = 0; i < p->handle->total_languages; i++)
+	{
+		p->i18n_content[i].content = (char *) realloc(p->i18n_content[i].content, 1);
+		p->i18n_content[i].content[0] = NULLSYM;
+		p->i18n_content[i].symbol_len = (int *) realloc(p->i18n_content[i].symbol_len, 1);
+		p->i18n_content[i].content_unchanged = (char *) realloc(p->i18n_content[i].content_unchanged, 1);
+		p->i18n_content[i].content_unchanged[0] = NULLSYM;
+		p->i18n_content[i].symbol_len_unchanged = (int *) realloc(p->i18n_content[i].symbol_len_unchanged, 1);
+	}*/
+	
 	int languages_mask = get_languages_mask();
 	for (int k = 0; k < p->cur_size-1; k++)
 	{
@@ -345,6 +355,8 @@ static void buffer_set_i18n_content(struct _buffer *p)
 
 static void buffer_set_content(struct _buffer *p, const char *new_content)
 {
+	p->clear(p);
+	
 	char *content = strdup(new_content);
 
 	p->cur_pos = strlen(content);
@@ -352,15 +364,13 @@ static void buffer_set_content(struct _buffer *p, const char *new_content)
 		set_new_size(p, p->cur_pos + 1);
 
 	if (p->content == NULL || p->keycode == NULL || p->keycode_modifiers == NULL)
-	{
-		free(content);
 		return;
-	}
 
 	p->content[p->cur_pos] = NULLSYM;
 	if (!p->cur_pos)
 	{
-		free(content);
+		if (p->content != NULL)
+			free(content);
 		return;
 	}
 
@@ -373,8 +383,18 @@ static void buffer_set_content(struct _buffer *p, const char *new_content)
 	set_new_size(p, p->cur_pos + 1);
 
 	if (p->content == NULL || p->keycode == NULL || p->keycode_modifiers == NULL)
+	{
+		for (int i = 0; i < p->handle->total_languages; i++)
+		{
+			free(p->i18n_content[i].content);
+			free(p->i18n_content[i].symbol_len);
+			free(p->i18n_content[i].content_unchanged);
+			free(p->i18n_content[i].symbol_len_unchanged);
+		}
 		return;
+	}
 
+	
 	buffer_set_i18n_content(p);
 }
 

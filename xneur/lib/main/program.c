@@ -2077,14 +2077,13 @@ static void program_check_misprint(struct _program *p)
 
 	// check leader puctuation char
 	unsigned int offset = 0;
-	int finish_offset = 0;
+	
 	for (offset = 0; offset < strlen(word); offset++)
 	{
-		finish_offset++;
 		if (!ispunct(word[offset]) && (!isdigit(word[offset])))
 			break;
 	}
-
+	
 #ifdef WITH_ENCHANT 
 	size_t count = 0;
 
@@ -2202,7 +2201,7 @@ static void program_check_misprint(struct _program *p)
 		log_message (DEBUG, _("Found a misprint , correction '%s' to '%s'..."), word+offset, possible_word);
 
 		p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
-
+		
 		int backspaces_count = p->buffer->cur_pos - get_last_word_offset (p->buffer->content, p->buffer->cur_pos) - offset;
 		p->event->send_backspaces(p->event, backspaces_count);
 		if (p->last_action == ACTION_AUTOCOMPLETION)
@@ -2216,6 +2215,18 @@ static void program_check_misprint(struct _program *p)
 		memset(new_content, 0, (p->buffer->cur_pos + possible_word_len + backspaces_count + 1) * sizeof(char));
 		new_content = strcat(new_content, p->buffer->content);
 		new_content = strcat(new_content, possible_word);
+
+		int finish_offset = 0;
+		for (int i = strlen(p->correction_buffer->i18n_content[lang].content_unchanged) - 1; i >= 0 ; i--)
+		{
+			finish_offset++;
+			if (  (!ispunct(p->correction_buffer->i18n_content[lang].content_unchanged[i])) && 
+			      (!isdigit(p->correction_buffer->i18n_content[lang].content_unchanged[i])) && 
+			      (!isspace(p->correction_buffer->i18n_content[lang].content_unchanged[i])))
+			{
+				break;
+			}
+		}
 		new_content = strcat(new_content, p->correction_buffer->i18n_content[lang].content_unchanged + strlen(p->correction_buffer->i18n_content[lang].content_unchanged) - finish_offset + 1);
 		p->buffer->set_content(p->buffer, new_content);
 

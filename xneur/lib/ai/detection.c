@@ -271,7 +271,8 @@ static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 			continue;
 		}
 
-		int word_len = strlen(word); 
+		int word_len = strlen(get_last_word(p->content));
+		
 		if ((word_len > 250) || (word_len < 2))
 		{
 			if (possible_words != NULL)
@@ -280,6 +281,8 @@ static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 				free(word);
 			continue;
 		}
+
+		word_len = strlen(word); 
 		
 		int offset = 0;
 		for (offset = 0; offset < word_len; offset++)
