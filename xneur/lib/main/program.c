@@ -294,6 +294,7 @@ static void program_update(struct _program *p)
 
 	p->buffer->save_and_clear(p->buffer, p->last_window);
 	p->correction_buffer->clear(p->correction_buffer);
+	p->correction_action = ACTION_NONE;
 	
 	if (status == FOCUS_NONE)
 		return;
@@ -424,6 +425,7 @@ static void program_process_input(struct _program *p)
 				{
 					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 					p->correction_buffer->clear(p->correction_buffer);
+					p->correction_action = ACTION_NONE;
 					log_message(TRACE, _("Received Button%dPress on window %d with subwindow %d (event type %d)"), p->event->event.xbutton.button, p->event->event.xbutton.window, p->event->event.xbutton.subwindow, type);
 				}
 				
@@ -449,6 +451,7 @@ static void program_process_input(struct _program *p)
 				{
 					p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 					p->correction_buffer->clear(p->correction_buffer);
+					p->correction_action = ACTION_NONE;
 				}
 
 				log_message(TRACE, _("Received Button%dRelease on window %d with subwindow %d (event type %d)"), p->event->event.xbutton.button, p->event->event.xbutton.window, type);
@@ -488,6 +491,7 @@ static void program_process_input(struct _program *p)
 				main_window->init_keymap(main_window);
 				p->buffer = buffer_init(xconfig->handle, main_window->keymap);
 				p->correction_buffer = buffer_init(xconfig->handle, main_window->keymap);
+				p->correction_action = ACTION_NONE;
 				
 				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
 
@@ -1694,7 +1698,7 @@ static void program_check_ellipsis(struct _program *p)
 	
 	log_message (DEBUG, _("Find three points, correction with a ellipsis sign..."));
 
-	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+	//p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
 
 	if (p->correction_action != CORRECTION_NONE)
 		p->correction_action = CORRECTION_NONE;
@@ -1702,6 +1706,8 @@ static void program_check_ellipsis(struct _program *p)
 	p->change_word(p, CHANGE_ELLIPSIS);
 	show_notify(NOTIFY_CORR_ELLIPSIS, NULL);
 
+	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+	
 	p->correction_action = CORRECTION_ELLIPSIS;
 }
 
@@ -2658,6 +2664,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 				XSync(main_window->display, TRUE);
 	
 				p->buffer->clear(p->buffer);
+				p->correction_buffer->clear(p->buffer);
 				p->event->default_event.xkey.keycode = 0;
 			}
 			else if (p->correction_action == CORRECTION_ELLIPSIS) 
