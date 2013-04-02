@@ -385,16 +385,29 @@ static int get_similar_words(struct _xneur_handle *handle, struct _buffer *p)
 int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 {
 	char **word = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
+	char **word_base = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	char **word_unchanged = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
+	char **word_unchanged_base = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	int **sym_len = (int **) malloc((handle->total_languages + 1) * sizeof(int *));
 
 	log_message(DEBUG, _("Processing word:"));
 	for (int i = 0; i < handle->total_languages; i++)
 	{
 		word[i] = strdup(get_last_word(p->i18n_content[i].content));
+		word_base[i] = word[i];
 		del_final_numeric_char(word[i]);
 
+		unsigned int offset = 0;
+		for (offset = 0; offset < strlen(word[i]); offset++)
+		{
+			if (!ispunct(word[i][offset]) && (!isdigit(word[i][offset])))
+				break;
+		}
+		word[i] = word[i] + offset;
+		
 		word_unchanged[i] = strdup(get_last_word(p->i18n_content[i].content_unchanged));
+		word_unchanged_base[i] = word_unchanged[i];
+		word_unchanged[i] = word_unchanged[i] + offset;
 		del_final_numeric_char(word_unchanged[i]);
 		
 		log_message(DEBUG, _("   '%s' on layout '%s'"), word_unchanged[i], handle->languages[i].dir);
@@ -434,11 +447,14 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 
 	for (int i = 0; i < handle->total_languages; i++)
 	{
-		free(word[i]);
-		free(word_unchanged[i]);
+		free(word_base[i]);
+		free(word_unchanged_base[i]);
 	}
+	
 	free(word);
 	free(word_unchanged);
+	free(word_base);
+	free(word_unchanged_base);
 	free(sym_len);
 	return lang;
 }
@@ -446,16 +462,29 @@ int check_lang(struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer *p, int cur_lang)
 {
 	char **word = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
+	char **word_base = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	char **word_unchanged = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
+	char **word_unchanged_base = (char **) malloc((handle->total_languages + 1) * sizeof(char *));
 	int **sym_len = (int **) malloc((handle->total_languages + 1) * sizeof(int *));
 
 	log_message(DEBUG, _("Processing word:"));
 	for (int i = 0; i < handle->total_languages; i++)
 	{
 		word[i] = strdup(get_last_word(p->i18n_content[i].content));
+		word_base[i] = word[i];
 		del_final_numeric_char(word[i]);
 
+		unsigned int offset = 0;
+		for (offset = 0; offset < strlen(word[i]); offset++)
+		{
+			if (!ispunct(word[i][offset]) && (!isdigit(word[i][offset])))
+				break;
+		}
+		word[i] = word[i] + offset;
+		
 		word_unchanged[i] = strdup(get_last_word(p->i18n_content[i].content_unchanged));
+		word_unchanged_base[i] = word_unchanged[i];
+		word_unchanged[i] = word_unchanged[i] + offset;
 		del_final_numeric_char(word_unchanged[i]);
 		
 		log_message(DEBUG, _("   '%s' on layout '%s'"), word_unchanged[i], handle->languages[i].dir);
@@ -499,11 +528,13 @@ int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer 
 
 	for (int i = 0; i < handle->total_languages; i++)
 	{
-		free(word[i]);
-		free(word_unchanged[i]);
+		free(word_base[i]);
+		free(word_unchanged_base[i]);
 	}
 	free(word);
 	free(word_unchanged);
+	free(word_base);
+	free(word_unchanged_base);
 	free(sym_len);
 	return lang;
-}
+} 

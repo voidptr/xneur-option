@@ -1704,7 +1704,7 @@ static void program_check_ellipsis(struct _program *p)
 	
 	log_message (DEBUG, _("Find three points, correction with a ellipsis sign..."));
 
-	//p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
 
 	if (p->correction_action != CORRECTION_NONE)
 		p->correction_action = CORRECTION_NONE;
@@ -1712,7 +1712,7 @@ static void program_check_ellipsis(struct _program *p)
 	p->change_word(p, CHANGE_ELLIPSIS);
 	show_notify(NOTIFY_CORR_ELLIPSIS, NULL);
 
-	p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
+	//p->correction_buffer->set_content(p->correction_buffer, p->buffer->content);
 	
 	p->correction_action = CORRECTION_ELLIPSIS;
 }
@@ -2618,7 +2618,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			else if (p->correction_action == CORRECTION_REGISTERED) 
 			{
 				p->event->send_spaces(p->event, 2);
-				
+
 				p->buffer->set_content(p->buffer, get_last_word(p->correction_buffer->content));
 				p->buffer->set_lang_mask(p->buffer, get_curr_keyboard_group ());
 
@@ -2977,6 +2977,7 @@ static void program_change_word(struct _program *p, enum _change_action action)
 	}
 
 	p->plugin->change_action(p->plugin, action);
+	p->correction_action = CORRECTION_NONE;
 }
 
 static void program_add_word_to_dict(struct _program *p, int new_lang)
@@ -3009,11 +3010,18 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 				continue;
 			}
 
-			struct _list_char *curr_temp_dictionary = xconfig->handle->languages[lang].temp_dictionary;
-			if (curr_temp_dictionary->exist(curr_temp_dictionary, curr_word, BY_REGEXP))
+			unsigned int offset = 0;
+			for (offset = 0; offset < strlen(curr_word); offset++)
 			{
-				char *word_to_dict = malloc((strlen(curr_word) + 7) * sizeof(char));
-				sprintf(word_to_dict, "%s%s%s", "(?i)^", curr_word, "$");
+				if (!ispunct(curr_word[offset]) && (!isdigit(curr_word[offset])))
+					break;
+			}
+			
+			struct _list_char *curr_temp_dictionary = xconfig->handle->languages[lang].temp_dictionary;
+			if (curr_temp_dictionary->exist(curr_temp_dictionary, curr_word+offset, BY_REGEXP))
+			{
+				char *word_to_dict = malloc((strlen(curr_word+offset) + 7) * sizeof(char));
+				sprintf(word_to_dict, "%s%s%s", "(?i)^", curr_word+offset, "$");
 				curr_temp_dictionary->rem(curr_temp_dictionary, word_to_dict);
 				free(word_to_dict);
 			}
@@ -3041,10 +3049,17 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 		return;
 	}
 
-	if (!new_temp_dictionary->exist(new_temp_dictionary, new_word, BY_REGEXP))
+	unsigned int offset = 0;
+	for (offset = 0; offset < strlen(new_word); offset++)
 	{
-		char *word_to_dict = malloc((strlen(new_word) + 7) * sizeof(char));
-		sprintf(word_to_dict, "%s%s%s", "(?i)^", new_word, "$");
+		if (!ispunct(new_word[offset]) && (!isdigit(new_word[offset])))
+			break;
+	}
+
+	if (!new_temp_dictionary->exist(new_temp_dictionary, new_word+offset, BY_REGEXP))
+	{
+		char *word_to_dict = malloc((strlen(new_word+offset) + 7) * sizeof(char));
+		sprintf(word_to_dict, "%s%s%s", "(?i)^", new_word+offset, "$");
 		if (strcmp(word_to_dict, "(?i)^.$") != 0)
 		{
 			new_temp_dictionary->add(new_temp_dictionary, word_to_dict);
@@ -3076,13 +3091,20 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 				free(curr_word);
 				continue;
 			}
+
+			unsigned int offset = 0;
+			for (offset = 0; offset < strlen(curr_word); offset++)
+			{
+				if (!ispunct(curr_word[offset]) && (!isdigit(curr_word[offset])))
+					break;
+			}
 			
 			struct _list_char *curr_dictionary = xconfig->handle->languages[lang].dictionary;
-			if (curr_dictionary->exist(curr_dictionary, curr_word, BY_REGEXP))
+			if (curr_dictionary->exist(curr_dictionary, curr_word+offset, BY_REGEXP))
 			{
-				log_message(DEBUG, _("Remove word '%s' from %s dictionary"), curr_word, xconfig->handle->languages[lang].name);
-				char *word_to_dict = malloc((strlen(curr_word) + 7) * sizeof(char));
-				sprintf(word_to_dict, "%s%s%s", "(?i)^", curr_word, "$");
+				log_message(DEBUG, _("Remove word '%s' from %s dictionary"), curr_word+offset, xconfig->handle->languages[lang].name);
+				char *word_to_dict = malloc((strlen(curr_word+offset) + 7) * sizeof(char));
+				sprintf(word_to_dict, "%s%s%s", "(?i)^", curr_word+offset, "$");
 				curr_dictionary->rem(curr_dictionary, word_to_dict);
 				xconfig->save_dict(xconfig, lang);
 				free(word_to_dict);
@@ -3092,13 +3114,13 @@ static void program_add_word_to_dict(struct _program *p, int new_lang)
 	}
 	
 	struct _list_char *new_dictionary = xconfig->handle->languages[new_lang].dictionary;
-	if (!new_dictionary->exist(new_dictionary, new_word, BY_REGEXP))
+	if (!new_dictionary->exist(new_dictionary, new_word+offset, BY_REGEXP))
 	{		
-		char *word_to_dict = malloc((strlen(new_word) + 7) * sizeof(char));
-		sprintf(word_to_dict, "%s%s%s", "(?i)^", new_word, "$");
+		char *word_to_dict = malloc((strlen(new_word+offset) + 7) * sizeof(char));
+		sprintf(word_to_dict, "%s%s%s", "(?i)^", new_word+offset, "$");
 		if (strcmp(word_to_dict, "(?i)^.$") != 0)
 		{
-			log_message(DEBUG, _("Add word '%s' in %s dictionary"), new_word, xconfig->handle->languages[new_lang].name);
+			log_message(DEBUG, _("Add word '%s' in %s dictionary"), new_word+offset, xconfig->handle->languages[new_lang].name);
 			new_dictionary->add(new_dictionary, word_to_dict);
 		}
 		xconfig->save_dict(xconfig, new_lang);
@@ -3134,10 +3156,18 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 		return;
 	}
 
-	if (isdigit(new_word[len-1]) || ispunct(new_word[len-1]))
+	del_final_numeric_char(new_word);
+	if (strlen(new_word) == 0)
 	{
 		free(new_word);
 		return;
+	}
+
+	unsigned int offset = 0;
+	for (offset = 0; offset < strlen(new_word); offset++)
+	{
+		if (!ispunct(new_word[offset]) && (!isdigit(new_word[offset])))
+			break;
 	}
 	
 	for (int i = 0; i < xconfig->handle->total_languages; i++)
@@ -3154,11 +3184,18 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 			free (old_word);
 			continue;
 		}
-		struct _list_char *old_pattern = xconfig->handle->languages[i].pattern;
-		if (old_pattern->exist(old_pattern, old_word, BY_PLAIN))
+		unsigned int offset = 0;
+		for (offset = 0; offset < strlen(old_word); offset++)
 		{
-			log_message(DEBUG, _("Remove word '%s' from %s pattern"), old_word, xconfig->handle->languages[i].name);
-			old_pattern->rem(old_pattern, old_word);
+			if (!ispunct(old_word[offset]) && (!isdigit(old_word[offset])))
+				break;
+		}
+		
+		struct _list_char *old_pattern = xconfig->handle->languages[i].pattern;
+		if (old_pattern->exist(old_pattern, old_word+offset, BY_PLAIN))
+		{
+			log_message(DEBUG, _("Remove word '%s' from %s pattern"), old_word+offset, xconfig->handle->languages[i].name);
+			old_pattern->rem(old_pattern, old_word+offset);
 			xconfig->save_pattern(xconfig, i);
 		}
 		free (old_word);
@@ -3167,7 +3204,7 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 #ifdef WITH_ASPELL
 	if (xconfig->handle->has_spell_checker[new_lang])
 	{
-		if (!aspell_speller_check(xconfig->handle->spell_checkers[new_lang], new_word, strlen(new_word)))
+		if (!aspell_speller_check(xconfig->handle->spell_checkers[new_lang], new_word+offset, strlen(new_word)))
 		{
 			free(new_word);
 			return;
@@ -3178,7 +3215,7 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 #ifdef WITH_ENCHANT
 	if (xconfig->handle->has_enchant_checker[new_lang])
 	{
-		if (enchant_dict_check(xconfig->handle->enchant_dicts[new_lang], new_word, strlen(new_word)))
+		if (enchant_dict_check(xconfig->handle->enchant_dicts[new_lang], new_word+offset, strlen(new_word+offset)))
 		{
 			free(new_word);
 			return;
@@ -3187,10 +3224,10 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 #endif
 	
 	struct _list_char *new_pattern = xconfig->handle->languages[new_lang].pattern;
-	if (!new_pattern->exist(new_pattern, new_word, BY_PLAIN))
+	if (!new_pattern->exist(new_pattern, new_word+offset, BY_PLAIN))
 	{
-		log_message(DEBUG, _("Add word '%s' in %s pattern"), new_word, xconfig->handle->languages[new_lang].name);
-		new_pattern->add(new_pattern, new_word);
+		log_message(DEBUG, _("Add word '%s' in %s pattern"), new_word+offset, xconfig->handle->languages[new_lang].name);
+		new_pattern->add(new_pattern, new_word+offset);
 		xconfig->save_pattern(xconfig, new_lang);
 	}
 

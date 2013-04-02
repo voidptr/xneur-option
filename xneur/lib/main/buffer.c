@@ -393,7 +393,6 @@ static void buffer_set_content(struct _buffer *p, const char *new_content)
 		}
 		return;
 	}
-
 	
 	buffer_set_i18n_content(p);
 }
