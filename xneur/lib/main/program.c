@@ -1690,10 +1690,16 @@ static void program_check_ellipsis(struct _program *p)
 
 	if (p->buffer->cur_pos < 3)
 		return;
+	
+	char *text = p->buffer->get_utf_string(p->buffer);
+	if (text == NULL)
+		return;
+	
+	int text_len = strlen(text);
 
-	if (((p->buffer->content[p->buffer->cur_pos-1] != '.') && (p->buffer->content[p->buffer->cur_pos-1] != '/')) || 
-		((p->buffer->content[p->buffer->cur_pos-2] != '.') && (p->buffer->content[p->buffer->cur_pos-2] != '/')) ||
-		((p->buffer->content[p->buffer->cur_pos-3] != '.') && (p->buffer->content[p->buffer->cur_pos-3] != '/'))) 
+	if ((text[text_len-1] != '.') || 
+		(text[text_len-2] != '.') ||
+		(text[text_len-3] != '.')) 
 		return;
 	
 	log_message (DEBUG, _("Find three points, correction with a ellipsis sign..."));
