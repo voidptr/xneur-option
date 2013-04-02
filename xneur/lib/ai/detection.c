@@ -114,12 +114,13 @@ static int get_enchant_hits(struct _xneur_handle *handle, char **word, int len, 
 		// check for current language first
 		if (handle->has_enchant_checker[cur_lang])
 		{
-			if (!handle->languages[cur_lang].disable_auto_detection && !handle->languages[cur_lang].excluded &&
-				!enchant_dict_check(handle->enchant_dicts[cur_lang], word[cur_lang], strlen(word[cur_lang])))
-			{
-				log_message(DEBUG, _("   [+] Found this word in %s enchant wrapper dictionary"), handle->languages[cur_lang].name);
-				return cur_lang;
-			}
+			if (strlen(word[cur_lang]) > 0)
+				if (!handle->languages[cur_lang].disable_auto_detection && !handle->languages[cur_lang].excluded &&
+					!enchant_dict_check(handle->enchant_dicts[cur_lang], word[cur_lang], strlen(word[cur_lang])))
+				{
+					log_message(DEBUG, _("   [+] Found this word in %s enchant wrapper dictionary"), handle->languages[cur_lang].name);
+					return cur_lang;
+				}
 		}
 		else
 		{
@@ -130,7 +131,7 @@ static int get_enchant_hits(struct _xneur_handle *handle, char **word, int len, 
 		// check for another languages
 		for (int lang = 0; lang < handle->total_languages; lang++)
 		{
-			if (handle->languages[lang].disable_auto_detection || handle->languages[lang].excluded || lang == cur_lang)
+			if (handle->languages[lang].disable_auto_detection || handle->languages[lang].excluded || lang == cur_lang || (strlen(word[lang]) <= 0)) 
 				continue;
 			
 			if (!handle->has_enchant_checker[lang])

@@ -2105,6 +2105,12 @@ static void program_check_misprint(struct _program *p)
 		return;
 	}
 
+	if (strlen(word+offset) <= 0)
+	{
+		free(word);
+		return;
+	}
+	
 	if (!enchant_dict_check(xconfig->handle->enchant_dicts[lang], word+offset, strlen(word+offset)))
 	{
 		free(word);
@@ -3215,6 +3221,12 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 #ifdef WITH_ENCHANT
 	if (xconfig->handle->has_enchant_checker[new_lang])
 	{
+		if (strlen(new_word+offset) <= 0)
+		{
+			free(new_word);
+			return;
+		}
+		
 		if (enchant_dict_check(xconfig->handle->enchant_dicts[new_lang], new_word+offset, strlen(new_word+offset)))
 		{
 			free(new_word);
