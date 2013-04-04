@@ -102,8 +102,6 @@ echo "Download to Launchpad Quantal..."
 dput ppa hunspell-ru-ie-yo_${NEW_VER}-0quantal_source.changes | cat
 echo "Download to Launchpad Precise..."
 dput ppa hunspell-ru-ie-yo_${NEW_VER}-0precise_source.changes | cat
-echo "Download to Launchpad Oneiric..."
-dput ppa hunspell-ru-ie-yo_${NEW_VER}-0oneiric_source.changes | cat
 
 rm -R ./"hunspell-ru-ie-yo-${NEW_VER}"
 rm -R ./"hunspell-ru-ie-yo-${CUR_VER}"
