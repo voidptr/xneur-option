@@ -1,5 +1,2 @@
 version=3
-opts="uversionmangle=s/^(\d+)-(\d+)-(\d+)$/0~$1$2$3/" \
-  http://code.google.com/p/hunspell-ru/downloads/list \
-  //hunspell-ru.googlecode.com/files/ru_RU_UTF-8_(.+).zip \
-  debian uupdate
+

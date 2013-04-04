@@ -68,7 +68,7 @@ read -p "Build package only on local system (y/N)?" RESPONSE
 echo
 if [ "$RESPONSE" = y ] ; then
 	# If you want to build package on your system uncomment this:
-	dch -v "$NEW_VER-mybuild1" "Minor update."
+	dch -v "$NEW_VER-mybuild1" "New dictionary update."
 	dpkg-buildpackage -rfakeroot
 
 	cd ..
@@ -79,7 +79,7 @@ else
 
 # begin update for basic releases
 dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
-  "Minor update."
+  "New dictionary  update."
 debuild -S -sa
 # end update for basic releases
 
