@@ -7,7 +7,7 @@ Build-Depends-Indep: dictionaries-common-dev (>= 1.10.5)
 Standards-Version: 3.9.3
 Homepage: http://code.google.com/p/hunspell-ru
 
-Package: hunspell-ru
+Package: hunspell-ru-ie-yo
 Architecture: all
 Depends: dictionaries-common (>= 1.0.0), ${misc:Depends}
 Conflicts: openoffice.org (<= 1.0.3-2), myspell-ru, hunspell-ru
