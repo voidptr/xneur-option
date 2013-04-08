@@ -409,7 +409,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/frmsettings.ui" line="162"/>
         <location filename="../src/ui_frmsettings.h" line="1423"/>
         <source>Сorrect two space with a comma and a space</source>
-        <translation>справление двух пробелов на запятую и пробел</translation>
+        <translation>Исправление двух пробелов на запятую и пробел</translation>
     </message>
     <message utf8="true">
         <location filename="../src/frmsettings.ui" line="169"/>
