@@ -83,7 +83,7 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->notif_save_set_font_osd(ui->tabOSD_txtFontOSD->text());
     cfgNeur->notif_save_enable_show_popup_msg(ui->tabPopupMessage_chkShowPopupMessage->isChecked());
     cfgNeur->notif_save_interval_popup_msg(ui->tabPopupMessage_spbIntervalPopup->value());
-
+    //save list actions (sounf osd popup msg)
     cfgNeur->notif_save_list_action_sound(get_lget_from_notif_widget(ui->tabSound_lstListSound));
     cfgNeur->notif_save_list_action_osd(get_lget_from_notif_widget(ui->tabOSD_lstListOSD));
     cfgNeur->notif_save_list_action_popup_msg(get_lget_from_notif_widget(ui->tabPopupMessage_lstListPopupMessage));
@@ -678,23 +678,6 @@ void kXneurApp::frmSettings::notif_get_list_action_sound(QMap<QString, QMultiMap
     }
 }
 
-//QMap<QString, QMultiMap<bool, QString> >  kXneurApp::frmSettings::notif_save_list_action_sound()
-//{
-//    QMap<QString, QMultiMap<bool, QString> > sound;
-//    QMultiMap<bool, QString> tmpMap;
-
-//    for (int i=0; i< ui->tabSound_lstListSound->rowCount();++i)
-//    {
-//        if (ui->tabSound_lstListSound->item(i,2)->checkState()==Qt::Unchecked)
-//            {tmpMap.insert(false, ui->tabSound_lstListSound->item(i,1)->text());}
-//        else
-//            {tmpMap.insert(true, ui->tabSound_lstListSound->item(i,1)->text());}
-//        sound.insert(ui->tabSound_lstListSound->item(i,0)->text(),tmpMap);
-//        tmpMap.clear();
-//    }
-//    return sound;
-//}
-
 void kXneurApp::frmSettings::notif_get_list_action_osd(QMap<QString, QMultiMap<bool, QString> > lstActions)
 {
     ui->tabOSD_lstListOSD->setRowCount(lstActions.size());
@@ -728,23 +711,6 @@ void kXneurApp::frmSettings::notif_get_list_action_osd(QMap<QString, QMultiMap<b
         ++p;++i;
     }
 }
-//QMap<QString, QMultiMap<bool, QString> > kXneurApp::frmSettings::notif_save_list_action_osd()
-//{
-
-//    QMap<QString, QMultiMap<bool, QString> > osd;
-//    QMultiMap<bool, QString> tmpMap;
-
-//    for (int i=0; i< ui->tabSound_lstListSound->rowCount();++i)
-//    {
-//        if (ui->tabSound_lstListSound->item(i,2)->checkState()==Qt::Unchecked)
-//            {tmpMap.insert(false, ui->tabSound_lstListSound->item(i,1)->text());}
-//        else
-//            {tmpMap.insert(true, ui->tabSound_lstListSound->item(i,1)->text());}
-//        osd.insert(ui->tabSound_lstListSound->item(i,0)->text(),tmpMap);
-//        tmpMap.clear();
-//    }
-//    return osd;
-//}
 
 void kXneurApp::frmSettings::notif_get_list_action_popup(QMap<QString, QMultiMap<bool, QString> > lstActions)
 {

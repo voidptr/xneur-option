@@ -36,6 +36,8 @@ void kXneurApp::kXneurTray::createActions(QMap<QString, QMap<QString, QString> >
   trayMenu = new QMenu();
   user_action_menu = new QMenu();
 
+  qDebug()<< "COUNT USER ACTIONS: " << lstAct.size();
+
   exit_app = new QAction(tr("Exit"), this);
   connect(exit_app, SIGNAL(triggered()), SIGNAL(exitApp()));
 
@@ -165,10 +167,10 @@ void kXneurApp::kXneurTray::showJournal()
         int viewer = properties.readEntry("Viewer", 0);
         switch(viewer)
         {
-        case 0:
+        case 0://browser
             QDesktopServices::openUrl(QUrl(logFile));
             break;
-        case 1:
+        case 1://logviewer
             break;
         }
     }

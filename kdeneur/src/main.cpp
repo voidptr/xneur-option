@@ -17,7 +17,6 @@
 #include <QTime>
 #include <QLibraryInfo>
 
-#include <unistd.h>
 static const KLocalizedString description =ki18n("kXneur (KDE X Neural Switcher) is xNeur front-end for KDE ( http://xneur.ru ).\nThis version work with XNeur v.0.16 only");
 static const char version[] = "0.16.0";
 
@@ -27,11 +26,8 @@ int main(int argc, char *argv[])
   QTextCodec::setCodecForTr(codec);
   QTextCodec::setCodecForCStrings(codec);
   QTextCodec::setCodecForLocale(codec);
-#ifdef QT_NO_DEBUG
   KConfig conf("kdeneurrc");
   sleep(conf.group("Properties").readEntry("WaiTime", 0));
-  qDebug() << "RELEASE";
-#endif
   kXneurApp::kXneur neur(argc, argv);
   neur.setApplicationName("kdeNeur");
   neur.setWindowIcon(QIcon(":/icons/kdeneur.png"));

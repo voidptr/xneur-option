@@ -206,10 +206,7 @@ void kXneurApp::xNeurConfig::test(QString str)
     qDebug()<<str;
 }
 
-//void kXneurApp::xNeurConfig::delayStartApp(int time)
-//{
-//    xconfig->
-//}
+
 
 /*================================= tab General =================================*/
 void kXneurApp::xNeurConfig::gen_main_save_manual_switch(bool stat)
@@ -552,8 +549,10 @@ QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_use
     QMap<QString, QMap<QString, QString> > lstUserAction;
     QMap<QString, QString> lstNameCmd;
     lstModifer << "Shift" << "Control" << "Alt" << "Super";
+    //FIXME: actions_count allways return  zero (0)
     for (int action = 0; action < xconfig->actions_count; action++)
     {
+        qDebug() << "ACTIONS " << action;
         for (int i = 0; i < TOTAL_MODIFER; ++i)
         {
                 if ((xconfig->actions[action].hotkey.modifiers & (0x1 << i)) == 0)
@@ -562,6 +561,7 @@ QMap<QString, QMap<QString, QString> >  kXneurApp::xNeurConfig::hot_get_list_use
                 }
 
                text += QString("%1+").arg(lstModifer.at(i));
+               test(text);
         }
         text += QString("%1").arg(xconfig->actions[action].hotkey.key);
 
