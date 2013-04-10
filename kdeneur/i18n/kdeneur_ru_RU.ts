@@ -1261,12 +1261,12 @@ p, li { white-space: pre-wrap; }
         <translation>Вы не выбрали язык</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="994"/>
+        <location filename="../src/frmsettings.cpp" line="960"/>
         <source>Open File</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/frmsettings.cpp" line="994"/>
+        <location filename="../src/frmsettings.cpp" line="960"/>
         <source>Audio ( *.wav)</source>
         <translation>Аудио (*.wav)</translation>
     </message>
@@ -1318,7 +1318,7 @@ and manually patch new configuration which will be created after first run.</sou
 <context>
     <name>kXneurApp::kXneurTray</name>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="39"/>
+        <location filename="../src/kxneurtray.cpp" line="41"/>
         <source>Exit</source>
         <translation>Выйти</translation>
     </message>
@@ -1327,58 +1327,58 @@ and manually patch new configuration which will be created after first run.</sou
         <translation type="obsolete">О kXneur...</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="42"/>
+        <location filename="../src/kxneurtray.cpp" line="44"/>
         <source>kdeNeur About...</source>
         <translation>О kdeNeur</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="45"/>
+        <location filename="../src/kxneurtray.cpp" line="47"/>
         <source>Keyboard Properties...</source>
         <translation>Параметры клавиатуры...</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="48"/>
+        <location filename="../src/kxneurtray.cpp" line="50"/>
         <source>Properties</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="51"/>
+        <location filename="../src/kxneurtray.cpp" line="53"/>
         <source>View log...</source>
         <translation>Посмотреть журнал...</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="56"/>
+        <location filename="../src/kxneurtray.cpp" line="58"/>
         <source>User Action</source>
         <translation>Пользовательское действие</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="65"/>
-        <location filename="../src/kxneurtray.cpp" line="253"/>
+        <location filename="../src/kxneurtray.cpp" line="67"/>
+        <location filename="../src/kxneurtray.cpp" line="255"/>
         <source>Start daemon</source>
         <translation>Запустить демон</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="80"/>
+        <location filename="../src/kxneurtray.cpp" line="82"/>
         <source>X Neural Switcher running</source>
         <translation>X Neural Switcher работает</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="177"/>
+        <location filename="../src/kxneurtray.cpp" line="179"/>
         <source>Log file not found...</source>
         <translation>Файл журнала не найден...</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="177"/>
+        <location filename="../src/kxneurtray.cpp" line="179"/>
         <source>Log file xneurlog.html not found. Maybe you do not have the option of logging!</source>
         <translation>Файл журнала xneur.html не найден. Возможно вы не включили опцию сохранения набираемого текста в журнал, проверьте настройки приложения!</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="233"/>
+        <location filename="../src/kxneurtray.cpp" line="235"/>
         <source>Error: Execute Actions</source>
         <translation>Ошибка: Выполнения пользовательского действия</translation>
     </message>
     <message>
-        <location filename="../src/kxneurtray.cpp" line="249"/>
+        <location filename="../src/kxneurtray.cpp" line="251"/>
         <source>Stop daemon</source>
         <translation>Остановить демон</translation>
     </message>
