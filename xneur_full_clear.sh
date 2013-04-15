@@ -1,4 +1,5 @@
 #!/bin/bash
+
 UID_ROOT=0
 if [ "$UID" -ne "$UID_ROOT" ]
 then
