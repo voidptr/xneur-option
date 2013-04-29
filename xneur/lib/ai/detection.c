@@ -174,7 +174,6 @@ static int get_proto_hits(struct _xneur_handle *handle, char *word, int *sym_len
 		strncpy(proto, word + local_offset, n_bytes);
 		proto[n_bytes] = NULLSYM;
 
-		log_message (ERROR, "%s", proto);
 		if (handle->languages[lang].proto->exist(handle->languages[lang].proto, proto, BY_PLAIN))
 		{
 			free(proto);
@@ -202,7 +201,6 @@ static int get_big_proto_hits(struct _xneur_handle *handle, char *word, int *sym
 		strncpy(proto, word+local_offset, n_bytes);
 		proto[n_bytes] = NULLSYM;
 
-		log_message (ERROR, "%s", proto);
 		if (handle->languages[lang].proto->exist(handle->languages[lang].big_proto, proto, BY_PLAIN))
 		{
 			free(proto);
