@@ -121,6 +121,9 @@ static void update_focus (void)
 	Window new_window;
 	while (TRUE)
 	{
+		// Wait for new window was focused.
+		usleep(500000);
+
 		int revert_to;
 		XGetInputFocus(display, &new_window, &revert_to);
 
@@ -129,11 +132,13 @@ static void update_focus (void)
 			break;
 
 		printf("New window empty\n");
-		usleep(1000);
+		usleep(100000);
 	}
 	
+	if (parent_window == new_window)
+		return;
 	printf("Focused window %d\n", (int) new_window);
-	
+
 	// Up to heighted window
 	parent_window = new_window;
 	while (TRUE)
@@ -143,11 +148,12 @@ static void update_focus (void)
 		Window *children;
 
 		int is_same_screen = XQueryTree(display, parent_window, &root, &parent, &children, &children_count);
+		if (children != NULL)
+			XFree(children);
 		if (!is_same_screen || parent == None || parent == root)
 			break;
 		
 		parent_window = parent;
-		XFree(children);
 	}	
 	
 	set_mask_to_window(parent_window, PointerMotionMask | PropertyChangeMask | FocusChangeMask | KeyReleaseMask);
@@ -405,11 +411,14 @@ int main(int argc, char *argv[])
 
 	update_focus();
 	XEvent e;
+	int k = 0;
 	while (TRUE)
 	{
 		XNextEvent(display, &e);
 		switch (e.type)
 		{
+			//case LeaveNotify:
+			//case EnterNotify:
 			case FocusIn:
 			case FocusOut:	
 			{
@@ -419,7 +428,9 @@ int main(int argc, char *argv[])
 			}
 			case MotionNotify:
 			{
+				k++;
 
+				printf("Motion %d\n",k);
 				cursor_show();
 				break;
 			}
