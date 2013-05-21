@@ -3,7 +3,7 @@ dnl Created by Anjuta application wizard.
 
 AC_INIT(xcurf, 0.3)
 
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+AM_INIT_AUTOMAKE(xcurf, 0.3)
 AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE
 

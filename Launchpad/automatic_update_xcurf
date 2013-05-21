@@ -25,7 +25,7 @@ hg pull
 hg update
 hg merge
 
-export CUR_VER=$(cat ../xcurf/configure.in | grep "AM_INIT_AUTOMAKE" | sed -e "s/^AM_INIT_AUTOMAKE(xcurf, \(.*\))$/\1/")
+export CUR_VER=$(cat ../xcurf/configure.ac | grep "AM_INIT_AUTOMAKE" | sed -e "s/^AM_INIT_AUTOMAKE(xcurf, \(.*\))$/\1/")
 export NEW_VER="${CUR_VER}+hg${LAST_REVISION}"
 
 echo "OLD_VER = ${OLD_VER}"
@@ -60,6 +60,7 @@ rm -R ./"xcurf-tmp"
 
 #Create .orig.tar.gz
 tar -czf "xcurf_$NEW_VER.orig.tar.gz" "xcurf-${CUR_VER}"
+tar -czf "xcurf_$CUR_VER.orig.tar.gz" "xcurf-${CUR_VER}"
 
 cd "xcurf-${CUR_VER}"
 # restore debianize settings
