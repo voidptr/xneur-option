@@ -1051,14 +1051,14 @@ static void free_structures(struct _xneur_config *p)
 
 static void xneur_config_reload(struct _xneur_config *p)
 {
-	int process_id = p->get_pid(p);
+	pid_t process_id = p->get_pid(p);
 	if (process_id <= 0)
 		return;
 
 	kill(process_id, SIGHUP);
 }
 
-static int xneur_config_set_pid(struct _xneur_config *p, int process_id)
+static pid_t xneur_config_set_pid(struct _xneur_config *p, pid_t process_id)
 {
 	// Set lock file to ~/.xneur/.cache/lock
 	char *lock_file_path_name = get_home_file_path_name(CACHEDIR, LOCK_NAME);
@@ -1091,7 +1091,7 @@ static int xneur_config_set_pid(struct _xneur_config *p, int process_id)
 
 static int xneur_config_kill(struct _xneur_config *p)
 {
-	int process_id = p->get_pid(p);
+	pid_t process_id = p->get_pid(p);
 	if (process_id <= 0)
 		return FALSE;
 
@@ -1115,7 +1115,7 @@ static int xneur_config_get_pid(struct _xneur_config *p)
 	if (pid_str == NULL)
 		return -1;
 
-	int process_id = atoi(pid_str);
+	pid_t process_id = atoi(pid_str);
 	free(pid_str);
 
 	if (getsid(process_id) == -1)

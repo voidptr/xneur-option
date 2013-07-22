@@ -181,7 +181,7 @@ struct _xneur_config
 {
 	char *version;
 
-	int pid;
+	pid_t pid;
 	
 	void (*get_library_version) (int *major_version, int *minor_version); // This function MUST be first
 
@@ -284,8 +284,8 @@ struct _xneur_config
 	int   (*kill) (struct _xneur_config *p);
 	void  (*save_dict) (struct _xneur_config *p, int lang);
 	void  (*save_pattern) (struct _xneur_config *p, int lang);
-	int   (*set_pid) (struct _xneur_config *p, int pid);
-	int   (*get_pid) (struct _xneur_config *p);
+	pid_t (*set_pid) (struct _xneur_config *p, pid_t pid);
+	pid_t (*get_pid) (struct _xneur_config *p);
 	char* (*get_lang_dir) (struct _xneur_config *p, int lang);
 	const char* (*get_log_level_name) (struct _xneur_config *p);
 	void  (*uninit) (struct _xneur_config *p);

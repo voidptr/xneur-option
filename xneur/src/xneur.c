@@ -211,16 +211,16 @@ static void xneur_set_lock(void)
 {
 	if (xneur_check_lock == TRUE)
 	{
-		int locked_pid = xconfig->get_pid(xconfig);
+		pid_t locked_pid = xconfig->get_pid(xconfig);
 		if (locked_pid != -1)
 		{
-			log_message(ERROR, _(PACKAGE " already running with pid %d"), locked_pid);
+			log_message(ERROR, _(PACKAGE " already running with pid %ld"), locked_pid);
 			exit(EXIT_FAILURE);
 		}
 	}
 
-	int process_id = getpid();
-	int result = xconfig->set_pid(xconfig, process_id);
+	pid_t process_id = getpid();
+	pid_t result = xconfig->set_pid(xconfig, process_id);
 	if (result == -1)
 		exit(EXIT_FAILURE);
 }
