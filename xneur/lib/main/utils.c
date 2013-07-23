@@ -182,6 +182,12 @@ void grab_modifier_keys(Window window, int is_grab)
 
 	if (modmap)
 		XFreeModifiermap (modmap);
+
+	int menu_kc = XKeysymToKeycode(main_window->display, XK_Menu);
+	if (is_grab)
+		XGrabKey(main_window->display, menu_kc, AnyModifier, window, FALSE, GrabModeAsync, GrabModeAsync);
+	else
+		XUngrabKey(main_window->display, menu_kc, AnyModifier, window);
 	
 	return;
 }
