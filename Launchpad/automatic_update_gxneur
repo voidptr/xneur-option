@@ -79,10 +79,15 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
+dch -b --force-distribution --distribution "saucy" -v "${NEW_VER}-0saucy" \
   "Minor update."
 debuild -S -sa
 # end update for basic releases
+
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raringl" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "quantal" -v "${NEW_VER}-0quantal" \
@@ -95,21 +100,6 @@ dch -b --force-distribution --distribution "precise" -v "${NEW_VER}-0precise" \
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "oneiric" -v "${NEW_VER}-0oneiric" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "natty" -v "${NEW_VER}-0natty" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "maverick" -v "${NEW_VER}-0maverick" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-0lucid" \
   "Automated backport upload; no source changes."
 debuild -S -sd
@@ -117,18 +107,14 @@ debuild -S -sd
 # end update for other releases
 
 cd ..
+echo "Download to Launcshpad Saucy..."
+dput ppa gxneur_${NEW_VER}-0saucy_source.changes | cat
 echo "Download to Launcshpad Raring..."
 dput ppa gxneur_${NEW_VER}-0raring_source.changes | cat
 echo "Download to Launchpad Quantal..."
 dput ppa gxneur_${NEW_VER}-0quantal_source.changes | cat
 echo "Download to Launchpad Precise..."
 dput ppa gxneur_${NEW_VER}-0precise_source.changes | cat
-echo "Download to Launchpad Oneiric..."
-dput ppa gxneur_${NEW_VER}-0oneiric_source.changes | cat
-echo "Download to Launchpad Natty..."
-dput ppa gxneur_${NEW_VER}-0natty_source.changes | cat
-echo "Download to Launchpad Maverick..."
-dput ppa gxneur_${NEW_VER}-0maverick_source.changes | cat
 echo "Download to Launchpad Lucid..."
 dput ppa gxneur_${NEW_VER}-0lucid_source.changes | cat
 
