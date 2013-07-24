@@ -950,10 +950,6 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton33");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->compatibility_with_completion);
 	
-	// Don't process word when pressed Enter mode
-	widget = glade_xml_get_widget (gxml, "checkbutton12");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->dont_process_when_press_enter);
-
 	// User Actions List set
 	treeview = glade_xml_get_widget (gxml, "treeview9");
 
@@ -1147,7 +1143,11 @@ void xneur_preference(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_switch);
 	widget = glade_xml_get_widget (gxml, "checkbutton35");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_full_screen);
-
+	widget = glade_xml_get_widget (gxml, "checkbutton12");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_enter);
+	widget = glade_xml_get_widget (gxml, "checkbutton45");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_tab);
+	
 	// Dont Send KeyRelease Mode
 	widget = glade_xml_get_widget (gxml, "checkbutton26");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->dont_send_key_release);
@@ -2161,9 +2161,6 @@ void xneur_save_preference(GladeXML *gxml)
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton11");
 	xconfig->flush_buffer_when_press_enter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
-	
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton12");
-	xconfig->dont_process_when_press_enter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton33");
 	xconfig->compatibility_with_completion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
@@ -2239,10 +2236,14 @@ void xneur_save_preference(GladeXML *gxml)
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton24");
 	xconfig->troubleshoot_delete = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton25");
-	xconfig->troubleshoot_switch = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));;
+	xconfig->troubleshoot_switch = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton35");
-	xconfig->troubleshoot_full_screen = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));;
-
+	xconfig->troubleshoot_full_screen = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton12");
+	xconfig->troubleshoot_enter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton45");
+	xconfig->troubleshoot_tab = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
+	
 	// Dont send KeyRelease mode
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton26");
 	xconfig->dont_send_key_release = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

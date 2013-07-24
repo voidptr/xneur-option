@@ -233,7 +233,6 @@ struct _xneur_config
 	
 	int   flush_buffer_when_press_escape;		// Flush internal buffer when pressed Escape
 	int   flush_buffer_when_press_enter;		// Flush internal buffer when pressed Enter or Tab
-	int   dont_process_when_press_enter;		// Don't correct word when pressed Enter
 	int   check_lang_on_process;			// Check lang on input process
 	int   disable_capslock;				// Disable CapsLock use
 
@@ -265,6 +264,10 @@ struct _xneur_config
 	int troubleshoot_delete;
 	int troubleshoot_switch;
 	int troubleshoot_full_screen;
+	int troubleshoot_enter;		// Don't correct word when pressed Enter
+	int troubleshoot_tab;		// Don't correct word when pressed Tab
+	int troubleshoot_ctrl;		// Don't correct word when pressed Enter
+	int troubleshoot_shift;		// Don't correct word when pressed Tab
 	
 	int compatibility_with_completion;
 		

@@ -58,7 +58,7 @@ static const char *option_names[] = 	{
 						"DefaultXkbGroup", "AddSound", "PlaySounds", "SendDelay", "LayoutRememberModeForApp",
 						"LogSave", "ReplaceAbbreviation",
 						"ReplaceAbbreviationIgnoreLayout", "CorrectIncidentalCaps", "CorrectTwoCapitalLetter",
-						"FlushBufferWhenPressEnter", "DontProcessWhenPressEnter", "AddAction",
+						"FlushBufferWhenPressEnter", "TroubleshootEnter", "AddAction",
 						"ShowOSD", "AddOSD", "FontOSD", "ShowPopup", "AddPopup", 
 	                    "CorrectSpaceWithPunctuation", "AddSpaceAfterAutocompletion", "LoadModule",
 						"LogSize", "LogMail", "LogHostIP", "SoundVolumePercent",
@@ -69,7 +69,8 @@ static const char *option_names[] = 	{
 						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
 						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace","CorrectTwoMinusWithDash",
 						"CorrectCWithCopyright", "CorrectTMWithTrademark", "CorrectRWithRegistered",
-						"CorrectDashWithEmDash","CorrectThreePointsWithEllipsis", "CorrectMisprint", "CheckSimilarWords"	
+						"CorrectDashWithEmDash","CorrectThreePointsWithEllipsis", "CorrectMisprint", "CheckSimilarWords",
+						"TroubleshootTab", "TroubleshootCtrl", "TroubleshootShift", 
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -469,7 +470,7 @@ static void parse_line(struct _xneur_config *p, char *line)
 				break;
 			}
 
-			p->dont_process_when_press_enter = index;
+			p->troubleshoot_enter = index;
 			break;
 		}
 		case 27: // User actions
@@ -973,6 +974,42 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->check_similar_words = index;
 			break;
 		}
+		case 66: // Don't process word when pressed Tab Mode
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for don't processing word when pressed Tab mode specified"));
+				break;
+			}
+
+			p->troubleshoot_tab = index;
+			break;
+		}
+		case 67: // Don't process word when pressed Ctrl Mode
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for don't processing word when pressed Ctrl mode specified"));
+				break;
+			}
+
+			p->troubleshoot_ctrl = index;
+			break;
+		}
+		case 68: // Don't process word when pressed Shift Mode
+		{
+			int index = get_option_index(bool_names, param);
+			if (index == -1)
+			{
+				log_message(WARNING, _("Invalid value for don't processing word when pressed Shift mode specified"));
+				break;
+			}
+
+			p->troubleshoot_shift = index;
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1436,11 +1473,6 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "#FlushBufferWhenPressEnter Yes\n");
 	fprintf(stream, "FlushBufferWhenPressEnter %s\n\n", p->get_bool_name(p->flush_buffer_when_press_enter));
 
-	fprintf(stream, "# This option disable or enable processing word when pressed Enter or Tab\n");
-	fprintf(stream, "# Example:\n");
-	fprintf(stream, "#DontProcessWhenPressEnter Yes\n");
-	fprintf(stream, "DontProcessWhenPressEnter %s\n\n", p->get_bool_name(p->dont_process_when_press_enter));
-
 	fprintf(stream, "# This option disable or enable show OSD\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#ShowOSD Yes\n");
@@ -1520,9 +1552,13 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Disable autoswitching if pressed up arrow\nTroubleshootUpArrow %s\n", p->get_bool_name(p->troubleshoot_up_arrow));
 	fprintf(stream, "# Disable autoswitching if pressed down arrow\nTroubleshootDownArrow %s\n", p->get_bool_name(p->troubleshoot_down_arrow));
 	fprintf(stream, "# Disable autoswitching if pressed delete\nTroubleshootDelete %s\n", p->get_bool_name(p->troubleshoot_delete));
+	fprintf(stream, "# Disable autoswitching if pressed enter\nTroubleshootEnter %s\n", p->get_bool_name(p->troubleshoot_enter));
+	fprintf(stream, "# Disable autoswitching if pressed tab\nTroubleshootTab %s\n", p->get_bool_name(p->troubleshoot_tab));
+	fprintf(stream, "# Disable autoswitching if pressed Ctrl\nTroubleshootCtrl %s\n", p->get_bool_name(p->troubleshoot_ctrl));
+	fprintf(stream, "# Disable autoswitching if pressed Shift\nTroubleshootShift %s\n", p->get_bool_name(p->troubleshoot_shift));
 	fprintf(stream, "# Disable autoswitching if layout switched\nTroubleshootSwitch %s\n", p->get_bool_name(p->troubleshoot_switch));
 	fprintf(stream, "# Disable autoswitching for full screen apps\nTroubleshootFullScreen %s\n\n", p->get_bool_name(p->troubleshoot_full_screen));
-	
+
 	fprintf(stream, "# Work-arround for compatibility with the completion\nCompatibilityWithCompletion %s\n\n", p->get_bool_name(p->compatibility_with_completion));
 
 	fprintf(stream, "# Disabling this option will add any application to the list of excluded applications.\nTrackingInput %s\n\n", p->get_bool_name(p->tracking_input));

@@ -503,14 +503,22 @@ msgid "Delete"
 msgstr "Delete"
 
 #: glade/config.glade:2386
+msgid "Enter"
+msgstr "Ввод (Enter)"
+
+#: glade/config.glade:2402
+msgid "Tab"
+msgstr "Табуляция (Tab)"
+
+#: glade/config.glade:2418
 msgid "You changed layout"
 msgstr "Вы переключили раскладку"
 
-#: glade/config.glade:2402
+#: glade/config.glade:2434
 msgid "Application in full screen mode"
 msgstr "Приложение в полноэкранном режиме"
 
-#: glade/config.glade:2433
+#: glade/config.glade:2465
 msgid ""
 "This will help avoid switching layout when editing parts previously "
 "introduced word."
@@ -518,46 +526,42 @@ msgstr ""
 "Это поможет избежать переключений раскладки при редактировании частей ранее "
 "введенного слова"
 
-#: glade/config.glade:2462
+#: glade/config.glade:2494
 msgid "Don't switch layout if before input where pressed"
 msgstr "Не переключать раскладку, если перед вводом были нажаты"
 
-#: glade/config.glade:2493
+#: glade/config.glade:2525
 msgid "Flush internal buffer on Escape"
 msgstr "Сбрасывать внутренний буфер при нажатии Escape"
 
-#: glade/config.glade:2509
+#: glade/config.glade:2541
 msgid "Flush internal buffer on Enter or Tab"
 msgstr "Сбрасывать внутренний буфер при нажатии Enter или Tab"
 
-#: glade/config.glade:2525
-msgid "Don't process words on Enter or Tab"
-msgstr "Не проверять слово при нажатии Enter или Tab"
-
-#: glade/config.glade:2541
+#: glade/config.glade:2560
 msgid "Compatibility with the completion"
 msgstr "Совместимость с автодополнением"
 
-#: glade/config.glade:2563
+#: glade/config.glade:2582
 msgid "Additional"
 msgstr "Дополнительно"
 
-#: glade/config.glade:2594
+#: glade/config.glade:2613
 msgid "Monitor the input"
 msgstr "Следить за вводом"
 
-#: glade/config.glade:2613
+#: glade/config.glade:2632
 msgid ""
 "Disabling this option will add any application to the list of excluded "
 "applications."
 msgstr ""
 "Выключение этой опции добавит ВСЕ приложения в список исключенных приложений."
 
-#: glade/config.glade:2623
+#: glade/config.glade:2642
 msgid "Monitor the mouse"
 msgstr "Следить за мышью"
 
-#: glade/config.glade:2642
+#: glade/config.glade:2661
 msgid ""
 "Disabling this option will disable mouse tracking. Reset buffer when "
 "clicking the mouse will not."
@@ -565,23 +569,23 @@ msgstr ""
 "Выключение этой опции выключит слежение за мышью. Сброса буфера при клике "
 "мышью не будет."
 
-#: glade/config.glade:2658
+#: glade/config.glade:2677
 msgid "Tracking input"
 msgstr "Слежение за вводом"
 
-#: glade/config.glade:2685
+#: glade/config.glade:2704
 msgid "<b>Troubleshooting</b>"
 msgstr "<b>Устранение проблем</b>"
 
-#: glade/config.glade:2737
+#: glade/config.glade:2756
 msgid "Delay before sending events (in milliseconds)"
 msgstr "Задержка перед отправкой событий (в миллисекундах)"
 
-#: glade/config.glade:2749
+#: glade/config.glade:2768
 msgid "Log verbosity level"
 msgstr "Уровень подробности выводимых сообщений"
 
-#: glade/config.glade:2762
+#: glade/config.glade:2781
 msgid ""
 "None\n"
 "Error\n"
@@ -597,31 +601,31 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2783
+#: glade/config.glade:2802
 msgid "Dont send KeyRelease event"
 msgstr "Не отправлять событие KeyRelease"
 
-#: glade/config.glade:2828
+#: glade/config.glade:2847
 msgid "<b>Advanced</b>"
 msgstr "<b>Специальное</b>"
 
-#: glade/config.glade:2895
+#: glade/config.glade:2914
 msgid "<b>Plugins</b>"
 msgstr "<b>Модули</b>"
 
-#: glade/config.glade:2936
+#: glade/config.glade:2955
 msgid "Autostartup"
 msgstr "Запускать автоматически при старте системы"
 
-#: glade/config.glade:2961
+#: glade/config.glade:2980
 msgid "Delay before startup"
 msgstr "Задержка перед запуском"
 
-#: glade/config.glade:3004
+#: glade/config.glade:3023
 msgid "Startup"
 msgstr "Параметры запуска"
 
-#: glade/config.glade:3037
+#: glade/config.glade:3056
 msgid ""
 "Show flag\n"
 "Show text\n"
@@ -631,7 +635,7 @@ msgstr ""
 "Показывать текст\n"
 "Показывать значок"
 
-#: glade/config.glade:3051
+#: glade/config.glade:3070
 msgid ""
 "Used for rendering built-in engine\n"
 "Used for rendering Status Icon engine\n"
@@ -641,28 +645,28 @@ msgstr ""
 "Использовать для отрисовки значка движок значков статуса\n"
 "Использовать для отрисовки значка движок индикаторов приложений"
 
-#: glade/config.glade:3074
+#: glade/config.glade:3093
 msgid "Set the extension to move the icon in the shell area of the Gnome 3."
 msgstr ""
 "Установить расширение для перемещения иконки в область оболочки Gnome 3."
 
-#: glade/config.glade:3089
+#: glade/config.glade:3108
 msgid "Gnome 3 Shell"
 msgstr "Оболочка Gnome 3"
 
-#: glade/config.glade:3115
+#: glade/config.glade:3134
 msgid "UI"
 msgstr "Внешний вид"
 
-#: glade/config.glade:3152
+#: glade/config.glade:3171
 msgid "Keyboard properties command"
 msgstr "Команда запуска параметров клавиатуры"
 
-#: glade/config.glade:3240
+#: glade/config.glade:3259
 msgid "System"
 msgstr "Системное"
 
-#: glade/config.glade:3273
+#: glade/config.glade:3292
 msgid "<b>Properties</b>"
 msgstr "<b>Параметры</b>"
 
@@ -965,6 +969,9 @@ msgstr "X Neural Switcher остановлен ("
 #: src/trayicon.c:585
 msgid "X Neural Switcher"
 msgstr "X Neural Switcher"
+
+#~ msgid "Don't process words on Enter or Tab"
+#~ msgstr "Не проверять слово при нажатии Enter или Tab"
 
 #~ msgid "Enable pattern mining and recognition (autocompletion)"
 #~ msgstr "Включить запоминание паттернов и автодополнение"

@@ -70,7 +70,8 @@
 #define KLB_DEL_SYM             2	// Backspace
 #define KLB_SPACE               3	// Word end (space etc)
 #define KLB_ENTER               4	// Enter
-#define KLB_CLEAR               5	// Home, End etc
+#define KLB_TAB 		        5	// Tab
+#define KLB_CLEAR               6	// Home, End etc
 
 #define MANUAL_FLAG_UNSET	0
 #define MANUAL_FLAG_SET		1
@@ -162,8 +163,9 @@ static int get_auto_action(struct _program *p, KeySym key, int modifier_mask)
 		case XK_Delete:
 			return KLB_NO_ACTION;
 		case XK_Return:
-		case XK_Tab:
 			return KLB_ENTER;
+		case XK_Tab:
+			return KLB_TAB;
 		case XK_space:
 		/*case XK_equal:
 		case XK_plus:
@@ -855,15 +857,17 @@ static void program_perform_auto_action(struct _program *p, int action)
 			return;
 		}
 		case KLB_ENTER:
+		case KLB_TAB:	
 		case KLB_SPACE:
 		case KLB_ADD_SYM:
 		{	
-			if (action == KLB_ENTER && xconfig->flush_buffer_when_press_enter)
+			if (((action == KLB_ENTER) || (action == KLB_TAB))&& xconfig->flush_buffer_when_press_enter)
 			{
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				p->correction_buffer->clear(p->correction_buffer);
 			}
-			if (action == KLB_ENTER && xconfig->dont_process_when_press_enter && !xconfig->flush_buffer_when_press_enter)
+			if (((action == KLB_ENTER && xconfig->troubleshoot_enter) || (action == KLB_TAB && xconfig->troubleshoot_tab)) && 
+			     !xconfig->flush_buffer_when_press_enter)
 				action = KLB_ADD_SYM;
 			
 			if (p->changed_manual == MANUAL_FLAG_NEED_FLUSH)
@@ -921,8 +925,6 @@ static void program_perform_auto_action(struct _program *p, int action)
 				p->last_action = ACTION_NONE;
 				
 				p->check_pattern(p, TRUE);
-
-				
 				
 				// Unblock keyboard
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);

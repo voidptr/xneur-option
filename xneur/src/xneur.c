@@ -185,7 +185,6 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Disable CapsLock use mode set to %s"), _(xconfig->get_bool_name(xconfig->disable_capslock)));
 	log_message(LOG, _("Flush internal buffer when pressed Escape mode set to %s"), _(xconfig->get_bool_name(xconfig->flush_buffer_when_press_escape)));
 	log_message(LOG, _("Flush internal buffer when pressed Enter or Tab mode set to %s"), _(xconfig->get_bool_name(xconfig->flush_buffer_when_press_enter)));
-	log_message(LOG, _("Don't process word when pressed Enter or Tab mode set to %s"), _(xconfig->get_bool_name(xconfig->dont_process_when_press_enter)));
 	log_message(LOG, _("Show OSD mode set to %s"), _(xconfig->get_bool_name(xconfig->show_osd)));
 	log_message(LOG, _("Show popup messages mode set to %s"), _(xconfig->get_bool_name(xconfig->show_popup)));
 	log_message(LOG, _("Popup expire timeout set to %d"), xconfig->popup_expire_timeout);
@@ -198,6 +197,8 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Disable autoswitching if pressed up arrow mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_up_arrow)));
 	log_message(LOG, _("Disable autoswitching if pressed down arrow mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_down_arrow)));
 	log_message(LOG, _("Disable autoswitching if pressed delete mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_delete)));
+	log_message(LOG, _("Disable autoswitching if pressed enter mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_enter)));
+	log_message(LOG, _("Disable autoswitching if pressed tab mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_tab)));
 	log_message(LOG, _("Disable autoswitching if layout switched mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_switch)));
 	log_message(LOG, _("Disable autoswitching for full screen apps mode set to %s"), _(xconfig->get_bool_name(xconfig->troubleshoot_full_screen)));
 	log_message(LOG, _("Compatibility with the completion mode set to %s"), _(xconfig->get_bool_name(xconfig->compatibility_with_completion)));

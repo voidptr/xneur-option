@@ -2382,6 +2382,38 @@
                                       </packing>
                                     </child>
                                     <child>
+                                      <widget class="GtkCheckButton" id="checkbutton12">
+                                        <property name="label" translatable="yes">Enter</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="use_action_appearance">False</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="draw_indicator">True</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">6</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkCheckButton" id="checkbutton45">
+                                        <property name="label" translatable="yes">Tab</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="use_action_appearance">False</property>
+                                        <property name="use_underline">True</property>
+                                        <property name="draw_indicator">True</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">7</property>
+                                      </packing>
+                                    </child>
+                                    <child>
                                       <widget class="GtkCheckButton" id="checkbutton25">
                                         <property name="label" translatable="yes">You changed layout</property>
                                         <property name="visible">True</property>
@@ -2394,7 +2426,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">True</property>
-                                        <property name="position">6</property>
+                                        <property name="position">8</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2410,7 +2442,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">True</property>
-                                        <property name="position">7</property>
+                                        <property name="position">9</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2422,7 +2454,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">True</property>
-                                        <property name="position">8</property>
+                                        <property name="position">10</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2436,7 +2468,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">True</property>
-                                        <property name="position">9</property>
+                                        <property name="position">11</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2448,7 +2480,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">True</property>
-                                        <property name="position">10</property>
+                                        <property name="position">12</property>
                                       </packing>
                                     </child>
                                   </widget>
@@ -2521,20 +2553,7 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkCheckButton" id="checkbutton12">
-                                        <property name="label" translatable="yes">Don't process words on Enter or Tab</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
-                                        <property name="use_underline">True</property>
-                                        <property name="draw_indicator">True</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">2</property>
-                                      </packing>
+                                      <placeholder/>
                                     </child>
                                     <child>
                                       <widget class="GtkCheckButton" id="checkbutton33">
