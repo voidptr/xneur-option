@@ -1304,9 +1304,11 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 					KeyCode *dummy_kc = malloc(strlen(replacement) * sizeof(KeyCode));
 					int *dummy_kc_mod = malloc(strlen(replacement) * sizeof(int));
 					main_window->keymap->convert_text_to_ascii(main_window->keymap, replacement, dummy_kc, dummy_kc_mod);
-
-					dummy_kc = realloc(dummy_kc, strlen(word) * sizeof(KeyCode));
-					dummy_kc_mod = realloc(dummy_kc_mod, strlen(word) * sizeof(int));
+					free(dummy_kc);
+					free(dummy_kc_mod);
+					
+					dummy_kc = malloc(strlen(word) * sizeof(KeyCode));
+					dummy_kc_mod = malloc(strlen(word) * sizeof(int));
 					main_window->keymap->convert_text_to_ascii(main_window->keymap, word, dummy_kc, dummy_kc_mod);
 
 					free(dummy_kc);

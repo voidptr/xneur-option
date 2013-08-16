@@ -77,13 +77,22 @@ void osd_show(int notify, char *command)
 	osd_text[0] = NULLSYM;
 	if (xconfig->osds[notify].file != NULL) 
 	{
-		osd_text = realloc(osd_text, (strlen(osd_text) + strlen(xconfig->osds[notify].file)) * sizeof(char));
-		osd_text = strcat(osd_text, xconfig->osds[notify].file);
+		char *tmp = realloc(osd_text, (strlen(osd_text) + strlen(xconfig->osds[notify].file)) * sizeof(char));
+		if (tmp != NULL)
+		{
+			osd_text = tmp;
+			osd_text = strcat(osd_text, xconfig->osds[notify].file);
+		}
 	}
 	if (command != NULL)
 	{
-		osd_text = realloc(osd_text, (strlen(osd_text) + strlen(command) + 1) * sizeof(char));
-		sprintf(osd_text, "%s %s", osd_text, command);
+		char *tmp = realloc(osd_text, (strlen(osd_text) + strlen(command) + 1) * sizeof(char));
+		if (tmp != NULL)
+		{
+			osd_text = tmp;
+			osd_text = strcat(osd_text, " ");
+			osd_text = strcat(osd_text, command);
+		}
 	}
 	//
 	log_message(DEBUG, _("Show OSD \"%s\""), osd_text);
@@ -92,6 +101,7 @@ void osd_show(int notify, char *command)
 	pthread_create(&osd_thread, &osd_thread_attr, (void *) &osd_show_thread, osd_text);
 
 	pthread_attr_destroy(&osd_thread_attr);
+	free(osd_text);
 }
 
 #else /* WITH_XOSD */

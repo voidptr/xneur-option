@@ -81,10 +81,14 @@ struct _xneur_handle *xneur_handle_create (void)
 {
 	struct _xneur_handle *handle = (struct _xneur_handle *) malloc(sizeof(struct _xneur_handle));;
 
-	XkbDescRec *kbd_desc_ptr = XkbAllocKeyboard();
-	if (kbd_desc_ptr == NULL)
-		return NULL;
+	XkbDescPtr kbd_desc_ptr;
 
+	if (!(kbd_desc_ptr = XkbAllocKeyboard()))
+	{
+		free(handle);
+		return NULL;
+	}
+	
 	Display *display = XOpenDisplay(NULL);
 	XkbGetNames(display, XkbAllNamesMask, kbd_desc_ptr);
 
@@ -92,6 +96,7 @@ struct _xneur_handle *xneur_handle_create (void)
 	{
 		XCloseDisplay(display);
 		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
+		free(handle);
 		return NULL;
 	}
 
@@ -106,6 +111,7 @@ struct _xneur_handle *xneur_handle_create (void)
 	{
 		XCloseDisplay(display);
 		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
+		free(handle);
 		return NULL;
 	}
 
@@ -114,6 +120,7 @@ struct _xneur_handle *xneur_handle_create (void)
 	{
 		XCloseDisplay(display);
 		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
+		free(handle);
 		return NULL;
 	}
 	Window rw = RootWindow(display, DefaultScreen(display));
@@ -133,6 +140,7 @@ struct _xneur_handle *xneur_handle_create (void)
 	{
 		XCloseDisplay(display);
 		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
+		free(handle);
 		return NULL;
 	}
 	
@@ -148,6 +156,7 @@ struct _xneur_handle *xneur_handle_create (void)
 	{
 		XCloseDisplay(display);
 		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
+		free(handle);
 		return NULL;
 	}
 	
@@ -161,6 +170,7 @@ struct _xneur_handle *xneur_handle_create (void)
 		{
 			XCloseDisplay(display);
 			XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
+			free(handle);
 			return NULL;
 		}
 		
@@ -177,6 +187,7 @@ struct _xneur_handle *xneur_handle_create (void)
 	{
 		XCloseDisplay(display);
 		XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
+		free(handle);
 		return NULL;
 	}
 	
@@ -218,8 +229,10 @@ struct _xneur_handle *xneur_handle_create (void)
 	XkbFreeKeyboard(kbd_desc_ptr, XkbAllComponentsMask, True);
 	
 	if (handle->total_languages == 0)
+	{
+		free(handle);
 		return NULL;
-
+	}
 #ifdef WITH_ASPELL
 	// init aspell spellers
 	handle->spell_checkers = (AspellSpeller **) malloc(handle->total_languages * sizeof(AspellSpeller*));

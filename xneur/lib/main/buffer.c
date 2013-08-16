@@ -357,15 +357,20 @@ static void buffer_set_content(struct _buffer *p, const char *new_content)
 {
 	p->clear(p);
 	
-	char *content = strdup(new_content);
+	char *content = NULL;
+	content = strdup(new_content);
 
 	p->cur_pos = strlen(content);
 	if (p->cur_pos >= p->cur_size)
 		set_new_size(p, p->cur_pos + 1);
 
 	if (p->content == NULL || p->keycode == NULL || p->keycode_modifiers == NULL)
+	{
+		if (content != NULL)
+			free(content);
 		return;
-
+	}
+	
 	p->content[p->cur_pos] = NULLSYM;
 	if (!p->cur_pos)
 	{
@@ -552,8 +557,12 @@ static char *buffer_get_utf_string(struct _buffer *p)
 
 		symbol[nbytes] = NULLSYM;
 
-		utf_string = (char *) realloc(utf_string, strlen(utf_string) * sizeof(char) + nbytes + 1);
-		strcat(utf_string, symbol);
+		char *tmp = realloc(utf_string, strlen(utf_string) * sizeof(char) + nbytes + 1);
+		if (tmp != NULL)
+		{
+			utf_string = tmp;
+			strcat(utf_string, symbol);
+		}
 	}
 
 	free(symbol);
@@ -577,8 +586,12 @@ static char *buffer_get_utf_string_on_kbd_group(struct _buffer *p, int group)
 		char *symbol = p->keymap->keycode_to_symbol(p->keymap, p->keycode[i], group, state);
 		if (symbol)
 		{
-			utf_string = (char *) realloc(utf_string, strlen(utf_string) * sizeof(char) + strlen(symbol) + 1);
-			strcat(utf_string, symbol);	
+			char *tmp = realloc(utf_string, strlen(utf_string) * sizeof(char) + strlen(symbol) + 1);
+			if (tmp != NULL)
+			{
+				utf_string = tmp;
+				strcat(utf_string, symbol);	
+			}
 			free(symbol);
 		}
 	}
