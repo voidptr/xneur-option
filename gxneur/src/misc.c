@@ -1319,7 +1319,6 @@ void xneur_preference(void)
 	
 	// Keyboard properties
 	widget = glade_xml_get_widget (gxml, "entry5");
-	string_value = NULL;
 	int keyboard_properties_config_not_supported = 0;
 	if (gxneur_config_read_str("keyboard_properties", &string_value) == CONFIG_NOT_SUPPORTED)
 		gtk_widget_set_sensitive(GTK_WIDGET(widget), FALSE),
@@ -1890,7 +1889,7 @@ gboolean save_abbreviation(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *
 
 	g_free(abbreviation);
 	g_free(full_text);
-	g_free(ptr);
+	free(ptr);
 
 	return FALSE;
 }
