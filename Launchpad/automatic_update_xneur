@@ -86,7 +86,7 @@ debuild -S -sa
 # end update for basic releases
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raringl" \
+dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
