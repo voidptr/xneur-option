@@ -189,6 +189,8 @@ struct _xneur_config
 	struct _list_char *auto_apps;
 	struct _list_char *manual_apps;
 	struct _list_char *layout_remember_apps;
+	struct _list_char *dont_send_key_release_apps;
+	
 	struct _list_char *window_layouts;
 	struct _list_char *abbreviations;
 	struct _list_char *plugins;
@@ -266,12 +268,9 @@ struct _xneur_config
 	int troubleshoot_full_screen;
 	int troubleshoot_enter;		// Don't correct word when pressed Enter
 	int troubleshoot_tab;		// Don't correct word when pressed Tab
-	int troubleshoot_ctrl;		// Don't correct word when pressed Enter
-	int troubleshoot_shift;		// Don't correct word when pressed Tab
 	
 	int compatibility_with_completion;
 		
-	int dont_send_key_release;
 	int tracking_input;
 	int tracking_mouse;
 		

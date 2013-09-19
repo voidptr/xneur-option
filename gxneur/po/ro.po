@@ -571,15 +571,15 @@ msgstr ""
 msgid "<b>Troubleshooting</b>"
 msgstr ""
 
-#: glade/config.glade:2756
+#: glade/config.glade:2761
 msgid "Delay before sending events (in milliseconds)"
 msgstr ""
 
-#: glade/config.glade:2768
+#: glade/config.glade:2773
 msgid "Log verbosity level"
 msgstr ""
 
-#: glade/config.glade:2781
+#: glade/config.glade:2786
 msgid ""
 "None\n"
 "Error\n"
@@ -595,65 +595,65 @@ msgstr ""
 "Debug\n"
 "Trace"
 
-#: glade/config.glade:2802
-msgid "Dont send KeyRelease event"
+#: glade/config.glade:2911
+msgid "Dont send event KeyRelease in these applications"
 msgstr ""
 
-#: glade/config.glade:2847
+#: glade/config.glade:2941
 msgid "<b>Advanced</b>"
 msgstr "<b>Avansat</b>"
 
-#: glade/config.glade:2914
+#: glade/config.glade:3008
 msgid "<b>Plugins</b>"
 msgstr ""
 
-#: glade/config.glade:2955
+#: glade/config.glade:3049
 msgid "Autostartup"
 msgstr ""
 
-#: glade/config.glade:2980
+#: glade/config.glade:3074
 msgid "Delay before startup"
 msgstr ""
 
-#: glade/config.glade:3023
+#: glade/config.glade:3117
 msgid "Startup"
 msgstr ""
 
-#: glade/config.glade:3056
+#: glade/config.glade:3150
 msgid ""
 "Show flag\n"
 "Show text\n"
 "Show icon"
 msgstr ""
 
-#: glade/config.glade:3070
+#: glade/config.glade:3164
 msgid ""
 "Used for rendering built-in engine\n"
 "Used for rendering Status Icon engine\n"
 "Used for rendering App Indicator engine"
 msgstr ""
 
-#: glade/config.glade:3093
+#: glade/config.glade:3187
 msgid "Set the extension to move the icon in the shell area of the Gnome 3."
 msgstr ""
 
-#: glade/config.glade:3108
+#: glade/config.glade:3202
 msgid "Gnome 3 Shell"
 msgstr ""
 
-#: glade/config.glade:3134
+#: glade/config.glade:3228
 msgid "UI"
 msgstr ""
 
-#: glade/config.glade:3171
+#: glade/config.glade:3265
 msgid "Keyboard properties command"
 msgstr ""
 
-#: glade/config.glade:3259
+#: glade/config.glade:3353
 msgid "System"
 msgstr ""
 
-#: glade/config.glade:3292
+#: glade/config.glade:3386
 msgid "<b>Properties</b>"
 msgstr ""
 

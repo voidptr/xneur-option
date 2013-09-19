@@ -204,7 +204,6 @@ static void xneur_load_config(void)
 	log_message(LOG, _("Compatibility with the completion mode set to %s"), _(xconfig->get_bool_name(xconfig->compatibility_with_completion)));
 	log_message(LOG, _("Tracking input mode set to %s"), _(xconfig->get_bool_name(xconfig->tracking_input)));
 	log_message(LOG, _("Tracking mouse mode set to %s"), _(xconfig->get_bool_name(xconfig->tracking_mouse)));
-	log_message(LOG, _("Disable send KeyRelease event mode set to %s"), _(xconfig->get_bool_name(xconfig->dont_send_key_release)));
 	log_message(LOG, _("Delay before sendind events to application set to (in milliseconds) %d"), xconfig->send_delay);
 }
 

@@ -81,7 +81,7 @@ static GtkListStore *store_exclude_app		= NULL;
 static GtkListStore *store_auto_app			= NULL;
 static GtkListStore *store_manual_app		= NULL;
 static GtkListStore *store_layout_app		= NULL;
-static GtkListStore *store_draw_flag_app	= NULL;
+//static GtkListStore *store_draw_flag_app	= NULL;
 static GtkListStore *store_abbreviation		= NULL;
 static GtkListStore *store_sound			= NULL;
 static GtkListStore *store_osd				= NULL;
@@ -89,6 +89,7 @@ static GtkListStore *store_popup			= NULL;
 static GtkListStore *store_action			= NULL;
 static GtkListStore *store_hotkey			= NULL;
 static GtkListStore *store_autocompletion_exclude_app		= NULL;
+static GtkListStore *store_dont_send_keyrelease_app		= NULL;
 static GtkListStore *store_plugin			= NULL;
 static GtkListStore *store_language			= NULL;
 
@@ -579,6 +580,34 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "button22");
 	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_manual_app), G_OBJECT(treeview));
 
+	
+	// DontSendKeyRelease App Set
+	treeview = glade_xml_get_widget (gxml, "treeview14");
+	
+	store_dont_send_keyrelease_app = gtk_list_store_new(1, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_dont_send_keyrelease_app));
+	gtk_widget_show(treeview);	
+
+	for (int i = 0; i < xconfig->dont_send_key_release_apps->data_count; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_dont_send_keyrelease_app), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_dont_send_keyrelease_app), &iter, 0, xconfig->dont_send_key_release_apps->data[i].string, -1);
+	}				
+
+	cell = gtk_cell_renderer_text_new();
+
+	column = gtk_tree_view_column_new_with_attributes(_("Application"), cell, "text", 0, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	// Adding/Removing DontSendKeyRelease App
+	widget = glade_xml_get_widget (gxml, "button7");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_dont_send_keyrelease_app), G_OBJECT(window));
+
+	widget = glade_xml_get_widget (gxml, "button9");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_dont_send_keyrelease_app), G_OBJECT(treeview));
+	
+	
 	// Layout Remember App Set
 	treeview = glade_xml_get_widget (gxml, "treeview4");
 	
@@ -1148,10 +1177,6 @@ void xneur_preference(void)
 	widget = glade_xml_get_widget (gxml, "checkbutton45");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->troubleshoot_tab);
 	
-	// Dont Send KeyRelease Mode
-	widget = glade_xml_get_widget (gxml, "checkbutton26");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->dont_send_key_release);
-
 	// Tracking input mode set
 	widget = glade_xml_get_widget (gxml, "checkbutton34");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), xconfig->tracking_input);
@@ -1373,6 +1398,11 @@ void xneur_add_auto_app(void)
 void xneur_add_manual_app(void)
 {
 	xneur_add_application(store_manual_app);
+}
+
+void xneur_add_dont_send_keyrelease_app(void)
+{
+	xneur_add_application(store_dont_send_keyrelease_app);
 }
 
 void xneur_add_layout_app(void)
@@ -1809,14 +1839,14 @@ void xneur_rem_manual_app(GtkWidget *widget)
 	remove_item(widget, store_manual_app);
 }
 
+void xneur_rem_dont_send_keyrelease_app(GtkWidget *widget)
+{
+	remove_item(widget, store_dont_send_keyrelease_app);
+}
+
 void xneur_rem_layout_app(GtkWidget *widget)
 {
 	remove_item(widget, store_layout_app);
-}
-
-void xneur_rem_draw_flag_app(GtkWidget *widget)
-{
-	remove_item(widget, store_draw_flag_app);
 }
 
 void xneur_rem_abbreviation(GtkWidget *widget)
@@ -1852,6 +1882,15 @@ gboolean save_auto_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter
 	if (model || path || user_data){};
 
 	save_list(store_auto_app, xconfig->auto_apps, iter);
+
+	return FALSE;
+}
+
+gboolean save_dont_send_keyrelease_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	save_list(store_dont_send_keyrelease_app, xconfig->dont_send_key_release_apps, iter);
 
 	return FALSE;
 }
@@ -2081,6 +2120,7 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_exclude_app), save_exclude_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_auto_app), save_auto_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_manual_app), save_manual_app, NULL);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_dont_send_keyrelease_app), save_dont_send_keyrelease_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_layout_app), save_layout_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_abbreviation), save_abbreviation, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_sound), save_sound, NULL);
@@ -2243,10 +2283,6 @@ void xneur_save_preference(GladeXML *gxml)
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton45");
 	xconfig->troubleshoot_tab = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
 	
-	// Dont send KeyRelease mode
-	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton26");
-	xconfig->dont_send_key_release = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));
-
 	// Tracking input mode
 	widgetPtrToBefound = glade_xml_get_widget (gxml, "checkbutton34");
 	xconfig->tracking_input = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widgetPtrToBefound));

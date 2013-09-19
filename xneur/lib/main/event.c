@@ -35,6 +35,7 @@
 #include "types.h"
 #include "log.h"
 #include "conversion.h"
+#include "list_char.h"
 
 #include "event.h"
 
@@ -74,8 +75,6 @@ int get_key_state(int key)
 
 void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 {
-	//XTestFakeKeyEvent(xdo->xdpy, modkey, is_press, CurrentTime);
-	//XSync(xdo->xdpy, False);
 	usleep(xconfig->send_delay);
 	
 	p->event.type			= KeyPress;
@@ -91,8 +90,13 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 
 	XSendEvent(main_window->display, p->owner_window, TRUE, NoEventMask, &p->event);
 
-	if (xconfig->dont_send_key_release) 
+	char *app_name = NULL;
+	app_name = get_wm_class_name(p->owner_window);	
+	if (xconfig->dont_send_key_release_apps->exist(xconfig->dont_send_key_release_apps, app_name, BY_PLAIN))
+	{
+		log_message(TRACE, _("The event KeyRelease is not sent to the window (ID %d) with name '%s'"), p->owner_window, app_name);
 		return;
+	}
 	
 	p->event.type			= KeyRelease;
 	p->event.xkey.type		= KeyRelease;

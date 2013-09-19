@@ -65,12 +65,12 @@ static const char *option_names[] = 	{
 						"TroubleshootBackspace", "TroubleshootLeftArrow", "TroubleshootRightArrow",
 						"TroubleshootUpArrow", "TroubleshootDownArrow", "TroubleshootDelete", 
 						"TroubleshootSwitch", "TroubleshootFullScreen",
-						"DontSendKeyRelease", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
+						"SetDontSendKeyReleaseApp", "LogPort", "RotateLayoutAfterChangeSelectedMode", "CorrectCapitalLetterAfterDot",
 						"FlushBufferWhenPressEscape", "CompatibilityWithCompletion", "TrackingInput", "TrackingMouse",
 						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace","CorrectTwoMinusWithDash",
 						"CorrectCWithCopyright", "CorrectTMWithTrademark", "CorrectRWithRegistered",
 						"CorrectDashWithEmDash","CorrectThreePointsWithEllipsis", "CorrectMisprint", "CheckSimilarWords",
-						"TroubleshootTab", "TroubleshootCtrl", "TroubleshootShift", 
+						"TroubleshootTab",  
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -777,16 +777,9 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->troubleshoot_full_screen = status;
 			break;
 		}
-		case 48: // Get dont send KeyRelease event mode
+		case 48: // Get Applications That Event Will Not Be Sent KeyRelease
 		{
-			int status = get_option_index(bool_names, param);
-			if (status == -1)
-			{
-				log_message(WARNING, _("Invalid value for dont send KeyRelease event mode"));
-				break;
-			}
-
-			p->dont_send_key_release = status;
+			p->dont_send_key_release_apps->add(p->dont_send_key_release_apps, full_string);
 			break;
 		}
 		case 49: // Port on host to send logfile
@@ -986,30 +979,6 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->troubleshoot_tab = index;
 			break;
 		}
-		case 67: // Don't process word when pressed Ctrl Mode
-		{
-			int index = get_option_index(bool_names, param);
-			if (index == -1)
-			{
-				log_message(WARNING, _("Invalid value for don't processing word when pressed Ctrl mode specified"));
-				break;
-			}
-
-			p->troubleshoot_ctrl = index;
-			break;
-		}
-		case 68: // Don't process word when pressed Shift Mode
-		{
-			int index = get_option_index(bool_names, param);
-			if (index == -1)
-			{
-				log_message(WARNING, _("Invalid value for don't processing word when pressed Shift mode specified"));
-				break;
-			}
-
-			p->troubleshoot_shift = index;
-			break;
-		}
 	}
 	free(full_string);
 }
@@ -1038,6 +1007,8 @@ static void free_structures(struct _xneur_config *p)
 	p->layout_remember_apps->uninit(p->layout_remember_apps);
 	p->excluded_apps->uninit(p->excluded_apps);
 	p->autocompletion_excluded_apps->uninit(p->autocompletion_excluded_apps);
+	p->dont_send_key_release_apps->uninit(p->dont_send_key_release_apps);
+	
 	p->abbreviations->uninit(p->abbreviations);
 	p->plugins->uninit(p->plugins);
 	
@@ -1554,19 +1525,23 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Disable autoswitching if pressed delete\nTroubleshootDelete %s\n", p->get_bool_name(p->troubleshoot_delete));
 	fprintf(stream, "# Disable autoswitching if pressed enter\nTroubleshootEnter %s\n", p->get_bool_name(p->troubleshoot_enter));
 	fprintf(stream, "# Disable autoswitching if pressed tab\nTroubleshootTab %s\n", p->get_bool_name(p->troubleshoot_tab));
-	fprintf(stream, "# Disable autoswitching if pressed Ctrl\nTroubleshootCtrl %s\n", p->get_bool_name(p->troubleshoot_ctrl));
-	fprintf(stream, "# Disable autoswitching if pressed Shift\nTroubleshootShift %s\n", p->get_bool_name(p->troubleshoot_shift));
 	fprintf(stream, "# Disable autoswitching if layout switched\nTroubleshootSwitch %s\n", p->get_bool_name(p->troubleshoot_switch));
 	fprintf(stream, "# Disable autoswitching for full screen apps\nTroubleshootFullScreen %s\n\n", p->get_bool_name(p->troubleshoot_full_screen));
 
+	fprintf(stream, "# Add Applications names to exclude it from sending KeyRelease process\n");
+	fprintf(stream, "# Xneur will not send KeyRelease events for this applications\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#SetDontSendKeyReleaseApp libreoffice-writer\n");
+	for (int i = 0; i < p->dont_send_key_release_apps->data_count; i++)
+		fprintf(stream, "SetDontSendKeyReleaseApp %s\n", p->dont_send_key_release_apps->data[i].string);
+	fprintf(stream, "\n");
+	
 	fprintf(stream, "# Work-arround for compatibility with the completion\nCompatibilityWithCompletion %s\n\n", p->get_bool_name(p->compatibility_with_completion));
 
 	fprintf(stream, "# Disabling this option will add any application to the list of excluded applications.\nTrackingInput %s\n\n", p->get_bool_name(p->tracking_input));
 
 	fprintf(stream, "# Disabling this option will disable mouse tracking.\nTrackingMouse %s\n\n", p->get_bool_name(p->tracking_mouse));
 
-	fprintf(stream, "# Disable send KeyRelease event\nDontSendKeyRelease %s\n\n", p->get_bool_name(p->dont_send_key_release));
-	
 	fprintf(stream, "# Modules list\n");
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#LoadModule libxntest.so\n");
@@ -1697,6 +1672,8 @@ struct _xneur_config* xneur_config_init(void)
 	p->auto_apps			= list_char_init();
 	p->manual_apps			= list_char_init();
 	p->layout_remember_apps		= list_char_init();
+	p->dont_send_key_release_apps = list_char_init();
+	
 	p->window_layouts		= list_char_init();
 	p->abbreviations		= list_char_init();
 	p->autocompletion_excluded_apps	= list_char_init();
@@ -1713,7 +1690,6 @@ struct _xneur_config* xneur_config_init(void)
 	p->troubleshoot_switch = TRUE;
 	p->troubleshoot_full_screen = TRUE;
 	
-	p->dont_send_key_release = FALSE;
 	p->tracking_input = TRUE;
 	p->tracking_mouse = TRUE;
 	
