@@ -1170,6 +1170,7 @@ static void xneur_config_clear(struct _xneur_config *p)
 	p->manual_apps			= list_char_init();
 	p->auto_apps			= list_char_init();
 	p->layout_remember_apps		= list_char_init();
+	p->dont_send_key_release_apps	= list_char_init();
 	p->excluded_apps		= list_char_init();
 	p->autocompletion_excluded_apps	= list_char_init();
 	p->abbreviations		= list_char_init();
