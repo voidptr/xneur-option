@@ -79,7 +79,7 @@ static const char *action_names[] =	{
 						"ChangeClipboard", "TranslitClipboard", "ChangecaseClipboard", "PreviewChangeClipboard",
 						"EnableLayout1", "EnableLayout2", "EnableLayout3", "EnableLayout4",
 						"RotateLayout","RotateLayoutBack","ReplaceAbbreviation", "AutocompletionConfirmation",
-						"BlockKeyboardAndMouseEvents", "InsertDate"
+						"RotateAutocompletion", "BlockKeyboardAndMouseEvents", "InsertDate"
 					};
 static const char *notify_names[] =	{
 						"XneurStart", "XneurReload", "XneurStop",

@@ -88,7 +88,7 @@ static const char *normal_action_names[] =	{
 	                                    "Correct clipboard text", "Transliterate clipboard text", "Change case of clipboard text", "Preview correction of clipboard text",
 										"Switch to layout 1", "Switch to layout 2", "Switch to layout 3", "Switch to layout 4",
 		                                "Rotate layouts", "Rotate layouts back", "Expand abbreviations", "Autocompletion confirmation", 
-										"Block/Unblock keyboard and mouse events", "Insert date"
+										"Rotate autocompletion", "Block/Unblock keyboard and mouse events", "Insert date"
 						};
 
 extern struct _xneur_config *xconfig;
@@ -774,7 +774,7 @@ static void program_on_key_action(struct _program *p, int type)
 			return;
 		}
 
-		if (p->manual_action != ACTION_NONE)
+		if (p->manual_action != ACTION_NONE) 
 		{
 			log_message (LOG, _("Execute manual action \"%s\""), _(normal_action_names[p->manual_action]));
 			if (p->perform_manual_action(p, p->manual_action))
@@ -900,7 +900,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 				if (!xconfig->check_lang_on_process)
 				{
-					p->check_pattern(p, TRUE);
+					p->check_pattern(p);
 					
 					// Unblock keyboard
 					p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
@@ -924,7 +924,7 @@ static void program_perform_auto_action(struct _program *p, int action)
 
 				p->last_action = ACTION_NONE;
 				
-				p->check_pattern(p, TRUE);
+				p->check_pattern(p);
 				
 				// Unblock keyboard
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
@@ -1196,19 +1196,51 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		{
 			if (p->last_action == ACTION_AUTOCOMPLETION)
 			{	
-				p->check_pattern(p, FALSE);
+				//p->check_pattern(p, FALSE);
 
 				// Block events of keyboard (push to event queue)
 				p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+				p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_Right), p->event->event.xkey.state);
 				if (xconfig->add_space_after_autocompletion)
 					p->event->send_xkey(p->event, XKeysymToKeycode(main_window->display, XK_space), p->event->event.xkey.state);
 				p->last_action = ACTION_NONE;
 
 				p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 				p->correction_buffer->clear(p->correction_buffer);
-				
+				  
 				// Unblock keyboard
 				p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
+				break;
+			}
+			
+			// Block events of keyboard (push to event queue)
+			p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+			
+			p->event->send_xkey(p->event, p->event->event.xkey.keycode, p->event->event.xkey.state);
+			// Unblock keyboard
+			p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
+			
+			p->event->event = p->event->default_event;
+			char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
+			int modifier_mask =  p->event->get_cur_modifiers(p->event);
+			p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
+
+			break;
+		}
+		case ACTION_ROTATE_AUTOCOMPLETION:
+		{
+			if (p->last_action == ACTION_AUTOCOMPLETION)
+			{	
+				p->rotate_pattern(p);
+
+				// Block events of keyboard (push to event queue)
+				//p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+
+				//p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
+				//p->correction_buffer->clear(p->correction_buffer);
+				  
+				// Unblock keyboard
+				//p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
 				break;
 			}
 			
@@ -1993,7 +2025,7 @@ static void program_check_capital_letter_after_dot(struct _program *p)
 	free(text);
 }
 
-static void program_check_pattern(struct _program *p, int selection)
+static void program_check_pattern(struct _program *p)
 {
 	if (!xconfig->autocompletion)
 		return;
@@ -2020,6 +2052,27 @@ static void program_check_pattern(struct _program *p, int selection)
 		return;
 	}
 
+	/*
+	if (selection) 
+	{
+	struct _list_char* list_alike = xconfig->handle->languages[lang].pattern->alike(xconfig->handle->languages[lang].pattern, word);
+	if (list_alike != NULL)
+	{
+		for (int i = 0; i < list_alike->data_count; i++)
+		{
+			log_message (ERROR, "%s", list_alike->data[i].string);
+		}
+
+		
+		list_alike->uninit(list_alike);
+		list_alike  =  NULL;
+	}	
+	if (list_alike != NULL)
+	  list_alike->uninit(list_alike);
+
+		
+	}*/
+	
 	struct _list_char_data *pattern_data = xconfig->handle->languages[lang].pattern->find_alike(xconfig->handle->languages[lang].pattern, word);
 	if (pattern_data == NULL)
 	{
@@ -2048,8 +2101,96 @@ static void program_check_pattern(struct _program *p, int selection)
 	p->event->send_next_event(p->event);
 	
 	p->event->send_string(p->event, tmp_buffer);
-	if (selection)
-		p->event->send_selection(p->event, tmp_buffer->cur_pos);
+	p->event->send_selection(p->event, tmp_buffer->cur_pos);
+
+	p->event->default_event.xkey.keycode = 0;
+	
+	tmp_buffer->uninit(tmp_buffer);
+
+	p->focus->update_events(p->focus, LISTEN_GRAB_INPUT);
+
+	p->last_action = ACTION_AUTOCOMPLETION;
+	p->last_pattern_id = 0;
+	
+	free (word);
+}
+
+static void program_rotate_pattern(struct _program *p)
+{
+	if (!xconfig->autocompletion)
+		return;
+
+	if (p->app_autocompletion_mode == AUTOCOMPLETION_EXCLUDED)
+		return;
+
+	if (p->last_action != ACTION_AUTOCOMPLETION)
+		return;
+	
+	char *tmp = get_last_word(p->buffer->content);
+	if (tmp == NULL)
+		return;
+	
+	if (strlen(tmp) < MIN_PATTERN_LEN - 1)
+		return;
+
+	int lang = get_curr_keyboard_group();
+	tmp = get_last_word(p->buffer->i18n_content[lang].content);
+
+	char *word = strdup(tmp);
+
+	int len = trim_word(word, strlen(tmp));
+	if (len == 0)
+	{
+		free (word);
+		return;
+	}
+
+	struct _list_char* list_alike = xconfig->handle->languages[lang].pattern->alike(xconfig->handle->languages[lang].pattern, word);
+	if (list_alike == NULL)
+	{
+		free (word);
+		return;
+	}
+	
+	/*for (int i = 0; i < list_alike->data_count; i++)
+	{
+		log_message (ERROR, "%s", list_alike->data[i].string);
+	}*/
+
+	if (list_alike->data_count == 1)
+	{
+		list_alike->uninit(list_alike);
+		list_alike  =  NULL;
+		free (word);
+		return;
+	}
+
+	p->last_pattern_id++;
+	if (p->last_pattern_id == list_alike->data_count)
+		p->last_pattern_id = 0;
+	
+    log_message (DEBUG, _("Next autocompletion word '%s' from text '%s' (layout %d), rotate autocompletation..."), list_alike->data[p->last_pattern_id].string, word, get_curr_keyboard_group());
+	
+	p->focus->update_events(p->focus, LISTEN_DONTGRAB_INPUT);
+
+	struct _buffer *tmp_buffer = buffer_init(xconfig->handle, main_window->keymap);
+	
+	tmp_buffer->set_content(tmp_buffer, list_alike->data[p->last_pattern_id].string + strlen(word)*sizeof(char));
+
+	if (tmp_buffer->cur_pos == 0)
+	{
+		list_alike->uninit(list_alike);
+		tmp_buffer->uninit(tmp_buffer);
+		p->last_action = ACTION_NONE;
+		free (word);
+		return;
+	}
+
+	p->event->event = p->event->default_event;
+	p->event->send_next_event(p->event);
+	
+	p->event->send_string(p->event, tmp_buffer);
+	p->event->send_selection(p->event, tmp_buffer->cur_pos);
 
 	p->event->default_event.xkey.keycode = 0;
 	
@@ -2059,6 +2200,9 @@ static void program_check_pattern(struct _program *p, int selection)
 
 	p->last_action = ACTION_AUTOCOMPLETION;
 	free (word);
+		
+	list_alike->uninit(list_alike);
+	list_alike  =  NULL;
 }
 
 static void program_check_misprint(struct _program *p)
@@ -2818,11 +2962,11 @@ static void program_change_word(struct _program *p, enum _change_action action)
 			p->buffer->change_case(p->buffer);
 
 			int len = p->buffer->cur_pos;
-			if (p->last_action == ACTION_AUTOCOMPLETION)
+			if (p->last_action == ACTION_AUTOCOMPLETION) 
 				len = p->buffer->cur_pos + 1;
 			p->send_string_silent(p, len);
 
-			p->last_action = ACTION_NONE;
+			p->last_action = ACTION_NONE;     
 			
 			// Revert fields back
 			p->buffer->unset_offset(p->buffer, offset);
@@ -3147,7 +3291,7 @@ static void program_add_word_to_pattern(struct _program *p, int new_lang)
 	// Enable saving pattern always
 	//if (!xconfig->autocompletion)
 	//	return;
-	
+
 	char *tmp = get_last_word(p->buffer->content);
 	if (tmp == NULL)
 		return;
@@ -3318,6 +3462,7 @@ struct _program* program_init(void)
 	p->check_registered = program_check_registered;
 	p->check_ellipsis = program_check_ellipsis;
 	p->check_pattern	= program_check_pattern;
+	p->rotate_pattern	= program_rotate_pattern;
 	p->check_misprint	= program_check_misprint;
 	p->change_word			= program_change_word;
 	p->add_word_to_dict		= program_add_word_to_dict;

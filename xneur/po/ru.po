@@ -89,6 +89,9 @@ msgstr "Замена сокращений"
 msgid "Autocompletion confirmation"
 msgstr "Подтверждение автодополнения"
 
+msgid "Rotate autocompletion"
+msgstr "Переключение вариантов автодополнения"
+
 msgid "Block/Unblock keyboard and mouse events"
 msgstr "Блокировка/Разблокировка клавиатуры и мыши"
 
@@ -868,31 +871,31 @@ msgstr "Получение файла блокировки %s"
 msgid "No languages specified in config file"
 msgstr "В конфигурационном файле не определены языки"
 
-#: lib/config/xnconfig.c:1187
+#: lib/config/xnconfig.c:1188
 #, c-format
 msgid "Saving main config to %s"
 msgstr "Сохранение основной конфигурации в %s"
 
-#: lib/config/xnconfig.c:1192
+#: lib/config/xnconfig.c:1193
 #, c-format
 msgid "Can't create file %s"
 msgstr "Невозможно создать файл %s"
 
-#: lib/config/xnconfig.c:1564
+#: lib/config/xnconfig.c:1565
 #, c-format
 msgid "Moving config file from %s to %s"
 msgstr "Перемещение конфигурационного файла из %s в %s"
 
-#: lib/config/xnconfig.c:1570
+#: lib/config/xnconfig.c:1571
 msgid "Can't move file!"
 msgstr "Невозможно переместить файл!"
 
-#: lib/config/xnconfig.c:1588
+#: lib/config/xnconfig.c:1589
 #, c-format
 msgid "Saving %s dictionary"
 msgstr "Сохранение словаря языка %s"
 
-#: lib/config/xnconfig.c:1602
+#: lib/config/xnconfig.c:1603
 #, c-format
 msgid "Saving %s pattern"
 msgstr "Сохранение паттернов языка %s"
@@ -917,7 +920,7 @@ msgstr "Всего неосвобождено %d указателей на об�
 msgid "Unfreed memory pointer %s (allocated at file %s:%d)"
 msgstr "Неосвобожден указатель на область памяти %s (получено в файле %s:%d)"
 
-#: lib/misc/list_char.c:329
+#: lib/misc/list_char.c:352
 #, c-format
 msgid "Sorting error: %s > %s"
 msgstr "Ошибка сортировки: %s > %s"
@@ -1004,21 +1007,21 @@ msgstr "Проигрывается звуковой клип %s (использ�
 msgid "Can't execute command '%s'"
 msgstr "Невозможно выполнить команду '%s'"
 
-#: lib/main/bind_table.c:129 lib/main/bind_table.c:167
+#: lib/main/bind_table.c:130 lib/main/bind_table.c:168
 #, c-format
 msgid "   No key set for action \"%s\""
 msgstr "   Не заданы горячие клавиши для действия \"%s\""
 
-#: lib/main/bind_table.c:155 lib/main/bind_table.c:193
+#: lib/main/bind_table.c:156 lib/main/bind_table.c:194
 #, c-format
 msgid "   Action \"%s\" with key \"%s\""
 msgstr "   Действие \"%s\" с клавишей \"%s\""
 
-#: lib/main/bind_table.c:221
+#: lib/main/bind_table.c:222
 msgid "Binded hotkeys actions:"
 msgstr "Установлены горячие клавиши:"
 
-#: lib/main/bind_table.c:250
+#: lib/main/bind_table.c:251
 msgid "Binded hotkeys user actions:"
 msgstr "Установлены горячие клавиши пользовательских действий:"
 
@@ -1041,12 +1044,12 @@ msgstr "Ошибка переименования файла \"%s\" в \"%s\""
 msgid "String is freed"
 msgstr "Текущие данные строки очищены"
 
-#: lib/main/event.c:100
+#: lib/main/event.c:97
 #, c-format
 msgid "The event KeyRelease is not sent to the window (ID %d) with name '%s'"
 msgstr "Событие KeyRelease не отправлено в окно (ID %d) с именем '%s'"
 
-#: lib/main/event.c:228
+#: lib/main/event.c:225
 msgid "Event is freed"
 msgstr "Текущие данные события очищены"
 
@@ -1223,118 +1226,125 @@ msgstr "Выполнение пользовательского действия
 msgid "Execute manual action \"%s\""
 msgstr "Выполнение действия \"%s\""
 
-#: lib/main/program.c:1246
+#: lib/main/program.c:1278
 #, c-format
 msgid "Now keyboard and mouse block status is %s"
 msgstr "Теперь статус блокировки клавиатуры и мыши установлен в значение %s"
 
-#: lib/main/program.c:1263
+#: lib/main/program.c:1295
 #, c-format
 msgid "Insert date '%s'."
 msgstr "Вставка даты '%s'."
 
-#: lib/main/program.c:1327
+#: lib/main/program.c:1359
 #, c-format
 msgid "Found Abbreviation '%s' '%s'. Replacing to '%s'."
 msgstr "Найдено сокращение '%s' '%s'. Замена на '%s'."
 
-#: lib/main/program.c:1400 lib/main/program.c:1453
+#: lib/main/program.c:1432 lib/main/program.c:1485
 msgid "No language found to change to"
 msgstr "Не найдено языка для смены"
 
-#: lib/main/program.c:1574
+#: lib/main/program.c:1606
 msgid "Find two space, correction with a comma and a space..."
 msgstr "Найдены два пробела, исправление на запятую и пробел..."
 
-#: lib/main/program.c:1600
+#: lib/main/program.c:1632
 msgid "Find two minus, correction with a dash..."
 msgstr "Найдены два минуса, исправление на тире..."
 
-#: lib/main/program.c:1625
+#: lib/main/program.c:1657
 msgid "Find (c), correction with a copyright sign..."
 msgstr "Найден (с), исправление на знак копирайта..."
 
-#: lib/main/program.c:1650
+#: lib/main/program.c:1682
 msgid "Find (r), correction with a registered sign..."
 msgstr "Найден (r), исправление на знак регистрации..."
 
-#: lib/main/program.c:1677
+#: lib/main/program.c:1709
 msgid "Find (tm), correction with a trademark sign..."
 msgstr "Найден (tm), исправление на знак торговой марки..."
 
-#: lib/main/program.c:1709
+#: lib/main/program.c:1741
 msgid "Find three points, correction with a ellipsis sign..."
 msgstr "Найдено три точки, исправление на знак многоточия..."
 
-#: lib/main/program.c:1753
+#: lib/main/program.c:1785
 msgid "Find spaces before punctuation, correction..."
 msgstr "Обнаружены пробелы перед знаком пунктуации, исправление..."
 
-#: lib/main/program.c:1806
+#: lib/main/program.c:1838
 msgid "Find no space before left bracket, correction..."
 msgstr "Не обнаружен пробел перед открывающей скобкой, исправление..."
 
-#: lib/main/program.c:1824
+#: lib/main/program.c:1856
 msgid "Find spaces before right bracket, correction..."
 msgstr "Обнаружены пробелы перед закрывающей скобкой, исправление..."
 
-#: lib/main/program.c:1867
+#: lib/main/program.c:1899
 msgid "Find no spaces after right bracket, correction..."
 msgstr "Не обнаружены пробелы после закрывающей скобки, исправление..."
 
-#: lib/main/program.c:1903
+#: lib/main/program.c:1935
 msgid "Find spaces after left bracket, correction..."
 msgstr "Обнаружены пробелы после открывающей скобки, исправление..."
 
-#: lib/main/program.c:1988
+#: lib/main/program.c:2020
 msgid "Find small letter after dot, correction..."
 msgstr "Обнаружена строчная буква после точки, исправление..."
 
-#: lib/main/program.c:2031
+#: lib/main/program.c:2084
 #, c-format
 msgid "Recognition word '%s' from text '%s' (layout %d), autocompletation..."
 msgstr "Распознано слово '%s' из текста '%s' (раскладка %d), автодополнение..."
 
-#: lib/main/program.c:2223
+#: lib/main/program.c:2172
+#, c-format
+msgid ""
+"Next autocompletion word '%s' from text '%s' (layout %d), rotate "
+"autocompletation..."
+msgstr "Следующий вариант автодополнения '%s' из текста '%s' (раскладка %d), изменение автодополнения..."
+
+#: lib/main/program.c:2367
 #, c-format
 msgid "Found a misprint , correction '%s' to '%s'..."
 msgstr "Найдена опечатка, исправление '%s' на '%s'..."
 
-#: lib/main/program.c:2263 lib/main/program.c:2265
+#: lib/main/program.c:2407 lib/main/program.c:2409
 #, c-format
 msgid "Correction '%s' to '%s'"
 msgstr "Исправление '%s' на '%s'"
 
-#: lib/main/program.c:2282
+#: lib/main/program.c:2426
 msgid "No string to change"
 msgstr "Нет строки для замены"
 
-#: lib/main/program.c:2286
+#: lib/main/program.c:2430
 #, c-format
 msgid "Processing string '%s'"
 msgstr "Обработка строки '%s'"
 
-#: lib/main/program.c:3115
+#: lib/main/program.c:3259
 #, c-format
 msgid "Remove word '%s' from %s dictionary"
 msgstr "Удалено слово '%s' из словаря %s"
 
-#: lib/main/program.c:3133
+#: lib/main/program.c:3277
 #, c-format
 msgid "Add word '%s' in %s dictionary"
 msgstr "Добавлено слово '%s' в словарь %s"
 
-#: lib/main/program.c:3207
+#: lib/main/program.c:3351
 #, c-format
 msgid "Remove word '%s' from %s pattern"
 msgstr "Удалено слово '%s' из паттерна %s"
 
-#: lib/main/program.c:3245
+#: lib/main/program.c:3390
 #, c-format
 msgid "Add word '%s' in %s pattern"
 msgstr "Добавлено слово '%s' в паттерн %s"
 
-#: lib/main/program.c:3265
+#: lib/main/program.c:3410
 msgid "Program is freed"
 msgstr "Текущие данные программы очищены"
 

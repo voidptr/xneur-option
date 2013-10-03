@@ -138,6 +138,9 @@ msgstr "Expandir abreviaciones"
 msgid "Autocompletion confirmation"
 msgstr "Confirmación de autocomplementación"
 
+msgid "Rotate autocompletion"
+msgstr ""
+
 msgid "Block/Unblock keyboard and mouse events"
 msgstr ""
 

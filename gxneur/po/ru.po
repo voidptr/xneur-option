@@ -138,6 +138,9 @@ msgstr "Замена сокращений"
 msgid "Autocompletion confirmation"
 msgstr "Подтверждение автодополнения"
 
+msgid "Rotate autocompletion"
+msgstr "Переключение вариантов автодополнения"
+
 msgid "Block/Unblock keyboard and mouse events"
 msgstr "Блокировка/Разблокировка клавиатуры и мыши"
 

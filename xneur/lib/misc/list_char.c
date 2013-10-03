@@ -208,8 +208,31 @@ struct _list_char_data* list_char_find_alike(struct _list_char *list, const char
 
 	if (strncmp(list->data[id].string, string, strlen(string)) != 0)
 		return NULL;
-	
+
 	return &list->data[id];
+}
+
+struct _list_char* list_char_alike(struct _list_char *list, const char *string)
+{
+	if (strlen(string) < 4)
+		return NULL;
+	
+	int id = get_add_id(list, string);
+	if ((id == -1) || (id == list->data_count))
+		return NULL;
+
+	if (strncmp(list->data[id].string, string, strlen(string)) != 0)
+		return NULL;
+
+	struct _list_char* list_alike = list_char_init();
+	
+	for (int i = id; i < list->data_count; i++)
+	{
+		if (strncmp(list->data[i].string, string, strlen(string)) != 0)
+			break;
+		add_last(list_alike, list->data[i].string);
+	}
+	return list_alike;
 }
 
 int list_char_exist(struct _list_char *list, const char *string, int mode)
@@ -361,6 +384,7 @@ void list_char_uninit(struct _list_char *list)
 
 	free(list->data);
 	free(list);
+	list = NULL;
 }
 
 struct _list_char* list_char_init(void)
@@ -378,6 +402,7 @@ struct _list_char* list_char_init(void)
 	list->load	= list_char_load;
 	list->save	= list_char_save;
 	list->clone	= list_char_clone;
+	list->alike	= list_char_alike;
 	list->sort	= list_char_sort;
 	list->exist	= list_char_exist;
 	return list;

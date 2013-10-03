@@ -139,6 +139,9 @@ msgstr "Замяняць скароты поўным тэкстам"
 msgid "Autocompletion confirmation"
 msgstr ""
 
+msgid "Rotate autocompletion"
+msgstr ""
+
 msgid "Block/Unblock keyboard and mouse events"
 msgstr ""
 

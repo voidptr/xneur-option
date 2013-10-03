@@ -138,6 +138,9 @@ msgstr "Розкрити скорочення"
 msgid "Autocompletion confirmation"
 msgstr "Підтвердження автодоповнювання"
 
+msgid "Rotate autocompletion"
+msgstr ""
+
 msgid "Block/Unblock keyboard and mouse events"
 msgstr ""
 

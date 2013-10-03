@@ -45,6 +45,7 @@ struct _list_char
 	struct _list_char_data* (*find) (struct _list_char *list, const char *string, int mode);
 	struct _list_char_data* (*find_alike) (struct _list_char *list, const char *string);
 	struct _list_char* (*clone) (struct _list_char *list);
+	struct _list_char* (*alike) (struct _list_char *list, const char *string);
 	void (*load)  (struct _list_char *list, char *content);
 	void (*save)  (struct _list_char *list, FILE *stream);
 	int  (*exist) (struct _list_char *list, const char *string, int mode);
