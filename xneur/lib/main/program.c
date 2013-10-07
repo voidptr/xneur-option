@@ -1890,8 +1890,9 @@ static void program_check_brackets_with_symbols(struct _program *p)
 	
 	if (text[text_len-2] == ')')
 	{
-		//log_message(ERROR, "%c", text[text_len-2]);
-		if (ispunct(text[text_len]))
+		char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->default_event);
+		//log_message(ERROR, "%c %d", text[text_len], text_len);
+		if (ispunct(sym))
 		{
 			free(text);
 			return;
@@ -1907,7 +1908,7 @@ static void program_check_brackets_with_symbols(struct _program *p)
 		p->buffer->add_symbol(p->buffer, ' ', p->event->event.xkey.keycode, modifier_mask);
 
 		p->event->event = p->event->default_event;
-		char sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
+		sym = main_window->keymap->get_cur_ascii_char(main_window->keymap, p->event->event);
 		modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 		p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);	
 	}
