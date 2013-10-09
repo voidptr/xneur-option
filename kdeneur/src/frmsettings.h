@@ -74,6 +74,10 @@ namespace kXneurApp
     void openLoFileIn(int);
     void openLogFile();
 
+    //tab advanced
+    void addApp_tabAdvanced();
+    void removeApp_tabAdvanced();
+
     //tab properties
     void RecoverKeyboardCommand();
     void EditKeyboardCommand();
@@ -82,7 +86,6 @@ namespace kXneurApp
     void BrowseIconTray();
     void chekAutostart(bool);
     void delayStartApp(int);
-
 
   private:
     Ui::frmSettings *ui;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>752</width>
-    <height>632</height>
+    <height>640</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -33,7 +33,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>8</number>
      </property>
      <widget class="TabBar" name="tabGeneral">
       <property name="locale">
@@ -46,7 +46,7 @@
        <item row="1" column="0">
         <widget class="QTabWidget" name="tbWidGeneral">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="tabMain">
           <attribute name="title">
@@ -831,7 +831,7 @@
        <item row="0" column="0">
         <widget class="QTabWidget" name="tbWidNotifications">
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="tabSound">
           <attribute name="title">
@@ -1430,6 +1430,20 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
+             <widget class="QCheckBox" name="tabTroubleshooting_chkEnter">
+              <property name="text">
+               <string>Enter</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="tabTroubleshooting_chkTab">
+              <property name="text">
+               <string>Tab</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QCheckBox" name="tabTroubleshooting_chkChangeLayout">
               <property name="text">
                <string>You changed layout</string>
@@ -1490,13 +1504,6 @@ p, li { white-space: pre-wrap; }
              <widget class="QCheckBox" name="tabTroubleshooting_chkFlushInterBuffEnterTab">
               <property name="text">
                <string>Flush internal buffer on Enter or Tab</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="tabTroubleshooting_chkProcessWordEnterTab">
-              <property name="text">
-               <string>Don't process words on Enter or Tab</string>
               </property>
              </widget>
             </item>
@@ -1578,99 +1585,113 @@ p, li { white-space: pre-wrap; }
       <attribute name="title">
        <string>Advanced</string>
       </attribute>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>441</width>
-         <height>78</height>
-        </rect>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_16">
-        <item row="0" column="0">
-         <widget class="QLabel" name="lblDelay">
-          <property name="text">
-           <string>Delay before sending events (in milliseconds)</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="tabAdvanced_spbDelay">
-          <property name="maximumSize">
-           <size>
-            <width>191</width>
-            <height>25</height>
-           </size>
-          </property>
-          <property name="maximum">
-           <number>50</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="lblNotSenKeyRelease">
-          <property name="text">
-           <string>Dont send KeyRelease even</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="tabAdvanced_chkKeyRelease">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="lblLogLevel">
-          <property name="text">
-           <string>Log verbosity level</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QComboBox" name="tabAdvanced_cmbLogLevel">
-          <property name="maximumSize">
-           <size>
-            <width>191</width>
-            <height>25</height>
-           </size>
-          </property>
-          <item>
+      <layout class="QVBoxLayout" name="verticalLayout_18">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_16">
+         <item row="0" column="0">
+          <widget class="QLabel" name="lblDelay">
            <property name="text">
-            <string>None</string>
+            <string>Delay before sending events (in milliseconds)</string>
            </property>
-          </item>
-          <item>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="tabAdvanced_spbDelay">
+           <property name="maximumSize">
+            <size>
+             <width>191</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <number>50</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="lblLogLevel">
            <property name="text">
-            <string>Error</string>
+            <string>Log verbosity level</string>
            </property>
-          </item>
-          <item>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="tabAdvanced_cmbLogLevel">
+           <property name="maximumSize">
+            <size>
+             <width>191</width>
+             <height>25</height>
+            </size>
+           </property>
+           <item>
+            <property name="text">
+             <string>None</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Error</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Warning</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Log</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Debug</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Trace</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QListWidget" name="tabAdvanced_tabAppList"/>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_14">
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="tabAdvanced_cmdAddApp">
            <property name="text">
-            <string>Warning</string>
+            <string>Add</string>
            </property>
-          </item>
-          <item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="tabAdvanced_cmdRemoveApp">
            <property name="text">
-            <string>Log</string>
+            <string>Remove</string>
            </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Debug</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Trace</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
      <widget class="TabBar" name="tabPlugins">
       <property name="locale">

@@ -110,7 +110,7 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->trabl_save_full_screen(ui->tabTroubleshooting_chkFullScreen->isChecked());
     cfgNeur->trabl_save_flush_buffer_esc(ui->tabTroubleshooting_chkFlushInterBuffEscape->isChecked());
     cfgNeur->trabl_save_flush_buffer_tab_enter(ui->tabTroubleshooting_chkFlushInterBuffEnterTab->isChecked());
-    cfgNeur->trabl_save_words_enter_tab(ui->tabTroubleshooting_chkProcessWordEnterTab->isChecked());
+    //cfgNeur->trabl_save_words_enter_tab(ui->tabTroubleshooting_chkProcessWordEnterTab->isChecked());
     cfgNeur->trabl_save_compat_with_completion(ui->tabTroubleshooting_chkCompatCompletion->isChecked());
     cfgNeur->trabl_save_monitor_input(ui->tabTroubleshooting_chkMonitorInput->isChecked());
     cfgNeur->trabl_save_monitor_mouse(ui->tabTroubleshooting_chkMonitorMouse->isChecked());
@@ -118,7 +118,7 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     //tab Advanced
     cfgNeur->adv_save_log_level(ui->tabAdvanced_cmbLogLevel->currentIndex());
     cfgNeur->adv_save_delay_sending_events(ui->tabAdvanced_spbDelay->value());
-    cfgNeur->adv_save_key_release_event(ui->tabAdvanced_chkKeyRelease->isChecked());
+    //cfgNeur->adv_save_key_release_event(ui->tabAdvanced_chkKeyRelease->isChecked());
 
     //tab Plugins
     cfgNeur->plug_save_list_plugins(plug_save_list_plugins());
@@ -260,14 +260,14 @@ void kXneurApp::frmSettings::readSettingsNeur()
 
     ui->tabTroubleshooting_chkFlushInterBuffEscape->setChecked(cfgNeur->trabl_get_flush_buffer_esc());
     ui->tabTroubleshooting_chkFlushInterBuffEnterTab->setChecked(cfgNeur->trabl_get_flush_buffer_tab_enter());
-    ui->tabTroubleshooting_chkProcessWordEnterTab->setChecked(cfgNeur->trabl_get_words_enter_tab());
+    //ui->tabTroubleshooting_chkProcessWordEnterTab->setChecked(cfgNeur->trabl_get_words_enter_tab());
     ui->tabTroubleshooting_chkCompatCompletion->setChecked(cfgNeur->trabl_get_compat_with_completion());
 
     ui->tabTroubleshooting_chkMonitorInput->setChecked(cfgNeur->trabl_get_monitor_input());
     ui->tabTroubleshooting_chkMonitorMouse->setChecked(cfgNeur->trabl_get_monitor_mouse());
 
     //tab Advanced
-   ui->tabAdvanced_chkKeyRelease->setChecked(cfgNeur->adv_get_key_release_event());
+   //ui->tabAdvanced_chkKeyRelease->setChecked(cfgNeur->adv_get_key_release_event());
    ui->tabAdvanced_spbDelay->setValue(cfgNeur->adv_get_delay_sending_events());
    ui->tabAdvanced_cmbLogLevel->setCurrentIndex(cfgNeur->adv_get_log_level());
 }
@@ -329,6 +329,10 @@ void kXneurApp::frmSettings::createConnect()
   //tab log
   connect(ui->tabLog_cmbOpenLongIn, SIGNAL(currentIndexChanged(int)), SLOT(openLoFileIn(int)));
   connect(ui->tabLog_cmdOpenLog, SIGNAL(clicked()),SLOT(openLogFile()));
+
+  //tab advanced
+  connect(ui->tabAdvanced_cmdAddApp, SIGNAL(clicked()), SLOT(addApp_tabAdvanced()));
+  connect(ui->tabAdvanced_cmdRemoveApp, SIGNAL(clicked()), SLOT(removeApp_tabAdvanced()));
 
   //tab properties
   connect(ui->tabProperties_cmdRecoverKeyCommand, SIGNAL(clicked()), SLOT(RecoverKeyboardCommand()));
@@ -974,7 +978,6 @@ void kXneurApp::frmSettings::notif_dublClicked(int row, int colum)
     }
 }
 
-
 QMap<QString, QMultiMap<bool, QString> > kXneurApp::frmSettings::get_lget_from_notif_widget(QTableWidget *wid)
 {
     QMap<QString, QMultiMap<bool, QString> > mapList;
@@ -989,4 +992,14 @@ QMap<QString, QMultiMap<bool, QString> > kXneurApp::frmSettings::get_lget_from_n
         mapTmp.clear();
     }
     return mapList;
+}
+
+void kXneurApp::frmSettings::addApp_tabAdvanced()
+{
+    add_Application_to_Widget(ui->tabAdvanced_tabAppList);
+}
+
+void kXneurApp::frmSettings::removeApp_tabAdvanced()
+{
+    del_Application_to_Widget(ui->tabAdvanced_tabAppList);
 }

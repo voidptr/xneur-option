@@ -1,5 +1,6 @@
 extern "C"
 {
+    #include <unistd.h>
     #include <xneur/xneur.h>
     #include <xneur/xnconfig.h>
     #include <xneur/list_char.h>
@@ -25,6 +26,7 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
     xconfig = NULL;
     init_libxnconfig();
     xneur_pid = xconfig->get_pid(xconfig);
+    //xneur_pid = xconfig->get_pid();
     dpy=XOpenDisplay(NULL);
     procxNeur = new QProcess();
     connect(procxNeur, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(procxNeurStop(int,QProcess::ExitStatus)));
@@ -1108,12 +1110,12 @@ void kXneurApp::xNeurConfig::trabl_save_flush_buffer_tab_enter (bool stat)
 
 bool kXneurApp::xNeurConfig::trabl_get_words_enter_tab ()
 {
-    return xconfig->dont_process_when_press_enter;
+    //return xconfig->dont_process_when_press_enter;
 }
 
 void kXneurApp::xNeurConfig::trabl_save_words_enter_tab (bool stat)
 {
-    xconfig->dont_process_when_press_enter = stat;
+    //xconfig->dont_process_when_press_enter = stat;
 }
 
 bool kXneurApp::xNeurConfig::trabl_get_compat_with_completion ()
@@ -1158,11 +1160,11 @@ int kXneurApp::xNeurConfig::adv_get_delay_sending_events()
 }
 void kXneurApp::xNeurConfig::adv_save_key_release_event(bool stat)
 {
-    xconfig->dont_send_key_release =stat;
+    //xconfig->dont_send_key_release =stat;
 }
 bool kXneurApp::xNeurConfig::adv_get_key_release_event()
 {
-    return xconfig->dont_send_key_release;
+    //return xconfig->dont_send_key_release;
 }
 void kXneurApp::xNeurConfig::adv_save_log_level(int index)
 {
@@ -1230,6 +1232,5 @@ void  kXneurApp::xNeurConfig::plug_save_list_plugins(QMap<QString, QMultiMap<boo
         }
         ++i;
     }
-
 }
 

@@ -26,7 +26,7 @@ SOURCES += \
 
 INCLUDEPATH += /usr/include
 
-LIBS += -lX11 -lkdeui -lkdecore -lxneur -lxnconfig -ldbus-1 -lplasma
+LIBS += -lX11 -lkdeui -lkdecore -lxneur -lxnconfig -lplasma
 
 HEADERS += \
     kxneurtray.h \
