@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
   QTextCodec::setCodecForCStrings(codec);
   QTextCodec::setCodecForLocale(codec);
   KConfig conf("kdeneurrc");
-  sleep(conf.group("Properties").readEntry("WaiTime", 0));
+ // sleep(conf.group("Properties").readEntry("WaiTime", 0));
   kXneurApp::kXneur neur(argc, argv);
   neur.setApplicationName("kdeNeur");
   neur.setWindowIcon(QIcon(":/icons/kdeneur.png"));

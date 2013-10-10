@@ -110,7 +110,8 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     cfgNeur->trabl_save_full_screen(ui->tabTroubleshooting_chkFullScreen->isChecked());
     cfgNeur->trabl_save_flush_buffer_esc(ui->tabTroubleshooting_chkFlushInterBuffEscape->isChecked());
     cfgNeur->trabl_save_flush_buffer_tab_enter(ui->tabTroubleshooting_chkFlushInterBuffEnterTab->isChecked());
-    //cfgNeur->trabl_save_words_enter_tab(ui->tabTroubleshooting_chkProcessWordEnterTab->isChecked());
+    cfgNeur->trabl_save_dont_correct_press_enter(ui->tabTroubleshooting_chkEnter->isChecked());
+    cfgNeur->trabl_save_dont_correct_press_tab(ui->tabTroubleshooting_chkTab->isChecked());
     cfgNeur->trabl_save_compat_with_completion(ui->tabTroubleshooting_chkCompatCompletion->isChecked());
     cfgNeur->trabl_save_monitor_input(ui->tabTroubleshooting_chkMonitorInput->isChecked());
     cfgNeur->trabl_save_monitor_mouse(ui->tabTroubleshooting_chkMonitorMouse->isChecked());
@@ -260,9 +261,9 @@ void kXneurApp::frmSettings::readSettingsNeur()
 
     ui->tabTroubleshooting_chkFlushInterBuffEscape->setChecked(cfgNeur->trabl_get_flush_buffer_esc());
     ui->tabTroubleshooting_chkFlushInterBuffEnterTab->setChecked(cfgNeur->trabl_get_flush_buffer_tab_enter());
-    //ui->tabTroubleshooting_chkProcessWordEnterTab->setChecked(cfgNeur->trabl_get_words_enter_tab());
     ui->tabTroubleshooting_chkCompatCompletion->setChecked(cfgNeur->trabl_get_compat_with_completion());
-
+    ui->tabTroubleshooting_chkEnter->setChecked(cfgNeur->trabl_get_dont_correct_press_enter());
+    ui->tabTroubleshooting_chkTab->setChecked(cfgNeur->trabl_get_dont_correct_press_tab());
     ui->tabTroubleshooting_chkMonitorInput->setChecked(cfgNeur->trabl_get_monitor_input());
     ui->tabTroubleshooting_chkMonitorMouse->setChecked(cfgNeur->trabl_get_monitor_mouse());
 
@@ -588,13 +589,17 @@ void kXneurApp::frmSettings::hot_get_list_hotkeys(QMap<QString, QString> lstComm
 {
     ui->tabHotKey_lstHotKey->setRowCount(lstCommand.size());
     ui->tabHotKey_lstHotKey->setColumnCount(2);
+    QString s1,s2;
 
     QMap<QString, QString>::const_iterator i = lstCommand.constBegin();
     int p=0;
     while (i != lstCommand.constEnd())
     {
-        ui->tabHotKey_lstHotKey->setItem(p,0, new QTableWidgetItem(i.key()));
-        ui->tabHotKey_lstHotKey->setItem(p,1, new QTableWidgetItem(i.value()));
+       s1 =i.key();
+       s2 = i.value();
+        ui->tabHotKey_lstHotKey->setItem(p,0, new QTableWidgetItem(s1));
+        ui->tabHotKey_lstHotKey->setItem(p,1, new QTableWidgetItem(s2));
+     //   qDebug() << s1 << "    " << s2;
         ++p;++i;
     }
 }

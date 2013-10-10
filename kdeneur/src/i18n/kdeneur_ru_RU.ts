@@ -315,7 +315,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../frmsettings.ui" line="96"/>
         <source>Check similar words</source>
-        <translation type="unfinished"></translation>
+        <translation>Check similar words</translation>
     </message>
     <message>
         <location filename="../frmsettings.ui" line="119"/>
@@ -385,7 +385,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../frmsettings.ui" line="211"/>
         <source>Correct misprint</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../frmsettings.ui" line="241"/>
@@ -420,6 +420,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../frmsettings.ui" line="722"/>
         <location filename="../frmsettings.ui" line="789"/>
         <location filename="../frmsettings.ui" line="1122"/>
+        <location filename="../frmsettings.ui" line="1681"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
@@ -431,6 +432,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../frmsettings.ui" line="735"/>
         <location filename="../frmsettings.ui" line="802"/>
         <location filename="../frmsettings.ui" line="1129"/>
+        <location filename="../frmsettings.ui" line="1688"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
@@ -450,7 +452,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../frmsettings.ui" line="421"/>
         <location filename="../frmsettings.ui" line="478"/>
         <location filename="../frmsettings.ui" line="899"/>
-        <location filename="../frmsettings.ui" line="1908"/>
+        <location filename="../frmsettings.ui" line="1929"/>
         <source>Edit</source>
         <translation>Изменить</translation>
     </message>
@@ -494,7 +496,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../frmsettings.ui" line="587"/>
         <source>Enable autocompletion</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../frmsettings.ui" line="598"/>
@@ -545,7 +547,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../frmsettings.ui" line="938"/>
         <location filename="../frmsettings.ui" line="1002"/>
         <location filename="../frmsettings.ui" line="1077"/>
-        <location filename="../frmsettings.ui" line="1687"/>
+        <location filename="../frmsettings.ui" line="1708"/>
         <source>Enabled</source>
         <translation>Включено</translation>
     </message>
@@ -624,7 +626,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../frmsettings.ui" line="1155"/>
-        <location filename="../frmsettings.ui" line="1657"/>
+        <location filename="../frmsettings.ui" line="1643"/>
         <source>Log</source>
         <translation>Журнал</translation>
     </message>
@@ -715,71 +717,80 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../frmsettings.ui" line="1435"/>
+        <source>Enter</source>
+        <translation>Вводе (Enter)</translation>
+    </message>
+    <message>
+        <location filename="../frmsettings.ui" line="1442"/>
+        <source>Tab</source>
+        <translation>Табуляция (Tab)</translation>
+    </message>
+    <message>
+        <location filename="../frmsettings.ui" line="1449"/>
         <source>You changed layout</source>
         <translation>Вы переключили раскладку</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1442"/>
+        <location filename="../frmsettings.ui" line="1456"/>
         <source>Application in full screen mode</source>
         <translation>Приложение в полноэкранном режиме</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1449"/>
+        <location filename="../frmsettings.ui" line="1463"/>
         <source>This will help avoid switching layout when editing parts previously introduced word.</source>
         <translation>Это поможет избежать переключений раскладки при редактировании частей ранее введенного слова.</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1477"/>
+        <location filename="../frmsettings.ui" line="1491"/>
         <source>Additional</source>
         <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1485"/>
+        <location filename="../frmsettings.ui" line="1499"/>
         <source>Flush internal buffer on Escape</source>
         <translation>Сбрасывать внутренний буфер при нажатии Escape</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1492"/>
+        <location filename="../frmsettings.ui" line="1506"/>
         <source>Flush internal buffer on Enter or Tab</source>
         <translation>Сбрасывать внутренний буфер при нажатии Enter или Tab</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1499"/>
         <source>Don&apos;t process words on Enter or Tab</source>
-        <translation>Не проверять слово при нажатии Enter или Tab</translation>
+        <translation type="obsolete">Не проверять слово при нажатии Enter или Tab</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1506"/>
+        <location filename="../frmsettings.ui" line="1513"/>
         <source>Compatibility with the completion</source>
         <translation>Совместимость с автодополнением</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1518"/>
+        <location filename="../frmsettings.ui" line="1525"/>
         <source>Tracking input</source>
         <translation>Слежение за вводом</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1526"/>
+        <location filename="../frmsettings.ui" line="1533"/>
         <source>Monitor the input</source>
         <translation>Следить за вводом</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1533"/>
+        <location filename="../frmsettings.ui" line="1540"/>
         <source>Disabling this option will add any application to the list of excluded applications.</source>
         <translation>Выключение этой опции добавит ВСЕ приложения в список исключенных приложений.</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1540"/>
+        <location filename="../frmsettings.ui" line="1547"/>
         <source>Monitor the mouse</source>
         <translation>Следить за мышью</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1547"/>
+        <location filename="../frmsettings.ui" line="1554"/>
         <source>Disabling this option will disable mouse tracking. Reset buffer when clicking the mouse will not.</source>
         <translation>Выключение этой опции выключит слежение за мышью. Сброса буфера при клике мышью не будет.</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1579"/>
+        <location filename="../frmsettings.ui" line="1586"/>
         <source>Advanced</source>
         <translation>Специальное</translation>
     </message>
@@ -789,97 +800,96 @@ p, li { white-space: pre-wrap; }
         <translation>Задержка перед отправкой событий (в миллисекундах)</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1614"/>
         <source>Dont send KeyRelease even</source>
-        <translation>Не отправлять событие KeyRelease</translation>
+        <translation type="obsolete">Не отправлять событие KeyRelease</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1628"/>
+        <location filename="../frmsettings.ui" line="1614"/>
         <source>Log verbosity level</source>
         <translation>Уровень подробности выводимых сообщений</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1642"/>
+        <location filename="../frmsettings.ui" line="1628"/>
         <source>None</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1647"/>
+        <location filename="../frmsettings.ui" line="1633"/>
         <source>Error</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1652"/>
+        <location filename="../frmsettings.ui" line="1638"/>
         <source>Warning</source>
         <translation>Предупреждения</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1662"/>
+        <location filename="../frmsettings.ui" line="1648"/>
         <source>Debug</source>
         <translation>Лог</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1667"/>
+        <location filename="../frmsettings.ui" line="1653"/>
         <source>Trace</source>
         <translation>Трассировка</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1680"/>
+        <location filename="../frmsettings.ui" line="1701"/>
         <source>Plugins</source>
         <translation>Модули</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1692"/>
+        <location filename="../frmsettings.ui" line="1713"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1697"/>
+        <location filename="../frmsettings.ui" line="1718"/>
         <source>File name</source>
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1709"/>
+        <location filename="../frmsettings.ui" line="1730"/>
         <source>Properties</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1715"/>
+        <location filename="../frmsettings.ui" line="1736"/>
         <source>Startup</source>
         <translation>Параметры запуска</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1723"/>
+        <location filename="../frmsettings.ui" line="1744"/>
         <source>Autostartup</source>
         <translation>Запускать автоматически при старте системы</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1738"/>
+        <location filename="../frmsettings.ui" line="1759"/>
         <source>Delay before startup</source>
         <translation>Задержка перед запуском</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1787"/>
+        <location filename="../frmsettings.ui" line="1808"/>
         <source>UI</source>
         <translation>Внешний вид</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1808"/>
+        <location filename="../frmsettings.ui" line="1829"/>
         <source>Show flag</source>
         <translation>Показывать флаг</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1813"/>
+        <location filename="../frmsettings.ui" line="1834"/>
         <source>Show user flag</source>
-        <translation type="unfinished"></translation>
+        <translation>Отображать флаги пользователя</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1818"/>
+        <location filename="../frmsettings.ui" line="1839"/>
         <source>Show text</source>
         <translation>Показывать текст</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1823"/>
+        <location filename="../frmsettings.ui" line="1844"/>
         <source>Show icon</source>
         <translation>Показывать значок</translation>
     </message>
@@ -900,27 +910,27 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Индикаторов приложений</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1834"/>
+        <location filename="../frmsettings.ui" line="1855"/>
         <source>Folder icon indicator</source>
         <translation>Каталог расположения используемых флагов</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1886"/>
+        <location filename="../frmsettings.ui" line="1907"/>
         <source>System</source>
         <translation>Системное</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1894"/>
+        <location filename="../frmsettings.ui" line="1915"/>
         <source>Keyboard properties command: </source>
         <translation>Команда запуска параметров клавиатуры: </translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1901"/>
+        <location filename="../frmsettings.ui" line="1922"/>
         <source>/usr/bin/kcmshell4 --args=--tab=layouts kcm_keyboard</source>
         <translation>/usr/bin/kcmshell4 --args=--tab=layouts kcm_keyboard</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1915"/>
+        <location filename="../frmsettings.ui" line="1936"/>
         <source>Recover</source>
         <translation>Восстановить</translation>
     </message>
@@ -1009,78 +1019,78 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>kXneurApp::frmSettings</name>
     <message>
-        <location filename="../frmsettings.cpp" line="379"/>
+        <location filename="../frmsettings.cpp" line="384"/>
         <source>Select execute file</source>
         <translation>Выберите исполняемый файл</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="403"/>
+        <location filename="../frmsettings.cpp" line="408"/>
         <source>Select Directory with icon tray</source>
         <translation>Укажите каталог содержащий иконки для трея</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="471"/>
+        <location filename="../frmsettings.cpp" line="476"/>
         <source>You don&apos;t select abbreviation for remove.</source>
         <translation>Вы не выбрали какое сокращение необходимо удалить.</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="485"/>
+        <location filename="../frmsettings.cpp" line="490"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="486"/>
+        <location filename="../frmsettings.cpp" line="491"/>
         <source>Layout</source>
         <translation>Раскладка</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="487"/>
+        <location filename="../frmsettings.cpp" line="492"/>
         <source>Excluded</source>
         <translation>Включено</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="542"/>
+        <location filename="../frmsettings.cpp" line="547"/>
         <source>Nothing deleted</source>
         <translation>Нечего удалять</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="542"/>
+        <location filename="../frmsettings.cpp" line="547"/>
         <source>You don&apos;t select an application that must be removed</source>
         <translation>Вы не указали какие именно приложение необходимо удалить из списка</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="566"/>
+        <location filename="../frmsettings.cpp" line="571"/>
         <source>WAR: Don&apos;t select language!</source>
         <translation>WAR: Не выбран язык!</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="471"/>
-        <location filename="../frmsettings.cpp" line="567"/>
+        <location filename="../frmsettings.cpp" line="476"/>
+        <location filename="../frmsettings.cpp" line="572"/>
         <source>Warning....</source>
         <translation>Предупреждение...</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="373"/>
+        <location filename="../frmsettings.cpp" line="378"/>
         <source>Log file not found...</source>
         <translation>Файл журнала не найден...</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="373"/>
+        <location filename="../frmsettings.cpp" line="378"/>
         <source>Log file xneurlog.html not found. Maybe you do not have the option of logging!</source>
         <translation>Файл журнала xneur.html не найден. Возможно вы не включили опцию сохранения набираемого текста в журнал, проверьте настройки приложения!</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="567"/>
+        <location filename="../frmsettings.cpp" line="572"/>
         <source>You don&apos;t select lang</source>
         <translation>Вы не выбрали язык</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="994"/>
+        <location filename="../frmsettings.cpp" line="969"/>
         <source>Open File</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="994"/>
+        <location filename="../frmsettings.cpp" line="969"/>
         <source>Audio ( *.wav)</source>
         <translation>Аудио (*.wav)</translation>
     </message>
@@ -1200,262 +1210,267 @@ and manually patch new configuration which will be created after first run.</sou
 <context>
     <name>kXneurApp::xNeurConfig</name>
     <message>
-        <location filename="../xneurconfig.cpp" line="33"/>
+        <location filename="../xneurconfig.cpp" line="35"/>
         <source>Xneur started</source>
         <translation>Запуск Xneur</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="33"/>
+        <location filename="../xneurconfig.cpp" line="35"/>
         <source>Xneur reloaded</source>
         <translation>Перезагрузка Xneur</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="33"/>
+        <location filename="../xneurconfig.cpp" line="35"/>
         <source>Xneur stopped</source>
         <translation>Остановка Xneur</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="33"/>
+        <location filename="../xneurconfig.cpp" line="35"/>
         <source>Keypress on layout 1</source>
         <translation>Нажатие клавиши при раскладке 1</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="34"/>
+        <location filename="../xneurconfig.cpp" line="36"/>
         <source>Keypress on layout 2</source>
         <translation>Нажатие клавиши при раскладке 2</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="34"/>
+        <location filename="../xneurconfig.cpp" line="36"/>
         <source>Keypress on layout 3</source>
         <translation>Нажатие клавиши при раскладке 3</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="34"/>
+        <location filename="../xneurconfig.cpp" line="36"/>
         <source>Keypress on layout 4</source>
         <translation>Нажатие клавиши при раскладке 4</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="34"/>
-        <location filename="../xneurconfig.cpp" line="48"/>
+        <location filename="../xneurconfig.cpp" line="36"/>
+        <location filename="../xneurconfig.cpp" line="50"/>
         <source>Switch to layout 1</source>
         <translation>Включение первой раскладки</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="35"/>
-        <location filename="../xneurconfig.cpp" line="48"/>
+        <location filename="../xneurconfig.cpp" line="37"/>
+        <location filename="../xneurconfig.cpp" line="50"/>
         <source>Switch to layout 2</source>
         <translation>Включение второй раскладки</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="35"/>
-        <location filename="../xneurconfig.cpp" line="48"/>
+        <location filename="../xneurconfig.cpp" line="37"/>
+        <location filename="../xneurconfig.cpp" line="50"/>
         <source>Switch to layout 3</source>
         <translation>Включение третьей раскладки</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="35"/>
-        <location filename="../xneurconfig.cpp" line="48"/>
+        <location filename="../xneurconfig.cpp" line="37"/>
+        <location filename="../xneurconfig.cpp" line="50"/>
         <source>Switch to layout 4</source>
         <translation>Включение четвертой раскладки</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="35"/>
+        <location filename="../xneurconfig.cpp" line="37"/>
         <source>Correct word automatically</source>
         <translation>Автоматическое изменение слова</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="36"/>
+        <location filename="../xneurconfig.cpp" line="38"/>
         <source>Correct last word manually</source>
         <translation>Ручное изменение последнего слова</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="36"/>
+        <location filename="../xneurconfig.cpp" line="38"/>
         <source>Transliterate last word manually</source>
         <translation>Транслитерация последнего слова</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="36"/>
+        <location filename="../xneurconfig.cpp" line="38"/>
         <source>Change case of last word manually</source>
         <translation>Смена регистра последнего слова</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="37"/>
+        <location filename="../xneurconfig.cpp" line="39"/>
         <source>Preview correction of last word manually</source>
         <translation>Предпросмотр коррекции последнего слова</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="37"/>
-        <location filename="../xneurconfig.cpp" line="45"/>
+        <location filename="../xneurconfig.cpp" line="39"/>
+        <location filename="../xneurconfig.cpp" line="47"/>
         <source>Correct last line</source>
         <translation>Коррекция последней строки</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="37"/>
-        <location filename="../xneurconfig.cpp" line="46"/>
+        <location filename="../xneurconfig.cpp" line="39"/>
+        <location filename="../xneurconfig.cpp" line="48"/>
         <source>Correct selected text</source>
         <translation>Коррекция выделенного текста</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="37"/>
-        <location filename="../xneurconfig.cpp" line="46"/>
+        <location filename="../xneurconfig.cpp" line="39"/>
+        <location filename="../xneurconfig.cpp" line="48"/>
         <source>Transliterate selected text</source>
         <translation>Транслитерация выделенного текста</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="38"/>
-        <location filename="../xneurconfig.cpp" line="46"/>
+        <location filename="../xneurconfig.cpp" line="40"/>
+        <location filename="../xneurconfig.cpp" line="48"/>
         <source>Change case of selected text</source>
         <translation>Смена регистра выделенного текста</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="38"/>
-        <location filename="../xneurconfig.cpp" line="46"/>
+        <location filename="../xneurconfig.cpp" line="40"/>
+        <location filename="../xneurconfig.cpp" line="48"/>
         <source>Preview correction of selected text</source>
         <translation>Предпросмотр коррекции выделенного текста</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="38"/>
-        <location filename="../xneurconfig.cpp" line="47"/>
+        <location filename="../xneurconfig.cpp" line="40"/>
+        <location filename="../xneurconfig.cpp" line="49"/>
         <source>Correct clipboard text</source>
         <translation>Коррекция буфера обмена</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="38"/>
-        <location filename="../xneurconfig.cpp" line="47"/>
+        <location filename="../xneurconfig.cpp" line="40"/>
+        <location filename="../xneurconfig.cpp" line="49"/>
         <source>Transliterate clipboard text</source>
         <translation>Транслитерация буфера обмена</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="39"/>
-        <location filename="../xneurconfig.cpp" line="47"/>
+        <location filename="../xneurconfig.cpp" line="41"/>
+        <location filename="../xneurconfig.cpp" line="49"/>
         <source>Change case of clipboard text</source>
         <translation>Смена регистра буфера обмена</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="39"/>
-        <location filename="../xneurconfig.cpp" line="47"/>
+        <location filename="../xneurconfig.cpp" line="41"/>
+        <location filename="../xneurconfig.cpp" line="49"/>
         <source>Preview correction of clipboard text</source>
         <translation>Предпросмотр коррекции буфера обмена</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="39"/>
-        <location filename="../xneurconfig.cpp" line="49"/>
+        <location filename="../xneurconfig.cpp" line="41"/>
+        <location filename="../xneurconfig.cpp" line="51"/>
         <source>Expand abbreviations</source>
         <translation>Замена сокращений</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="39"/>
+        <location filename="../xneurconfig.cpp" line="41"/>
         <source>Correct aCCIDENTAL caps</source>
         <translation>Исправление сЛУЧАЙНОГО CapsLock</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="40"/>
+        <location filename="../xneurconfig.cpp" line="42"/>
         <source>Correct TWo INitial caps</source>
         <translation>Исправление двух ПРописных букв</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="40"/>
+        <location filename="../xneurconfig.cpp" line="42"/>
         <source>Correct two space with a comma and a space</source>
         <translation>Исправление двух пробелов на запятую и пробел</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="40"/>
+        <location filename="../xneurconfig.cpp" line="42"/>
         <source>Correct two minus with a dash</source>
         <translation>Исправление двух минусов на тире</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="41"/>
+        <location filename="../xneurconfig.cpp" line="43"/>
         <source>Correct (c) with a copyright sign</source>
         <translation>Исправление (с) на знак копирайта</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="41"/>
+        <location filename="../xneurconfig.cpp" line="43"/>
         <source>Correct (tm) with a trademark sign</source>
         <translation>Исправление (tm) на знак торговой марки</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="41"/>
+        <location filename="../xneurconfig.cpp" line="43"/>
         <source>Correct (r) with a registered sign</source>
         <translation>Исправление (r) на знак регистрации</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="42"/>
+        <location filename="../xneurconfig.cpp" line="44"/>
         <source>Correct three points with a ellipsis sign</source>
         <translation>Исправление трёх точек на знак многоточия</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="42"/>
+        <location filename="../xneurconfig.cpp" line="44"/>
         <source>Execute user action</source>
         <translation>Выполнение пользовательского действия</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="42"/>
+        <location filename="../xneurconfig.cpp" line="44"/>
         <source>Block keyboard and mouse events</source>
         <translation>Блокировка клавиатуры и мыши</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="43"/>
+        <location filename="../xneurconfig.cpp" line="45"/>
         <source>Unblock keyboard and mouse events</source>
         <translation>Разблокировка клавиатуры и мыши</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="45"/>
+        <location filename="../xneurconfig.cpp" line="47"/>
         <source>Correct/Undo correction</source>
         <translation>Коррекция/Отмена коррекции</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="45"/>
+        <location filename="../xneurconfig.cpp" line="47"/>
         <source>Transliterate</source>
         <translation>Транслитерация</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="45"/>
+        <location filename="../xneurconfig.cpp" line="47"/>
         <source>Change case</source>
         <translation>Смена регистра</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="45"/>
+        <location filename="../xneurconfig.cpp" line="47"/>
         <source>Preview correction</source>
         <translation>Предпросмотр коррекции</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="49"/>
+        <location filename="../xneurconfig.cpp" line="51"/>
         <source>Rotate layouts</source>
         <translation>Переключение раскладки</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="49"/>
+        <location filename="../xneurconfig.cpp" line="51"/>
         <source>Rotate layouts back</source>
         <translation>Переключение раскладки назад</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="49"/>
+        <location filename="../xneurconfig.cpp" line="51"/>
         <source>Autocompletion confirmation</source>
         <translation>Подтверждение автодополнения</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="50"/>
+        <location filename="../xneurconfig.cpp" line="52"/>
         <source>Block/Unblock keyboard and mouse events</source>
         <translation>Блокировка/Разблокировка клавиатуры и мыши</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="50"/>
+        <location filename="../xneurconfig.cpp" line="52"/>
         <source>Insert date</source>
         <translation>Вставка даты</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="90"/>
+        <location filename="../xneurconfig.cpp" line="52"/>
+        <source>Rotate autocompletion</source>
+        <translation>Переключение вариантов автодополнения</translation>
+    </message>
+    <message>
+        <location filename="../xneurconfig.cpp" line="92"/>
         <source>Wrong XNeur configuration library api version.
 Please, install libxnconfig version 0.%1.%2</source>
         <translation>Несовпадение версии библиотеки конфигурации XNeur. Пожалуйста, установите libxnconfig версии 0.%1.%2</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="94"/>
+        <location filename="../xneurconfig.cpp" line="96"/>
         <source>Using libxnconfig API version 0.%1.%2 (build with 0.%3.%4)</source>
         <translation>Используется libxnconfig API версии 0.%1.%2 (собрано с 0.%3.%4)</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="97"/>
+        <location filename="../xneurconfig.cpp" line="99"/>
         <source>XNeur&apos;s config broken or was created with old version!
 Please, remove ~/.xneur/. It should solve the problem!
 If you don&apos;t want to loose your configuration, back it up
@@ -1467,12 +1482,12 @@ and manually patch new configuration which will be created after first run.</sou
 первого запуска.</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="147"/>
+        <location filename="../xneurconfig.cpp" line="149"/>
         <source>ERROR: start xNeur Fail</source>
         <translation>ОШИБКА запуска xNeur</translation>
     </message>
     <message>
-        <location filename="../xneurconfig.cpp" line="179"/>
+        <location filename="../xneurconfig.cpp" line="181"/>
         <source>ERROR: Warning process xNeur crashed, please look log file and inform the author xNeur. Thank You!</source>
         <translation>ОШИБКА: Внимание процесс xNeur был аварийно остановлен, просмотрите лог файл и сообщите автору xNeur. Спасибо!</translation>
     </message>

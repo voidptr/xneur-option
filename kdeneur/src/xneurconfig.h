@@ -180,8 +180,12 @@ namespace kXneurApp
         void trabl_save_flush_buffer_esc (bool);
         bool trabl_get_flush_buffer_tab_enter ();
         void trabl_save_flush_buffer_tab_enter (bool);
-        bool trabl_get_words_enter_tab ();
-        void trabl_save_words_enter_tab (bool);
+
+        bool trabl_get_dont_correct_press_enter();
+        bool trabl_get_dont_correct_press_tab ();
+        void trabl_save_dont_correct_press_enter(bool);
+        void trabl_save_dont_correct_press_tab (bool);
+
         bool trabl_get_compat_with_completion ();
         void trabl_save_compat_with_completion (bool);
         bool trabl_get_monitor_input ();

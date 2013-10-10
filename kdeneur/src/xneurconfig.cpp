@@ -49,7 +49,7 @@ kXneurApp::xNeurConfig::xNeurConfig(QObject *parent) :  QObject(parent)
                << tr("Correct clipboard text") << tr("Transliterate clipboard text") << tr("Change case of clipboard text") << tr("Preview correction of clipboard text")
                << tr("Switch to layout 1") << tr("Switch to layout 2") << tr("Switch to layout 3") << tr("Switch to layout 4")
                << tr("Rotate layouts") << tr("Rotate layouts back") << tr("Expand abbreviations") << tr("Autocompletion confirmation")
-               << tr("Block/Unblock keyboard and mouse events") << tr("Insert date");
+               << tr("Rotate autocompletion") << tr("Block/Unblock keyboard and mouse events") << tr("Insert date");
      lstModifer << "Shift" << "Control" << "Alt" << "Super";
 
 }
@@ -505,6 +505,7 @@ QMap <QString, QString> kXneurApp::xNeurConfig::hot_get_list_command_hotkeys()
             hot_key="";
             tblHotKey.insert(lstCommand_hotKey.at(i), hot_key);
         }
+        qDebug() << lstCommand_hotKey.at(i) << "\t" << hot_key;
     }
 return tblHotKey;
 }
@@ -1108,14 +1109,24 @@ void kXneurApp::xNeurConfig::trabl_save_flush_buffer_tab_enter (bool stat)
     xconfig->flush_buffer_when_press_enter = stat;
 }
 
-bool kXneurApp::xNeurConfig::trabl_get_words_enter_tab ()
+bool kXneurApp::xNeurConfig::trabl_get_dont_correct_press_tab ()
 {
-    //return xconfig->dont_process_when_press_enter;
+    return xconfig->troubleshoot_tab;
 }
 
-void kXneurApp::xNeurConfig::trabl_save_words_enter_tab (bool stat)
+void kXneurApp::xNeurConfig::trabl_save_dont_correct_press_tab (bool stat)
 {
-    //xconfig->dont_process_when_press_enter = stat;
+    xconfig->troubleshoot_tab = stat;
+}
+
+bool kXneurApp::xNeurConfig::trabl_get_dont_correct_press_enter()
+{
+    return xconfig->troubleshoot_enter;
+}
+
+void kXneurApp::xNeurConfig::trabl_save_dont_correct_press_enter(bool stat)
+{
+    xconfig->troubleshoot_enter =  stat;
 }
 
 bool kXneurApp::xNeurConfig::trabl_get_compat_with_completion ()
