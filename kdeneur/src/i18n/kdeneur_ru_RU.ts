@@ -315,7 +315,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../frmsettings.ui" line="96"/>
         <source>Check similar words</source>
-        <translation>Check similar words</translation>
+        <translation>Проверять похожие слова</translation>
     </message>
     <message>
         <location filename="../frmsettings.ui" line="119"/>
@@ -355,7 +355,7 @@ p, li { white-space: pre-wrap; }
     <message utf8="true">
         <location filename="../frmsettings.ui" line="169"/>
         <source>Сorrect two minus with a dash</source>
-        <translation>Исправление двух минусов на тире</translation>
+        <translation type="unfinished">Исправление двух минусов на тире</translation>
     </message>
     <message utf8="true">
         <location filename="../frmsettings.ui" line="176"/>
@@ -385,7 +385,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../frmsettings.ui" line="211"/>
         <source>Correct misprint</source>
-        <translation></translation>
+        <translation>Исправление опечаток</translation>
     </message>
     <message>
         <location filename="../frmsettings.ui" line="241"/>
