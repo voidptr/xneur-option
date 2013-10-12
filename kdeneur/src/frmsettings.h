@@ -136,6 +136,8 @@ namespace kXneurApp
     QMap<QString, QMultiMap<bool, QString> > plug_save_list_plugins();
 
     void auto_get_list_app_autocomp(QStringList);
+
+    void adv_get_list_key_release_app(QStringList);
   };
 }
 #endif // FRMSETTINGS_H

@@ -1169,13 +1169,22 @@ int kXneurApp::xNeurConfig::adv_get_delay_sending_events()
 {
     return xconfig->send_delay;
 }
-void kXneurApp::xNeurConfig::adv_save_key_release_event(bool stat)
+void kXneurApp::xNeurConfig::adv_save_key_release_app(QStringList lstApp)
 {
-    //xconfig->dont_send_key_release =stat;
+    for (int i =0; i< lstApp.size(); ++i)
+    {
+        xconfig->dont_send_key_release_apps->add(xconfig->dont_send_key_release_apps, lstApp.at(i).toAscii().data());
+    }
 }
-bool kXneurApp::xNeurConfig::adv_get_key_release_event()
+QStringList kXneurApp::xNeurConfig::adv_get_key_release_app()
 {
-    //return xconfig->dont_send_key_release;
+    QStringList lstApp;
+
+    for(int i=0; i<xconfig->dont_send_key_release_apps->data_count;i++)
+    {
+        lstApp << xconfig->dont_send_key_release_apps->data[i].string;
+    }
+    return lstApp;
 }
 void kXneurApp::xNeurConfig::adv_save_log_level(int index)
 {

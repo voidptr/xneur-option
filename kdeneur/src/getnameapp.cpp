@@ -47,6 +47,8 @@ void kXneurApp::getNameApp::getApp()
 
 void kXneurApp::getNameApp::readOutput()
 {
-    QString str = Xprop->readAllStandardOutput();
-    ui->txtNameApp->setText(str.remove(0,19).split(",").at(1).trimmed().replace("\"",""));
+    QStringList str = QString(Xprop->readAllStandardOutput()).remove(0,20).replace("\"","").trimmed().split(",");
+    qDebug() << str.size();
+    if(str.size() == 2)
+        ui->txtNameApp->setText(str.at(1));
 }

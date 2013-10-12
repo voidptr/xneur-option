@@ -125,14 +125,15 @@ void kXneurApp::kXneurTray::setTrayIconFlags(QString lang)
         QFont font;
         font.setFamily("Ubuntu");
         font.setBold(true);
-        font.setPointSize(18);
-        QColor 	textColor = Plasma::Theme::defaultTheme()->color(Plasma::Theme::TextColor);
-        QColor 	shadowColor = Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor);
-        QPoint 	offset = QPoint(0, 0);
+        font.setPointSize(16);
+        QColor textColor = Plasma::Theme::defaultTheme()->color(Plasma::Theme::TextColor);
+        QColor shadowColor = Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor);
+        QPoint offset = QPoint(0, 0);
         trayIcon->setIcon(QIcon(Plasma::PaintUtils::shadowText(lang, font, textColor, shadowColor, offset, 0)));
     }break;
     case ICON:
         trayIcon->setIcon(QIcon(":/icons/kdeneur.png"));
+        qDebug() << "Not found icon for " << lang << " language!";
         break;
     }
 }

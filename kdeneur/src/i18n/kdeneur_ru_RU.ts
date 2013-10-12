@@ -355,7 +355,7 @@ p, li { white-space: pre-wrap; }
     <message utf8="true">
         <location filename="../frmsettings.ui" line="169"/>
         <source>Сorrect two minus with a dash</source>
-        <translation type="unfinished">Исправление двух минусов на тире</translation>
+        <translation>Исправление двух минусов на тире</translation>
     </message>
     <message utf8="true">
         <location filename="../frmsettings.ui" line="176"/>
@@ -420,7 +420,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../frmsettings.ui" line="722"/>
         <location filename="../frmsettings.ui" line="789"/>
         <location filename="../frmsettings.ui" line="1122"/>
-        <location filename="../frmsettings.ui" line="1681"/>
+        <location filename="../frmsettings.ui" line="1688"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
@@ -432,7 +432,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../frmsettings.ui" line="735"/>
         <location filename="../frmsettings.ui" line="802"/>
         <location filename="../frmsettings.ui" line="1129"/>
-        <location filename="../frmsettings.ui" line="1688"/>
+        <location filename="../frmsettings.ui" line="1695"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
@@ -452,7 +452,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../frmsettings.ui" line="421"/>
         <location filename="../frmsettings.ui" line="478"/>
         <location filename="../frmsettings.ui" line="899"/>
-        <location filename="../frmsettings.ui" line="1929"/>
+        <location filename="../frmsettings.ui" line="1936"/>
         <source>Edit</source>
         <translation>Изменить</translation>
     </message>
@@ -547,7 +547,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../frmsettings.ui" line="938"/>
         <location filename="../frmsettings.ui" line="1002"/>
         <location filename="../frmsettings.ui" line="1077"/>
-        <location filename="../frmsettings.ui" line="1708"/>
+        <location filename="../frmsettings.ui" line="1715"/>
         <source>Enabled</source>
         <translation>Включено</translation>
     </message>
@@ -834,62 +834,67 @@ p, li { white-space: pre-wrap; }
         <translation>Трассировка</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1701"/>
+        <location filename="../frmsettings.ui" line="1663"/>
+        <source>Don&apos;t send event KeyRelease in these applications:</source>
+        <translation>Не отправлять событие KeyRelease для этих приложений:</translation>
+    </message>
+    <message>
+        <location filename="../frmsettings.ui" line="1708"/>
         <source>Plugins</source>
         <translation>Модули</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1713"/>
+        <location filename="../frmsettings.ui" line="1720"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1718"/>
+        <location filename="../frmsettings.ui" line="1725"/>
         <source>File name</source>
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1730"/>
+        <location filename="../frmsettings.ui" line="1737"/>
         <source>Properties</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1736"/>
+        <location filename="../frmsettings.ui" line="1743"/>
         <source>Startup</source>
         <translation>Параметры запуска</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1744"/>
+        <location filename="../frmsettings.ui" line="1751"/>
         <source>Autostartup</source>
         <translation>Запускать автоматически при старте системы</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1759"/>
+        <location filename="../frmsettings.ui" line="1766"/>
         <source>Delay before startup</source>
         <translation>Задержка перед запуском</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1808"/>
+        <location filename="../frmsettings.ui" line="1815"/>
         <source>UI</source>
         <translation>Внешний вид</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1829"/>
+        <location filename="../frmsettings.ui" line="1836"/>
         <source>Show flag</source>
         <translation>Показывать флаг</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1834"/>
+        <location filename="../frmsettings.ui" line="1841"/>
         <source>Show user flag</source>
         <translation>Отображать флаги пользователя</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1839"/>
+        <location filename="../frmsettings.ui" line="1846"/>
         <source>Show text</source>
         <translation>Показывать текст</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1844"/>
+        <location filename="../frmsettings.ui" line="1851"/>
         <source>Show icon</source>
         <translation>Показывать значок</translation>
     </message>
@@ -910,27 +915,27 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Индикаторов приложений</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1855"/>
+        <location filename="../frmsettings.ui" line="1862"/>
         <source>Folder icon indicator</source>
         <translation>Каталог расположения используемых флагов</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1907"/>
+        <location filename="../frmsettings.ui" line="1914"/>
         <source>System</source>
         <translation>Системное</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1915"/>
+        <location filename="../frmsettings.ui" line="1922"/>
         <source>Keyboard properties command: </source>
         <translation>Команда запуска параметров клавиатуры: </translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1922"/>
+        <location filename="../frmsettings.ui" line="1929"/>
         <source>/usr/bin/kcmshell4 --args=--tab=layouts kcm_keyboard</source>
         <translation>/usr/bin/kcmshell4 --args=--tab=layouts kcm_keyboard</translation>
     </message>
     <message>
-        <location filename="../frmsettings.ui" line="1936"/>
+        <location filename="../frmsettings.ui" line="1943"/>
         <source>Recover</source>
         <translation>Восстановить</translation>
     </message>
@@ -1019,78 +1024,78 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>kXneurApp::frmSettings</name>
     <message>
-        <location filename="../frmsettings.cpp" line="384"/>
+        <location filename="../frmsettings.cpp" line="387"/>
         <source>Select execute file</source>
         <translation>Выберите исполняемый файл</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="408"/>
+        <location filename="../frmsettings.cpp" line="411"/>
         <source>Select Directory with icon tray</source>
         <translation>Укажите каталог содержащий иконки для трея</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="476"/>
+        <location filename="../frmsettings.cpp" line="479"/>
         <source>You don&apos;t select abbreviation for remove.</source>
         <translation>Вы не выбрали какое сокращение необходимо удалить.</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="490"/>
+        <location filename="../frmsettings.cpp" line="493"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="491"/>
+        <location filename="../frmsettings.cpp" line="494"/>
         <source>Layout</source>
         <translation>Раскладка</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="492"/>
+        <location filename="../frmsettings.cpp" line="495"/>
         <source>Excluded</source>
         <translation>Включено</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="547"/>
+        <location filename="../frmsettings.cpp" line="556"/>
         <source>Nothing deleted</source>
         <translation>Нечего удалять</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="547"/>
+        <location filename="../frmsettings.cpp" line="556"/>
         <source>You don&apos;t select an application that must be removed</source>
         <translation>Вы не указали какие именно приложение необходимо удалить из списка</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="571"/>
+        <location filename="../frmsettings.cpp" line="580"/>
         <source>WAR: Don&apos;t select language!</source>
         <translation>WAR: Не выбран язык!</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="476"/>
-        <location filename="../frmsettings.cpp" line="572"/>
+        <location filename="../frmsettings.cpp" line="479"/>
+        <location filename="../frmsettings.cpp" line="581"/>
         <source>Warning....</source>
         <translation>Предупреждение...</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="378"/>
+        <location filename="../frmsettings.cpp" line="381"/>
         <source>Log file not found...</source>
         <translation>Файл журнала не найден...</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="378"/>
+        <location filename="../frmsettings.cpp" line="381"/>
         <source>Log file xneurlog.html not found. Maybe you do not have the option of logging!</source>
         <translation>Файл журнала xneur.html не найден. Возможно вы не включили опцию сохранения набираемого текста в журнал, проверьте настройки приложения!</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="572"/>
+        <location filename="../frmsettings.cpp" line="581"/>
         <source>You don&apos;t select lang</source>
         <translation>Вы не выбрали язык</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="969"/>
+        <location filename="../frmsettings.cpp" line="978"/>
         <source>Open File</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../frmsettings.cpp" line="969"/>
+        <location filename="../frmsettings.cpp" line="978"/>
         <source>Audio ( *.wav)</source>
         <translation>Аудио (*.wav)</translation>
     </message>
@@ -1177,7 +1182,7 @@ and manually patch new configuration which will be created after first run.</sou
     </message>
     <message>
         <location filename="../kxneurtray.cpp" line="67"/>
-        <location filename="../kxneurtray.cpp" line="255"/>
+        <location filename="../kxneurtray.cpp" line="256"/>
         <source>Start daemon</source>
         <translation>Запустить демон</translation>
     </message>
@@ -1187,22 +1192,22 @@ and manually patch new configuration which will be created after first run.</sou
         <translation>X Neural Switcher работает</translation>
     </message>
     <message>
-        <location filename="../kxneurtray.cpp" line="179"/>
+        <location filename="../kxneurtray.cpp" line="180"/>
         <source>Log file not found...</source>
         <translation>Файл журнала не найден...</translation>
     </message>
     <message>
-        <location filename="../kxneurtray.cpp" line="179"/>
+        <location filename="../kxneurtray.cpp" line="180"/>
         <source>Log file xneurlog.html not found. Maybe you do not have the option of logging!</source>
         <translation>Файл журнала xneur.html не найден. Возможно вы не включили опцию сохранения набираемого текста в журнал, проверьте настройки приложения!</translation>
     </message>
     <message>
-        <location filename="../kxneurtray.cpp" line="235"/>
+        <location filename="../kxneurtray.cpp" line="236"/>
         <source>Error: Execute Actions</source>
         <translation>Ошибка: Выполнения пользовательского действия</translation>
     </message>
     <message>
-        <location filename="../kxneurtray.cpp" line="251"/>
+        <location filename="../kxneurtray.cpp" line="252"/>
         <source>Stop daemon</source>
         <translation>Остановить демон</translation>
     </message>

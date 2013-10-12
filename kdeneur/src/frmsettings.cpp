@@ -119,7 +119,7 @@ void kXneurApp::frmSettings::saveSettingsNeur()
     //tab Advanced
     cfgNeur->adv_save_log_level(ui->tabAdvanced_cmbLogLevel->currentIndex());
     cfgNeur->adv_save_delay_sending_events(ui->tabAdvanced_spbDelay->value());
-    //cfgNeur->adv_save_key_release_event(ui->tabAdvanced_chkKeyRelease->isChecked());
+    cfgNeur->adv_save_key_release_app(getListFromWidget(ui->tabAdvanced_tabAppList));
 
     //tab Plugins
     cfgNeur->plug_save_list_plugins(plug_save_list_plugins());
@@ -165,6 +165,9 @@ void kXneurApp::frmSettings::settintgGrid()
     notif_get_list_action_sound(cfgNeur->notif_get_list_action_sound());
     notif_get_list_action_osd(cfgNeur->notif_get_list_action_osd());
     notif_get_list_action_popup(cfgNeur->notif_get_list_action_popup_msg());
+
+    //tab Advanced
+    adv_get_list_key_release_app(cfgNeur->adv_get_key_release_app());
 
     //tab Abbreviations
     abbr_get_list_abbreviations(cfgNeur->abbr_get_list_abbreviations());
@@ -512,6 +515,12 @@ void kXneurApp::frmSettings::tab_lay_get_list_lang(QStringList lstLng)
         }
     }
 }
+
+void kXneurApp::frmSettings::adv_get_list_key_release_app(QStringList lstApp)
+{
+    ui->tabAdvanced_tabAppList->addItems(lstApp);
+}
+
 
 void kXneurApp::frmSettings::tab_lay_get_list_app(QStringList lstApp)
 {

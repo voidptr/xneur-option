@@ -33,7 +33,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>8</number>
+      <number>9</number>
      </property>
      <widget class="TabBar" name="tabGeneral">
       <property name="locale">
@@ -1656,6 +1656,13 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblKeyRelease">
+         <property name="text">
+          <string>Don't send event KeyRelease in these applications:</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QListWidget" name="tabAdvanced_tabAppList"/>
