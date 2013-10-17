@@ -1,5 +1,5 @@
 INCLUDES = 	-DPACKAGE_PIXMAPS_DIR=\""${pkgdatadir}/pixmaps"\" 	\
-		-DLOCALEDIR=\""${pkgdatadir}/kdeneur/i18n"\" 				\
+		-DLOCALEDIR=\""${pkgdatadir}/i18n"\" 				\
 		-DXNEUR_PLUGIN_DIR=\""@libdir@/xneur"\"	\
 		-DSHAREDIR=\""${pkgdatadir}"\" 				
 		

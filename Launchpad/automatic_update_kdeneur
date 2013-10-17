@@ -120,6 +120,7 @@ dput ppa kdeneur_${NEW_VER}-0lucid_source.changes | cat
 
 rm -R ./"kdeneur-${NEW_VER}"
 rm -R ./"kdeneur-${CUR_VER}"
+
 fi
 
 echo "Update kdeneur finished successfully"
