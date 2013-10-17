@@ -32,6 +32,7 @@
 #define MAX_NOTIFIES		38
 #define MAX_HOTKEYS			24
 
+#include <sys/types.h>	
 #include "xneur.h"
 
 enum _flag_action
