@@ -88,15 +88,16 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 	p->event.xkey.keycode		= kc;
 	p->event.xkey.time		= CurrentTime;
 
-	XSendEvent(main_window->display, p->owner_window, TRUE, NoEventMask, &p->event);
-
 	char *app_name = NULL;
 	app_name = get_wm_class_name(p->owner_window);	
 	if (xconfig->dont_send_key_release_apps->exist(xconfig->dont_send_key_release_apps, app_name, BY_PLAIN))
 	{
+		XSendEvent(main_window->display, p->owner_window, TRUE, NoEventMask, &p->event);
 		log_message(TRACE, _("The event KeyRelease is not sent to the window (ID %d) with name '%s'"), p->owner_window, app_name);
 		return;
 	}
+
+	XSendEvent(main_window->display, p->owner_window, TRUE, NoEventMask, &p->event);
 	
 	p->event.type			= KeyRelease;
 	p->event.xkey.type		= KeyRelease;
