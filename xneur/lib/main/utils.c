@@ -169,8 +169,26 @@ void grab_modifier_keys(Window window, int is_grab)
 
 		for (j = 0; j < modmap->max_keypermod; j++) 
 		{
+			// Dirty hack for using Shift and Ctrl on xneur
+			if ((i == 0) || (i == 2))
+			{
+				k++;
+				continue;
+			}
+			
 			if (modmap->modifiermap[k]) 
 			{
+				/*
+				int keysyms_per_keycode_return;
+				KeySym *keysym = XGetKeyboardMapping(main_window->display,
+				modmap->modifiermap[k],
+				1,
+				&keysyms_per_keycode_return);
+				log_message (ERROR, "Modifiers List:");
+				log_message (ERROR, "%d %d %s", i, j, XKeysymToString(keysym[0]));
+				XFree(keysym);
+				*/
+
 				if (is_grab)
 					XGrabKey(main_window->display, modmap->modifiermap[k], AnyModifier, window, FALSE, GrabModeAsync, GrabModeAsync);
 				else
