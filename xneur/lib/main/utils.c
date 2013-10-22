@@ -169,8 +169,8 @@ void grab_modifier_keys(Window window, int is_grab)
 
 		for (j = 0; j < modmap->max_keypermod; j++) 
 		{
-			// Dirty hack for using Shift and Ctrl on xneur
-			if ((i == 0) || (i == 2))
+			// Dirty hack for using Shift /*and Ctrl*/ on xneur
+			if ((i == 0)/* || (i == 2)*/)
 			{
 				k++;
 				continue;
