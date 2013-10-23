@@ -108,7 +108,7 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 
 static void event_send_backspaces(struct _event *p, int count)
 {
-	
+
 	for (int i = 0; i < count; i++)
 	{
 		p->send_xkey(p, p->backspace, None);

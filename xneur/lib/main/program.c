@@ -481,6 +481,7 @@ static void program_process_input(struct _program *p)
 			}
 			case MappingNotify:
 			{
+				/* В xneur стало валиться слишком много этих сообщений в 13.10, отключено до лучших времен.
 				log_message(TRACE, _("Received MappingNotify (event type %d)"), type);
 
 				p->buffer->uninit(p->buffer);
@@ -493,9 +494,9 @@ static void program_process_input(struct _program *p)
 				main_window->init_keymap(main_window);
 				p->buffer = buffer_init(xconfig->handle, main_window->keymap);
 				p->correction_buffer = buffer_init(xconfig->handle, main_window->keymap);
-				p->correction_action = ACTION_NONE;
+				p->correction_action = ACTION_NONE;}
 				
-				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);
+				log_message (DEBUG, _("Now layouts count %d"), xconfig->handle->total_languages);*/
 
 				break;
 			}
