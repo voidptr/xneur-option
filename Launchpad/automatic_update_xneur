@@ -78,7 +78,6 @@ else
 
 # Note: I am using gnupg-agent for comfortable work
 
-
 # begin update for basic releases
 dch -b --force-distribution --distribution "saucy" -v "${NEW_VER}-0saucy" \
   "Minor update."

@@ -1,10 +1,7 @@
 #!/bin/sh
 
-
 # Must be from GPG key
 export DEBEMAIL="Andrew Crew Kuznetsov <andrewcrew@rambler.ru>"
-
-cd "${HOME}/develop/xneur-hg/xneur/Launchpad"
 
 if !([ -e xneur_*.orig.tar.gz ]); then
   echo "File xneur_*.orig.tar.gz is not found.";
@@ -13,7 +10,7 @@ else
   export OLD_VER=$(ls xneur_*.orig.tar.gz | sed -e "s/^xneur_\(.*\).orig.tar.gz$/\1/");
 fi
 
-export LAST_REVISION=$(hg su | grep "родитель: [0-9]\+" | sed -e "s/^родитель: \([0-9]\+\).*$/\1/")
+export LAST_REVISION=$(hg su | grep "родитель:[\ ]*[0-9]\+" | sed -e "s/^родитель:[\ ]*\([0-9]\+\).*$/\1/")
 
 echo "Number of last revision: ${LAST_REVISION}"
 
@@ -44,7 +41,9 @@ if [ ${NEW_VER} = ${OLD_VER} ]; then
 	fi
 fi
 
+# begin local updating
 hg archive -t files "xneur-tmp"
+
 # end local updating
 
 # building to dist
@@ -70,66 +69,59 @@ read -p "Build package only on local system (y/N)?" RESPONSE
 echo
 if [ "$RESPONSE" = y ] ; then
 	# If you want to build package on your system uncomment this:
-	dch -v "$NEW_VER-mybuild1" "New upstream version 0.16.0."
+	dch -v "$NEW_VER-mybuild1" "New upstream version ${CUR_VER}"
 	dpkg-buildpackage -rfakeroot
 
 	cd ..
-	rm -R "xneur-${CUR_VER}"
+	rm -R ./"xneur-${NEW_VER}"
 else
 
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "quantal" -v "${NEW_VER}-0quantal" \
-  "New upstream version 0.16.0."
+dch -b --force-distribution --distribution "saucy" -v "${NEW_VER}-0saucy" \
+  "Minor update."
 debuild -S -sa
 # end update for basic releases
 
 cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
+
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "quantal" -v "${NEW_VER}-0quantal" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
+
+cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "precise" -v "${NEW_VER}-0precise" \
-  "New upstream version 0.16.0."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "oneiric" -v "${NEW_VER}-0oneiric" \
-  "New upstream version 0.16.0."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "natty" -v "${NEW_VER}-0natty" \
-  "New upstream version 0.16.0."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "maverick" -v "${NEW_VER}-0maverick" \
-  "New upstream version 0.16.0."
+  "Automated backport upload; no source changes."
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-0lucid" \
-  "New upstream version 0.16.0."
+  "Automated backport upload; no source changes."
 debuild -S -sd
 
 # end update for other releases
 
 cd ..
-echo "Download to Launcshpad Quantal..."
+echo "Download to Launcshpad Saucy..."
+dput ppa xneur_${NEW_VER}-0saucy_source.changes | cat
+echo "Download to Launcshpad Raring..."
+dput ppa xneur_${NEW_VER}-0raring_source.changes | cat
+echo "Download to Launchpad Quantal..."
 dput ppa xneur_${NEW_VER}-0quantal_source.changes | cat
-echo "Download to Launcshpad Precise..."
+echo "Download to Launchpad Precise..."
 dput ppa xneur_${NEW_VER}-0precise_source.changes | cat
-echo "Download to Launchpad Oneiric..."
-dput ppa xneur_${NEW_VER}-0oneiric_source.changes | cat
-echo "Download to Launchpad Natty..."
-dput ppa xneur_${NEW_VER}-0natty_source.changes | cat
-echo "Download to Launchpad Maverick..."
-dput ppa xneur_${NEW_VER}-0maverick_source.changes | cat
 echo "Download to Launchpad Lucid..."
 dput ppa xneur_${NEW_VER}-0lucid_source.changes | cat
 
-rm -R "xneur-${CUR_VER}"
-
+rm -R ./"xneur-${NEW_VER}"
+rm -R ./"xneur-${CUR_VER}"
 fi
 
-echo "Update XNEUR finished successfully"
+echo "Update xneur finished successfully"
 
 

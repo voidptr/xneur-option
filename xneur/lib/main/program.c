@@ -2227,7 +2227,7 @@ static void program_check_misprint(struct _program *p)
 		free(word);
 		return;
 	}
-
+	
 	if (xconfig->handle->languages[lang].dictionary->exist(xconfig->handle->languages[lang].dictionary, word, BY_REGEXP))
 	{
 		free(word);
@@ -2381,6 +2381,8 @@ static void program_check_misprint(struct _program *p)
 		int possible_word_len = strlen(possible_word);
 		char *new_content = malloc((p->buffer->cur_pos + possible_word_len + backspaces_count + 1) * sizeof(char));
 		memset(new_content, 0, (p->buffer->cur_pos + possible_word_len + backspaces_count + 1) * sizeof(char));
+		//char *new_content = malloc(1024 * sizeof(char));
+		//memset(new_content, 0, 1024 * sizeof(char));
 		new_content = strcat(new_content, p->buffer->content);
 		new_content = strcat(new_content, possible_word);
 
@@ -2397,9 +2399,9 @@ static void program_check_misprint(struct _program *p)
 		}
 		new_content = strcat(new_content, p->correction_buffer->i18n_content[lang].content_unchanged + strlen(p->correction_buffer->i18n_content[lang].content_unchanged) - finish_offset + 1);
 		p->buffer->set_content(p->buffer, new_content);
-
 		if (new_content != NULL)
 			free(new_content);
+
 		p->buffer->set_offset(p->buffer, new_offset);
 		p->send_string_silent(p, 0);	
 		p->buffer->unset_offset(p->buffer, new_offset);
@@ -2413,7 +2415,6 @@ static void program_check_misprint(struct _program *p)
 		free(notify_text);
 
 		p->correction_action = CORRECTION_MISPRINT;
-
 		//p->buffer->save_and_clear(p->buffer, p->focus->owner_window);
 
 		free(possible_word);

@@ -1,3 +1,12 @@
+October 24 2013:
+Version 0.17.0 released.
+Add misprint correction
+Add total cancellation of correction
+Check memory leaks via сppcheck
+Add new option "Rotate autocompletion"
+Add app list for exclude from KeyRelease sending
+Big lot of bugfixes (see mercurial journal).
+
 October 25 2012:
 Version 0.16.0 released.
 New option for сorrect two minus with a long dash

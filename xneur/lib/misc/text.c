@@ -23,6 +23,7 @@
 #include <ctype.h>
 
 #include "types.h"
+#include "log.h"
 
 #include "text.h"
 
@@ -254,8 +255,8 @@ void del_final_numeric_char(char *word)
 			}
 		}
 	}
-	if (offset == len)
-		return;
+	//if (offset == len)
+		//return;
 	word[len - offset] = NULLSYM;
 }
 
