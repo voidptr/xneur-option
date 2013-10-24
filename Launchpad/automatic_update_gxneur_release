@@ -26,7 +26,7 @@ hg update
 hg merge
 
 export CUR_VER=$(cat ../gxneur/configure.in | grep "AM_INIT_AUTOMAKE" | sed -e "s/^AM_INIT_AUTOMAKE(gxneur, \(.*\))$/\1/")
-export NEW_VER="${CUR_VER}+0"
+export NEW_VER="${CUR_VER}"
 
 echo "OLD_VER = ${OLD_VER}"
 echo "NEW_VER = ${NEW_VER}"
