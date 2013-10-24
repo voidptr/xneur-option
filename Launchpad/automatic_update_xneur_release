@@ -26,7 +26,7 @@ hg update
 hg merge
 
 export CUR_VER=$(cat ../xneur/configure.in | grep "AM_INIT_AUTOMAKE" | sed -e "s/^AM_INIT_AUTOMAKE(xneur, \(.*\))$/\1/")
-export NEW_VER="${CUR_VER}"
+export NEW_VER="${CUR_VER}+0"
 
 echo "OLD_VER = ${OLD_VER}"
 echo "NEW_VER = ${NEW_VER}"
@@ -79,28 +79,28 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "saucy" -v "${NEW_VER}-1saucy" \
+dch -b --force-distribution --distribution "saucy" -v "${NEW_VER}-0saucy" \
   "Minor update."
 debuild -S -sa
 # end update for basic releases
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-1raring" \
+dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "quantal" -v "${NEW_VER}-1quantal" \
+dch -b --force-distribution --distribution "quantal" -v "${NEW_VER}-0quantal" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "precise" -v "${NEW_VER}-1precise" \
+dch -b --force-distribution --distribution "precise" -v "${NEW_VER}-0precise" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-1lucid" \
+dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-0lucid" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
@@ -108,15 +108,15 @@ debuild -S -sd
 
 cd ..
 echo "Download to Launcshpad Saucy..."
-dput ppa xneur_${NEW_VER}-1saucy_source.changes | cat
+dput ppa xneur_${NEW_VER}-0saucy_source.changes | cat
 echo "Download to Launcshpad Raring..."
-dput ppa xneur_${NEW_VER}-1raring_source.changes | cat
+dput ppa xneur_${NEW_VER}-0raring_source.changes | cat
 echo "Download to Launchpad Quantal..."
-dput ppa xneur_${NEW_VER}-1quantal_source.changes | cat
+dput ppa xneur_${NEW_VER}-0quantal_source.changes | cat
 echo "Download to Launchpad Precise..."
-dput ppa xneur_${NEW_VER}-1precise_source.changes | cat
+dput ppa xneur_${NEW_VER}-0precise_source.changes | cat
 echo "Download to Launchpad Lucid..."
-dput ppa xneur_${NEW_VER}-1lucid_source.changes | cat
+dput ppa xneur_${NEW_VER}-0lucid_source.changes | cat
 
 rm -R ./"xneur-${NEW_VER}"
 rm -R ./"xneur-${CUR_VER}"
