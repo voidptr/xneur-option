@@ -245,11 +245,6 @@ FlushBufferWhenPressEscape No
 #FlushBufferWhenPressEnter Yes
 FlushBufferWhenPressEnter No
 
-# This option disable or enable processing word when pressed Enter or Tab
-# Example:
-#DontProcessWhenPressEnter Yes
-DontProcessWhenPressEnter No
-
 # This option disable or enable show OSD
 # Example:
 #ShowOSD Yes

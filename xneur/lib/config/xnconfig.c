@@ -152,9 +152,15 @@ static void parse_line(struct _xneur_config *p, char *line)
 		return;
 	}
 
+	if (line == NULL)
+	{
+		log_message(WARNING, _("Param mismatch for option %s"), option);
+		return;
+	}
+	
 	char *full_string = strdup(line);
-
 	char *param = get_word(&line);
+
 	if (param == NULL)
 	{
 		free(full_string);
@@ -661,7 +667,8 @@ static void parse_line(struct _xneur_config *p, char *line)
 		}
 		case 36: // Log Size
 		{
-			p->size_keyboard_log = atoi (param);
+			if (param != NULL) 
+			  p->size_keyboard_log = atoi (param);
 			break;
 		}
 		case 37: // Log E-Mail 
@@ -993,8 +1000,10 @@ static int parse_config_file(struct _xneur_config *p, const char *dir_name, cons
 	}
 
 	for (int i = 0; i < list->data_count; i++)
+	{	
 		parse_line(p, list->data[i].string);
-
+	}
+	
 	list->uninit(list);
 	return TRUE;
 }
@@ -1158,7 +1167,6 @@ static int xneur_config_load(struct _xneur_config *p)
 		log_message(ERROR, _("No languages specified in config file"));
 		return FALSE;
 	}
-
 	return TRUE;
 }
 
