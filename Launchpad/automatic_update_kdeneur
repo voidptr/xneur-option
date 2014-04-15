@@ -79,10 +79,15 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "saucy" -v "${NEW_VER}-0saucy" \
+dch -b --force-distribution --distribution "trusty" -v "${NEW_VER}-0trusty" \
   "Minor update."
 debuild -S -sa
 # end update for basic releases
+
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "saucy" -v "${NEW_VER}-0saucy" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
@@ -107,6 +112,8 @@ debuild -S -sd
 # end update for other releases
 
 cd ..
+echo "Download to Launchpad Trusty..."
+dput ppa kdeneur_${NEW_VER}-0trusty_source.changes | cat
 echo "Download to Launcshpad Saucy..."
 dput ppa kdeneur_${NEW_VER}-0saucy_source.changes | cat
 echo "Download to Launcshpad Raring..."
