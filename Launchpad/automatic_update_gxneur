@@ -116,8 +116,6 @@ echo "Download to Launchpad Trusty..."
 dput ppa gxneur_${NEW_VER}-0trusty_source.changes | cat
 echo "Download to Launchpad Saucy..."
 dput ppa gxneur_${NEW_VER}-0saucy_source.changes | cat
-echo "Download to Launchpad Raring..."
-dput ppa gxneur_${NEW_VER}-0raring_source.changes | cat
 echo "Download to Launchpad Quantal..."
 dput ppa gxneur_${NEW_VER}-0quantal_source.changes | cat
 echo "Download to Launchpad Precise..."
