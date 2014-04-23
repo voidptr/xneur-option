@@ -75,7 +75,7 @@ int get_key_state(int key)
 
 void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 {
-	usleep(xconfig->send_delay);
+	//usleep(xconfig->send_delay);
 	
 	p->event.type			= KeyPress;
 	p->event.xkey.type		= KeyPress;
@@ -98,6 +98,7 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 	}
 
 	XSendEvent(main_window->display, p->owner_window, TRUE, NoEventMask, &p->event);
+	usleep(xconfig->send_delay * 1000);
 	
 	p->event.type			= KeyRelease;
 	p->event.xkey.type		= KeyRelease;
@@ -108,7 +109,6 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 
 static void event_send_backspaces(struct _event *p, int count)
 {
-
 	for (int i = 0; i < count; i++)
 	{
 		p->send_xkey(p, p->backspace, None);
@@ -117,7 +117,6 @@ static void event_send_backspaces(struct _event *p, int count)
 
 static void event_send_spaces(struct _event *p, int count)
 {
-	
 	for (int i = 0; i < count; i++)
 	{
 		p->send_xkey(p, p->space, None);
