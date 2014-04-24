@@ -90,6 +90,7 @@ static GtkListStore *store_action			= NULL;
 static GtkListStore *store_hotkey			= NULL;
 static GtkListStore *store_autocompletion_exclude_app		= NULL;
 static GtkListStore *store_dont_send_keyrelease_app		= NULL;
+static GtkListStore *store_delay_send_key_app		= NULL;
 static GtkListStore *store_plugin			= NULL;
 static GtkListStore *store_language			= NULL;
 
@@ -954,6 +955,32 @@ void xneur_preference(void)
 	// Delay Before Send
 	widget = glade_xml_get_widget (gxml, "spinbutton1");
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), xconfig->send_delay);
+
+	// Delay App Set
+	treeview = glade_xml_get_widget (gxml, "treeview15");
+	
+	store_delay_send_key_app = gtk_list_store_new(1, G_TYPE_STRING);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store_delay_send_key_app));
+	gtk_widget_show(treeview);	
+
+	for (int i = 0; i < xconfig->delay_send_key_apps->data_count; i++)
+	{
+		GtkTreeIter iter;
+		gtk_list_store_append(GTK_LIST_STORE(store_delay_send_key_app), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store_delay_send_key_app), &iter, 0, xconfig->delay_send_key_apps->data[i].string, -1);
+	}				
+
+	cell = gtk_cell_renderer_text_new();
+
+	column = gtk_tree_view_column_new_with_attributes(_("Application"), cell, "text", 0, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), GTK_TREE_VIEW_COLUMN(column));
+
+	// Adding/Removing Delay App
+	widget = glade_xml_get_widget (gxml, "button14");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_add_delay_send_key_app), G_OBJECT(window));
+
+	widget = glade_xml_get_widget (gxml, "button17");
+	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(xneur_rem_delay_send_key_app), G_OBJECT(treeview));
 	
 	// Log Level
 	widget = glade_xml_get_widget (gxml, "combobox1");
@@ -1400,6 +1427,11 @@ void xneur_add_manual_app(void)
 	xneur_add_application(store_manual_app);
 }
 
+void xneur_add_delay_send_key_app(void)
+{
+	xneur_add_application(store_delay_send_key_app);
+}
+
 void xneur_add_dont_send_keyrelease_app(void)
 {
 	xneur_add_application(store_dont_send_keyrelease_app);
@@ -1844,6 +1876,11 @@ void xneur_rem_dont_send_keyrelease_app(GtkWidget *widget)
 	remove_item(widget, store_dont_send_keyrelease_app);
 }
 
+void xneur_rem_delay_send_key_app(GtkWidget *widget)
+{
+	remove_item(widget, store_delay_send_key_app);
+}
+
 void xneur_rem_layout_app(GtkWidget *widget)
 {
 	remove_item(widget, store_layout_app);
@@ -1891,6 +1928,15 @@ gboolean save_dont_send_keyrelease_app(GtkTreeModel *model, GtkTreePath *path, G
 	if (model || path || user_data){};
 
 	save_list(store_dont_send_keyrelease_app, xconfig->dont_send_key_release_apps, iter);
+
+	return FALSE;
+}
+
+gboolean save_delay_send_key_app(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	if (model || path || user_data){};
+
+	save_list(store_delay_send_key_app, xconfig->delay_send_key_apps, iter);
 
 	return FALSE;
 }
@@ -2121,6 +2167,7 @@ void xneur_save_preference(GladeXML *gxml)
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_auto_app), save_auto_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_manual_app), save_manual_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_dont_send_keyrelease_app), save_dont_send_keyrelease_app, NULL);
+	gtk_tree_model_foreach(GTK_TREE_MODEL(store_delay_send_key_app), save_delay_send_key_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_layout_app), save_layout_app, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_abbreviation), save_abbreviation, NULL);
 	gtk_tree_model_foreach(GTK_TREE_MODEL(store_sound), save_sound, NULL);

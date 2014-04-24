@@ -55,6 +55,9 @@ void xneur_rem_manual_app(GtkWidget *widget);
 void xneur_add_dont_send_keyrelease_app(void);
 void xneur_rem_dont_send_keyrelease_app(GtkWidget *widget);
 
+void xneur_add_delay_send_key_app(void);
+void xneur_rem_delay_send_key_app(GtkWidget *widget);
+
 void xneur_add_layout_app(void);
 void xneur_rem_layout_app(GtkWidget *widget);
 

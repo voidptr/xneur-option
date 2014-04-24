@@ -70,7 +70,7 @@ static const char *option_names[] = 	{
 						"PopupExpireTimeout", "CorrectTwoSpaceWithCommaAndSpace","CorrectTwoMinusWithDash",
 						"CorrectCWithCopyright", "CorrectTMWithTrademark", "CorrectRWithRegistered",
 						"CorrectDashWithEmDash","CorrectThreePointsWithEllipsis", "CorrectMisprint", "CheckSimilarWords",
-						"TroubleshootTab",  
+						"TroubleshootTab", "DelaySendingEventApp" 
 					};
 static const char *action_names[] =	{
 						"ChangeWord", "TranslitWord", "ChangecaseWord", "PreviewChangeWord",
@@ -986,6 +986,11 @@ static void parse_line(struct _xneur_config *p, char *line)
 			p->troubleshoot_tab = index;
 			break;
 		}
+		case 67: // Get Applications That Event Will Be Delayed Sent events
+		{
+			p->delay_send_key_apps->add(p->delay_send_key_apps, full_string);
+			break;
+		}
 	}
 	free(full_string);
 }
@@ -1017,6 +1022,7 @@ static void free_structures(struct _xneur_config *p)
 	p->excluded_apps->uninit(p->excluded_apps);
 	p->autocompletion_excluded_apps->uninit(p->autocompletion_excluded_apps);
 	p->dont_send_key_release_apps->uninit(p->dont_send_key_release_apps);
+	p->delay_send_key_apps->uninit(p->delay_send_key_apps);
 	
 	p->abbreviations->uninit(p->abbreviations);
 	p->plugins->uninit(p->plugins);
@@ -1179,6 +1185,8 @@ static void xneur_config_clear(struct _xneur_config *p)
 	p->auto_apps			= list_char_init();
 	p->layout_remember_apps		= list_char_init();
 	p->dont_send_key_release_apps	= list_char_init();
+	p->delay_send_key_apps	= list_char_init();
+	
 	p->excluded_apps		= list_char_init();
 	p->autocompletion_excluded_apps	= list_char_init();
 	p->abbreviations		= list_char_init();
@@ -1356,6 +1364,14 @@ static int xneur_config_save(struct _xneur_config *p)
 	fprintf(stream, "# Example:\n");
 	fprintf(stream, "#RotateLayoutAfterChangeSelectedMode No\n");
 	fprintf(stream, "RotateLayoutAfterChangeSelectedMode %s\n\n", p->get_bool_name(p->rotate_layout_after_convert));
+
+	fprintf(stream, "# Add Applications names to include it to delay sending process\n");
+	fprintf(stream, "# Xneur will be delay KeyPress and KeyRelease events for this applications\n");
+	fprintf(stream, "# Example:\n");
+	fprintf(stream, "#DelaySendingEventApp Firefox\n");
+	for (int i = 0; i < p->delay_send_key_apps->data_count; i++)
+		fprintf(stream, "DelaySendingEventApp %s\n", p->delay_send_key_apps->data[i].string);
+	fprintf(stream, "\n");
 	
 	fprintf(stream, "# This option define delay before sendind events to application (in milliseconds between 0 to 50).\n");
 	fprintf(stream, "SendDelay %d\n\n", p->send_delay);
@@ -1682,6 +1698,7 @@ struct _xneur_config* xneur_config_init(void)
 	p->manual_apps			= list_char_init();
 	p->layout_remember_apps		= list_char_init();
 	p->dont_send_key_release_apps = list_char_init();
+	p->delay_send_key_apps	= list_char_init();
 	
 	p->window_layouts		= list_char_init();
 	p->abbreviations		= list_char_init();

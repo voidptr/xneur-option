@@ -10,7 +10,7 @@ else
   export OLD_VER=$(ls hunspell-ru-ie-yo_*.orig.tar.gz | sed -e "s/^hunspell-ru-ie-yo_\(.*\).orig.tar.gz$/\1/");
 fi
 
-export LAST_REVISION=$(hg su | grep "родитель: [0-9]\+" | sed -e "s/^родитель: \([0-9]\+\).*$/\1/")
+export LAST_REVISION=$(hg su | grep "родитель:[\ ]*[0-9]\+" | sed -e "s/^родитель:[\ ]*\([0-9]\+\).*$/\1/")
 
 echo "Number of last revision: ${LAST_REVISION}"
 
@@ -25,8 +25,8 @@ hg pull
 hg update
 hg merge
 
-export CUR_VER="0.2.9-1"
-export NEW_VER="0.2.9-1"
+export CUR_VER="0.2.9-2"
+export NEW_VER="0.2.9-2"
 
 echo "OLD_VER = ${OLD_VER}"
 echo "NEW_VER = ${NEW_VER}"
@@ -78,10 +78,20 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
-  "New dictionary  update."
+dch -b --force-distribution --distribution "trusty" -v "${NEW_VER}-0trusty" \
+  "Minor update."
 debuild -S -sa
 # end update for basic releases
+
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "saucy" -v "${NEW_VER}-0saucy" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
+
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "quantal" -v "${NEW_VER}-0quantal" \
@@ -93,15 +103,25 @@ dch -b --force-distribution --distribution "precise" -v "${NEW_VER}-0precise" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-0lucid" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
+
 # end update for other releases
 
 cd ..
-echo "Download to Launcshpad Raring..."
-dput ppa hunspell-ru-ie-yo_${NEW_VER}-0raring_source.changes | cat
+
+echo "Download to Launchpad Trusty..."
+dput ppa hunspell-ru-ie-yo_${NEW_VER}-0trusty_source.changes | cat
+echo "Download to Launchpad Saucy..."
+dput ppa hunspell-ru-ie-yo_${NEW_VER}-0saucy_source.changes | cat
 echo "Download to Launchpad Quantal..."
 dput ppa hunspell-ru-ie-yo_${NEW_VER}-0quantal_source.changes | cat
 echo "Download to Launchpad Precise..."
 dput ppa hunspell-ru-ie-yo_${NEW_VER}-0precise_source.changes | cat
+echo "Download to Launchpad Lucid..."
+dput ppa hunspell-ru-ie-yo_${NEW_VER}-0lucid_source.changes | cat
 
 rm -R ./"hunspell-ru-ie-yo-${NEW_VER}"
 rm -R ./"hunspell-ru-ie-yo-${CUR_VER}"

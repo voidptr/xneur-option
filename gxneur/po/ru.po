@@ -580,15 +580,11 @@ msgstr "Слежение за вводом"
 msgid "<b>Troubleshooting</b>"
 msgstr "<b>Устранение проблем</b>"
 
-#: glade/config.glade:2761
-msgid "Delay before sending events (in milliseconds)"
-msgstr "Задержка перед отправкой событий (в миллисекундах)"
-
-#: glade/config.glade:2773
+#: glade/config.glade:2739
 msgid "Log verbosity level"
 msgstr "Уровень подробности выводимых сообщений"
 
-#: glade/config.glade:2786
+#: glade/config.glade:2752
 msgid ""
 "None\n"
 "Error\n"
@@ -604,31 +600,39 @@ msgstr ""
 "Отладка\n"
 "Трассировка"
 
-#: glade/config.glade:2911
+#: glade/config.glade:2818
+msgid "Delay before sending events (in milliseconds)"
+msgstr "Задержка перед отправкой событий (в миллисекундах)"
+
+#: glade/config.glade:2940
+msgid "Delay before sending events in these applications"
+msgstr "Задерживать отправку событий в этих приложениях"
+
+#: glade/config.glade:3045
 msgid "Dont send event KeyRelease in these applications"
 msgstr "Не отправлять событие KeyRelease для этих приложений"
 
-#: glade/config.glade:2941
+#: glade/config.glade:3073
 msgid "<b>Advanced</b>"
 msgstr "<b>Специальное</b>"
 
-#: glade/config.glade:3008
+#: glade/config.glade:3140
 msgid "<b>Plugins</b>"
 msgstr "<b>Модули</b>"
 
-#: glade/config.glade:3049
+#: glade/config.glade:3181
 msgid "Autostartup"
 msgstr "Запускать автоматически при старте системы"
 
-#: glade/config.glade:3074
+#: glade/config.glade:3206
 msgid "Delay before startup"
 msgstr "Задержка перед запуском"
 
-#: glade/config.glade:3117
+#: glade/config.glade:3249
 msgid "Startup"
 msgstr "Параметры запуска"
 
-#: glade/config.glade:3150
+#: glade/config.glade:3282
 msgid ""
 "Show flag\n"
 "Show text\n"
@@ -638,7 +642,7 @@ msgstr ""
 "Показывать текст\n"
 "Показывать значок"
 
-#: glade/config.glade:3164
+#: glade/config.glade:3296
 msgid ""
 "Used for rendering built-in engine\n"
 "Used for rendering Status Icon engine\n"
@@ -648,28 +652,28 @@ msgstr ""
 "Использовать для отрисовки значка движок значков статуса\n"
 "Использовать для отрисовки значка движок индикаторов приложений"
 
-#: glade/config.glade:3187
+#: glade/config.glade:3319
 msgid "Set the extension to move the icon in the shell area of the Gnome 3."
 msgstr ""
 "Установить расширение для перемещения иконки в область оболочки Gnome 3."
 
-#: glade/config.glade:3202
+#: glade/config.glade:3334
 msgid "Gnome 3 Shell"
 msgstr "Оболочка Gnome 3"
 
-#: glade/config.glade:3228
+#: glade/config.glade:3360
 msgid "UI"
 msgstr "Внешний вид"
 
-#: glade/config.glade:3265
+#: glade/config.glade:3397
 msgid "Keyboard properties command"
 msgstr "Команда запуска параметров клавиатуры"
 
-#: glade/config.glade:3353
+#: glade/config.glade:3485
 msgid "System"
 msgstr "Системное"
 
-#: glade/config.glade:3386
+#: glade/config.glade:3518
 msgid "<b>Properties</b>"
 msgstr "<b>Параметры</b>"
 
