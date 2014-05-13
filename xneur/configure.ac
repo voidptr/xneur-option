@@ -1,9 +1,10 @@
-AC_INIT(configure.in)
+AC_INIT(xneur, 0.17.0)
+AM_INIT_AUTOMAKE
 AC_PREREQ(2.59)
+
 AC_CONFIG_HEADER(config.h)
 
 AC_CONFIG_MACRO_DIR(m4)
-AM_INIT_AUTOMAKE(xneur, 0.17.0)
 
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
@@ -36,12 +37,46 @@ if test "x$found_x11" = "xno"; then
 	fi
 
 	X11_CFLAGS="$X_CFLAGS"
-	X11_LIBS="$X_LIBS -lX11"
+	AC_CHECK_LIB(Xtst, XTestFakeMotionEvent, LIBXTST="-lXtst",[AC_CHECK_LIB(Xext,XTestFakeMotionEvent , LIBXTST="-lXext")])
+	if test "x$LIBXTST" = "x" ; 
+	then
+		echo ""
+		echo " **** ERROR **** "
+		echo ""
+		echo "Could not locate the needed X11 extensions:"
+		echo ""
+		echo "   RECORD"
+		echo "   XTest"
+		echo ""
+		echo "Make sure you have them installed before building Xneur"
+		echo ""
+		echo "  ... on Debian based distros do: apt-get install libxtst-dev"
+		echo " "
+		exit 1
+	fi
+	X11_LIBS="$X_LIBS -lX11 $LIBXTST $LIBXI"
 
 	AC_SUBST(X11_CFLAGS)
 	AC_SUBST(X11_LIBS)
 else
-	X11_LIBS="$X11_LIBS"
+	AC_CHECK_LIB(Xtst, XTestFakeMotionEvent, LIBXTST="-lXtst",[AC_CHECK_LIB(Xext,XTestFakeMotionEvent , LIBXTST="-lXext")])
+	if test "x$LIBXTST" = "x" ; 
+	then
+		echo ""
+		echo " **** ERROR **** "
+		echo ""
+		echo "Could not locate the needed X11 extensions:"
+		echo ""
+		echo "   RECORD"
+		echo "   XTest"
+		echo ""
+		echo "Make sure you have them installed before building Xneur"
+		echo ""
+		echo "  ... on Debian based distros do: apt-get install libxtst-dev"
+		echo " "
+		exit 1
+	fi
+	X11_LIBS="$X11_LIBS $LIBXTST $LIBXI"
 	AC_SUBST(X11_LIBS)
 fi
 
