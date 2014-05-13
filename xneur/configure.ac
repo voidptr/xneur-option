@@ -38,46 +38,46 @@ if test "x$found_x11" = "xno"; then
 	fi
 
 	X11_CFLAGS="$X_CFLAGS"
-	AC_CHECK_LIB(Xtst, XTestFakeMotionEvent, LIBXTST="-lXtst",[AC_CHECK_LIB(Xext,XTestFakeMotionEvent , LIBXTST="-lXext")])
-	if test "x$LIBXTST" = "x" ; 
-	then
-		echo ""
-		echo " **** ERROR **** "
-		echo ""
-		echo "Could not locate the needed X11 extensions:"
-		echo ""
-		echo "   RECORD"
-		echo "   XTest"
-		echo ""
-		echo "Make sure you have them installed before building Xneur"
-		echo ""
-		echo "  ... on Debian based distros do: apt-get install libxtst-dev"
-		echo " "
-		exit 1
-	fi
-	X11_LIBS="$X_LIBS -lX11 $LIBXTST $LIBXI"
+#	AC_CHECK_LIB(Xtst, XTestFakeMotionEvent, LIBXTST="-lXtst",[AC_CHECK_LIB(Xext,XTestFakeMotionEvent , LIBXTST="-lXext")])
+#	if test "x$LIBXTST" = "x" ; 
+#	then
+#		echo " **** ERROR **** "
+#		echo ""
+#		echo "Could not locate the needed X11 extensions:"
+#		echo ""
+#		echo "   RECORD"
+#		echo "   XTest"
+#		echo ""
+#		echo "Make sure you have them installed before building Xneur"
+#		echo ""
+#		echo "  ... on Debian based distros do: apt-get install libxtst-dev"
+#		echo " "
+#		exit 1
+#	fi
+#	X11_LIBS="$X_LIBS -lX11 $LIBXTST $LIBXI"
+	X11_LIBS="$X_LIBS -lX11"
 
 	AC_SUBST(X11_CFLAGS)
 	AC_SUBST(X11_LIBS)
 else
-	AC_CHECK_LIB(Xtst, XTestFakeMotionEvent, LIBXTST="-lXtst",[AC_CHECK_LIB(Xext,XTestFakeMotionEvent , LIBXTST="-lXext")])
-	if test "x$LIBXTST" = "x" ; 
-	then
-		echo ""
-		echo " **** ERROR **** "
-		echo ""
-		echo "Could not locate the needed X11 extensions:"
-		echo ""
-		echo "   RECORD"
-		echo "   XTest"
-		echo ""
-		echo "Make sure you have them installed before building Xneur"
-		echo ""
-		echo "  ... on Debian based distros do: apt-get install libxtst-dev"
-		echo " "
-		exit 1
-	fi
-	X11_LIBS="$X11_LIBS $LIBXTST $LIBXI"
+#	AC_CHECK_LIB(Xtst, XTestFakeMotionEvent, LIBXTST="-lXtst",[AC_CHECK_LIB(Xext,XTestFakeMotionEvent , LIBXTST="-lXext")])
+#	if test "x$LIBXTST" = "x" ; 
+#	then
+#		echo " **** ERROR **** "
+#		echo ""
+#		echo "Could not locate the needed X11 extensions:"
+#		echo ""
+#		echo "   RECORD"
+#		echo "   XTest"
+#		echo ""
+#		echo "Make sure you have them installed before building Xneur"
+#		echo ""
+#		echo "  ... on Debian based distros do: apt-get install libxtst-dev"
+#		echo " "
+#		exit 1
+#	fi
+#	X11_LIBS="$X_LIBS -lX11 $LIBXTST $LIBXI"
+	X11_LIBS="$X_LIBS -lX11"
 	AC_SUBST(X11_LIBS)
 fi
 

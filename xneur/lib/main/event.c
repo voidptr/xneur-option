@@ -18,8 +18,8 @@
  */
 
 #include <X11/XKBlib.h>
-#include <X11/Xlib.h>
-#include <X11/extensions/XTest.h>
+//#include <X11/Xlib.h>
+//#include <X11/extensions/XTest.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -77,7 +77,7 @@ int get_key_state(int key)
 
 void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 {
-	XTestGrabControl (main_window->display, True);
+	//XTestGrabControl (main_window->display, True);
 	
 	char *app_name = NULL;
 	app_name = get_wm_class_name(p->owner_window);
@@ -102,12 +102,14 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 	if (xconfig->dont_send_key_release_apps->exist(xconfig->dont_send_key_release_apps, app_name, BY_PLAIN))
 	{
 		XSendEvent(main_window->display, p->owner_window, TRUE, NoEventMask, &p->event);
+		XFlush(main_window->display);
 		log_message(TRACE, _("The event KeyRelease is not sent to the window (ID %d) with name '%s'"), p->owner_window, app_name);
 		return;
 	}
 
 	XSendEvent(main_window->display, p->owner_window, TRUE, NoEventMask, &p->event);
-
+	XFlush(main_window->display);
+	
 	if (is_delay)
 	{
 		usleep(xconfig->send_delay * 1000);
@@ -118,7 +120,8 @@ void event_send_xkey(struct _event *p, KeyCode kc, int modifiers)
 	p->event.xkey.time		= CurrentTime;
 
 	XSendEvent(main_window->display, p->owner_window, TRUE, NoEventMask, &p->event);
-	XTestGrabControl (main_window->display, False);
+	XFlush(main_window->display);
+	//XTestGrabControl (main_window->display, False);
 }
 
 static void event_send_backspaces(struct _event *p, int count)
