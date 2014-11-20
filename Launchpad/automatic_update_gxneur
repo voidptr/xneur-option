@@ -25,7 +25,7 @@ hg pull
 hg update
 hg merge
 
-export CUR_VER=$(cat ../gxneur/configure.in | grep "AM_INIT_AUTOMAKE" | sed -e "s/^AM_INIT_AUTOMAKE(gxneur, \(.*\))$/\1/")
+export CUR_VER=$(cat ../gxneur/configure.ac | grep "AC_INIT" | sed -e "s/^AC_INIT(gxneur, \(.*\))$/\1/")
 export NEW_VER="${CUR_VER}+hg${LAST_REVISION}"
 
 echo "OLD_VER = ${OLD_VER}"
@@ -90,21 +90,6 @@ dch -b --force-distribution --distribution "trusty" -v "${NEW_VER}-0trusty" \
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "saucy" -v "${NEW_VER}-0saucy" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "quantal" -v "${NEW_VER}-0quantal" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "precise" -v "${NEW_VER}-0precise" \
   "Automated backport upload; no source changes."
 debuild -S -sd
@@ -121,10 +106,6 @@ echo "Download to Launchpad Utopic..."
 dput ppa gxneur_${NEW_VER}-0utopic_source.changes | cat
 echo "Download to Launchpad Trusty..."
 dput ppa gxneur_${NEW_VER}-0trusty_source.changes | cat
-echo "Download to Launchpad Saucy..."
-dput ppa gxneur_${NEW_VER}-0saucy_source.changes | cat
-echo "Download to Launchpad Quantal..."
-dput ppa gxneur_${NEW_VER}-0quantal_source.changes | cat
 echo "Download to Launchpad Precise..."
 dput ppa gxneur_${NEW_VER}-0precise_source.changes | cat
 echo "Download to Launchpad Lucid..."
