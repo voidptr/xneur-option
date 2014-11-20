@@ -25,8 +25,8 @@ hg pull
 hg update
 hg merge
 
-export CUR_VER="0.2.9-2"
-export NEW_VER="0.2.9-2"
+export CUR_VER="0.2.9-3"
+export NEW_VER="0.2.9-3"
 
 echo "OLD_VER = ${OLD_VER}"
 echo "NEW_VER = ${NEW_VER}"
@@ -89,27 +89,7 @@ dch -b --force-distribution --distribution "trusty" -v "${NEW_VER}-0trusty" \
 debuild -S -sd
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "saucy" -v "${NEW_VER}-0saucy" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "raring" -v "${NEW_VER}-0raring" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "quantal" -v "${NEW_VER}-0quantal" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "precise" -v "${NEW_VER}-0precise" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-0lucid" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
@@ -121,14 +101,8 @@ echo "Download to Launchpad Utopic..."
 dput ppa hunspell-ru-ie-yo_${NEW_VER}-0utopic_source.changes | cat
 echo "Download to Launchpad Trusty..."
 dput ppa hunspell-ru-ie-yo_${NEW_VER}-0trusty_source.changes | cat
-echo "Download to Launchpad Saucy..."
-dput ppa hunspell-ru-ie-yo_${NEW_VER}-0saucy_source.changes | cat
-echo "Download to Launchpad Quantal..."
-dput ppa hunspell-ru-ie-yo_${NEW_VER}-0quantal_source.changes | cat
 echo "Download to Launchpad Precise..."
 dput ppa hunspell-ru-ie-yo_${NEW_VER}-0precise_source.changes | cat
-echo "Download to Launchpad Lucid..."
-dput ppa hunspell-ru-ie-yo_${NEW_VER}-0lucid_source.changes | cat
 
 rm -R ./"hunspell-ru-ie-yo-${NEW_VER}"
 rm -R ./"hunspell-ru-ie-yo-${CUR_VER}"
