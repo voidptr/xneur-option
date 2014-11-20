@@ -441,10 +441,10 @@ int main(int argc, char *argv[])
 	xneur_load_config();
 
 	int process_id = xconfig->get_pid(xconfig);
-	int priority = getpriority(PRIO_PROCESS, process_id);
+	//int priority = getpriority(PRIO_PROCESS, process_id);
 
 	setpriority(PRIO_PROCESS, process_id, -19);
-	priority = getpriority(PRIO_PROCESS, process_id);
+	int priority = getpriority(PRIO_PROCESS, process_id);
 	
 	log_message(TRACE, _("Xneur process identificator is %d with nice %d"), process_id, priority);
 	

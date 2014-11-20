@@ -6,7 +6,8 @@ xneur_includedir = $(includedir)/xneur
 xneur_include_HEADERS = xneur.h		
 
 libxneur_la_SOURCES =		\
-	xneurlib.c		
+	../config/xnconfig_files.c \
+	xneurlib.c	\	
 	xneur.h		
 
 libxneur_la_CFLAGS = -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/main -I@top_srcdir@/lib/ai -I@top_srcdir@/lib/config -I@top_srcdir@/lib/notify  @DEFAULT_CFLAGS@ @X11_CFLAGS@ @ASPELL_CFLAGS@ @ENCHANT_CFLAGS@

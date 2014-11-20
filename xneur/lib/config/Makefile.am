@@ -9,7 +9,6 @@ noinst_HEADERS =		\
 	xnconfig_files.h	
 
 libxnconfig_la_SOURCES =	\
-	xnconfig_files.c	\
 	xnconfig.c		
 
 libxnconfig_la_CFLAGS = -I@top_srcdir@/lib/misc -I@top_srcdir@/lib/main -I@top_srcdir@/lib/lib @DEFAULT_CFLAGS@

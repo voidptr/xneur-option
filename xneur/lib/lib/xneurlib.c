@@ -46,6 +46,8 @@
 
 #include "log.h"
 
+#include "buffer.h"
+
 extern struct _window *main_window;
 
 struct _xneur_config *xconfig				= NULL;
@@ -446,7 +448,6 @@ int xneur_get_layout (struct _xneur_handle *handle, char *word)
 {
 	if (!word || handle == NULL)
 		return -1;
-
 	struct _buffer *buffer = buffer_init(handle, main_window->keymap);
 
 	buffer->set_content(buffer, word);

@@ -72,7 +72,7 @@ void sound_uninit(void)
 	It is normally not needed to call this function in a normal application as
 	the resources will automatically be freed when the program terminates.
 	*/
-	gst_deinit();
+	//gst_deinit();
 }
 
 static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data)
@@ -134,15 +134,15 @@ void *play_file_thread(void *param)
 	GstElement *conv     = gst_element_factory_make("audioconvert",  "converter");
 	GstElement *sink     = gst_element_factory_make("alsasink", "audio-output");
 	
-	if (!pipeline || !source || !parser || !conv || !volume || !sink)
+	/*if (!pipeline || !source || !parser || !conv || !volume || !sink)
 	{
 		free(path);
 		log_message(ERROR, _("Failed to create gstreamer context"));
 		g_main_loop_unref(loop);
 		return NULL;
-  	}
+  	}*/
 
-	/*if (!pipeline)
+	if (!pipeline)
 	{
 		free(path);
 		log_message(ERROR, _("Failed to create gstreamer context (pipeline)"));
@@ -188,7 +188,7 @@ void *play_file_thread(void *param)
 		log_message(ERROR, _("Failed to create gstreamer context (sink)"));
 		g_main_loop_unref(loop);
 		return NULL;
-  	}*/
+  	}
 	
 	g_object_set(G_OBJECT(source), "location", path, NULL);
 	double i = (double) xconfig->volume_percent / 100.0;
@@ -218,7 +218,7 @@ void *play_file_thread(void *param)
 	return NULL;
 }
 
-#elif WITH_OPENAL /* WITH_GSTREAMER */
+#elif WITH_OPENAL /* WITH_OPENAL */
 
 void sound_init(void)
 {

@@ -1675,6 +1675,9 @@ struct _xneur_config* xneur_config_init(void)
 	p->pid = -1;
 	
 	p->handle = xneur_handle_create();
+
+	//char *a = "ghbdtn";
+	//xneur_get_layout(p->handle, a);
 	
 	p->hotkeys = (struct _xneur_hotkey *) malloc(MAX_HOTKEYS * sizeof(struct _xneur_hotkey));
 	bzero(p->hotkeys, MAX_HOTKEYS * sizeof(struct _xneur_hotkey));

@@ -272,7 +272,6 @@ static void program_layout_update(struct _program *p)
 	free(window_layouts);
 
 	log_message(DEBUG, _("Store default layout group to %d"), xconfig->default_group);
-	XkbLockGroup(main_window->display, XkbUseCoreKbd, xconfig->default_group);
 }
 
 static void program_update(struct _program *p)
@@ -1156,6 +1155,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_ENABLE_LAYOUT_0:
 		{
 			XkbLockGroup(main_window->display, XkbUseCoreKbd, 0);
+			
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_0, NULL);
 			break;
@@ -1163,6 +1163,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_ENABLE_LAYOUT_1:
 		{
 			XkbLockGroup(main_window->display, XkbUseCoreKbd, 1);
+			
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_1, NULL);
 			break;
@@ -1170,6 +1171,7 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_ENABLE_LAYOUT_2:
 		{
 			XkbLockGroup(main_window->display, XkbUseCoreKbd, 2);
+			
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_2, NULL);
 			break;
@@ -1177,6 +1179,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		case ACTION_ENABLE_LAYOUT_3:
 		{
 			XkbLockGroup(main_window->display, XkbUseCoreKbd, 3);
+			// Gsettings hack
+			
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_3, NULL);
 			break;
@@ -1789,11 +1793,9 @@ static void program_check_space_before_punctuation(struct _program *p)
 	p->correction_buffer->del_symbol(p->correction_buffer);
 	while (p->buffer->content[p->buffer->cur_pos-1] == ' ')
 	{
-		log_message (ERROR, "1 '%s'", p->buffer->content);
 		p->event->send_backspaces(p->event, 1);
 		p->buffer->del_symbol(p->buffer);
 		p->correction_buffer->del_symbol(p->correction_buffer);
-		log_message (ERROR, "2 '%s'", p->buffer->content);
 	}
 
 	p->event->event = p->event->default_event;
@@ -1801,7 +1803,6 @@ static void program_check_space_before_punctuation(struct _program *p)
 	int modifier_mask = groups[get_curr_keyboard_group()] | p->event->get_cur_modifiers(p->event);
 	p->buffer->add_symbol(p->buffer, sym, p->event->event.xkey.keycode, modifier_mask);
 
-	log_message (ERROR, "'%s'", p->buffer->content);
 	free(text);
 }
 

@@ -542,3 +542,4 @@ int check_lang_with_similar_words (struct _xneur_handle *handle, struct _buffer 
 	free(sym_len);
 	return lang;
 } 
+

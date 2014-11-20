@@ -563,7 +563,6 @@ static void get_offending_modifiers (struct _keymap *p)
 	p->scrolllock_mask = 0;
 	p->capslock_mask = 0;
 	
-	int i;
 	XModifierKeymap *modmap;
 	KeyCode nlock, slock;
 	static int mask_table[8] = {
@@ -582,7 +581,7 @@ static void get_offending_modifiers (struct _keymap *p)
 
 	if (modmap != NULL && modmap->max_keypermod > 0)
 	{
-		for (i = 0; i < 8 * modmap->max_keypermod; i++)
+		for (int i = 0; i < 8 * modmap->max_keypermod; i++)
 		{
 			if (modmap->modifiermap[i] == nlock && nlock != 0)
 				p->numlock_mask = mask_table[i / modmap->max_keypermod];

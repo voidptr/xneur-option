@@ -79,7 +79,8 @@ int main(int argc, char *argv[])
 	
 	struct _xneur_handle *xnh;
 	xnh = xneur_handle_create();
-
+    printf("Xneur handler created\n");
+	
 	if ((!layouts) && (!translates))
 		translates = 1;
 	
@@ -87,8 +88,9 @@ int main(int argc, char *argv[])
 	{
 		for (int i = argc - words_count; i < argc; i++)
 		{
+			printf("Xneur processing '%s'...\n", argv[i]);
 			int layout = xneur_get_layout(xnh, argv[i]);
-			printf("%d ", layout);
+			printf("%d \n", layout);
 		}
 		printf("\n");
 	}

@@ -125,8 +125,8 @@ static int find_id(struct _list_char *list, const char *string, int mode)
 
 		for (int i = 0; i < list->data_count - 1; i++)
 		{
-			struct _list_char_data *data = &list->data[0];
-			data = &list->data[i];
+			struct _list_char_data *data = &list->data[i];
+			//data = &list->data[i];
 			strcat(full_str, data->string);
 			strcat(full_str, "|");
 		} 
