@@ -25,8 +25,8 @@ hg pull
 hg update
 hg merge
 
-export CUR_VER="0.2.9-3"
-export NEW_VER="0.2.9-3"
+export CUR_VER="0.3.9-1"
+export NEW_VER="0.3.9-1"
 
 echo "OLD_VER = ${OLD_VER}"
 echo "NEW_VER = ${NEW_VER}"
@@ -78,10 +78,15 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "utopic" -v "${NEW_VER}-0utopic" \
+dch -b --force-distribution --distribution "vivid" -v "${NEW_VER}-0vivid" \
   "Minor update."
 debuild -S -sa
 # end update for basic releases
+
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "utopic" -v "${NEW_VER}-0utopic" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "trusty" -v "${NEW_VER}-0trusty" \
@@ -97,6 +102,8 @@ debuild -S -sd
 
 cd ..
 
+echo "Download to Launchpad Vivid..."
+dput ppa hunspell-ru-ie-yo_${NEW_VER}-0vivid_source.changes | cat
 echo "Download to Launchpad Utopic..."
 dput ppa hunspell-ru-ie-yo_${NEW_VER}-0utopic_source.changes | cat
 echo "Download to Launchpad Trusty..."
