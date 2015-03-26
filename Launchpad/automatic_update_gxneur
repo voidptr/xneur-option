@@ -79,10 +79,15 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "utopic" -v "${NEW_VER}-0utopic" \
+dch -b --force-distribution --distribution "vivid" -v "${NEW_VER}-0vivid" \
   "Minor update."
 debuild -S -sa
 # end update for basic releases
+
+cp -f ../changelog debian/changelog
+dch -b --force-distribution --distribution "utopic" -v "${NEW_VER}-0utopic" \
+  "Automated backport upload; no source changes."
+debuild -S -sd
 
 cp -f ../changelog debian/changelog
 dch -b --force-distribution --distribution "trusty" -v "${NEW_VER}-0trusty" \
@@ -102,6 +107,8 @@ debuild -S -sd
 # end update for other releases
 
 cd ..
+echo "Download to Launchpad Vivid..."
+dput ppa gxneur_${NEW_VER}-0vivid_source.changes | cat
 echo "Download to Launchpad Utopic..."
 dput ppa gxneur_${NEW_VER}-0utopic_source.changes | cat
 echo "Download to Launchpad Trusty..."
