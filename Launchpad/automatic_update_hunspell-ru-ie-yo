@@ -25,8 +25,8 @@ hg pull
 hg update
 hg merge
 
-export CUR_VER="0.3.9-1"
-export NEW_VER="0.3.9-1"
+export CUR_VER="0.3.9-2"
+export NEW_VER="0.3.9-2"
 
 echo "OLD_VER = ${OLD_VER}"
 echo "NEW_VER = ${NEW_VER}"
