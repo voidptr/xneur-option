@@ -79,13 +79,13 @@ else
 # Note: I am using gnupg-agent for comfortable work
 
 # begin update for basic releases
-dch -b --force-distribution --distribution "vivid" -v "${NEW_VER}-0vivid" \
+dch -b --force-distribution --distribution "wily" -v "${NEW_VER}-0wily" \
   "Minor update."
 debuild -S -sa
 # end update for basic releases
 
 cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "utopic" -v "${NEW_VER}-0utopic" \
+dch -b --force-distribution --distribution "vivid" -v "${NEW_VER}-0vivid" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
@@ -99,24 +99,17 @@ dch -b --force-distribution --distribution "precise" -v "${NEW_VER}-0precise" \
   "Automated backport upload; no source changes."
 debuild -S -sd
 
-cp -f ../changelog debian/changelog
-dch -b --force-distribution --distribution "lucid" -v "${NEW_VER}-0lucid" \
-  "Automated backport upload; no source changes."
-debuild -S -sd
-
 # end update for other releases
 
 cd ..
+echo "Download to Launchpad Wily..."
+dput ppa gxneur_${NEW_VER}-0wily_source.changes | cat
 echo "Download to Launchpad Vivid..."
 dput ppa gxneur_${NEW_VER}-0vivid_source.changes | cat
-echo "Download to Launchpad Utopic..."
-dput ppa gxneur_${NEW_VER}-0utopic_source.changes | cat
 echo "Download to Launchpad Trusty..."
 dput ppa gxneur_${NEW_VER}-0trusty_source.changes | cat
 echo "Download to Launchpad Precise..."
 dput ppa gxneur_${NEW_VER}-0precise_source.changes | cat
-echo "Download to Launchpad Lucid..."
-dput ppa gxneur_${NEW_VER}-0lucid_source.changes | cat
 
 rm -R ./"gxneur-${NEW_VER}"
 rm -R ./"gxneur-${CUR_VER}"
