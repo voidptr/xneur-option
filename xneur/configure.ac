@@ -92,7 +92,10 @@ if test "x$with_sound" != "xno"; then
 
 	case $with_sound in
 		gstreamer|yes)
-			PKG_CHECK_MODULES(GSTREAMER, [gstreamer-0.10 >= 0.10.6])
+			PKG_CHECK_MODULES(GSTREAMER, [gstreamer-1.0 >= 1.2.4], found_gst="yes", found_gst="no")
+			if test "x$found_gst" = "xno"; then
+				PKG_CHECK_MODULES(GSTREAMER, [gstreamer-0.10 >= 0.10.6])
+			fi
 			AC_DEFINE(WITH_GSTREAMER, 1, [Define if you want gstreamer sound support])
 			;;
 		openal)

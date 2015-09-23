@@ -85,6 +85,7 @@ static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data)
 	{
 		case GST_MESSAGE_EOS:
 		{
+		    //g_print ("End of stream\n");
 			g_main_loop_quit(loop);
 			break;
 		}
@@ -95,6 +96,7 @@ static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data)
 
 			gst_message_parse_error(msg, &err, &debug);
 			g_free(debug);
+			g_printerr ("Error: %s\n", err->message);
 			g_error_free(err);
 
 			g_main_loop_quit(loop);
@@ -107,15 +109,21 @@ static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer data)
 	return TRUE;
 }
 
-static void new_pad(GstElement *element, GstPad *pad, gpointer data)
+static void on_pad_added(GstElement *element, GstPad *pad, gpointer data)
 {
 	if (element){}
 
-	GstElement *sink = data;
+	GstPad *sinkpad;
+	GstElement *decoder = (GstElement *) data;
 
-	GstPad *alsapad = gst_element_get_pad(sink, "sink");
-	gst_pad_link(pad, alsapad);
-	gst_object_unref(alsapad);
+	// We can now link this pad with the vorbis-decoder sink pad 
+	//g_print ("Dynamic pad created, linking demuxer/decoder\n");
+
+	sinkpad = gst_element_get_static_pad (decoder, "sink");
+
+	gst_pad_link (pad, sinkpad);
+
+	gst_object_unref (sinkpad);
 }
 
 void *play_file_thread(void *param)
@@ -123,24 +131,22 @@ void *play_file_thread(void *param)
 	char *path = (char *) param;
 	log_message(TRACE, _("Play sound sample %s (use Gstreamer engine)"), path);
 
+
 	// Initialize GStreamer
 	GMainLoop *loop = g_main_loop_new(NULL, FALSE);
 
-	// Initialize gst-elements
-	GstElement *pipeline = gst_pipeline_new        ("xneur");
-	GstElement *source   = gst_element_factory_make("filesrc",  "file-source");
-	GstElement *parser   = gst_element_factory_make("wavparse", "wav-parcer");
-	GstElement *volume   = gst_element_factory_make("volume", "volume");
-	GstElement *conv     = gst_element_factory_make("audioconvert",  "converter");
-	GstElement *sink     = gst_element_factory_make("alsasink", "audio-output");
-	
-	/*if (!pipeline || !source || !parser || !conv || !volume || !sink)
-	{
-		free(path);
-		log_message(ERROR, _("Failed to create gstreamer context"));
-		g_main_loop_unref(loop);
-		return NULL;
-  	}*/
+	GstElement *pipeline, *source, *parser, *conv, *sink, *playback, *volume;
+	GstBus *bus;
+	guint bus_watch_id;
+	/* Create gstreamer elements */
+	pipeline = gst_pipeline_new ("audio-player");
+	gst_element_set_state (pipeline, GST_STATE_NULL);
+
+	source   = gst_element_factory_make ("filesrc",       "file-source");
+	parser   = gst_element_factory_make("wavparse", "wav-parser");
+	conv     = gst_element_factory_make ("audioconvert",  "converter");
+	sink     = gst_element_factory_make ("alsasink", "audio-output");
+	volume   = gst_element_factory_make("volume", NULL);
 
 	if (!pipeline)
 	{
@@ -189,29 +195,148 @@ void *play_file_thread(void *param)
 		g_main_loop_unref(loop);
 		return NULL;
   	}
-	
-	g_object_set(G_OBJECT(source), "location", path, NULL);
+
+	// Set volume
 	double i = (double) xconfig->volume_percent / 100.0;
 	g_object_set (G_OBJECT (volume), "volume", (double)i, NULL);
+
+	/* we set the input filename to the source element */
+	g_object_set (G_OBJECT (source), "location", path, NULL);
+
+	playback = gst_bin_new ("bin_playback"); 
+	if (!playback)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (playback)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
 	
+	gst_bin_add_many(GST_BIN(playback), source, parser, conv, volume, sink, NULL);
+     
+	gst_element_link_many (source, parser, conv, volume, sink, NULL);
+         
+	g_signal_connect(parser, "pad-added", G_CALLBACK(on_pad_added), sink);    
+  
+	gst_bin_add(GST_BIN (pipeline), playback);
+  
+	/* we add a message handler */
+	bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline));
+	bus_watch_id = gst_bus_add_watch (bus, bus_call, loop);
+	gst_object_unref (bus);
+
+
+	/* Set the pipeline to "playing" state*/
+	//g_print ("Now playing: %s\n", path);
+	gst_element_set_state (pipeline, GST_STATE_PLAYING);
+
+
+	/* Iterate */
+	//g_print ("Running...\n");
+	g_main_loop_run (loop);
+
+
+	/* Out of the main loop, clean up nicely */
+	//g_print ("Returned, stopping playback\n");
+	gst_element_set_state (pipeline, GST_STATE_NULL);
+
+	//g_print ("Deleting pipeline\n");
+	gst_object_unref (GST_OBJECT (pipeline));
+	g_source_remove (bus_watch_id);
+	g_main_loop_unref (loop);
+	
+	// Initialize gst-elements
+	/*GstElement *pipeline = gst_pipeline_new        ("xneur");
+	gst_element_set_state(pipeline, GST_STATE_NULL);
+	
+	GstElement *source   = gst_element_factory_make("filesrc",  "file-source");
+	GstElement *parser   = gst_element_factory_make("wavparse", "wav-parser");
+	GstElement *conv     = gst_element_factory_make("audioconvert",  "converter");
+	GstElement *sink     = gst_element_factory_make("autoaudiosink", "audio-output");
+	
+	GstElement *playback = gst_bin_new ("bin_playback"); 
+	
+	if (!pipeline)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (pipeline)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+
+	if (!source)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (source)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+	
+	if (!parser)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (parser)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+
+	if (!conv)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (conv)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+
+	if (!volume)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (volume)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+
+	if (!sink)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (sink)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+
+	if (!playback)
+	{
+		free(path);
+		log_message(ERROR, _("Failed to create gstreamer context (playback)"));
+		g_main_loop_unref(loop);
+		return NULL;
+  	}
+	
+	g_object_set(G_OBJECT(source), "location", path, NULL);
+
+	double i = (double) xconfig->volume_percent / 100.0;
+	g_object_set (G_OBJECT (volume), "volume", (double)i, NULL);
+
+	gst_bin_add_many(GST_BIN(playback), source, parser, volume, conv, sink, NULL);
+         
+	gst_element_link_many (source, parser, volume, conv, sink, NULL);
+ 
+	g_signal_connect(parser, "pad-added", G_CALLBACK(on_pad_added), sink);    
+  
+	gst_bin_add(GST_BIN (pipeline), playback);
+  
 	GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipeline));
-	gst_bus_add_watch(bus, bus_call, loop);
+	int bus_watch_id = gst_bus_add_watch(bus, bus_call, loop);
 	gst_object_unref(bus);
 	
-	gst_bin_add_many(GST_BIN(pipeline), source, parser, conv, volume, sink, NULL);
-	
-	gst_element_link(source, parser);
-	gst_element_link_many (conv, volume, sink, NULL);
-	
-	g_signal_connect(parser, "pad-added", G_CALLBACK(new_pad), conv);
-
 	gst_element_set_state(pipeline, GST_STATE_PLAYING);
 	g_main_loop_run(loop);
 
 	// Clean up nicely
 	gst_element_set_state(pipeline, GST_STATE_NULL);
 	gst_object_unref(GST_OBJECT(pipeline));
-	g_main_loop_unref(loop);
+	g_source_remove (bus_watch_id);
+	g_main_loop_unref(loop);*/
 	
 	free(path);
 	
