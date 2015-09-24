@@ -592,7 +592,7 @@ void create_tray_icon (void)
 	gint kbd_gr = get_active_kbd_group(dpy);
 	
 	// Tray icon
-	if (strcasecmp(rendering_engine, "Built-in") == 0 || tray_icon_failed)
+	if (strcasecmp(rendering_engine, "Built-in") == 0 /*|| tray_icon_failed*/)
 	{
 		tray->tray_icon = _gtk_tray_icon_new(_("X Neural Switcher"));
 
@@ -631,7 +631,7 @@ void create_tray_icon (void)
 	}
 
 	// Status Icon
-	if (!tray_icon_created)
+	if (tray_icon_failed || !tray_icon_created || strcasecmp(rendering_engine, "StatusIcon") == 0 )
 	{
 		tray->status_icon = gtk_status_icon_new();
 
