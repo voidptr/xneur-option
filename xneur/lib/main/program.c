@@ -263,7 +263,8 @@ static void program_layout_update(struct _program *p)
 		free(text_to_find);
 		free(window_layouts);
 
-		XkbLockGroup(main_window->display, XkbUseCoreKbd, lang);
+		//XkbLockGroup(main_window->display, XkbUseCoreKbd, lang);
+		set_keyboard_group(lang);
 		log_message(DEBUG, _("Restore layout group to %d"), lang);
 		return;
 	}
@@ -517,7 +518,8 @@ static void program_change_lang(struct _program *p, int new_lang)
 {
 	log_message(DEBUG, _("Changing language from %s to %s"), xconfig->handle->languages[get_curr_keyboard_group()].name, xconfig->handle->languages[new_lang].name);
 	p->buffer->set_lang_mask(p->buffer, new_lang);
-	XkbLockGroup(main_window->display, XkbUseCoreKbd, new_lang);
+	//XkbLockGroup(main_window->display, XkbUseCoreKbd, new_lang);
+	set_keyboard_group(new_lang);
 	p->last_layout = new_lang;
 }
 
@@ -1154,7 +1156,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_ENABLE_LAYOUT_0:
 		{
-			XkbLockGroup(main_window->display, XkbUseCoreKbd, 0);
+			//XkbLockGroup(main_window->display, XkbUseCoreKbd, 0);
+			set_keyboard_group(0);
 			
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_0, NULL);
@@ -1162,7 +1165,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_ENABLE_LAYOUT_1:
 		{
-			XkbLockGroup(main_window->display, XkbUseCoreKbd, 1);
+			//XkbLockGroup(main_window->display, XkbUseCoreKbd, 1);
+			set_keyboard_group(1);
 			
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_1, NULL);
@@ -1170,7 +1174,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_ENABLE_LAYOUT_2:
 		{
-			XkbLockGroup(main_window->display, XkbUseCoreKbd, 2);
+			//XkbLockGroup(main_window->display, XkbUseCoreKbd, 2);
+			set_keyboard_group(2);
 			
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_2, NULL);
@@ -1178,8 +1183,8 @@ static int program_perform_manual_action(struct _program *p, enum _hotkey_action
 		}
 		case ACTION_ENABLE_LAYOUT_3:
 		{
-			XkbLockGroup(main_window->display, XkbUseCoreKbd, 3);
-			// Gsettings hack
+			//XkbLockGroup(main_window->display, XkbUseCoreKbd, 3);
+			set_keyboard_group(3);
 			
 			p->event->default_event.xkey.keycode = 0;
 			show_notify(NOTIFY_ENABLE_LAYOUT_3, NULL);

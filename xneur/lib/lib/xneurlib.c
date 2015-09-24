@@ -52,6 +52,34 @@ extern struct _window *main_window;
 
 struct _xneur_config *xconfig				= NULL;
 
+static int get_group(Display *dpy) {
+	XkbStateRec state[1];
+	memset(state, 0, sizeof(state));
+	XkbGetState(dpy, XkbUseCoreKbd, state);
+	return state->group;
+}
+
+static int get_layout(Display *dpy, char **names) {
+	XkbDescRec desc[1];
+	int gc;
+	memset(desc, 0, sizeof(desc));
+	desc->device_spec = XkbUseCoreKbd;
+	XkbGetControls(dpy, XkbGroupsWrapMask, desc);
+	XkbGetNames(dpy, XkbGroupNamesMask, desc);
+	XGetAtomNames(dpy, desc->names->groups, gc = desc->ctrls->num_groups, names);
+	XkbFreeControls(desc, XkbGroupsWrapMask, True);
+	XkbFreeNames(desc, XkbGroupNamesMask, True);
+	return gc;
+}
+
+static void free_layout(char **names, int gc) {
+	for (; gc--; ++names)
+		if (*names) {
+			XFree(*names);
+			*names = NULL;
+		}
+}
+
 #if  defined(WITH_ASPELL) || defined(WITH_ENCHANT)
 static char *layout_names[] =
 {
@@ -92,6 +120,16 @@ struct _xneur_handle *xneur_handle_create (void)
 	}
 	
 	Display *display = XOpenDisplay(NULL);
+
+	char *names[XkbNumKbdGroups];
+	int gc = get_layout(display, names);
+	int g = get_group(display);
+	for (int i = 0; i < gc; i++)
+	{
+		printf("%d) %c %s\n", i, i == g ? '*' : ' ', names[i]);
+	}
+	free_layout(names, gc);
+	
 	XkbGetNames(display, XkbAllNamesMask, kbd_desc_ptr);
 
 	if (kbd_desc_ptr->names == NULL)

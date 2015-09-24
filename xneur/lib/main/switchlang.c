@@ -45,17 +45,27 @@ int get_curr_keyboard_group(void)
 	return group;
 }
 
+void set_keyboard_group(int layout_group)
+{
+	XkbLockGroup(main_window->display, XkbUseCoreKbd, layout_group);
+	//Gsettings hack
+	/*char *gsettings_command = malloc(1024 * sizeof(char));
+	sprintf(gsettings_command, "gsettings set org.gnome.desktop.input-sources current %d", layout_group); 
+	log_message (DEBUG, gsettings_command);
+	if (system(gsettings_command)) {};*/
+}
+
 void set_next_keyboard_group(struct _xneur_handle *handle)
 {
 	int new_layout_group = get_curr_keyboard_group() + 1;
 	if (new_layout_group == handle->total_languages)
 		new_layout_group = 0;
 	XkbLockGroup(main_window->display, XkbUseCoreKbd, new_layout_group);
-	// Gsettings hack
-	//char *gsettings_command = malloc(1024 * sizeof(char));
-	//sprintf(gsettings_command, "gsettings set org.gnome.desktop.input-sources current %d", new_layout_group); 
-	//log_message (DEBUG, gsettings_command);
-	//if (system(gsettings_command)) {};
+	//Gsettings hack
+	/*char *gsettings_command = malloc(1024 * sizeof(char));
+	sprintf(gsettings_command, "gsettings set org.gnome.desktop.input-sources current %d", new_layout_group); 
+	log_message (DEBUG, gsettings_command);
+	if (system(gsettings_command)) {};*/
 }
 
 void set_prev_keyboard_group(struct _xneur_handle *handle)
@@ -65,8 +75,8 @@ void set_prev_keyboard_group(struct _xneur_handle *handle)
 		new_layout_group = handle->total_languages - 1;
 	XkbLockGroup(main_window->display, XkbUseCoreKbd, new_layout_group);
 	// Gsettings hack
-	//char *gsettings_command = malloc(1024 * sizeof(char));
-	//sprintf(gsettings_command, "gsettings set org.gnome.desktop.input-sources current %d", new_layout_group); 
-	//log_message (DEBUG, gsettings_command);
-	//if (system(gsettings_command)) {};
+	/*char *gsettings_command = malloc(1024 * sizeof(char));
+	sprintf(gsettings_command, "gsettings set org.gnome.desktop.input-sources current %d", new_layout_group); 
+	log_message (DEBUG, gsettings_command);
+	if (system(gsettings_command)) {};*/
 }

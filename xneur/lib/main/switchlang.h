@@ -23,6 +23,7 @@
 #include "xneur.h"
 
 int  get_curr_keyboard_group(void);
+void set_keyboard_group(int layout_group);
 void set_next_keyboard_group(struct _xneur_handle *handle);
 void set_prev_keyboard_group(struct _xneur_handle *handle);
 
