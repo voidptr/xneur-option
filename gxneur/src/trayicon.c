@@ -582,7 +582,7 @@ void create_tray_icon (void)
 		}
 		else
 		{
-			tray_icon_failed = 0;
+			tray_icon_failed = 1;
 		}
 #else
 		tray_icon_failed = 1;

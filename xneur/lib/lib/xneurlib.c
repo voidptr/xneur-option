@@ -52,7 +52,7 @@ extern struct _window *main_window;
 
 struct _xneur_config *xconfig				= NULL;
 
-static int get_group(Display *dpy) {
+/*static int get_group(Display *dpy) {
 	XkbStateRec state[1];
 	memset(state, 0, sizeof(state));
 	XkbGetState(dpy, XkbUseCoreKbd, state);
@@ -78,7 +78,7 @@ static void free_layout(char **names, int gc) {
 			XFree(*names);
 			*names = NULL;
 		}
-}
+}*/
 
 #if  defined(WITH_ASPELL) || defined(WITH_ENCHANT)
 static char *layout_names[] =
@@ -121,14 +121,14 @@ struct _xneur_handle *xneur_handle_create (void)
 	
 	Display *display = XOpenDisplay(NULL);
 
-	char *names[XkbNumKbdGroups];
+	/*char *names[XkbNumKbdGroups];
 	int gc = get_layout(display, names);
 	int g = get_group(display);
 	for (int i = 0; i < gc; i++)
 	{
 		printf("%d) %c %s\n", i, i == g ? '*' : ' ', names[i]);
 	}
-	free_layout(names, gc);
+	free_layout(names, gc);*/
 	
 	XkbGetNames(display, XkbAllNamesMask, kbd_desc_ptr);
 
